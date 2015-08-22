@@ -5,19 +5,21 @@ import localizer from './utils/localizer'
 import chunk from 'lodash/array/chunk';
 import omit from 'lodash/object/omit';
 
-import { instanceId } from './utils/helpers';
+import { navigate } from './utils/constants';
 import getHeight from 'dom-helpers/query/height';
 
 import EventRow from './EventRow';
 import BackgroundCells from './BackgroundCells';
-import { accessor, elementType, dateFormat } from './utils/propTypes';
+import { dateFormat } from './utils/propTypes';
 import { segStyle, inRange, eventSegments, eventLevels, sortEvents } from './utils/eventLevels';
 
-function eventsForWeek(evts, start, end){
-  return evts.filter( e => inRange(e, start, end))
+function eventsForWeek(evts, start, end, props){
+  return evts.filter( e => inRange(e, start, end, props))
 }
 
 let propTypes = {
+  ...EventRow.PropTypes,
+
   culture: React.PropTypes.string,
 
   date: React.PropTypes.instanceOf(Date),
@@ -37,12 +39,6 @@ let MonthView = React.createClass({
   displayName: 'MonthView',
 
   propTypes,
-
-  getDefaultProps() {
-    return {
-      allDayField: 'allDay'
-    };
-  },
 
   getInitialState(){
     return { rowLimit: 5 }
@@ -73,7 +69,7 @@ let MonthView = React.createClass({
         className={cn('rbc-month-view', elementProps.className)}
       >
         <div className='rbc-row rbc-month-header'>
-          {this._headers(weekdayFormat, culture)}
+          {this._headers(rows[0], weekdayFormat, culture)}
         </div>
         { rows.map((row, idx) =>
             this._row(row, idx, measure && this._renderMeasureRows))
@@ -85,11 +81,11 @@ let MonthView = React.createClass({
   _row(row, rowIdx, content) {
     let first = row[0]
     let last = row[row.length - 1]
-    let evts = eventsForWeek(this.props.events, row[0], row[row.length - 1])
+    let evts = eventsForWeek(this.props.events, row[0], row[row.length - 1], this.props)
 
-    evts.sort(sortEvents, this.props.allDayField)
+    evts.sort((a, b) => sortEvents(a, b, this.props))
 
-    let segments = evts = evts.map(evt => eventSegments(evt, first, last))
+    let segments = evts = evts.map(evt => eventSegments(evt, first, last, this.props))
     let levels = eventLevels(segments)
 
     let limit = this.state.rowLimit;
@@ -132,11 +128,11 @@ let MonthView = React.createClass({
 
     return (
       <EventRow
+        {...this.props}
         key={idx}
         segments={segments}
         start={first}
         end={last}
-        onEventClick={this.props.onEventClick}
       />
     )
   },
@@ -168,7 +164,10 @@ let MonthView = React.createClass({
       return (
         <div
           key={'header_' + colIdx}
-          className={cn('rbc-date-cell', {'rbc-off-range': offRange })}
+          className={cn('rbc-date-cell', {
+            'rbc-off-range': offRange,
+            'rbc-now': dates.eq(day, new Date(), 'day')
+          })}
         >
           {
             localizer.format(day, this.props.dateFormat, this.props.culture)
@@ -178,10 +177,13 @@ let MonthView = React.createClass({
     })
   },
 
-  _headers(format, culture){
-    return [0, 1, 2, 3, 4, 5, 6].map( (day) =>
+  _headers(row, format, culture){
+    let first = row[0]
+    let last = row[row.length - 1]
+
+    return dates.range(first, last, 'day').map((day, idx) =>
       <div
-        key={'header_' + day }
+        key={'header_' + idx}
         className='rbc-month-header-cell'
         style={segStyle(1, 7)}
       >
@@ -216,5 +218,18 @@ let MonthView = React.createClass({
   }
 
 });
+
+MonthView.navigate = (date, action)=>{
+  switch (action){
+    case navigate.PREVIOUS:
+      return dates.add(date, -1, 'month');
+
+    case navigate.NEXT:
+      return dates.add(date, 1, 'month')
+
+    default:
+      return date;
+  }
+}
 
 export default MonthView

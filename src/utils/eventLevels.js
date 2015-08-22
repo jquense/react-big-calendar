@@ -1,10 +1,14 @@
 import dates from './dates';
+import { accessor as get } from './accessors';
 
-export function eventSegments(event, first, last){
-  let start = dates.duration(first, dates.max(event.start, first), 'day');
+export function eventSegments(event, first, last, { startAccessor, endAccessor }){
+
+  let start = dates.duration(first,
+      dates.max(get(event, startAccessor), first), 'day');
+
   let span = Math.min(dates.duration(
-      dates.max(event.start, first)
-    , dates.min(event.end, dates.add(last, 1, 'day'))
+      dates.max(get(event, startAccessor), first)
+    , dates.min(get(event, endAccessor), dates.add(last, 1, 'day'))
     , 'day'), 7);
 
   span = Math.max(span, 1);
@@ -44,10 +48,13 @@ export function eventLevels(rowSegments){
   return levels;
 }
 
-export function inRange(e, start, end){
-  let starts = dates.inRange(e.start, start, end, 'day')
-  let during = dates.lt(e.start, start, 'day') && dates.gt(e.end, end, 'day')
-  let ends = dates.lt(e.start, start) && dates.inRange(e.end, start, end, 'day')
+export function inRange(e, start, end, { startAccessor, endAccessor }){
+  let eStart = get(e, startAccessor)
+  let eEnd = get(e, endAccessor)
+
+  let starts = dates.inRange(eStart, start, end, 'day')
+  let during = dates.lt(eStart, start, 'day') && dates.gt(eEnd, end, 'day')
+  let ends = dates.lt(eStart, start) && dates.inRange(eEnd, start, end, 'day')
 
   return starts || ends || during
 }
@@ -59,11 +66,17 @@ export function segsOverlap(seg, otherSegs) {
 }
 
 
-export function sortEvents(evtA, evtB, allDayField) {
-  let durA = dates.duration(evtA.start, evtA.end, 'day')
-    , durB = dates.duration(evtB.start, evtB.end, 'day');
+export function sortEvents(evtA, evtB, { startAccessor, endAccessor, allDayAccessor }) {
+  let durA = dates.duration(
+          get(evtA, startAccessor)
+        , get(evtA, endAccessor)
+        , 'day')
+    , durB = dates.duration(
+        get(evtB, startAccessor)
+      , get(evtB, endAccessor)
+      , 'day');
 
-  return (+evtA.start - +evtB.start)
+  return (+get(evtA, startAccessor) - +get(evtB, startAccessor))
     || (durB - durA)
-    || !!evtA[allDayField] - !!evtB[allDayField]
+    || !!get(evtA, allDayAccessor) - !!get(evtB, allDayAccessor)
 }

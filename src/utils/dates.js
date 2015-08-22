@@ -91,6 +91,21 @@ let dates = Object.assign(dateMath, {
     return dates.eq(dateA, dateB, 'month')
   },
 
+  eqTime(dateA, dateB){
+    return dates.hours(dateA) === dates.hours(dateB)
+      && dates.minutes(dateA) === dates.minutes(dateB)
+      && dates.seconds(dateA) === dates.seconds(dateB)
+  },
+
+  isJustDate(date){
+    return (
+         dates.hours(date) === 0
+      && dates.minutes(date) === 0
+      && dates.seconds(date) === 0
+      && dates.milliseconds(date) === 0
+    )
+  },
+
   duration(start, end, unit){
     if (unit === 'day') unit = 'date';
     return Math.abs(dates[unit](start) - dates[unit](end))

@@ -2,12 +2,23 @@
 @import './gutter.less';
 @import './day-slot.less';
 
+.rbc-slot-selection {
+  z-index: 10;
+  position: absolute;
+  cursor: default;
+  background-color: @selection-bg-color;
+  color: @selection-color;
+  opacity: .5;
+  font-size: 75%;
+  padding: 3px;
+}
 
 .rbc-time-view {
   display: flex;
   flex-direction: column;
   flex: 1;
   width: 100%;
+  border: 1px solid @cell-border;
 
   .rbc-time-gutter {
     white-space: nowrap;
@@ -16,7 +27,6 @@
   .rbc-allday-cell {
     width: 100%;
     position: relative;
-    border-right: 1px solid @cell-border;
   }
 
   .rbc-row > {
@@ -36,20 +46,26 @@
   font-weight: bold;
   font-size: 90%;
   min-height: 0;
-  border-right: 1px solid @cell-border;
-  border-bottom: 1px solid @cell-border;
+  // border-right: 1px solid @cell-border;
+  // border-bottom: 1px solid @cell-border;
 }
 
 .rbc-time-header {
   display: flex;
-  border: 1px solid @cell-border;
-  border-bottom-width: 0;
+  flex-direction: column;
+  // border: 1px solid @cell-border;
+  // border-bottom-width: 0;
 
-  > .rbc-gutter-cell {
-    flex: none;
-    margin-top: 20px;
-    border-top: 1px solid @cell-border;
+  &.rbc-header-overflowing {
     border-right: 1px solid @cell-border;
+  }
+
+  > .rbc-row > * + * {
+    border-left: 1px solid @cell-border;
+  }
+
+  .rbc-gutter-cell {
+    flex: none;
   }
 
   > .rbc-gutter-cell + * {
@@ -61,7 +77,7 @@
   display: flex;
   align-items: flex-start;
   width: 100%;
-  border: 1px solid @cell-border;
+  border-top: 1px solid @cell-border;
   overflow: auto;
 
   > .rbc-time-gutter {

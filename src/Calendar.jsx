@@ -1,7 +1,13 @@
 import React, { PropTypes } from 'react';
+import invariant from 'invariant';
 import uncontrollable from 'uncontrollable';
-import { accessor, elementType, dateFormat } from './utils/propTypes';
-import { directions, views } from './utils/constants';
+import {
+    accessor
+  , elementType
+  , dateFormat
+  , views as componentViews } from './utils/propTypes';
+
+import { navigate, views } from './utils/constants';
 import dates from './utils/dates';
 
 import Month from './Month';
@@ -17,6 +23,7 @@ const VIEWS = {
   [views.DAY]: Day,
   [views.WEEK]: Week
 };
+
 
 let timeOverlap = [
   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
@@ -45,6 +52,13 @@ let events = [
   { start: new Date(2015, 7, 21), end: new Date(2015, 7, 31) }
 ]
 
+function isValidView(view, { views }) {
+  if (!Array.isArray(views))
+    views = Object.keys(views);
+
+  return views.indexOf(view) !== -1
+}
+
 let Calendar = React.createClass({
 
   propTypes: {
@@ -59,19 +73,43 @@ let Calendar = React.createClass({
     startAccessor: accessor,
     endAccessor: accessor,
 
-    //dateFormat,
+    dateFormat,
     dayFormat: dateFormat,
-    // weekdayFormat: dateFormat,
+    weekdayFormat: dateFormat,
+
+    monthTitleFormat: dateFormat,
+    weekTitleFormat: dateFormat,
+    dayTitleFormat: dateFormat,
+    agendaTitleFormat: dateFormat,
+    selectRangeFormat: dateFormat,
 
     toolbar: PropTypes.bool,
 
-    eventComponent: elementType,
+
+    components: PropTypes.shape({
+      event: elementType,
+
+      agenda: PropTypes.shape({
+        date: elementType,
+        time: elementType,
+        event: elementType
+      })
+    }),
 
     onNavigate: PropTypes.func,
     onSelect: PropTypes.func,
 
+    views: componentViews,
+
     messages: PropTypes.shape({
-      allDay: PropTypes.string
+      allDay: PropTypes.string,
+      back: PropTypes.string,
+      forward: PropTypes.string,
+      today: PropTypes.string,
+      month: PropTypes.string,
+      week: PropTypes.string,
+      day: PropTypes.string,
+      agenda: PropTypes.string
     })
   },
 
@@ -79,8 +117,10 @@ let Calendar = React.createClass({
     return {
       events,
 
+      toolbar: true,
 
-      view: views.MONTH,
+      view: views.WEEK,
+      views: Object.keys(views).map(k => views[k]),
 
       date: new Date(2015, 7, 15, 15, 0, 0),
 
@@ -91,23 +131,29 @@ let Calendar = React.createClass({
       allDayAccessor: 'allDay',
 
       startAccessor: 'start',
-      endAccessor: 'start',
+      endAccessor: 'end',
+
+      timeGutterFormat: 'h:mm tt',
 
       dayFormat: 'ddd dd/MM',
       dateFormat: 'dd',
-      weekdayFormat: 'ddd'
+      weekdayFormat: 'ddd',
+      selectRangeFormat: ({ start, end }, culture, local)=>
+        local.format(start, 'h:mm tt', culture) + ' - ' + local.format(end, 'h:mm tt', culture)
     };
   },
 
   render() {
-    let { min, max, date: current, view = views.MONTH } = this.props;
+    let {
+        min, max, components, view, toolbar
+      , date: current
+     } = this.props;
 
     let View = VIEWS[view]
       , todaysDate = new Date()
       , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))
-      , viewProps  = pick(this.props, Object.keys(View.propTypes))
 
     return (
       <div {...elementProps}
@@ -122,43 +168,51 @@ let Calendar = React.createClass({
           />
         }
         <View
-          {...viewProps}
+          {...this.props}
           events={events}
           date={current}
           onHeaderClick={this._headerClick}
-          onEventClick={this._select}
+          onSelect={this._select}
         />
 
       </div>
     );
   },
 
-  _navigate(action) {
+  _navigate(action, newDate) {
     let { view, date, onNavigate } = this.props;
-    let back = action === 'back';
 
-    if (action === 'today')
-      return onNavigate(new Date())
-
-    if (view === views.MONTH)
-      date = dates.add(date, back ? -1 : 1, 'month')
-
-    if (view === views.WEEK)
-      date = dates.add(date, back ? -1 : 1, 'week')
-
-    if (view === views.DAY)
-      date = dates.add(date, back ? -1 : 1, 'day')
+    switch (action){
+      case navigate.TODAY:
+        date = new Date()
+        break;
+      case navigate.DATE:
+        date = newDate
+        break;
+      default:
+        date = VIEWS[view].navigate(newDate || date, action)
+    }
 
     onNavigate(date)
   },
 
   _view(view){
-    this.props.onView(view)
+    if (view !== this.props.view && isValidView(view, this.props))
+      this.props.onView(view)
   },
 
-  _select(){},
+  _select(events){
+    this.props.onSelect(events)
+  },
 
-  _headerClick(){}
+  _headerClick(date){
+    let { view } = this.props;
+
+    if ( view === views.MONTH || view === views.WEEK)
+      this._view(views.day)
+
+    this._navigate(navigate.DATE, date)
+  }
 });
 
-export default uncontrollable(Calendar, { view: 'onView', date: 'onNavigate' })
+export default uncontrollable(Calendar, { view: 'onView', date: 'onNavigate', selected: 'onSelect' })

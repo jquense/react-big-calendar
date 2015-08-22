@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 import dates from './utils/dates';
 import localizer from './utils/localizer'
@@ -8,17 +9,26 @@ import EventRow from './EventRow';
 import TimeGutter from './TimeGutter';
 import BackgroundCells from './BackgroundCells';
 
+import classes from 'dom-helpers/class';
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
 import message from './utils/messages';
 
+import { accessor as get } from './utils/accessors';
+
 import { inRange, eventSegments, eventLevels, sortEvents, segStyle } from './utils/eventLevels';
+
+
 
 let Day = React.createClass({
 
   propTypes: {
     ...DaySlot.propTypes,
     ...TimeGutter.propTypes
+  },
+
+  componentWillMount() {
+    this._gutters = [];
   },
 
   componentDidMount() {
@@ -30,7 +40,12 @@ let Day = React.createClass({
   },
 
   render() {
-    let { events, start, end, messages } = this.props;
+    let {
+        events, start, end, messages
+      , startAccessor, endAccessor, allDayAccessor } = this.props;
+
+    let addGutterRef = i => ref => this._gutters[i] = ref;
+
     let range = dates.range(start, end, 'day')
 
     this._slots = range.length;
@@ -39,28 +54,37 @@ let Day = React.createClass({
       , rangeEvents = [];
 
     events.forEach(event => {
-      if (inRange(event, start, end)) {
-        if (event.allDay || !dates.eq(event.start, event.end, 'day') )
+      if (inRange(event, start, end, this.props)) {
+        let eStart = get(event, startAccessor)
+          , eEnd = get(event, endAccessor);
+
+        if (
+             get(event, allDayAccessor)
+          || !dates.eq(eStart, eEnd, 'day')
+          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
+        {
           allDayEvents.push(event)
+        }
         else
           rangeEvents.push(event)
       }
     })
 
-    allDayEvents.sort(sortEvents, this.props.allDayField)
+    allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
-    let segments = allDayEvents.map(evt => eventSegments(evt, start, end))
+    let segments = allDayEvents.map(evt => eventSegments(evt, start, end, this.props))
     let levels = eventLevels(segments)
 
     return (
       <div className='rbc-time-view'>
-        <div className='rbc-time-header'>
-          <div ref='gutterCell' className='rbc-gutter-cell'>
-            { message(messages).allDay }
+        <div ref='headerCell' className='rbc-time-header'>
+          <div className='rbc-row'>
+            <div ref={addGutterRef(0)} className='rbc-gutter-cell'/>
+            { this.renderHeader(range) }
           </div>
-          <div ref='headerCell' >
-            <div className='rbc-row'>
-              { this.renderHeader(range) }
+          <div className='rbc-row'>
+            <div ref={addGutterRef(1)} className='rbc-gutter-cell'>
+              { message(messages).allDay }
             </div>
             <div className='rbc-allday-cell'>
               <BackgroundCells slots={range.length}/>
@@ -81,17 +105,21 @@ let Day = React.createClass({
   },
 
   renderEvents(range, events){
+    let today = new Date();
+
     return range.map((date, idx) => {
-      let { onEventClick } = this.props;
+      let { onSelect } = this.props;
+
       let daysEvents = events.filter(event => dates.inRange(date, event.start, event.end, 'day'))
 
       return (
         <DaySlot
-          {...this.props}
+          {...this.props }
+          className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
+          style={segStyle(1, this._slots)}
           key={idx}
           date={date}
           events={daysEvents}
-          onEventClick={onEventClick}
         />
       )
     })
@@ -106,6 +134,9 @@ let Day = React.createClass({
 
     return levels.map((segs, idx) =>
       <EventRow
+        startAccessor={this.props.startAccessor}
+        endAccessor={this.props.endAccessor}
+        allDayAccessor={this.props.allDayAccessor}
         onEventClick={this.props.onEventClick}
         slots={this._slots}
         key={idx}
@@ -131,16 +162,22 @@ let Day = React.createClass({
   },
 
   _adjustGutter() {
+    let header = this.refs.headerCell;
     let width = this._gutterWidth
+    let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
 
     this._gutterWidth = getWidth(findDOMNode(this.refs.gutter));
 
     if (width !== this._gutterWidth) {
-      this.refs.gutterCell.style.width = this._gutterWidth + 1 + 'px';
+      width = this._gutterWidth + 'px';
+      this._gutters.forEach(node => node.style.width = width)
     }
 
-    if (this.refs.content.scrollHeight > this.refs.content.clientHeight) {
+    if (isOverflowing) {
+      classes.addClass(header, 'rbc-header-overflowing')
       this.refs.headerCell.style.marginRight = scrollbarSize() + 'px'
+    } else {
+      classes.removeClass(header, 'rbc-header-overflowing')
     }
   }
 

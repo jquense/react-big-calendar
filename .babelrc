@@ -3,5 +3,8 @@
   "loose": [
     "all"
   ],
-  "plugins": ["object-assign"]
+  "plugins": [
+    "object-assign",
+    "jsx-fragment"
+  ]
 }

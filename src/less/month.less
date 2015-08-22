@@ -22,6 +22,10 @@
   &:extend(.rbc-ellipsis);
   background-color: #ccc;
   border: 1px solid black;
+
+  &.rbc-selected {
+    background-color: blue;
+  }
 }
 
 .rbc-show-more {
@@ -78,6 +82,10 @@
   flex: 0 0 @segment-width;
   padding-right: 5px;
   text-align: right;
+
+  &.rbc-now {
+    font-weight: bold;
+  }
 }
 
 .rbc-row-content {

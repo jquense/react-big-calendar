@@ -20,7 +20,8 @@ let TimeGutter = React.createClass({
   },
 
   render() {
-    let { min, max, step } = this.props;
+    let { min, max, step, timeGutterFormat } = this.props;
+    let today = new Date()
     let totalMin = dates.diff(min, max, 'minutes')
     let numSlots = Math.ceil(totalMin / step)
     let date = min;
@@ -28,17 +29,21 @@ let TimeGutter = React.createClass({
 
     for (var i = 0; i < numSlots; i++) {
       let isEven = (i % 2) === 0;
-
+      let next = dates.add(date, step, 'minutes');
       children.push(
-        <div key={i} className='rbc-time-slot'>
+        <div key={i}
+          className={cn('rbc-time-slot', {
+            'rbc-now': dates.inRange(today, date, next, 'minutes')
+          })}
+        >
         { isEven && (
-            <span>{localizer.format(date, 'h:mm tt')}</span>
+            <span>{localizer.format(date, timeGutterFormat)}</span>
           )
         }
         </div>
       )
 
-      date = dates.add(date, step, 'minutes')
+      date = next
     }
 
     return (

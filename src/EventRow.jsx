@@ -3,14 +3,19 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './utils/localizer'
 
+import { accessor } from './utils/propTypes';
 import { segStyle } from './utils/eventLevels';
-
-
+import { isSelected } from './utils/selection';
+import { accessor as get } from './utils/accessors';
 
 let propTypes = {
   segments: React.PropTypes.array,
   end: React.PropTypes.instanceOf(Date),
   start: React.PropTypes.instanceOf(Date),
+
+  allDayAccessor: accessor,
+  startAccessor: accessor,
+  endAccessor: accessor,
 
   onChange: React.PropTypes.func.isRequired,
   onEventClick: React.PropTypes.func
@@ -26,12 +31,15 @@ let MonthView = React.createClass({
   getDefaultProps() {
     return {
       segments: [],
+      selected: [],
       slots: 7
     };
   },
 
   render(){
-    let { segments, start, end } = this.props;
+    let {
+        segments, start, end
+      , startAccessor, endAccessor } = this.props;
 
     let lastEnd = 1;
 
@@ -43,8 +51,8 @@ let MonthView = React.createClass({
           let gap = left - lastEnd;
           let content = this.renderEvent(event, {
             className: cn({
-              'rbc-event-continues-after': dates.gt(event.end, end),
-              'rbc-event-continues-prior': dates.lt(event.start, start)
+              'rbc-event-continues-after': dates.gt(get(event, endAccessor), end),
+              'rbc-event-continues-prior': dates.lt(get(event, startAccessor), start)
             })
           })
 
@@ -65,13 +73,15 @@ let MonthView = React.createClass({
   },
 
   renderEvent(event, props = {}){
-    let { onEventClick } = this.props;
+    let { selected } = this.props;
 
     return (
       <div
         {...props}
-        className={cn('rbc-event', props.className)}
-        onClick={onEventClick.bind(null, event)}
+        className={cn('rbc-event', props.className, {
+          'rbc-selected': isSelected(event, selected)
+        })}
+        onClick={this._select.bind(null, event)}
       >
         { event.start.toLocaleString() }
       </div>
@@ -86,6 +96,13 @@ let MonthView = React.createClass({
         {content}
       </div>
     )
+  },
+
+  _select(event){
+    this.props.onEventClick &&
+      this.props.onEventClick(event);
+
+    this.props.onSelect([event])
   }
 
 });

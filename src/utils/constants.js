@@ -1,9 +1,9 @@
 
-export let directions = {
-  LEFT:  'LEFT',
-  RIGHT: 'RIGHT',
-  UP:    'UP',
-  DOWN:  'DOWN'
+export let navigate = {
+  PREVIOUS:  'PREV',
+  NEXT: 'NEXT',
+  TODAY: 'TODAY',
+  DATE: 'DATE'
 }
 
 

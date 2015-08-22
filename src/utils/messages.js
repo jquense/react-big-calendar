@@ -1,10 +1,15 @@
 import invariant from 'invariant';
 
  let messages = {
+  date: 'Date',
+  time: 'Time',
+  event: 'Event',
   allDay: 'all day',
   week: 'week',
   day: 'day',
   month: 'month',
+  previous: 'back',
+  next: 'next',
   yesterday: 'yesterday',
   tomorrow: 'tomorrow',
   today: 'today',

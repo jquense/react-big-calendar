@@ -1,0 +1,30 @@
+@import './variables.less';
+
+.rbc-day-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.rbc-time-slot {
+  flex: 1 0 0;
+  min-height: 20px;
+  height: 20px;
+
+  & + & {
+    border-top: 1px solid #DDD;
+  }
+
+  &:nth-child(even){
+    border-top-color: lighten(#DDD, 10%);
+  }
+}
+
+.rbc-day-header {
+  text-align: center;
+}
+
+.rbc-day-slot .rbc-event {
+  position: absolute;
+}

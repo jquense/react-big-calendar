@@ -1,0 +1,99 @@
+@import './variables.less';
+
+.rbc-row {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+
+.show-more-offsets (@i) when (@i > 0) {
+  @per: percentage((@i - 1) / 7);
+
+  .rbc-show-offset-@{i}{
+    left: @per;
+  }
+  .show-more-offsets (@i - 1);
+}
+
+.show-more-offsets(7);
+
+.rbc-event {
+  &:extend(.rbc-ellipsis);
+  background-color: #ccc;
+  border: 1px solid black;
+}
+
+.rbc-show-more {
+  &:extend(.rbc-ellipsis);
+  float: left;
+  position: absolute;
+  width: 14.28571429%;
+  bottom: 0;
+  font-style: italic;
+  font-size: 85%;
+  text-align: center;
+  height: auto;
+  line-height: normal;
+  white-space: nowrap;
+
+}
+
+.rbc-month-view {
+  border: 1px solid @calendar-border;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.rbc-month-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.rbc-month-row {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  flex: 1 0 0;
+  overflow: hidden;
+
+  & + & {
+    border-top: 1px solid @cell-border;
+  }
+}
+
+.rbc-month-header-cell {
+  text-align: center;
+  border-bottom: 1px solid @cell-border;
+
+  & + & {
+    border-left: 1px solid @cell-border;
+  }
+}
+
+.rbc-date-cell{
+  flex: 0 0 @segment-width;
+  padding-right: 5px;
+  text-align: right;
+}
+
+.rbc-row-content {
+  &:extend(.rbc-abs-full);
+}
+
+.rbc-row-bg {
+  &:extend(.rbc-abs-full);
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 0;
+  overflow: hidden;
+}
+
+.rbc-day-bg {
+  & + & {
+    border-left: 1px solid @cell-border;
+  }
+}

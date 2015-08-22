@@ -1,0 +1,78 @@
+@import './variables.less';
+@import './gutter.less';
+@import './day-slot.less';
+
+
+.rbc-time-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+
+  .rbc-time-gutter {
+    white-space: nowrap;
+  }
+
+  .rbc-allday-cell {
+    width: 100%;
+    position: relative;
+    border-right: 1px solid @cell-border;
+  }
+
+  .rbc-row > {
+    min-height: 20px;
+  }
+}
+
+.rbc-divider {
+  width: 100%;
+  height: 2px;
+  border-top: 2px solid #ccc;
+}
+
+.rbc-cell-header {
+  padding: 0 3px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 90%;
+  min-height: 0;
+  border-right: 1px solid @cell-border;
+  border-bottom: 1px solid @cell-border;
+}
+
+.rbc-time-header {
+  display: flex;
+  border: 1px solid @cell-border;
+  border-bottom-width: 0;
+
+  > .rbc-gutter-cell {
+    flex: none;
+    margin-top: 20px;
+    border-top: 1px solid @cell-border;
+    border-right: 1px solid @cell-border;
+  }
+
+  > .rbc-gutter-cell + * {
+    width: 100%;
+  }
+}
+
+.rbc-time-content {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  border: 1px solid @cell-border;
+  overflow: auto;
+
+  > .rbc-time-gutter {
+    flex: none;
+  }
+
+  > * + * {
+    border-left: 1px solid @cell-border;
+  }
+
+  > .rbc-day-slot {
+    width: 100%
+  }
+}

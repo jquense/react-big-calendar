@@ -119,7 +119,7 @@ let Calendar = React.createClass({
 
       toolbar: true,
 
-      view: views.WEEK,
+      view: views.MONTH,
       views: Object.keys(views).map(k => views[k]),
 
       date: new Date(2015, 7, 15, 15, 0, 0),

@@ -4,26 +4,10 @@ import events from 'dom-helpers/events';
 const listeners = {};
 const dochandlers = {};
 
-function addPooledHandler(type, handler) {
-  let handlers = listeners[type] || (listeners[type] = []);
-
-  if (handlers.length === 0) {
-    dochandlers[type] = e => handlers.forEach(fn => fn(e));
-    events.on(document, type, dochandlers[type]);
-  }
-
-  handlers.push(handler);
-
+function addEventListener(type, handler) {
+  events.on(document, type, handler)
   return {
-    remove(){
-      let idx = handlers.indexOf(handler);
-      if( idx !== -1) handlers.splice(idx, 1)
-
-      if (handlers.length === 0) {
-        events.off(document, type, dochandlers[type]);
-        dochandlers[type] = null;
-      }
-    }
+    remove(){ events.off(document, type, handler) }
   }
 }
 
@@ -40,9 +24,9 @@ class Selection {
     this._openSelector = this._openSelector.bind(this)
     this._keyListener = this._keyListener.bind(this)
 
-    this._onMouseDownListener = addPooledHandler('mousedown', this._mouseDown)
-    this._onKeyDownListener = addPooledHandler('keydown', this._keyListener)
-    this._onKeyUpListener = addPooledHandler('keyup', this._keyListener)
+    this._onMouseDownListener = addEventListener('mousedown', this._mouseDown)
+    this._onKeyDownListener = addEventListener('keydown', this._keyListener)
+    this._onKeyUpListener = addEventListener('keyup', this._keyListener)
   }
 
   on(type, handler) {
@@ -115,31 +99,32 @@ class Selection {
       if (!collides) return;
     }
 
-    this._mouseDownData = {
-      boxLeft: e.pageX,
-      boxTop: e.pageY,
-      initialW: e.pageX,
-      initialH: e.pageY
-    };
+    this.emit('mousedown', this._mouseDownData = {
+      x: e.pageX,
+      y: e.pageY,
+      clientX: e.clientX,
+      clientY: e.clientY
+    });
 
     e.preventDefault();
 
-    this._onMouseUpListener = addPooledHandler('mouseup', this._mouseUp)
-    this._onMouseMoveListener = addPooledHandler('mousemove', this._openSelector)
+    this._onMouseUpListener = addEventListener('mouseup', this._mouseUp)
+    this._onMouseMoveListener = addEventListener('mousemove', this._openSelector)
   }
 
   _mouseUp(e) {
+
     this._onMouseUpListener && this._onMouseUpListener.remove();
     this._onMouseMoveListener && this._onMouseMoveListener.remove();
 
     if (!this._mouseDownData) return;
 
-    var { initialW, initialH } = this._mouseDownData;
+    var { x, y } = this._mouseDownData;
     var inRoot = !this.container || contains(this.container, e.target);
     var bounds = this._selectRect;
     var click = (
-      e.pageX === initialW &&
-      e.pageY === initialH
+      e.pageX === x &&
+      e.pageY === y
     );
 
     this._mouseDownData = null
@@ -159,18 +144,25 @@ class Selection {
   }
 
   _openSelector(e) {
-    var { initialW, initialH } = this._mouseDownData;
-    var w = Math.abs(initialW - e.pageX);
-    var h = Math.abs(initialH - e.pageY);
+    var { x, y } = this._mouseDownData;
+    var w = Math.abs(x - e.pageX);
+    var h = Math.abs(y - e.pageY);
 
-    let left = Math.min(e.pageX, initialW)
-      , top = Math.min(e.pageY, initialH);
+    let left = Math.min(e.pageX, x)
+      , top = Math.min(e.pageY, y)
+      , old = this.selecting;
 
     this.selecting = true;
+
+    if (!old) {
+      this.emit('selectStart', this._mouseDownData)
+    }
 
     this.emit('selecting', this._selectRect = {
       top,
       left,
+      x: e.pageX,
+      y: e.pageY,
       right: left + w,
       bottom: top + h
     });
@@ -199,7 +191,7 @@ function normalizeDistance(distance = 0) {
  * @param  {Object|HTMLElement} b
  * @return {bool}
  */
-function objectsCollide(nodeA, nodeB, tolerance = 0) {
+export function objectsCollide(nodeA, nodeB, tolerance = 0) {
   let { top: aTop, left: aLeft, right: aRight = aLeft, bottom: aBottom = aTop } = getBoundsForNode(nodeA);
   let { top: bTop, left: bLeft, right: bRight = bLeft, bottom: bBottom = bTop } = getBoundsForNode(nodeB);
 

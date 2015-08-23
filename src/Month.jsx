@@ -45,7 +45,8 @@ let MonthView = React.createClass({
   },
 
   componentWillMount() {
-    this._needLimitMeasure = true;
+    this._pendingSelection = []
+    this._needLimitMeasure = true
   },
 
   componentDidMount() {
@@ -98,7 +99,7 @@ let MonthView = React.createClass({
         ref={!rowIdx && (r => this._firstRow = r)}
       >
         <div className='rbc-row-bg'>
-          {this.renderBackground()}
+          {this.renderBackground(row)}
         </div>
 
         <div className='rbc-row-content'>
@@ -138,7 +139,17 @@ let MonthView = React.createClass({
   },
 
   renderBackground(row){
-    return <BackgroundCells slots={7}/>
+    let self = this;
+
+    function onSelectSlot({ start, end }) {
+      self._pendingSelection = self._pendingSelection
+        .concat(row.slice(start, end + 1))
+
+      clearTimeout(self._selectTimer)
+      self._selectTimer = setTimeout(()=> self._selectDates())
+    }
+
+    return <BackgroundCells selectable slots={7} onSelectSlot={onSelectSlot}/>
   },
 
   renderShowMore(levels){
@@ -215,6 +226,11 @@ let MonthView = React.createClass({
       rowLimit: Math.max(
         Math.floor(eventSpace / eventHeight), 1)
     })
+  },
+
+  _selectDates(){
+    console.log(this._pendingSelection.slice())
+    this._pendingSelection = []
   }
 
 });

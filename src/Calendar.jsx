@@ -286,7 +286,7 @@ let Calendar = React.createClass({
     let headerFormat = this.props[Formats[view]];
 
     let label = headerSingle
-      ? localizer.format(start, headerFormat, culture)
+      ? localizer.format(current, headerFormat, culture)
       : localizer.format({ start, end }, headerFormat, culture)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))

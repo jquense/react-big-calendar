@@ -191,15 +191,30 @@ let MonthView = React.createClass({
     let slots = [1, 3, 4, 5, 6, 7];
 
     return slots.map((slot, idx) => {
+      let events = [];
+
       let sum = levels.reduce((cnt, level) => {
-        if (level.some(seg => seg.left <= slot && seg.right >= slot))
+        let overlaps = level.filter(seg => seg.left <= slot && seg.right >= slot)
+
+        if (overlaps.length) {
+          events = events.concat(overlaps[0].event)
           return cnt + 1;
+        }
+
         return cnt
       }, 0)
 
       return sum
-        ? <a key={'sm_' + idx} href='#' className={'rbc-show-more rbc-show-offset-' + slot}>{'show ' + sum + ' more'}</a>
-        : false
+        ? (
+          <a
+            key={'sm_' + idx}
+            href='#'
+            className={'rbc-show-more rbc-show-offset-' + slot}
+            onClick={()=> notify(this.props.onShowMore, events)}
+          >
+            {'show ' + sum + ' more'}
+          </a>
+        ) : false
     })
   },
 
@@ -210,6 +225,7 @@ let MonthView = React.createClass({
       return (
         <div
           key={'header_' + colIdx}
+          style={segStyle(1, 7)}
           className={cn('rbc-date-cell', {
             'rbc-off-range': offRange,
             'rbc-now': dates.eq(day, new Date(), 'day')

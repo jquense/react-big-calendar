@@ -1,5 +1,12 @@
 import dates from './dates';
 import { accessor as get } from './accessors';
+//import canUseDom from 'dom-helpers/util/inDOM';
+
+// let isIE = false;
+
+// if (canUseDom) {
+//   isIE = ('documentMode' in document)
+// }
 
 export function eventSegments(event, first, last, { startAccessor, endAccessor }){
 
@@ -23,7 +30,8 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
 
 
 export function segStyle(span, slots){
-  return { flexBasis: (span / slots) * 100 + '%' }
+  let per = (span / slots) * 100 + '%';
+  return { flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
 }
 
 export function eventLevels(rowSegments){

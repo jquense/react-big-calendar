@@ -22377,7 +22377,7 @@
 	    return {
 
 	      toolbar: true,
-	      view: _utilsConstants.views.AGENDA,
+	      view: _utilsConstants.views.MONTH,
 	      views: [_utilsConstants.views.MONTH, _utilsConstants.views.WEEK, _utilsConstants.views.DAY, _utilsConstants.views.AGENDA],
 	      date: now,
 

@@ -239,7 +239,7 @@ let Calendar = React.createClass({
     return {
 
       toolbar: true,
-      view: views.AGENDA,
+      view: views.MONTH,
       views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
       date: now,
 

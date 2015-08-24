@@ -13,7 +13,9 @@ import invariant from 'invariant';
   yesterday: 'yesterday',
   tomorrow: 'tomorrow',
   today: 'today',
-  agenda: 'agenda'
+  agenda: 'agenda',
+
+  hiddenEvents: total => `show ${total} more`
 }
 
 export function set(key, msg){
@@ -23,6 +25,10 @@ export function set(key, msg){
   )
 
   messages[key] = msg;
+}
+
+export function result(msg, ...args){
+  return typeof msg === 'function' ? msg(args) : msg
 }
 
 export default function messages(msgs){

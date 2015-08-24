@@ -6,7 +6,9 @@ import chunk from 'lodash/array/chunk';
 import omit from 'lodash/object/omit';
 
 import { navigate } from './utils/constants';
+import { notify } from './utils/helpers';
 import getHeight from 'dom-helpers/query/height';
+import raf from 'dom-helpers/util/requestAnimationFrame';
 
 import EventRow from './EventRow';
 import BackgroundCells from './BackgroundCells';
@@ -28,9 +30,11 @@ let propTypes = {
   max: React.PropTypes.instanceOf(Date),
 
   dateFormat,
+
   weekdayFormat: dateFormat,
 
-  onChange: React.PropTypes.func.isRequired
+  onSelectEvent: React.PropTypes.func,
+  onSelectSlot: React.PropTypes.func
 };
 
 
@@ -41,16 +45,45 @@ let MonthView = React.createClass({
   propTypes,
 
   getInitialState(){
-    return { rowLimit: 5 }
+    return {
+      rowLimit: 5,
+      needLimitMeasure: true
+    }
   },
 
   componentWillMount() {
     this._pendingSelection = []
-    this._needLimitMeasure = true
+  },
+
+  componentWillReceiveProps({ date }) {
+    this.setState({
+      needLimitMeasure: !dates.eq(date, this.props.date)
+    })
   },
 
   componentDidMount() {
-    this._measureRowLimit(this.props)
+    let running;
+
+    if (this.state.needLimitMeasure)
+      this._measureRowLimit(this.props)
+
+    window.addEventListener('resize', this._resizeListener = ()=> {
+      if (!running) {
+        raf(()=> {
+          running = false
+          this.setState({ needLimitMeasure: true }) //eslint-disable-line
+        })
+      }
+    }, false)
+  },
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.needLimitMeasure)
+      this._measureRowLimit(this.props)
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._resizeListener, false)
   },
 
   render(){
@@ -58,7 +91,7 @@ let MonthView = React.createClass({
       , month = dates.visibleDays(date, culture)
       , rows  = chunk(month, 7);
 
-    let measure = this._needLimitMeasure
+    let measure = this.state.needLimitMeasure
 
     this._rowCount = rows.length;
 
@@ -130,6 +163,8 @@ let MonthView = React.createClass({
     return (
       <EventRow
         {...this.props}
+        eventComponent={this.props.components.event}
+        onEventClick={this._selectEvent}
         key={idx}
         segments={segments}
         start={first}
@@ -180,9 +215,9 @@ let MonthView = React.createClass({
             'rbc-now': dates.eq(day, new Date(), 'day')
           })}
         >
-          {
-            localizer.format(day, this.props.dateFormat, this.props.culture)
-          }
+          <a href='#' onClick={this._dateClick.bind(null, day)}>
+            { localizer.format(day, this.props.dateFormat, this.props.culture) }
+          </a>
         </div>
       )
     })
@@ -195,7 +230,7 @@ let MonthView = React.createClass({
     return dates.range(first, last, 'day').map((day, idx) =>
       <div
         key={'header_' + idx}
-        className='rbc-month-header-cell'
+        className='rbc-header'
         style={segStyle(1, 7)}
       >
         { localizer.format(day, format, culture) }
@@ -208,8 +243,10 @@ let MonthView = React.createClass({
 
     return first ? (
       <div className='rbc-row'>
-        <div style={segStyle(1, 7)}>
-          <div ref={r => this._measureEvent = r} className={cn('rbc-measure-event')}>&nbsp;</div>
+        <div className='rbc-row-segment' style={segStyle(1, 7)}>
+          <div ref={r => this._measureEvent = r} className={cn('rbc-event')}>
+            <div className='rbc-event-content'>&nbsp;</div>
+          </div>
         </div>
       </div>
     ) : <span/>
@@ -223,14 +260,41 @@ let MonthView = React.createClass({
     this._needLimitMeasure = false;
 
     this.setState({
+      needLimitMeasure: false,
       rowLimit: Math.max(
         Math.floor(eventSpace / eventHeight), 1)
     })
   },
 
+  _dateClick(date){
+    this.clearSelection()
+    notify(this.props.onNavigate, [navigate.DATE, date])
+  },
+
+  _selectEvent(...args){
+    //cancel any pending selections so only the event click goes through.
+    this.clearSelection()
+
+    notify(this.props.onSelectEvent, args)
+  },
+
   _selectDates(){
-    console.log(this._pendingSelection.slice())
+    let slots = this._pendingSelection.slice()
+
     this._pendingSelection = []
+
+    slots.sort((a, b) => +a - +b)
+
+    notify(this.props.onSelectSlot, {
+      slots,
+      start: slots[0],
+      end: slots[slots.length - 1]
+    })
+  },
+
+  clearSelection(){
+    clearTimeout(this._selectTimer)
+    this._pendingSelection = [];
   }
 
 });
@@ -246,6 +310,12 @@ MonthView.navigate = (date, action)=>{
     default:
       return date;
   }
+}
+
+MonthView.range = (date, { culture }) => {
+  let start = dates.firstVisibleDay(date, culture)
+  let end = dates.lastVisibleDay(date, culture)
+  return { start, end }
 }
 
 export default MonthView

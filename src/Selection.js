@@ -119,12 +119,14 @@ class Selection {
 
     if (!this._mouseDownData) return;
 
+    let clickTolerance = 5;
+
     var { x, y } = this._mouseDownData;
     var inRoot = !this.container || contains(this.container, e.target);
     var bounds = this._selectRect;
     var click = (
-      e.pageX === x &&
-      e.pageY === y
+      Math.abs(e.pageX - x) <= clickTolerance &&
+      Math.abs(e.pageY - y) <= clickTolerance
     );
 
     this._mouseDownData = null
@@ -134,7 +136,7 @@ class Selection {
     }
 
     if(click && inRoot)
-      return this.emit('click', e.pageX, e.pageY)
+      return this.emit('click', { x: e.pageX, y: e.pageY })
 
     // User drag-clicked in the Selectable area
     if(!click)

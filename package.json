@@ -1,9 +1,9 @@
 {
-  "name": "react-overlays",
-  "version": "0.50.0-alpha1",
-  "description": "Utilities for creating robust overlay components",
+  "name": "react-big-calendar",
+  "version": "0.3.0",
+  "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "react-bootstrap/react-overlays",
+  "repository": "jaquense/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
@@ -55,6 +55,7 @@
     "eslint-plugin-babel": "^1.0.0",
     "eslint-plugin-mocha": "^0.4.0",
     "eslint-plugin-react": "^3.1.0",
+    "file-loader": "^0.8.4",
     "globalize": "^0.1.1",
     "isparta-loader": "^0.2.0",
     "jquery": "^2.1.4",
@@ -87,6 +88,7 @@
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.12.3",
+    "url-loader": "^0.5.6",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.9.0",
     "yargs": "^3.14.0"

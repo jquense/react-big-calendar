@@ -6,17 +6,9 @@ import localizer from './utils/localizer'
 let TimeGutter = React.createClass({
 
   propTypes: {
-    step: React.PropTypes.number,
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date)
-  },
-
-  getDefaultProps() {
-    return {
-      step: 30,
-      min: dates.startOf(new Date(), 'day'),
-      max: dates.endOf(new Date(), 'day')
-    };
+    step: React.PropTypes.number.isRequired,
+    min: React.PropTypes.instanceOf(Date).isRequired,
+    max: React.PropTypes.instanceOf(Date).isRequired
   },
 
   render() {

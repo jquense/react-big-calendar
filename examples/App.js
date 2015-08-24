@@ -14,19 +14,37 @@ import 'react-big-calendar/less/styles.less';
 import './styles.less';
 
 
+import events from './events';
+
+class EventWeek {
+  render(){
+    return <strong>{this.props.event.title}</strong>
+  }
+}
+
+class EventAgenda {
+  render(){
+    return <em>{this.props.event.title}</em>
+  }
+}
+
 const Example = React.createClass({
 
   render() {
 
     return (
-      <div className='app row'>
-        <article className='side-panel col-md-2'>
-          <ul className='list-unstyled'>
-            <li><a href='#bigcalendar'>Big Calendar</a></li>
-          </ul>
-        </article>
-        <main className='col-md-10'>
-          <BigCalendar/>
+      <div className='app'>
+        <main className=''>
+          <BigCalendar selectable
+            events={events}
+            defaultDate={new Date(2015, 1, 1)}
+            components={{
+              event: EventWeek,
+              agenda: {
+                event: EventAgenda
+              }
+            }}
+          />
         </main>
       </div>
     );

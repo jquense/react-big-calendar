@@ -9,9 +9,10 @@ let Day = React.createClass({
 
   render() {
     let { date } = this.props;
+    let { start, end } = Day.range(date)
 
     return (
-      <TimeGrid {...this.props} start={date} end={date} eventOffset={10}/>
+      <TimeGrid {...this.props} start={start} end={end} eventOffset={10}/>
     );
   }
 });
@@ -28,5 +29,12 @@ Day.navigate = (date, action)=>{
       return date;
   }
 }
+
+
+Day.range = (date)=> {
+  date = dates.startOf(date, 'day')
+  return { start: date, end: date }
+}
+
 
 export default Day

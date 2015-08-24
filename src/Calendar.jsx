@@ -7,84 +7,211 @@ import {
   , dateFormat
   , views as componentViews } from './utils/propTypes';
 
+import localizer from './utils/localizer'
+import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import dates from './utils/dates';
 
 import Month from './Month';
 import Day from './Day';
 import Week from './Week';
+import Agenda from './Agenda';
 import Toolbar from './Toolbar';
 
 import omit from 'lodash/object/omit';
 import pick from 'lodash/object/pick';
+import defaults from 'lodash/object/defaults';
 
 const VIEWS = {
   [views.MONTH]: Month,
+  [views.WEEK]: Week,
   [views.DAY]: Day,
-  [views.WEEK]: Week
+  [views.AGENDA]: Agenda
 };
 
-
-let timeOverlap = [
-  { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
-
-  { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 17, 30, 0) },
-  { start: new Date(2015, 7, 15, 15, 0, 0), end: new Date(2015, 7, 15, 17, 45, 0) }
-]
-
-let events = [
-  { start: new Date(2015, 7, 2), end: new Date(2015, 7, 4) },
-  { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
-  { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
-  { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
-
-  { start: new Date(2015, 7, 5), end: new Date(2015, 7, 7) },
-  { start: new Date(2015, 7, 5), end: new Date(2015, 7, 5) },
-  { start: new Date(2015, 7, 5), end: new Date(2015, 7, 7) },
-
-  { start: new Date(2015, 7, 11), end: new Date(2015, 7, 17) },
-  { start: new Date(2015, 7, 7), end: new Date(2015, 7, 12) },
-  { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
-
-  { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 17, 30, 0) },
-  { start: new Date(2015, 7, 15, 15, 0, 0), end: new Date(2015, 7, 15, 17, 45, 0) },
-  { start: new Date(2015, 7, 17), end: new Date(2015, 7, 18) },
-  { start: new Date(2015, 7, 21), end: new Date(2015, 7, 31) }
-]
-
-function isValidView(view, { views }) {
-  if (!Array.isArray(views))
-    views = Object.keys(views);
-
-  return views.indexOf(view) !== -1
+const Formats = {
+  [views.MONTH]: 'monthHeaderFormat',
+  [views.WEEK]: 'weekHeaderFormat',
+  [views.DAY]: 'dayHeaderFormat',
+  [views.AGENDA]: 'agendaHeaderFormat'
 }
+
+// let timeOverlap = [
+//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
+
+//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 17, 30, 0) },
+//   { start: new Date(2015, 7, 15, 15, 0, 0), end: new Date(2015, 7, 15, 17, 45, 0) }
+// ]
+
+// let events = [
+//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 4) },
+//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
+//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
+//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
+
+//   { start: new Date(2015, 7, 5), end: new Date(2015, 7, 7) },
+//   { start: new Date(2015, 7, 5), end: new Date(2015, 7, 5) },
+//   { start: new Date(2015, 7, 5), end: new Date(2015, 7, 7) },
+
+//   { start: new Date(2015, 7, 11), end: new Date(2015, 7, 17) },
+//   { start: new Date(2015, 7, 7), end: new Date(2015, 7, 12) },
+//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
+
+//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 17, 30, 0) },
+//   { start: new Date(2015, 7, 15, 15, 0, 0), end: new Date(2015, 7, 15, 17, 45, 0) },
+//   { start: new Date(2015, 7, 17), end: new Date(2015, 7, 18) },
+//   { start: new Date(2015, 7, 21), end: new Date(2015, 7, 31) }
+// ]
+function inSame12Hr(start, end){
+  let s = 12 - dates.hours(start)
+  let e = 12 - dates.hours(end)
+  return (s <= 0 && e <= 0) || (s >= 0 && e >= 0)
+}
+
+function viewNames(_views){
+  return !Array.isArray(_views) ? Object.keys(_views) : _views
+}
+
+function isValidView(view, { views: _views }) {
+  let names = viewNames(_views)
+  return names.indexOf(view) !== -1
+}
+
+let now = new Date();
+
+let dateRangeFormat = ({ start, end }, culture, local)=>
+  local.format(start, 'd', culture) + ' — ' + local.format(end, 'd', culture)
+
+let timeRangeFormat = ({ start, end }, culture, local)=>
+  local.format(start, 'h:mmtt', culture) +
+    ' — ' + local.format(end, inSame12Hr(start, end) ? 'h:mm' : 'h:mmtt', culture)
+
+let weekRangeFormat = ({ start, end }, culture, local)=>
+  local.format(start, 'MMM dd', culture) +
+    ' - ' + local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
 
 let Calendar = React.createClass({
 
   propTypes: {
+    /**
+     * The current date value of the calendar. Determines the visible view range
+     */
     date: PropTypes.instanceOf(Date),
 
-    events: PropTypes.array,
+    /**
+     * An array of event objects to display on the calendar
+     */
+    events: PropTypes.arrayOf(PropTypes.object),
 
-    min: PropTypes.instanceOf(Date),
-    max: PropTypes.instanceOf(Date),
+    /**
+     * Callback fired when the `date` value changes.
+     */
+    onNavigate: PropTypes.func,
 
-    allDayAccessor: accessor,
-    startAccessor: accessor,
-    endAccessor: accessor,
+    /**
+     * A callback fired when a date selection is made.
+     *
+     * ```js
+     * function(
+     *   slotInfo: object {
+     *     start: date,
+     *     end: date,
+     *     slots: array<date>
+     *   }
+     * )
+     * ```
+     */
+    onSelectSlot: PropTypes.func,
 
-    dateFormat,
-    dayFormat: dateFormat,
-    weekdayFormat: dateFormat,
+    /**
+     * Callback fired when an event node is selected.
+     *
+     * ```js
+     * function(event: object)
+     * ```
+     */
+    onSelectEvent: PropTypes.func,
 
-    monthTitleFormat: dateFormat,
-    weekTitleFormat: dateFormat,
-    dayTitleFormat: dateFormat,
-    agendaTitleFormat: dateFormat,
-    selectRangeFormat: dateFormat,
+    /**
+     * An array of built in view names
+     */
+    views: componentViews,
 
+    /**
+     * Determines whether the toolbar is displayed
+     */
     toolbar: PropTypes.bool,
 
+    /**
+     * Allows mouse selection of ranges of dates/times.
+     */
+    selectable: PropTypes.bool,
+
+    /**
+     * Accessor for the event title, used to display event information. Should
+     * resolve to a `renderable` value.
+     *
+     * @type {(func|string)}
+     */
+    titleAccessor: accessor,
+
+    /**
+     * Determines whether the event should be considered an "all day" event and ignore time.
+     * Must resolve to a `boolean` value.
+     *
+     * @type {(func|string)}
+     */
+    allDayAccessor: accessor,
+
+    /**
+     * The start date/time of the event. Must resolve to a JavaScript `Date` object.
+     *
+     * @type {(func|string)}
+     */
+    startAccessor: accessor,
+
+    /**
+     * The end date/time of the event. Must resolve to a JavaScript `Date` object.
+     *
+     * @type {(func|string)}
+     */
+    endAccessor: accessor,
+
+    /**
+     * Format for the day of the month heading in the Month view.
+     */
+    dateFormat,
+
+    /**
+     * A day of the week format for Week and Day headings
+     */
+    dayFormat: dateFormat,
+    /**
+     * Week day name format for the Month week day headings.
+     */
+    weekdayFormat: dateFormat,
+
+    /**
+     * Toolbar header format for the Month view.
+     */
+    monthHeaderFormat: dateFormat,
+    /**
+     * Toolbar header format for the Week views.
+     */
+    weekHeaderFormat: dateFormat,
+    /**
+     * Toolbar header format for the Day view.
+     */
+    dayHeaderFormat: dateFormat,
+    /**
+     * Toolbar header format for the Agenda view.
+     */
+    agendaHeaderFormat: dateFormat,
+
+    /**
+     * A time range format for selecting time slots.
+     */
+    selectRangeFormat: dateFormat,
 
     components: PropTypes.shape({
       event: elementType,
@@ -96,15 +223,10 @@ let Calendar = React.createClass({
       })
     }),
 
-    onNavigate: PropTypes.func,
-    onSelect: PropTypes.func,
-
-    views: componentViews,
-
     messages: PropTypes.shape({
       allDay: PropTypes.string,
-      back: PropTypes.string,
-      forward: PropTypes.string,
+      previous: PropTypes.string,
+      next: PropTypes.string,
       today: PropTypes.string,
       month: PropTypes.string,
       week: PropTypes.string,
@@ -115,21 +237,14 @@ let Calendar = React.createClass({
 
   getDefaultProps() {
     return {
-      events,
 
       toolbar: true,
+      view: views.AGENDA,
+      views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
+      date: now,
 
-      view: views.MONTH,
-      views: Object.keys(views).map(k => views[k]),
-
-      date: new Date(2015, 7, 15, 15, 0, 0),
-
-      step: 30,
-      min: dates.startOf(new Date(), 'day'),
-      max: dates.endOf(new Date(), 'day'),
-
+      titleAccessor: 'title',
       allDayAccessor: 'allDay',
-
       startAccessor: 'start',
       endAccessor: 'end',
 
@@ -138,22 +253,48 @@ let Calendar = React.createClass({
       dayFormat: 'ddd dd/MM',
       dateFormat: 'dd',
       weekdayFormat: 'ddd',
-      selectRangeFormat: ({ start, end }, culture, local)=>
-        local.format(start, 'h:mm tt', culture) + ' - ' + local.format(end, 'h:mm tt', culture)
+
+      selectRangeFormat: timeRangeFormat,
+      eventTimeRangeFormat: timeRangeFormat,
+
+      monthHeaderFormat: 'MMMM yyyy',
+      weekHeaderFormat: weekRangeFormat,
+      dayHeaderFormat: 'dddd MMM dd',
+      agendaHeaderFormat: dateRangeFormat,
+
+      agendaDateFormat: 'ddd MMM dd',
+      agendaTimeFormat: 'hh:mm tt',
+      agendaTimeRangeFormat: timeRangeFormat
+
     };
   },
 
   render() {
     let {
-        min, max, components, view, toolbar
-      , date: current
-     } = this.props;
+        view, toolbar, events
+      , culture
+      , components = {}
+      , date: current } = this.props;
 
-    let View = VIEWS[view]
-      , todaysDate = new Date()
-      , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
+    let View = VIEWS[view];
+    let headerSingle = view === views.MONTH || view === views.DAY
+
+    let names = viewNames(this.props.views)
+
+    let { start, end } = View.range(current, this.props);
+
+    let headerFormat = this.props[Formats[view]];
+
+    let label = headerSingle
+      ? localizer.format(start, headerFormat, culture)
+      : localizer.format({ start, end }, headerFormat, culture)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))
+
+    let viewComponents = defaults(
+      components[view] || {},
+      omit(components, names)
+    )
 
     return (
       <div {...elementProps}
@@ -162,19 +303,24 @@ let Calendar = React.createClass({
         { toolbar &&
           <Toolbar
             date={current}
-            longFormat={'D'}
+            view={view}
+            views={names}
+            label={label}
             onViewChange={this._view}
             onNavigate={this._navigate}
           />
         }
         <View
+          ref='view'
           {...this.props}
           events={events}
           date={current}
+          components={viewComponents}
+          onNavigate={this._navigate}
           onHeaderClick={this._headerClick}
-          onSelect={this._select}
+          onSelectEvent={this._select}
+          onSelectSlot={this._selectSlot}
         />
-
       </div>
     );
   },
@@ -193,7 +339,18 @@ let Calendar = React.createClass({
         date = VIEWS[view].navigate(newDate || date, action)
     }
 
-    onNavigate(date)
+    onNavigate(date, view)
+
+    if (action === navigate.DATE)
+      this._viewNavigate(date)
+  },
+
+  _viewNavigate(nextDate){
+    let { view, date, culture } = this.props;
+
+    if (dates.eq(date, nextDate, view, localizer.startOfWeek(culture))) {
+      this._view(views.DAY)
+    }
   },
 
   _view(view){
@@ -201,8 +358,12 @@ let Calendar = React.createClass({
       this.props.onView(view)
   },
 
-  _select(events){
-    this.props.onSelect(events)
+  _select(event){
+    notify(this.props.onSelectEvent, event)
+  },
+
+  _selectSlot(slotInfo){
+    notify(this.props.onSelectSlot, slotInfo)
   },
 
   _headerClick(date){
@@ -215,4 +376,4 @@ let Calendar = React.createClass({
   }
 });
 
-export default uncontrollable(Calendar, { view: 'onView', date: 'onNavigate', selected: 'onSelect' })
+export default uncontrollable(Calendar, { view: 'onView', date: 'onNavigate', selected: 'onSelectEvent' })

@@ -1,8 +1,11 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import dates from './utils/dates';
-import localizer from './utils/localizer'
+import getHeight from 'dom-helpers/query/height';
+//import localizer from './utils/localizer'
 
+import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';
 import { segStyle } from './utils/eventLevels';
 import { isSelected } from './utils/selection';
@@ -13,11 +16,11 @@ let propTypes = {
   end: React.PropTypes.instanceOf(Date),
   start: React.PropTypes.instanceOf(Date),
 
+  titleAccessor: accessor,
   allDayAccessor: accessor,
   startAccessor: accessor,
   endAccessor: accessor,
 
-  onChange: React.PropTypes.func.isRequired,
   onEventClick: React.PropTypes.func
 };
 
@@ -73,8 +76,10 @@ let MonthView = React.createClass({
   },
 
   renderEvent(event, props = {}){
-    let { selected } = this.props;
+    let { selected, titleAccessor, eventComponent } = this.props;
 
+    let EventComponent = eventComponent;
+    let title = get(event, titleAccessor)
     return (
       <div
         {...props}
@@ -83,7 +88,12 @@ let MonthView = React.createClass({
         })}
         onClick={this._select.bind(null, event)}
       >
-        { event.start.toLocaleString() }
+        <div className='rbc-event-content'>
+          { EventComponent
+            ? <EventComponent event={event} title={title}/>
+            : title
+          }
+        </div>
       </div>
     )
   },
@@ -92,17 +102,18 @@ let MonthView = React.createClass({
     let { slots } = this.props;
 
     return (
-      <div key={key} style={segStyle(Math.abs(len), slots)}>
+      <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>
         {content}
       </div>
     )
   },
 
-  _select(event){
-    this.props.onEventClick &&
-      this.props.onEventClick(event);
+  getRowHeight(){
+    getHeight(findDOMNode(this))
+  },
 
-    this.props.onSelect([event])
+  _select(event){
+    notify(this.props.onEventClick, event);
   }
 
 });

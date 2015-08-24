@@ -18,7 +18,7 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
-  border: 1px solid @cell-border;
+  border: 1px solid @calendar-border;
 
   .rbc-time-gutter {
     white-space: nowrap;
@@ -34,27 +34,10 @@
   }
 }
 
-.rbc-divider {
-  width: 100%;
-  height: 2px;
-  border-top: 2px solid #ccc;
-}
-
-.rbc-cell-header {
-  padding: 0 3px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 90%;
-  min-height: 0;
-  // border-right: 1px solid @cell-border;
-  // border-bottom: 1px solid @cell-border;
-}
 
 .rbc-time-header {
   display: flex;
   flex-direction: column;
-  // border: 1px solid @cell-border;
-  // border-bottom-width: 0;
 
   &.rbc-header-overflowing {
     border-right: 1px solid @cell-border;
@@ -62,6 +45,10 @@
 
   > .rbc-row > * + * {
     border-left: 1px solid @cell-border;
+  }
+
+  > .rbc-row:first-child {
+    border-bottom: 1px solid  @cell-border;
   }
 
   .rbc-gutter-cell {
@@ -77,8 +64,17 @@
   display: flex;
   align-items: flex-start;
   width: 100%;
-  border-top: 1px solid @cell-border;
-  overflow: auto;
+  border-top: 2px solid @calendar-border;
+  overflow-y: auto;
+  //overflow-x: hidden;
+
+  .rbc-event {
+    border: 1px solid @event-border;
+  }
+
+  .rbc-event-content {
+    word-wrap: break-word;
+  }
 
   > .rbc-time-gutter {
     flex: none;

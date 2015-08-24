@@ -4,16 +4,33 @@ export function isSelected(event, selected){
   return [].concat(selected).indexOf(event) !== -1
 }
 
+export function slotWidth(rowBox, slots){
+  let rowWidth = rowBox.right - rowBox.left;
+  let cellWidth = rowWidth / slots
+
+  return cellWidth
+}
+
+export function getCellAtX(rowBox, x, cellWidth) {
+   return Math.floor((x - rowBox.left) / cellWidth);
+}
+
+export function pointInBox(box, { x, y }) {
+   return (
+      (y >= box.top && y <= box.bottom) &&
+      (x >= box.left && x <= box.right)
+   )
+}
+
 export function dateCellSelection(start, rowBox, box, slots){
   let startIdx = -1;
   let endIdx = -1;
   let lastSlotIdx = slots - 1
 
-  let rowWidth = rowBox.right - rowBox.left;
-  let cellWidth = rowWidth / slots
+  let cellWidth = slotWidth(rowBox, slots);
 
   // cell under the mouse
-  let currentSlot = Math.floor((box.x - rowBox.left) / cellWidth);
+  let currentSlot = getCellAtX(rowBox, box.x, cellWidth);
 
   // Identify row as either the initial row
   // or the row under the current mouse point

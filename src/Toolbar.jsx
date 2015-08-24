@@ -1,42 +1,64 @@
 import React from 'react';
+import cn from 'classnames';
 import localizer from './utils/localizer'
-import message from './utils/messages';
+import message, { get } from './utils/messages';
 import { navigate, views } from './utils/constants';
 
+const Formats = {
+  [views.MONTH]: 'monthHeaderFormat',
+  [views.WEEK]: 'weekHeaderFormat',
+  [views.DAY]: 'dayHeaderFormat',
+  [views.AGENDA]: 'agendaHeaderFormat'
+}
+
 let Toolbar = React.createClass({
+
   render() {
-    let { date, longFormat, messages } = this.props;
+    let {
+        start, end, messages
+      , label
+      , views: viewNames, view } = this.props;
 
     messages = message(messages)
 
     return (
-      <div>
-        <span>
-          <button type='button' onClick={this.navigate.bind(null, navigate.PREVIOUS)}>
+      <div className='rbc-toolbar'>
+        <span className='rbc-btn-group'>
+          <button
+            type='button'
+            onClick={this.navigate.bind(null, navigate.TODAY)}
+          >
+            {messages.today}
+          </button>
+          <button
+            type='button'
+            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
+          >
             {messages.previous}
           </button>
-          <button type='button' onClick={this.navigate.bind(null, navigate.NEXT)}>
+          <button
+            type='button'
+            onClick={this.navigate.bind(null, navigate.NEXT)}
+          >
             {messages.next}
           </button>
         </span>
 
-        <button type='button' onClick={this.navigate.bind(null, navigate.TODAY)}>
-          {messages.today}
-        </button>
-
-        <span>
-          { localizer.format(date, longFormat)}
+        <span className='rbc-toolbar-label'>
+          { label }
         </span>
-        <span>
-          <button type='button' onClick={this.view.bind(null, views.MONTH)}>
-            {messages.month}
-          </button>
-          <button type='button' onClick={this.view.bind(null, views.WEEK)}>
-            {messages.week}
-          </button>
-          <button type='button' onClick={this.view.bind(null, views.DAY)}>
-            {messages.day}
-          </button>
+
+        <span className='rbc-btn-group'>
+          {
+            viewNames.map(name =>
+              <button type='button'
+                className={cn({'rbc-active': view === name})}
+                onClick={this.view.bind(null, name)}
+              >
+                {messages[name]}
+              </button>
+            )
+          }
         </span>
       </div>
     );

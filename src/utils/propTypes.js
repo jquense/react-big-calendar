@@ -2,6 +2,7 @@ import { PropTypes } from 'react';
 import localizer from'./localizer';
 import elementType from 'react-prop-types/lib/elementType';
 import all from 'react-prop-types/lib/all';
+import { views as Views } from './constants';
 import {createChainableTypeChecker} from 'react-prop-types/lib/common';
 
 export { elementType }
@@ -25,7 +26,9 @@ export let dateFormat = createChainableTypeChecker(
     (...args) => localizer.propType && localizer.propType(...args))
 
 export let views = PropTypes.oneOfType([
-  PropTypes.arrayOf(PropTypes.string),
+  PropTypes.oneOf(
+    Object.keys(Views).map(k => Views[k])
+  ),
   all([
     PropTypes.object,
     (props, name, component)=>{
@@ -33,7 +36,7 @@ export let views = PropTypes.oneOfType([
         , err;
 
       Object.keys(prop).every(
-        key => !(err = PropTypes.string(prop, key, component)))
+        key => !(err = elementType(prop, key, component)))
 
       return err || null
     }

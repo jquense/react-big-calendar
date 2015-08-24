@@ -6,32 +6,16 @@ import dates from './utils/dates';
 import { isSelected } from './utils/selection';
 import localizer from './utils/localizer'
 
+import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
-
-
-var boxStyle = {
-  zIndex: 9000,
-  position: 'absolute',
-  cursor: 'default'
-};
-
-var spanStyle = {
-  backgroundColor: 'transparent',
-  border: '1px dashed #999',
-  width: '100%',
-  height: '100%',
-  float: 'left'
-};
 
 function snapToSlot(date, step){
   var roundTo = 1000 * 60 * step;
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-// function slotFromDate(date, min, step){
-//   return Math.ceil(dates.diff(min, snapDate(dates.merge(min, date), step), 'minutes') / step)
-// }
+
 
 function positionFromDate(date, min, step){
   return dates.diff(min, dates.merge(min, date), 'minutes')
@@ -42,30 +26,31 @@ function overlaps(event, events, { startAccessor, endAccessor }){
     , eEnd = get(event, endAccessor);
 
   function overlap(eventB){
-    return (dates.lte(eStart, get(eventB, startAccessor)) && dates.lte(eEnd, get(eventB, endAccessor)))
-      || (dates.lte(eventB.start, get(eventB, startAccessor)) && dates.lte(get(eventB, endAccessor), eEnd))
+    return dates.lt(eStart, get(eventB, endAccessor))
   }
 
   return events.reduce((sum, otherEvent) => {
-    return sum  + (overlap(event, otherEvent) ? 1 : 0)
+    return sum  + (overlap(otherEvent) ? 1 : 0)
   }, 0)
 }
 
 let DaySlot = React.createClass({
 
   propTypes: {
-    events: React.PropTypes.array,
-    step: React.PropTypes.number,
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date),
+    events: React.PropTypes.array.isRequired,
+    step: React.PropTypes.number.isRequired,
+    min: React.PropTypes.instanceOf(Date).isRequired,
+    max: React.PropTypes.instanceOf(Date).isRequired,
 
-    allDayAccessor: accessor,
-    startAccessor: accessor,
-    endAccessor: accessor,
+    allDayAccessor: accessor.isRequired,
+    startAccessor: accessor.isRequired,
+    endAccessor: accessor.isRequired,
 
+    selectable: React.PropTypes.bool,
     eventOffset: React.PropTypes.number,
 
-    onEventClick: React.PropTypes.func
+    onSelectSlot: React.PropTypes.func.isRequired,
+    onSelectEvent: React.PropTypes.func.isRequired
   },
 
   getInitialState() {
@@ -73,7 +58,8 @@ let DaySlot = React.createClass({
   },
 
   componentDidMount() {
-    this._selectable()
+    this.props.selectable
+      && this._selectable()
   },
 
   componentWillUnmount() {
@@ -123,19 +109,26 @@ let DaySlot = React.createClass({
 
   renderEvents(numSlots, totalMin) {
     let {
-        events, step, min, selected
-      , startAccessor, endAccessor } = this.props;
+        events, step, min, culture
+      , selected, eventTimeRangeFormat, eventComponent
+      , startAccessor, endAccessor, titleAccessor } = this.props;
 
-    events.sort((a, b) => +a - +b)
+    let EventComponent = eventComponent;
+
+    events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor))
 
     return events.map((event, idx) => {
-
-      let startSlot = positionFromDate(get(event, startAccessor), min, step);
-      let endSlot = positionFromDate(get(event, endAccessor), min, step);
+      let start = get(event, startAccessor)
+      let end = get(event, endAccessor)
+      let startSlot = positionFromDate(start, min, step);
+      let endSlot = positionFromDate(end, min, step);
 
       let leftOffset = overlaps(event, events.slice(0, idx), this.props)
 
       let style = this._slotStyle(startSlot, endSlot, leftOffset)
+
+      let title = get(event, titleAccessor)
+      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture);
 
       return (
         <div
@@ -146,7 +139,13 @@ let DaySlot = React.createClass({
             'rbc-selected': isSelected(event, selected)
           })}
         >
-          { event.start.toLocaleString() }
+          <div className='rbc-event-label' title={label}>{label}</div>
+          <div className='rbc-event-content'>
+            { EventComponent
+              ? <EventComponent event={event} title={title}/>
+              : title
+            }
+          </div>
         </div>
       )
     })
@@ -170,22 +169,29 @@ let DaySlot = React.createClass({
     let node = findDOMNode(this);
     let selector = this._selector = new Selection(node)
 
-    selector.on('selecting', selectBox => {
+    selector.on('selecting', ({ x, y }) => {
       let { date, step, min } = this.props;
-
       let { top, bottom } = getBoundsForNode(node)
 
       let mins = this._totalMin;
 
       let range = Math.abs(top - bottom)
-      let start = (selectBox.top - top) / range;
-      let end = (selectBox.bottom - top) / range;
 
-      start = snapToSlot(minToDate(mins * start, date), step)
-      end = snapToSlot(minToDate(mins * end, date), step)
+      let current = (y - top) / range;
 
-      if (dates.eq(start, end, 'minutes'))
-        end = dates.add(end, step, 'minutes')
+      current = snapToSlot(minToDate(mins * current, date), step)
+
+      if (!this.state.selecting)
+        this._initialDateSlot = current
+
+      let initial = this._initialDateSlot;
+
+      if (dates.eq(initial, current, 'minutes'))
+        current = dates.add(current, step, 'minutes')
+
+      //end = snapToSlot(minToDate(mins * end, date), step)
+      let start = dates.min(initial, current)
+      let end = dates.max(initial, current)
 
       this.setState({
         selecting: true,
@@ -210,19 +216,26 @@ let DaySlot = React.createClass({
   },
 
   _selectSlot({ startDate, endDate, endSlot, startSlot }){
-    console.log({ startDate, endDate, endSlot, startSlot })
-    this.props.onSelectSlot &&
-      this.props.onSelectSlot({
-        start: startDate, end: endDate, endSlot, startSlot })
+    let current = startDate
+      , slots = [];
+
+    while (dates.lte(current, endDate)) {
+      slots.push(current)
+      current = dates.add(current, this.props.step, 'minutes')
+    }
+
+    notify(this.props.onSelectSlot, {
+      slots,
+      start: startDate,
+      end: endDate
+    })
   },
 
   _select(event){
-    this.props.onEventClick &&
-      this.props.onEventClick(event);
-
-    this.props.onSelect([event])
+    notify(this.props.onSelectEvent, event)
   }
 });
+
 
 function minToDate(min, date){
   var dt = new Date(date);
@@ -231,4 +244,5 @@ function minToDate(min, date){
   dt = dates.seconds(dt, 0)
   return dates.milliseconds(dt, 0)
 }
+
 export default DaySlot;

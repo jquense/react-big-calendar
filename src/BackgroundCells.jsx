@@ -2,7 +2,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import { segStyle } from './utils/eventLevels';
-import { dateCellSelection } from './utils/selection';
+import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode } from './Selection';
 
 class DisplayCells extends React.Component {
@@ -79,8 +79,19 @@ class DisplayCells extends React.Component {
     })
 
     selector
-      .on('click', () => {
-        this._selectSlot(this.state)
+      .on('click', point => {
+        let rowBox = getBoundsForNode(node)
+
+        if (pointInBox(rowBox, point)) {
+          let width = slotWidth(getBoundsForNode(node),  this.props.slots);
+          let currentCell = getCellAtX(rowBox, point.x, width);
+
+          this._selectSlot({
+            startIdx: currentCell,
+            endIdx: currentCell
+          })
+        }
+
         this._initial = {}
         this.setState({ selecting: false })
       })
@@ -99,7 +110,6 @@ class DisplayCells extends React.Component {
         start: startIdx, end: endIdx
       })
   }
-
 }
 
 export default DisplayCells;

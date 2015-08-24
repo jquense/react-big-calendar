@@ -14,17 +14,33 @@ import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
 import message from './utils/messages';
 
+import { dateFormat} from './utils/propTypes';
+
+import { notify } from './utils/helpers';
+import { navigate } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 
 import { inRange, eventSegments, eventLevels, sortEvents, segStyle } from './utils/eventLevels';
 
 
-
-let Day = React.createClass({
+let TimeGrid = React.createClass({
 
   propTypes: {
     ...DaySlot.propTypes,
-    ...TimeGutter.propTypes
+    ...TimeGutter.propTypes,
+
+    step: React.PropTypes.number,
+    min: React.PropTypes.instanceOf(Date),
+    max: React.PropTypes.instanceOf(Date),
+    dayFormat: dateFormat
+  },
+
+  getDefaultProps(){
+    return {
+      step: 30,
+      min: dates.startOf(new Date(), 'day'),
+      max: dates.endOf(new Date(), 'day')
+    }
   },
 
   componentWillMount() {
@@ -105,16 +121,20 @@ let Day = React.createClass({
   },
 
   renderEvents(range, events){
+    let { endAccessor, startAccessor, components } = this.props;
     let today = new Date();
 
     return range.map((date, idx) => {
-      let { onSelect } = this.props;
-
-      let daysEvents = events.filter(event => dates.inRange(date, event.start, event.end, 'day'))
+      let daysEvents = events.filter(
+        event => dates.inRange(date,
+          get(event, startAccessor),
+          get(event, endAccessor), 'day')
+      )
 
       return (
         <DaySlot
           {...this.props }
+          eventComponent={components.event}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, this._slots)}
           key={idx}
@@ -134,6 +154,8 @@ let Day = React.createClass({
 
     return levels.map((segs, idx) =>
       <EventRow
+        eventComponent={this.props.components.event}
+        titleAccessor={this.props.titleAccessor}
         startAccessor={this.props.startAccessor}
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
@@ -148,17 +170,22 @@ let Day = React.createClass({
   },
 
   renderHeader(range){
-    let { dayFormat, culture, onHeaderClick } = this.props;
+    let { dayFormat, culture } = this.props;
 
     return range.map((date, i) =>
       <div key={i}
-        className='rbc-cell-header'
+        className='rbc-header'
         style={segStyle(1, this._slots)}
-        onClick={onHeaderClick.bind(null, date)}
       >
-        { localizer.format(date, dayFormat, culture) }
+        <a href='#' onClick={this._headerClick.bind(null, date)}>
+          { localizer.format(date, dayFormat, culture) }
+        </a>
       </div>
     )
+  },
+
+  _headerClick(date){
+    notify(this.props.onNavigate, [navigate.DATE, date])
   },
 
   _adjustGutter() {
@@ -183,4 +210,5 @@ let Day = React.createClass({
 
 });
 
-export default Day
+
+export default TimeGrid

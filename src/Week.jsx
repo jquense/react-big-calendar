@@ -10,10 +10,8 @@ let Week = React.createClass({
   propTypes: TimeGrid.propTypes,
 
   render() {
-    let { date, culture } = this.props;
-    let firstOfWeek = localizer.startOfWeek(culture)
-    let start = dates.startOf(date, 'week', firstOfWeek)
-    let end = dates.endOf(date, 'week', firstOfWeek)
+    let { date, culture } = this.props
+    let { start, end } = Week.range(date, this.props)
 
     return (
       <TimeGrid {...this.props} start={start} end={end} eventOffset={15}/>
@@ -34,5 +32,14 @@ Week.navigate = (date, action)=>{
       return date;
   }
 }
+
+Week.range = (date, { culture }) => {
+  let firstOfWeek = localizer.startOfWeek(culture)
+  let start = dates.startOf(date, 'week', firstOfWeek)
+  let end = dates.endOf(date, 'week', firstOfWeek)
+
+  return { start, end }
+}
+
 
 export default Week

@@ -1,0 +1,55 @@
+
+.rbc-agenda-view {
+  table {
+    width: 100%;
+    border: 1px solid @cell-border;
+
+    tbody > tr > td {
+      padding: 5px 10px;
+      vertical-align: top;
+
+    }
+
+    .rbc-agenda-time-cell {
+      padding-left: 15px;
+      padding-right: 15px;
+      text-transform: lowercase;
+    }
+
+    tbody > tr > td + td {
+      border-left: 1px solid @cell-border;
+    }
+
+    tbody > tr + tr {
+      border-top: 1px solid @cell-border;
+    }
+
+    thead > tr > th {
+      padding: 3px 5px;
+      text-align: left;
+      border-bottom: 1px solid @cell-border;
+    }
+  }
+}
+
+.rbc-agenda-time-cell {
+  text-transform: lowercase;
+
+  .rbc-continues-after:after {
+    content: ' »'
+  }
+  .rbc-continues-prior:before {
+    content: '« '
+  }
+}
+
+.rbc-agenda-date-cell,
+.rbc-agenda-time-cell {
+  white-space: nowrap;
+}
+
+
+
+.rbc-agenda-event-cell {
+  width: 100%
+}

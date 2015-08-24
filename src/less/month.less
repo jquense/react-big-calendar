@@ -1,15 +1,25 @@
 @import './variables.less';
 
 
-.rbc-selected-cell {
-  background-color: violet;
-}
 .rbc-row {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
 }
 
+.rbc-row-segment {
+  padding: 0 1px 1px 1px;
+
+  .rbc-event-content {
+    &:extend(.rbc-ellipsis);
+  }
+}
+
+.rbc-selected-cell {
+  background-color: @selection-bg-color;
+  color: @selection-color;
+  opacity: 0.05
+}
 
 .show-more-offsets (@i) when (@i > 0) {
   @per: percentage((@i - 1) / 7);
@@ -21,16 +31,6 @@
 }
 
 .show-more-offsets(7);
-
-.rbc-event {
-  &:extend(.rbc-ellipsis);
-  background-color: #ccc;
-  border: 1px solid black;
-
-  &.rbc-selected {
-    background-color: blue;
-  }
-}
 
 .rbc-show-more {
   &:extend(.rbc-ellipsis);
@@ -53,6 +53,14 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
+
+  .rbc-header {
+    border-bottom: 1px solid @cell-border;
+  }
+
+  .rbc-header + .rbc-header {
+    border-left: 1px solid @cell-border;
+  }
 }
 
 .rbc-month-header {
@@ -73,22 +81,20 @@
   }
 }
 
-.rbc-month-header-cell {
-  text-align: center;
-  border-bottom: 1px solid @cell-border;
-
-  & + & {
-    border-left: 1px solid @cell-border;
-  }
-}
-
-.rbc-date-cell{
+.rbc-date-cell {
   flex: 0 0 @segment-width;
   padding-right: 5px;
   text-align: right;
 
   &.rbc-now {
     font-weight: bold;
+  }
+
+  > a {
+    &, &:active, &:visited {
+      color: inherit;
+      text-decoration: none;
+    }
   }
 }
 

@@ -4,7 +4,7 @@ let config = require('../webpack/examples.config');
 
 new WebpackDevServer(webpack(config), {
 
-  publicPath: '/static/',
+  publicPath: config.output.publicPath,
   hot: true,
   historyApiFallback: true,
   quiet: false,

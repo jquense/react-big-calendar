@@ -1,3 +1,12 @@
+// import Chance from 'chance';
+
+// let chance = new Chance();
+// let events = []
+
+// for (var i = 0; i < 300; i++) {
+//   events.push({
+//     start: chance.date({ year: 2015 }),
+//   })
 
 export default [
   {
@@ -50,11 +59,5 @@ export default [
     "title": "Birthday Party",
     "start":new Date(2015, 1, 13, 7, 0, 0),
     "end": new Date(2015, 1, 13, 10, 30, 0)
-  },
-  {
-    "title": "Click for Google",
-    "url": "http://google.com/",
-    "start": new Date(2015, 1, 28),
-    "end": new Date(2015, 1, 28)
   }
 ]

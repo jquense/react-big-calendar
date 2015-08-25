@@ -1,5 +1,12 @@
 import dates from './dates';
 import { accessor as get } from './accessors';
+//import canUseDom from 'dom-helpers/util/inDOM';
+
+// let isIE = false;
+
+// if (canUseDom) {
+//   isIE = ('documentMode' in document)
+// }
 
 export function eventSegments(event, first, last, { startAccessor, endAccessor }){
 
@@ -23,12 +30,14 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
 
 
 export function segStyle(span, slots){
-  return { flexBasis: (span / slots) * 100 + '%' }
+  let per = (span / slots) * 100 + '%';
+  return { flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
 }
 
-export function eventLevels(rowSegments){
+export function eventLevels(rowSegments, limit = Infinity){
   let i, j, seg
-    , levels = [];
+    , levels = []
+    , extra = [];
 
   for (i = 0; i < rowSegments.length; i++) {
     seg = rowSegments[i];
@@ -37,15 +46,19 @@ export function eventLevels(rowSegments){
       if (!segsOverlap(seg, levels[j]))
         break
 
-    seg.level = j;
-    (levels[j] || (levels[j] = [])).push(seg);
+    if (j >= limit) {
+      extra.push(seg)
+    }
+    else {
+      (levels[j] || (levels[j] = [])).push(seg);
+    }
   }
 
   for (i = 0; i < levels.length; i++) {
     levels[i].sort((a, b) => a.left - b.left); //eslint-disable-line
   }
 
-  return levels;
+  return { levels, extra };
 }
 
 export function inRange(e, start, end, { startAccessor, endAccessor }){

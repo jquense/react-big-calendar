@@ -1,6 +1,6 @@
 
 import dateMath from 'date-arithmetic';
-import localizer from './localizer';
+import localizer from '../localizer';
 import { directions } from './constants';
 
 const MILLI = {

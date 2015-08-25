@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 import message, { get } from './utils/messages';
 import { navigate, views } from './utils/constants';
 
@@ -51,7 +51,7 @@ let Toolbar = React.createClass({
         <span className='rbc-btn-group'>
           {
             viewNames.map(name =>
-              <button type='button'
+              <button type='button' key={name}
                 className={cn({'rbc-active': view === name})}
                 onClick={this.view.bind(null, name)}
               >

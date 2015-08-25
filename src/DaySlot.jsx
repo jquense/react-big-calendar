@@ -4,7 +4,7 @@ import Selection, { getBoundsForNode } from './Selection';
 import cn from 'classnames';
 import dates from './utils/dates';
 import { isSelected } from './utils/selection';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 
 import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';

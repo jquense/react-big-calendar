@@ -1,9 +1,11 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
+
+import EventCell from './EventCell';
 import dates from './utils/dates';
 import getHeight from 'dom-helpers/query/height';
-//import localizer from './utils/localizer'
+//import localizer from './localizer'
 
 import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';
@@ -40,9 +42,7 @@ let MonthView = React.createClass({
   },
 
   render(){
-    let {
-        segments, start, end
-      , startAccessor, endAccessor } = this.props;
+    let { segments, start, end } = this.props;
 
     let lastEnd = 1;
 
@@ -52,12 +52,8 @@ let MonthView = React.createClass({
         segments.reduce((row, { event, left, right, span }, li) => {
           let key = '_lvl_' + li;
           let gap = left - lastEnd;
-          let content = this.renderEvent(event, {
-            className: cn({
-              'rbc-event-continues-after': dates.gt(get(event, endAccessor), end),
-              'rbc-event-continues-prior': dates.lt(get(event, startAccessor), start)
-            })
-          })
+
+          let content = this.renderEvent(event, start, end)
 
           if (gap)
             row.push(this.renderSpan(gap, key + '_gap'))
@@ -75,26 +71,24 @@ let MonthView = React.createClass({
     )
   },
 
-  renderEvent(event, props = {}){
-    let { selected, titleAccessor, eventComponent } = this.props;
+  renderEvent(event, start, end, props = {}){
+    let {
+        selected, startAccessor, endAccessor
+      , titleAccessor, eventComponent, onSelect } = this.props;
 
-    let EventComponent = eventComponent;
-    let title = get(event, titleAccessor)
+
     return (
-      <div
-        {...props}
-        className={cn('rbc-event', props.className, {
-          'rbc-selected': isSelected(event, selected)
-        })}
-        onClick={this._select.bind(null, event)}
-      >
-        <div className='rbc-event-content'>
-          { EventComponent
-            ? <EventComponent event={event} title={title}/>
-            : title
-          }
-        </div>
-      </div>
+      <EventCell
+        event={event}
+        onSelect={onSelect}
+        selected={isSelected(event, selected)}
+        startAccessor={startAccessor}
+        endAccessor={endAccessor}
+        titleAccessor={titleAccessor}
+        slotStart={start}
+        slotEnd={end}
+        component={eventComponent}
+      />
     )
   },
 
@@ -110,12 +104,7 @@ let MonthView = React.createClass({
 
   getRowHeight(){
     getHeight(findDOMNode(this))
-  },
-
-  _select(event){
-    notify(this.props.onEventClick, event);
   }
-
 });
 
 export default MonthView

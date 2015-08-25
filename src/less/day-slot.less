@@ -2,8 +2,31 @@
 
 .rbc-day-slot {
   position: relative;
-  display: flex;
+  display: inline-flex;
+  overflow: hidden;
   flex-direction: column;
+
+  .rbc-event {
+    border: 1px solid @event-border;
+    display: flex;
+    max-height: 100%;
+    flex-flow: column wrap;
+    align-items: flex-start;
+  }
+
+  .rbc-event-label {
+    flex: none;
+    padding-right: 5px;
+    width: auto;
+  }
+
+  .rbc-event-content {
+    width: 100%;
+    flex: none;
+    word-wrap: break-word;
+    line-height: 1;
+  }
+
 }
 
 .rbc-time-slot {

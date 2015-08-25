@@ -1,17 +1,15 @@
 import React, { PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 import message from './utils/messages';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 
 import dates from './utils/dates';
 import { navigate } from './utils/constants';
-import { dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
 import classes from 'dom-helpers/class';
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
-import { segStyle, inRange, sortEvents } from './utils/eventLevels';
+import { inRange } from './utils/eventLevels';
 
 
 let Agenda = React.createClass({
@@ -71,7 +69,7 @@ let Agenda = React.createClass({
         <div className='rbc-agenda-content' ref='content'>
           <table>
             <tbody ref='tbody'>
-              {range.map((day, idx) => this.renderDay(day, events, idx))}
+              { range.map((day, idx) => this.renderDay(day, events, idx)) }
             </tbody>
           </table>
         </div>
@@ -85,14 +83,19 @@ let Agenda = React.createClass({
       , titleAccessor, agendaDateFormat } = this.props;
 
     let EventComponent = components.event;
+    let DateComponent = components.date;
 
     events = events.filter(e => inRange(e, day, day, this.props))
 
     return events.map((event, idx) => {
+      let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture)
       let first = idx === 0
           ? (
             <td rowSpan={events.length} className='rbc-agenda-date-cell'>
-              {localizer.format(day, agendaDateFormat, culture)}
+              { DateComponent
+                ? <DateComponent day={day} label={dateLabel}/>
+                : dateLabel
+              }
             </td>
           ) : false
 
@@ -118,9 +121,10 @@ let Agenda = React.createClass({
   timeRangeLabel(day, event){
     let {
         endAccessor, startAccessor, allDayAccessor
-      , culture, messages } = this.props;
+      , culture, messages, components } = this.props;
 
     let labelClass = ''
+      , TimeComponent = components.time
       , label = message(messages).allDay
 
     let start = get(event, startAccessor)
@@ -138,13 +142,17 @@ let Agenda = React.createClass({
       }
     }
 
-    if (dates.gt(day, start, 'day'))
-      labelClass = 'rbc-continues-prior'
+    if (dates.gt(day, start, 'day')) labelClass = 'rbc-continues-prior'
+    if (dates.lt(day, end, 'day'))   labelClass += ' rbc-continues-after'
 
-    if (dates.lt(day, end, 'day'))
-      labelClass += ' rbc-continues-after'
-
-    return <span className={labelClass.trim()}>{label}</span>
+    return (
+      <span className={labelClass.trim()}>
+        { TimeComponent
+          ? <TimeComponent event={event} label={label}/>
+          : label
+        }
+      </span>
+    )
   },
 
   _adjustHeader() {

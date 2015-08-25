@@ -1,5 +1,5 @@
+import { PropTypes } from 'react';
 import dates from './utils/dates';
-import { set } from './formats';
 
 function inSame12Hr(start, end){
   let s = 12 - dates.hours(start)
@@ -18,7 +18,8 @@ let weekRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'MMM dd', culture) +
     ' - ' + local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
 
-export let formats = {
+let formats = {
+
   dateFormat: 'dd',
   dayFormat: 'ddd dd/MM',
   weekdayFormat: 'ddd',
@@ -26,43 +27,28 @@ export let formats = {
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
 
-  timeGutterFormat: 't',
+  timeGutterFormat: 'h:mm tt',
 
-  monthHeaderFormat: 'Y',
+  monthHeaderFormat: 'MMMM yyyy',
   dayHeaderFormat: 'dddd MMM dd',
   dayRangeHeaderFormat: weekRangeFormat,
   agendaHeaderFormat: dateRangeFormat,
 
   agendaDateFormat: 'ddd MMM dd',
-  agendaTimeFormat: 't',
+  agendaTimeFormat: 'hh:mm tt',
   agendaTimeRangeFormat: timeRangeFormat
 }
 
-export default function(globalize) {
+export function set(_formats){
+  if (arguments.length > 1)
+    _formats = { [_formats]: arguments[1] }
 
-  function getCulture(culture){
-    return culture
-      ? globalize.findClosestCulture(culture)
-      : globalize.culture()
-  }
-
-  function firstOfWeek(culture) {
-    culture = getCulture(culture)
-    return (culture && culture.calendar.firstDay) || 0
-  }
-
-  set(formats)
-
-  return {
-    firstOfWeek,
-
-    parse(value, format, culture){
-      return globalize.parseDate(value, format, culture)
-    },
-
-    format(value, format, culture){
-      return globalize.format(value, format, culture)
-    }
-  }
+  Object.assign(formats, _formats)
 }
 
+export default function format(fmts){
+  return {
+    ...formats,
+    ...fmts
+  }
+}

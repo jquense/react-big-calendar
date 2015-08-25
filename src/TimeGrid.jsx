@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 import dates from './utils/dates';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 
 import DaySlot from './DaySlot';
 import EventRow from './EventRow';
@@ -22,6 +22,7 @@ import { accessor as get } from './utils/accessors';
 
 import { inRange, eventSegments, eventLevels, sortEvents, segStyle } from './utils/eventLevels';
 
+const MIN_ROWS = 2;
 
 let TimeGrid = React.createClass({
 
@@ -89,7 +90,7 @@ let TimeGrid = React.createClass({
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     let segments = allDayEvents.map(evt => eventSegments(evt, start, end, this.props))
-    let levels = eventLevels(segments)
+    let { levels } = eventLevels(segments)
 
     return (
       <div className='rbc-time-view'>
@@ -149,7 +150,7 @@ let TimeGrid = React.createClass({
     let first = range[0]
       , last = range[range.length - 1];
 
-    if (levels.length === 1)
+    while (levels.length < MIN_ROWS )
       levels.push([])
 
     return levels.map((segs, idx) =>

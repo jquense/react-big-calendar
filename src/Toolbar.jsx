@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 import message, { get } from './utils/messages';
 import { navigate, views } from './utils/constants';
 

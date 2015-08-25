@@ -1,5 +1,5 @@
 import { PropTypes } from 'react';
-import localizer from'./localizer';
+import localizer from '../localizer';
 import elementType from 'react-prop-types/lib/elementType';
 import all from 'react-prop-types/lib/all';
 import { views as Views } from './constants';

@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import dates from './utils/dates';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 
 let TimeGutter = React.createClass({
 

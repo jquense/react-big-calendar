@@ -1,16 +1,17 @@
 import React, { PropTypes } from 'react';
-import invariant from 'invariant';
 import uncontrollable from 'uncontrollable';
+
 import {
     accessor
   , elementType
   , dateFormat
   , views as componentViews } from './utils/propTypes';
 
-import localizer from './utils/localizer'
+import localizer from './localizer'
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import dates from './utils/dates';
+import defaultFormats from './formats';
 
 import Month from './Month';
 import Day from './Day';
@@ -19,7 +20,6 @@ import Agenda from './Agenda';
 import Toolbar from './Toolbar';
 
 import omit from 'lodash/object/omit';
-import pick from 'lodash/object/pick';
 import defaults from 'lodash/object/defaults';
 
 const VIEWS = {
@@ -31,42 +31,11 @@ const VIEWS = {
 
 const Formats = {
   [views.MONTH]: 'monthHeaderFormat',
-  [views.WEEK]: 'weekHeaderFormat',
+  [views.WEEK]: 'dayRangeHeaderFormat',
   [views.DAY]: 'dayHeaderFormat',
   [views.AGENDA]: 'agendaHeaderFormat'
 }
 
-// let timeOverlap = [
-//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
-
-//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 17, 30, 0) },
-//   { start: new Date(2015, 7, 15, 15, 0, 0), end: new Date(2015, 7, 15, 17, 45, 0) }
-// ]
-
-// let events = [
-//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 4) },
-//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
-//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
-//   { start: new Date(2015, 7, 2), end: new Date(2015, 7, 2) },
-
-//   { start: new Date(2015, 7, 5), end: new Date(2015, 7, 7) },
-//   { start: new Date(2015, 7, 5), end: new Date(2015, 7, 5) },
-//   { start: new Date(2015, 7, 5), end: new Date(2015, 7, 7) },
-
-//   { start: new Date(2015, 7, 11), end: new Date(2015, 7, 17) },
-//   { start: new Date(2015, 7, 7), end: new Date(2015, 7, 12) },
-//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 15, 30, 0) },
-
-//   { start: new Date(2015, 7, 15, 12, 45, 0), end: new Date(2015, 7, 15, 17, 30, 0) },
-//   { start: new Date(2015, 7, 15, 15, 0, 0), end: new Date(2015, 7, 15, 17, 45, 0) },
-//   { start: new Date(2015, 7, 17), end: new Date(2015, 7, 18) },
-//   { start: new Date(2015, 7, 21), end: new Date(2015, 7, 31) }
-// ]
-function inSame12Hr(start, end){
-  let s = 12 - dates.hours(start)
-  let e = 12 - dates.hours(end)
-  return (s <= 0 && e <= 0) || (s >= 0 && e >= 0)
-}
 
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -79,16 +48,6 @@ function isValidView(view, { views: _views }) {
 
 let now = new Date();
 
-let dateRangeFormat = ({ start, end }, culture, local)=>
-  local.format(start, 'd', culture) + ' — ' + local.format(end, 'd', culture)
-
-let timeRangeFormat = ({ start, end }, culture, local)=>
-  local.format(start, 'h:mmtt', culture) +
-    ' — ' + local.format(end, inSame12Hr(start, end) ? 'h:mm' : 'h:mmtt', culture)
-
-let weekRangeFormat = ({ start, end }, culture, local)=>
-  local.format(start, 'MMM dd', culture) +
-    ' - ' + local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
 
 let Calendar = React.createClass({
 
@@ -177,41 +136,49 @@ let Calendar = React.createClass({
      */
     endAccessor: accessor,
 
-    /**
-     * Format for the day of the month heading in the Month view.
-     */
-    dateFormat,
+    formats: PropTypes.shape({
+      /**
+       * Format for the day of the month heading in the Month view.
+       */
+      dateFormat,
 
-    /**
-     * A day of the week format for Week and Day headings
-     */
-    dayFormat: dateFormat,
-    /**
-     * Week day name format for the Month week day headings.
-     */
-    weekdayFormat: dateFormat,
+      /**
+       * A day of the week format for Week and Day headings
+       */
+      dayFormat: dateFormat,
+      /**
+       * Week day name format for the Month week day headings.
+       */
+      weekdayFormat: dateFormat,
 
-    /**
-     * Toolbar header format for the Month view.
-     */
-    monthHeaderFormat: dateFormat,
-    /**
-     * Toolbar header format for the Week views.
-     */
-    weekHeaderFormat: dateFormat,
-    /**
-     * Toolbar header format for the Day view.
-     */
-    dayHeaderFormat: dateFormat,
-    /**
-     * Toolbar header format for the Agenda view.
-     */
-    agendaHeaderFormat: dateFormat,
+      /**
+       * Toolbar header format for the Month view.
+       */
+      monthHeaderFormat: dateFormat,
+      /**
+       * Toolbar header format for the Week views.
+       */
+      weekHeaderFormat: dateFormat,
+      /**
+       * Toolbar header format for the Day view.
+       */
+      dayHeaderFormat: dateFormat,
 
-    /**
-     * A time range format for selecting time slots.
-     */
-    selectRangeFormat: dateFormat,
+      /**
+       * Toolbar header format for the Agenda view.
+       */
+      agendaHeaderFormat: dateFormat,
+
+      /**
+       * A time range format for selecting time slots.
+       */
+      selectRangeFormat: dateFormat,
+
+
+      agendaDateFormat: dateFormat,
+      agendaTimeFormat: dateFormat,
+      agendaTimeRangeFormat: dateFormat
+    }),
 
     components: PropTypes.shape({
       event: elementType,
@@ -220,7 +187,11 @@ let Calendar = React.createClass({
         date: elementType,
         time: elementType,
         event: elementType
-      })
+      }),
+
+      day: PropTypes.shape({ event: elementType }),
+      week: PropTypes.shape({ event: elementType }),
+      month: PropTypes.shape({ event: elementType })
     }),
 
     messages: PropTypes.shape({
@@ -237,35 +208,16 @@ let Calendar = React.createClass({
 
   getDefaultProps() {
     return {
-
+      popup: false,
       toolbar: true,
-      view: views.AGENDA,
+      view: views.MONTH,
       views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
       date: now,
 
       titleAccessor: 'title',
       allDayAccessor: 'allDay',
       startAccessor: 'start',
-      endAccessor: 'end',
-
-      timeGutterFormat: 'h:mm tt',
-
-      dayFormat: 'ddd dd/MM',
-      dateFormat: 'dd',
-      weekdayFormat: 'ddd',
-
-      selectRangeFormat: timeRangeFormat,
-      eventTimeRangeFormat: timeRangeFormat,
-
-      monthHeaderFormat: 'MMMM yyyy',
-      weekHeaderFormat: weekRangeFormat,
-      dayHeaderFormat: 'dddd MMM dd',
-      agendaHeaderFormat: dateRangeFormat,
-
-      agendaDateFormat: 'ddd MMM dd',
-      agendaTimeFormat: 'hh:mm tt',
-      agendaTimeRangeFormat: timeRangeFormat
-
+      endAccessor: 'end'
     };
   },
 
@@ -274,7 +226,10 @@ let Calendar = React.createClass({
         view, toolbar, events
       , culture
       , components = {}
+      , formats = {}
       , date: current } = this.props;
+
+    formats = defaultFormats(formats)
 
     let View = VIEWS[view];
     let headerSingle = view === views.MONTH || view === views.DAY
@@ -283,7 +238,7 @@ let Calendar = React.createClass({
 
     let { start, end } = View.range(current, this.props);
 
-    let headerFormat = this.props[Formats[view]];
+    let headerFormat = formats[Formats[view]];
 
     let label = headerSingle
       ? localizer.format(current, headerFormat, culture)
@@ -313,6 +268,8 @@ let Calendar = React.createClass({
         <View
           ref='view'
           {...this.props}
+          {...formats}
+          formats={undefined}
           events={events}
           date={current}
           components={viewComponents}
@@ -320,6 +277,7 @@ let Calendar = React.createClass({
           onHeaderClick={this._headerClick}
           onSelectEvent={this._select}
           onSelectSlot={this._selectSlot}
+          onShowMore={this._showMore}
         />
       </div>
     );

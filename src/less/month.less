@@ -33,20 +33,24 @@
 
 .rbc-show-more {
   &:extend(.rbc-ellipsis);
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: @event-zindex;
   float: left;
   position: absolute;
   width: 14.28571429%;
   bottom: 0;
-  font-style: italic;
+  //font-style: italic;
+  font-weight: bold;
   font-size: 85%;
   text-align: center;
   height: auto;
   line-height: normal;
   white-space: nowrap;
-
+  color: #333;
 }
 
 .rbc-month-view {
+  position: relative;
   border: 1px solid @calendar-border;
   display: flex;
   flex-direction: column;
@@ -115,5 +119,19 @@
 .rbc-day-bg {
   & + & {
     border-left: 1px solid @cell-border;
+  }
+}
+
+.rbc-overlay {
+  position: absolute;
+  //width: 400;
+  z-index: @event-zindex + 1;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,.25);
+  padding: 10px;
+
+  > * + * {
+    margin-top: 1px;
   }
 }

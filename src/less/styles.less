@@ -10,6 +10,12 @@
   align-items: stretch;
 }
 
+.rbc-calendar *,
+.rbc-calendar *:before,
+.rbc-calendar *:after {
+  box-sizing: inherit;
+}
+
 .rbc-abs-full {
   overflow: hidden;
   position: absolute;
@@ -17,12 +23,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-}
-
-.rbc-calendar *,
-.rbc-calendar *:before,
-.rbc-calendar *:after {
-  box-sizing: inherit;
 }
 
 .rbc-ellipsis {

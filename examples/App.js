@@ -1,20 +1,24 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import Button from 'react-bootstrap/lib/Button';
-import { date as localizer } from 'react-widgets-globalize-localizer'
+import globalizeLocalizer from 'react-big-calendar/globalize-localizer';
+import momentLocalizer from 'react-big-calendar/moment-localizer';
 
-import { set } from 'react-big-calendar/utils/localizer';
+import { set as setLocalizer } from 'react-big-calendar/localizer';
 
-set(localizer);
+import moment from 'moment';
+import globalize from 'globalize';
 
 import BigCalendar from 'react-big-calendar';
 
 import 'react-big-calendar/less/styles.less';
 import './styles.less';
 
-
 import events from './events';
+
+setLocalizer(
+  globalizeLocalizer(globalize)
+);
 
 class EventWeek {
   render(){
@@ -35,7 +39,9 @@ const Example = React.createClass({
     return (
       <div className='app'>
         <main className=''>
-          <BigCalendar selectable
+          <BigCalendar
+            selectable
+            popup
             events={events}
             defaultDate={new Date(2015, 1, 1)}
             components={{

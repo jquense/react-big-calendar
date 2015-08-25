@@ -52,7 +52,6 @@ let localizer = {
   startOfWeek: error
 }
 
-
 export function set(newLocalizer){
   localizer = new DateLocalizer(newLocalizer)
 }
@@ -71,16 +70,10 @@ let exp = {
   }
 }
 
-Object.defineProperty(exp, 'formats', {
-  get(){
-    return localizer.formats
-  }
-})
-
 export default exp
 
 function error(){
   throw new Error(
-    'You are attempting to use big Calendar without a localizer. ' +
-    'Please install a localizer')
+    'You have not selected a localization strategy for Big Calendar. ' +
+    'Please use either of the two included.')
 }

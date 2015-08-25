@@ -1,23 +1,41 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import dates from './utils/dates';
-import localizer from './utils/localizer'
+import localizer from './localizer'
 import chunk from 'lodash/array/chunk';
 import omit from 'lodash/object/omit';
 
 import { navigate } from './utils/constants';
 import { notify } from './utils/helpers';
 import getHeight from 'dom-helpers/query/height';
+import getPosition from 'dom-helpers/query/position';
 import raf from 'dom-helpers/util/requestAnimationFrame';
 
 import EventRow from './EventRow';
+import Popup from './Popup';
+import Overlay from 'react-overlays/lib/Overlay';
 import BackgroundCells from './BackgroundCells';
+
 import { dateFormat } from './utils/propTypes';
 import { segStyle, inRange, eventSegments, eventLevels, sortEvents } from './utils/eventLevels';
+
+const SHOW_MORE_HEIGHT = 14;
+
+let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 function eventsForWeek(evts, start, end, props){
   return evts.filter( e => inRange(e, start, end, props))
 }
+
+// function groupBySlot(row, segments){
+//   let group = {}
+//   row.forEach((_, idx) => {
+//     let slot = idx + 1
+//     group[slot] = segments.filter(seg => seg.left <= slot && seg.right >= slot)
+//   })
+//   return group
+// }
 
 let propTypes = {
   ...EventRow.PropTypes,
@@ -52,6 +70,7 @@ let MonthView = React.createClass({
   },
 
   componentWillMount() {
+    this._bgRows = []
     this._pendingSelection = []
   },
 
@@ -120,22 +139,21 @@ let MonthView = React.createClass({
     evts.sort((a, b) => sortEvents(a, b, this.props))
 
     let segments = evts = evts.map(evt => eventSegments(evt, first, last, this.props))
-    let levels = eventLevels(segments)
-
     let limit = this.state.rowLimit;
-    let renderableLevels = levels.slice(0, limit)
-    let hiddenLevels = levels.slice(limit)
+
+    let { levels, extra } = eventLevels(segments, limit)
 
     return (
       <div key={'week_' + rowIdx}
         className='rbc-month-row'
         ref={!rowIdx && (r => this._firstRow = r)}
       >
-        <div className='rbc-row-bg'>
-          {this.renderBackground(row)}
-        </div>
-
-        <div className='rbc-row-content'>
+        {
+          this.renderBackground(row, rowIdx)
+        }
+        <div
+          className='rbc-row-content'
+        >
           <div
             className='rbc-row'
             ref={!rowIdx && (r => this._firstDateRow = r)}
@@ -144,14 +162,16 @@ let MonthView = React.createClass({
           </div>
           {
             content
-              ? content(renderableLevels, row, rowIdx)
-              : renderableLevels.map((l, idx) => this.renderRowLevel(l, row, idx))
-          }
-          {
-            !!hiddenLevels.length
-              && this.renderShowMore(hiddenLevels)
+              ? content(levels, row, rowIdx)
+              : levels.map((l, idx) => this.renderRowLevel(l, row, idx))
           }
         </div>
+        {
+          this.renderShowMore(segments, extra, row, rowIdx)
+        }
+        { this.props.popup
+            && this._renderOverlay()
+        }
       </div>
     )
   },
@@ -164,7 +184,7 @@ let MonthView = React.createClass({
       <EventRow
         {...this.props}
         eventComponent={this.props.components.event}
-        onEventClick={this._selectEvent}
+        onSelect={this._selectEvent}
         key={idx}
         segments={segments}
         start={first}
@@ -173,7 +193,7 @@ let MonthView = React.createClass({
     )
   },
 
-  renderBackground(row){
+  renderBackground(row, idx){
     let self = this;
 
     function onSelectSlot({ start, end }) {
@@ -184,35 +204,38 @@ let MonthView = React.createClass({
       self._selectTimer = setTimeout(()=> self._selectDates())
     }
 
-    return <BackgroundCells selectable slots={7} onSelectSlot={onSelectSlot}/>
+    return (
+    <BackgroundCells
+      selectable
+      slots={7}
+      ref={r => this._bgRows[idx] = r}
+      onSelectSlot={onSelectSlot}
+    />
+    )
   },
 
-  renderShowMore(levels){
-    let slots = [1, 3, 4, 5, 6, 7];
+  renderShowMore(segments, extraSegments, row, rowIdx) {
+    return row.map((date, idx) => {
+      let slot = idx + 1;
 
-    return slots.map((slot, idx) => {
-      let events = [];
+      let count = extraSegments
+        .filter(seg => isSegmentInSlot(seg, slot)).length
 
-      let sum = levels.reduce((cnt, level) => {
-        let overlaps = level.filter(seg => seg.left <= slot && seg.right >= slot)
+      let events = segments
+        .filter(seg => isSegmentInSlot(seg, slot))
+        .map(seg => seg.event)
 
-        if (overlaps.length) {
-          events = events.concat(overlaps[0].event)
-          return cnt + 1;
-        }
+      let onClick = ()=> this._showMore(events, date, rowIdx, idx)
 
-        return cnt
-      }, 0)
-
-      return sum
+      return count
         ? (
           <a
             key={'sm_' + idx}
             href='#'
             className={'rbc-show-more rbc-show-offset-' + slot}
-            onClick={()=> notify(this.props.onShowMore, events)}
+            onClick={onClick}
           >
-            {'show ' + sum + ' more'}
+            {'show ' + count + ' more'}
           </a>
         ) : false
     })
@@ -268,6 +291,32 @@ let MonthView = React.createClass({
     ) : <span/>
   },
 
+  _renderOverlay(){
+    let overlay = (this.state && this.state.overlay) || {};
+
+    return (
+      <Overlay
+        rootClose
+        placement='bottom'
+        container={this}
+        show={!!overlay.position}
+        onHide={() => this.setState({ overlay: null })}
+      >
+        <Popup
+          position={overlay.position}
+          events={overlay.events}
+          slotStart={overlay.date}
+          slotEnd={overlay.end}
+          selected={this.props.selected}
+          onSelect={this._selectEvent}
+          startAccessor={this.props.startAccessor}
+          endAccessor={this.props.endAccessor}
+          titleAccessor={this.props.titleAccessor}
+        />
+      </Overlay>
+    )
+  },
+
   _measureRowLimit(props) {
     let eventHeight = getHeight(this._measureEvent);
     let labelHeight = getHeight(this._firstDateRow);
@@ -306,6 +355,20 @@ let MonthView = React.createClass({
       start: slots[0],
       end: slots[slots.length - 1]
     })
+  },
+
+  _showMore(events, date, row, slot){
+    let cell = findDOMNode(this._bgRows[row]).children[slot];
+
+    if (this.props.popup) {
+      let position = getPosition(cell, findDOMNode(this));
+
+      this.setState({
+        overlay: { date, events, position }
+      })
+    }
+
+    notify(this.props.onShowMore, [events, date, slot])
   },
 
   clearSelection(){

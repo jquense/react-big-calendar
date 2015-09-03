@@ -20,22 +20,11 @@ import BackgroundCells from './BackgroundCells';
 import { dateFormat } from './utils/propTypes';
 import { segStyle, inRange, eventSegments, eventLevels, sortEvents } from './utils/eventLevels';
 
-const SHOW_MORE_HEIGHT = 14;
-
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
-function eventsForWeek(evts, start, end, props){
-  return evts.filter( e => inRange(e, start, end, props))
-}
+let eventsForWeek = (evts, start, end, props) =>
+  evts.filter(e => inRange(e, start, end, props));
 
-// function groupBySlot(row, segments){
-//   let group = {}
-//   row.forEach((_, idx) => {
-//     let slot = idx + 1
-//     group[slot] = segments.filter(seg => seg.left <= slot && seg.right >= slot)
-//   })
-//   return group
-// }
 
 let propTypes = {
   ...EventRow.PropTypes,

@@ -1,45 +1,79 @@
-'use strict';
+/* eslint no-var: 0, babel/object-shorthand: 0 */
+require('babel/register');
+
+var webpackConfig = require('./webpack/test.config.js');
+var isCI = process.env.CONTINUOUS_INTEGRATION === 'true';
+var runCoverage = process.env.COVERAGE === 'true' || isCI;
+
+var reporters = ['mocha'];
+
+if (runCoverage) {
+  webpackConfig = require('./webpack/test-coverage.config');
+  reporters.push('coverage');
+
+  if (isCI) {
+    reporters.push('coveralls');
+  }
+}
 
 module.exports = function (config) {
-  
   config.set({
 
     basePath: '',
 
-    frameworks: ['mocha'],
-
-    files: [
-      './vendor/phantomjs-shim.js',
-      './vendor/sinon-1.10.3.js',
-      '__tests__/*.js*',
+    frameworks: [
+      'mocha',
+      'sinon-chai'
     ],
 
-    reporters: ['progress'],
-
-    port: 9876,
-    colors: true,
-    autoWatch: true,
-    singleRun: false,
-
-
-    logLevel: config.LOG_INFO,
-
-    browsers: ['PhantomJS'], 
+    files: [
+      'test/index.js'
+    ],
 
     preprocessors: {
-      '__tests__/*.js*': ['webpack']
+      'test/index.js': ['webpack', 'sourcemap']
     },
 
-    webpack: require('./tasks/webpack.configs').test,
+    webpack: webpackConfig,
 
-    webpackServer: {
+    webpackMiddleware: {
       noInfo: true
     },
 
-    plugins: [
-      require("karma-phantomjs-launcher"),
-      require("karma-webpack"),
-      require("karma-mocha")
-    ]
+    reporters: reporters,
+
+    mochaReporter: {
+      output: 'autowatch'
+    },
+
+    coverageReporter: {
+      dir: '.coverage',
+      reporters: [
+        { type: 'html' },
+        { type: 'lcovonly' }
+      ]
+    },
+
+    port: 9876,
+
+    colors: true,
+
+    logLevel: config.LOG_INFO,
+
+    autoWatch: true,
+
+    browsers: [ isCI ? 'ChromeTravisCI' : 'Chrome' ],
+
+    customLaunchers: {
+      ChromeTravisCI: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
+
+    captureTimeout: 60000,
+    browserNoActivityTimeout: 45000,
+
+    singleRun: isCI
   });
 };

@@ -1,9 +1,6 @@
 import contains from 'dom-helpers/query/contains';
 import events from 'dom-helpers/events';
 
-const listeners = {};
-const dochandlers = {};
-
 function addEventListener(type, handler) {
   events.on(document, type, handler)
   return {

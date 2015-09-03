@@ -22,8 +22,7 @@ function positionFromDate(date, min, step){
 }
 
 function overlaps(event, events, { startAccessor, endAccessor }){
-  let eStart = get(event, startAccessor)
-    , eEnd = get(event, endAccessor);
+  let eStart = get(event, startAccessor);
 
   function overlap(eventB){
     return dates.lt(eStart, get(eventB, endAccessor))

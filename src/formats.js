@@ -1,4 +1,3 @@
-import { PropTypes } from 'react';
 import dates from './utils/dates';
 
 function inSame12Hr(start, end){

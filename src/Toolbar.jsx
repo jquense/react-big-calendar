@@ -1,22 +1,13 @@
 import React from 'react';
 import cn from 'classnames';
-import localizer from './localizer'
-import message, { get } from './utils/messages';
-import { navigate, views } from './utils/constants';
-
-const Formats = {
-  [views.MONTH]: 'monthHeaderFormat',
-  [views.WEEK]: 'weekHeaderFormat',
-  [views.DAY]: 'dayHeaderFormat',
-  [views.AGENDA]: 'agendaHeaderFormat'
-}
+import message from './utils/messages';
+import { navigate } from './utils/constants';
 
 let Toolbar = React.createClass({
 
   render() {
     let {
-        start, end, messages
-      , label
+        messages, label
       , views: viewNames, view } = this.props;
 
     messages = message(messages)

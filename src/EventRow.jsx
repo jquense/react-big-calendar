@@ -1,17 +1,10 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import cn from 'classnames';
-
 import EventCell from './EventCell';
-import dates from './utils/dates';
 import getHeight from 'dom-helpers/query/height';
-//import localizer from './localizer'
-
-import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';
 import { segStyle } from './utils/eventLevels';
 import { isSelected } from './utils/selection';
-import { accessor as get } from './utils/accessors';
 
 let propTypes = {
   segments: React.PropTypes.array,

@@ -54,6 +54,7 @@
     "cpy": "^3.4.1",
     "css-loader": "^0.15.6",
     "es5-shim": "^4.1.7",
+    "es6-promise": "^3.0.2",
     "eslint": "^0.24.0",
     "eslint-plugin-babel": "^1.0.0",
     "eslint-plugin-mocha": "^0.4.0",

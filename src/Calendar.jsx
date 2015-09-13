@@ -12,30 +12,13 @@ import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import dates from './utils/dates';
 import defaultFormats from './formats';
-
-import Month from './Month';
-import Day from './Day';
-import Week from './Week';
-import Agenda from './Agenda';
+import viewLabel from './utils/viewLabel';
+import moveDate from './utils/move';
+import VIEWS from './Views';
 import Toolbar from './Toolbar';
 
 import omit from 'lodash/object/omit';
 import defaults from 'lodash/object/defaults';
-
-const VIEWS = {
-  [views.MONTH]: Month,
-  [views.WEEK]: Week,
-  [views.DAY]: Day,
-  [views.AGENDA]: Agenda
-};
-
-const Formats = {
-  [views.MONTH]: 'monthHeaderFormat',
-  [views.WEEK]: 'dayRangeHeaderFormat',
-  [views.DAY]: 'dayHeaderFormat',
-  [views.AGENDA]: 'agendaHeaderFormat'
-}
-
 
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -232,17 +215,8 @@ let Calendar = React.createClass({
     formats = defaultFormats(formats)
 
     let View = VIEWS[view];
-    let headerSingle = view === views.MONTH || view === views.DAY
-
+    let label = viewLabel(current, view, formats, culture)
     let names = viewNames(this.props.views)
-
-    let { start, end } = View.range(current, this.props);
-
-    let headerFormat = formats[Formats[view]];
-
-    let label = headerSingle
-      ? localizer.format(current, headerFormat, culture)
-      : localizer.format({ start, end }, headerFormat, culture)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))
 
@@ -286,16 +260,7 @@ let Calendar = React.createClass({
   _navigate(action, newDate) {
     let { view, date, onNavigate } = this.props;
 
-    switch (action){
-      case navigate.TODAY:
-        date = new Date()
-        break;
-      case navigate.DATE:
-        date = newDate
-        break;
-      default:
-        date = VIEWS[view].navigate(newDate || date, action)
-    }
+    date = moveDate(action, newDate || date, view)
 
     onNavigate(date, view)
 

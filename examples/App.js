@@ -39,7 +39,7 @@ const Example = React.createClass({
             selectable
             popup
             events={events}
-            defaultDate={new Date(2015, 1, 1)}
+            defaultDate={new Date(2015, 3, 1)}
             eventPropGetter={e => ({ className: 'hi-event'})}
             components={{
               event: EventWeek,

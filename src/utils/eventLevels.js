@@ -1,4 +1,5 @@
 import dates from './dates';
+import localizer from '../localizer';
 import { accessor as get } from './accessors';
 //import canUseDom from 'dom-helpers/util/inDOM';
 
@@ -8,10 +9,9 @@ import { accessor as get } from './accessors';
 //   isIE = ('documentMode' in document)
 // }
 
-export function eventSegments(event, first, last, { startAccessor, endAccessor }){
-
-  let start = dates.duration(first,
-      dates.max(get(event, startAccessor), first), 'day');
+export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
+  let startOfWeek = localizer.startOfWeek(culture);
+  let start = dates.duration(first, dates.max(get(event, startAccessor), first), 'weekday', startOfWeek);
 
   let span = Math.min(dates.duration(
       dates.max(get(event, startAccessor), first)

@@ -10,21 +10,21 @@ import { accessor as get } from './accessors';
 // }
 
 export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
-  let startOfWeek = localizer.startOfWeek(culture);
-  let start = dates.duration(first, dates.max(get(event, startAccessor), first), 'weekday', startOfWeek);
+  let slots = dates.diff(first, last, 'day')
+  let start = dates.max(get(event, startAccessor), first);
+  let end = dates.min(get(event, endAccessor), dates.add(last, 1, 'day'))
 
-  let span = Math.min(dates.duration(
-      dates.max(get(event, startAccessor), first)
-    , dates.min(get(event, endAccessor), dates.add(last, 1, 'day'))
-    , 'day'), 7);
+  let span = dates.diff(start, end, 'day');
 
-  span = Math.max(span, 1);
+  span = Math.min(Math.max(span, 1), slots);
+
+  let padding = dates.diff(first, start, 'day');
 
   return {
     event,
     span,
-    left: start + 1,
-    right: Math.max(start + span, 1)
+    left: padding + 1,
+    right: Math.max(padding + span, 1)
   }
 }
 

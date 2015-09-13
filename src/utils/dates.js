@@ -106,16 +106,18 @@ let dates = Object.assign(dateMath, {
     )
   },
 
-  duration(start, end, unit){
+  duration(start, end, unit, firstOfWeek){
     if (unit === 'day') unit = 'date';
-    return Math.abs(dates[unit](start) - dates[unit](end))
+    return Math.abs(dates[unit](start, undefined, firstOfWeek) - dates[unit](end, undefined, firstOfWeek))
   },
 
   diff(dateA, dateB, unit){
     if (!unit)
       return Math.abs(+dateA - +dateB)
 
-    return Math.abs((+dateA / MILLI[unit]) - (+dateB / MILLI[unit]))
+    return Math.abs(
+      (+dates.startOf(dateA, unit) / MILLI[unit]) - (+dates.startOf(dateB, unit) / MILLI[unit])
+    )
   },
 
   week(date){

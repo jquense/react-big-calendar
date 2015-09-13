@@ -1,3 +1,11 @@
+v0.6.0 - Sun, 13 Sep 2015 15:32:08 GMT
+--------------------------------------
+
+- [49e321f](../../commit/49e321f) [fixed] layout of events in months that don't start evenly at weekday 0
+- [720675e](../../commit/720675e) [added] eventPropsGetter for event markup customization
+
+
+
 v0.5.2 - Sun, 13 Sep 2015 12:56:02 GMT
 --------------------------------------
 

@@ -195,7 +195,7 @@ let MonthView = React.createClass({
 
     return (
     <BackgroundCells
-      selectable
+      selectable={this.props.selectable}
       slots={7}
       ref={r => this._bgRows[idx] = r}
       onSelectSlot={onSelectSlot}

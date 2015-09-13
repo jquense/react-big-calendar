@@ -56,13 +56,21 @@ let DaySlot = React.createClass({
     return { selecting: false };
   },
 
+
   componentDidMount() {
     this.props.selectable
       && this._selectable()
   },
 
   componentWillUnmount() {
-    this._selector && this._selector.teardown()
+    this._teardownSelectable();
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectable && !this.props.selectable)
+      this._selectable();
+    if (!nextProps.selectable && this.props.selectable)
+      this._teardownSelectable();
   },
 
   render() {
@@ -214,7 +222,13 @@ let DaySlot = React.createClass({
       })
   },
 
-  _selectSlot({ startDate, endDate, endSlot, startSlot }){
+  _teardownSelectable() {
+    if (!this._selector) return
+    this._selector.teardown();
+    this._selector = null;
+  },
+
+  _selectSlot({ startDate, endDate, endSlot, startSlot }) {
     let current = startDate
       , slots = [];
 

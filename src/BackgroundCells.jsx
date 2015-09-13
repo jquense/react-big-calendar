@@ -21,7 +21,14 @@ class DisplayCells extends React.Component {
   }
 
   componentWillUnmount() {
-    this._selector && this._selector.teardown()
+    this._teardownSelectable();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectable && !this.props.selectable)
+      this._selectable();
+    if (!nextProps.selectable && this.props.selectable)
+      this._teardownSelectable();
   }
 
   render(){
@@ -102,6 +109,12 @@ class DisplayCells extends React.Component {
         this._initial = {}
         this.setState({ selecting: false })
       })
+  }
+
+  _teardownSelectable() {
+    if (!this._selector) return
+    this._selector.teardown();
+    this._selector = null;
   }
 
   _selectSlot({ endIdx, startIdx }) {

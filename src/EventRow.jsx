@@ -66,13 +66,14 @@ let EventRow = React.createClass({
 
   renderEvent(event, start, end, props = {}){
     let {
-        selected, startAccessor, endAccessor
+        eventPropGetter, selected, startAccessor, endAccessor
       , titleAccessor, eventComponent, onSelect } = this.props;
 
 
     return (
       <EventCell
         event={event}
+        eventPropGetter={eventPropGetter}
         onSelect={onSelect}
         selected={isSelected(event, selected)}
         startAccessor={startAccessor}

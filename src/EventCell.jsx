@@ -6,7 +6,7 @@ import { accessor as get } from './utils/accessors';
 let EventCell = React.createClass({
   render() {
     let {
-        className, event, selected
+        className, event, selected, eventPropGetter
       , startAccessor, endAccessor, titleAccessor
       , slotStart, slotEnd, onSelect, component, ...props } = this.props;
 
@@ -16,10 +16,14 @@ let EventCell = React.createClass({
       , end = get(event, endAccessor)
       , start = get(event, startAccessor)
 
+    if (eventPropGetter)
+      var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
+
     return (
       <div
         {...props}
-        className={cn('rbc-event', className, {
+        style={{...props.style, ...style}}
+        className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,
           'rbc-event-continues-prior': dates.lt(start, slotStart),
           'rbc-event-continues-after': dates.gt(end, slotEnd)

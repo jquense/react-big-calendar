@@ -90,6 +90,21 @@ let Calendar = React.createClass({
     selectable: PropTypes.bool,
 
     /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the the event node.
+     *
+     * ```js
+     * function(
+     * 	event: object,
+     * 	start: date,
+     * 	end: date,
+     * 	isSelected: bool
+     * ) -> { className: string?, style: object? }
+     * ```
+     */
+    eventPropGetter: PropTypes.func,
+
+    /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
      *

@@ -116,7 +116,7 @@ let DaySlot = React.createClass({
 
   renderEvents(numSlots, totalMin) {
     let {
-        events, step, min, culture
+        events, step, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
@@ -136,14 +136,18 @@ let DaySlot = React.createClass({
 
       let title = get(event, titleAccessor)
       let label = localizer.format({ start, end }, eventTimeRangeFormat, culture);
+      let _isSelected = isSelected(event, selected);
+
+      if (eventPropGetter)
+        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected);
 
       return (
         <div
           key={'evt_' + idx}
-          style={style}
+          style={{...xStyle, ...style}}
           onClick={this._select.bind(null, event)}
-          className={cn('rbc-event', {
-            'rbc-selected': isSelected(event, selected)
+          className={cn('rbc-event', className, {
+            'rbc-selected': _isSelected
           })}
         >
           <div className='rbc-event-label' title={label}>{label}</div>

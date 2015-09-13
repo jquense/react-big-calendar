@@ -298,6 +298,7 @@ let MonthView = React.createClass({
           slotEnd={overlay.end}
           selected={this.props.selected}
           onSelect={this._selectEvent}
+          eventPropGetter={this.props.eventPropGetter}
           startAccessor={this.props.startAccessor}
           endAccessor={this.props.endAccessor}
           titleAccessor={this.props.titleAccessor}

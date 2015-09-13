@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import uncontrollable from 'uncontrollable';
-
+import cn from 'classnames';
 import {
     accessor
   , elementType
@@ -210,7 +210,10 @@ let Calendar = React.createClass({
       , culture
       , components = {}
       , formats = {}
-      , date: current } = this.props;
+      , style
+      , className
+      , date: current
+      , ...props } = this.props;
 
     formats = defaultFormats(formats)
 
@@ -226,7 +229,8 @@ let Calendar = React.createClass({
 
     return (
       <div {...elementProps}
-        className='rbc-calendar'
+        className={cn('rbc-calendar', className)}
+        style={style}
       >
         { toolbar &&
           <Toolbar
@@ -240,7 +244,7 @@ let Calendar = React.createClass({
         }
         <View
           ref='view'
-          {...this.props}
+          {...props}
           {...formats}
           formats={undefined}
           events={events}

@@ -1,3 +1,11 @@
+v0.6.1 - Sun, 13 Sep 2015 16:52:20 GMT
+--------------------------------------
+
+- [c3092f4](../../commit/c3092f4) [fixed] event rows incorrect duration styles
+- [dade2b9](../../commit/dade2b9) [fixed] more month event layout issues
+
+
+
 v0.6.0 - Sun, 13 Sep 2015 15:32:08 GMT
 --------------------------------------
 

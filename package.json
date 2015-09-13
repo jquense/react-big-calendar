@@ -13,15 +13,12 @@
     "CHANGELOG.md"
   ],
   "keywords": [
-    "react-overlays",
+    "scheduler",
     "react-component",
     "react",
-    "overlay",
-    "react-component",
-    "tooltip",
-    "bootstrap",
-    "popover",
-    "modal"
+    "calendar",
+    "events",
+    "full calendar"
   ],
   "scripts": {
     "prepublish": "npm run test && npm run build",
@@ -41,7 +38,8 @@
     "major": "release major"
   },
   "peerDependencies": {
-    "react": "^0.14.0-beta1"
+    "react": "^0.14.0-beta1",
+    "react-dom": "^0.14.0-beta3"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",
@@ -75,7 +73,6 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
-    "lodash": "^3.10.0",
     "marked": "^0.3.5",
     "mocha": "^2.2.5",
     "moment": "^2.10.6",

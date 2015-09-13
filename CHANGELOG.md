@@ -1,3 +1,10 @@
+v0.5.2 - Sun, 13 Sep 2015 12:56:02 GMT
+--------------------------------------
+
+- [386d4bc](../../commit/386d4bc) [fixed] `selectable` can properly be toggled on and off
+
+
+
 v0.5.1 - Sun, 13 Sep 2015 10:08:24 GMT
 --------------------------------------
 

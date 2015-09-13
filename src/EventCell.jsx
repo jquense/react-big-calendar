@@ -25,8 +25,8 @@ let EventCell = React.createClass({
         style={{...props.style, ...style}}
         className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,
-          'rbc-event-continues-prior': dates.lt(start, slotStart),
-          'rbc-event-continues-after': dates.gt(end, slotEnd)
+          'rbc-event-continues-prior': dates.lt(start, slotStart, 'day'),
+          'rbc-event-continues-after': dates.gt(end, slotEnd, 'day')
         })}
         onClick={()=> onSelect(event)}
       >

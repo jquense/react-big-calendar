@@ -1,13 +1,5 @@
 import dates from './dates';
-import localizer from '../localizer';
 import { accessor as get } from './accessors';
-//import canUseDom from 'dom-helpers/util/inDOM';
-
-// let isIE = false;
-
-// if (canUseDom) {
-//   isIE = ('documentMode' in document)
-// }
 
 export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
   let slots = dates.diff(first, last, 'day')

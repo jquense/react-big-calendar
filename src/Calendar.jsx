@@ -215,7 +215,6 @@ let Calendar = React.createClass({
     formats = defaultFormats(formats)
 
     let View = VIEWS[view];
-    let label = viewLabel(current, view, formats, culture)
     let names = viewNames(this.props.views)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))
@@ -234,7 +233,7 @@ let Calendar = React.createClass({
             date={current}
             view={view}
             views={names}
-            label={label}
+            label={viewLabel(current, view, formats, culture)}
             onViewChange={this._view}
             onNavigate={this._navigate}
           />

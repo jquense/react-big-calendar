@@ -20,16 +20,12 @@ setLocalizer(
   globalizeLocalizer(globalize)
 );
 
-class EventWeek {
-  render(){
-    return <strong>{this.props.event.title}</strong>
-  }
+function EventWeek(props) {
+  return <strong>{props.event.title}</strong>
 }
 
-class EventAgenda {
-  render(){
-    return <em>{this.props.event.title}</em>
-  }
+function EventAgenda(props) {
+  return <em>{props.event.title}</em>
 }
 
 const Example = React.createClass({

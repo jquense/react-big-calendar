@@ -20,9 +20,9 @@ let propTypes = {
 };
 
 
-let MonthView = React.createClass({
+let EventRow = React.createClass({
 
-  displayName: 'MonthView',
+  displayName: 'EventRow',
 
   propTypes,
 
@@ -100,4 +100,4 @@ let MonthView = React.createClass({
   }
 });
 
-export default MonthView
+export default EventRow

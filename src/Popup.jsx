@@ -2,7 +2,7 @@ import React from 'react';
 import EventCell from './EventCell';
 import { isSelected } from './utils/selection';
 
-class Popup {
+class Popup extends React.Component {
   render() {
     let { events, selected, ...props } = this.props;
 

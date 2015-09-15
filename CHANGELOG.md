@@ -1,3 +1,11 @@
+v0.7.0 - Tue, 15 Sep 2015 08:37:50 GMT
+--------------------------------------
+
+- [8ad4ee7](../../commit/8ad4ee7) [changed] selection bound to Calendar container, respects overlays
+- [98b3dad](../../commit/98b3dad) [fixed] selecting events in All Day row of week/Day views
+
+
+
 v0.6.1 - Sun, 13 Sep 2015 16:52:20 GMT
 --------------------------------------
 

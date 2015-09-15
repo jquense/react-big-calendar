@@ -2,6 +2,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import { segStyle } from './utils/eventLevels';
+import { notify } from './utils/helpers';
 import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode } from './Selection';
 
@@ -58,7 +59,7 @@ class DisplayCells extends React.Component {
 
   _selectable(){
     let node = findDOMNode(this);
-    let selector = this._selector = new Selection()
+    let selector = this._selector = new Selection(this.props.container)
 
     selector.on('selecting', box => {
       let { slots } = this.props;
@@ -66,9 +67,10 @@ class DisplayCells extends React.Component {
       let startIdx = -1;
       let endIdx = -1;
 
-      if (!this.state.selecting)
+      if (!this.state.selecting) {
+        notify(this.props.onSelectStart, [box]);
         this._initial = { x: box.x, y: box.y };
-
+      }
       if (selector.isSelected(node)) {
         let nodeBox = getBoundsForNode(node);
 
@@ -108,6 +110,7 @@ class DisplayCells extends React.Component {
         this._selectSlot(this.state)
         this._initial = {}
         this.setState({ selecting: false })
+        notify(this.props.onSelectEnd, [this.state]);
       })
   }
 

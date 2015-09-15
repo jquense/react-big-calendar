@@ -103,8 +103,12 @@ let TimeGrid = React.createClass({
             <div ref={addGutterRef(1)} className='rbc-gutter-cell'>
               { message(messages).allDay }
             </div>
-            <div className='rbc-allday-cell'>
-              <BackgroundCells slots={range.length}/>
+            <div ref='allDay' className='rbc-allday-cell'>
+              <BackgroundCells
+                slots={range.length}
+                container={()=> this.refs.allDay}
+                selectable={this.props.selectable}
+              />
               <div style={{ zIndex: 1, position: 'relative' }}>
                 { this.renderAllDayEvents(range, levels) }
               </div>

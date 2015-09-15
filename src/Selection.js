@@ -8,6 +8,10 @@ function addEventListener(type, handler) {
   }
 }
 
+function isOverContainer(container, x, y){
+  return !container || contains(container, document.elementFromPoint(x, y))
+}
+
 class Selection {
 
   constructor(node, global = false){
@@ -72,14 +76,14 @@ class Selection {
   }
 
   _mouseDown (e) {
-    var node = this.container
+    var node = this.container()
       , collides, offsetData;
 
     // Right clicks
-    if (e.which === 3 || e.button === 2)
+    if (e.which === 3 || e.button === 2 || !isOverContainer(node, e.pageX, e.pageY))
       return;
 
-    if (node && !contains(node, e.target) && !this.globalMouse) {
+    if (!this.globalMouse && node && !contains(node, e.target)) {
 
       let { top, left, bottom, right } = normalizeDistance(0);
 
@@ -119,7 +123,7 @@ class Selection {
     let clickTolerance = 5;
 
     var { x, y } = this._mouseDownData;
-    var inRoot = !this.container || contains(this.container, e.target);
+    var inRoot = !this.container || contains(this.container(), e.target);
     var bounds = this._selectRect;
     var click = (
       Math.abs(e.pageX - x) <= clickTolerance &&

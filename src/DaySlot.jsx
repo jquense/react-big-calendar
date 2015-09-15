@@ -178,7 +178,7 @@ let DaySlot = React.createClass({
 
   _selectable(){
     let node = findDOMNode(this);
-    let selector = this._selector = new Selection(node)
+    let selector = this._selector = new Selection(()=> findDOMNode(this))
 
     selector.on('selecting', ({ x, y }) => {
       let { date, step, min } = this.props;

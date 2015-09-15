@@ -160,7 +160,7 @@ let TimeGrid = React.createClass({
         startAccessor={this.props.startAccessor}
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
-        onEventClick={this.props.onEventClick}
+        onSelect={this._selectEvent}
         slots={this._slots}
         key={idx}
         segments={segs}
@@ -187,6 +187,10 @@ let TimeGrid = React.createClass({
 
   _headerClick(date){
     notify(this.props.onNavigate, [navigate.DATE, date])
+  },
+
+  _selectEvent(...args){
+    notify(this.props.onSelectEvent, args)
   },
 
   _adjustGutter() {

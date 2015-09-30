@@ -80,7 +80,7 @@ class Selection {
       , collides, offsetData;
 
     // Right clicks
-    if (e.which === 3 || e.button === 2 || !isOverContainer(node, e.pageX, e.pageY))
+    if (e.which === 3 || e.button === 2 || !isOverContainer(node, e.clientX, e.clientY))
       return;
 
     if (!this.globalMouse && node && !contains(node, e.target)) {

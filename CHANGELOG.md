@@ -1,3 +1,10 @@
+v0.7.1 - Wed, 30 Sep 2015 12:34:43 GMT
+--------------------------------------
+
+- [f7969b3](../../commit/f7969b3) [fixed] use client coords to get node during selection
+
+
+
 v0.7.0 - Tue, 15 Sep 2015 08:37:50 GMT
 --------------------------------------
 

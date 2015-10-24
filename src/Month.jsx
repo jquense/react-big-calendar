@@ -351,6 +351,9 @@ let MonthView = React.createClass({
   _showMore(events, date, row, slot){
     let cell = findDOMNode(this._bgRows[row]).children[slot];
 
+    //cancel any pending selections so only the event click goes through.
+    this.clearSelection()
+    
     if (this.props.popup) {
       let position = getPosition(cell, findDOMNode(this));
 

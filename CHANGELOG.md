@@ -1,3 +1,11 @@
+v0.7.2 - Sat, 24 Oct 2015 03:21:53 GMT
+--------------------------------------
+
+- [0b0fa0f](../../commit/0b0fa0f) [fixed] prevent selection when clicking show more
+- [57c8843](../../commit/57c8843) [fixed] allow event selection when selectable, in day views
+
+
+
 v0.7.1 - Wed, 30 Sep 2015 12:34:43 GMT
 --------------------------------------
 

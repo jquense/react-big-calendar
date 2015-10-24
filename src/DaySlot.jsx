@@ -215,7 +215,10 @@ let DaySlot = React.createClass({
 
     selector
       .on('click', () => {
-        this._selectSlot(this.state)
+        this._clickTimer = setTimeout(()=> {
+          this._selectSlot(this.state)
+        })
+
         this.setState({ selecting: false })
       })
 
@@ -249,6 +252,7 @@ let DaySlot = React.createClass({
   },
 
   _select(event){
+    clearTimeout(this._clickTimer);
     notify(this.props.onSelectEvent, event)
   }
 });

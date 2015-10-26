@@ -1,3 +1,12 @@
+v0.8.0 - Mon, 26 Oct 2015 12:32:54 GMT
+--------------------------------------
+
+- [4dac3f5](../../commit/4dac3f5) [added] rbc-event-allday class in month view
+- [e314128](../../commit/e314128) [fixed] missing keys in popup
+- [0d5df79](../../commit/0d5df79) [changed] "show more" behavior is cleaner
+
+
+
 v0.7.2 - Sat, 24 Oct 2015 03:21:53 GMT
 --------------------------------------
 

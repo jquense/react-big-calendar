@@ -1,41 +1,19 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
-import EventCell from './EventCell';
-import getHeight from 'dom-helpers/query/height';
-import { accessor } from './utils/propTypes';
-import { segStyle } from './utils/eventLevels';
-import { isSelected } from './utils/selection';
-
-let propTypes = {
-  segments: React.PropTypes.array,
-  end: React.PropTypes.instanceOf(Date),
-  start: React.PropTypes.instanceOf(Date),
-
-  titleAccessor: accessor,
-  allDayAccessor: accessor,
-  startAccessor: accessor,
-  endAccessor: accessor,
-
-  onEventClick: React.PropTypes.func
-};
+import EventRowMixin from './EventRowMixin';
 
 
 let EventRow = React.createClass({
 
   displayName: 'EventRow',
 
-  propTypes,
-
-  getDefaultProps() {
-    return {
-      segments: [],
-      selected: [],
-      slots: 7
-    };
+  propTypes: {
+    segments: React.PropTypes.array
   },
 
+  mixins: [EventRowMixin],
+
   render(){
-    let { segments, start, end } = this.props;
+    let { segments } = this.props;
 
     let lastEnd = 1;
 
@@ -46,7 +24,7 @@ let EventRow = React.createClass({
           let key = '_lvl_' + li;
           let gap = left - lastEnd;
 
-          let content = this.renderEvent(event, start, end)
+          let content = this.renderEvent(event)
 
           if (gap)
             row.push(this.renderSpan(gap, key + '_gap'))
@@ -62,42 +40,6 @@ let EventRow = React.createClass({
       }
       </div>
     )
-  },
-
-  renderEvent(event, start, end, props = {}){
-    let {
-        eventPropGetter, selected, startAccessor, endAccessor
-      , titleAccessor, eventComponent, onSelect } = this.props;
-
-
-    return (
-      <EventCell
-        event={event}
-        eventPropGetter={eventPropGetter}
-        onSelect={onSelect}
-        selected={isSelected(event, selected)}
-        startAccessor={startAccessor}
-        endAccessor={endAccessor}
-        titleAccessor={titleAccessor}
-        slotStart={start}
-        slotEnd={end}
-        component={eventComponent}
-      />
-    )
-  },
-
-  renderSpan(len, key, content = ' '){
-    let { slots } = this.props;
-
-    return (
-      <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>
-        {content}
-      </div>
-    )
-  },
-
-  getRowHeight(){
-    getHeight(findDOMNode(this))
   }
 });
 

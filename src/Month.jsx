@@ -13,6 +13,7 @@ import getPosition from 'dom-helpers/query/position';
 import raf from 'dom-helpers/util/requestAnimationFrame';
 
 import EventRow from './EventRow';
+import EventEndingRow from './EventEndingRow';
 import Popup from './Popup';
 import Overlay from 'react-overlays/lib/Overlay';
 import BackgroundCells from './BackgroundCells';
@@ -20,11 +21,11 @@ import BackgroundCells from './BackgroundCells';
 import { dateFormat } from './utils/propTypes';
 import { segStyle, inRange, eventSegments, eventLevels, sortEvents } from './utils/eventLevels';
 
-let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props));
 
+let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 let propTypes = {
   ...EventRow.PropTypes,
@@ -97,11 +98,11 @@ let MonthView = React.createClass({
   render(){
     var { date, culture, weekdayFormat } = this.props
       , month = dates.visibleDays(date, culture)
-      , rows  = chunk(month, 7);
+      , weeks  = chunk(month, 7);
 
     let measure = this.state.needLimitMeasure
 
-    this._rowCount = rows.length;
+    this._weekCount = weeks.length;
 
     var elementProps = omit(this.props, Object.keys(propTypes));
 
@@ -111,74 +112,58 @@ let MonthView = React.createClass({
         className={cn('rbc-month-view', elementProps.className)}
       >
         <div className='rbc-row rbc-month-header'>
-          {this._headers(rows[0], weekdayFormat, culture)}
+          {this._headers(weeks[0], weekdayFormat, culture)}
         </div>
-        { rows.map((row, idx) =>
-            this._row(row, idx, measure && this._renderMeasureRows))
+        { weeks.map((week, idx) =>
+            this.renderWeek(week, idx, measure && this._renderMeasureRows))
         }
       </div>
     )
   },
 
-  _row(row, rowIdx, content) {
-    let first = row[0]
-    let last = row[row.length - 1]
-    let evts = eventsForWeek(this.props.events, row[0], row[row.length - 1], this.props)
+  renderWeek(week, weekIdx, content) {
+    let first = week[0]
+    let last = week[week.length - 1]
+    let evts = eventsForWeek(this.props.events, week[0], week[week.length - 1], this.props)
 
     evts.sort((a, b) => sortEvents(a, b, this.props))
 
     let segments = evts = evts.map(evt => eventSegments(evt, first, last, this.props))
-    let limit = this.state.rowLimit;
+    let limit = (this.state.rowLimit - 1) || 1;
 
     let { levels, extra } = eventLevels(segments, limit)
 
+    content = content || ((lvls, wk) => lvls.map((lvl, idx) => this.renderRowLevel(lvl, wk, idx)))
+
     return (
-      <div key={'week_' + rowIdx}
+      <div key={'week_' + weekIdx}
         className='rbc-month-row'
-        ref={!rowIdx && (r => this._firstRow = r)}
+        ref={!weekIdx && (r => this._firstRow = r)}
       >
         {
-          this.renderBackground(row, rowIdx)
+          this.renderBackground(week, weekIdx)
         }
         <div
           className='rbc-row-content'
         >
           <div
             className='rbc-row'
-            ref={!rowIdx && (r => this._firstDateRow = r)}
+            ref={!weekIdx && (r => this._firstDateRow = r)}
           >
-            { this._dates(row) }
+            { this._dates(week) }
           </div>
           {
-            content
-              ? content(levels, row, rowIdx)
-              : levels.map((l, idx) => this.renderRowLevel(l, row, idx))
+            content(levels, week, weekIdx)
+          }
+          {
+            !!extra.length &&
+              this.renderShowMore(segments, extra, week, weekIdx, levels.length)
           }
         </div>
-        {
-          this.renderShowMore(segments, extra, row, rowIdx)
-        }
         { this.props.popup
             && this._renderOverlay()
         }
       </div>
-    )
-  },
-
-  renderRowLevel(segments, week, idx){
-    let first = week[0]
-    let last = week[week.length - 1]
-
-    return (
-      <EventRow
-        {...this.props}
-        eventComponent={this.props.components.event}
-        onSelect={this._selectEvent}
-        key={idx}
-        segments={segments}
-        start={first}
-        end={last}
-      />
     )
   },
 
@@ -204,31 +189,41 @@ let MonthView = React.createClass({
     )
   },
 
-  renderShowMore(segments, extraSegments, row, rowIdx) {
-    return row.map((date, idx) => {
-      let slot = idx + 1;
+  renderRowLevel(segments, week, idx){
+    let first = week[0]
+    let last = week[week.length - 1]
 
-      let count = extraSegments
-        .filter(seg => isSegmentInSlot(seg, slot)).length
+    return (
+      <EventRow
+        {...this.props}
+        eventComponent={this.props.components.event}
+        onSelect={this._selectEvent}
+        key={idx}
+        segments={segments}
+        start={first}
+        end={last}
+      />
+    )
+  },
 
-      let events = segments
-        .filter(seg => isSegmentInSlot(seg, slot))
-        .map(seg => seg.event)
+  renderShowMore(segments, extraSegments, week, weekIdx) {
+    let first = week[0]
+    let last = week[week.length - 1]
 
-      let onClick = ()=> this._showMore(events, date, rowIdx, idx)
+    let onClick = slot => this._showMore(segments, week[slot - 1], weekIdx, slot)
 
-      return count
-        ? (
-          <a
-            key={'sm_' + idx}
-            href='#'
-            className={'rbc-show-more rbc-show-offset-' + slot}
-            onClick={onClick}
-          >
-            {'show ' + count + ' more'}
-          </a>
-        ) : false
-    })
+    return (
+      <EventEndingRow
+        {...this.props}
+        eventComponent={this.props.components.event}
+        onSelect={this._selectEvent}
+        onShowMore={onClick}
+        key={'last_row_' + weekIdx}
+        segments={extraSegments}
+        start={first}
+        end={last}
+      />
+    )
   },
 
   _dates(row){
@@ -348,12 +343,16 @@ let MonthView = React.createClass({
     })
   },
 
-  _showMore(events, date, row, slot){
-    let cell = findDOMNode(this._bgRows[row]).children[slot];
+  _showMore(segments, date, weekIdx, slot){
+    let cell = findDOMNode(this._bgRows[weekIdx]).children[slot - 1];
+
+    let events = segments
+      .filter(seg => isSegmentInSlot(seg, slot))
+      .map(seg => seg.event)
 
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
-    
+
     if (this.props.popup) {
       let position = getPosition(cell, findDOMNode(this));
 

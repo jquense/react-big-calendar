@@ -192,6 +192,9 @@ let Calendar = React.createClass({
       month: PropTypes.shape({ event: elementType })
     }),
 
+    /**
+     * String messages used throughout the component, override to provide localizations
+     */
     messages: PropTypes.shape({
       allDay: PropTypes.string,
       previous: PropTypes.string,
@@ -200,7 +203,8 @@ let Calendar = React.createClass({
       month: PropTypes.string,
       week: PropTypes.string,
       day: PropTypes.string,
-      agenda: PropTypes.string
+      agenda: PropTypes.string,
+      showMore: PropTypes.func
     })
   },
 

@@ -145,12 +145,14 @@ let DaySlot = React.createClass({
         <div
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
+          title={label + ': ' + title }
           onClick={this._select.bind(null, event)}
           className={cn('rbc-event', className, {
-            'rbc-selected': _isSelected
+            'rbc-selected': _isSelected,
+            'rbc-event-overlaps': leftOffset !== 0
           })}
         >
-          <div className='rbc-event-label' title={label}>{label}</div>
+          <div className='rbc-event-label'>{label}</div>
           <div className='rbc-event-content'>
             { EventComponent
               ? <EventComponent event={event} title={title}/>
@@ -163,16 +165,21 @@ let DaySlot = React.createClass({
   },
 
   _slotStyle(startSlot, endSlot, leftOffset){
+
+    endSlot = Math.max(endSlot, startSlot + this.props.step) //must be at least one `step` high
+
     let eventOffset = this.props.eventOffset || 10;
 
     let top = ((startSlot / this._totalMin) * 100);
     let bottom = ((endSlot / this._totalMin) * 100);
+    let per = leftOffset === 0 ? 0 : leftOffset * eventOffset;
+    let rightDiff = (eventOffset / (leftOffset + 1));
 
     return {
       top: top + '%',
       height: bottom - top + '%',
-      left: leftOffset === 0 ? 0 : leftOffset * eventOffset + '%',
-      right: 0
+      left: per + '%',
+      width: (leftOffset === 0 ? (100 - eventOffset) : (100 - per) - rightDiff) + '%'
     }
   },
 
@@ -180,7 +187,7 @@ let DaySlot = React.createClass({
     let node = findDOMNode(this);
     let selector = this._selector = new Selection(()=> findDOMNode(this))
 
-    selector.on('selecting', ({ x, y }) => {
+    let selectionState = ({ x, y }) => {
       let { date, step, min } = this.props;
       let { top, bottom } = getBoundsForNode(node)
 
@@ -204,14 +211,20 @@ let DaySlot = React.createClass({
       let start = dates.min(initial, current)
       let end = dates.max(initial, current)
 
-      this.setState({
+      return {
         selecting: true,
         startDate: start,
         endDate: end,
         startSlot: positionFromDate(start, min, step),
         endSlot: positionFromDate(end, min, step)
-      })
-    })
+      }
+    }
+
+    selector.on('selecting',
+      box => this.setState(selectionState(box)))
+
+    selector.on('selectStart',
+      box => this.setState(selectionState(box)))
 
     selector
       .on('click', () => {

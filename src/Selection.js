@@ -12,6 +12,8 @@ function isOverContainer(container, x, y){
   return !container || contains(container, document.elementFromPoint(x, y))
 }
 
+const clickTolerance = 5;
+
 class Selection {
 
   constructor(node, global = false){
@@ -120,15 +122,9 @@ class Selection {
 
     if (!this._mouseDownData) return;
 
-    let clickTolerance = 5;
-
-    var { x, y } = this._mouseDownData;
     var inRoot = !this.container || contains(this.container(), e.target);
     var bounds = this._selectRect;
-    var click = (
-      Math.abs(e.pageX - x) <= clickTolerance &&
-      Math.abs(e.pageY - y) <= clickTolerance
-    );
+    var click = this.isClick(e.pageX, e.pageY);
 
     this._mouseDownData = null
 
@@ -161,18 +157,27 @@ class Selection {
       this.emit('selectStart', this._mouseDownData)
     }
 
-    this.emit('selecting', this._selectRect = {
-      top,
-      left,
-      x: e.pageX,
-      y: e.pageY,
-      right: left + w,
-      bottom: top + h
-    });
+    if (!this.isClick(e.pageX, e.pageY))
+      this.emit('selecting', this._selectRect = {
+        top,
+        left,
+        x: e.pageX,
+        y: e.pageY,
+        right: left + w,
+        bottom: top + h
+      });
   }
 
   _keyListener(e) {
     this.ctrl = (e.metaKey || e.ctrlKey)
+  }
+
+  isClick(pageX, pageY){
+    var { x, y } = this._mouseDownData;
+    return (
+      Math.abs(pageX - x) <= clickTolerance &&
+      Math.abs(pageY - y) <= clickTolerance
+    );
   }
 }
 

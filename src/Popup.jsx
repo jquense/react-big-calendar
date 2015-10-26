@@ -15,8 +15,8 @@ class Popup extends React.Component {
     return (
       <div style={style} className='rbc-overlay'>
         {
-          events.map(event =>
-            <EventCell {...props} event={event} selected={isSelected(event, selected)} />
+          events.map((event, idx) =>
+            <EventCell key={idx} {...props} event={event} selected={isSelected(event, selected)} />
           )
         }
       </div>

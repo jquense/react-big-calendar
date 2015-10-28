@@ -37,8 +37,9 @@ let EventRow = React.createClass({
         continue;
       }
 
+      let gap = Math.max(0, left - lastEnd);
+
       if (this.canRenderSlotEvent(left, span)) {
-        let gap = left - lastEnd;
         let content = this.renderEvent(event)
 
         if (gap)
@@ -51,6 +52,9 @@ let EventRow = React.createClass({
         lastEnd = current = (right + 1);
       }
       else {
+        if (gap)
+          row.push(this.renderSpan(gap, key + '_gap'))
+
         row.push(this.renderSpan(1, key, this.renderShowMore(segments, current)))
         current++;
       }
@@ -88,6 +92,11 @@ let EventRow = React.createClass({
           {messages.showMore(count)}
         </a>
       ) : false
+  },
+
+  _showMore(slot, e){
+    e.preventDefault()
+    this.props.onShowMore(slot)
   }
 });
 

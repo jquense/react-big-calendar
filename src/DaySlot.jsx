@@ -21,16 +21,21 @@ function positionFromDate(date, min, step){
   return dates.diff(min, dates.merge(min, date), 'minutes')
 }
 
-function overlaps(event, events, { startAccessor, endAccessor }){
+function overlaps(event, events, { startAccessor, endAccessor }, last) {
   let eStart = get(event, startAccessor);
+  let offset = last;
 
   function overlap(eventB){
     return dates.lt(eStart, get(eventB, endAccessor))
   }
 
-  return events.reduce((sum, otherEvent) => {
-    return sum  + (overlap(otherEvent) ? 1 : 0)
-  }, 0)
+  if (!events.length) return last - 1
+  events.reverse().some(prevEvent => {
+    if (overlap(prevEvent)) return true
+    offset = offset - 1
+  })
+
+  return offset
 }
 
 let DaySlot = React.createClass({
@@ -120,7 +125,8 @@ let DaySlot = React.createClass({
       , selected, eventTimeRangeFormat, eventComponent
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
-    let EventComponent = eventComponent;
+    let EventComponent = eventComponent
+      , lastLeftOffset = 0;
 
     events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor))
 
@@ -130,9 +136,10 @@ let DaySlot = React.createClass({
       let startSlot = positionFromDate(start, min, step);
       let endSlot = positionFromDate(end, min, step);
 
-      let leftOffset = overlaps(event, events.slice(0, idx), this.props)
+      lastLeftOffset = Math.max(0,
+        overlaps(event, events.slice(0, idx), this.props, lastLeftOffset + 1))
 
-      let style = this._slotStyle(startSlot, endSlot, leftOffset)
+      let style = this._slotStyle(startSlot, endSlot, lastLeftOffset)
 
       let title = get(event, titleAccessor)
       let label = localizer.format({ start, end }, eventTimeRangeFormat, culture);
@@ -149,7 +156,7 @@ let DaySlot = React.createClass({
           onClick={this._select.bind(null, event)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,
-            'rbc-event-overlaps': leftOffset !== 0
+            'rbc-event-overlaps': lastLeftOffset !== 0
           })}
         >
           <div className='rbc-event-label'>{label}</div>

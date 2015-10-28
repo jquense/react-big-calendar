@@ -87,7 +87,7 @@ let EventRow = React.createClass({
           key={'sm_' + slot}
           href='#'
           className={'rbc-show-more'}
-          onClick={this.props.onShowMore.bind(null, slot)}
+          onClick={this._showMore.bind(null, slot)}
         >
           {messages.showMore(count)}
         </a>

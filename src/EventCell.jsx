@@ -34,7 +34,7 @@ let EventCell = React.createClass({
         })}
         onClick={()=> onSelect(event)}
       >
-        <div className='rbc-event-content'>
+        <div className='rbc-event-content' title={title}>
           { Component
             ? <Component event={event} title={title}/>
             : title

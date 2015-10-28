@@ -1,3 +1,14 @@
+v0.8.1 - Wed, 28 Oct 2015 07:58:13 GMT
+--------------------------------------
+
+- [4560ff7](../../commit/4560ff7) [changed] better thin event title collapse
+- [0eeb43f](../../commit/0eeb43f) [fixed] event layout sort
+- [0574eed](../../commit/0574eed) [fixed] show more row layout issues
+- [7ee9959](../../commit/7ee9959) [added] title to time view events
+- [c07d0ab](../../commit/c07d0ab) [changed] better event overlays for overlapping events
+
+
+
 v0.8.0 - Mon, 26 Oct 2015 12:32:54 GMT
 --------------------------------------
 

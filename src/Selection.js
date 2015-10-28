@@ -1,15 +1,18 @@
 import contains from 'dom-helpers/query/contains';
 import events from 'dom-helpers/events';
 
-const listeners = {};
-const dochandlers = {};
-
 function addEventListener(type, handler) {
   events.on(document, type, handler)
   return {
     remove(){ events.off(document, type, handler) }
   }
 }
+
+function isOverContainer(container, x, y){
+  return !container || contains(container, document.elementFromPoint(x, y))
+}
+
+const clickTolerance = 5;
 
 class Selection {
 
@@ -75,14 +78,14 @@ class Selection {
   }
 
   _mouseDown (e) {
-    var node = this.container
+    var node = this.container()
       , collides, offsetData;
 
     // Right clicks
-    if (e.which === 3 || e.button === 2)
+    if (e.which === 3 || e.button === 2 || !isOverContainer(node, e.clientX, e.clientY))
       return;
 
-    if (node && !contains(node, e.target) && !this.globalMouse) {
+    if (!this.globalMouse && node && !contains(node, e.target)) {
 
       let { top, left, bottom, right } = normalizeDistance(0);
 
@@ -119,15 +122,9 @@ class Selection {
 
     if (!this._mouseDownData) return;
 
-    let clickTolerance = 5;
-
-    var { x, y } = this._mouseDownData;
-    var inRoot = !this.container || contains(this.container, e.target);
+    var inRoot = !this.container || contains(this.container(), e.target);
     var bounds = this._selectRect;
-    var click = (
-      Math.abs(e.pageX - x) <= clickTolerance &&
-      Math.abs(e.pageY - y) <= clickTolerance
-    );
+    var click = this.isClick(e.pageX, e.pageY);
 
     this._mouseDownData = null
 
@@ -160,18 +157,27 @@ class Selection {
       this.emit('selectStart', this._mouseDownData)
     }
 
-    this.emit('selecting', this._selectRect = {
-      top,
-      left,
-      x: e.pageX,
-      y: e.pageY,
-      right: left + w,
-      bottom: top + h
-    });
+    if (!this.isClick(e.pageX, e.pageY))
+      this.emit('selecting', this._selectRect = {
+        top,
+        left,
+        x: e.pageX,
+        y: e.pageY,
+        right: left + w,
+        bottom: top + h
+      });
   }
 
   _keyListener(e) {
     this.ctrl = (e.metaKey || e.ctrlKey)
+  }
+
+  isClick(pageX, pageY){
+    var { x, y } = this._mouseDownData;
+    return (
+      Math.abs(pageX - x) <= clickTolerance &&
+      Math.abs(pageY - y) <= clickTolerance
+    );
   }
 }
 

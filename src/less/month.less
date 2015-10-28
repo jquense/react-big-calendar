@@ -20,33 +20,17 @@
   opacity: 0.05
 }
 
-.show-more-offsets (@i) when (@i > 0) {
-  @per: percentage((@i - 1) / 7);
 
-  .rbc-show-offset-@{i}{
-    left: @per;
-  }
-  .show-more-offsets (@i - 1);
-}
-
-.show-more-offsets(7);
 
 .rbc-show-more {
   &:extend(.rbc-ellipsis);
   background-color: rgba(255, 255, 255, 0.3);
   z-index: @event-zindex;
-  float: left;
-  position: absolute;
-  width: 14.28571429%;
-  bottom: 0;
-  //font-style: italic;
   font-weight: bold;
   font-size: 85%;
-  text-align: center;
   height: auto;
   line-height: normal;
   white-space: nowrap;
-  color: #333;
 }
 
 .rbc-month-view {

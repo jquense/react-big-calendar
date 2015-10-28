@@ -1,13 +1,12 @@
 import React from 'react';
-import dates from './utils/dates';
 import EventCell from './EventCell';
 import { isSelected } from './utils/selection';
 
-class Popup {
+class Popup extends React.Component {
   render() {
     let { events, selected, ...props } = this.props;
 
-    let { left, width, top, height } = this.props.position;
+    let { left, width, top } = this.props.position;
 
     top += 20;
 
@@ -16,8 +15,8 @@ class Popup {
     return (
       <div style={style} className='rbc-overlay'>
         {
-          events.map(event =>
-            <EventCell {...props} event={event} selected={isSelected(event, selected)} />
+          events.map((event, idx) =>
+            <EventCell key={idx} {...props} event={event} selected={isSelected(event, selected)} />
           )
         }
       </div>

@@ -103,8 +103,12 @@ let TimeGrid = React.createClass({
             <div ref={addGutterRef(1)} className='rbc-gutter-cell'>
               { message(messages).allDay }
             </div>
-            <div className='rbc-allday-cell'>
-              <BackgroundCells slots={range.length}/>
+            <div ref='allDay' className='rbc-allday-cell'>
+              <BackgroundCells
+                slots={range.length}
+                container={()=> this.refs.allDay}
+                selectable={this.props.selectable}
+              />
               <div style={{ zIndex: 1, position: 'relative' }}>
                 { this.renderAllDayEvents(range, levels) }
               </div>
@@ -160,7 +164,7 @@ let TimeGrid = React.createClass({
         startAccessor={this.props.startAccessor}
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
-        onEventClick={this.props.onEventClick}
+        onSelect={this._selectEvent}
         slots={this._slots}
         key={idx}
         segments={segs}
@@ -187,6 +191,10 @@ let TimeGrid = React.createClass({
 
   _headerClick(date){
     notify(this.props.onNavigate, [navigate.DATE, date])
+  },
+
+  _selectEvent(...args){
+    notify(this.props.onSelectEvent, args)
   },
 
   _adjustGutter() {

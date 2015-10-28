@@ -1,30 +1,22 @@
 import dates from './dates';
 import { accessor as get } from './accessors';
-//import canUseDom from 'dom-helpers/util/inDOM';
 
-// let isIE = false;
+export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
+  let slots = dates.diff(first, last, 'day')
+  let start = dates.max(get(event, startAccessor), first);
+  let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), dates.add(last, 1, 'day'))
 
-// if (canUseDom) {
-//   isIE = ('documentMode' in document)
-// }
+  let span = dates.diff(start, end, 'day');
 
-export function eventSegments(event, first, last, { startAccessor, endAccessor }){
+  span = Math.max(Math.min(span, slots), 1);
 
-  let start = dates.duration(first,
-      dates.max(get(event, startAccessor), first), 'day');
-
-  let span = Math.min(dates.duration(
-      dates.max(get(event, startAccessor), first)
-    , dates.min(get(event, endAccessor), dates.add(last, 1, 'day'))
-    , 'day'), 7);
-
-  span = Math.max(span, 1);
+  let padding = dates.diff(first, start, 'day');
 
   return {
     event,
     span,
-    left: start + 1,
-    right: Math.max(start + span, 1)
+    left: padding + 1,
+    right: Math.max(padding + span, 1)
   }
 }
 
@@ -80,16 +72,20 @@ export function segsOverlap(seg, otherSegs) {
 
 
 export function sortEvents(evtA, evtB, { startAccessor, endAccessor, allDayAccessor }) {
-  let durA = dates.duration(
-          get(evtA, startAccessor)
-        , get(evtA, endAccessor)
-        , 'day')
-    , durB = dates.duration(
-        get(evtB, startAccessor)
-      , get(evtB, endAccessor)
+  let startSort = +dates.startOf(get(evtA, startAccessor), 'day') - +dates.startOf(get(evtB, startAccessor), 'day')
+
+  let durA = dates.diff(
+        get(evtA, startAccessor)
+      , dates.ceil(get(evtA, endAccessor), 'day')
       , 'day');
 
-  return (+get(evtA, startAccessor) - +get(evtB, startAccessor))
-    || (durB - durA)
-    || !!get(evtA, allDayAccessor) - !!get(evtB, allDayAccessor)
+  let durB = dates.diff(
+        get(evtB, startAccessor)
+      , dates.ceil(get(evtB, endAccessor), 'day')
+      , 'day');
+
+  return startSort // sort by start Day first
+    || Math.max(durB, 1) - Math.max(durA, 1) // events spanning multiple days go first
+    || !!get(evtB, allDayAccessor) - !!get(evtA, allDayAccessor) // then allDay single day events
+    || +get(evtA, startAccessor) - +get(evtB, startAccessor)     // then sort by start time
 }

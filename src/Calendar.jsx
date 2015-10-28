@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import uncontrollable from 'uncontrollable';
-
+import cn from 'classnames';
 import {
     accessor
   , elementType
@@ -12,30 +12,13 @@ import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import dates from './utils/dates';
 import defaultFormats from './formats';
-
-import Month from './Month';
-import Day from './Day';
-import Week from './Week';
-import Agenda from './Agenda';
+import viewLabel from './utils/viewLabel';
+import moveDate from './utils/move';
+import VIEWS from './Views';
 import Toolbar from './Toolbar';
 
 import omit from 'lodash/object/omit';
 import defaults from 'lodash/object/defaults';
-
-const VIEWS = {
-  [views.MONTH]: Month,
-  [views.WEEK]: Week,
-  [views.DAY]: Day,
-  [views.AGENDA]: Agenda
-};
-
-const Formats = {
-  [views.MONTH]: 'monthHeaderFormat',
-  [views.WEEK]: 'dayRangeHeaderFormat',
-  [views.DAY]: 'dayHeaderFormat',
-  [views.AGENDA]: 'agendaHeaderFormat'
-}
-
 
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -105,6 +88,21 @@ let Calendar = React.createClass({
      * Allows mouse selection of ranges of dates/times.
      */
     selectable: PropTypes.bool,
+
+    /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the the event node.
+     *
+     * ```js
+     * function(
+     * 	event: object,
+     * 	start: date,
+     * 	end: date,
+     * 	isSelected: bool
+     * ) -> { className: string?, style: object? }
+     * ```
+     */
+    eventPropGetter: PropTypes.func,
 
     /**
      * Accessor for the event title, used to display event information. Should
@@ -194,6 +192,9 @@ let Calendar = React.createClass({
       month: PropTypes.shape({ event: elementType })
     }),
 
+    /**
+     * String messages used throughout the component, override to provide localizations
+     */
     messages: PropTypes.shape({
       allDay: PropTypes.string,
       previous: PropTypes.string,
@@ -202,7 +203,8 @@ let Calendar = React.createClass({
       month: PropTypes.string,
       week: PropTypes.string,
       day: PropTypes.string,
-      agenda: PropTypes.string
+      agenda: PropTypes.string,
+      showMore: PropTypes.func
     })
   },
 
@@ -227,22 +229,15 @@ let Calendar = React.createClass({
       , culture
       , components = {}
       , formats = {}
-      , date: current } = this.props;
+      , style
+      , className
+      , date: current
+      , ...props } = this.props;
 
     formats = defaultFormats(formats)
 
     let View = VIEWS[view];
-    let headerSingle = view === views.MONTH || view === views.DAY
-
     let names = viewNames(this.props.views)
-
-    let { start, end } = View.range(current, this.props);
-
-    let headerFormat = formats[Formats[view]];
-
-    let label = headerSingle
-      ? localizer.format(current, headerFormat, culture)
-      : localizer.format({ start, end }, headerFormat, culture)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))
 
@@ -253,21 +248,22 @@ let Calendar = React.createClass({
 
     return (
       <div {...elementProps}
-        className='rbc-calendar'
+        className={cn('rbc-calendar', className)}
+        style={style}
       >
         { toolbar &&
           <Toolbar
             date={current}
             view={view}
             views={names}
-            label={label}
+            label={viewLabel(current, view, formats, culture)}
             onViewChange={this._view}
             onNavigate={this._navigate}
           />
         }
         <View
           ref='view'
-          {...this.props}
+          {...props}
           {...formats}
           formats={undefined}
           events={events}
@@ -286,16 +282,7 @@ let Calendar = React.createClass({
   _navigate(action, newDate) {
     let { view, date, onNavigate } = this.props;
 
-    switch (action){
-      case navigate.TODAY:
-        date = new Date()
-        break;
-      case navigate.DATE:
-        date = newDate
-        break;
-      default:
-        date = VIEWS[view].navigate(newDate || date, action)
-    }
+    date = moveDate(action, newDate || date, view)
 
     onNavigate(date, view)
 

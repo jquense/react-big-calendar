@@ -45,6 +45,12 @@ let dates = Object.assign(dateMath, {
     return days
   },
 
+  ceil(date, unit){
+    let floor = dates.startOf(date, unit)
+
+    return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
+  },
+
   move(date, min, max, unit, direction){
     let isUpOrDown = direction === directions.UP || direction === directions.DOWN
       , addUnit = isUpOrDown ? 'week' : 'day'
@@ -106,16 +112,18 @@ let dates = Object.assign(dateMath, {
     )
   },
 
-  duration(start, end, unit){
+  duration(start, end, unit, firstOfWeek){
     if (unit === 'day') unit = 'date';
-    return Math.abs(dates[unit](start) - dates[unit](end))
+    return Math.abs(dates[unit](start, undefined, firstOfWeek) - dates[unit](end, undefined, firstOfWeek))
   },
 
   diff(dateA, dateB, unit){
     if (!unit)
       return Math.abs(+dateA - +dateB)
 
-    return Math.abs((+dateA / MILLI[unit]) - (+dateB / MILLI[unit]))
+    return Math.abs(
+      (+dates.startOf(dateA, unit) / MILLI[unit]) - (+dates.startOf(dateB, unit) / MILLI[unit])
+    )
   },
 
   week(date){

@@ -159,6 +159,9 @@ let Agenda = React.createClass({
     let header = this.refs.header;
     let firstRow = this.refs.tbody.firstChild
 
+    if (!firstRow)
+      return
+
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
     let widths = this._widths || []
 

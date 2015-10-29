@@ -1,22 +1,58 @@
 import React from 'react';
 import EventCell from './EventCell';
 import { isSelected } from './utils/selection';
+import localizer from './localizer';
+import getOffset from 'dom-helpers/query/offset';
+import getScrollTop from 'dom-helpers/query/scrollTop';
+import getScrollLeft from 'dom-helpers/query/scrollLeft';
 
 class Popup extends React.Component {
+
+  componentDidMount(){
+    let { top, left, width, height } = getOffset(this.refs.root)
+      , viewBottom = window.innerHeight + getScrollTop(window)
+      , viewRight = window.innerWidth + getScrollLeft(window)
+      , bottom = top + height
+      , right = left + width
+
+    if (bottom > viewBottom || right > viewRight) {
+      let topOffset, leftOffset;
+
+      if (bottom > viewBottom)
+        topOffset = bottom - viewBottom + 5
+      if (right > viewRight)
+        leftOffset = right - viewRight + 5
+
+      this.setState({ topOffset, leftOffset })
+    }
+  }
+
   render() {
-    let { events, selected, ...props } = this.props;
+    let { events, selected, eventComponent, ...props } = this.props;
 
-    let { left, width, top } = this.props.position;
+    let { left, width, top } = this.props.position
+      , topOffset = (this.state || {}).topOffset || 0
+      , leftOffset = (this.state || {}).leftOffset || 0;
 
-    top += 20;
-
-    let style = { left, top, minWidth: width + (width / 2) }
+    let style = {
+      top: top - topOffset,
+      left: left - leftOffset,
+      minWidth: width + (width / 2)
+    }
 
     return (
-      <div style={style} className='rbc-overlay'>
+      <div ref='root' style={style} className='rbc-overlay'>
+        <div className='rbc-overlay-header'>
+          { localizer.format(props.slotStart, props.dayHeaderFormat, props.culture) }
+        </div>
         {
           events.map((event, idx) =>
-            <EventCell key={idx} {...props} event={event} selected={isSelected(event, selected)} />
+            <EventCell key={idx}
+              {...props}
+              event={event}
+              component={eventComponent}
+              selected={isSelected(event, selected)}
+            />
           )
         }
       </div>

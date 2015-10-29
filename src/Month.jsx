@@ -288,16 +288,12 @@ let MonthView = React.createClass({
         onHide={() => this.setState({ overlay: null })}
       >
         <Popup
+          {...this.props}
           position={overlay.position}
           events={overlay.events}
           slotStart={overlay.date}
           slotEnd={overlay.end}
-          selected={this.props.selected}
           onSelect={this._selectEvent}
-          eventPropGetter={this.props.eventPropGetter}
-          startAccessor={this.props.startAccessor}
-          endAccessor={this.props.endAccessor}
-          titleAccessor={this.props.titleAccessor}
         />
       </Overlay>
     )

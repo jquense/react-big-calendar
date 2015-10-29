@@ -85,7 +85,6 @@ let EventRow = React.createClass({
       ? (
         <a
           key={'sm_' + slot}
-          href='#'
           className={'rbc-show-more'}
           onClick={this._showMore.bind(null, slot)}
         >

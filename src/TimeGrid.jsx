@@ -189,7 +189,8 @@ let TimeGrid = React.createClass({
     )
   },
 
-  _headerClick(date){
+  _headerClick(date, e){
+    e.preventDefault()
     notify(this.props.onNavigate, [navigate.DATE, date])
   },
 

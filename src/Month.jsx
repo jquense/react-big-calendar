@@ -317,7 +317,8 @@ let MonthView = React.createClass({
     })
   },
 
-  _dateClick(date){
+  _dateClick(date, e){
+    e.preventDefault();
     this.clearSelection()
     notify(this.props.onNavigate, [navigate.DATE, date])
   },

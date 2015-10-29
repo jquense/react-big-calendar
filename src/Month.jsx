@@ -239,7 +239,7 @@ let MonthView = React.createClass({
             'rbc-now': dates.eq(day, new Date(), 'day')
           })}
         >
-          <a href='#' onClick={this._dateClick.bind(null, day)}>
+          <a onClick={this._dateClick.bind(null, day)}>
             { localizer.format(day, this.props.dateFormat, this.props.culture) }
           </a>
         </div>

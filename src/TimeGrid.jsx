@@ -182,7 +182,7 @@ let TimeGrid = React.createClass({
         className='rbc-header'
         style={segStyle(1, this._slots)}
       >
-        <a href='#' onClick={this._headerClick.bind(null, date)}>
+        <a onClick={this._headerClick.bind(null, date)}>
           { localizer.format(date, dayFormat, culture) }
         </a>
       </div>

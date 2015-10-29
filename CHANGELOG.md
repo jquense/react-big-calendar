@@ -1,3 +1,12 @@
+v0.8.3 - Thu, 29 Oct 2015 06:07:22 GMT
+--------------------------------------
+
+- [d98af8d](../../commit/d98af8d) [added] edge detection for event popup
+- [69b092d](../../commit/69b092d) [fixed] accidental hash changes
+- [0351b71](../../commit/0351b71) [fixed] incorrect 'show more' layout
+
+
+
 v0.8.2 - Wed, 28 Oct 2015 08:09:39 GMT
 --------------------------------------
 

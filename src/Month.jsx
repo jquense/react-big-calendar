@@ -105,7 +105,7 @@ let MonthView = React.createClass({
     window.removeEventListener('resize', this._resizeListener, false)
   },
 
-  render(){
+  render() {
     var { date, culture, weekdayFormat } = this.props
       , month = dates.visibleDays(date, culture)
       , weeks  = chunk(month, 7);
@@ -366,6 +366,9 @@ let MonthView = React.createClass({
       this.setState({
         overlay: { date, events, position }
       })
+    }
+    else {
+      notify(this.props.onNavigate, [navigate.DATE, date])
     }
 
     notify(this.props.onShowMore, [events, date, slot])

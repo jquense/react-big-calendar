@@ -1,3 +1,11 @@
+v0.9.0 - Tue, 03 Nov 2015 11:33:38 GMT
+--------------------------------------
+
+- [ee53bbc](../../commit/ee53bbc) [changed] default "show more" behavior navigates to day view
+- [80aa08f](../../commit/80aa08f) [added] popupOffset prop for configuring distance from viewport edge
+
+
+
 v0.8.3 - Thu, 29 Oct 2015 06:07:22 GMT
 --------------------------------------
 

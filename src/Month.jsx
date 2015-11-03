@@ -41,6 +41,16 @@ let propTypes = {
 
   weekdayFormat: dateFormat,
 
+  popup: React.PropTypes.bool,
+
+  popupOffset: React.PropTypes.oneOfType([
+    React.PropTypes.number,
+    React.PropTypes.shape({
+      x: React.PropTypes.number,
+      y: React.PropTypes.number
+    })
+  ]),
+
   onSelectEvent: React.PropTypes.func,
   onSelectSlot: React.PropTypes.func
 };

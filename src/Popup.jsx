@@ -9,7 +9,8 @@ import getScrollLeft from 'dom-helpers/query/scrollLeft';
 class Popup extends React.Component {
 
   componentDidMount(){
-    let { top, left, width, height } = getOffset(this.refs.root)
+    let { popupOffset = 5 } = this.props
+      , { top, left, width, height } = getOffset(this.refs.root)
       , viewBottom = window.innerHeight + getScrollTop(window)
       , viewRight = window.innerWidth + getScrollLeft(window)
       , bottom = top + height
@@ -19,11 +20,11 @@ class Popup extends React.Component {
       let topOffset, leftOffset;
 
       if (bottom > viewBottom)
-        topOffset = bottom - viewBottom + 5
+        topOffset = bottom - viewBottom + (popupOffset.y || +popupOffset || 0)
       if (right > viewRight)
-        leftOffset = right - viewRight + 5
+        leftOffset = right - viewRight + (popupOffset.x || +popupOffset || 0)
 
-      this.setState({ topOffset, leftOffset })
+      this.setState({ topOffset, leftOffset }) //eslint-disable-line
     }
   }
 
@@ -37,7 +38,8 @@ class Popup extends React.Component {
     let style = {
       top: top - topOffset,
       left: left - leftOffset,
-      minWidth: width + (width / 2)
+      minWidth: width + (width / 2),
+      height: 300
     }
 
     return (

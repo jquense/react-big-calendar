@@ -85,6 +85,23 @@ let Calendar = React.createClass({
     toolbar: PropTypes.bool,
 
     /**
+     * Show truncated events in an overlay when you click the "+_x_ more" link.
+     */
+    popup: PropTypes.bool,
+
+    /**
+     * Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
+     *
+     * ```js
+     * <BigCalendar popupOffset={30}/>
+     * <BigCalendar popupOffset={{x: 30, y: 20}}/>
+     * ```
+     */
+    popupOffset: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
+    ]),
+    /**
      * Allows mouse selection of ranges of dates/times.
      */
     selectable: PropTypes.bool,

@@ -18,7 +18,7 @@ Include `react-big-calendar/lib/css/react-big-calendar.css` for styles.
 
 ### Localization and Date Formatting
 
-`react-big-calendar` includes two options for handling the date formatting and culture localization, dpending
+`react-big-calendar` includes two options for handling the date formatting and culture localization, depending
 on your preference of DateTime libraries. You can use either the Moment.js or Globalize.js localizers.
 
 Regardless of your choice you __must__ choose a localizer to use react-big-calendar.

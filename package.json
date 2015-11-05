@@ -3,7 +3,7 @@
   "version": "0.9.0",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "jaquense/react-big-calendar",
+  "repository": "jquense/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "files": [

@@ -1,3 +1,11 @@
+v0.9.1 - Thu, 12 Nov 2015 14:52:20 GMT
+--------------------------------------
+
+- [d5a0d20](../../commit/d5a0d20) [fixed] month event rows not fitting in their cells
+- [f4b18d6](../../commit/f4b18d6) [fixed] day view clicks return the correct slot
+
+
+
 v0.9.0 - Tue, 03 Nov 2015 11:33:38 GMT
 --------------------------------------
 

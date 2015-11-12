@@ -1,3 +1,12 @@
+v0.9.2 - Thu, 12 Nov 2015 23:34:33 GMT
+--------------------------------------
+
+- [58f008f](../../commit/58f008f) [fixed] none integer slot spaces (again)
+- [f2084ef](../../commit/f2084ef) [fixed] month event rows not fitting in their cells
+- [73e449d](../../commit/73e449d) [fixed] day view clicks return the correct slot
+
+
+
 v0.9.1 - Thu, 12 Nov 2015 14:52:20 GMT
 --------------------------------------
 

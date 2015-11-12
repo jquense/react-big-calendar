@@ -3,7 +3,7 @@ import { accessor as get } from './accessors';
 
 export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
   let slots = dates.diff(first, last, 'day')
-  let start = dates.max(get(event, startAccessor), first);
+  let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
   let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), dates.add(last, 1, 'day'))
 
   let span = dates.diff(start, end, 'day');

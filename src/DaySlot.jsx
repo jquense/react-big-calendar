@@ -234,9 +234,9 @@ let DaySlot = React.createClass({
       box => this.setState(selectionState(box)))
 
     selector
-      .on('click', () => {
+      .on('click', ({ x, y }) => {
         this._clickTimer = setTimeout(()=> {
-          this._selectSlot(this.state)
+          this._selectSlot(selectionState({ x, y }))
         })
 
         this.setState({ selecting: false })

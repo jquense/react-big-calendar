@@ -276,6 +276,7 @@ let Calendar = React.createClass({
             label={viewLabel(current, view, formats, culture)}
             onViewChange={this._view}
             onNavigate={this._navigate}
+            messages={this.props.messages}
           />
         }
         <View

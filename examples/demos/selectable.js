@@ -7,8 +7,8 @@ let Selectable = React.createClass({
     return (
       <div>
         <h3 className='text-info text-center demo-info'>
-          Click an event to see mroe info or
-          Drag the mouse  over the calendar to select a date/time range.
+          Click an event to see more info, or
+          drag the mouse over the calendar to select a date/time range.
         </h3>
         <BigCalendar
           selectable

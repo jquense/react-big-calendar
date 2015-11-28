@@ -26,7 +26,7 @@
     "less": "lessc -x src/less/styles.less ./lib/css/react-big-calendar.css",
     "assets": "cpy src/less/* lib/less",
     "build": "npm run clean && babel src --out-dir lib && npm run assets & npm run less",
-    "build:examples": "npm run clean:examples && webpack --config docs.config.es6.js",
+    "build:examples": "npm run clean:examples && webpack --config webpack/docs.config.es6.js",
     "examples": "npm run clean:examples && babel-node ./examples/server.js",
     "lint": "eslint src test",
     "test": "npm run lint && karma start --single-run",

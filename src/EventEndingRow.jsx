@@ -56,7 +56,7 @@ let EventRow = React.createClass({
           row.push(this.renderSpan(gap, key + '_gap'))
 
         row.push(this.renderSpan(1, key, this.renderShowMore(segments, current)))
-        current++;
+        lastEnd = current = current + 1
       }
     }
 
@@ -87,7 +87,7 @@ let EventRow = React.createClass({
           key={'sm_' + slot}
           href='#'
           className={'rbc-show-more'}
-          onClick={this.props.onShowMore.bind(null, slot)}
+          onClick={this._showMore.bind(null, slot)}
         >
           {messages.showMore(count)}
         </a>

@@ -1,5 +1,6 @@
-import dates from './utils/dates';
-import { set } from './formats';
+import dates from '../utils/dates';
+import { set } from '../formats';
+import { set as setLocalizer } from '../localizer';
 
 function inSame12Hr(start, end){
   let s = 12 - dates.hours(start)
@@ -43,7 +44,7 @@ export default function (moment){
 
   set(formats)
 
-  return {
+  return setLocalizer({
 
     firstOfWeek(culture) {
       let data = culture ? moment.localeData(culture) : moment.localeData();
@@ -57,6 +58,5 @@ export default function (moment){
     format(value, format, culture) {
       return locale(moment(value), culture).format(format)
     }
-  }
-
+  })
 }

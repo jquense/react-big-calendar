@@ -3,28 +3,63 @@
 //   border-radius: 0;
 // }
 
-.app {
-  font-family: "Helvetica";
+body {
+  font-size: 16px;
+}
+
+.jumbotron {
+  background-color: #3174ad;
+  color: white;
+
+  a {
+    font-size: 85%;
+    color: darken(white, 10%);
+  }
+}
+
+.example {
+  font-size: 14px;
+}
+
+.contain {
+  background-color: white;
+  border-radius: 3px;
+  padding: 20px;
   max-width: 900px;
-  margin: 0 auto;
-  padding-top: 0;
+  margin: auto;
 }
 
-.side-panel {
-
-  ul {
-    position: fixed;
-    top: 40px;
-  }
-
-  ul > li {
-    padding: 5px;
-  }
+.docs {
+  background-color: #3174ad;
+  margin-top: 20px;
+  padding: 30px;
 }
+
+.examples {
+  position: relative;
+}
+
+aside {
+  position: absolute;
+  width: 200px;
+  top: 0;
+  left:  -210px;
+}
+
+h3 > a > code {
+  color: #3174ad;
+  background: none;
+  padding: 0;
+}
+
 pre {
   border-radius: 0;
   border: none;
   border-left: 4px solid #ccc;
+}
+
+pre.shape-prop {
+  border: none;
 }
 
 code {

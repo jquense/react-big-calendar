@@ -1,5 +1,6 @@
-import dates from './utils/dates';
-import { set } from './formats';
+import dates from '../utils/dates';
+import { set } from '../formats';
+import { set as setLocalizer } from '../localizer';
 
 function inSame12Hr(start, end){
   let s = 12 - dates.hours(start)
@@ -53,7 +54,7 @@ export default function(globalize) {
 
   set(formats)
 
-  return {
+  return setLocalizer({
     firstOfWeek,
 
     parse(value, format, culture){
@@ -63,6 +64,5 @@ export default function(globalize) {
     format(value, format, culture){
       return globalize.format(value, format, culture)
     }
-  }
+  })
 }
-

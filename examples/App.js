@@ -1,115 +1,82 @@
 import React from 'react';
-import Modal from 'react-overlays/lib/Modal';
-
+import Api from './Api';
+import cn from 'classnames';
 import { render } from 'react-dom';
 
-import globalizeLocalizer from 'react-big-calendar/globalize-localizer';
-import momentLocalizer from 'react-big-calendar/moment-localizer';
-
-import { set as setLocalizer } from 'react-big-calendar/localizer';
-
-import moment from 'moment';
+import localizer from 'react-big-calendar/localizers/globalize';
 import globalize from 'globalize';
 
-import BigCalendar from 'react-big-calendar';
+localizer(globalize);
 
 import 'react-big-calendar/less/styles.less';
 import './styles.less';
 
-import events from './events';
-
-setLocalizer(
-  globalizeLocalizer(globalize)
-);
-
-function EventWeek(props) {
-  return <strong>{props.event.title}</strong>
-}
-
-function EventAgenda(props) {
-  return <em>{props.event.title}</em>
-}
-
-
-let rand = ()=> (Math.floor(Math.random() * 20) - 10);
-
-const modalStyle = {
-  position: 'fixed',
-  zIndex: 1040,
-  top: 0, bottom: 0, left: 0, right: 0
-};
-
-const backdropStyle = {
-  ...modalStyle,
-  zIndex: 'auto',
-  backgroundColor: '#000',
-  opacity: 0.5
-};
-
-const dialogStyle = function() {
-  // we use some psuedo random coords so modals
-  // don't sit right on top of each other.
-  let top = 50 + rand();
-  let left = 50 + rand();
-
-  return {
-    position: 'absolute',
-    width: 400,
-    top: top + '%', left: left + '%',
-    transform: `translate(-${top}%, -${left}%)`,
-    border: '1px solid #e5e5e5',
-    backgroundColor: 'white',
-    boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-    padding: 20
-  };
-};
 
 const Example = React.createClass({
   getInitialState(){
-    return { showModal: false };
+    return {
+      selected: 'basic'
+    };
   },
+
   render() {
+    let selected = this.state.selected;
+    let Current = {
+      basic: require('./demos/basic'),
+      selectable: require('./demos/selectable'),
+      popup: require('./demos/popup'),
+      rendering: require('./demos/rendering')
+    }[selected];
 
     return (
       <div className='app'>
-        <main className=''>
-          <BigCalendar
-            selectable
-            popup
-            events={events}
-            onSelectEvent={this.open}
-            defaultDate={new Date(2015, 3, 1)}
-            eventPropGetter={e => ({ className: 'hi-event'})}
-            components={{
-              event: EventWeek,
-              agenda: {
-                event: EventAgenda
-              }
-            }}
-          />
-        </main>
-        <Modal
-          aria-labelledby='modal-label'
-          style={modalStyle}
-          backdropStyle={backdropStyle}
-          show={this.state.showModal}
-          onHide={this.close}
-        >
-          <div style={dialogStyle()} >
-            <h4 id='modal-label'>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+      <div className="jumbotron">
+        <div className="container">
+          <h1>Big Calendar <i className='fa fa-calendar'/></h1>
+          <p>such enterprise, very business.</p>
+          <p>
+            <a href="#api">
+              <i className='fa fa-book'/> API documentation
+            </a>
+            {' | '}
+            <a target='_blank' href="https://github.com/intljusticemission/react-big-calendar">
+              <i className='fa fa-github'/> github
+            </a>
+          </p>
+        </div>
+      </div>
+        <div className='examples contain'>
+          <aside>
+            <ul className='nav nav-pills nav-stacked'>
+              <li className={cn({active: selected === 'basic' })}>
+                <a href='#' onClick={this.select.bind(null, 'basic')}>Basic</a>
+              </li>
+              <li className={cn({active: selected === 'selectable' })}>
+                <a href='#' onClick={this.select.bind(null, 'selectable')}>Selectable</a>
+              </li>
+              <li className={cn({active: selected === 'popup' })}>
+                <a href='#' onClick={this.select.bind(null, 'popup')}>Popup</a>
+              </li>
+              <li className={cn({active: selected === 'rendering' })}>
+                <a href='#' onClick={this.select.bind(null, 'rendering')}>Custom rendering</a>
+              </li>
+            </ul>
+          </aside>
+          <div className='example'>
+            <Current />
           </div>
-        </Modal>
+        </div>
+        <div className='docs'>
+          <Api className='contain' />
+        </div>
       </div>
     );
   },
-  close(){
-    this.setState({ showModal: false });
-  },
 
-  open(){
-    this.setState({ showModal: true });
+  select(selected, e){
+    e.preventDefault();
+    this.setState({ selected })
   }
 });
 
-render(<Example/>, document.body);
+render(<Example/>, document.getElementById('root'));

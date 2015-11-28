@@ -1,3 +1,44 @@
+v0.9.2 - Thu, 12 Nov 2015 23:34:33 GMT
+--------------------------------------
+
+- [58f008f](../../commit/58f008f) [fixed] none integer slot spaces (again)
+- [f2084ef](../../commit/f2084ef) [fixed] month event rows not fitting in their cells
+- [73e449d](../../commit/73e449d) [fixed] day view clicks return the correct slot
+
+
+
+v0.9.1 - Thu, 12 Nov 2015 14:52:20 GMT
+--------------------------------------
+
+- [d5a0d20](../../commit/d5a0d20) [fixed] month event rows not fitting in their cells
+- [f4b18d6](../../commit/f4b18d6) [fixed] day view clicks return the correct slot
+
+
+
+v0.9.0 - Tue, 03 Nov 2015 11:33:38 GMT
+--------------------------------------
+
+- [ee53bbc](../../commit/ee53bbc) [changed] default "show more" behavior navigates to day view
+- [80aa08f](../../commit/80aa08f) [added] popupOffset prop for configuring distance from viewport edge
+
+
+
+v0.8.3 - Thu, 29 Oct 2015 06:07:22 GMT
+--------------------------------------
+
+- [d98af8d](../../commit/d98af8d) [added] edge detection for event popup
+- [69b092d](../../commit/69b092d) [fixed] accidental hash changes
+- [0351b71](../../commit/0351b71) [fixed] incorrect 'show more' layout
+
+
+
+v0.8.2 - Wed, 28 Oct 2015 08:09:39 GMT
+--------------------------------------
+
+- [892af3d](../../commit/892af3d) [fixed] use correct handler for "show more"
+
+
+
 v0.8.1 - Wed, 28 Oct 2015 07:58:13 GMT
 --------------------------------------
 

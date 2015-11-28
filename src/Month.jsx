@@ -41,6 +41,16 @@ let propTypes = {
 
   weekdayFormat: dateFormat,
 
+  popup: React.PropTypes.bool,
+
+  popupOffset: React.PropTypes.oneOfType([
+    React.PropTypes.number,
+    React.PropTypes.shape({
+      x: React.PropTypes.number,
+      y: React.PropTypes.number
+    })
+  ]),
+
   onSelectEvent: React.PropTypes.func,
   onSelectSlot: React.PropTypes.func
 };
@@ -95,7 +105,7 @@ let MonthView = React.createClass({
     window.removeEventListener('resize', this._resizeListener, false)
   },
 
-  render(){
+  render() {
     var { date, culture, weekdayFormat } = this.props
       , month = dates.visibleDays(date, culture)
       , weeks  = chunk(month, 7);
@@ -288,16 +298,12 @@ let MonthView = React.createClass({
         onHide={() => this.setState({ overlay: null })}
       >
         <Popup
+          {...this.props}
           position={overlay.position}
           events={overlay.events}
           slotStart={overlay.date}
           slotEnd={overlay.end}
-          selected={this.props.selected}
           onSelect={this._selectEvent}
-          eventPropGetter={this.props.eventPropGetter}
-          startAccessor={this.props.startAccessor}
-          endAccessor={this.props.endAccessor}
-          titleAccessor={this.props.titleAccessor}
         />
       </Overlay>
     )
@@ -317,7 +323,8 @@ let MonthView = React.createClass({
     })
   },
 
-  _dateClick(date){
+  _dateClick(date, e){
+    e.preventDefault();
     this.clearSelection()
     notify(this.props.onNavigate, [navigate.DATE, date])
   },
@@ -359,6 +366,9 @@ let MonthView = React.createClass({
       this.setState({
         overlay: { date, events, position }
       })
+    }
+    else {
+      notify(this.props.onNavigate, [navigate.DATE, date])
     }
 
     notify(this.props.onShowMore, [events, date, slot])

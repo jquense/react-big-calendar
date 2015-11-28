@@ -195,7 +195,7 @@ let DaySlot = React.createClass({
     let selector = this._selector = new Selection(()=> findDOMNode(this))
 
     let selectionState = ({ x, y }) => {
-      let { date, step, min } = this.props;
+      let { step, min, max } = this.props;
       let { top, bottom } = getBoundsForNode(node)
 
       let mins = this._totalMin;
@@ -204,7 +204,7 @@ let DaySlot = React.createClass({
 
       let current = (y - top) / range;
 
-      current = snapToSlot(minToDate(mins * current, date), step)
+      current = snapToSlot(minToDate(mins * current, min), step)
 
       if (!this.state.selecting)
         this._initialDateSlot = current
@@ -214,9 +214,8 @@ let DaySlot = React.createClass({
       if (dates.eq(initial, current, 'minutes'))
         current = dates.add(current, step, 'minutes')
 
-      //end = snapToSlot(minToDate(mins * end, date), step)
-      let start = dates.min(initial, current)
-      let end = dates.max(initial, current)
+      let start = dates.max(min, dates.min(initial, current))
+      let end = dates.min(max, dates.max(initial, current))
 
       return {
         selecting: true,
@@ -279,9 +278,11 @@ let DaySlot = React.createClass({
 
 
 function minToDate(min, date){
-  var dt = new Date(date);
+  var dt = new Date(date)
+    , totalMins = dates.diff(dates.startOf(date, 'day'), date, 'minutes');
+
   dt = dates.hours(dt, 0);
-  dt = dates.minutes(dt, min);
+  dt = dates.minutes(dt, totalMins + min);
   dt = dates.seconds(dt, 0)
   return dates.milliseconds(dt, 0)
 }

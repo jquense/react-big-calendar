@@ -24,6 +24,7 @@ const Example = React.createClass({
     let Current = {
       basic: require('./demos/basic'),
       selectable: require('./demos/selectable'),
+      cultures: require('./demos/cultures'),
       popup: require('./demos/popup'),
       rendering: require('./demos/rendering')
     }[selected];
@@ -53,6 +54,9 @@ const Example = React.createClass({
               </li>
               <li className={cn({active: selected === 'selectable' })}>
                 <a href='#' onClick={this.select.bind(null, 'selectable')}>Selectable</a>
+              </li>
+              <li className={cn({active: selected === 'cultures' })}>
+                <a href='#' onClick={this.select.bind(null, 'cultures')}>I18n and Locales</a>
               </li>
               <li className={cn({active: selected === 'popup' })}>
                 <a href='#' onClick={this.select.bind(null, 'popup')}>Popup</a>

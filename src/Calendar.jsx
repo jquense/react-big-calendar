@@ -53,9 +53,10 @@ let Calendar = React.createClass({
     /**
      * The current view of the calendar.
      *
+     * @default 'month'
      * @controllable onView
      */
-    onView: PropTypes.string,
+    view: PropTypes.string,
 
     /**
      * An array of event objects to display on the calendar
@@ -330,6 +331,7 @@ let Calendar = React.createClass({
           ref='view'
           {...props}
           {...formats}
+          culture={culture}
           formats={undefined}
           events={events}
           date={current}

@@ -15,7 +15,7 @@ let Api = React.createClass({
 
     return (
       <div {...this.props}>
-        <h1><a href='#api'>API</a></h1>
+        <h1 id='api'><a href='#api'>API</a></h1>
         <p dangerouslySetInnerHTML={{ __html: calData.descHtml }} />
 
         <h2>Props</h2>
@@ -35,7 +35,7 @@ let Api = React.createClass({
 
     return (
       <section>
-        <Heading>
+        <Heading id={`prop-${name}`}>
           <a href={`#prop-${name}`}>
             <code>{name}</code>
           </a>

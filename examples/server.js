@@ -1,6 +1,6 @@
 let webpack = require('webpack');
 let WebpackDevServer = require('webpack-dev-server');
-let config = require('../webpack/examples.config');
+let config = require('../webpack/examples.config.es6');
 
 new WebpackDevServer(webpack(config), {
 

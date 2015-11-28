@@ -53,7 +53,8 @@ let localizer = {
 }
 
 export function set(newLocalizer){
-  localizer = new DateLocalizer(newLocalizer)
+  localizer = new DateLocalizer(newLocalizer);
+  return localizer;
 }
 
 let exp = {

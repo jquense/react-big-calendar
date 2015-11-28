@@ -1,70 +1,82 @@
 import React from 'react';
-import Modal from 'react-overlays/lib/Modal';
-
+import Api from './Api';
+import cn from 'classnames';
 import { render } from 'react-dom';
 
-import globalizeLocalizer from 'react-big-calendar/globalize-localizer';
-import momentLocalizer from 'react-big-calendar/moment-localizer';
-
-import { set as setLocalizer } from 'react-big-calendar/localizer';
-
-import moment from 'moment';
+import localizer from 'react-big-calendar/localizers/globalize';
 import globalize from 'globalize';
 
-import BigCalendar from 'react-big-calendar';
+localizer(globalize);
 
 import 'react-big-calendar/less/styles.less';
 import './styles.less';
 
-import events from './events';
-
-setLocalizer(
-  globalizeLocalizer(globalize)
-);
-
-function EventWeek(props) {
-  return <strong>{props.event.title}</strong>
-}
-
-function EventAgenda(props) {
-  return <em>{props.event.title}</em>
-}
-
 
 const Example = React.createClass({
   getInitialState(){
-    return { showModal: false };
+    return {
+      selected: 'basic'
+    };
   },
+
   render() {
+    let selected = this.state.selected;
+    let Current = {
+      basic: require('./demos/basic'),
+      selectable: require('./demos/selectable'),
+      popup: require('./demos/popup'),
+      rendering: require('./demos/rendering')
+    }[selected];
 
     return (
       <div className='app'>
-        <main className=''>
-          <BigCalendar
-            selectable
-            popup
-            events={events}
-            onSelectEvent={this.open}
-            defaultDate={new Date(2015, 3, 1)}
-            eventPropGetter={e => ({ className: 'hi-event'})}
-            components={{
-              event: EventWeek,
-              agenda: {
-                event: EventAgenda
-              }
-            }}
-          />
-        </main>
+      <div className="jumbotron">
+        <div className="container">
+          <h1>Big Calendar <i className='fa fa-calendar'/></h1>
+          <p>such enterprise, very business.</p>
+          <p>
+            <a href="#api">
+              <i className='fa fa-book'/> API documentation
+            </a>
+            {' | '}
+            <a target='_blank' href="https://github.com/intljusticemission/react-big-calendar">
+              <i className='fa fa-github'/> github
+            </a>
+          </p>
+        </div>
+      </div>
+        <div className='examples contain'>
+          <aside>
+            <ul className='nav nav-pills nav-stacked'>
+              <li className={cn({active: selected === 'basic' })}>
+                <a href='#' onClick={this.select.bind(null, 'basic')}>Basic</a>
+              </li>
+              <li className={cn({active: selected === 'selectable' })}>
+                <a href='#' onClick={this.select.bind(null, 'selectable')}>Selectable</a>
+              </li>
+              <li className={cn({active: selected === 'popup' })}>
+                <a href='#' onClick={this.select.bind(null, 'popup')}>Popup</a>
+              </li>
+              <li className={cn({active: selected === 'rendering' })}>
+                <a href='#' onClick={this.select.bind(null, 'rendering')}>Custom rendering</a>
+              </li>
+            </ul>
+          </aside>
+          <div className='example'>
+            <Current />
+          </div>
+        </div>
+        <div className='docs'>
+          <Api className='contain' />
+        </div>
       </div>
     );
   },
-  close(){
-    this.setState({ showModal: false });
-  },
 
-  open(){
-    this.setState({ showModal: true });
+  select(selected, e){
+    e.preventDefault();
+    this.setState({ selected })
   }
 });
 
-render(<Example/>, document.body);
+render(<Example/>, document.getElementById('root'));

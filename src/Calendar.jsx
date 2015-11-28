@@ -31,14 +31,31 @@ function isValidView(view, { views: _views }) {
 
 let now = new Date();
 
-
+/**
+ * react-big-calendar is full featured Calendar component for managing events and dates. It uses
+ * modern `flexbox` for layout making it super responsive and performant. Leaving most of the layout heavy lifting
+ * to the browser.
+ *
+ * Big Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes
+ * the most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it
+ * how to find the start and end datetimes and you can pass it whatever you want.
+ */
 let Calendar = React.createClass({
 
   propTypes: {
     /**
      * The current date value of the calendar. Determines the visible view range
+     *
+     * @controllable onNavigate
      */
     date: PropTypes.instanceOf(Date),
+
+    /**
+     * The current view of the calendar.
+     *
+     * @controllable onView
+     */
+    onView: PropTypes.string,
 
     /**
      * An array of event objects to display on the calendar
@@ -47,11 +64,20 @@ let Calendar = React.createClass({
 
     /**
      * Callback fired when the `date` value changes.
+     *
+     * @controllable date
      */
     onNavigate: PropTypes.func,
 
     /**
-     * A callback fired when a date selection is made.
+     * Callback fired when the `view` value changes.
+     *
+     * @controllable date
+     */
+    onView: PropTypes.func,
+
+    /**
+     * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
      * function(
@@ -66,7 +92,7 @@ let Calendar = React.createClass({
     onSelectSlot: PropTypes.func,
 
     /**
-     * Callback fired when an event node is selected.
+     * Callback fired when a calendar event is selected.
      *
      * ```js
      * function(event: object)
@@ -75,7 +101,10 @@ let Calendar = React.createClass({
     onSelectEvent: PropTypes.func,
 
     /**
-     * An array of built in view names
+     * An array of built-in view names to allow the calendar to display.
+     *
+     * @type Calendar.views
+     * @default ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
 
@@ -151,6 +180,9 @@ let Calendar = React.createClass({
      */
     endAccessor: accessor,
 
+    /**
+     * Localizer specific formats, tell the Calendar how to format and display dates.
+     */
     formats: PropTypes.shape({
       /**
        * Format for the day of the month heading in the Month view.
@@ -195,6 +227,21 @@ let Calendar = React.createClass({
       agendaTimeRangeFormat: dateFormat
     }),
 
+    /**
+     * Customize how different sections of the calendar render by providing custom Components.
+     * In particular the `Event` component can be specified for the entire calendar, or you can
+     * provide an individual component for each view type.
+     *
+     * ```jsx
+     * let components = {
+     *   event: MyEvent, // used by each view (Month, Day, Week)
+     *   agenda: {
+     *   	 event: MyAgendaEvent // with the agenda view use a different component to render events
+     *   }
+     * }
+     * <Calendar components={components} />
+     * ```
+     */
     components: PropTypes.shape({
       event: elementType,
 

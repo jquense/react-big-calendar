@@ -47,13 +47,13 @@ let Api = React.createClass({
           }
         </Heading>
         <p dangerouslySetInnerHTML={{ __html: data.descHtml }}/>
-        <div style={{ paddingLeft: 20 }}>
+        <div style={{ paddingLeft: 0 }}>
           <p>
-            <strong>type: </strong>
+            {'type: '}
             { typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code> }
           </p>
           { data.defaultValue &&
-            <div><strong>default: </strong><code>{data.defaultValue.trim()}</code></div>
+            <div>default: <code>{data.defaultValue.trim()}</code></div>
           }
         </div>
       </section>

@@ -186,11 +186,15 @@ let Calendar = React.createClass({
      */
     endAccessor: accessor,
 
+    /**
+     * Constrains the minimum _time_ of the Day and Week views.
+     */
     min: PropTypes.instanceOf(Date),
-    max: PropTypes.instanceOf(Date),
 
-    timeMin: PropTypes.instanceOf(Date),
-    timeMax: PropTypes.instanceOf(Date),
+    /**
+     * Constrains the maximum _time_ of the Day and Week views..
+     */
+    max: PropTypes.instanceOf(Date),
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.

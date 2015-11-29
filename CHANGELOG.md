@@ -1,3 +1,11 @@
+v0.9.4 - Sun, 29 Nov 2015 02:19:49 GMT
+--------------------------------------
+
+- [a41c9f9](../../commit/a41c9f9) [added] right-to-left support
+- [8bb6589](../../commit/8bb6589) [fixed] properly select time ranges with min/max set
+
+
+
 v0.9.3 - Sat, 28 Nov 2015 20:00:24 GMT
 --------------------------------------
 

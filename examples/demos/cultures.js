@@ -15,6 +15,7 @@ let Cultures = React.createClass({
 
   render(){
     let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
+    let rtl = this.state.culture === 'ar-AE';
 
     return (
       <div>
@@ -22,6 +23,8 @@ let Cultures = React.createClass({
           <label>Select a Culture</label>
           {' '}
           <select
+            className='form-control'
+            style={{ width: 200, display: 'inline-block'}}
             defaultValue={'fr'}
             onChange={e => this.setState({ culture: e.target.value })}
           >
@@ -33,6 +36,7 @@ let Cultures = React.createClass({
           </select>
         </h3>
         <BigCalendar
+          rtl={rtl}
           events={events}
           culture={this.state.culture}
           defaultDate={new Date(2015, 3, 1)}

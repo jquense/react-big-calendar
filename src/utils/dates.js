@@ -1,4 +1,4 @@
-
+/* eslint no-fallthrough: 0 */
 import dateMath from 'date-arithmetic';
 import localizer from '../localizer';
 import { directions } from './constants';
@@ -124,6 +124,26 @@ let dates = Object.assign(dateMath, {
     return Math.abs(
       (+dates.startOf(dateA, unit) / MILLI[unit]) - (+dates.startOf(dateB, unit) / MILLI[unit])
     )
+  },
+
+  total(date, unit) {
+    let ms = date.getTime()
+      , div = 1;
+
+    switch (unit) {
+      case 'week':
+        div *= 7
+      case 'day':
+        div *= 24
+      case 'hours':
+        div *= 60
+      case 'minutes':
+        div *= 60
+      case 'seconds':
+        div *= 1000;
+    }
+
+    return ms / div;
   },
 
   week(date){

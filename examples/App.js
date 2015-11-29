@@ -1,5 +1,6 @@
 import React from 'react';
 import Api from './Api';
+import Intro from './Intro.md';
 import cn from 'classnames';
 import { render } from 'react-dom';
 
@@ -11,6 +12,7 @@ localizer(globalize);
 import 'react-big-calendar/less/styles.less';
 import './styles.less';
 
+let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
 const Example = React.createClass({
   getInitialState(){
@@ -36,6 +38,10 @@ const Example = React.createClass({
           <h1>Big Calendar <i className='fa fa-calendar'/></h1>
           <p>such enterprise, very business.</p>
           <p>
+            <a href="#intro">
+              <i className='fa fa-play'/> Getting started
+            </a>
+            {' | '}
             <a href="#api">
               <i className='fa fa-book'/> API documentation
             </a>
@@ -67,11 +73,17 @@ const Example = React.createClass({
             </ul>
           </aside>
           <div className='example'>
+            <div  style={{ marginBottom: 15 }}>
+              <a target='_blank' href={demoRoot + '/' + selected + '.js' }>
+                <strong><i className='fa fa-code'/>{' view example source code'}</strong>
+              </a>
+            </div>
             <Current />
           </div>
         </div>
         <div className='docs'>
-          <Api className='contain' />
+          <Intro className='contain section'/>
+          <Api className='contain section' />
         </div>
       </div>
     );

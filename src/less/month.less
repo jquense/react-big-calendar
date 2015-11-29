@@ -50,6 +50,11 @@
   .rbc-header + .rbc-header {
     border-left: 1px solid @cell-border;
   }
+
+  .rbc-rtl & .rbc-header + .rbc-header {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
+  }
 }
 
 .rbc-month-header {
@@ -103,6 +108,11 @@
 .rbc-day-bg {
   & + & {
     border-left: 1px solid @cell-border;
+  }
+
+  .rbc-rtl & + & {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
   }
 }
 

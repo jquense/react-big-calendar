@@ -43,8 +43,18 @@
     border-right: 1px solid @cell-border;
   }
 
+  .rbc-rtl &.rbc-header-overflowing {
+    border-right-width: 0;
+    border-left: 1px solid @cell-border;
+  }
+
   > .rbc-row > * + * {
     border-left: 1px solid @cell-border;
+  }
+
+  .rbc-rtl & > .rbc-row > * + * {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
   }
 
   > .rbc-row:first-child {
@@ -66,7 +76,6 @@
   width: 100%;
   border-top: 2px solid @calendar-border;
   overflow-y: auto;
-  //overflow-x: hidden;
 
   > .rbc-time-gutter {
     flex: none;
@@ -74,6 +83,11 @@
 
   > * + * {
     border-left: 1px solid @cell-border;
+  }
+
+  .rbc-rtl & > * + * {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
   }
 
   > .rbc-day-slot {

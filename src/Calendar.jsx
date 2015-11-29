@@ -137,6 +137,11 @@ let Calendar = React.createClass({
     selectable: PropTypes.bool,
 
     /**
+     * switch the calendar to a `right-to-left` read direction.
+     */
+    rtl: PropTypes.bool,
+
+    /**
      * Optionally provide a function that returns an object of className or style props
      * to be applied to the the event node.
      *
@@ -180,6 +185,16 @@ let Calendar = React.createClass({
      * @type {(func|string)}
      */
     endAccessor: accessor,
+
+    /**
+     * Constrains the minimum _time_ of the Day and Week views.
+     */
+    min: PropTypes.instanceOf(Date),
+
+    /**
+     * Constrains the maximum _time_ of the Day and Week views..
+     */
+    max: PropTypes.instanceOf(Date),
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
@@ -313,7 +328,9 @@ let Calendar = React.createClass({
 
     return (
       <div {...elementProps}
-        className={cn('rbc-calendar', className)}
+        className={cn('rbc-calendar', className, {
+          'rbc-rtl': props.rtl
+        })}
         style={style}
       >
         { toolbar &&

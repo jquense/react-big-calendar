@@ -33,7 +33,8 @@ let TimeGrid = React.createClass({
     step: React.PropTypes.number,
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
-    dayFormat: dateFormat
+    dayFormat: dateFormat,
+    rtl: React.PropTypes.bool
   },
 
   getDefaultProps(){
@@ -199,6 +200,7 @@ let TimeGrid = React.createClass({
   },
 
   _adjustGutter() {
+    let isRtl = this.props.rtl;
     let header = this.refs.headerCell;
     let width = this._gutterWidth
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
@@ -212,7 +214,8 @@ let TimeGrid = React.createClass({
 
     if (isOverflowing) {
       classes.addClass(header, 'rbc-header-overflowing')
-      this.refs.headerCell.style.marginRight = scrollbarSize() + 'px'
+      this.refs.headerCell.style[!isRtl ? 'marginLeft' : 'marginRight'] = '';
+      this.refs.headerCell.style[isRtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
     } else {
       classes.removeClass(header, 'rbc-header-overflowing')
     }

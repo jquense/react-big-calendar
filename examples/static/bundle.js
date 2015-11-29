@@ -56,25 +56,31 @@
 
 	var _Api2 = _interopRequireDefault(_Api);
 
-	var _classnames = __webpack_require__(210);
+	var _IntroMd = __webpack_require__(210);
+
+	var _IntroMd2 = _interopRequireDefault(_IntroMd);
+
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
-	var _reactBigCalendarLocalizersGlobalize = __webpack_require__(212);
+	var _reactBigCalendarLocalizersGlobalize = __webpack_require__(213);
 
 	var _reactBigCalendarLocalizersGlobalize2 = _interopRequireDefault(_reactBigCalendarLocalizersGlobalize);
 
-	var _globalize = __webpack_require__(219);
+	var _globalize = __webpack_require__(220);
 
 	var _globalize2 = _interopRequireDefault(_globalize);
 
-	__webpack_require__(220);
+	__webpack_require__(221);
 
-	__webpack_require__(224);
+	__webpack_require__(225);
 
 	_reactBigCalendarLocalizersGlobalize2['default'](_globalize2['default']);
+
+	var demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos';
 
 	var Example = _react2['default'].createClass({
 	  displayName: 'Example',
@@ -88,11 +94,11 @@
 	  render: function render() {
 	    var selected = this.state.selected;
 	    var Current = ({
-	      basic: __webpack_require__(226),
-	      selectable: __webpack_require__(327),
-	      cultures: __webpack_require__(328),
-	      popup: __webpack_require__(333),
-	      rendering: __webpack_require__(334)
+	      basic: __webpack_require__(227),
+	      selectable: __webpack_require__(328),
+	      cultures: __webpack_require__(329),
+	      popup: __webpack_require__(334),
+	      rendering: __webpack_require__(335)
 	    })[selected];
 
 	    return _react2['default'].createElement(
@@ -118,6 +124,13 @@
 	          _react2['default'].createElement(
 	            'p',
 	            null,
+	            _react2['default'].createElement(
+	              'a',
+	              { href: '#intro' },
+	              _react2['default'].createElement('i', { className: 'fa fa-play' }),
+	              ' Getting started'
+	            ),
+	            ' | ',
 	            _react2['default'].createElement(
 	              'a',
 	              { href: '#api' },
@@ -193,13 +206,28 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'example' },
+	          _react2['default'].createElement(
+	            'div',
+	            { style: { marginBottom: 15 } },
+	            _react2['default'].createElement(
+	              'a',
+	              { target: '_blank', href: demoRoot + '/' + selected + '.js' },
+	              _react2['default'].createElement(
+	                'strong',
+	                null,
+	                _react2['default'].createElement('i', { className: 'fa fa-code' }),
+	                ' view example source code'
+	              )
+	            )
+	          ),
 	          _react2['default'].createElement(Current, null)
 	        )
 	      ),
 	      _react2['default'].createElement(
 	        'div',
 	        { className: 'docs' },
-	        _react2['default'].createElement(_Api2['default'], { className: 'contain' })
+	        _react2['default'].createElement(_IntroMd2['default'], { className: 'contain section' }),
+	        _react2['default'].createElement(_Api2['default'], { className: 'contain section' })
 	      )
 	    );
 	  },
@@ -19226,15 +19254,11 @@
 	      _react2['default'].createElement('p', { dangerouslySetInnerHTML: { __html: data.descHtml } }),
 	      _react2['default'].createElement(
 	        'div',
-	        { style: { paddingLeft: 20 } },
+	        { style: { paddingLeft: 0 } },
 	        _react2['default'].createElement(
 	          'p',
 	          null,
-	          _react2['default'].createElement(
-	            'strong',
-	            null,
-	            'type: '
-	          ),
+	          'type: ',
 	          typeInfo && typeInfo.type === 'pre' ? typeInfo : _react2['default'].createElement(
 	            'code',
 	            null,
@@ -19244,11 +19268,7 @@
 	        data.defaultValue && _react2['default'].createElement(
 	          'div',
 	          null,
-	          _react2['default'].createElement(
-	            'strong',
-	            null,
-	            'default: '
-	          ),
+	          'default: ',
 	          _react2['default'].createElement(
 	            'code',
 	            null,
@@ -19433,7 +19453,7 @@
 /* 163 */
 /***/ function(module, exports) {
 
-	module.exports = {"Calendar":{"props":{"date":{"type":{"name":"Date"},"required":false,"desc":"The current date value of the calendar. Determines the visible view range","defaultValue":"now","computed":true,"doclets":{"controllable":"onNavigate"},"descHtml":"<p>The current date value of the calendar. Determines the visible view range</p>\n"},"view":{"type":{"name":"string"},"required":false,"desc":"The current view of the calendar.","defaultValue":"'month'","computed":true,"doclets":{"default":"'month'\r","controllable":"onView"},"descHtml":"<p>The current view of the calendar.</p>\n"},"events":{"type":{"name":"array","value":{"name":"object"}},"required":false,"desc":"An array of event objects to display on the calendar","doclets":{},"descHtml":"<p>An array of event objects to display on the calendar</p>\n"},"onNavigate":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `date` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>date</code> value changes.</p>\n"},"onView":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `view` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>view</code> value changes.</p>\n"},"onSelectSlot":{"type":{"name":"func"},"required":false,"desc":"A callback fired when a date selection is made. Only fires when `selectable` is `true`.\r\n\n```js\r\nfunction(\r\n  slotInfo: object {\r\n    start: date,\r\n    end: date,\r\n    slots: array<date>\r\n  }\r\n)\r\n```","doclets":{},"descHtml":"<p>A callback fired when a date selection is made. Only fires when <code>selectable</code> is <code>true</code>.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\" >function</span><span class=\"token punctuation\" >(</span>\n  slotInfo<span class=\"token punctuation\" >:</span> object <span class=\"token punctuation\" >{</span>\n    start<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    end<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    slots<span class=\"token punctuation\" >:</span> array<span class=\"token operator\" >&lt;</span>date<span class=\"token operator\" >></span>\n  <span class=\"token punctuation\" >}</span>\n<span class=\"token punctuation\" >)</span>\n</code></pre>\n"},"onSelectEvent":{"type":{"name":"func"},"required":false,"desc":"Callback fired when a calendar event is selected.\r\n\n```js\r\nfunction(event: object)\r\n```","doclets":{},"descHtml":"<p>Callback fired when a calendar event is selected.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\" >function</span><span class=\"token punctuation\" >(</span>event<span class=\"token punctuation\" >:</span> object<span class=\"token punctuation\" >)</span>\n</code></pre>\n"},"views":{"type":{"name":"Calendar.views"},"required":false,"desc":"An array of built-in view names to allow the calendar to display.","defaultValue":"['month', 'week', 'day', 'agenda']","computed":true,"doclets":{"type":"Calendar.views\r","default":"['month', 'week', 'day', 'agenda']"},"descHtml":"<p>An array of built-in view names to allow the calendar to display.</p>\n"},"toolbar":{"type":{"name":"bool"},"required":false,"desc":"Determines whether the toolbar is displayed","defaultValue":"true","computed":false,"doclets":{},"descHtml":"<p>Determines whether the toolbar is displayed</p>\n"},"popup":{"type":{"name":"bool"},"required":false,"desc":"Show truncated events in an overlay when you click the \"+_x_ more\" link.","defaultValue":"false","computed":false,"doclets":{},"descHtml":"<p>Show truncated events in an overlay when you click the &quot;+<em>x</em> more&quot; link.</p>\n"},"popupOffset":{"type":{"name":"union","value":[{"name":"number"},{"name":"object","value":{"x":{"type":{"name":"number"},"required":false,"desc":""},"y":{"type":{"name":"number"},"required":false,"desc":""}}}]},"required":false,"desc":"Distance in pixels, from the edges of the viewport, the \"show more\" overlay should be positioned.\r\n\n```js\r\n<BigCalendar popupOffset={30}/>\r\n<BigCalendar popupOffset={{x: 30, y: 20}}/>\r\n```","doclets":{},"descHtml":"<p>Distance in pixels, from the edges of the viewport, the &quot;show more&quot; overlay should be positioned.</p>\n<pre><code class=\"lang-js\"><span class=\"token operator\" >&lt;</span>BigCalendar popupOffset<span class=\"token operator\" >=</span><span class=\"token punctuation\" >{</span><span class=\"token number\" >30</span><span class=\"token punctuation\" >}</span><span class=\"token operator\" >/</span><span class=\"token operator\" >></span>\n<span class=\"token operator\" >&lt;</span>BigCalendar popupOffset<span class=\"token operator\" >=</span><span class=\"token punctuation\" >{</span><span class=\"token punctuation\" >{</span>x<span class=\"token punctuation\" >:</span> <span class=\"token number\" >30</span><span class=\"token punctuation\" >,</span> y<span class=\"token punctuation\" >:</span> <span class=\"token number\" >20</span><span class=\"token punctuation\" >}</span><span class=\"token punctuation\" >}</span><span class=\"token operator\" >/</span><span class=\"token operator\" >></span>\n</code></pre>\n"},"selectable":{"type":{"name":"bool"},"required":false,"desc":"Allows mouse selection of ranges of dates/times.","doclets":{},"descHtml":"<p>Allows mouse selection of ranges of dates/times.</p>\n"},"eventPropGetter":{"type":{"name":"func"},"required":false,"desc":"Optionally provide a function that returns an object of className or style props\r\nto be applied to the the event node.\r\n\n```js\r\nfunction(\r\n\tevent: object,\r\n\tstart: date,\r\n\tend: date,\r\n\tisSelected: bool\r\n) -> { className: string?, style: object? }\r\n```","doclets":{},"descHtml":"<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\" >function</span><span class=\"token punctuation\" >(</span>\n    event<span class=\"token punctuation\" >:</span> object<span class=\"token punctuation\" >,</span>\n    start<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    end<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    isSelected<span class=\"token punctuation\" >:</span> bool\n<span class=\"token punctuation\" >)</span> <span class=\"token operator\" >-</span><span class=\"token operator\" >></span> <span class=\"token punctuation\" >{</span> className<span class=\"token punctuation\" >:</span> string<span class=\"token operator\" >?</span><span class=\"token punctuation\" >,</span> style<span class=\"token punctuation\" >:</span> object<span class=\"token operator\" >?</span> <span class=\"token punctuation\" >}</span>\n</code></pre>\n"},"titleAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Accessor for the event title, used to display event information. Should\r\nresolve to a `renderable` value.","defaultValue":"'title'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Accessor for the event title, used to display event information. Should\nresolve to a <code>renderable</code> value.</p>\n"},"allDayAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Determines whether the event should be considered an \"all day\" event and ignore time.\r\nMust resolve to a `boolean` value.","defaultValue":"'allDay'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Determines whether the event should be considered an &quot;all day&quot; event and ignore time.\nMust resolve to a <code>boolean</code> value.</p>\n"},"startAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The start date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'start'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The start date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"endAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The end date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'end'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The end date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"formats":{"type":{"name":"object","value":{"dateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Format for the day of the month heading in the Month view."},"dayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"A day of the week format for Week and Day headings"},"weekdayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Week day name format for the Month week day headings."},"monthHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Month view."},"weekHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Week views."},"dayHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Day view."},"agendaHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Agenda view."},"selectRangeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"A time range format for selecting time slots."},"agendaDateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":""},"agendaTimeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":""},"agendaTimeRangeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":""}}},"required":false,"desc":"Localizer specific formats, tell the Calendar how to format and display dates.","doclets":{},"descHtml":"<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n"},"components":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""},"agenda":{"type":{"name":"object","value":{"date":{"type":{"name":"elementType"},"required":false,"desc":""},"time":{"type":{"name":"elementType"},"required":false,"desc":""},"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""},"day":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""},"week":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""},"month":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""}}},"required":false,"desc":"Customize how different sections of the calendar render by providing custom Components.\r\nIn particular the `Event` component can be specified for the entire calendar, or you can\r\nprovide an individual component for each view type.\r\n\n```jsx\r\nlet components = {\r\n  event: MyEvent, // used by each view (Month, Day, Week)\r\n  agenda: {\r\n  \t event: MyAgendaEvent // with the agenda view use a different component to render events\r\n  }\r\n}\r\n<Calendar components={components} />\r\n```","doclets":{},"descHtml":"<p>Customize how different sections of the calendar render by providing custom Components.\nIn particular the <code>Event</code> component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.</p>\n<pre><code class=\"lang-jsx\"><span class=\"token keyword\" >let</span> components <span class=\"token operator\" >=</span> <span class=\"token punctuation\" >{</span>\n  event<span class=\"token punctuation\" >:</span> MyEvent<span class=\"token punctuation\" >,</span> <span class=\"token comment\" spellcheck=\"true\">// used by each view (Month, Day, Week)</span>\n  agenda<span class=\"token punctuation\" >:</span> <span class=\"token punctuation\" >{</span>\n       event<span class=\"token punctuation\" >:</span> MyAgendaEvent <span class=\"token comment\" spellcheck=\"true\">// with the agenda view use a different component to render events</span>\n  <span class=\"token punctuation\" >}</span>\n<span class=\"token punctuation\" >}</span>\n<span class=\"token tag\" ><span class=\"token tag\" ><span class=\"token punctuation\" >&lt;</span>Calendar</span> <span class=\"token attr-name\" >components</span><span class=\"token script language-javascript\" ><span class=\"token punctuation\" >=</span><span class=\"token punctuation\" >{</span>components<span class=\"token punctuation\" >}</span></span> <span class=\"token punctuation\" >/></span></span>\n</code></pre>\n"},"messages":{"type":{"name":"object","value":{"allDay":{"type":{"name":"string"},"required":false,"desc":""},"previous":{"type":{"name":"string"},"required":false,"desc":""},"next":{"type":{"name":"string"},"required":false,"desc":""},"today":{"type":{"name":"string"},"required":false,"desc":""},"month":{"type":{"name":"string"},"required":false,"desc":""},"week":{"type":{"name":"string"},"required":false,"desc":""},"day":{"type":{"name":"string"},"required":false,"desc":""},"agenda":{"type":{"name":"string"},"required":false,"desc":""},"showMore":{"type":{"name":"func"},"required":false,"desc":""}}},"required":false,"desc":"String messages used throughout the component, override to provide localizations","doclets":{},"descHtml":"<p>String messages used throughout the component, override to provide localizations</p>\n"}},"composes":[],"desc":"react-big-calendar is full featured Calendar component for managing events and dates. It uses\r\nmodern `flexbox` for layout making it super responsive and performant. Leaving most of the layout heavy lifting\r\nto the browser.\r\n\nBig Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\r\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\r\nhow to find the start and end datetimes and you can pass it whatever you want.","doclets":{},"descHtml":"<p>react-big-calendar is full featured Calendar component for managing events and dates. It uses\nmodern <code>flexbox</code> for layout making it super responsive and performant. Leaving most of the layout heavy lifting\nto the browser.</p>\n<p>Big Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\nhow to find the start and end datetimes and you can pass it whatever you want.</p>\n"}}
+	module.exports = {"Calendar":{"props":{"date":{"type":{"name":"Date"},"required":false,"desc":"The current date value of the calendar. Determines the visible view range","defaultValue":"now","computed":true,"doclets":{"controllable":"onNavigate"},"descHtml":"<p>The current date value of the calendar. Determines the visible view range</p>\n"},"view":{"type":{"name":"string"},"required":false,"desc":"The current view of the calendar.","defaultValue":"'month'","computed":true,"doclets":{"default":"'month'\r","controllable":"onView"},"descHtml":"<p>The current view of the calendar.</p>\n"},"events":{"type":{"name":"array","value":{"name":"object"}},"required":false,"desc":"An array of event objects to display on the calendar","doclets":{},"descHtml":"<p>An array of event objects to display on the calendar</p>\n"},"onNavigate":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `date` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>date</code> value changes.</p>\n"},"onView":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `view` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>view</code> value changes.</p>\n"},"onSelectSlot":{"type":{"name":"func"},"required":false,"desc":"A callback fired when a date selection is made. Only fires when `selectable` is `true`.\r\n\n```js\r\nfunction(\r\n  slotInfo: object {\r\n    start: date,\r\n    end: date,\r\n    slots: array<date>\r\n  }\r\n)\r\n```","doclets":{},"descHtml":"<p>A callback fired when a date selection is made. Only fires when <code>selectable</code> is <code>true</code>.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\" >function</span><span class=\"token punctuation\" >(</span>\n  slotInfo<span class=\"token punctuation\" >:</span> object <span class=\"token punctuation\" >{</span>\n    start<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    end<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    slots<span class=\"token punctuation\" >:</span> array<span class=\"token operator\" >&lt;</span>date<span class=\"token operator\" >></span>\n  <span class=\"token punctuation\" >}</span>\n<span class=\"token punctuation\" >)</span>\n</code></pre>\n"},"onSelectEvent":{"type":{"name":"func"},"required":false,"desc":"Callback fired when a calendar event is selected.\r\n\n```js\r\nfunction(event: object)\r\n```","doclets":{},"descHtml":"<p>Callback fired when a calendar event is selected.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\" >function</span><span class=\"token punctuation\" >(</span>event<span class=\"token punctuation\" >:</span> object<span class=\"token punctuation\" >)</span>\n</code></pre>\n"},"views":{"type":{"name":"Calendar.views"},"required":false,"desc":"An array of built-in view names to allow the calendar to display.","defaultValue":"['month', 'week', 'day', 'agenda']","computed":true,"doclets":{"type":"Calendar.views\r","default":"['month', 'week', 'day', 'agenda']"},"descHtml":"<p>An array of built-in view names to allow the calendar to display.</p>\n"},"toolbar":{"type":{"name":"bool"},"required":false,"desc":"Determines whether the toolbar is displayed","defaultValue":"true","computed":false,"doclets":{},"descHtml":"<p>Determines whether the toolbar is displayed</p>\n"},"popup":{"type":{"name":"bool"},"required":false,"desc":"Show truncated events in an overlay when you click the \"+_x_ more\" link.","defaultValue":"false","computed":false,"doclets":{},"descHtml":"<p>Show truncated events in an overlay when you click the &quot;+<em>x</em> more&quot; link.</p>\n"},"popupOffset":{"type":{"name":"union","value":[{"name":"number"},{"name":"object","value":{"x":{"type":{"name":"number"},"required":false,"desc":""},"y":{"type":{"name":"number"},"required":false,"desc":""}}}]},"required":false,"desc":"Distance in pixels, from the edges of the viewport, the \"show more\" overlay should be positioned.\r\n\n```js\r\n<BigCalendar popupOffset={30}/>\r\n<BigCalendar popupOffset={{x: 30, y: 20}}/>\r\n```","doclets":{},"descHtml":"<p>Distance in pixels, from the edges of the viewport, the &quot;show more&quot; overlay should be positioned.</p>\n<pre><code class=\"lang-js\"><span class=\"token operator\" >&lt;</span>BigCalendar popupOffset<span class=\"token operator\" >=</span><span class=\"token punctuation\" >{</span><span class=\"token number\" >30</span><span class=\"token punctuation\" >}</span><span class=\"token operator\" >/</span><span class=\"token operator\" >></span>\n<span class=\"token operator\" >&lt;</span>BigCalendar popupOffset<span class=\"token operator\" >=</span><span class=\"token punctuation\" >{</span><span class=\"token punctuation\" >{</span>x<span class=\"token punctuation\" >:</span> <span class=\"token number\" >30</span><span class=\"token punctuation\" >,</span> y<span class=\"token punctuation\" >:</span> <span class=\"token number\" >20</span><span class=\"token punctuation\" >}</span><span class=\"token punctuation\" >}</span><span class=\"token operator\" >/</span><span class=\"token operator\" >></span>\n</code></pre>\n"},"selectable":{"type":{"name":"bool"},"required":false,"desc":"Allows mouse selection of ranges of dates/times.","doclets":{},"descHtml":"<p>Allows mouse selection of ranges of dates/times.</p>\n"},"rtl":{"type":{"name":"bool"},"required":false,"desc":"switch the calendar to a `right-to-left` read direction.","doclets":{},"descHtml":"<p>switch the calendar to a <code>right-to-left</code> read direction.</p>\n"},"eventPropGetter":{"type":{"name":"func"},"required":false,"desc":"Optionally provide a function that returns an object of className or style props\r\nto be applied to the the event node.\r\n\n```js\r\nfunction(\r\n\tevent: object,\r\n\tstart: date,\r\n\tend: date,\r\n\tisSelected: bool\r\n) -> { className: string?, style: object? }\r\n```","doclets":{},"descHtml":"<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\" >function</span><span class=\"token punctuation\" >(</span>\n    event<span class=\"token punctuation\" >:</span> object<span class=\"token punctuation\" >,</span>\n    start<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    end<span class=\"token punctuation\" >:</span> date<span class=\"token punctuation\" >,</span>\n    isSelected<span class=\"token punctuation\" >:</span> bool\n<span class=\"token punctuation\" >)</span> <span class=\"token operator\" >-</span><span class=\"token operator\" >></span> <span class=\"token punctuation\" >{</span> className<span class=\"token punctuation\" >:</span> string<span class=\"token operator\" >?</span><span class=\"token punctuation\" >,</span> style<span class=\"token punctuation\" >:</span> object<span class=\"token operator\" >?</span> <span class=\"token punctuation\" >}</span>\n</code></pre>\n"},"titleAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Accessor for the event title, used to display event information. Should\r\nresolve to a `renderable` value.","defaultValue":"'title'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Accessor for the event title, used to display event information. Should\nresolve to a <code>renderable</code> value.</p>\n"},"allDayAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Determines whether the event should be considered an \"all day\" event and ignore time.\r\nMust resolve to a `boolean` value.","defaultValue":"'allDay'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Determines whether the event should be considered an &quot;all day&quot; event and ignore time.\nMust resolve to a <code>boolean</code> value.</p>\n"},"startAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The start date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'start'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The start date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"endAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The end date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'end'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The end date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"min":{"type":{"name":"Date"},"required":false,"desc":"Constrains the minimum _time_ of the Day and Week views.","doclets":{},"descHtml":"<p>Constrains the minimum <em>time</em> of the Day and Week views.</p>\n"},"max":{"type":{"name":"Date"},"required":false,"desc":"Constrains the maximum _time_ of the Day and Week views..","doclets":{},"descHtml":"<p>Constrains the maximum <em>time</em> of the Day and Week views..</p>\n"},"formats":{"type":{"name":"object","value":{"dateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Format for the day of the month heading in the Month view."},"dayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"A day of the week format for Week and Day headings"},"weekdayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Week day name format for the Month week day headings."},"monthHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Month view."},"weekHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Week views."},"dayHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Day view."},"agendaHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Agenda view."},"selectRangeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"A time range format for selecting time slots."},"agendaDateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":""},"agendaTimeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":""},"agendaTimeRangeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":""}}},"required":false,"desc":"Localizer specific formats, tell the Calendar how to format and display dates.","doclets":{},"descHtml":"<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n"},"components":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""},"agenda":{"type":{"name":"object","value":{"date":{"type":{"name":"elementType"},"required":false,"desc":""},"time":{"type":{"name":"elementType"},"required":false,"desc":""},"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""},"day":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""},"week":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""},"month":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":""}}},"required":false,"desc":""}}},"required":false,"desc":"Customize how different sections of the calendar render by providing custom Components.\r\nIn particular the `Event` component can be specified for the entire calendar, or you can\r\nprovide an individual component for each view type.\r\n\n```jsx\r\nlet components = {\r\n  event: MyEvent, // used by each view (Month, Day, Week)\r\n  agenda: {\r\n  \t event: MyAgendaEvent // with the agenda view use a different component to render events\r\n  }\r\n}\r\n<Calendar components={components} />\r\n```","doclets":{},"descHtml":"<p>Customize how different sections of the calendar render by providing custom Components.\nIn particular the <code>Event</code> component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.</p>\n<pre><code class=\"lang-jsx\"><span class=\"token keyword\" >let</span> components <span class=\"token operator\" >=</span> <span class=\"token punctuation\" >{</span>\n  event<span class=\"token punctuation\" >:</span> MyEvent<span class=\"token punctuation\" >,</span> <span class=\"token comment\" spellcheck=\"true\">// used by each view (Month, Day, Week)</span>\n  agenda<span class=\"token punctuation\" >:</span> <span class=\"token punctuation\" >{</span>\n       event<span class=\"token punctuation\" >:</span> MyAgendaEvent <span class=\"token comment\" spellcheck=\"true\">// with the agenda view use a different component to render events</span>\n  <span class=\"token punctuation\" >}</span>\n<span class=\"token punctuation\" >}</span>\n<span class=\"token tag\" ><span class=\"token tag\" ><span class=\"token punctuation\" >&lt;</span>Calendar</span> <span class=\"token attr-name\" >components</span><span class=\"token script language-javascript\" ><span class=\"token punctuation\" >=</span><span class=\"token punctuation\" >{</span>components<span class=\"token punctuation\" >}</span></span> <span class=\"token punctuation\" >/></span></span>\n</code></pre>\n"},"messages":{"type":{"name":"object","value":{"allDay":{"type":{"name":"string"},"required":false,"desc":""},"previous":{"type":{"name":"string"},"required":false,"desc":""},"next":{"type":{"name":"string"},"required":false,"desc":""},"today":{"type":{"name":"string"},"required":false,"desc":""},"month":{"type":{"name":"string"},"required":false,"desc":""},"week":{"type":{"name":"string"},"required":false,"desc":""},"day":{"type":{"name":"string"},"required":false,"desc":""},"agenda":{"type":{"name":"string"},"required":false,"desc":""},"showMore":{"type":{"name":"func"},"required":false,"desc":""}}},"required":false,"desc":"String messages used throughout the component, override to provide localizations","doclets":{},"descHtml":"<p>String messages used throughout the component, override to provide localizations</p>\n"}},"composes":[],"desc":"react-big-calendar is full featured Calendar component for managing events and dates. It uses\r\nmodern `flexbox` for layout making it super responsive and performant. Leaving most of the layout heavy lifting\r\nto the browser.\r\n\nBig Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\r\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\r\nhow to find the start and end datetimes and you can pass it whatever you want.","doclets":{},"descHtml":"<p>react-big-calendar is full featured Calendar component for managing events and dates. It uses\nmodern <code>flexbox</code> for layout making it super responsive and performant. Leaving most of the layout heavy lifting\nto the browser.</p>\n<p>Big Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\nhow to find the start and end datetimes and you can pass it whatever you want.</p>\n"}}
 
 /***/ },
 /* 164 */
@@ -21232,6 +21252,122 @@
 /* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var React = __webpack_require__(10);
+
+	module.exports = React.createClass({
+	  displayName: 'intro/',
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      this.props,
+	      React.createElement(
+	        'h2',
+	        { id: '-a-id-intro-href-intro-getting-started-a-' },
+	        React.createElement(
+	          'a',
+	          { id: 'intro', href: '#intro' },
+	          'Getting Started'
+	        )
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'You can install ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'react-big-calendar'
+	        ),
+	        ' via npm:'
+	      ),
+	      React.createElement(
+	        'pre',
+	        null,
+	        React.createElement('code', {
+	          className: 'js',
+	          dangerouslySetInnerHTML: { __html: 'npm i <span class="token operator" >--</span>save react<span class="token operator" >-</span>big<span class="token operator" >-</span>calendar' }
+	        })
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Styles can be found at: ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'react-big-calendar/lib/css/react-big-calendar.css'
+	        ),
+	        ', and should be included on the page with the calendar component.'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Date internationalization and localization is ',
+	        React.createElement(
+	          'strong',
+	          null,
+	          'hard'
+	        ),
+	        ' and ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'react-big-calendar'
+	        ),
+	        ' doesn\'t even attempt to solve that problem. Instead you can use one of the many excellent solutions already out there, via adapters called "localizers". Big Calendar comes with two localizers for use with ',
+	        React.createElement(
+	          'a',
+	          { href: 'https://github.com/jquery/globalize' },
+	          'Globalize.js'
+	        ),
+	        ' (v0.1.0 supported) or ',
+	        React.createElement(
+	          'a',
+	          { href: 'http://momentjs.com/' },
+	          'Moment.js'
+	        ),
+	        '.'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Choose the localizer that best suits your needs, or write your own. Whatever you do, you\'ll need to set it up before you can use the calendar (you only need to set it up once).'
+	      ),
+	      React.createElement(
+	        'pre',
+	        null,
+	        React.createElement('code', {
+	          className: 'jsx',
+	          dangerouslySetInnerHTML: { __html: '<span class="token keyword" >import</span> BigCalendar <span class="token keyword" >from</span> <span class="token string" >\'react-big-calendar\'</span><span class="token punctuation" >;</span>\n<span class="token keyword" >import</span> moment <span class="token keyword" >from</span> <span class="token string" >\'moment\'</span><span class="token punctuation" >;</span>\n\n<span class="token comment" spellcheck="true">// Setup the localizer by providing the moment (or globalize) Object</span>\n<span class="token comment" spellcheck="true">// to the correct localizer.</span>\nBigCalendar<span class="token punctuation" >.</span><span class="token function" >momentLocalizer</span><span class="token punctuation" >(</span>moment<span class="token punctuation" >)</span><span class="token punctuation" >;</span> <span class="token comment" spellcheck="true">// or globalizeLocalizer</span>\n\n<span class="token keyword" >let</span> MyCalendar <span class="token operator" >=</span> props <span class="token operator" >=</span><span class="token operator" >></span> <span class="token punctuation" >(</span>\n  <span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;</span>div</span><span class="token punctuation" >></span></span>\n    <span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;</span>BigCalendar</span>\n      <span class="token attr-name" >events</span><span class="token script language-javascript" ><span class="token punctuation" >=</span><span class="token punctuation" >{</span>myEventsList<span class="token punctuation" >}</span></span>\n      <span class="token attr-name" >startAccessor</span><span class="token attr-value" ><span class="token punctuation" >=</span><span class="token punctuation" >\'</span>startDate<span class="token punctuation" >\'</span></span>\n      <span class="token attr-name" >endAccessor</span><span class="token attr-value" ><span class="token punctuation" >=</span><span class="token punctuation" >\'</span>endDate<span class="token punctuation" >\'</span></span>\n    <span class="token punctuation" >/></span></span>\n  <span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;/</span>div</span><span class="token punctuation" >></span></span>\n<span class="token punctuation" >)</span><span class="token punctuation" >;</span>' }
+	        })
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Once you\'ve configured a localizer, the Calendar is ready to accept ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'dateFormat'
+	        ),
+	        ' props. These props determine how dates will be displayed throughout the component and are specific to the localizer of your choice. For instance if you are using the Moment localizer, then any ',
+	        React.createElement(
+	          'a',
+	          { href: 'http://momentjs.com/docs/#/displaying/format/' },
+	          'Moment format pattern'
+	        ),
+	        ' is valid!'
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
@@ -21283,7 +21419,7 @@
 
 
 /***/ },
-/* 211 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21292,7 +21428,7 @@
 
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21303,13 +21439,13 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _formats = __webpack_require__(218);
+	var _formats = __webpack_require__(219);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	function inSame12Hr(start, end) {
 	  var s = 12 - _utilsDates2['default'].hours(start);
@@ -21384,9 +21520,10 @@
 	};
 
 /***/ },
-/* 213 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-fallthrough: 0 */
 	'use strict';
 
 	exports.__esModule = true;
@@ -21405,15 +21542,15 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _dateArithmetic = __webpack_require__(214);
+	var _dateArithmetic = __webpack_require__(215);
 
 	var _dateArithmetic2 = _interopRequireDefault(_dateArithmetic);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _constants = __webpack_require__(217);
+	var _constants = __webpack_require__(218);
 
 	var MILLI = {
 	  seconds: 1000,
@@ -21527,6 +21664,26 @@
 	    return Math.abs(+dates.startOf(dateA, unit) / MILLI[unit] - +dates.startOf(dateB, unit) / MILLI[unit]);
 	  },
 
+	  total: function total(date, unit) {
+	    var ms = date.getTime(),
+	        div = 1;
+
+	    switch (unit) {
+	      case 'week':
+	        div *= 7;
+	      case 'day':
+	        div *= 24;
+	      case 'hours':
+	        div *= 60;
+	      case 'minutes':
+	        div *= 60;
+	      case 'seconds':
+	        div *= 1000;
+	    }
+
+	    return ms / div;
+	  },
+
 	  week: function week(date) {
 	    var d = new Date(date);
 	    d.setHours(0, 0, 0);
@@ -21551,7 +21708,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 214 */
+/* 215 */
 /***/ function(module, exports) {
 
 	var MILI    = 'milliseconds'
@@ -21724,7 +21881,7 @@
 
 
 /***/ },
-/* 215 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21744,7 +21901,7 @@
 
 	var _react = __webpack_require__(10);
 
-	var _invariant = __webpack_require__(216);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -21827,7 +21984,7 @@
 	}
 
 /***/ },
-/* 216 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21884,7 +22041,7 @@
 
 
 /***/ },
-/* 217 */
+/* 218 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21908,7 +22065,7 @@
 	exports.views = views;
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21932,7 +22089,7 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
@@ -21994,7 +22151,7 @@
 	}
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -23584,16 +23741,16 @@
 
 
 /***/ },
-/* 220 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(221);
+	var content = __webpack_require__(222);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(223)(content, {});
+	var update = __webpack_require__(224)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23610,21 +23767,21 @@
 	}
 
 /***/ },
-/* 221 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(222)();
+	exports = module.exports = __webpack_require__(223)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".rbc-btn {\n  color: inherit;\n  font: inherit;\n  margin: 0;\n}\nbutton.rbc-btn {\n  overflow: visible;\n  text-transform: none;\n  -webkit-appearance: button;\n  cursor: pointer;\n}\nbutton[disabled].rbc-btn {\n  cursor: not-allowed;\n}\nbutton.rbc-input::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n.rbc-calendar {\n  box-sizing: border-box;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n}\n.rbc-calendar *,\n.rbc-calendar *:before,\n.rbc-calendar *:after {\n  box-sizing: inherit;\n}\n.rbc-abs-full,\n.rbc-row-bg {\n  overflow: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.rbc-ellipsis,\n.rbc-event-label,\n.rbc-row-segment .rbc-event-content,\n.rbc-show-more {\n  display: block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.rbc-off-range {\n  color: #b3b3b3;\n}\n.rbc-header {\n  padding: 0 3px;\n  text-align: center;\n  vertical-align: middle;\n  font-weight: bold;\n  font-size: 90%;\n  min-height: 0;\n}\n.rbc-header > a,\n.rbc-header > a:active,\n.rbc-header > a:visited {\n  color: inherit;\n  text-decoration: none;\n}\n.rbc-toolbar {\n  display: flex;\n  align-items: center;\n  margin-bottom: 10px;\n  font-size: 16px;\n}\n.rbc-toolbar .rbc-toolbar-label {\n  width: 100%;\n  text-align: center;\n}\n.rbc-toolbar button {\n  color: #373a3c;\n  display: inline-block;\n  margin: 0;\n  text-align: center;\n  vertical-align: middle;\n  background: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  padding: .375rem 1rem;\n  border-radius: 4px;\n  line-height: normal;\n  white-space: nowrap;\n}\n.rbc-toolbar button:active,\n.rbc-toolbar button.rbc-active {\n  background-image: none;\n  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.rbc-toolbar button:active:hover,\n.rbc-toolbar button.rbc-active:hover,\n.rbc-toolbar button:active:focus,\n.rbc-toolbar button.rbc-active:focus {\n  color: #373a3c;\n  background-color: #d4d4d4;\n  border-color: #8c8c8c;\n}\n.rbc-toolbar button:focus {\n  color: #373a3c;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.rbc-toolbar button:hover {\n  color: #373a3c;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.rbc-btn-group {\n  display: inline-block;\n  white-space: nowrap;\n}\n.rbc-btn-group > button:first-child:not(:last-child) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rbc-btn-group > button:last-child:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.rbc-btn-group > button:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n.rbc-btn-group button + button {\n  margin-left: -1px;\n}\n.rbc-btn-group + .rbc-btn-group,\n.rbc-btn-group + button {\n  margin-left: 10px;\n}\n.rbc-event {\n  cursor: pointer;\n  padding: 2px 5px;\n  background-color: #3174ad;\n  border-radius: 5px;\n  color: #fff;\n}\n.rbc-event.rbc-selected {\n  background-color: #265985;\n}\n.rbc-event-label {\n  font-size: 80%;\n}\n.rbc-event-overlaps {\n  box-shadow: -1px 1px 5px 0px rgba(51, 51, 51, 0.5);\n}\n.rbc-event-continues-after {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rbc-event-continues-prior {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.rbc-row {\n  display: flex;\n  flex-direction: row;\n}\n.rbc-row-segment {\n  padding: 0 1px 1px 1px;\n}\n.rbc-selected-cell {\n  background-color: #000;\n  color: white;\n  opacity: 0.05;\n}\n.rbc-show-more {\n  background-color: rgba(255, 255, 255, 0.3);\n  z-index: 4;\n  font-weight: bold;\n  font-size: 85%;\n  height: auto;\n  line-height: normal;\n  white-space: nowrap;\n}\n.rbc-month-view {\n  position: relative;\n  border: 1px solid #DDD;\n  display: flex;\n  flex-direction: column;\n  flex: 1 0 0;\n  width: 100%;\n  height: 100%;\n}\n.rbc-month-view .rbc-header {\n  border-bottom: 1px solid #DDD;\n}\n.rbc-month-view .rbc-header + .rbc-header {\n  border-left: 1px solid #DDD;\n}\n.rbc-month-header {\n  display: flex;\n  flex-direction: row;\n}\n.rbc-month-row {\n  display: flex;\n  position: relative;\n  flex-direction: column;\n  flex: 1 0 0;\n  overflow: hidden;\n  height: 100%;\n}\n.rbc-month-row + .rbc-month-row {\n  border-top: 1px solid #DDD;\n}\n.rbc-date-cell {\n  padding-right: 5px;\n  text-align: right;\n}\n.rbc-date-cell.rbc-now {\n  font-weight: bold;\n}\n.rbc-date-cell > a,\n.rbc-date-cell > a:active,\n.rbc-date-cell > a:visited {\n  color: inherit;\n  text-decoration: none;\n}\n.rbc-row-content {\n  position: relative;\n  z-index: 4;\n}\n.rbc-row-bg {\n  display: flex;\n  flex-direction: row;\n  flex: 1 0 0;\n  overflow: hidden;\n}\n.rbc-day-bg + .rbc-day-bg {\n  border-left: 1px solid #DDD;\n}\n.rbc-overlay {\n  position: absolute;\n  z-index: 5;\n  border: 1px solid #e5e5e5;\n  background-color: #fff;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);\n  padding: 10px;\n}\n.rbc-overlay > * + * {\n  margin-top: 1px;\n}\n.rbc-overlay-header {\n  border-bottom: 1px solid #e5e5e5;\n  margin: -10px -10px 5px -10px;\n  padding: 2px 10px;\n}\n.rbc-agenda-view {\n  display: flex;\n  flex-direction: column;\n  flex: 1 0 0;\n  overflow: auto;\n}\n.rbc-agenda-view table {\n  width: 100%;\n  border: 1px solid #DDD;\n}\n.rbc-agenda-view table tbody > tr > td {\n  padding: 5px 10px;\n  vertical-align: top;\n}\n.rbc-agenda-view table .rbc-agenda-time-cell {\n  padding-left: 15px;\n  padding-right: 15px;\n  text-transform: lowercase;\n}\n.rbc-agenda-view table tbody > tr > td + td {\n  border-left: 1px solid #DDD;\n}\n.rbc-agenda-view table tbody > tr + tr {\n  border-top: 1px solid #DDD;\n}\n.rbc-agenda-view table thead > tr > th {\n  padding: 3px 5px;\n  text-align: left;\n  border-bottom: 1px solid #DDD;\n}\n.rbc-agenda-time-cell {\n  text-transform: lowercase;\n}\n.rbc-agenda-time-cell .rbc-continues-after:after {\n  content: ' \\BB';\n}\n.rbc-agenda-time-cell .rbc-continues-prior:before {\n  content: '\\AB   ';\n}\n.rbc-agenda-date-cell,\n.rbc-agenda-time-cell {\n  white-space: nowrap;\n}\n.rbc-agenda-event-cell {\n  width: 100%;\n}\n.rbc-time-gutter > .rbc-time-slot {\n  padding: 0 5px;\n}\n.rbc-gutter-cell {\n  padding: 0 5px;\n}\n.rbc-day-slot {\n  position: relative;\n  display: inline-flex;\n  overflow: hidden;\n  flex-direction: column;\n}\n.rbc-day-slot .rbc-event {\n  border: 1px solid #265985;\n  display: flex;\n  max-height: 100%;\n  flex-flow: column wrap;\n  align-items: flex-start;\n  overflow: hidden;\n}\n.rbc-day-slot .rbc-event-label {\n  flex: none;\n  padding-right: 5px;\n  width: auto;\n}\n.rbc-day-slot .rbc-event-content {\n  width: 100%;\n  flex: 1 1 0;\n  word-wrap: break-word;\n  line-height: 1;\n  height: 100%;\n  min-height: 1em;\n}\n.rbc-time-slot {\n  flex: 1 0 0;\n  min-height: 20px;\n  height: 20px;\n}\n.rbc-time-slot + .rbc-time-slot {\n  border-top: 1px solid #DDD;\n}\n.rbc-time-slot:nth-child(even) {\n  border-top-color: #f7f7f7;\n}\n.rbc-day-header {\n  text-align: center;\n}\n.rbc-day-slot .rbc-event {\n  position: absolute;\n}\n.rbc-slot-selection {\n  z-index: 10;\n  position: absolute;\n  cursor: default;\n  background-color: #000;\n  color: white;\n  opacity: .5;\n  font-size: 75%;\n  padding: 3px;\n}\n.rbc-time-view {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  width: 100%;\n  border: 1px solid #DDD;\n}\n.rbc-time-view .rbc-time-gutter {\n  white-space: nowrap;\n}\n.rbc-time-view .rbc-allday-cell {\n  width: 100%;\n  position: relative;\n}\n.rbc-time-view .rbc-row {\n  min-height: 20px;\n}\n.rbc-time-header {\n  display: flex;\n  flex-direction: column;\n}\n.rbc-time-header.rbc-header-overflowing {\n  border-right: 1px solid #DDD;\n}\n.rbc-time-header > .rbc-row > * + * {\n  border-left: 1px solid #DDD;\n}\n.rbc-time-header > .rbc-row:first-child {\n  border-bottom: 1px solid #DDD;\n}\n.rbc-time-header .rbc-gutter-cell {\n  flex: none;\n}\n.rbc-time-header > .rbc-gutter-cell + * {\n  width: 100%;\n}\n.rbc-time-content {\n  display: flex;\n  align-items: flex-start;\n  width: 100%;\n  border-top: 2px solid #DDD;\n  overflow-y: auto;\n}\n.rbc-time-content > .rbc-time-gutter {\n  flex: none;\n}\n.rbc-time-content > * + * {\n  border-left: 1px solid #DDD;\n}\n.rbc-time-content > .rbc-day-slot {\n  width: 100%;\n}\n", ""]);
+	exports.push([module.id, ".rbc-btn {\n  color: inherit;\n  font: inherit;\n  margin: 0;\n}\nbutton.rbc-btn {\n  overflow: visible;\n  text-transform: none;\n  -webkit-appearance: button;\n  cursor: pointer;\n}\nbutton[disabled].rbc-btn {\n  cursor: not-allowed;\n}\nbutton.rbc-input::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n.rbc-calendar {\n  box-sizing: border-box;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n}\n.rbc-calendar *,\n.rbc-calendar *:before,\n.rbc-calendar *:after {\n  box-sizing: inherit;\n}\n.rbc-abs-full,\n.rbc-row-bg {\n  overflow: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.rbc-ellipsis,\n.rbc-event-label,\n.rbc-row-segment .rbc-event-content,\n.rbc-show-more {\n  display: block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.rbc-rtl {\n  direction: rtl;\n}\n.rbc-off-range {\n  color: #b3b3b3;\n}\n.rbc-header {\n  padding: 0 3px;\n  text-align: center;\n  vertical-align: middle;\n  font-weight: bold;\n  font-size: 90%;\n  min-height: 0;\n}\n.rbc-header > a,\n.rbc-header > a:active,\n.rbc-header > a:visited {\n  color: inherit;\n  text-decoration: none;\n}\n.rbc-toolbar {\n  display: flex;\n  align-items: center;\n  margin-bottom: 10px;\n  font-size: 16px;\n}\n.rbc-toolbar .rbc-toolbar-label {\n  width: 100%;\n  text-align: center;\n}\n.rbc-toolbar button {\n  color: #373a3c;\n  display: inline-block;\n  margin: 0;\n  text-align: center;\n  vertical-align: middle;\n  background: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  padding: .375rem 1rem;\n  border-radius: 4px;\n  line-height: normal;\n  white-space: nowrap;\n}\n.rbc-toolbar button:active,\n.rbc-toolbar button.rbc-active {\n  background-image: none;\n  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.rbc-toolbar button:active:hover,\n.rbc-toolbar button.rbc-active:hover,\n.rbc-toolbar button:active:focus,\n.rbc-toolbar button.rbc-active:focus {\n  color: #373a3c;\n  background-color: #d4d4d4;\n  border-color: #8c8c8c;\n}\n.rbc-toolbar button:focus {\n  color: #373a3c;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.rbc-toolbar button:hover {\n  color: #373a3c;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.rbc-btn-group {\n  display: inline-block;\n  white-space: nowrap;\n}\n.rbc-btn-group > button:first-child:not(:last-child) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rbc-btn-group > button:last-child:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.rbc-rtl .rbc-btn-group > button:first-child:not(:last-child) {\n  border-radius: 4px;\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.rbc-rtl .rbc-btn-group > button:last-child:not(:first-child) {\n  border-radius: 4px;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rbc-btn-group > button:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n.rbc-btn-group button + button {\n  margin-left: -1px;\n}\n.rbc-rtl .rbc-btn-group button + button {\n  margin-left: 0;\n  margin-right: -1px;\n}\n.rbc-btn-group + .rbc-btn-group,\n.rbc-btn-group + button {\n  margin-left: 10px;\n}\n.rbc-event {\n  cursor: pointer;\n  padding: 2px 5px;\n  background-color: #3174ad;\n  border-radius: 5px;\n  color: #fff;\n}\n.rbc-event.rbc-selected {\n  background-color: #265985;\n}\n.rbc-event-label {\n  font-size: 80%;\n}\n.rbc-event-overlaps {\n  box-shadow: -1px 1px 5px 0px rgba(51, 51, 51, 0.5);\n}\n.rbc-event-continues-after {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rbc-event-continues-prior {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.rbc-row {\n  display: flex;\n  flex-direction: row;\n}\n.rbc-row-segment {\n  padding: 0 1px 1px 1px;\n}\n.rbc-selected-cell {\n  background-color: #000;\n  color: white;\n  opacity: 0.05;\n}\n.rbc-show-more {\n  background-color: rgba(255, 255, 255, 0.3);\n  z-index: 4;\n  font-weight: bold;\n  font-size: 85%;\n  height: auto;\n  line-height: normal;\n  white-space: nowrap;\n}\n.rbc-month-view {\n  position: relative;\n  border: 1px solid #DDD;\n  display: flex;\n  flex-direction: column;\n  flex: 1 0 0;\n  width: 100%;\n  height: 100%;\n}\n.rbc-month-view .rbc-header {\n  border-bottom: 1px solid #DDD;\n}\n.rbc-month-view .rbc-header + .rbc-header {\n  border-left: 1px solid #DDD;\n}\n.rbc-rtl .rbc-month-view .rbc-header + .rbc-header {\n  border-left-width: 0;\n  border-right: 1px solid #DDD;\n}\n.rbc-month-header {\n  display: flex;\n  flex-direction: row;\n}\n.rbc-month-row {\n  display: flex;\n  position: relative;\n  flex-direction: column;\n  flex: 1 0 0;\n  overflow: hidden;\n  height: 100%;\n}\n.rbc-month-row + .rbc-month-row {\n  border-top: 1px solid #DDD;\n}\n.rbc-date-cell {\n  padding-right: 5px;\n  text-align: right;\n}\n.rbc-date-cell.rbc-now {\n  font-weight: bold;\n}\n.rbc-date-cell > a,\n.rbc-date-cell > a:active,\n.rbc-date-cell > a:visited {\n  color: inherit;\n  text-decoration: none;\n}\n.rbc-row-content {\n  position: relative;\n  z-index: 4;\n}\n.rbc-row-bg {\n  display: flex;\n  flex-direction: row;\n  flex: 1 0 0;\n  overflow: hidden;\n}\n.rbc-day-bg + .rbc-day-bg {\n  border-left: 1px solid #DDD;\n}\n.rbc-rtl .rbc-day-bg + .rbc-day-bg {\n  border-left-width: 0;\n  border-right: 1px solid #DDD;\n}\n.rbc-overlay {\n  position: absolute;\n  z-index: 5;\n  border: 1px solid #e5e5e5;\n  background-color: #fff;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);\n  padding: 10px;\n}\n.rbc-overlay > * + * {\n  margin-top: 1px;\n}\n.rbc-overlay-header {\n  border-bottom: 1px solid #e5e5e5;\n  margin: -10px -10px 5px -10px;\n  padding: 2px 10px;\n}\n.rbc-agenda-view {\n  display: flex;\n  flex-direction: column;\n  flex: 1 0 0;\n  overflow: auto;\n}\n.rbc-agenda-view table {\n  width: 100%;\n  border: 1px solid #DDD;\n}\n.rbc-agenda-view table tbody > tr > td {\n  padding: 5px 10px;\n  vertical-align: top;\n}\n.rbc-agenda-view table .rbc-agenda-time-cell {\n  padding-left: 15px;\n  padding-right: 15px;\n  text-transform: lowercase;\n}\n.rbc-agenda-view table tbody > tr > td + td {\n  border-left: 1px solid #DDD;\n}\n.rbc-rtl .rbc-agenda-view table tbody > tr > td + td {\n  border-left-width: 0;\n  border-right: 1px solid #DDD;\n}\n.rbc-agenda-view table tbody > tr + tr {\n  border-top: 1px solid #DDD;\n}\n.rbc-agenda-view table thead > tr > th {\n  padding: 3px 5px;\n  text-align: left;\n  border-bottom: 1px solid #DDD;\n}\n.rbc-rtl .rbc-agenda-view table thead > tr > th {\n  text-align: right;\n}\n.rbc-agenda-time-cell {\n  text-transform: lowercase;\n}\n.rbc-agenda-time-cell .rbc-continues-after:after {\n  content: ' \\BB';\n}\n.rbc-agenda-time-cell .rbc-continues-prior:before {\n  content: '\\AB   ';\n}\n.rbc-agenda-date-cell,\n.rbc-agenda-time-cell {\n  white-space: nowrap;\n}\n.rbc-agenda-event-cell {\n  width: 100%;\n}\n.rbc-time-gutter > .rbc-time-slot {\n  padding: 0 5px;\n}\n.rbc-gutter-cell {\n  padding: 0 5px;\n}\n.rbc-day-slot {\n  position: relative;\n  display: inline-flex;\n  overflow: hidden;\n  flex-direction: column;\n}\n.rbc-day-slot .rbc-event {\n  border: 1px solid #265985;\n  display: flex;\n  max-height: 100%;\n  flex-flow: column wrap;\n  align-items: flex-start;\n  overflow: hidden;\n}\n.rbc-day-slot .rbc-event-label {\n  flex: none;\n  padding-right: 5px;\n  width: auto;\n}\n.rbc-day-slot .rbc-event-content {\n  width: 100%;\n  flex: 1 1 0;\n  word-wrap: break-word;\n  line-height: 1;\n  height: 100%;\n  min-height: 1em;\n}\n.rbc-time-slot {\n  flex: 1 0 0;\n  min-height: 20px;\n  height: 20px;\n}\n.rbc-time-slot + .rbc-time-slot {\n  border-top: 1px solid #DDD;\n}\n.rbc-time-slot:nth-child(even) {\n  border-top-color: #f7f7f7;\n}\n.rbc-day-header {\n  text-align: center;\n}\n.rbc-day-slot .rbc-event {\n  position: absolute;\n}\n.rbc-slot-selection {\n  z-index: 10;\n  position: absolute;\n  cursor: default;\n  background-color: #000;\n  color: white;\n  opacity: .5;\n  font-size: 75%;\n  padding: 3px;\n}\n.rbc-time-view {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  width: 100%;\n  border: 1px solid #DDD;\n}\n.rbc-time-view .rbc-time-gutter {\n  white-space: nowrap;\n}\n.rbc-time-view .rbc-allday-cell {\n  width: 100%;\n  position: relative;\n}\n.rbc-time-view .rbc-row {\n  min-height: 20px;\n}\n.rbc-time-header {\n  display: flex;\n  flex-direction: column;\n}\n.rbc-time-header.rbc-header-overflowing {\n  border-right: 1px solid #DDD;\n}\n.rbc-rtl .rbc-time-header.rbc-header-overflowing {\n  border-right-width: 0;\n  border-left: 1px solid #DDD;\n}\n.rbc-time-header > .rbc-row > * + * {\n  border-left: 1px solid #DDD;\n}\n.rbc-rtl .rbc-time-header > .rbc-row > * + * {\n  border-left-width: 0;\n  border-right: 1px solid #DDD;\n}\n.rbc-time-header > .rbc-row:first-child {\n  border-bottom: 1px solid #DDD;\n}\n.rbc-time-header .rbc-gutter-cell {\n  flex: none;\n}\n.rbc-time-header > .rbc-gutter-cell + * {\n  width: 100%;\n}\n.rbc-time-content {\n  display: flex;\n  align-items: flex-start;\n  width: 100%;\n  border-top: 2px solid #DDD;\n  overflow-y: auto;\n}\n.rbc-time-content > .rbc-time-gutter {\n  flex: none;\n}\n.rbc-time-content > * + * {\n  border-left: 1px solid #DDD;\n}\n.rbc-rtl .rbc-time-content > * + * {\n  border-left-width: 0;\n  border-right: 1px solid #DDD;\n}\n.rbc-time-content > .rbc-day-slot {\n  width: 100%;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/*
@@ -23680,7 +23837,7 @@
 
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -23905,16 +24062,16 @@
 
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(225);
+	var content = __webpack_require__(226);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(223)(content, {});
+	var update = __webpack_require__(224)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23931,21 +24088,21 @@
 	}
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(222)();
+	exports = module.exports = __webpack_require__(223)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "body {\n  font-size: 16px;\n}\n.jumbotron {\n  background-color: #3174ad;\n  color: white;\n}\n.jumbotron a {\n  font-size: 85%;\n  color: #e6e6e6;\n}\n.example {\n  font-size: 14px;\n}\n.contain {\n  background-color: white;\n  border-radius: 3px;\n  padding: 20px;\n  max-width: 900px;\n  margin: auto;\n}\n.docs {\n  background-color: #3174ad;\n  margin-top: 20px;\n  padding: 30px;\n}\n.examples {\n  position: relative;\n}\naside {\n  position: absolute;\n  width: 200px;\n  top: 0;\n  left: -210px;\n}\nh3 > a > code {\n  color: #3174ad;\n  background: none;\n  padding: 0;\n}\npre {\n  border-radius: 0;\n  border: none;\n  border-left: 4px solid #ccc;\n}\npre.shape-prop {\n  border: none;\n}\ncode {\n  color: #555;\n  margin: -0.05rem -0.15em;\n  padding: .05rem .35em;\n  background-color: rgba(0, 0, 0, 0.04);\n}\n.playgroundStage,\n.cm-s-neo.CodeMirror {\n  background-color: #F4F4F4;\n  height: auto;\n  min-height: 75px;\n}\n.CodeMirror {\n  font-size: 12px;\n}\n.cm-s-neo div.CodeMirror-cursor {\n  border-left: 1px solid #9b9da2;\n}\n.cm-s-neo .CodeMirror-linenumber {\n  color: #ccc;\n}\n.cm-s-neo .cm-atom,\n.cm-s-neo .cm-number {\n  color: #905;\n}\n.prop-table {\n  font-size: 14 px;\n}\n.playgroundStage {\n  padding: 15px 0 15px 15px;\n}\n.playground.collapsableCode .playgroundCode {\n  height: 0;\n  overflow: hidden;\n}\n.playground.collapsableCode .playgroundCode.expandedCode {\n  height: auto;\n}\n.playgroundPreview {\n  position: relative;\n  padding: 40px 15px 15px 15px;\n}\n.playgroundPreview:before {\n  position: absolute;\n  top: 3px;\n  left: 7px;\n  color: #959595;\n  border-bottom: 1px solid  #eee;\n  padding: 0 3px;\n  content: 'Result';\n}\n.playground {\n  position: relative;\n  margin: 0;\n  margin-bottom: 20px;\n  border-top: 1px solid #ccc;\n}\n.playgroundCode,\n.playgroundPreview {\n  border-left: 1px solid #ccc;\n  border-right: 1px solid #ccc;\n}\n.playgroundToggleCodeBar {\n  padding: 1px;\n  border-top: 1px solid #ccc;\n}\n.playgroundToggleCodeLink {\n  color: #333;\n  background-color: #ccc;\n  margin-top: 1px;\n  margin-left: -1px;\n  border-bottom-left-radius: 3px;\n  border-bottom-right-radius: 3px;\n  padding: 3px 5px;\n}\n.playgroundToggleCodeLink:hover,\n.playgroundToggleCodeLink:focus {\n  color: black;\n}\n.anchor,\n.anchor:hover,\n.anchor:active,\n.anchor:focus {\n  color: black;\n  text-decoration: none;\n  position: relative;\n}\n.anchor-icon {\n  font-size: 90%;\n  padding-top: 0.1em;\n  position: absolute;\n  left: -0.8em;\n  opacity: 0;\n}\nh1:hover .anchor-icon,\nh1 a:focus .anchor-icon,\nh2:hover .anchor-icon,\nh2 a:focus .anchor-icon,\nh3:hover .anchor-icon,\nh3 a:focus .anchor-icon,\nh4:hover .anchor-icon,\nh4 a:focus .anchor-icon {\n  opacity: 0.5;\n}\n/** examples */\n", ""]);
+	exports.push([module.id, "body {\n  font-size: 16px;\n}\n.jumbotron {\n  background-color: #3174ad;\n  color: white;\n}\n.jumbotron a {\n  font-size: 85%;\n  color: #e6e6e6;\n}\n.example {\n  font-size: 14px;\n}\n.contain {\n  background-color: white;\n  border-radius: 3px;\n  padding: 20px;\n  max-width: 900px;\n  margin: auto;\n}\n.docs {\n  background-color: #3174ad;\n  margin-top: 20px;\n  padding: 30px;\n}\n.examples {\n  position: relative;\n}\n.section {\n  margin-bottom: 20px;\n}\naside {\n  position: absolute;\n  width: 200px;\n  top: 0;\n  left: -210px;\n}\nh3 > a > code {\n  color: #3174ad;\n  background: none;\n  padding: 0;\n}\npre {\n  border-radius: 0;\n  border: none;\n  border-left: 4px solid #ccc;\n}\npre.shape-prop {\n  border: none;\n}\ncode {\n  color: #555;\n  margin: -0.05rem -0.15em;\n  padding: .05rem .35em;\n  background-color: rgba(0, 0, 0, 0.04);\n}\n.playgroundStage,\n.cm-s-neo.CodeMirror {\n  background-color: #F4F4F4;\n  height: auto;\n  min-height: 75px;\n}\n.CodeMirror {\n  font-size: 12px;\n}\n.cm-s-neo div.CodeMirror-cursor {\n  border-left: 1px solid #9b9da2;\n}\n.cm-s-neo .CodeMirror-linenumber {\n  color: #ccc;\n}\n.cm-s-neo .cm-atom,\n.cm-s-neo .cm-number {\n  color: #905;\n}\n.prop-table {\n  font-size: 14 px;\n}\n.playgroundStage {\n  padding: 15px 0 15px 15px;\n}\n.playground.collapsableCode .playgroundCode {\n  height: 0;\n  overflow: hidden;\n}\n.playground.collapsableCode .playgroundCode.expandedCode {\n  height: auto;\n}\n.playgroundPreview {\n  position: relative;\n  padding: 40px 15px 15px 15px;\n}\n.playgroundPreview:before {\n  position: absolute;\n  top: 3px;\n  left: 7px;\n  color: #959595;\n  border-bottom: 1px solid  #eee;\n  padding: 0 3px;\n  content: 'Result';\n}\n.playground {\n  position: relative;\n  margin: 0;\n  margin-bottom: 20px;\n  border-top: 1px solid #ccc;\n}\n.playgroundCode,\n.playgroundPreview {\n  border-left: 1px solid #ccc;\n  border-right: 1px solid #ccc;\n}\n.playgroundToggleCodeBar {\n  padding: 1px;\n  border-top: 1px solid #ccc;\n}\n.playgroundToggleCodeLink {\n  color: #333;\n  background-color: #ccc;\n  margin-top: 1px;\n  margin-left: -1px;\n  border-bottom-left-radius: 3px;\n  border-bottom-right-radius: 3px;\n  padding: 3px 5px;\n}\n.playgroundToggleCodeLink:hover,\n.playgroundToggleCodeLink:focus {\n  color: black;\n}\n.anchor,\n.anchor:hover,\n.anchor:active,\n.anchor:focus {\n  color: black;\n  text-decoration: none;\n  position: relative;\n}\n.anchor-icon {\n  font-size: 90%;\n  padding-top: 0.1em;\n  position: absolute;\n  left: -0.8em;\n  opacity: 0;\n}\nh1:hover .anchor-icon,\nh1 a:focus .anchor-icon,\nh2:hover .anchor-icon,\nh2 a:focus .anchor-icon,\nh3:hover .anchor-icon,\nh3 a:focus .anchor-icon,\nh4:hover .anchor-icon,\nh4 a:focus .anchor-icon {\n  opacity: 0.5;\n}\n/** examples */\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23958,11 +24115,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactBigCalendar = __webpack_require__(227);
+	var _reactBigCalendar = __webpack_require__(228);
 
 	var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar);
 
-	var _events = __webpack_require__(326);
+	var _events = __webpack_require__(327);
 
 	var _events2 = _interopRequireDefault(_events);
 
@@ -23985,7 +24142,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24006,29 +24163,29 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _Calendar = __webpack_require__(228);
+	var _Calendar = __webpack_require__(229);
 
 	var _Calendar2 = _interopRequireDefault(_Calendar);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
-	var _localizersMoment = __webpack_require__(325);
+	var _localizersMoment = __webpack_require__(326);
 
 	var _localizersMoment2 = _interopRequireDefault(_localizersMoment);
 
-	var _localizersGlobalize = __webpack_require__(212);
+	var _localizersGlobalize = __webpack_require__(213);
 
 	var _localizersGlobalize2 = _interopRequireDefault(_localizersGlobalize);
 
-	var _utilsViewLabel = __webpack_require__(237);
+	var _utilsViewLabel = __webpack_require__(238);
 
 	var _utilsViewLabel2 = _interopRequireDefault(_utilsViewLabel);
 
-	var _utilsMove = __webpack_require__(315);
+	var _utilsMove = __webpack_require__(316);
 
 	var _utilsMove2 = _interopRequireDefault(_utilsMove);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
 	_extends(_Calendar2['default'], {
 	  setLocalizer: _localizer.set,
@@ -24043,7 +24200,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24074,53 +24231,53 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _uncontrollable = __webpack_require__(229);
+	var _uncontrollable = __webpack_require__(230);
 
 	var _uncontrollable2 = _interopRequireDefault(_uncontrollable);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsPropTypes = __webpack_require__(232);
+	var _utilsPropTypes = __webpack_require__(233);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _utilsHelpers = __webpack_require__(236);
+	var _utilsHelpers = __webpack_require__(237);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _formats = __webpack_require__(218);
+	var _formats = __webpack_require__(219);
 
 	var _formats2 = _interopRequireDefault(_formats);
 
-	var _utilsViewLabel = __webpack_require__(237);
+	var _utilsViewLabel = __webpack_require__(238);
 
 	var _utilsViewLabel2 = _interopRequireDefault(_utilsViewLabel);
 
-	var _utilsMove = __webpack_require__(315);
+	var _utilsMove = __webpack_require__(316);
 
 	var _utilsMove2 = _interopRequireDefault(_utilsMove);
 
-	var _Views = __webpack_require__(238);
+	var _Views = __webpack_require__(239);
 
 	var _Views2 = _interopRequireDefault(_Views);
 
-	var _Toolbar = __webpack_require__(316);
+	var _Toolbar = __webpack_require__(317);
 
 	var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
-	var _lodashObjectOmit = __webpack_require__(242);
+	var _lodashObjectOmit = __webpack_require__(243);
 
 	var _lodashObjectOmit2 = _interopRequireDefault(_lodashObjectOmit);
 
-	var _lodashObjectDefaults = __webpack_require__(317);
+	var _lodashObjectDefaults = __webpack_require__(318);
 
 	var _lodashObjectDefaults2 = _interopRequireDefault(_lodashObjectDefaults);
 
@@ -24241,6 +24398,11 @@
 	    selectable: _react.PropTypes.bool,
 
 	    /**
+	     * switch the calendar to a `right-to-left` read direction.
+	     */
+	    rtl: _react.PropTypes.bool,
+
+	    /**
 	     * Optionally provide a function that returns an object of className or style props
 	     * to be applied to the the event node.
 	     *
@@ -24284,6 +24446,16 @@
 	     * @type {(func|string)}
 	     */
 	    endAccessor: _utilsPropTypes.accessor,
+
+	    /**
+	     * Constrains the minimum _time_ of the Day and Week views.
+	     */
+	    min: _react.PropTypes.instanceOf(Date),
+
+	    /**
+	     * Constrains the maximum _time_ of the Day and Week views..
+	     */
+	    max: _react.PropTypes.instanceOf(Date),
 
 	    /**
 	     * Localizer specific formats, tell the Calendar how to format and display dates.
@@ -24417,7 +24589,9 @@
 	    var viewComponents = _lodashObjectDefaults2['default'](components[view] || {}, _lodashObjectOmit2['default'](components, names));
 
 	    return _react2['default'].createElement('div', _extends({}, elementProps, {
-	      className: _classnames2['default']('rbc-calendar', className),
+	      className: _classnames2['default']('rbc-calendar', className, {
+	        'rbc-rtl': props.rtl
+	      }),
 	      style: style
 	    }), toolbar && _react2['default'].createElement(_Toolbar2['default'], {
 	      date: current,
@@ -24492,7 +24666,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24501,7 +24675,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _createUncontrollable = __webpack_require__(230);
+	var _createUncontrollable = __webpack_require__(231);
 
 	var _createUncontrollable2 = _interopRequireDefault(_createUncontrollable);
 
@@ -24528,7 +24702,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24549,7 +24723,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utils = __webpack_require__(231);
+	var _utils = __webpack_require__(232);
 
 	var utils = _interopRequireWildcard(_utils);
 
@@ -24668,7 +24842,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 231 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24691,7 +24865,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _invariant = __webpack_require__(216);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -24784,7 +24958,7 @@
 	}
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24797,21 +24971,21 @@
 
 	var _react = __webpack_require__(10);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _reactPropTypesLibElementType = __webpack_require__(233);
+	var _reactPropTypesLibElementType = __webpack_require__(234);
 
 	var _reactPropTypesLibElementType2 = _interopRequireDefault(_reactPropTypesLibElementType);
 
-	var _reactPropTypesLibAll = __webpack_require__(235);
+	var _reactPropTypesLibAll = __webpack_require__(236);
 
 	var _reactPropTypesLibAll2 = _interopRequireDefault(_reactPropTypesLibAll);
 
-	var _constants = __webpack_require__(217);
+	var _constants = __webpack_require__(218);
 
-	var _reactPropTypesLibCommon = __webpack_require__(234);
+	var _reactPropTypesLibCommon = __webpack_require__(235);
 
 	exports.elementType = _reactPropTypesLibElementType2['default'];
 	var eventComponent = _react.PropTypes.oneOfType([_reactPropTypesLibElementType2['default'], _react.PropTypes.shape({
@@ -24847,7 +25021,7 @@
 	exports.views = views;
 
 /***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24860,7 +25034,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _common = __webpack_require__(234);
+	var _common = __webpack_require__(235);
 
 	/**
 	 * Checks whether a prop provides a type of element.
@@ -24893,7 +25067,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24932,7 +25106,7 @@
 	}
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24967,7 +25141,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24998,7 +25172,7 @@
 	}
 
 /***/ },
-/* 237 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25013,17 +25187,17 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _constants = __webpack_require__(217);
+	var _constants = __webpack_require__(218);
 
-	var _formats = __webpack_require__(218);
+	var _formats = __webpack_require__(219);
 
 	var _formats2 = _interopRequireDefault(_formats);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _Views = __webpack_require__(238);
+	var _Views = __webpack_require__(239);
 
 	var _Views2 = _interopRequireDefault(_Views);
 
@@ -25043,7 +25217,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25056,21 +25230,21 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
-	var _Month = __webpack_require__(239);
+	var _Month = __webpack_require__(240);
 
 	var _Month2 = _interopRequireDefault(_Month);
 
-	var _Day = __webpack_require__(303);
+	var _Day = __webpack_require__(304);
 
 	var _Day2 = _interopRequireDefault(_Day);
 
-	var _Week = __webpack_require__(313);
+	var _Week = __webpack_require__(314);
 
 	var _Week2 = _interopRequireDefault(_Week);
 
-	var _Agenda = __webpack_require__(314);
+	var _Agenda = __webpack_require__(315);
 
 	var _Agenda2 = _interopRequireDefault(_Agenda);
 
@@ -25080,7 +25254,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 239 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25105,67 +25279,67 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _lodashArrayChunk = __webpack_require__(240);
+	var _lodashArrayChunk = __webpack_require__(241);
 
 	var _lodashArrayChunk2 = _interopRequireDefault(_lodashArrayChunk);
 
-	var _lodashObjectOmit = __webpack_require__(242);
+	var _lodashObjectOmit = __webpack_require__(243);
 
 	var _lodashObjectOmit2 = _interopRequireDefault(_lodashObjectOmit);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
-	var _utilsHelpers = __webpack_require__(236);
+	var _utilsHelpers = __webpack_require__(237);
 
-	var _domHelpersQueryHeight = __webpack_require__(257);
+	var _domHelpersQueryHeight = __webpack_require__(258);
 
 	var _domHelpersQueryHeight2 = _interopRequireDefault(_domHelpersQueryHeight);
 
-	var _domHelpersQueryPosition = __webpack_require__(263);
+	var _domHelpersQueryPosition = __webpack_require__(264);
 
 	var _domHelpersQueryPosition2 = _interopRequireDefault(_domHelpersQueryPosition);
 
-	var _domHelpersUtilRequestAnimationFrame = __webpack_require__(275);
+	var _domHelpersUtilRequestAnimationFrame = __webpack_require__(276);
 
 	var _domHelpersUtilRequestAnimationFrame2 = _interopRequireDefault(_domHelpersUtilRequestAnimationFrame);
 
-	var _EventRow = __webpack_require__(276);
+	var _EventRow = __webpack_require__(277);
 
 	var _EventRow2 = _interopRequireDefault(_EventRow);
 
-	var _EventEndingRow = __webpack_require__(282);
+	var _EventEndingRow = __webpack_require__(283);
 
 	var _EventEndingRow2 = _interopRequireDefault(_EventEndingRow);
 
-	var _Popup = __webpack_require__(285);
+	var _Popup = __webpack_require__(286);
 
 	var _Popup2 = _interopRequireDefault(_Popup);
 
-	var _reactOverlaysLibOverlay = __webpack_require__(286);
+	var _reactOverlaysLibOverlay = __webpack_require__(287);
 
 	var _reactOverlaysLibOverlay2 = _interopRequireDefault(_reactOverlaysLibOverlay);
 
-	var _BackgroundCells = __webpack_require__(298);
+	var _BackgroundCells = __webpack_require__(299);
 
 	var _BackgroundCells2 = _interopRequireDefault(_BackgroundCells);
 
-	var _utilsPropTypes = __webpack_require__(232);
+	var _utilsPropTypes = __webpack_require__(233);
 
-	var _utilsEventLevels = __webpack_require__(280);
+	var _utilsEventLevels = __webpack_require__(281);
 
 	var eventsForWeek = function eventsForWeek(evts, start, end, props) {
 	  return evts.filter(function (e) {
@@ -25547,11 +25721,11 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseSlice = __webpack_require__(197),
-	    isIterateeCall = __webpack_require__(241);
+	    isIterateeCall = __webpack_require__(242);
 
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeCeil = Math.ceil,
@@ -25599,7 +25773,7 @@
 
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(181),
@@ -25633,17 +25807,17 @@
 
 
 /***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayMap = __webpack_require__(243),
-	    baseDifference = __webpack_require__(244),
-	    baseFlatten = __webpack_require__(251),
+	var arrayMap = __webpack_require__(244),
+	    baseDifference = __webpack_require__(245),
+	    baseFlatten = __webpack_require__(252),
 	    bindCallback = __webpack_require__(202),
 	    keysIn = __webpack_require__(189),
-	    pickByArray = __webpack_require__(253),
-	    pickByCallback = __webpack_require__(254),
-	    restParam = __webpack_require__(256);
+	    pickByArray = __webpack_require__(254),
+	    pickByCallback = __webpack_require__(255),
+	    restParam = __webpack_require__(257);
 
 	/**
 	 * The opposite of `_.pick`; this method creates an object composed of the
@@ -25686,7 +25860,7 @@
 
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports) {
 
 	/**
@@ -25713,12 +25887,12 @@
 
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIndexOf = __webpack_require__(245),
-	    cacheIndexOf = __webpack_require__(247),
-	    createCache = __webpack_require__(248);
+	var baseIndexOf = __webpack_require__(246),
+	    cacheIndexOf = __webpack_require__(248),
+	    createCache = __webpack_require__(249);
 
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -25774,10 +25948,10 @@
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var indexOfNaN = __webpack_require__(246);
+	var indexOfNaN = __webpack_require__(247);
 
 	/**
 	 * The base implementation of `_.indexOf` without support for binary searches.
@@ -25807,7 +25981,7 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports) {
 
 	/**
@@ -25836,7 +26010,7 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(179);
@@ -25861,10 +26035,10 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {var SetCache = __webpack_require__(249),
+	/* WEBPACK VAR INJECTION */(function(global) {var SetCache = __webpack_require__(250),
 	    getNative = __webpack_require__(176);
 
 	/** Native method references. */
@@ -25889,10 +26063,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {var cachePush = __webpack_require__(250),
+	/* WEBPACK VAR INJECTION */(function(global) {var cachePush = __webpack_require__(251),
 	    getNative = __webpack_require__(176);
 
 	/** Native method references. */
@@ -25925,7 +26099,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(179);
@@ -25951,10 +26125,10 @@
 
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayPush = __webpack_require__(252),
+	var arrayPush = __webpack_require__(253),
 	    isArguments = __webpack_require__(186),
 	    isArray = __webpack_require__(187),
 	    isArrayLike = __webpack_require__(181),
@@ -25998,7 +26172,7 @@
 
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports) {
 
 	/**
@@ -26024,7 +26198,7 @@
 
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var toObject = __webpack_require__(191);
@@ -26058,10 +26232,10 @@
 
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseForIn = __webpack_require__(255);
+	var baseForIn = __webpack_require__(256);
 
 	/**
 	 * A specialized version of `_.pick` which picks `object` properties `predicate`
@@ -26086,7 +26260,7 @@
 
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseFor = __webpack_require__(208),
@@ -26109,7 +26283,7 @@
 
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports) {
 
 	/** Used as the `TypeError` message for "Functions" methods. */
@@ -26173,13 +26347,13 @@
 
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var offset = __webpack_require__(258),
-	    getWindow = __webpack_require__(261);
+	var offset = __webpack_require__(259),
+	    getWindow = __webpack_require__(262);
 
 	module.exports = function height(node, client) {
 	  var win = getWindow(node);
@@ -26187,13 +26361,13 @@
 	};
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var contains = __webpack_require__(259),
-	    getWindow = __webpack_require__(261),
-	    ownerDocument = __webpack_require__(262);
+	var contains = __webpack_require__(260),
+	    getWindow = __webpack_require__(262),
+	    ownerDocument = __webpack_require__(263);
 
 	module.exports = function offset(node) {
 	  var doc = ownerDocument(node),
@@ -26222,11 +26396,11 @@
 	};
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var canUseDOM = __webpack_require__(260);
+	var canUseDOM = __webpack_require__(261);
 
 	var contains = (function () {
 	  var root = canUseDOM && document.documentElement;
@@ -26247,14 +26421,14 @@
 	module.exports = contains;
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports) {
 
 	'use strict';
 	module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26264,7 +26438,7 @@
 	};
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26279,33 +26453,33 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var babelHelpers = __webpack_require__(264);
+	var babelHelpers = __webpack_require__(265);
 
 	exports.__esModule = true;
 	exports['default'] = position;
 
-	var _offset = __webpack_require__(258);
+	var _offset = __webpack_require__(259);
 
 	var _offset2 = babelHelpers.interopRequireDefault(_offset);
 
-	var _offsetParent = __webpack_require__(265);
+	var _offsetParent = __webpack_require__(266);
 
 	var _offsetParent2 = babelHelpers.interopRequireDefault(_offsetParent);
 
-	var _scrollTop = __webpack_require__(273);
+	var _scrollTop = __webpack_require__(274);
 
 	var _scrollTop2 = babelHelpers.interopRequireDefault(_scrollTop);
 
-	var _scrollLeft = __webpack_require__(274);
+	var _scrollLeft = __webpack_require__(275);
 
 	var _scrollLeft2 = babelHelpers.interopRequireDefault(_scrollLeft);
 
-	var _style = __webpack_require__(266);
+	var _style = __webpack_require__(267);
 
 	var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -26341,7 +26515,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -26377,21 +26551,21 @@
 	})
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var babelHelpers = __webpack_require__(264);
+	var babelHelpers = __webpack_require__(265);
 
 	exports.__esModule = true;
 	exports['default'] = offsetParent;
 
-	var _ownerDocument = __webpack_require__(262);
+	var _ownerDocument = __webpack_require__(263);
 
 	var _ownerDocument2 = babelHelpers.interopRequireDefault(_ownerDocument);
 
-	var _style = __webpack_require__(266);
+	var _style = __webpack_require__(267);
 
 	var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -26413,15 +26587,15 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var camelize = __webpack_require__(267),
-	    hyphenate = __webpack_require__(269),
-	    _getComputedStyle = __webpack_require__(271),
-	    removeStyle = __webpack_require__(272);
+	var camelize = __webpack_require__(268),
+	    hyphenate = __webpack_require__(270),
+	    _getComputedStyle = __webpack_require__(272),
+	    removeStyle = __webpack_require__(273);
 
 	var has = Object.prototype.hasOwnProperty;
 
@@ -26442,7 +26616,7 @@
 	};
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26452,7 +26626,7 @@
 	 */
 
 	'use strict';
-	var camelize = __webpack_require__(268);
+	var camelize = __webpack_require__(269);
 	var msPattern = /^-ms-/;
 
 	module.exports = function camelizeStyleName(string) {
@@ -26460,7 +26634,7 @@
 	};
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26474,7 +26648,7 @@
 	};
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26485,7 +26659,7 @@
 
 	"use strict";
 
-	var hyphenate = __webpack_require__(270);
+	var hyphenate = __webpack_require__(271);
 	var msPattern = /^ms-/;
 
 	module.exports = function hyphenateStyleName(string) {
@@ -26493,7 +26667,7 @@
 	};
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26505,14 +26679,14 @@
 	};
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var babelHelpers = __webpack_require__(264);
+	var babelHelpers = __webpack_require__(265);
 
-	var _utilCamelizeStyle = __webpack_require__(267);
+	var _utilCamelizeStyle = __webpack_require__(268);
 
 	var _utilCamelizeStyle2 = babelHelpers.interopRequireDefault(_utilCamelizeStyle);
 
@@ -26558,7 +26732,7 @@
 	};
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26568,11 +26742,11 @@
 	};
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var getWindow = __webpack_require__(261);
+	var getWindow = __webpack_require__(262);
 
 	module.exports = function scrollTop(node, val) {
 	  var win = getWindow(node);
@@ -26583,11 +26757,11 @@
 	};
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var getWindow = __webpack_require__(261);
+	var getWindow = __webpack_require__(262);
 
 	module.exports = function scrollTop(node, val) {
 	  var win = getWindow(node);
@@ -26598,12 +26772,12 @@
 	};
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var canUseDOM = __webpack_require__(260);
+	var canUseDOM = __webpack_require__(261);
 
 	var vendors = ['', 'webkit', 'moz', 'o', 'ms'],
 	    cancel = 'clearTimeout',
@@ -26649,7 +26823,7 @@
 	module.exports = compatRaf;
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26664,7 +26838,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _EventRowMixin = __webpack_require__(277);
+	var _EventRowMixin = __webpack_require__(278);
 
 	var _EventRowMixin2 = _interopRequireDefault(_EventRowMixin);
 
@@ -26711,7 +26885,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26726,21 +26900,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
-	var _EventCell = __webpack_require__(278);
+	var _EventCell = __webpack_require__(279);
 
 	var _EventCell2 = _interopRequireDefault(_EventCell);
 
-	var _domHelpersQueryHeight = __webpack_require__(257);
+	var _domHelpersQueryHeight = __webpack_require__(258);
 
 	var _domHelpersQueryHeight2 = _interopRequireDefault(_domHelpersQueryHeight);
 
-	var _utilsPropTypes = __webpack_require__(232);
+	var _utilsPropTypes = __webpack_require__(233);
 
-	var _utilsEventLevels = __webpack_require__(280);
+	var _utilsEventLevels = __webpack_require__(281);
 
-	var _utilsSelection = __webpack_require__(281);
+	var _utilsSelection = __webpack_require__(282);
 
 	exports['default'] = {
 	  propType: {
@@ -26809,7 +26983,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26840,15 +27014,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _utilsAccessors = __webpack_require__(279);
+	var _utilsAccessors = __webpack_require__(280);
 
 	var EventCell = _react2['default'].createClass({
 	  displayName: 'EventCell',
@@ -26901,7 +27075,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26918,7 +27092,7 @@
 	}
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26935,11 +27109,11 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _dates = __webpack_require__(213);
+	var _dates = __webpack_require__(214);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
-	var _accessors = __webpack_require__(279);
+	var _accessors = __webpack_require__(280);
 
 	function eventSegments(event, first, last, _ref) {
 	  var startAccessor = _ref.startAccessor;
@@ -27037,7 +27211,7 @@
 	}
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27129,7 +27303,7 @@
 	}
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27144,17 +27318,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _EventRowMixin = __webpack_require__(277);
+	var _EventRowMixin = __webpack_require__(278);
 
 	var _EventRowMixin2 = _interopRequireDefault(_EventRowMixin);
 
-	var _utilsEventLevels = __webpack_require__(280);
+	var _utilsEventLevels = __webpack_require__(281);
 
-	var _utilsMessages = __webpack_require__(283);
+	var _utilsMessages = __webpack_require__(284);
 
 	var _utilsMessages2 = _interopRequireDefault(_utilsMessages);
 
-	var _lodashUtilityRange = __webpack_require__(284);
+	var _lodashUtilityRange = __webpack_require__(285);
 
 	var _lodashUtilityRange2 = _interopRequireDefault(_lodashUtilityRange);
 
@@ -27260,7 +27434,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27285,7 +27459,7 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _invariant = __webpack_require__(216);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -27328,10 +27502,10 @@
 	}
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isIterateeCall = __webpack_require__(241);
+	var isIterateeCall = __webpack_require__(242);
 
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeCeil = Math.ceil,
@@ -27400,7 +27574,7 @@
 
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27443,25 +27617,25 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _EventCell = __webpack_require__(278);
+	var _EventCell = __webpack_require__(279);
 
 	var _EventCell2 = _interopRequireDefault(_EventCell);
 
-	var _utilsSelection = __webpack_require__(281);
+	var _utilsSelection = __webpack_require__(282);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _domHelpersQueryOffset = __webpack_require__(258);
+	var _domHelpersQueryOffset = __webpack_require__(259);
 
 	var _domHelpersQueryOffset2 = _interopRequireDefault(_domHelpersQueryOffset);
 
-	var _domHelpersQueryScrollTop = __webpack_require__(273);
+	var _domHelpersQueryScrollTop = __webpack_require__(274);
 
 	var _domHelpersQueryScrollTop2 = _interopRequireDefault(_domHelpersQueryScrollTop);
 
-	var _domHelpersQueryScrollLeft = __webpack_require__(274);
+	var _domHelpersQueryScrollLeft = __webpack_require__(275);
 
 	var _domHelpersQueryScrollLeft2 = _interopRequireDefault(_domHelpersQueryScrollLeft);
 
@@ -27538,7 +27712,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27559,19 +27733,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Portal = __webpack_require__(287);
+	var _Portal = __webpack_require__(288);
 
 	var _Portal2 = _interopRequireDefault(_Portal);
 
-	var _Position = __webpack_require__(291);
+	var _Position = __webpack_require__(292);
 
 	var _Position2 = _interopRequireDefault(_Position);
 
-	var _RootCloseWrapper = __webpack_require__(293);
+	var _RootCloseWrapper = __webpack_require__(294);
 
 	var _RootCloseWrapper2 = _interopRequireDefault(_RootCloseWrapper);
 
-	var _reactPropTypesLibElementType = __webpack_require__(233);
+	var _reactPropTypesLibElementType = __webpack_require__(234);
 
 	var _reactPropTypesLibElementType2 = _interopRequireDefault(_reactPropTypesLibElementType);
 
@@ -27737,7 +27911,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27750,19 +27924,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactPropTypesLibMountable = __webpack_require__(288);
+	var _reactPropTypesLibMountable = __webpack_require__(289);
 
 	var _reactPropTypesLibMountable2 = _interopRequireDefault(_reactPropTypesLibMountable);
 
-	var _utilsOwnerDocument = __webpack_require__(289);
+	var _utilsOwnerDocument = __webpack_require__(290);
 
 	var _utilsOwnerDocument2 = _interopRequireDefault(_utilsOwnerDocument);
 
-	var _utilsGetContainer = __webpack_require__(290);
+	var _utilsGetContainer = __webpack_require__(291);
 
 	var _utilsGetContainer2 = _interopRequireDefault(_utilsGetContainer);
 
@@ -27865,14 +28039,14 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _common = __webpack_require__(234);
+	var _common = __webpack_require__(235);
 
 	/**
 	 * Checks whether a prop provides a DOM element
@@ -27897,7 +28071,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27906,11 +28080,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _domHelpersOwnerDocument = __webpack_require__(262);
+	var _domHelpersOwnerDocument = __webpack_require__(263);
 
 	var _domHelpersOwnerDocument2 = _interopRequireDefault(_domHelpersOwnerDocument);
 
@@ -27921,7 +28095,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27931,7 +28105,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -27943,7 +28117,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27964,25 +28138,25 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsOwnerDocument = __webpack_require__(289);
+	var _utilsOwnerDocument = __webpack_require__(290);
 
 	var _utilsOwnerDocument2 = _interopRequireDefault(_utilsOwnerDocument);
 
-	var _utilsGetContainer = __webpack_require__(290);
+	var _utilsGetContainer = __webpack_require__(291);
 
 	var _utilsGetContainer2 = _interopRequireDefault(_utilsGetContainer);
 
-	var _utilsOverlayPositionUtils = __webpack_require__(292);
+	var _utilsOverlayPositionUtils = __webpack_require__(293);
 
-	var _reactPropTypesLibMountable = __webpack_require__(288);
+	var _reactPropTypesLibMountable = __webpack_require__(289);
 
 	var _reactPropTypesLibMountable2 = _interopRequireDefault(_reactPropTypesLibMountable);
 
@@ -28134,7 +28308,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28143,19 +28317,19 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _ownerDocument = __webpack_require__(289);
+	var _ownerDocument = __webpack_require__(290);
 
 	var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
 
-	var _domHelpersQueryOffset = __webpack_require__(258);
+	var _domHelpersQueryOffset = __webpack_require__(259);
 
 	var _domHelpersQueryOffset2 = _interopRequireDefault(_domHelpersQueryOffset);
 
-	var _domHelpersQueryPosition = __webpack_require__(263);
+	var _domHelpersQueryPosition = __webpack_require__(264);
 
 	var _domHelpersQueryPosition2 = _interopRequireDefault(_domHelpersQueryPosition);
 
-	var _domHelpersQueryScrollTop = __webpack_require__(273);
+	var _domHelpersQueryScrollTop = __webpack_require__(274);
 
 	var _domHelpersQueryScrollTop2 = _interopRequireDefault(_domHelpersQueryScrollTop);
 
@@ -28273,7 +28447,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28290,19 +28464,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _utilsAddEventListener = __webpack_require__(294);
+	var _utilsAddEventListener = __webpack_require__(295);
 
 	var _utilsAddEventListener2 = _interopRequireDefault(_utilsAddEventListener);
 
-	var _utilsCreateChainedFunction = __webpack_require__(297);
+	var _utilsCreateChainedFunction = __webpack_require__(298);
 
 	var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
 
-	var _utilsOwnerDocument = __webpack_require__(289);
+	var _utilsOwnerDocument = __webpack_require__(290);
 
 	var _utilsOwnerDocument2 = _interopRequireDefault(_utilsOwnerDocument);
 
@@ -28437,7 +28611,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28446,11 +28620,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _domHelpersEventsOn = __webpack_require__(295);
+	var _domHelpersEventsOn = __webpack_require__(296);
 
 	var _domHelpersEventsOn2 = _interopRequireDefault(_domHelpersEventsOn);
 
-	var _domHelpersEventsOff = __webpack_require__(296);
+	var _domHelpersEventsOff = __webpack_require__(297);
 
 	var _domHelpersEventsOff2 = _interopRequireDefault(_domHelpersEventsOff);
 
@@ -28466,11 +28640,11 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var canUseDOM = __webpack_require__(260);
+	var canUseDOM = __webpack_require__(261);
 	var on = function on() {};
 
 	if (canUseDOM) {
@@ -28487,11 +28661,11 @@
 	module.exports = on;
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var canUseDOM = __webpack_require__(260);
+	var canUseDOM = __webpack_require__(261);
 	var off = function off() {};
 
 	if (canUseDOM) {
@@ -28509,7 +28683,7 @@
 	module.exports = off;
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports) {
 
 	/**
@@ -28555,7 +28729,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28592,19 +28766,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsEventLevels = __webpack_require__(280);
+	var _utilsEventLevels = __webpack_require__(281);
 
-	var _utilsHelpers = __webpack_require__(236);
+	var _utilsHelpers = __webpack_require__(237);
 
-	var _utilsSelection = __webpack_require__(281);
+	var _utilsSelection = __webpack_require__(282);
 
-	var _Selection = __webpack_require__(299);
+	var _Selection = __webpack_require__(300);
 
 	var _Selection2 = _interopRequireDefault(_Selection);
 
@@ -28742,7 +28916,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28761,11 +28935,11 @@
 	  }
 	}
 
-	var _domHelpersQueryContains = __webpack_require__(259);
+	var _domHelpersQueryContains = __webpack_require__(260);
 
 	var _domHelpersQueryContains2 = _interopRequireDefault(_domHelpersQueryContains);
 
-	var _domHelpersEvents = __webpack_require__(300);
+	var _domHelpersEvents = __webpack_require__(301);
 
 	var _domHelpersEvents2 = _interopRequireDefault(_domHelpersEvents);
 
@@ -29041,24 +29215,24 @@
 	exports['default'] = Selection;
 
 /***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var on = __webpack_require__(295),
-	    off = __webpack_require__(296),
-	    filter = __webpack_require__(301);
-
-	module.exports = { on: on, off: off, filter: filter };
-
-/***/ },
 /* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	var on = __webpack_require__(296),
+	    off = __webpack_require__(297),
+	    filter = __webpack_require__(302);
 
-	var contains = __webpack_require__(259),
-	    qsa = __webpack_require__(302);
+	module.exports = { on: on, off: off, filter: filter };
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var contains = __webpack_require__(260),
+	    qsa = __webpack_require__(303);
 
 	module.exports = function (selector, handler) {
 	  return function (e) {
@@ -29073,7 +29247,7 @@
 	};
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29105,7 +29279,7 @@
 	};
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29130,15 +29304,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _TimeGrid = __webpack_require__(304);
+	var _TimeGrid = __webpack_require__(305);
 
 	var _TimeGrid2 = _interopRequireDefault(_TimeGrid);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
 	var Day = _react2['default'].createClass({
 	  displayName: 'Day',
@@ -29179,7 +29353,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29204,61 +29378,61 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _DaySlot = __webpack_require__(305);
+	var _DaySlot = __webpack_require__(306);
 
 	var _DaySlot2 = _interopRequireDefault(_DaySlot);
 
-	var _EventRow = __webpack_require__(276);
+	var _EventRow = __webpack_require__(277);
 
 	var _EventRow2 = _interopRequireDefault(_EventRow);
 
-	var _TimeGutter = __webpack_require__(306);
+	var _TimeGutter = __webpack_require__(307);
 
 	var _TimeGutter2 = _interopRequireDefault(_TimeGutter);
 
-	var _BackgroundCells = __webpack_require__(298);
+	var _BackgroundCells = __webpack_require__(299);
 
 	var _BackgroundCells2 = _interopRequireDefault(_BackgroundCells);
 
-	var _domHelpersClass = __webpack_require__(307);
+	var _domHelpersClass = __webpack_require__(308);
 
 	var _domHelpersClass2 = _interopRequireDefault(_domHelpersClass);
 
-	var _domHelpersQueryWidth = __webpack_require__(311);
+	var _domHelpersQueryWidth = __webpack_require__(312);
 
 	var _domHelpersQueryWidth2 = _interopRequireDefault(_domHelpersQueryWidth);
 
-	var _domHelpersUtilScrollbarSize = __webpack_require__(312);
+	var _domHelpersUtilScrollbarSize = __webpack_require__(313);
 
 	var _domHelpersUtilScrollbarSize2 = _interopRequireDefault(_domHelpersUtilScrollbarSize);
 
-	var _utilsMessages = __webpack_require__(283);
+	var _utilsMessages = __webpack_require__(284);
 
 	var _utilsMessages2 = _interopRequireDefault(_utilsMessages);
 
-	var _utilsPropTypes = __webpack_require__(232);
+	var _utilsPropTypes = __webpack_require__(233);
 
-	var _utilsHelpers = __webpack_require__(236);
+	var _utilsHelpers = __webpack_require__(237);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
-	var _utilsAccessors = __webpack_require__(279);
+	var _utilsAccessors = __webpack_require__(280);
 
-	var _utilsEventLevels = __webpack_require__(280);
+	var _utilsEventLevels = __webpack_require__(281);
 
 	var MIN_ROWS = 2;
 
@@ -29270,7 +29444,8 @@
 	    step: _react2['default'].PropTypes.number,
 	    min: _react2['default'].PropTypes.instanceOf(Date),
 	    max: _react2['default'].PropTypes.instanceOf(Date),
-	    dayFormat: _utilsPropTypes.dateFormat
+	    dayFormat: _utilsPropTypes.dateFormat,
+	    rtl: _react2['default'].PropTypes.bool
 	  }),
 
 	  getDefaultProps: function getDefaultProps() {
@@ -29430,6 +29605,7 @@
 	  },
 
 	  _adjustGutter: function _adjustGutter() {
+	    var isRtl = this.props.rtl;
 	    var header = this.refs.headerCell;
 	    var width = this._gutterWidth;
 	    var isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
@@ -29445,7 +29621,8 @@
 
 	    if (isOverflowing) {
 	      _domHelpersClass2['default'].addClass(header, 'rbc-header-overflowing');
-	      this.refs.headerCell.style.marginRight = _domHelpersUtilScrollbarSize2['default']() + 'px';
+	      this.refs.headerCell.style[!isRtl ? 'marginLeft' : 'marginRight'] = '';
+	      this.refs.headerCell.style[isRtl ? 'marginLeft' : 'marginRight'] = _domHelpersUtilScrollbarSize2['default']() + 'px';
 	    } else {
 	      _domHelpersClass2['default'].removeClass(header, 'rbc-header-overflowing');
 	    }
@@ -29457,7 +29634,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29488,31 +29665,31 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(211);
+	var _reactDom = __webpack_require__(212);
 
-	var _Selection = __webpack_require__(299);
+	var _Selection = __webpack_require__(300);
 
 	var _Selection2 = _interopRequireDefault(_Selection);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _utilsSelection = __webpack_require__(281);
+	var _utilsSelection = __webpack_require__(282);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _utilsHelpers = __webpack_require__(236);
+	var _utilsHelpers = __webpack_require__(237);
 
-	var _utilsPropTypes = __webpack_require__(232);
+	var _utilsPropTypes = __webpack_require__(233);
 
-	var _utilsAccessors = __webpack_require__(279);
+	var _utilsAccessors = __webpack_require__(280);
 
 	function snapToSlot(date, step) {
 	  var roundTo = 1000 * 60 * step;
@@ -29523,9 +29700,9 @@
 	  return _utilsDates2['default'].diff(min, _utilsDates2['default'].merge(min, date), 'minutes');
 	}
 
-	function overlaps(event, events, _ref, last) {
-	  var startAccessor = _ref.startAccessor;
-	  var endAccessor = _ref.endAccessor;
+	function overlaps(event, events, _ref2, last) {
+	  var startAccessor = _ref2.startAccessor;
+	  var endAccessor = _ref2.endAccessor;
 
 	  var eStart = _utilsAccessors.accessor(event, startAccessor);
 	  var offset = last;
@@ -29671,22 +29848,22 @@
 	  },
 
 	  _slotStyle: function _slotStyle(startSlot, endSlot, leftOffset) {
+	    var _ref;
 
 	    endSlot = Math.max(endSlot, startSlot + this.props.step); //must be at least one `step` high
 
-	    var eventOffset = this.props.eventOffset || 10;
+	    var eventOffset = this.props.eventOffset || 10,
+	        isRtl = this.props.rtl;
 
 	    var top = startSlot / this._totalMin * 100;
 	    var bottom = endSlot / this._totalMin * 100;
 	    var per = leftOffset === 0 ? 0 : leftOffset * eventOffset;
 	    var rightDiff = eventOffset / (leftOffset + 1);
 
-	    return {
+	    return _ref = {
 	      top: top + '%',
-	      height: bottom - top + '%',
-	      left: per + '%',
-	      width: (leftOffset === 0 ? 100 - eventOffset : 100 - per - rightDiff) + '%'
-	    };
+	      height: bottom - top + '%'
+	    }, _ref[isRtl ? 'right' : 'left'] = per + '%', _ref.width = (leftOffset === 0 ? 100 - eventOffset : 100 - per - rightDiff) + '%', _ref;
 	  },
 
 	  _selectable: function _selectable() {
@@ -29697,13 +29874,13 @@
 	      return _reactDom.findDOMNode(_this2);
 	    });
 
-	    var selectionState = function selectionState(_ref2) {
-	      var x = _ref2.x;
-	      var y = _ref2.y;
+	    var selectionState = function selectionState(_ref3) {
+	      var x = _ref3.x;
+	      var y = _ref3.y;
 	      var _props3 = _this2.props;
-	      var date = _props3.date;
 	      var step = _props3.step;
 	      var min = _props3.min;
+	      var max = _props3.max;
 
 	      var _getBoundsForNode = _Selection.getBoundsForNode(node);
 
@@ -29716,7 +29893,7 @@
 
 	      var current = (y - top) / range;
 
-	      current = snapToSlot(minToDate(mins * current, date), step);
+	      current = snapToSlot(minToDate(mins * current, min), step);
 
 	      if (!_this2.state.selecting) _this2._initialDateSlot = current;
 
@@ -29724,9 +29901,8 @@
 
 	      if (_utilsDates2['default'].eq(initial, current, 'minutes')) current = _utilsDates2['default'].add(current, step, 'minutes');
 
-	      //end = snapToSlot(minToDate(mins * end, date), step)
-	      var start = _utilsDates2['default'].min(initial, current);
-	      var end = _utilsDates2['default'].max(initial, current);
+	      var start = _utilsDates2['default'].max(min, _utilsDates2['default'].min(initial, current));
+	      var end = _utilsDates2['default'].min(max, _utilsDates2['default'].max(initial, current));
 
 	      return {
 	        selecting: true,
@@ -29745,9 +29921,9 @@
 	      return _this2.setState(selectionState(box));
 	    });
 
-	    selector.on('click', function (_ref3) {
-	      var x = _ref3.x;
-	      var y = _ref3.y;
+	    selector.on('click', function (_ref4) {
+	      var x = _ref4.x;
+	      var y = _ref4.y;
 
 	      _this2._clickTimer = setTimeout(function () {
 	        _this2._selectSlot(selectionState({ x: x, y: y }));
@@ -29768,11 +29944,11 @@
 	    this._selector = null;
 	  },
 
-	  _selectSlot: function _selectSlot(_ref4) {
-	    var startDate = _ref4.startDate;
-	    var endDate = _ref4.endDate;
-	    var endSlot = _ref4.endSlot;
-	    var startSlot = _ref4.startSlot;
+	  _selectSlot: function _selectSlot(_ref5) {
+	    var startDate = _ref5.startDate;
+	    var endDate = _ref5.endDate;
+	    var endSlot = _ref5.endSlot;
+	    var startSlot = _ref5.startSlot;
 
 	    var current = startDate,
 	        slots = [];
@@ -29796,9 +29972,11 @@
 	});
 
 	function minToDate(min, date) {
-	  var dt = new Date(date);
+	  var dt = new Date(date),
+	      totalMins = _utilsDates2['default'].diff(_utilsDates2['default'].startOf(date, 'day'), date, 'minutes');
+
 	  dt = _utilsDates2['default'].hours(dt, 0);
-	  dt = _utilsDates2['default'].minutes(dt, min);
+	  dt = _utilsDates2['default'].minutes(dt, totalMins + min);
 	  dt = _utilsDates2['default'].seconds(dt, 0);
 	  return _utilsDates2['default'].milliseconds(dt, 0);
 	}
@@ -29807,7 +29985,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29822,15 +30000,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
@@ -29876,30 +30054,30 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = {
-	  addClass: __webpack_require__(308),
-	  removeClass: __webpack_require__(310),
-	  hasClass: __webpack_require__(309)
+	  addClass: __webpack_require__(309),
+	  removeClass: __webpack_require__(311),
+	  hasClass: __webpack_require__(310)
 	};
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var hasClass = __webpack_require__(309);
+	var hasClass = __webpack_require__(310);
 
 	module.exports = function addClass(element, className) {
 	  if (element.classList) element.classList.add(className);else if (!hasClass(element)) element.className = element.className + ' ' + className;
 	};
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29908,7 +30086,7 @@
 	};
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29918,13 +30096,13 @@
 	};
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var offset = __webpack_require__(258),
-	    getWindow = __webpack_require__(261);
+	var offset = __webpack_require__(259),
+	    getWindow = __webpack_require__(262);
 
 	module.exports = function width(node, client) {
 	  var win = getWindow(node);
@@ -29932,12 +30110,12 @@
 	};
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var canUseDOM = __webpack_require__(260);
+	var canUseDOM = __webpack_require__(261);
 
 	var size;
 
@@ -29962,7 +30140,7 @@
 	};
 
 /***/ },
-/* 313 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29987,17 +30165,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
-	var _TimeGrid = __webpack_require__(304);
+	var _TimeGrid = __webpack_require__(305);
 
 	var _TimeGrid2 = _interopRequireDefault(_TimeGrid);
 
@@ -30046,7 +30224,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30061,35 +30239,35 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsMessages = __webpack_require__(283);
+	var _utilsMessages = __webpack_require__(284);
 
 	var _utilsMessages2 = _interopRequireDefault(_utilsMessages);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	var _localizer2 = _interopRequireDefault(_localizer);
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
-	var _utilsAccessors = __webpack_require__(279);
+	var _utilsAccessors = __webpack_require__(280);
 
-	var _domHelpersClass = __webpack_require__(307);
+	var _domHelpersClass = __webpack_require__(308);
 
 	var _domHelpersClass2 = _interopRequireDefault(_domHelpersClass);
 
-	var _domHelpersQueryWidth = __webpack_require__(311);
+	var _domHelpersQueryWidth = __webpack_require__(312);
 
 	var _domHelpersQueryWidth2 = _interopRequireDefault(_domHelpersQueryWidth);
 
-	var _domHelpersUtilScrollbarSize = __webpack_require__(312);
+	var _domHelpersUtilScrollbarSize = __webpack_require__(313);
 
 	var _domHelpersUtilScrollbarSize2 = _interopRequireDefault(_domHelpersUtilScrollbarSize);
 
-	var _utilsEventLevels = __webpack_require__(280);
+	var _utilsEventLevels = __webpack_require__(281);
 
 	var Agenda = _react2['default'].createClass({
 	  displayName: 'Agenda',
@@ -30251,7 +30429,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30263,9 +30441,9 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _constants = __webpack_require__(217);
+	var _constants = __webpack_require__(218);
 
-	var _Views = __webpack_require__(238);
+	var _Views = __webpack_require__(239);
 
 	var _Views2 = _interopRequireDefault(_Views);
 
@@ -30286,7 +30464,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30301,15 +30479,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(210);
+	var _classnames = __webpack_require__(211);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _utilsMessages = __webpack_require__(283);
+	var _utilsMessages = __webpack_require__(284);
 
 	var _utilsMessages2 = _interopRequireDefault(_utilsMessages);
 
-	var _utilsConstants = __webpack_require__(217);
+	var _utilsConstants = __webpack_require__(218);
 
 	var Toolbar = _react2['default'].createClass({
 	  displayName: 'Toolbar',
@@ -30355,12 +30533,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assign = __webpack_require__(318),
-	    assignDefaults = __webpack_require__(323),
-	    createDefaults = __webpack_require__(324);
+	var assign = __webpack_require__(319),
+	    assignDefaults = __webpack_require__(324),
+	    createDefaults = __webpack_require__(325);
 
 	/**
 	 * Assigns own enumerable properties of source object(s) to the destination
@@ -30386,12 +30564,12 @@
 
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignWith = __webpack_require__(319),
-	    baseAssign = __webpack_require__(320),
-	    createAssigner = __webpack_require__(322);
+	var assignWith = __webpack_require__(320),
+	    baseAssign = __webpack_require__(321),
+	    createAssigner = __webpack_require__(323);
 
 	/**
 	 * Assigns own enumerable properties of source object(s) to the destination
@@ -30435,7 +30613,7 @@
 
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var keys = __webpack_require__(175);
@@ -30473,10 +30651,10 @@
 
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseCopy = __webpack_require__(321),
+	var baseCopy = __webpack_require__(322),
 	    keys = __webpack_require__(175);
 
 	/**
@@ -30498,7 +30676,7 @@
 
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports) {
 
 	/**
@@ -30527,12 +30705,12 @@
 
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bindCallback = __webpack_require__(202),
-	    isIterateeCall = __webpack_require__(241),
-	    restParam = __webpack_require__(256);
+	    isIterateeCall = __webpack_require__(242),
+	    restParam = __webpack_require__(257);
 
 	/**
 	 * Creates a `_.assign`, `_.defaults`, or `_.merge` function.
@@ -30574,7 +30752,7 @@
 
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports) {
 
 	/**
@@ -30593,10 +30771,10 @@
 
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var restParam = __webpack_require__(256);
+	var restParam = __webpack_require__(257);
 
 	/**
 	 * Creates a `_.defaults` or `_.defaultsDeep` function.
@@ -30621,7 +30799,7 @@
 
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30632,13 +30810,13 @@
 	  return obj && obj.__esModule ? obj : { 'default': obj };
 	}
 
-	var _utilsDates = __webpack_require__(213);
+	var _utilsDates = __webpack_require__(214);
 
 	var _utilsDates2 = _interopRequireDefault(_utilsDates);
 
-	var _formats = __webpack_require__(218);
+	var _formats = __webpack_require__(219);
 
-	var _localizer = __webpack_require__(215);
+	var _localizer = __webpack_require__(216);
 
 	function inSame12Hr(start, end) {
 	  var s = 12 - _utilsDates2['default'].hours(start);
@@ -30711,7 +30889,7 @@
 	};
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30766,7 +30944,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30779,11 +30957,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactBigCalendar = __webpack_require__(227);
+	var _reactBigCalendar = __webpack_require__(228);
 
 	var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar);
 
-	var _events = __webpack_require__(326);
+	var _events = __webpack_require__(327);
 
 	var _events2 = _interopRequireDefault(_events);
 
@@ -30797,12 +30975,14 @@
 	      _react2['default'].createElement(
 	        'h3',
 	        { className: 'text-info text-center demo-info' },
-	        'Click an event to see mroe info or Drag the mouse  over the calendar to select a date/time range.'
+	        'Click an event to see more info, or drag the mouse over the calendar to select a date/time range.'
 	      ),
 	      _react2['default'].createElement(_reactBigCalendar2['default'], {
 	        selectable: true,
 	        events: _events2['default'],
 	        defaultView: 'week',
+	        min: new Date(2015, 3, 1, 4, 0, 0),
+	        max: new Date(2015, 3, 1, 16, 30, 0),
 	        defaultDate: new Date(2015, 3, 1),
 	        onSelectEvent: function (event) {
 	          return alert(event.title);
@@ -30819,7 +30999,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30832,18 +31012,18 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactBigCalendar = __webpack_require__(227);
+	var _reactBigCalendar = __webpack_require__(228);
 
 	var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar);
 
-	var _events = __webpack_require__(326);
+	var _events = __webpack_require__(327);
 
 	var _events2 = _interopRequireDefault(_events);
 
-	__webpack_require__(329);
 	__webpack_require__(330);
 	__webpack_require__(331);
 	__webpack_require__(332);
+	__webpack_require__(333);
 
 	var Cultures = _react2['default'].createClass({
 	  displayName: 'Cultures',
@@ -30856,6 +31036,7 @@
 	    var _this = this;
 
 	    var cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE'];
+	    var rtl = this.state.culture === 'ar-AE';
 
 	    return _react2['default'].createElement(
 	      'div',
@@ -30872,6 +31053,8 @@
 	        _react2['default'].createElement(
 	          'select',
 	          {
+	            className: 'form-control',
+	            style: { width: 200, display: 'inline-block' },
 	            defaultValue: 'fr',
 	            onChange: function (e) {
 	              return _this.setState({ culture: e.target.value });
@@ -30887,6 +31070,7 @@
 	        )
 	      ),
 	      _react2['default'].createElement(_reactBigCalendar2['default'], {
+	        rtl: rtl,
 	        events: _events2['default'],
 	        culture: this.state.culture,
 	        defaultDate: new Date(2015, 3, 1)
@@ -30899,7 +31083,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30921,7 +31105,7 @@
 
 	if ( true ) {
 		// Assume CommonJS
-		Globalize = __webpack_require__( 219 );
+		Globalize = __webpack_require__( 220 );
 	} else {
 		// Global variable
 		Globalize = window.Globalize;
@@ -30958,7 +31142,7 @@
 
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30980,7 +31164,7 @@
 
 	if ( true ) {
 		// Assume CommonJS
-		Globalize = __webpack_require__( 219 );
+		Globalize = __webpack_require__( 220 );
 	} else {
 		// Global variable
 		Globalize = window.Globalize;
@@ -31041,7 +31225,7 @@
 
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31063,7 +31247,7 @@
 
 	if ( true ) {
 		// Assume CommonJS
-		Globalize = __webpack_require__( 219 );
+		Globalize = __webpack_require__( 220 );
 	} else {
 		// Global variable
 		Globalize = window.Globalize;
@@ -31124,7 +31308,7 @@
 
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31146,7 +31330,7 @@
 
 	if ( true ) {
 		// Assume CommonJS
-		Globalize = __webpack_require__( 219 );
+		Globalize = __webpack_require__( 220 );
 	} else {
 		// Global variable
 		Globalize = window.Globalize;
@@ -31585,7 +31769,7 @@
 
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31598,11 +31782,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactBigCalendar = __webpack_require__(227);
+	var _reactBigCalendar = __webpack_require__(228);
 
 	var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar);
 
-	var _events = __webpack_require__(326);
+	var _events = __webpack_require__(327);
 
 	var _events2 = _interopRequireDefault(_events);
 
@@ -31631,7 +31815,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31644,11 +31828,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactBigCalendar = __webpack_require__(227);
+	var _reactBigCalendar = __webpack_require__(228);
 
 	var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar);
 
-	var _events = __webpack_require__(326);
+	var _events = __webpack_require__(327);
 
 	var _events2 = _interopRequireDefault(_events);
 

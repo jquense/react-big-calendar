@@ -25,6 +25,13 @@
       border-left: 1px solid @cell-border;
     }
 
+    .rbc-rtl & {
+      tbody > tr > td + td {
+        border-left-width: 0;
+        border-right: 1px solid @cell-border;
+      }
+    }
+
     tbody > tr + tr {
       border-top: 1px solid @cell-border;
     }
@@ -33,6 +40,10 @@
       padding: 3px 5px;
       text-align: left;
       border-bottom: 1px solid @cell-border;
+
+      .rbc-rtl & {
+        text-align: right;
+      }
     }
   }
 }

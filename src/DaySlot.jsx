@@ -15,8 +15,6 @@ function snapToSlot(date, step){
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-
-
 function positionFromDate(date, min, step){
   return dates.diff(min, dates.merge(min, date), 'minutes')
 }
@@ -175,7 +173,8 @@ let DaySlot = React.createClass({
 
     endSlot = Math.max(endSlot, startSlot + this.props.step) //must be at least one `step` high
 
-    let eventOffset = this.props.eventOffset || 10;
+    let eventOffset = this.props.eventOffset || 10
+      , isRtl = this.props.rtl;
 
     let top = ((startSlot / this._totalMin) * 100);
     let bottom = ((endSlot / this._totalMin) * 100);
@@ -185,7 +184,7 @@ let DaySlot = React.createClass({
     return {
       top: top + '%',
       height: bottom - top + '%',
-      left: per + '%',
+      [isRtl ? 'right' : 'left']: per + '%',
       width: (leftOffset === 0 ? (100 - eventOffset) : (100 - per) - rightDiff) + '%'
     }
   },

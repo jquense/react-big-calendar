@@ -12,7 +12,7 @@ with the calendar component.
 Date internationalization and localization is __hard__ and `react-big-calendar` doesn't even attempt to
 solve that problem. Instead you can use one of the many excellent solutions already
 out there, via adapters called "localizers". Big Calendar comes with two localizers for use
-with [Globalize.js](https://github.com/jquery/globalize) (v0.1.0 supported) or [Moment.js](http://momentjs.com/).
+with [Globalize.js](https://github.com/jquery/globalize) or [Moment.js](http://momentjs.com/).
 
 Choose the localizer that best suits your needs, or write your own. Whatever you do, you'll need to set it up
 before you can use the calendar (you only need to set it up once).

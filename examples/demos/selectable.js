@@ -14,8 +14,6 @@ let Selectable = React.createClass({
           selectable
           events={events}
           defaultView='week'
-          min={new Date(2015, 3, 1, 4, 0, 0)}
-          max={new Date(2015, 3, 1, 16, 30, 0)}
           defaultDate={new Date(2015, 3, 1)}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={(slotInfo) => alert(

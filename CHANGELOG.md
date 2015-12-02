@@ -1,3 +1,14 @@
+v0.9.5 - Wed, 02 Dec 2015 18:09:32 GMT
+--------------------------------------
+
+- [c2e8aa4](../../commit/c2e8aa4) [fixed] accidental breaking change on the localizers
+- [dc90943](../../commit/dc90943) [fixed] some style issues
+- [ea8e085](../../commit/ea8e085) [added] modern globalize support
+- [4b3d3ba](../../commit/4b3d3ba) [fixed] have gutter use culture prop
+- [7922882](../../commit/7922882) [fixed] better gutter width detection
+
+
+
 v0.9.4 - Sun, 29 Nov 2015 02:19:49 GMT
 --------------------------------------
 

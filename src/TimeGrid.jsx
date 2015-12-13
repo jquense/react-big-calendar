@@ -206,9 +206,13 @@ let TimeGrid = React.createClass({
     let gutterCells = [findDOMNode(this.refs.gutter), ...this._gutters]
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
 
+    if (width)
+      gutterCells.forEach(
+        node => node.style.width = '');
+
     this._gutterWidth = Math.max(...gutterCells.map(getWidth));
 
-    if (width !== this._gutterWidth) {
+    if (this._gutterWidth && width !== this._gutterWidth) {
       width = this._gutterWidth + 'px';
       gutterCells.forEach(node => node.style.width = width)
     }

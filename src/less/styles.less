@@ -41,7 +41,9 @@
 }
 
 .rbc-header {
-  &:extend(.rbc-ellipsis);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   padding: 0 3px;
   text-align: center;
   vertical-align: middle;

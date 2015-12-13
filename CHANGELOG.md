@@ -1,3 +1,11 @@
+v0.9.6 - Sun, 13 Dec 2015 21:39:49 GMT
+--------------------------------------
+
+- [a69600b](../../commit/a69600b) [fixed] Pass correct date to DaySlot for selections.
+- [5ac5c30](../../commit/5ac5c30) [fixed] reset gutter widths before calculations
+
+
+
 v0.9.5 - Wed, 02 Dec 2015 18:09:32 GMT
 --------------------------------------
 

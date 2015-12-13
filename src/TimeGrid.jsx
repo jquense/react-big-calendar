@@ -127,7 +127,7 @@ let TimeGrid = React.createClass({
   },
 
   renderEvents(range, events){
-    let { endAccessor, startAccessor, components } = this.props;
+    let { min, max, endAccessor, startAccessor, components } = this.props;
     let today = new Date();
 
     return range.map((date, idx) => {
@@ -140,6 +140,8 @@ let TimeGrid = React.createClass({
       return (
         <DaySlot
           {...this.props }
+          min={dates.merge(date, min)}
+          max={dates.merge(date, max)}
           eventComponent={components.event}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, this._slots)}

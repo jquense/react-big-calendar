@@ -26,6 +26,11 @@ export let accessor = PropTypes.oneOfType([
   PropTypes.func
 ])
 
+export let stringOrElement = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.element
+])
+
 export let dateFormat = createChainableTypeChecker(
     (...args) => localizer.propType && localizer.propType(...args))
 

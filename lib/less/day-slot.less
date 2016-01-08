@@ -1,0 +1,55 @@
+@import './variables.less';
+
+.rbc-day-slot {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  flex-direction: column;
+
+  .rbc-event {
+    border: 1px solid @event-border;
+    display: flex;
+    max-height: 100%;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+
+  .rbc-event-label {
+    flex: none;
+    padding-right: 5px;
+    width: auto;
+  }
+
+  .rbc-event-content {
+    width: 100%;
+    flex: 1 1 0;
+    word-wrap: break-word;
+    line-height: 1;
+    height: 100%;
+    min-height: 1em;
+  }
+
+}
+
+.rbc-time-slot {
+  flex: 1 0 0;
+  min-height: 20px;
+  height: 20px;
+
+  & + & {
+    border-top: 1px solid @cell-border;
+  }
+
+  &:nth-child(even){
+    border-top-color: lighten(@cell-border, 10%);
+  }
+}
+
+.rbc-day-header {
+  text-align: center;
+}
+
+.rbc-day-slot .rbc-event {
+  position: absolute;
+}

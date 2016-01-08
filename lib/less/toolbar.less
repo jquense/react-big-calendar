@@ -1,0 +1,104 @@
+@import './variables.less';
+
+@active-background: darken(@btn-bg, 10%);
+@active-border: darken(@btn-border, 12%);
+
+.rbc-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+
+  .rbc-toolbar-label {
+    width: 100%;
+    padding: 0 10px;
+    text-align: center;
+  }
+
+  & button {
+    color: @btn-color;
+    display: inline-block;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+    background: none;
+    background-image: none;
+    border: 1px solid @btn-border;
+    padding: .375rem 1rem;
+    border-radius: 4px;
+    line-height: normal;
+    white-space: nowrap;
+
+    &:active,
+    &.rbc-active {
+      background-image: none;
+      box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+      background-color: @active-background;
+      border-color: @active-border;
+
+      &:hover,
+      &:focus {
+        color: @btn-color;
+        background-color: darken(@btn-bg, 17%);
+        border-color: darken(@btn-border, 25%);
+      }
+    }
+
+    &:focus {
+      color: @btn-color;
+      background-color: @active-background;
+      border-color: @active-border;
+    }
+
+    &:hover {
+      color: @btn-color;
+      background-color: @active-background;
+          border-color: @active-border;
+    }
+  }
+}
+
+.rbc-btn-group {
+  display: inline-block;
+  white-space: nowrap;
+
+  > button:first-child:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > button:last-child:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .rbc-rtl & > button:first-child:not(:last-child) {
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .rbc-rtl & > button:last-child:not(:first-child) {
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > button:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+
+  button + button {
+    margin-left: -1px;
+  }
+
+  .rbc-rtl & button + button {
+    margin-left: 0;
+    margin-right: -1px;
+  }
+
+  & + &,
+  & + button {
+    margin-left: 10px;
+  }
+}

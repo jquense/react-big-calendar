@@ -5,6 +5,7 @@ import {
     accessor
   , elementType
   , dateFormat
+  , stringOrElement
   , views as componentViews } from './utils/propTypes';
 
 import localizer from './localizer'

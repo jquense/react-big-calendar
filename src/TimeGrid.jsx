@@ -208,22 +208,21 @@ let TimeGrid = React.createClass({
     let gutterCells = [findDOMNode(this.refs.gutter), ...this._gutters]
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
 
-    if (width)
-      gutterCells.forEach(
-        node => node.style.width = '');
+    if (!width) {
+      this._gutterWidth = Math.max(...gutterCells.map(getWidth));
 
-    this._gutterWidth = Math.max(...gutterCells.map(getWidth));
-
-    if (this._gutterWidth && width !== this._gutterWidth) {
-      width = this._gutterWidth + 'px';
-      gutterCells.forEach(node => node.style.width = width)
+      if (this._gutterWidth) {
+        width = this._gutterWidth + 'px';
+        gutterCells.forEach(node => node.style.width = width)
+      }
     }
 
     if (isOverflowing) {
       classes.addClass(header, 'rbc-header-overflowing')
       this.refs.headerCell.style[!isRtl ? 'marginLeft' : 'marginRight'] = '';
       this.refs.headerCell.style[isRtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
-    } else {
+    }
+    else {
       classes.removeClass(header, 'rbc-header-overflowing')
     }
   }

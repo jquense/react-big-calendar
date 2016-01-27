@@ -247,7 +247,7 @@ let MonthView = React.createClass({
           className={cn('rbc-date-cell', {
             'rbc-off-range': offRange,
             'rbc-now': dates.eq(day, new Date(), 'day'),
-            'rbc-selected': dates.eq(day, this.props.date, 'day')
+            'rbc-current': dates.eq(day, this.props.date, 'day')
           })}
         >
           <a href='#' onClick={this._dateClick.bind(null, day)}>

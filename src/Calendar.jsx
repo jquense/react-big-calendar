@@ -5,6 +5,7 @@ import {
     accessor
   , elementType
   , dateFormat
+  , stringOrElement
   , views as componentViews } from './utils/propTypes';
 
 import localizer from './localizer'
@@ -276,14 +277,14 @@ let Calendar = React.createClass({
      * String messages used throughout the component, override to provide localizations
      */
     messages: PropTypes.shape({
-      allDay: PropTypes.string,
-      previous: PropTypes.string,
-      next: PropTypes.string,
-      today: PropTypes.string,
-      month: PropTypes.string,
-      week: PropTypes.string,
-      day: PropTypes.string,
-      agenda: PropTypes.string,
+      allDay: stringOrElement,
+      previous: stringOrElement,
+      next: stringOrElement,
+      today: stringOrElement,
+      month: stringOrElement,
+      week: stringOrElement,
+      day: stringOrElement,
+      agenda: stringOrElement,
       showMore: PropTypes.func
     })
   },

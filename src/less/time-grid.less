@@ -38,6 +38,7 @@
 
 .rbc-time-header {
   display: flex;
+  flex: 0 0 auto; // should not shrink below height
   flex-direction: column;
 
   &.rbc-header-overflowing {
@@ -73,6 +74,7 @@
 
 .rbc-time-content {
   display: flex;
+  flex: 1 1 0%;
   align-items: flex-start;
   width: 100%;
   border-top: 2px solid @calendar-border;

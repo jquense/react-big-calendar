@@ -1,6 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import message from './utils/messages';
 import { navigate } from './utils/constants';
 
 let Toolbar = React.createClass({
@@ -9,8 +8,6 @@ let Toolbar = React.createClass({
     let {
         messages, label
       , views: viewNames, view } = this.props;
-
-    messages = message(messages)
 
     return (
       <div className='rbc-toolbar'>

@@ -15,6 +15,12 @@ let timeRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'h:mma', culture) +
     ' — ' + local.format(end, inSame12Hr(start, end) ? 'h:mm' : 'h:mma', culture)
 
+let timeRangeStartFormat = ({ start, end }, culture, local)=>
+  local.format(start, 'h:mmtt', culture) +' — '
+
+let timeRangeEndFormat = ({ start, end }, culture, local)=>
+  ' — ' + local.format(end, 'h:mmtt', culture)
+
 let weekRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'MMM DD', culture) +
     ' - ' + local.format(end, dates.eq(start, end, 'month') ? 'DD' : 'MMM DD', culture)
@@ -26,6 +32,8 @@ export let formats = {
 
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
+  eventTimeRangeStartFormat: timeRangeStartFormat,
+  eventTimeRangeEndFormat: timeRangeEndFormat,
 
   timeGutterFormat: 'LT',
 

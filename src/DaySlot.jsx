@@ -170,7 +170,7 @@ let DaySlot = React.createClass({
         <div
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
-          title={(typeof label ? label + ': ' : '') + title }
+          title={(typeof label === 'string' ? label + ': ' : '') + title }
           onClick={this._select.bind(null, event)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,

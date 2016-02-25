@@ -11,9 +11,9 @@ module.exports = {
     path.join(__dirname, '../examples/index.html')
   ],
   output: {
-    path: path.join(__dirname, '../examples/'),
+    path: path.join(__dirname, '../examples'),
     filename: 'bundle.js',
-    publicPath: '/examples/static'
+    publicPath: '/static'
   },
 
   plugins: [

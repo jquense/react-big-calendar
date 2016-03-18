@@ -102,6 +102,17 @@ let Calendar = React.createClass({
     onSelectEvent: PropTypes.func,
 
     /**
+     * Callback fired when dragging a selection in the Time views.
+     *
+     * Returning `false` from the handler will prevent a selection.
+     *
+     * ```js
+     * function ({ start: Date, end: Date }) : boolean
+     * ```
+     */
+    onSelecting: PropTypes.func,
+
+    /**
      * An array of built-in view names to allow the calendar to display.
      *
      * @type Calendar.views

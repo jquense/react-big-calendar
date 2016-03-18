@@ -51,6 +51,7 @@ let DaySlot = React.createClass({
     selectable: React.PropTypes.bool,
     eventOffset: React.PropTypes.number,
 
+    onSelecting: React.PropTypes.func,
     onSelectSlot: React.PropTypes.func.isRequired,
     onSelectEvent: React.PropTypes.func.isRequired
   },
@@ -193,6 +194,24 @@ let DaySlot = React.createClass({
     let node = findDOMNode(this);
     let selector = this._selector = new Selection(()=> findDOMNode(this))
 
+    let maybeSelect = (box) => {
+      let onSelecting = this.props.onSelecting
+      let current = this.state || {};
+      let state = selectionState(box);
+      let { startDate: start, endDate: end } = state;
+
+      if (onSelecting) {
+        if (
+          (dates.eq(current.startDate, start, 'minutes') &&
+          dates.eq(current.endDate, end, 'minutes')) ||
+          onSelecting({ start, end }) === false
+        )
+         return
+      }
+
+      this.setState(state)
+    }
+
     let selectionState = ({ x, y }) => {
       let { step, min, max } = this.props;
       let { top, bottom } = getBoundsForNode(node)
@@ -225,11 +244,8 @@ let DaySlot = React.createClass({
       }
     }
 
-    selector.on('selecting',
-      box => this.setState(selectionState(box)))
-
-    selector.on('selectStart',
-      box => this.setState(selectionState(box)))
+    selector.on('selecting', maybeSelect)
+    selector.on('selectStart', maybeSelect)
 
     selector
       .on('click', ({ x, y }) => {
@@ -242,8 +258,10 @@ let DaySlot = React.createClass({
 
     selector
       .on('select', () => {
-        this._selectSlot(this.state)
-        this.setState({ selecting: false })
+        if (this.state.selecting) {
+          this._selectSlot(this.state)
+          this.setState({ selecting: false })
+        }
       })
   },
 

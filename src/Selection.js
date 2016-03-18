@@ -224,8 +224,8 @@ export function getBoundsForNode(node) {
   if (!node.getBoundingClientRect) return node;
 
   var rect = node.getBoundingClientRect()
-    , left = rect.left + (document.body.scrollLeft || 0)
-    , top = rect.top + (document.body.scrollTop || 0);
+    , left = rect.left + pageOffset('left')
+    , top = rect.top + pageOffset('top');
 
   return {
     top,
@@ -235,4 +235,10 @@ export function getBoundsForNode(node) {
   };
 }
 
+function pageOffset(dir) {
+  if (dir === 'left')
+    return (window.pageXOffset || document.body.scrollLeft || 0)
+  if (dir === 'top')
+    return (window.pageYOffset || document.body.scrollTop || 0)
+}
 export default Selection

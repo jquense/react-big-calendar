@@ -8,7 +8,7 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor, 
 
   let span = dates.diff(start, end, 'day');
 
-  span = Math.floor(Math.max(Math.min(span, slots), 1));
+  span = Math.floor(Math.max(span, 1));
 
   let padding = Math.floor(dates.diff(first, start, 'day'));
 

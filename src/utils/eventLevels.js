@@ -2,19 +2,17 @@ import dates from './dates';
 import { accessor as get } from './accessors';
 
 export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
-  let slots = dates.diff(first, last, 'day')
-  let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
-  let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), dates.add(last, 1, 'day'))
+  const slots = Math.round(dates.diff(first, last, 'day')) + 1;
 
-  let span = dates.diff(start, end, 'day');
+  const start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
+  const end = dates.min(dates.startOf(get(event, endAccessor), 'day'), last);
 
-  span = Math.floor(Math.max(Math.min(span, slots), 1));
-
-  let padding = Math.floor(dates.diff(first, start, 'day'));
+  const span = Math.round(dates.diff(start, end, 'day')) + 1;
+  const padding = Math.round(dates.diff(first, start, 'day'));
 
   return {
     event,
-    span,
+    span: Math.max(Math.min(span, slots), 1),
     left: padding + 1,
     right: Math.max(padding + span, 1)
   }

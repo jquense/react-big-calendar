@@ -1,16 +1,23 @@
 import dates from './dates';
 import { accessor as get } from './accessors';
 
-export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }){
+export function endOfRange(dateRange, unit = 'day') {
+  return {
+    first: dateRange[0],
+    last: dates.add(dateRange[dateRange.length - 1], 1, unit)
+  }
+}
+
+export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }) {
   let slots = dates.diff(first, last, 'day')
   let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
-  let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), dates.add(last, 1, 'day'))
+  let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), last)
 
+  let padding = dates.diff(first, start, 'day');
   let span = dates.diff(start, end, 'day');
 
-  span = Math.floor(Math.max(Math.min(span, slots), 1));
-
-  let padding = Math.floor(dates.diff(first, start, 'day'));
+  span = Math.min(span, slots)
+  span = Math.max(span, 1);
 
   return {
     event,
@@ -54,14 +61,13 @@ export function eventLevels(rowSegments, limit = Infinity){
 }
 
 export function inRange(e, start, end, { startAccessor, endAccessor }){
-  let eStart = get(e, startAccessor)
-  let eEnd = get(e, endAccessor)
+  let eStart = dates.startOf(get(e, startAccessor), 'day')
+  let eEnd = dates.ceil(get(e, endAccessor), 'day')
 
-  let starts = dates.inRange(eStart, start, end, 'day')
-  let during = dates.lt(eStart, start, 'day') && dates.gt(eEnd, end, 'day')
-  let ends = dates.lt(eStart, start) && dates.inRange(eEnd, start, end, 'day')
+  let startsBeforeEnd = dates.lte(eStart, end, 'day')
+  let endsAfterStart = dates.gt(eEnd, start, 'day')
 
-  return starts || ends || during
+  return startsBeforeEnd && endsAfterStart
 }
 
 

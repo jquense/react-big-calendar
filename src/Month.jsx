@@ -19,8 +19,9 @@ import Overlay from 'react-overlays/lib/Overlay';
 import BackgroundCells from './BackgroundCells';
 
 import { dateFormat } from './utils/propTypes';
-import { segStyle, inRange, eventSegments, eventLevels, sortEvents } from './utils/eventLevels';
-
+import {
+    segStyle, inRange, eventSegments
+  , endOfRange, eventLevels, sortEvents } from './utils/eventLevels';
 
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props));
@@ -132,8 +133,7 @@ let MonthView = React.createClass({
   },
 
   renderWeek(week, weekIdx, content) {
-    let first = week[0]
-    let last = week[week.length - 1]
+    let { first, last } = endOfRange(week);
     let evts = eventsForWeek(this.props.events, week[0], week[week.length - 1], this.props)
 
     evts.sort((a, b) => sortEvents(a, b, this.props))
@@ -200,8 +200,7 @@ let MonthView = React.createClass({
   },
 
   renderRowLevel(segments, week, idx){
-    let first = week[0]
-    let last = week[week.length - 1]
+    let { first, last } = endOfRange(week);
 
     return (
       <EventRow
@@ -217,8 +216,7 @@ let MonthView = React.createClass({
   },
 
   renderShowMore(segments, extraSegments, week, weekIdx) {
-    let first = week[0]
-    let last = week[week.length - 1]
+    let { first, last } = endOfRange(week);
 
     let onClick = slot => this._showMore(segments, week[slot - 1], weekIdx, slot)
 

@@ -20,9 +20,12 @@ import { notify } from './utils/helpers';
 import { navigate } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 
-import { inRange, eventSegments, eventLevels, sortEvents, segStyle } from './utils/eventLevels';
+import {
+    inRange, eventSegments, endOfRange
+  , eventLevels, sortEvents, segStyle } from './utils/eventLevels';
 
 const MIN_ROWS = 2;
+
 
 let TimeGrid = React.createClass({
 
@@ -154,8 +157,7 @@ let TimeGrid = React.createClass({
   },
 
   renderAllDayEvents(range, levels){
-    let first = range[0]
-      , last = range[range.length - 1];
+    let { first, last } = endOfRange(range);
 
     while (levels.length < MIN_ROWS )
       levels.push([])

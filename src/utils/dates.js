@@ -122,6 +122,8 @@ let dates = Object.assign(dateMath, {
       return Math.abs(+dateA - +dateB)
 
     // the .round() handles an edge case
+    // with DST where the total won't be exact
+    // since one day in the range may be shorter/longer by an hour
     return Math.round(Math.abs(
       (+dates.startOf(dateA, unit) / MILLI[unit]) - (+dates.startOf(dateB, unit) / MILLI[unit])
     ))

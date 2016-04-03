@@ -121,9 +121,10 @@ let dates = Object.assign(dateMath, {
     if (!unit)
       return Math.abs(+dateA - +dateB)
 
-    return Math.abs(
+    // the .round() handles an edge case
+    return Math.round(Math.abs(
       (+dates.startOf(dateA, unit) / MILLI[unit]) - (+dates.startOf(dateB, unit) / MILLI[unit])
-    )
+    ))
   },
 
   total(date, unit) {

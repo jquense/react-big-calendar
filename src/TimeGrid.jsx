@@ -169,6 +169,7 @@ let TimeGrid = React.createClass({
         startAccessor={this.props.startAccessor}
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
+        eventPropGetter={this.props.eventPropGetter}
         onSelect={this._selectEvent}
         slots={this._slots}
         key={idx}

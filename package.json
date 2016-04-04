@@ -3,7 +3,7 @@
   "version": "0.9.8",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "jquense/react-big-calendar",
+  "repository": "intljusticemission/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
@@ -25,7 +25,7 @@
     "clean:examples": "rimraf examples/static",
     "less": "lessc -x src/less/styles.less ./lib/css/react-big-calendar.css",
     "assets": "cpy src/less/* lib/less",
-    "build": "npm run clean && babel src --out-dir lib && npm run assets & npm run less",
+    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less",
     "build:examples": "npm run clean:examples && webpack --config webpack/docs.config.es6.js",
     "build:visual-test": "webpack --config webpack/visual-test.es6.js",
     "examples": "npm run clean:examples && babel-node ./examples/server.js",

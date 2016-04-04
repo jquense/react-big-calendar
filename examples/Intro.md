@@ -1,10 +1,8 @@
-## <a id='intro' href='#intro'>Getting Started</a>
+# <a id='intro' href='#intro'>Getting Started</a>
 
-You can install `react-big-calendar` via npm:
+You can install `react-big-calendar` via [npm](https://www.npmjs.com/):
 
-```js
-npm i --save react-big-calendar
-```
+    npm i --save react-big-calendar
 
 Styles can be found at: `react-big-calendar/lib/css/react-big-calendar.css`, and should be included on the page
 with the calendar component.
@@ -25,7 +23,7 @@ import moment from 'moment';
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
-let MyCalendar = props => (
+const MyCalendar = props => (
   <div>
     <BigCalendar
       events={myEventsList}

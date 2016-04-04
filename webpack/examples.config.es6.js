@@ -2,10 +2,14 @@ var path = require('path');
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer-core');
 
+// be able to choose the port from the command line (1st argument or env var):
+const port = Number(process.argv[2]) || Number(process.env.PORT) || 3000
+
 module.exports = {
+  port,
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://localhost:' + port,
     'webpack/hot/only-dev-server',
     path.join(__dirname, '../examples/App.js')
   ],

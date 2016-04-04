@@ -11,6 +11,7 @@ localizer(globalize);
 
 import 'react-big-calendar/less/styles.less';
 import './styles.less';
+import './prism.less';
 
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
@@ -54,7 +55,7 @@ const Example = React.createClass({
       </div>
         <div className='examples contain'>
           <aside>
-            <ul className='nav nav-pills nav-stacked'>
+            <ul className='nav nav-pills'>
               <li className={cn({active: selected === 'basic' })}>
                 <a href='#' onClick={this.select.bind(null, 'basic')}>Basic</a>
               </li>

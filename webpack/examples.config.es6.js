@@ -11,12 +11,13 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:' + port,
     'webpack/hot/only-dev-server',
-    path.join(__dirname, '../examples/App.js')
+    path.join(__dirname, '../examples/App.js'),
+    path.join(__dirname, '../examples/index.html')
   ],
   output: {
-    path: path.join(__dirname, '../examples/'),
+    path: path.join(__dirname, '../examples'),
     filename: 'bundle.js',
-    publicPath: '/examples/static/'
+    publicPath: '/static'
   },
 
   plugins: [
@@ -36,6 +37,7 @@ module.exports = {
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=[name].[ext]' },
       { test: /\.less/, loader: 'style-loader!css-loader!postcss-loader!less-loader', exclude: /node_modules/ },
       { test: /\.md/, loader: 'babel!markdown-jsx-loader'},
+      { test: /\.(html|png)$/, loader: "file?name=[path][name].[ext]&context=./examples" },
       { test: /\.js/, loaders: ['babel'], exclude: /node_modules/},
       { test: /\.js/, loaders: ['babel'], include: path.join(__dirname, '..', 'src')}
     ]

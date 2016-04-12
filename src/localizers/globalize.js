@@ -43,11 +43,12 @@ export default function(globalize) {
   // method of getting first day of week.
   function firstOfWeek(culture) {
     try {
-        const days = ['sun', 'mon', 'tue', 'wed', 'thur', 'fri', 'sat'];
+        const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
         const cldr = locale(culture).cldr;
         const territory = cldr.attributes.territory;
         const weekData = cldr.get('supplemental').weekData;
         const firstDay = weekData.firstDay[territory || '001'];
+        console.log("FIRST OF WEEK", days.indexOf(firstDay));
         return days.indexOf(firstDay);
     } catch (e) {
         console.error("Could not use suplemental", e)

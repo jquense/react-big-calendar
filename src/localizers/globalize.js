@@ -50,6 +50,7 @@ export default function(globalize) {
         const firstDay = weekData.firstDay[territory || '001'];
         return days.indexOf(firstDay);
     } catch (e) {
+        console.error("Could not use suplemental", e)
         // maybe cldr supplemental is not loaded? revert to original method
         const date = new Date();
         //cldr-data doesn't seem to be zero based

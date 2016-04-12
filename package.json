@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
-    "lib/",
+    "lib/*",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"

@@ -10,7 +10,7 @@ require('globalize/lib/cultures/globalize.culture.ar-AE');
 let Cultures = React.createClass({
 
   getInitialState(){
-    return { culture: 'en-GB' }
+    return { culture: 'fr' }
   },
 
   render(){

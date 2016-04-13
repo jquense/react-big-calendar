@@ -1,6 +1,6 @@
 import dates from '../utils/dates';
 import oldGlobalize from './oldGlobalize';
-import invariant from 'invariant';
+import warning from 'warning';
 import { set } from '../formats';
 import { set as setLocalizer } from '../localizer';
 
@@ -51,7 +51,7 @@ export default function(globalize) {
         const firstDay = weekData.firstDay[territory || '001'];
         return days.indexOf(firstDay);
     } catch (e) {
-        invariant(true,
+        warning(true,
             `Failed to accurately determine first day of the week.
             Is supplemental data loaded into CLDR?`);
         // maybe cldr supplemental is not loaded? revert to original method

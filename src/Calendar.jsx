@@ -12,6 +12,7 @@ import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import dates from './utils/dates';
 import defaultFormats from './formats';
+import message from './utils/messages';
 import viewLabel from './utils/viewLabel';
 import moveDate from './utils/move';
 import VIEWS from './Views';
@@ -328,12 +329,14 @@ let Calendar = React.createClass({
       , culture
       , components = {}
       , formats = {}
+      , messages = {}
       , style
       , className
       , date: current
       , ...props } = this.props;
 
     formats = defaultFormats(formats)
+    messages = message(messages)
 
     let View = VIEWS[view];
     let names = viewNames(this.props.views)
@@ -360,13 +363,14 @@ let Calendar = React.createClass({
             label={viewLabel(current, view, formats, culture)}
             onViewChange={this._view}
             onNavigate={this._navigate}
-            messages={this.props.messages}
+            messages={messages}
           />
         }
         <View
           ref='view'
           {...props}
           {...formats}
+          messages={messages}
           culture={culture}
           formats={undefined}
           events={events}

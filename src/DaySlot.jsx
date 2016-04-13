@@ -120,9 +120,9 @@ let DaySlot = React.createClass({
 
   renderEvents(numSlots, totalMin) {
     let {
-        events, step, min, culture, eventPropGetter
-      , selected, eventTimeRangeFormat, eventComponent
-      , startAccessor, endAccessor, titleAccessor } = this.props;
+        events, step, min, max, culture, eventPropGetter, selected, messages
+      , eventTimeRangeFormat, eventTimeRangeStartFormat, eventTimeRangeEndFormat
+      , eventComponent, startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
       , lastLeftOffset = 0;
@@ -130,8 +130,22 @@ let DaySlot = React.createClass({
     events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor))
 
     return events.map((event, idx) => {
+      let _eventTimeRangeFormat = eventTimeRangeFormat;
+      let _continuesPrior = false;
+      let _continuesAfter = false;
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
+      if ( start < min ) {
+        start = min;
+        _continuesPrior = true;
+        _eventTimeRangeFormat = eventTimeRangeEndFormat;
+      }
+      if ( end > max ) {
+        end = max;
+        _continuesAfter = true;
+        _eventTimeRangeFormat = eventTimeRangeStartFormat;
+      }
+
       let startSlot = positionFromDate(start, min, step);
       let endSlot = positionFromDate(end, min, step);
 
@@ -141,7 +155,13 @@ let DaySlot = React.createClass({
       let style = this._slotStyle(startSlot, endSlot, lastLeftOffset)
 
       let title = get(event, titleAccessor)
-      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture);
+      let label;
+      if ( _continuesPrior && _continuesAfter ) {
+        label = messages.allDay;
+      } else {
+        label = localizer.format({ start, end }, _eventTimeRangeFormat, culture);
+      }
+
       let _isSelected = isSelected(event, selected);
 
       if (eventPropGetter)
@@ -151,11 +171,13 @@ let DaySlot = React.createClass({
         <div
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
-          title={label + ': ' + title }
+          title={(typeof label === 'string' ? label + ': ' : '') + title }
           onClick={this._select.bind(null, event)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,
-            'rbc-event-overlaps': lastLeftOffset !== 0
+            'rbc-event-overlaps': lastLeftOffset !== 0,
+            'rbc-event-continues-day-prior': _continuesPrior,
+            'rbc-event-continues-day-after': _continuesAfter
           })}
         >
           <div className='rbc-event-label'>{label}</div>

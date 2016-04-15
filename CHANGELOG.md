@@ -1,3 +1,15 @@
+v0.9.9 - Fri, 15 Apr 2016 12:28:00 GMT
+--------------------------------------
+
+- [a2a49c8](../../commit/a2a49c8) [fixed] consistent handling of end dates as _exclusive_ ranges
+- [1c12b16](../../commit/1c12b16) [fixed] DST issue with events
+- [f526e23](../../commit/f526e23) [added] onSelecting callback
+- [18c0234](../../commit/18c0234) [fixed] incorrect page offset
+- [4eeacd4](../../commit/4eeacd4) [fixed] more cross browser flex issues.
+- [2dc61ec](../../commit/2dc61ec) [fixed] add minHeight for week view overflow
+
+
+
 v0.9.8 - Thu, 14 Jan 2016 19:35:07 GMT
 --------------------------------------
 

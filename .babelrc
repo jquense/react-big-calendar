@@ -1,10 +1,3 @@
 {
-  "stage": 0,
-  "loose": [
-    "all"
-  ],
-  "plugins": [
-    "object-assign",
-    "jsx-fragment"
-  ]
+  "presets": ["jason"]
 }

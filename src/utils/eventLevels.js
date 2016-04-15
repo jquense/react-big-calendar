@@ -8,7 +8,7 @@ export function endOfRange(dateRange, unit = 'day') {
   }
 }
 
-export function eventSegments(event, first, last, { startAccessor, endAccessor, culture }) {
+export function eventSegments(event, first, last, { startAccessor, endAccessor }) {
   let slots = dates.diff(first, last, 'day')
   let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
   let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), last)

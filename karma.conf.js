@@ -1,5 +1,5 @@
 /* eslint no-var: 0, babel/object-shorthand: 0 */
-require('babel/register');
+require('babel-register');
 
 var isCI = process.env.CONTINUOUS_INTEGRATION === 'true';
 var reporters = ['mocha'];

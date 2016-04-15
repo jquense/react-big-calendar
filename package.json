@@ -6,6 +6,12 @@
   "repository": "intljusticemission/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
+  "files": [
+    "lib/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "keywords": [
     "scheduler",
     "react-component",

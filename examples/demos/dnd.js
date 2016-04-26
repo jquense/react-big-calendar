@@ -44,18 +44,25 @@ const dropTarget = {
 
 function collectTarget(connect, monitor) {
   return {
-    connectDropTarget: connect.dropTarget()
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
   };
 }
 
 class DroppableBackgroundWrapper extends React.Component {
   render() {
-    const { connectDropTarget, children } = this.props;
+    const { connectDropTarget, children, isOver } = this.props;
     const BackgroundWrapper = BigCalendar.components.backgroundWrapper;
 
     return (<BackgroundWrapper
       children={children}
-      ref={instance => connectDropTarget(findDOMNode(instance))}
+      ref={instance => {
+        const domNode = findDOMNode(instance);
+        if(domNode) {
+          domNode.style.backgroundColor = isOver ? '#dddddd' : '';
+        }
+        return connectDropTarget(domNode);
+      }}
     />);
   }
 }

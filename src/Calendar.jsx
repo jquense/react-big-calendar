@@ -270,6 +270,7 @@ let Calendar = React.createClass({
      * ```jsx
      * let components = {
      *   event: MyEvent, // used by each view (Month, Day, Week)
+     *   toolbar: MyToolbar,
      *   agenda: {
      *   	 event: MyAgendaEvent // with the agenda view use a different component to render events
      *   }
@@ -279,6 +280,8 @@ let Calendar = React.createClass({
      */
     components: PropTypes.shape({
       event: elementType,
+
+      toolbar: PropTypes.element,
 
       agenda: PropTypes.shape({
         date: elementType,
@@ -345,6 +348,8 @@ let Calendar = React.createClass({
       omit(components, names)
     )
 
+    let ToolbarToRender = components.toolbar || Toolbar
+
     return (
       <div {...elementProps}
         className={cn('rbc-calendar', className, {
@@ -353,7 +358,7 @@ let Calendar = React.createClass({
         style={style}
       >
         { toolbar &&
-          <Toolbar
+          <ToolbarToRender
             date={current}
             view={view}
             views={names}

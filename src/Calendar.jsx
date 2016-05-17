@@ -339,7 +339,8 @@ let Calendar = React.createClass({
 
     formats = defaultFormats(formats)
 
-    let View = (this.props[view] && this.props[view].component) || VIEWS[view];
+    const viewComponent = (components && components[view] && components[view].component) || VIEWS[view];
+    let View = viewComponent;
     let names = viewNames(this.props.views)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))

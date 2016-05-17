@@ -322,7 +322,7 @@ let Calendar = React.createClass({
       titleAccessor: 'title',
       allDayAccessor: 'allDay',
       startAccessor: 'start',
-      endAccessor: 'end'
+      endAccessor: 'end',
     };
   },
 

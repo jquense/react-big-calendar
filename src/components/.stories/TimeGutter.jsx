@@ -41,3 +41,13 @@ storiesOf('components.TimeGutter', module)
       />
     )
   })
+
+  .add('time is 9:20:01am, 5 slices', () => {
+    return (
+      <TimeGutter min={moment('9:00am', 'h:mma').toDate()}
+                  max={moment('5:00pm', 'h:mma').toDate()}
+                  slices={5}
+                  now={moment('9:20:01am', 'h:mm:ssa').toDate()}
+      />
+    )
+  })

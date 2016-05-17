@@ -1,28 +1,36 @@
 import React, { Component, PropTypes } from 'react'
 import dates from '../utils/dates';
 import moment from 'moment'
-import TimeSlice from './TimeSlice.jsx'
+import TimeSliceGroup from './TimeSliceGroup.jsx'
 
 export default class TimeGutter extends Component {
+  static propTypes = {
+    step: PropTypes.number.isRequired,
+    slices: PropTypes.number.isRequired,
+    now: PropTypes.instanceOf(Date).isRequired,
+    min: PropTypes.instanceOf(Date).isRequired,
+    max: PropTypes.instanceOf(Date).isRequired
+  }
+  static defaultProps = {
+    step: 10,
+    slices: 2,
+    formatter: (time) => moment(time).format('h:mm A')
+  }
+  
   render() {
     const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
-    const numSlots = Math.ceil(totalMin / this.props.step)
+    const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
     const children = []
 
     let date = this.props.min
     let next = date
     let isNow = false
-    let isEven = true
 
-    for (var i = 0; i < numSlots; i++) {
-      next = dates.add(date, this.props.step, 'minutes');
-      isEven = (i % 2) === 0
-      if (isEven) {
-        isNow = dates.inRange(this.props.now, date, dates.add(next, this.props.step - 1, 'minutes'), 'minutes')
-      }
+    for (var i = 0; i < numGroups; i++) {
+      isNow = dates.inRange(this.props.now, date, dates.add(next, this.props.step * this.props.slices - 1, 'minutes'), 'minutes')
+      next = dates.add(date, this.props.step * this.props.slices, 'minutes');
       children.push(
-        <TimeSlice key={i} isNow={isNow} showlabel={isEven}
-                   time={this.props.formatter.bind(null, date)}
+        <TimeSliceGroup key={i} isNow={isNow} slices={this.props.slices} time={this.props.formatter.bind(null, date)}
         />
       )
       date = next
@@ -34,16 +42,4 @@ export default class TimeGutter extends Component {
       </div>
     )
   }
-}
-
-TimeGutter.defaultProps = {
-  step: 10,
-  formatter: (time) => moment(time).format('h:mm A')
-}
-
-TimeGutter.propTypes = {
-  step: React.PropTypes.number.isRequired,
-  now: React.PropTypes.instanceOf(Date).isRequired,
-  min: React.PropTypes.instanceOf(Date).isRequired,
-  max: React.PropTypes.instanceOf(Date).isRequired
 }

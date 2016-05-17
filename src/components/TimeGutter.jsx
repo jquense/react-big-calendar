@@ -15,11 +15,9 @@ const TimeGutter = ({ now, min, max, step = 10, formatter = (time) => moment(tim
 
   for (var i = 0; i < numSlots; i++) {
     next = dates.add(date, step, 'minutes');
-    if ((i % 2) === 0) {
-      isEven = true
+    isEven = (i % 2) === 0
+    if (isEven) {
       isNow = dates.inRange(now, date, dates.add(next, step - 1, 'minutes'), 'minutes')
-    } else {
-      isEven = false
     }
     children.push(
       <TimeSlice key={i} isNow={isNow} showlabel={isEven}

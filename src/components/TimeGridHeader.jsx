@@ -35,5 +35,3 @@ TimeGridHeader.propTypes = {
   onClick: PropTypes.func,
   formatter: PropTypes.func
 }
-
-export default TimeGridHeader

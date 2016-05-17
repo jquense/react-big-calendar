@@ -1,11 +1,19 @@
-import React, {PropTypes} from 'react'
+import React, { Component, PropTypes } from 'react'
 
-const TimeSlice = ({isNow = false, time = () => '', showlabel = true}) => {
-  return (
-    <div className={`rbc-time-slot${isNow ? ' rbc-now' : ''}`}>
-      {showlabel ? time() : ''}
-    </div>
-  )
+export default class TimeSlice extends Component {
+  render() {
+    return (
+      <div className={`rbc-time-slot${this.props.isNow ? ' rbc-now' : ''}`}>
+        {this.props.showlabel ? this.props.time() : ''}
+      </div>
+    )
+  }
+}
+
+TimeSlice.defaultProps = {
+  isNow: false,
+  time: () => '',
+  showlabel: true
 }
 
 TimeSlice.propTypes = {
@@ -13,5 +21,3 @@ TimeSlice.propTypes = {
   isNow: PropTypes.bool,
   showloabel: PropTypes.bool
 }
-
-export default TimeSlice

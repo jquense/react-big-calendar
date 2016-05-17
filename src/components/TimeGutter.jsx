@@ -1,37 +1,44 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import dates from '../utils/dates';
 import moment from 'moment'
 import TimeSlice from './TimeSlice.jsx'
 
-const TimeGutter = ({ now, min, max, step = 10, formatter = (time) => moment(time).format('h:mm A') }) => {
-  const totalMin = dates.diff(min, max, 'minutes')
-  const numSlots = Math.ceil(totalMin / step)
-  const children = []
+export default class TimeGutter extends Component {
+  render() {
+    const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
+    const numSlots = Math.ceil(totalMin / this.props.step)
+    const children = []
 
-  let date = min
-  let next = date
-  let isNow = false
-  let isEven = true
+    let date = this.props.min
+    let next = date
+    let isNow = false
+    let isEven = true
 
-  for (var i = 0; i < numSlots; i++) {
-    next = dates.add(date, step, 'minutes');
-    isEven = (i % 2) === 0
-    if (isEven) {
-      isNow = dates.inRange(now, date, dates.add(next, step - 1, 'minutes'), 'minutes')
+    for (var i = 0; i < numSlots; i++) {
+      next = dates.add(date, this.props.step, 'minutes');
+      isEven = (i % 2) === 0
+      if (isEven) {
+        isNow = dates.inRange(this.props.now, date, dates.add(next, this.props.step - 1, 'minutes'), 'minutes')
+      }
+      children.push(
+        <TimeSlice key={i} isNow={isNow} showlabel={isEven}
+                   time={this.props.formatter.bind(null, date)}
+        />
+      )
+      date = next
     }
-    children.push(
-      <TimeSlice key={i} isNow={isNow} showlabel={isEven}
-                 time={formatter.bind(null, date)}
-      />
-    )
-    date = next
-  }
 
-  return (
-    <div className='rbc-time-gutter'>
-      {children}
-    </div>
-  )
+    return (
+      <div className='rbc-time-gutter'>
+        {children}
+      </div>
+    )
+  }
+}
+
+TimeGutter.defaultProps = {
+  step: 10,
+  formatter: (time) => moment(time).format('h:mm A')
 }
 
 TimeGutter.propTypes = {
@@ -40,5 +47,3 @@ TimeGutter.propTypes = {
   min: React.PropTypes.instanceOf(Date).isRequired,
   max: React.PropTypes.instanceOf(Date).isRequired
 }
-
-export default TimeGutter

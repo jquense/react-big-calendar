@@ -1,8 +1,12 @@
 import React, { PropTypes } from 'react'
 
-function Selectable(Component, key, value) {
+function Selectable(Component, options) {
   const displayName = Component.displayName || Component.name || 'Component'
+  let unregister = () => {
+    console.log('unregister called before component mounted')
+  }
   return class extends React.Component {
+    static propTypes = Component.propTypes
     static displayName = `Selectable(${displayName})`
     
     constructor(props, context) {
@@ -11,28 +15,32 @@ function Selectable(Component, key, value) {
         throw new Error('Selectable must be wrapped in a Selection component')
       }
       this.context = context
+      this.state = {
+        selected: false
+      }
     }
 
     static contextTypes = {
       registerSelectable: PropTypes.func,
       unregisterSelectable: PropTypes.func,
-      selectedNodes: PropTypes.object,
-      selectedValues: PropTypes.object
     }
 
     componentDidMount() {
-      this.context.registerSelectable(this, key, value)
-      this.unregister = this.context.unregisterSelectable
+      const key = options.key(this.props)
+      this.context.registerSelectable(this, key, options.value(this.props), this.selectItem.bind(this))
+      unregister = this.context.unregisterSelectable.bind(null, this, key)
     }
     
     componentWillUnmount() {
-      this.unregister(this, key)
+      unregister()
+    }
+
+    selectItem(value) {
+      this.setState({ selected: value })
     }
 
     render() {
-      let selected = false
-      if (this.context.selectedNodes.hasOwnProperty(key)) selected = true
-      return <Component {...this.props} selected={selected} />
+      return <Component {...this.props} selected={this.state.selected} />
     }
   }
 }

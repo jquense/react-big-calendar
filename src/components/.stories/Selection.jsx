@@ -4,6 +4,10 @@ import Selectable from '../../containers/Selectable.jsx'
 import Selection from '../../containers/Selection.jsx'
 
 class Thing extends React.Component {
+  static propTypes = {
+    key: React.PropTypes.number.isRequired,
+    thing: React.PropTypes.string.isRequired
+  }
   render() {
     return <div style={{
       width: 50,
@@ -16,14 +20,15 @@ class Thing extends React.Component {
   }
 }
 
-let val = 1
-function selectableFactory() {
-  return () => {
-    return Selectable(Thing, `key${val}`, val++)
+const SelectableThing = Selectable(Thing, {
+  key: (props) => {
+    return props.index
+  },
+  value: (props) => {
+    return props.thing
   }
-}
+})
 
-const Thing1 = selectableFactory()(), Thing2 = selectableFactory()(), Thing3 = selectableFactory()()
 class Test extends React.Component {
   render() {
     return <div style={{width: 100, height: 200, padding: 30, backgroundColor: '#ff8888'}}>{this.props.children}</div>
@@ -35,9 +40,9 @@ storiesOf('module.Selectable', module)
     const Sel = Selection(Test)
     return (
       <Sel constantSelect selectable>
-        <Thing1 thing="hi" />
-        <Thing2 thing="there" />
-        <Thing3 thing="foo" />
+        <SelectableThing thing="hi" index={1}/>
+        <SelectableThing thing="there" index={2} />
+        <SelectableThing thing="foo" index={3} />
       </Sel>
     )
   })
@@ -46,9 +51,9 @@ storiesOf('module.Selectable', module)
     const Sel = Selection(Test)
     return (
       <Sel selectable>
-        <Thing1 thing="hi" />
-        <Thing2 thing="there" />
-        <Thing3 thing="foo" />
+        <SelectableThing thing="hi" index={1}/>
+        <SelectableThing thing="there" index={2} />
+        <SelectableThing thing="foo" index={3} />
       </Sel>
     )
   })
@@ -57,9 +62,9 @@ storiesOf('module.Selectable', module)
     const Sel = Selection(Test)
     return (
       <Sel>
-        <Thing1 thing="hi" />
-        <Thing2 thing="there" />
-        <Thing3 thing="foo" />
+        <SelectableThing thing="hi" index={1}/>
+        <SelectableThing thing="there" index={2} />
+        <SelectableThing thing="foo" index={3} />
       </Sel>
     )
   })
@@ -68,9 +73,9 @@ storiesOf('module.Selectable', module)
     const Sel = Selection(Test)
     return (
       <Sel constantSelect selectable preserveSelection>
-        <Thing1 thing="hi" />
-        <Thing2 thing="there" />
-        <Thing3 thing="foo" />
+        <SelectableThing thing="hi" index={1}/>
+        <SelectableThing thing="there" index={2} />
+        <SelectableThing thing="foo" index={3} />
       </Sel>
     )
   })
@@ -79,9 +84,9 @@ storiesOf('module.Selectable', module)
     const Sel = Selection(Test)
     return (
       <Sel selectable preserveSelection>
-        <Thing1 thing="hi" />
-        <Thing2 thing="there" />
-        <Thing3 thing="foo" />
+        <SelectableThing thing="hi" index={1}/>
+        <SelectableThing thing="there" index={2} />
+        <SelectableThing thing="foo" index={3} />
       </Sel>
     )
   })

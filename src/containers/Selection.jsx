@@ -3,6 +3,13 @@ import contains from 'dom-helpers/query/contains'
 import React, { PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 
+const DEBUGGING = {
+  debug: false,
+  bounds: false,
+  clicks: false,
+  selection: false
+}
+
 function makeSelectable(Component) {
   const displayName = Component.displayName || Component.name || 'Component'
 
@@ -33,7 +40,8 @@ function makeSelectable(Component) {
       clickTolerance: PropTypes.number,
       constantSelect: PropTypes.bool,
       selectable: PropTypes.bool,
-      preserveSelection: PropTypes.bool
+      preserveSelection: PropTypes.bool,
+      onSelectSlot: PropTypes.func
     }
     
     static defaultProps = {
@@ -50,24 +58,40 @@ function makeSelectable(Component) {
       selectedValues: PropTypes.object
     }
 
+    updateState(selecting, nodes, values) {
+      if (DEBUGGING.debug && DEBUGGING.selection) {
+        console.log('updatestate: ', selecting, nodes, values)
+      }
+      this.setState({
+        selecting: selecting === null ? this.state.selecting : selecting,
+        selectedNodes: nodes === null ? this.state.selectedNodes : nodes,
+        selectedValues: values === null ? this.state.selectedValues : values
+      })
+      if (this.props.onSelectSlot) {
+        if (DEBUGGING.debug && DEBUGGING.selection) {
+          console.log('updatestate onSelectSlot', values, nodes)
+        }
+        this.props.onSelectSlot(values, () => nodes)
+      }
+    }
+
     getChildContext() {
       return {
-        registerSelectable: (component, key, value) => {
+        registerSelectable: (component, key, value, callback) => {
           if (!this.selectables.hasOwnProperty(key)) {
             this.selectableKeys.push(key)
           }
-          this.selectables[key] = { component, value }
+          this.selectables[key] = { component, value, callback }
         },
         unregisterSelectable: (component, key) => {
           delete this.selectables[key]
           this.selectableKeys = this.selectableKeys.filter((itemKey) => itemKey !== key)
           if (this.state.selectedNodes[key]) {
-            const newNodes = this.state.selectedNodes
-            delete this.state.SelectedNodes[key]
-            this.setState({
-              selecting: this.state.selecting,
-              selectedNodes: newNodes
-            })
+            const nodes = this.state.selectedNodes
+            const values = this.state.selectedValues
+            delete nodes[key]
+            delete values[key]
+            this.updateState(null, nodes, values)
           }
         },
         selectedNodes: this.state.selectedNodes,
@@ -121,6 +145,13 @@ function makeSelectable(Component) {
         right: bRight = bLeft,
         bottom: bBottom = bTop
       } = this.getBoundsForNode(nodeB);
+      if (DEBUGGING.debug && DEBUGGING.bounds) {
+        console.log('collide: ', this.getBoundsForNode(nodeA), this.getBoundsForNode(nodeB))
+        console.log('a bottom < b top', ((aBottom - tolerance ) < bTop))
+        console.log('a top > b bottom', (aTop + tolerance) > (bBottom))
+        console.log('a right < b left', ((aBottom - tolerance ) < bTop))
+        console.log('a left > b right', (aLeft + tolerance) > (bRight))
+      }
 
       return !(
         // 'a' bottom doesn't touch 'b' top
@@ -154,14 +185,29 @@ function makeSelectable(Component) {
     }
 
     mouseDown(e) {
+      if (DEBUGGING.debug && DEBUGGING.clicks) {
+        console.log('mousedown')
+      }
       if (!this.props.selectable) return
+      if (DEBUGGING.debug && DEBUGGING.clicks) {
+        console.log('mousedown: selectable')
+      }
       const node = findDOMNode(this.ref)
       if (e.which === 3 || e.button === 2 || !this.isOverContainer(node, e.clientX, e.clientY))
         return
+      if (DEBUGGING.debug && DEBUGGING.clicks) {
+        console.log('mousedown: left click')
+      }
+      if (DEBUGGING.debug && DEBUGGING.bounds) {
+        console.log('mousedown: bounds', this.getBoundsForNode(node), e.pageY, e.pageX)
+      }
       if (!this.objectsCollide(this.getBoundsForNode(node), {
         top: e.pageY,
         left: e.pageX
       })) return
+      if (DEBUGGING.debug && DEBUGGING.clicks) {
+        console.log('mousedown: maybe select')
+      }
 
       this.mouseDownData = {
         x: e.pageX,
@@ -172,7 +218,7 @@ function makeSelectable(Component) {
 
       if (this.props.constantSelect) {
         this.createSelectRect(e)
-        this.setState({...this.selectNodes(e)})
+        this.selectNodes(e)
       }
 
       e.preventDefault()
@@ -188,14 +234,10 @@ function makeSelectable(Component) {
       this.handlers.stopmousemove()
       this.createSelectRect(e)
       if (this.props.constantSelect && !this.props.preserveSelection) {
-        this.setState({ selecting: false, selectedNodes: {}, selectedValues: {}})
+        this.deselectNodes()
         return
       }
-      if (this.state.selecting) {
-        this.setState({ selecting: false, ...this.selectNodes(e)  })
-      } else {
-        this.setState({...this.selectNodes(e)})
-      }
+      this.selectNodes(e)
     }
 
     mouseUp(e) {
@@ -212,12 +254,10 @@ function makeSelectable(Component) {
       }
 
       if (this.props.constantSelect && !this.props.preserveSelection) {
-        this.setState({ selecting: false, selectedNodes: {}, selectedValues: {}})
+        this.deselectNodes()
         return
       }
-      const state = { selecting: false, ...this.selectNodes(e) }
-
-      return this.setState(state)
+      this.selectNodes(e)
     }
 
     mouseMove(e) {
@@ -231,7 +271,7 @@ function makeSelectable(Component) {
       if (!this.isClick(e.pageX, e.pageY))
       this.createSelectRect(e)
       if (this.props.constantSelect) {
-        this.setState({...this.selectNodes(e)})
+        this.selectNodes(e)
       }
     }
 
@@ -253,31 +293,51 @@ function makeSelectable(Component) {
       }
     }
 
-    selectNodes() {
-      const nodes = this.state.selectedNodes
-      const values = this.state.selectedValues
+    deselectNodes() {
       let changed = false
+      Object.keys(this.state.selectedNodes).forEach((key) => {
+        changed = true
+        this.selectables[key].callback(false, {}, {})
+      })
+      if (changed) {
+        this.updateState(false, {}, {})
+      }
+    }
+
+    selectNodes() {
+      let nodes = {...this.state.selectedNodes}
+      let values = {...this.state.selectedValues}
+      const changedNodes = []
 
       this.selectableKeys.forEach((key) => {
         const node = this.selectables[key]
         const domnode = findDOMNode(node.component)
+        if (DEBUGGING.debug && DEBUGGING.bounds) {
+          console.log(`node ${key} bounds`, this.getBoundsForNode(domnode))
+        }
         if (!domnode || !this.objectsCollide(this._selectRect, domnode, this.clickTolerance)) {
+          if (nodes[key] === undefined) return
+          if (DEBUGGING.debug && DEBUGGING.selection) {
+            console.log(`deselect: ${key}`)
+          }
           delete nodes[key]
           delete values[key]
-          changed = true
+          changedNodes.push([false, node])
           return
         }
+        if (DEBUGGING.debug && DEBUGGING.selection) {
+          console.log(`select: ${key}`)
+        }
+        if (nodes[key] !== undefined) return
         nodes[key] = node.component
         values[key] = node.value
-        changed = true
+        changedNodes.push([true, node])
       })
-      if (changed) return {
-        selectedNodes: nodes,
-        selectedValues: values
-      }
-      return {
-        selectedNodes: this.state.selectedNodes,
-        selectedValues: this.state.selectedValues
+      if (changedNodes.length) {
+        changedNodes.forEach((item) => {
+          item[1].callback(item[0], nodes, values)
+        })
+        this.updateState(null, nodes, values)
       }
     }
 
@@ -288,5 +348,7 @@ function makeSelectable(Component) {
     }
   }
 }
+
+export { DEBUGGING }
 
 export default makeSelectable

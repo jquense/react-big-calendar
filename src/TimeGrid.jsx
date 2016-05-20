@@ -93,7 +93,9 @@ let TimeGrid = React.createClass({
 
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
-    let segments = allDayEvents.map(evt => eventSegments(evt, start, end, this.props))
+    let {first, last} = endOfRange(range);
+
+    let segments = allDayEvents.map(evt => eventSegments(evt, first, last, this.props))
     let { levels } = eventLevels(segments)
 
     return (

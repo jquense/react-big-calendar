@@ -17,6 +17,11 @@ export default class TimeGutter extends Component {
     formatter: (time) => moment(time).format('h:mm A')
   }
   
+  renderTimeSliceGroup(key, isNow, date) {
+    return <TimeSliceGroup key={key} isNow={isNow} slices={this.props.slices}
+                           time={this.props.formatter.bind(null, date)} />
+  }
+  
   render() {
     const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
     const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
@@ -29,10 +34,8 @@ export default class TimeGutter extends Component {
     for (var i = 0; i < numGroups; i++) {
       isNow = dates.inRange(this.props.now, date, dates.add(next, this.props.step * this.props.slices - 1, 'minutes'), 'minutes')
       next = dates.add(date, this.props.step * this.props.slices, 'minutes');
-      children.push(
-        <TimeSliceGroup key={i} isNow={isNow} slices={this.props.slices} time={this.props.formatter.bind(null, date)}
-        />
-      )
+      children.push(this.renderTimeSliceGroup(i, isNow, date))
+      
       date = next
     }
 

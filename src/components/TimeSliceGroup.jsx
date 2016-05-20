@@ -12,6 +12,12 @@ export default class TimeSliceGroup extends Component {
     isNow: false,
     time: () => null
   }
+
+  renderSlice(i, className) {
+    return <TimeSlice key={i} showlabel={!i} time={this.props.time} isNow={this.props.isNow}
+                  classNames={className} />
+  }
+
   renderSlices() {
     let className
     switch (this.props.slices) {
@@ -31,11 +37,7 @@ export default class TimeSliceGroup extends Component {
     }
     const ret = []
     for (let i = 0; i < this.props.slices; i++) {
-      if (!i) {
-        ret.push(<TimeSlice key={i} showlabel time={this.props.time} isNow={this.props.isNow} classNames={className}/>)
-        continue
-      }
-      ret.push(<TimeSlice key={i} showlabel={false} time={() => ''} classNames={className} />)
+      ret.push(this.renderSlice(i, className))
     }
     return ret
   }

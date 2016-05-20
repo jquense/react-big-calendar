@@ -2,8 +2,20 @@ import React, {Component, PropTypes} from 'react'
 import moment from 'moment'
 import { segStyle } from '../utils/eventLevels';
 
-
 export default class TimeGridHeader extends Component {
+  static propTypes = {
+    range: PropTypes.arrayOf(React.PropTypes.instanceOf(Date)).isRequired,
+    onClick: PropTypes.func,
+    formatter: PropTypes.func,
+    gutterwidth: PropTypes.number
+  }
+  static defaultProps = {
+    range: [],
+    onClick: () => null,
+    formatter: (date) => moment(date).format('ddd D/M'),
+    gutterwidth: 70
+  }
+
   render() {
     return (
       <div className="rbc-time-header">
@@ -23,18 +35,4 @@ export default class TimeGridHeader extends Component {
       </div>
     )
   }
-}
-
-TimeGridHeader.defaultProps = {
-  range: [],
-  onClick: () => null,
-  formatter: (date) => moment(date).format('ddd D/M'),
-  gutterwidth: 70
-}
-
-TimeGridHeader.propTypes = {
-  range: PropTypes.arrayOf(React.PropTypes.instanceOf(Date)).isRequired,
-  onClick: PropTypes.func,
-  formatter: PropTypes.func,
-  gutterwidth: PropTypes.number
 }

@@ -1,6 +1,6 @@
 import invariant from 'invariant';
 
- let messages = {
+ let defaultMessages = {
   date: 'Date',
   time: 'Time',
   event: 'Event',
@@ -31,9 +31,9 @@ export function result(msg, ...args){
   return typeof msg === 'function' ? msg(args) : msg
 }
 
-export default function messages(msgs){
+export default function messages(msgs) {
   return {
-    ...messages,
+    ...defaultMessages,
     ...msgs
   }
 }

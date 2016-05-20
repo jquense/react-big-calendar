@@ -16,7 +16,7 @@ storiesOf('components.DaySliceGroup', module)
   .add('default view', () => {
     return (
       <div className='rbc-time-gutter'>
-        <Wrapper>
+        <Wrapper selectable constantSelect>
           <DaySliceGroup time={() => '1:00pm'} />
           <DaySliceGroup time={() => '1:20pm'} />
           <DaySliceGroup time={() => '1:40pm'} />
@@ -28,7 +28,7 @@ storiesOf('components.DaySliceGroup', module)
   .add('3 slices', () => {
     return (
       <div className='rbc-time-gutter'>
-        <Wrapper>
+        <Wrapper selectable constantSelect>
           <DaySliceGroup slices={3} time={() => '1:00pm'} />
           <DaySliceGroup slices={3} time={() => '1:20pm'} />
           <DaySliceGroup slices={3} time={() => '1:40pm'} />
@@ -40,7 +40,7 @@ storiesOf('components.DaySliceGroup', module)
   .add('4 slices', () => {
     return (
       <div className='rbc-time-gutter'>
-        <Wrapper>
+        <Wrapper selectable constantSelect>
           <DaySliceGroup slices={4} time={() => '1:00pm'} />
           <DaySliceGroup slices={4} time={() => '1:20pm'} />
           <DaySliceGroup slices={4} time={() => '1:40pm'} />
@@ -52,7 +52,7 @@ storiesOf('components.DaySliceGroup', module)
   .add('5 slices', () => {
     return (
       <div className='rbc-time-gutter'>
-        <Wrapper>
+        <Wrapper selectable constantSelect>
           <DaySliceGroup slices={5} time={() => '1:00pm'} />
           <DaySliceGroup slices={5} time={() => '1:20pm'} />
           <DaySliceGroup slices={5} time={() => '1:40pm'} />

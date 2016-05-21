@@ -1,10 +1,13 @@
 import React, { PropTypes, Component } from 'react'
 import TimeSlice from './TimeSlice.jsx'
+import date from '../utils/dates.js'
 
 export default class TimeSliceGroup extends Component {
   static propTypes = {
     slices: PropTypes.oneOf([2,3,4,5]),
+    size: PropTypes.number.isRequired,
     time: PropTypes.func.isRequired,
+    value: PropTypes.instanceOf(Date).isRequired,
     isNow: PropTypes.bool
   }
   static defaultProps = {
@@ -13,9 +16,9 @@ export default class TimeSliceGroup extends Component {
     time: () => null
   }
 
-  renderSlice(i, className) {
+  renderSlice(i, className, value) {
     return <TimeSlice key={i} showlabel={!i} time={this.props.time} isNow={this.props.isNow}
-                  classNames={className} />
+                  classNames={className} value={value} />
   }
 
   renderSlices() {
@@ -36,8 +39,11 @@ export default class TimeSliceGroup extends Component {
         break
     }
     const ret = []
+    const sliceLength = Math.floor(this.props.size / this.props.slices)
+    let sliceValue = this.props.value
     for (let i = 0; i < this.props.slices; i++) {
-      ret.push(this.renderSlice(i, className))
+      ret.push(this.renderSlice(i, className, sliceValue))
+      sliceValue = date.add(sliceValue, sliceLength , 'minutes')
     }
     return ret
   }

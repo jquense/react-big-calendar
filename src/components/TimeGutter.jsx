@@ -19,7 +19,7 @@ export default class TimeGutter extends Component {
   
   renderTimeSliceGroup(key, isNow, date) {
     return <TimeSliceGroup key={key} isNow={isNow} slices={this.props.slices}
-                           time={this.props.formatter.bind(null, date)} />
+                           time={this.props.formatter} size={this.props.step} value={date}/>
   }
   
   render() {

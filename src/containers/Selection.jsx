@@ -3,11 +3,27 @@ import contains from 'dom-helpers/query/contains'
 import React, { PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 
-const DEBUGGING = {
+import getBoundsForNode from '../utils/getBoundsForNode.js'
+
+let DEBUGGING = {
   debug: false,
   bounds: false,
   clicks: false,
-  selection: false
+  selection: false,
+  registration: false
+}
+
+function debug({ bounds = false, clicks = false, selection = false, registration = false }) {
+  if (bounds || clicks || selection) {
+    const props = { bounds, clicks, selection }
+    DEBUGGING.debug = true
+    DEBUGGING = {
+      debug: true,
+      ...props
+    }
+  } else {
+    DEBUGGING.debug = false
+  }
 }
 
 function makeSelectable(Component) {
@@ -32,7 +48,9 @@ function makeSelectable(Component) {
       this.state = {
         selecting: false,
         selectedNodes: {},
-        selectedValues: {}
+        selectedNodeList: [],
+        selectedValues: {},
+        selectedValueList: []
       }
     }
     
@@ -62,16 +80,20 @@ function makeSelectable(Component) {
       if (DEBUGGING.debug && DEBUGGING.selection) {
         console.log('updatestate: ', selecting, nodes, values)
       }
+      const newnodes = nodes === null ? this.state.selectedNodes : nodes
+      const newvalues = values === null ? this.state.selectedValues : values
       this.setState({
         selecting: selecting === null ? this.state.selecting : selecting,
-        selectedNodes: nodes === null ? this.state.selectedNodes : nodes,
-        selectedValues: values === null ? this.state.selectedValues : values
+        selectedNodes: newnodes,
+        selectedValues: newvalues
       })
       if (this.props.onSelectSlot) {
+        const nodelist = Object.keys(newnodes).map((key) => newnodes[key])
+        const valuelist = Object.keys(newvalues).map((key) => newvalues[key])
         if (DEBUGGING.debug && DEBUGGING.selection) {
-          console.log('updatestate onSelectSlot', values, nodes)
+          console.log('updatestate onSelectSlot', values, nodes, valuelist, nodelist)
         }
-        this.props.onSelectSlot(values, () => nodes)
+        this.props.onSelectSlot(values, () => nodes, valuelist, () => nodelist)
       }
     }
 
@@ -80,6 +102,9 @@ function makeSelectable(Component) {
         registerSelectable: (component, key, value, callback) => {
           if (!this.selectables.hasOwnProperty(key)) {
             this.selectableKeys.push(key)
+          }
+          if (DEBUGGING.debug && DEBUGGING.registration) {
+            console.log(`registered: ${key}`, value)
           }
           this.selectables[key] = { component, value, callback }
         },
@@ -112,41 +137,22 @@ function makeSelectable(Component) {
       this.handlers.stopmouseup && this.handlers.stopmouseup()
       this.handlers.stopmousemove && this.handlers.stopmousemove()
     }
-      /**
-     * Given a node, get everything needed to calculate its boundaries
-     * @param  {HTMLElement} node
-     * @return {Object}
-     */
-    getBoundsForNode(node) {
-      if (!node.getBoundingClientRect) return node;
 
-      const rect = node.getBoundingClientRect()
-      const left = rect.left + this.pageOffset('left')
-      const top = rect.top + this.pageOffset('top')
-
-      return {
-        top,
-        left,
-        right: (node.offsetWidth || 0) + left,
-        bottom: (node.offsetHeight || 0) + top
-      };
-    }
-
-    objectsCollide(nodeA, nodeB, tolerance = 0) {
+    objectsCollide(nodeA, nodeB, tolerance = 0, key = '(unknown)') {
       const {
         top: aTop,
         left: aLeft,
         right: aRight = aLeft,
         bottom: aBottom = aTop
-      } = this.getBoundsForNode(nodeA);
+      } = getBoundsForNode(nodeA);
       const {
         top: bTop,
         left: bLeft,
         right: bRight = bLeft,
         bottom: bBottom = bTop
-      } = this.getBoundsForNode(nodeB);
+      } = getBoundsForNode(nodeB);
       if (DEBUGGING.debug && DEBUGGING.bounds) {
-        console.log('collide: ', this.getBoundsForNode(nodeA), this.getBoundsForNode(nodeB))
+        console.log(`collide ${key}: `, getBoundsForNode(nodeA), getBoundsForNode(nodeB))
         console.log('a bottom < b top', ((aBottom - tolerance ) < bTop))
         console.log('a top > b bottom', (aTop + tolerance) > (bBottom))
         console.log('a right < b left', ((aBottom - tolerance ) < bTop))
@@ -164,14 +170,7 @@ function makeSelectable(Component) {
         ((aLeft + tolerance) > (bRight) )
       );
     }
-
-    pageOffset(dir) {
-      if (dir === 'left')
-        return (window.pageXOffset || document.body.scrollLeft || 0)
-      if (dir === 'top')
-        return (window.pageYOffset || document.body.scrollTop || 0)
-    }
-
+    
     isOverContainer(container, x, y) {
       return !container || contains(container, document.elementFromPoint(x, y))
     }
@@ -199,9 +198,9 @@ function makeSelectable(Component) {
         console.log('mousedown: left click')
       }
       if (DEBUGGING.debug && DEBUGGING.bounds) {
-        console.log('mousedown: bounds', this.getBoundsForNode(node), e.pageY, e.pageX)
+        console.log('mousedown: bounds', getBoundsForNode(node), e.pageY, e.pageX)
       }
-      if (!this.objectsCollide(this.getBoundsForNode(node), {
+      if (!this.objectsCollide(getBoundsForNode(node), {
         top: e.pageY,
         left: e.pageX
       })) return
@@ -313,9 +312,9 @@ function makeSelectable(Component) {
         const node = this.selectables[key]
         const domnode = findDOMNode(node.component)
         if (DEBUGGING.debug && DEBUGGING.bounds) {
-          console.log(`node ${key} bounds`, this.getBoundsForNode(domnode))
+          console.log(`node ${key} bounds`, getBoundsForNode(domnode))
         }
-        if (!domnode || !this.objectsCollide(this._selectRect, domnode, this.clickTolerance)) {
+        if (!domnode || !this.objectsCollide(this._selectRect, domnode, this.clickTolerance, key)) {
           if (nodes[key] === undefined) return
           if (DEBUGGING.debug && DEBUGGING.selection) {
             console.log(`deselect: ${key}`)
@@ -325,10 +324,10 @@ function makeSelectable(Component) {
           changedNodes.push([false, node])
           return
         }
+        if (nodes[key] !== undefined) return
         if (DEBUGGING.debug && DEBUGGING.selection) {
           console.log(`select: ${key}`)
         }
-        if (nodes[key] !== undefined) return
         nodes[key] = node.component
         values[key] = node.value
         changedNodes.push([true, node])
@@ -349,6 +348,6 @@ function makeSelectable(Component) {
   }
 }
 
-export { DEBUGGING }
+export { debug }
 
 export default makeSelectable

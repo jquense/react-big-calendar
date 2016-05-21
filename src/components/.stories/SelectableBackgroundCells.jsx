@@ -1,7 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import SelectableBackgroundCells from '../../containers/SelectableBackgroundCells.jsx';
-import { DEBUGGING } from '../../containers/Selection.jsx'
 import moment from 'moment'
 
 storiesOf('components.BackgroundCells', module)

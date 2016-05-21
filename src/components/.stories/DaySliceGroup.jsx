@@ -3,6 +3,11 @@ import { storiesOf, action, linkTo } from '@kadira/storybook';
 import DaySliceGroup from '../DaySliceGroup.jsx';
 import Selection from '../../containers/Selection.jsx'
 import '../../less/styles.less'
+import moment from 'moment'
+
+function format(v) {
+  return moment(v).format('h:mma')
+}
 
 class Test extends React.Component {
   render () {
@@ -17,9 +22,9 @@ storiesOf('components.DaySliceGroup', module)
     return (
       <div className='rbc-time-gutter'>
         <Wrapper selectable constantSelect>
-          <DaySliceGroup time={() => '1:00pm'} />
-          <DaySliceGroup time={() => '1:20pm'} />
-          <DaySliceGroup time={() => '1:40pm'} />
+          <DaySliceGroup time={format} size={20} value={moment('1:00pm', 'h:mma').toDate()} />
+          <DaySliceGroup time={format} size={20} value={moment('1:20pm', 'h:mma').toDate()} />
+          <DaySliceGroup time={format} size={20} value={moment('1:40pm', 'h:mma').toDate()} />
         </Wrapper>
       </div>
     )
@@ -29,9 +34,9 @@ storiesOf('components.DaySliceGroup', module)
     return (
       <div className='rbc-time-gutter'>
         <Wrapper selectable constantSelect>
-          <DaySliceGroup slices={3} time={() => '1:00pm'} />
-          <DaySliceGroup slices={3} time={() => '1:20pm'} />
-          <DaySliceGroup slices={3} time={() => '1:40pm'} />
+          <DaySliceGroup slices={3} time={format} size={20} value={moment('1:00pm', 'h:mma').toDate()} />
+          <DaySliceGroup slices={3} time={format} size={20} value={moment('1:20pm', 'h:mma').toDate()} />
+          <DaySliceGroup slices={3} time={format} size={20} value={moment('1:40pm', 'h:mma').toDate()} />
         </Wrapper>
       </div>
     )
@@ -41,9 +46,9 @@ storiesOf('components.DaySliceGroup', module)
     return (
       <div className='rbc-time-gutter'>
         <Wrapper selectable constantSelect>
-          <DaySliceGroup slices={4} time={() => '1:00pm'} />
-          <DaySliceGroup slices={4} time={() => '1:20pm'} />
-          <DaySliceGroup slices={4} time={() => '1:40pm'} />
+          <DaySliceGroup slices={4} time={format} size={20} value={moment('1:00pm', 'h:mma').toDate()} />
+          <DaySliceGroup slices={4} time={format} size={20} value={moment('1:20pm', 'h:mma').toDate()} />
+          <DaySliceGroup slices={4} time={format} size={20} value={moment('1:40pm', 'h:mma').toDate()} />
         </Wrapper>
       </div>
     )
@@ -53,9 +58,9 @@ storiesOf('components.DaySliceGroup', module)
     return (
       <div className='rbc-time-gutter'>
         <Wrapper selectable constantSelect>
-          <DaySliceGroup slices={5} time={() => '1:00pm'} />
-          <DaySliceGroup slices={5} time={() => '1:20pm'} />
-          <DaySliceGroup slices={5} time={() => '1:40pm'} />
+          <DaySliceGroup slices={5} time={format} size={20} value={moment('1:00pm', 'h:mma').toDate()} />
+          <DaySliceGroup slices={5} time={format} size={20} value={moment('1:20pm', 'h:mma').toDate()} />
+          <DaySliceGroup slices={5} time={format} size={20} value={moment('1:40pm', 'h:mma').toDate()} />
         </Wrapper>
       </div>
     )

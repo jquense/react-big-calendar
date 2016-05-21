@@ -1,6 +1,7 @@
 import './TimeGutter.jsx'
 import './TimeSlice.jsx'
 import './TimeSliceGroup.jsx'
+import './DaySlot.jsx'
 import './DaySliceGroup.jsx'
 import './TimeGridHeader.jsx'
 import './Selection.jsx'

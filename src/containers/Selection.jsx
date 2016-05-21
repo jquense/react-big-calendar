@@ -222,8 +222,8 @@ function makeSelectable(Component) {
 
       e.preventDefault()
 
-      this.addListener(node, 'mouseup', this.mouseUp)
-      this.addListener(node, 'mousemove', this.mouseMove)
+      this.addListener(document, 'mouseup', this.mouseUp)
+      this.addListener(document, 'mousemove', this.mouseMove)
     }
 
     click(e) {

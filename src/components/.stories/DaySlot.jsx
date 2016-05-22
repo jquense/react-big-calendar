@@ -5,8 +5,6 @@ import '../../less/reset.less'
 import '../../less/styles.less'
 import moment from 'moment'
 
-import { debug } from '../../containers/Selection.jsx'
-
 storiesOf('components.DaySlot', module)
   .add('default view', () => {
     return (

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import TimeSlice from './TimeSlice.jsx'
+import SelectableTimeSlice from '../containers/SelectableTimeSlice.jsx'
 import date from '../utils/dates.js'
 
 export default class TimeSliceGroup extends Component {
@@ -8,34 +9,41 @@ export default class TimeSliceGroup extends Component {
     size: PropTypes.number.isRequired,
     time: PropTypes.func.isRequired,
     value: PropTypes.instanceOf(Date).isRequired,
-    isNow: PropTypes.bool
+    timesliceComponent: PropTypes.oneOf([TimeSlice, SelectableTimeSlice]),
+    showlabels: PropTypes.bool,
+    isNow: PropTypes.bool,
+    timesliceClassnames: PropTypes.string,
+    debug: PropTypes.bool
   }
   static defaultProps = {
     slices: 2,
     isNow: false,
-    time: () => null
+    time: () => null,
+    showlabels: true,
+    timesliceComponent: TimeSlice,
+    debug: false
   }
 
   renderSlice(i, className, value) {
-    return <TimeSlice key={i} showlabel={!i} time={this.props.time} isNow={this.props.isNow}
-                  classNames={className} value={value} />
+    const T = this.props.timesliceComponent
+    return <T key={i} showlabel={this.props.showlabels && !i} time={this.props.time}
+              isNow={this.props.isNow} classNames={className} value={value} />
   }
 
   renderSlices() {
-    let className
+    let className = this.props.timesliceClassnames ? `${this.props.timesliceClassnames} ` : ''
     switch (this.props.slices) {
       case 2 :
-        className = ''
         break
       case 3 :
-        className = 'three'
+        className += 'three'
         break
       case 4 :
-        className = 'four'
+        className += 'four'
         break
       case 5 :
       default :
-        className = 'five'
+        className += 'five'
         break
     }
     const ret = []

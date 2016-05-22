@@ -21,7 +21,9 @@ export default class TimeGridAllDay extends Component {
           { message(this.props.messages).allDay }
         </div>
         <div className="rbc-allday-cell">
-          <SelectableBackgroundCells selectable constantSelect slots={this.props.range.length} />
+          <SelectableBackgroundCells selectable constantSelect slots={this.props.range.length}
+                                     getValueFromSlot={(slot) => this.props.range[slot]}
+          />
         </div>
         <div style={{ zIndex: 1, position: 'relative' }}>
           {this.props.children}

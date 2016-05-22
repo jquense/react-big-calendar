@@ -89,7 +89,7 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
         selectedValues: newvalues
       })
       if (this.props.onSelectSlot) {
-        const nodelist = Object.keys(newnodes).map((key) => newnodes[key]).sort((a, b) => nodevalue(a) - nodevalue(b))
+        const nodelist = Object.keys(newnodes).map((key) => newnodes[key]).sort((a, b) => nodevalue(a.node) - nodevalue(b.node))
         const valuelist = Object.keys(newvalues).map((key) => newvalues[key]).sort(sorter)
         if (DEBUGGING.debug && DEBUGGING.selection) {
           console.log('updatestate onSelectSlot', values, nodes, valuelist, nodelist)
@@ -312,10 +312,11 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
       this.selectableKeys.forEach((key) => {
         const node = this.selectables[key]
         const domnode = findDOMNode(node.component)
+        const bounds = getBoundsForNode(domnode)
         if (DEBUGGING.debug && DEBUGGING.bounds) {
-          console.log(`node ${key} bounds`, getBoundsForNode(domnode))
+          console.log(`node ${key} bounds`, bounds)
         }
-        if (!domnode || !this.objectsCollide(this._selectRect, domnode, this.clickTolerance, key)) {
+        if (!domnode || !this.objectsCollide(this._selectRect, bounds, this.clickTolerance, key)) {
           if (nodes[key] === undefined) return
           if (DEBUGGING.debug && DEBUGGING.selection) {
             console.log(`deselect: ${key}`)
@@ -329,7 +330,7 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
         if (DEBUGGING.debug && DEBUGGING.selection) {
           console.log(`select: ${key}`)
         }
-        nodes[key] = node.component
+        nodes[key] = {node: node.component, bounds: bounds}
         values[key] = node.value
         changedNodes.push([true, node])
       })

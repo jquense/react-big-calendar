@@ -11,7 +11,9 @@ storiesOf('components.TimeGrid', module)
         gutterProps={{
           min: moment('9:00am', 'h:mma').toDate(),
           max: moment('5:00pm', 'h:mma').toDate(),
-          now: moment('3:00pm', 'h:mma').toDate()
+          now: moment('3:00pm', 'h:mma').toDate(),
+          step: 20,
+          slices: 2
         }} />
       </div>
     )

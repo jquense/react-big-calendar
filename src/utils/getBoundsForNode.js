@@ -1,8 +1,8 @@
 function pageOffset(dir) {
   if (dir === 'left')
-    return (window.pageXOffset || document.body.scrollLeft || 0)
+    return (window.pageXOffset || window.scrollX || document.body.scrollLeft || 0)
   if (dir === 'top')
-    return (window.pageYOffset || document.body.scrollTop || 0)
+    return (window.pageYOffset || window.scrollY || document.body.scrollTop || 0)
 }
 
 /**

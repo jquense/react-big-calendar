@@ -6,7 +6,6 @@ function Selectable(Component, options) {
     console.log('unregister called before component mounted')
   }
   return class extends React.Component {
-    static propTypes = Component.propTypes
     static displayName = `Selectable(${displayName})`
     
     constructor(props, context) {

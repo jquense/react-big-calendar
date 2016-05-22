@@ -26,7 +26,8 @@ function debug({ bounds = false, clicks = false, selection = false, registration
   }
 }
 
-function makeSelectable(Component) {
+function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) => node.props.value) {
+  if (!Component) throw new Error("Component is undefined")
   const displayName = Component.displayName || Component.name || 'Component'
 
   return class extends React.Component {
@@ -88,8 +89,8 @@ function makeSelectable(Component) {
         selectedValues: newvalues
       })
       if (this.props.onSelectSlot) {
-        const nodelist = Object.keys(newnodes).map((key) => newnodes[key])
-        const valuelist = Object.keys(newvalues).map((key) => newvalues[key])
+        const nodelist = Object.keys(newnodes).map((key) => newnodes[key]).sort((a, b) => nodevalue(a) - nodevalue(b))
+        const valuelist = Object.keys(newvalues).map((key) => newvalues[key]).sort(sorter)
         if (DEBUGGING.debug && DEBUGGING.selection) {
           console.log('updatestate onSelectSlot', values, nodes, valuelist, nodelist)
         }

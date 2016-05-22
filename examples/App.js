@@ -29,7 +29,8 @@ const Example = React.createClass({
       selectable: require('./demos/selectable'),
       cultures: require('./demos/cultures'),
       popup: require('./demos/popup'),
-      rendering: require('./demos/rendering')
+      rendering: require('./demos/rendering'),
+      customView: require('./demos/customView'),
     }[selected];
 
     return (
@@ -70,6 +71,9 @@ const Example = React.createClass({
               </li>
               <li className={cn({active: selected === 'rendering' })}>
                 <a href='#' onClick={this.select.bind(null, 'rendering')}>Custom rendering</a>
+              </li>
+              <li className={cn({active: selected === 'customView' })}>
+                <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
               </li>
             </ul>
           </aside>

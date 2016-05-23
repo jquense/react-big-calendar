@@ -1,5 +1,10 @@
 @import './variables.less';
 
+.rbc-timeslice-group + .rbc-timeslice-group {
+  border-top: 1px solid @cell-border;
+  margin-bottom: -1px;
+}
+
 .rbc-day-slot {
   position: relative;
   display: inline-flex;

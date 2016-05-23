@@ -32,6 +32,7 @@
     "lint": "eslint src test",
     "test": "npm run lint && karma start --single-run",
     "tdd": "karma start",
+    "storybook": "start-storybook -p 9002",
     "release": "release"
   },
   "peerDependencies": {
@@ -71,7 +72,7 @@
     "karma-sourcemap-loader": "^0.3.5",
     "karma-webpack": "^1.7.0",
     "less": "^2.5.1",
-    "less-loader": "^2.2.0",
+    "less-loader": "^2.2.3",
     "lolex": "^1.4.0",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",

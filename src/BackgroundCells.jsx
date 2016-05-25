@@ -33,19 +33,20 @@ class DisplayCells extends React.Component {
   }
 
   render(){
-    let { slots } = this.props;
+    let { slots, row, dayPropGetter } = this.props
     let { selecting, startIdx, endIdx } = this.state
 
     let children = [];
 
     for (var i = 0; i < slots; i++) {
+      var customDayClass = dayPropGetter ? dayPropGetter(row[i]) : ''
       children.push(
         <div
           key={'bg_' + i}
           style={segStyle(1, slots)}
           className={cn('rbc-day-bg', {
             'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
-          })}
+          }, customDayClass)}
         />
       )
     }

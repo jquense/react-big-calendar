@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import cn from 'classnames'
-import moment from 'moment'
+import localizer from '../localizer.js'
+import formats from '../formats.js'
 
 import TimeGridHeader from './TimeGridHeader.jsx'
 import TimeGutter from './TimeGutter.jsx'
@@ -12,13 +13,21 @@ import dates from '../utils/dates';
 
 export default class TimeGrid extends Component {
   static propTypes = {
+    ...TimeGutter.propTypes,
     end: PropTypes.instanceOf(Date),
     start: PropTypes.instanceOf(Date),
-    gutterProps: PropTypes.shape({...TimeGutter.propTypes})
+    selectRangeFormat: PropTypes.func.isRequired,
+    timegutterFormat: PropTypes.string,
+    culture: PropTypes.string.isRequired
+  }
+
+  static defaultProps = {
+    culture: 'en',
+    selectRangeFormat: formats().selectRangeFormat
   }
 
   renderEvents(range, events){
-    let { min, max, endAccessor, startAccessor, components } = this.props.gutterProps;
+    let { min, max, endAccessor, startAccessor, components } = this.props;
     let today = new Date(), daysEvents=[]
 
     return range.map((date, idx) => {
@@ -30,17 +39,21 @@ export default class TimeGrid extends Component {
 
       return (
         <DaySlot
-          {...this.props.gutterProps }
+          {...this.props }
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}
           now={new Date()}
           formatter={({start, end}) => {
             if (start+'' === end+'') {
-              return `${moment(start).format('h:mm')}-${moment(start)
-              .add(this.props.gutterProps.step, 'minutes').format('h:mm')}`
+              return localizer.format(
+                {start, end: dates.add(end, this.props.step, 'minutes')},
+                this.props.selectRangeFormat,
+                this.props.culture)
             }
-            return `${moment(start).format('h:mm')}-${
-            moment(end).add(this.props.gutterProps.step, 'minutes').format('h:mm')}`
+            return localizer.format(
+              {start, end},
+              this.props.selectRangeFormat,
+              this.props.culture)
           }}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, range.length)}
@@ -62,7 +75,7 @@ export default class TimeGrid extends Component {
           <TimeGridAllDay range={range}>
           </TimeGridAllDay>
           <div className="rbc-time-content">
-            <TimeGutter {...this.props.gutterProps} />
+            <TimeGutter {...this.props} />
             {this.renderEvents(range, [])}
           </div>
         </div>

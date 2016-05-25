@@ -1,9 +1,19 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import DaySlot from '../DaySlot.jsx';
-import '../../less/reset.less'
-import '../../less/styles.less'
 import moment from 'moment'
+import momentLocalizer, { formats } from '../../localizers/moment.js'
+
+// Setup the localizer by providing the moment (or globalize) Object
+// to the correct localizer.
+momentLocalizer(moment); // or globalizeLocalizer
+
+const events = [
+  {
+    start: moment('10:00am', 'h:mma').toDate(),
+    end: moment('10:43am', 'h:mma').toDate()
+  }
+]
 
 storiesOf('components.DaySlot', module)
   .add('default view', () => {
@@ -15,6 +25,8 @@ storiesOf('components.DaySlot', module)
                 return `${moment(start).format('h:mm')}-${
                 moment(end).format('h:mm')}`
                }}
+               events={events}
+               eventTimeRangeFormat={formats.eventTimeRangeFormat}
       />
     )
   })
@@ -29,6 +41,8 @@ storiesOf('components.DaySlot', module)
                   return `${moment(start).format('h:mm')}-${
                   moment(end).format('h:mm')}`
                  }}
+               events={events}
+               eventTimeRangeFormat={formats.eventTimeRangeFormat}
       />
     )
   })
@@ -44,6 +58,8 @@ storiesOf('components.DaySlot', module)
                   return `${moment(start).format('h:mm')}-${
                   moment(end).format('h:mm')}`
                  }}
+               events={events}
+               eventTimeRangeFormat={formats.eventTimeRangeFormat}
       />
     )
   })
@@ -59,6 +75,8 @@ storiesOf('components.DaySlot', module)
                 return `${moment(start).format('h:mm')}-${
                 moment(end).format('h:mm')}`
                }}
+               events={events}
+               eventTimeRangeFormat={formats.eventTimeRangeFormat}
       />
     )
   })

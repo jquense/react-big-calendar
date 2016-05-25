@@ -86,15 +86,16 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
       this.setState({
         selecting: selecting === null ? this.state.selecting : selecting,
         selectedNodes: newnodes,
-        selectedValues: newvalues
+        selectedValues: newvalues,
+        containerBounds: this.bounds
       })
       if (this.props.onSelectSlot) {
         const nodelist = Object.keys(newnodes).map((key) => newnodes[key]).sort((a, b) => nodevalue(a.node) - nodevalue(b.node))
         const valuelist = Object.keys(newvalues).map((key) => newvalues[key]).sort(sorter)
         if (DEBUGGING.debug && DEBUGGING.selection) {
-          console.log('updatestate onSelectSlot', values, nodes, valuelist, nodelist)
+          console.log('updatestate onSelectSlot', values, nodes, valuelist, nodelist, this.bounds)
         }
-        this.props.onSelectSlot(values, () => nodes, valuelist, () => nodelist)
+        this.props.onSelectSlot(values, () => nodes, valuelist, () => nodelist, this.bounds)
       }
     }
 
@@ -192,16 +193,19 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
       if (DEBUGGING.debug && DEBUGGING.clicks) {
         console.log('mousedown: selectable')
       }
-      const node = findDOMNode(this.ref)
-      if (e.which === 3 || e.button === 2 || !this.isOverContainer(node, e.clientX, e.clientY))
+      if (!this.node) {
+        this.node = findDOMNode(this.ref)
+        this.bounds = getBoundsForNode(this.node)
+      }
+      if (e.which === 3 || e.button === 2 || !this.isOverContainer(this.node, e.clientX, e.clientY))
         return
       if (DEBUGGING.debug && DEBUGGING.clicks) {
         console.log('mousedown: left click')
       }
       if (DEBUGGING.debug && DEBUGGING.bounds) {
-        console.log('mousedown: bounds', getBoundsForNode(node), e.pageY, e.pageX)
+        console.log('mousedown: bounds', this.bounds, e.pageY, e.pageX)
       }
-      if (!this.objectsCollide(getBoundsForNode(node), {
+      if (!this.objectsCollide(this.bounds, {
         top: e.pageY,
         left: e.pageX
       })) return

@@ -25,10 +25,10 @@ export default class TimeSliceGroup extends Component {
     culture: 'en'
   }
 
-  renderSlice(i, className, value) {
+  renderSlice(i, classNames, value) {
     const T = this.props.timesliceComponent
     return <T key={i}
-              className={className}
+              classNames={classNames}
               showlabel={this.props.showlabels && !i}
               format={this.props.timegutterFormat}
               culture={this.props.culture}
@@ -37,26 +37,26 @@ export default class TimeSliceGroup extends Component {
   }
 
   renderSlices() {
-    let className = this.props.timesliceClassnames
+    let classNames = this.props.timesliceClassnames
     switch (this.props.slices) {
       case 2 :
         break
       case 3 :
-        className += ' three'
+        classNames += ' three'
         break
       case 4 :
-        className += ' four'
+        classNames += ' four'
         break
       case 5 :
       default :
-        className += ' five'
+        classNames += ' five'
         break
     }
     const ret = []
     const sliceLength = this.props.step
     let sliceValue = this.props.value
     for (let i = 0; i < this.props.slices; i++) {
-      ret.push(this.renderSlice(i, className, sliceValue))
+      ret.push(this.renderSlice(i, classNames, sliceValue))
       sliceValue = date.add(sliceValue, sliceLength , 'minutes')
     }
     return ret

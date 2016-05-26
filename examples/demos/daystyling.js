@@ -18,7 +18,13 @@ let Basic = React.createClass({
 
             }
         )
-        return isDayInCommission ? 'green' : 'lightblue';
+`        return {
+            className: isDayInCommission ? 'green' : 'blue',
+            style: {},
+            header: 'Base',
+            description: 'New tier for mobile app'
+        }
+
     },
 
     render(){

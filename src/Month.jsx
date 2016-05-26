@@ -239,7 +239,7 @@ let MonthView = React.createClass({
   _dates(row){
     return row.map((day, colIdx) => {
       var offRange = dates.month(day) !== dates.month(this.props.date);
-
+      var dayProps = this._getDayProps(this.props.dayPropGetter, colIdx)
       return (
         <div
           key={'header_' + colIdx}
@@ -253,9 +253,18 @@ let MonthView = React.createClass({
           <a href='#' onClick={this._dateClick.bind(null, day)}>
             { localizer.format(day, this.props.dateFormat, this.props.culture) }
           </a>
+          <p>{dayProps.header}</p>
+          <p>{dayProps.description}</p>
         </div>
       )
     })
+  },
+
+  _getDayProps(dayPropGetter, row, i){
+    if(dayPropGetter){
+      return dayPropGetter(row[i]);
+    }
+    return {};
   },
 
   _headers(row, format, culture){

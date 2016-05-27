@@ -8,7 +8,7 @@ import EventRow from '../EventRow.jsx'
 import dates from '../utils/dates';
 import { isSelected } from '../utils/selection';
 import { notify } from '../utils/helpers';
-import { accessor } from '../utils/propTypes';
+import { accessor, elementType } from '../utils/propTypes';
 import { accessor as get } from '../utils/accessors';
 import localizer from '../localizer'
 
@@ -29,14 +29,17 @@ export default class DaySlot extends Component {
     onSelectEvent: PropTypes.func.isRequired,
 
     events: PropTypes.array,
-    eventComponent: PropTypes.element
+    eventComponent: elementType
   }
 
   static defaultProps = {
     events: [],
     eventComponent: EventRow,
     startAccessor: 'start',
-    endAccessor: 'end'
+    endAccessor: 'end',
+    allDayAccessor: 'allDay',
+    onSelectSlot: () => null,
+    onSelectEvent: () => null
   }
 
   constructor(props) {

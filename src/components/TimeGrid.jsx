@@ -9,6 +9,7 @@ import DaySlot from './DaySlot.jsx'
 import TimeGridAllDay from './TimeGridAllDay.jsx'
 
 import { segStyle } from '../utils/eventLevels';
+import { accessor as get } from '../utils/accessors';
 import dates from '../utils/dates';
 
 export default class TimeGrid extends Component {
@@ -17,13 +18,16 @@ export default class TimeGrid extends Component {
     end: PropTypes.instanceOf(Date),
     start: PropTypes.instanceOf(Date),
     selectRangeFormat: PropTypes.func.isRequired,
+    eventTimeRangeFormat: PropTypes.func.isRequired,
     timegutterFormat: PropTypes.string,
     culture: PropTypes.string.isRequired
   }
 
   static defaultProps = {
+    ...TimeGutter.defaultProps,
     culture: 'en',
-    selectRangeFormat: formats().selectRangeFormat
+    selectRangeFormat: formats().selectRangeFormat,
+    eventTimeRangeFormat: formats().eventTimeRangeFormat
   }
 
   renderEvents(range, events){
@@ -31,11 +35,11 @@ export default class TimeGrid extends Component {
     let today = new Date(), daysEvents=[]
 
     return range.map((date, idx) => {
-      // let daysEvents = events.filter(
-      //   event => dates.inRange(date,
-      //     get(event, startAccessor),
-      //     get(event, endAccessor), 'day')
-      // )
+       let daysEvents = events.filter(
+         event => dates.inRange(date,
+           get(event, startAccessor),
+           get(event, endAccessor), 'day')
+       )
 
       return (
         <DaySlot
@@ -43,6 +47,7 @@ export default class TimeGrid extends Component {
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}
           now={new Date()}
+          eventTimeRangeFormat={this.props.eventTimeRangeFormat}
           formatter={({start, end}) => {
             if (start+'' === end+'') {
               return localizer.format(

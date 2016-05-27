@@ -14,7 +14,9 @@ import dates from '../utils/dates';
 
 export default class TimeGrid extends Component {
   static propTypes = {
+    ...DaySlot.propTypes,
     ...TimeGutter.propTypes,
+
     end: PropTypes.instanceOf(Date),
     start: PropTypes.instanceOf(Date),
     selectRangeFormat: PropTypes.func.isRequired,
@@ -24,6 +26,7 @@ export default class TimeGrid extends Component {
   }
 
   static defaultProps = {
+    ...DaySlot.defaultProps,
     ...TimeGutter.defaultProps,
     culture: 'en',
     selectRangeFormat: formats().selectRangeFormat,
@@ -81,7 +84,7 @@ export default class TimeGrid extends Component {
           </TimeGridAllDay>
           <div className="rbc-time-content">
             <TimeGutter {...this.props} />
-            {this.renderEvents(range, [])}
+            {this.renderEvents(range, this.props.events)}
           </div>
         </div>
       </div>

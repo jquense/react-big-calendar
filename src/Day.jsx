@@ -1,11 +1,15 @@
 import React from 'react';
 import dates from './utils/dates';
-import TimeGrid from './TimeGrid';
+import TimeGrid from './components/TimeGrid';
 import { navigate } from './utils/constants';
 
 let Day = React.createClass({
 
   propTypes: TimeGrid.propTypes,
+
+  defaultProps() {
+    return TimeGrid.defaultProps
+  },
 
   render() {
     let { date } = this.props;

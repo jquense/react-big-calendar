@@ -11,7 +11,7 @@ export default class TimeSliceGroup extends Component {
     timesliceComponent: PropTypes.oneOf([TimeSlice, SelectableTimeSlice]),
     showlabels: PropTypes.bool,
     isNow: PropTypes.bool,
-    timegutterFormat: PropTypes.string,
+    timeGutterFormat: PropTypes.string,
     timesliceClassnames: PropTypes.string,
     culture: PropTypes.string
   }
@@ -30,7 +30,7 @@ export default class TimeSliceGroup extends Component {
     return <T key={i}
               classNames={classNames}
               showlabel={this.props.showlabels && !i}
-              format={this.props.timegutterFormat}
+              format={this.props.timeGutterFormat}
               culture={this.props.culture}
               isNow={this.props.isNow}
               value={value} />

@@ -14,7 +14,7 @@ export default class TimeGutter extends Component {
     selectable: PropTypes.bool,
     hidelabels: PropTypes.bool,
     timesliceClassnames: PropTypes.string,
-    timegutterFormat: PropTypes.string
+    timeGutterFormat: PropTypes.string
   }
   static defaultProps = {
     step: 10,
@@ -31,7 +31,7 @@ export default class TimeGutter extends Component {
                            slices={this.props.slices}
                            step={this.props.step}
                            showlabels={!this.props.hidelabels}
-                           timegutterFormat={this.props.timegutterFormat}
+                           timeGutterFormat={this.props.timeGutterFormat}
                            timesliceClassnames={this.props.timesliceClassnames}
                            value={date}
                            timesliceComponent={TS}
@@ -39,6 +39,7 @@ export default class TimeGutter extends Component {
   }
   
   render() {
+    console.log(this.props)
     const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
     const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
     const children = []

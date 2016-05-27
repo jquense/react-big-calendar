@@ -13,7 +13,7 @@ storiesOf('components.TimeGutter', module)
       <TimeGutter min={moment('9:00am', 'h:mma').toDate()}
                   max={moment('5:00pm', 'h:mma').toDate()}
                   now={moment('9:20am', 'h:mma').toDate()}
-                  timegutterFormat={format}
+                  timeGutterFormat={format}
       />
     )
   })
@@ -23,7 +23,7 @@ storiesOf('components.TimeGutter', module)
       <TimeGutter min={moment('9:00am', 'h:mma').toDate()}
                   max={moment('5:00pm', 'h:mma').toDate()}
                   now={moment('9:23am', 'h:mma').toDate()}
-                  timegutterFormat={format}
+                  timeGutterFormat={format}
       />
     )
   })
@@ -33,7 +33,7 @@ storiesOf('components.TimeGutter', module)
       <TimeGutter min={moment('9:00am', 'h:mma').toDate()}
                   max={moment('5:00pm', 'h:mma').toDate()}
                   now={moment('9:19:59am', 'h:mm:ssa').toDate()}
-                  timegutterFormat={format}
+                  timeGutterFormat={format}
       />
     )
   })
@@ -43,7 +43,7 @@ storiesOf('components.TimeGutter', module)
       <TimeGutter min={moment('9:00am', 'h:mma').toDate()}
                   max={moment('5:00pm', 'h:mma').toDate()}
                   now={moment('9:20:01am', 'h:mm:ssa').toDate()}
-                  timegutterFormat={format}
+                  timeGutterFormat={format}
       />
     )
   })
@@ -54,7 +54,7 @@ storiesOf('components.TimeGutter', module)
                   max={moment('5:00pm', 'h:mma').toDate()}
                   slices={5}
                   now={moment('9:20:01am', 'h:mm:ssa').toDate()}
-                  timegutterFormat={format}
+                  timeGutterFormat={format}
       />
     )
   })

@@ -21,7 +21,7 @@ export default class TimeGrid extends Component {
     start: PropTypes.instanceOf(Date),
     selectRangeFormat: PropTypes.func.isRequired,
     eventTimeRangeFormat: PropTypes.func.isRequired,
-    timegutterFormat: PropTypes.string,
+    timeGutterFormat: PropTypes.string,
     culture: PropTypes.string.isRequired
   }
 

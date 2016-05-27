@@ -3,11 +3,15 @@ import dates from './utils/dates';
 import localizer from './localizer';
 import { navigate } from './utils/constants';
 
-import TimeGrid from './TimeGrid';
+import TimeGrid from './components/TimeGrid';
 
 let Week = React.createClass({
 
   propTypes: TimeGrid.propTypes,
+
+  getDefaultProps() {
+    return TimeGrid.defaultProps
+  },
 
   render() {
     let { date } = this.props

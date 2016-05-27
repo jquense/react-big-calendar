@@ -37,7 +37,7 @@ storiesOf('components.TimeGrid', module)
                   slices={2}
                   events={events}
                   selectRangeFormat={formats.selectRangeFormat}
-                  timegutterFormat={formats.timeGutterFormat}
+                  timeGutterFormat={formats.timeGutterFormat}
                   eventTimeRangeFormat={formats.eventTimeRangeFormat}
         />
       </div>

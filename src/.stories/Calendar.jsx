@@ -14,6 +14,8 @@ storiesOf('module.Calendar', module)
     return (
       <div style={{height: 900}}>
         <Calendar
+          min={moment('9:00am', 'h:mma').toDate()}
+          max={moment('5:00pm', 'h:mma').toDate()}
           events={[{
             title: 'test',
             start: moment().add(1, 'days').toDate(),

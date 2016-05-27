@@ -10,9 +10,9 @@ storiesOf('components.TimeSliceGroup', module)
   .add('default view', () => {
     return (
       <div className='rbc-time-gutter'>
-        <TimeSliceGroup timegutterFormat={format} size={20} value={moment('1:00pm', 'h:mma').toDate()} />
-        <TimeSliceGroup timegutterFormat={format} size={20} value={moment('1:20pm', 'h:mma').toDate()} />
-        <TimeSliceGroup timegutterFormat={format} size={20} value={moment('1:40pm', 'h:mma').toDate()} />
+        <TimeSliceGroup timeGutterFormat={format} size={20} value={moment('1:00pm', 'h:mma').toDate()} />
+        <TimeSliceGroup timeGutterFormat={format} size={20} value={moment('1:20pm', 'h:mma').toDate()} />
+        <TimeSliceGroup timeGutterFormat={format} size={20} value={moment('1:40pm', 'h:mma').toDate()} />
       </div>
     )
   })
@@ -20,9 +20,9 @@ storiesOf('components.TimeSliceGroup', module)
   .add('3 slices', () => {
     return (
       <div className='rbc-time-gutter'>
-        <TimeSliceGroup slices={3} size={20} timegutterFormat={format} value={moment('1:00pm', 'h:mma').toDate()} />
-        <TimeSliceGroup slices={3} size={20} timegutterFormat={format} value={moment('1:20pm', 'h:mma').toDate()} />
-        <TimeSliceGroup slices={3} size={20} timegutterFormat={format} value={moment('1:40pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={3} size={20} timeGutterFormat={format} value={moment('1:00pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={3} size={20} timeGutterFormat={format} value={moment('1:20pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={3} size={20} timeGutterFormat={format} value={moment('1:40pm', 'h:mma').toDate()} />
       </div>
     )
   })
@@ -30,9 +30,9 @@ storiesOf('components.TimeSliceGroup', module)
   .add('4 slices', () => {
     return (
       <div className='rbc-time-gutter'>
-        <TimeSliceGroup slices={4} size={20} timegutterFormat={format} value={moment('1:00pm', 'h:mma').toDate()} />
-        <TimeSliceGroup slices={4} size={20} timegutterFormat={format} value={moment('1:20pm', 'h:mma').toDate()} />
-        <TimeSliceGroup slices={4} size={20} timegutterFormat={format} value={moment('1:40pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={4} size={20} timeGutterFormat={format} value={moment('1:00pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={4} size={20} timeGutterFormat={format} value={moment('1:20pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={4} size={20} timeGutterFormat={format} value={moment('1:40pm', 'h:mma').toDate()} />
       </div>
     )
   })
@@ -40,9 +40,9 @@ storiesOf('components.TimeSliceGroup', module)
   .add('5 slices', () => {
     return (
       <div className='rbc-time-gutter'>
-        <TimeSliceGroup slices={5} size={20} timegutterFormat={format} value={moment('1:00pm', 'h:mma').toDate()} />
-        <TimeSliceGroup slices={5} size={20} timegutterFormat={format} value={moment('1:20pm', 'h:mma').toDate()} />
-        <TimeSliceGroup slices={5} size={20} timegutterFormat={format} value={moment('1:40pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={5} size={20} timeGutterFormat={format} value={moment('1:00pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={5} size={20} timeGutterFormat={format} value={moment('1:20pm', 'h:mma').toDate()} />
+        <TimeSliceGroup slices={5} size={20} timeGutterFormat={format} value={moment('1:40pm', 'h:mma').toDate()} />
       </div>
     )
   })

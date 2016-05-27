@@ -39,7 +39,6 @@ export default class TimeGutter extends Component {
   }
   
   render() {
-    console.log(this.props)
     const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
     const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
     const children = []

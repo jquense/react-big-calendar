@@ -286,13 +286,12 @@ let Calendar = React.createClass({
       agenda: PropTypes.shape({
         date: elementType,
         time: elementType,
-        event: elementType,
-        component: PropTypes.element
+        event: elementType
       }),
 
-      day: PropTypes.shape({ event: elementType, component: PropTypes.element }),
-      week: PropTypes.shape({ event: elementType, component: PropTypes.element }),
-      month: PropTypes.shape({ event: elementType, component: PropTypes.element })
+      day: PropTypes.shape({ event: elementType }),
+      week: PropTypes.shape({ event: elementType }),
+      month: PropTypes.shape({ event: elementType })
     }),
 
     /**
@@ -322,7 +321,7 @@ let Calendar = React.createClass({
       titleAccessor: 'title',
       allDayAccessor: 'allDay',
       startAccessor: 'start',
-      endAccessor: 'end',
+      endAccessor: 'end'
     };
   },
 
@@ -339,7 +338,7 @@ let Calendar = React.createClass({
 
     formats = defaultFormats(formats)
 
-    let View = (this.props[view] && this.props[view].component) || VIEWS[view];
+    let View = VIEWS[view];
     let names = viewNames(this.props.views)
 
     let elementProps = omit(this.props, Object.keys(Calendar.propTypes))

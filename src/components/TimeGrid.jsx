@@ -80,7 +80,7 @@ export default class TimeGrid extends Component {
       <div className='rbc-time-view'>
         <div className='rbc-time-header'>
           <TimeGridHeader range={range} />
-          <TimeGridAllDay range={range}>
+          <TimeGridAllDay range={range} selectable={this.props.selectable}>
           </TimeGridAllDay>
           <div className="rbc-time-content">
             <TimeGutter {...this.props} />

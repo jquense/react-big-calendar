@@ -43,3 +43,38 @@ storiesOf('components.TimeGrid', module)
       </div>
     )
   })
+  .add('default view', () => {
+    return (
+      <div height="80%">
+        <TimeGrid start={moment().startOf('day').toDate()} end={moment().add(2, 'days').startOf('day').toDate()}
+                  min={moment('9:00am', 'h:mma').toDate()}
+                  max={moment('5:00pm', 'h:mma').toDate()}
+                  now={moment('3:00pm', 'h:mma').toDate()}
+                  step={20}
+                  slices={2}
+                  events={events}
+                  selectRangeFormat={formats.selectRangeFormat}
+                  timeGutterFormat={formats.timeGutterFormat}
+                  eventTimeRangeFormat={formats.eventTimeRangeFormat}
+        />
+      </div>
+    )
+  })
+  .add('selectable', () => {
+    return (
+      <div height="80%">
+        <TimeGrid start={moment().startOf('day').toDate()} end={moment().add(2, 'days').startOf('day').toDate()}
+                  min={moment('9:00am', 'h:mma').toDate()}
+                  max={moment('5:00pm', 'h:mma').toDate()}
+                  now={moment('3:00pm', 'h:mma').toDate()}
+                  step={20}
+                  selectable
+                  slices={2}
+                  events={events}
+                  selectRangeFormat={formats.selectRangeFormat}
+                  timeGutterFormat={formats.timeGutterFormat}
+                  eventTimeRangeFormat={formats.eventTimeRangeFormat}
+        />
+      </div>
+    )
+  })

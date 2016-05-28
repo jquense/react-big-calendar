@@ -196,7 +196,7 @@ export default class DaySlot extends Component {
     this._totalMin = dates.diff(min, max, 'minutes')
     return (
       <div className={cn('rbc-day-slot',this.props.className)} style={{...this.props.style}}>
-        <SelectableTimeGutter selectable={true}
+        <SelectableTimeGutter selectable={this.props.selectable}
                               constantSelect
                               onSelectSlot={this.makeFancy}
                               hidelabels={true}

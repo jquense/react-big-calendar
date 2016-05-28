@@ -5,9 +5,10 @@ import SelectableBackgroundCells from '../containers/SelectableBackgroundCells.j
 
 export default class TimeGridAllDay extends Component {
   static propTypes = {
-    messages: React.PropTypes.array,
+    messages: PropTypes.array,
     gutterwidth: PropTypes.number,
-    range: React.PropTypes.array
+    range: PropTypes.array,
+    selectable: PropTypes.bool
   }
   static defaultProps = {
     gutterwidth: 70,
@@ -21,7 +22,9 @@ export default class TimeGridAllDay extends Component {
           { message(this.props.messages).allDay }
         </div>
         <div className="rbc-allday-cell">
-          <SelectableBackgroundCells selectable constantSelect slots={this.props.range.length}
+          <SelectableBackgroundCells selectable={this.props.selectable}
+                                     constantSelect
+                                     slots={this.props.range.length}
                                      getValueFromSlot={(slot) => this.props.range[slot]}
           />
         </div>

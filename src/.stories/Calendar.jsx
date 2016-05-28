@@ -26,3 +26,21 @@ storiesOf('module.Calendar', module)
       </div>
     )
   })
+
+  .add('selectable', () => {
+    return (
+      <div style={{height: 900}}>
+        <Calendar
+          selectable
+          min={moment('9:00am', 'h:mma').toDate()}
+          max={moment('5:00pm', 'h:mma').toDate()}
+          events={[{
+            title: 'test',
+            start: moment().add(1, 'days').toDate(),
+            end: moment().add(1, 'days').add(1, 'hours').toDate()
+          }]}
+          defaultDate={new Date()}
+        />
+      </div>
+    )
+  })

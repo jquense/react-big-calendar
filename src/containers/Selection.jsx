@@ -60,7 +60,8 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
       constantSelect: PropTypes.bool,
       selectable: PropTypes.bool,
       preserveSelection: PropTypes.bool,
-      onSelectSlot: PropTypes.func
+      onSelectSlot: PropTypes.func,
+      onFinishSelect: PropTypes.func
     }
     
     static defaultProps = {
@@ -89,16 +90,28 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
         selectedValues: newvalues,
         containerBounds: this.bounds
       })
-      if (this.props.onSelectSlot) {
+      if (this.props.onSelectSlot || this.props.onFinishSelect) {
         const nodelist = Object.keys(newnodes).map((key) => newnodes[key]).sort((a, b) => nodevalue(a.node) - nodevalue(b.node))
         const valuelist = Object.keys(newvalues).map((key) => newvalues[key]).sort(sorter)
         if (DEBUGGING.debug && DEBUGGING.selection) {
           console.log('updatestate onSelectSlot', values, nodes, valuelist, nodelist, this.bounds)
         }
-        this.props.onSelectSlot(values, () => nodes, valuelist, () => nodelist, this.bounds)
+        this.props.onSelectSlot && this.props.onSelectSlot(values, () => nodes, valuelist, () => nodelist, this.bounds)
       }
     }
 
+    propagateFinishedSelect() {
+      if (!this.props.onFinishSelect) return
+      const newnodes = this.state.selectedNodes
+      const newvalues = this.state.selectedValues
+      const nodelist = Object.keys(newnodes).map((key) => newnodes[key]).sort((a, b) => nodevalue(a.node) - nodevalue(b.node))
+      const valuelist = Object.keys(newvalues).map((key) => newvalues[key]).sort(sorter)
+      if (DEBUGGING.debug && DEBUGGING.selection) {
+        console.log('finishselect', newvalues, newnodes, valuelist, nodelist, this.bounds)
+      }
+      this.props.onFinishSelect(newvalues, () => newnodes, valuelist, () => nodelist, this.bounds)
+      
+    }
     getChildContext() {
       return {
         registerSelectable: (component, key, value, callback) => {
@@ -258,6 +271,7 @@ function makeSelectable(Component, sorter = (a, b) => a - b, nodevalue = (node) 
       }
 
       if (this.props.constantSelect && !this.props.preserveSelection) {
+        this.propagateFinishedSelect()
         this.deselectNodes()
         return
       }

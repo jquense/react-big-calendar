@@ -199,6 +199,10 @@ export default class DaySlot extends Component {
         <SelectableTimeGutter selectable={this.props.selectable}
                               constantSelect
                               onSelectSlot={this.makeFancy}
+                              onFinishSelect={(a,b,values) => this.props.onSelectSlot({
+                                start: values[0],
+                                slots: values,
+                                end: values[values.length - 1]})}
                               hidelabels={true}
                               timesliceClassnames="day-slot"
                               slices={slices}

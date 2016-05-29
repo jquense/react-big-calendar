@@ -44,6 +44,7 @@ storiesOf('module.Calendar', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
+          onSelectSlot={e => console.log('selected', e)}
           defaultDate={new Date()}
         />
       </div>

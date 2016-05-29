@@ -20,7 +20,7 @@ import dates from '../utils/dates';
 import {
   inRange, eventSegments, endOfRange
   , eventLevels, sortEvents, segStyle } from '../utils/eventLevels';
-import { elementType } from '../utils/propTypes';
+import { elementType, accessor } from '../utils/propTypes';
 
 const MIN_ROWS = 2;
 
@@ -49,7 +49,12 @@ export default class TimeGrid extends Component {
       day: PropTypes.shape({ event: elementType }),
       week: PropTypes.shape({ event: elementType }),
       month: PropTypes.shape({ event: elementType })
-    })
+    }),
+
+    allDayAccessor: accessor,
+    titleAccessor: accessor,
+    startAccessor: accessor,
+    endAccessor: accessor
   }
 
   static defaultProps = {
@@ -59,8 +64,12 @@ export default class TimeGrid extends Component {
     selectRangeFormat: formats().selectRangeFormat,
     eventTimeRangeFormat: formats().eventTimeRangeFormat,
     components: {
-      event: EventCell
-    }
+      event: null
+    },
+    allDayAccessor: 'allDay',
+    startAccessor: 'start',
+    endAccessor: 'end',
+    titleAccessor: 'title'
   }
 
   _adjustGutter() {
@@ -188,8 +197,8 @@ export default class TimeGrid extends Component {
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
         eventPropGetter={this.props.eventPropGetter}
-        onSelect={this._selectEvent}
-        slots={this._slots}
+        onSelect={() => null}
+        slots={range.length}
         key={idx}
         segments={segs}
         start={first}

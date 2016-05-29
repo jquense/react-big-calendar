@@ -9,18 +9,27 @@ import '../less/styles.less'
 // to the correct localizer.
 momentLocalizer(moment); // or globalizeLocalizer
 
+const events = [{
+  title: 'test',
+  start: moment().add(1, 'days').subtract(5, 'hours').toDate(),
+  end: moment().add(1, 'days').subtract(4, 'hours').toDate(),
+  allDay: false
+},
+  {
+    title: 'test all day',
+    start: moment().toDate(),
+    end: moment().toDate(),
+    allDay: true
+  }]
+
 storiesOf('module.Calendar', module)
   .add('default view', () => {
     return (
       <div style={{height: 900}}>
         <Calendar
-          min={moment('9:00am', 'h:mma').toDate()}
-          max={moment('5:00pm', 'h:mma').toDate()}
-          events={[{
-            title: 'test',
-            start: moment().add(1, 'days').toDate(),
-            end: moment().add(1, 'days').add(1, 'hours').toDate()
-          }]}
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
           defaultDate={new Date()}
         />
       </div>
@@ -32,13 +41,9 @@ storiesOf('module.Calendar', module)
       <div style={{height: 900}}>
         <Calendar
           selectable
-          min={moment('9:00am', 'h:mma').toDate()}
-          max={moment('5:00pm', 'h:mma').toDate()}
-          events={[{
-            title: 'test',
-            start: moment().add(1, 'days').toDate(),
-            end: moment().add(1, 'days').add(1, 'hours').toDate()
-          }]}
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
           defaultDate={new Date()}
         />
       </div>

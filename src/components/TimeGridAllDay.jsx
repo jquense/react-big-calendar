@@ -29,9 +29,9 @@ export default class TimeGridAllDay extends Component {
                                      slots={this.props.range.length}
                                      getValueFromSlot={(slot) => this.props.range[slot]}
           />
-        </div>
-        <div style={{ zIndex: 1, position: 'relative' }}>
-          {this.props.children}
+          <div style={{ zIndex: 1, position: 'relative' }}>
+            {this.props.children}
+          </div>
         </div>
       </div>
     )

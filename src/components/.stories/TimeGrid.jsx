@@ -22,6 +22,12 @@ const events = [
     title: 'hmmmm',
     start: moment('9:00am', 'h:mma').add(2, 'days').toDate(),
     end: moment('3:00pm', 'h:mma').add(2, 'days').toDate()
+  },
+  {
+    title: '3rd',
+    allDay: true,
+    start: moment().toDate(),
+    end: moment().toDate()
   }
 ]
 
@@ -60,6 +66,7 @@ storiesOf('components.TimeGrid', module)
       </div>
     )
   })
+
   .add('selectable', () => {
     return (
       <div height="80%">
@@ -70,6 +77,25 @@ storiesOf('components.TimeGrid', module)
                   step={20}
                   selectable
                   slices={2}
+                  events={events}
+                  selectRangeFormat={formats.selectRangeFormat}
+                  timeGutterFormat={formats.timeGutterFormat}
+                  eventTimeRangeFormat={formats.eventTimeRangeFormat}
+        />
+      </div>
+    )
+  })
+
+  .add('5 slices', () => {
+    return (
+      <div height="80%">
+        <TimeGrid start={moment().startOf('day').toDate()} end={moment().add(2, 'days').startOf('day').toDate()}
+                  min={moment('9:00am', 'h:mma').toDate()}
+                  max={moment('5:00pm', 'h:mma').toDate()}
+                  now={moment('3:00pm', 'h:mma').toDate()}
+                  step={20}
+                  selectable
+                  slices={5}
                   events={events}
                   selectRangeFormat={formats.selectRangeFormat}
                   timeGutterFormat={formats.timeGutterFormat}

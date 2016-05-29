@@ -6,19 +6,21 @@ import SelectableBackgroundCells from '../containers/SelectableBackgroundCells.j
 export default class TimeGridAllDay extends Component {
   static propTypes = {
     messages: PropTypes.array,
-    gutterwidth: PropTypes.number,
+    gutterWidth: PropTypes.number,
     range: PropTypes.array,
-    selectable: PropTypes.bool
+    selectable: PropTypes.bool,
+    gutterRef: PropTypes.func
   }
   static defaultProps = {
-    gutterwidth: 70,
-    range: []
+    range: [],
+    gutterRef: () => null
   }
   render() {
     
     return (
       <div className="rbc-row">
-        <div className="rbc-gutter-cell" style={{width: this.props.gutterwidth}}>
+        <div ref={this.props.gutterRef} className="rbc-gutter-cell" style={this.props.gutterWidth ?
+          {width: this.props.gutterWidth} : {}}>
           { message(this.props.messages).allDay }
         </div>
         <div className="rbc-allday-cell">

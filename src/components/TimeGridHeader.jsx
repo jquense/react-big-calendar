@@ -7,20 +7,22 @@ export default class TimeGridHeader extends Component {
     range: PropTypes.arrayOf(React.PropTypes.instanceOf(Date)).isRequired,
     onClick: PropTypes.func,
     formatter: PropTypes.func,
-    gutterwidth: PropTypes.number
+    gutterWidth: PropTypes.number,
+    gutterRef: PropTypes.func
   }
   static defaultProps = {
     range: [],
     onClick: () => null,
     formatter: (date) => moment(date).format('ddd D/M'),
-    gutterwidth: 70
+    gutterRef: () => null
   }
 
   render() {
     return (
       <div className="rbc-time-header">
         <div className="rbc-row">
-          <div className='rbc-gutter-cell' style={{width: this.props.gutterwidth }} />
+          <div ref={this.props.gutterRef} className='rbc-gutter-cell' style={this.props.gutterWidth ?
+          {width: this.props.gutterWidth} : {}} />
           {this.props.range.map((date, i) =>
             <div key={i}
                  className='rbc-header'

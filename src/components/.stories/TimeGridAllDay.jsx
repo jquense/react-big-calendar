@@ -17,8 +17,8 @@ storiesOf('components.TimeGridAllDay', module)
     return (
       <div className='rbc-time-view'>
         <div className='rbc-time-header'>
-          <TimeGridHeader range={range}/>
-          <TimeGridAllDay range={range}>
+          <TimeGridHeader range={range} gutterWidth={90}/>
+          <TimeGridAllDay range={range} gutterWidth={90}>
           </TimeGridAllDay>
         </div>
       </div>

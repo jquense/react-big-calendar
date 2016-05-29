@@ -2,15 +2,27 @@ import React, { PropTypes, Component } from 'react'
 import cn from 'classnames'
 import localizer from '../localizer.js'
 import formats from '../formats.js'
+import { findDOMNode } from 'react-dom';
+import classes from 'dom-helpers/class';
+import scrollbarSize from 'dom-helpers/util/scrollbarSize';
+import getWidth from 'dom-helpers/query/width';
 
 import TimeGridHeader from './TimeGridHeader.jsx'
 import TimeGutter from './TimeGutter.jsx'
 import DaySlot from './DaySlot.jsx'
 import TimeGridAllDay from './TimeGridAllDay.jsx'
 
-import { segStyle } from '../utils/eventLevels';
+import EventRow from '../EventRow.jsx'
+import EventCell from '../EventCell.jsx'
+
 import { accessor as get } from '../utils/accessors';
 import dates from '../utils/dates';
+import {
+  inRange, eventSegments, endOfRange
+  , eventLevels, sortEvents, segStyle } from '../utils/eventLevels';
+import { elementType } from '../utils/propTypes';
+
+const MIN_ROWS = 2;
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -22,7 +34,22 @@ export default class TimeGrid extends Component {
     selectRangeFormat: PropTypes.func.isRequired,
     eventTimeRangeFormat: PropTypes.func.isRequired,
     timeGutterFormat: PropTypes.string,
-    culture: PropTypes.string.isRequired
+    culture: PropTypes.string.isRequired,
+    components: PropTypes.shape({
+      event: elementType,
+
+      toolbar: PropTypes.element,
+
+      agenda: PropTypes.shape({
+        date: elementType,
+        time: elementType,
+        event: elementType
+      }),
+
+      day: PropTypes.shape({ event: elementType }),
+      week: PropTypes.shape({ event: elementType }),
+      month: PropTypes.shape({ event: elementType })
+    })
   }
 
   static defaultProps = {
@@ -30,7 +57,75 @@ export default class TimeGrid extends Component {
     ...TimeGutter.defaultProps,
     culture: 'en',
     selectRangeFormat: formats().selectRangeFormat,
-    eventTimeRangeFormat: formats().eventTimeRangeFormat
+    eventTimeRangeFormat: formats().eventTimeRangeFormat,
+    components: {
+      event: EventCell
+    }
+  }
+
+  _adjustGutter() {
+    const isRtl = this.props.rtl;
+    const header = this.refs.headerCell;
+    const gutterCells = [findDOMNode(this.refs.gutter), ...this._gutters]
+    const isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
+
+    let width = this._gutterWidth
+
+    if (!width) {
+      this._gutterWidth = Math.max(...gutterCells.map(getWidth));
+
+      if (this._gutterWidth) {
+        width = this._gutterWidth + 'px';
+        gutterCells.forEach(node => node.style.width = width)
+      }
+    }
+
+    if (isOverflowing) {
+      classes.addClass(header, 'rbc-header-overflowing')
+      this.refs.headerCell.style[!isRtl ? 'marginLeft' : 'marginRight'] = '';
+      this.refs.headerCell.style[isRtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
+    }
+    else {
+      classes.removeClass(header, 'rbc-header-overflowing')
+    }
+  }
+
+  componentWillMount() {
+    this._gutters = [];
+  }
+
+  componentDidMount() {
+    this._adjustGutter()
+  }
+
+  componentDidUpdate() {
+    this._adjustGutter()
+  }
+
+  separateEvents() {
+    const allDayEvents = []
+    const rangeEvents = []
+
+    this.props.events.forEach(event => {
+      if (inRange(event, this.props.start, this.props.end, this.props)) {
+        let eStart = get(event, this.props.startAccessor)
+          , eEnd = get(event, this.props.endAccessor);
+
+        if (
+          get(event, this.props.allDayAccessor)
+          || !dates.eq(eStart, eEnd, 'day')
+          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
+        {
+          allDayEvents.push(event)
+        }
+        else
+          rangeEvents.push(event)
+      }
+    })
+    return {
+      allDayEvents,
+      rangeEvents
+    }
   }
 
   renderEvents(range, events){
@@ -73,18 +168,52 @@ export default class TimeGrid extends Component {
     })
   }
 
+  renderAllDayEvents(allDayEvents, range){
+    const events = allDayEvents.slice(0)
+
+    events.sort((a, b) => sortEvents(a, b, this.props))
+
+    const { first, last } = endOfRange(range);
+    const segments = events.map(evt => eventSegments(evt, first, last, this.props))
+    const { levels } = eventLevels(segments)
+
+    while (levels.length < MIN_ROWS )
+      levels.push([])
+
+    return levels.map((segs, idx) =>
+      <EventRow
+        eventComponent={this.props.components.event}
+        titleAccessor={this.props.titleAccessor}
+        startAccessor={this.props.startAccessor}
+        endAccessor={this.props.endAccessor}
+        allDayAccessor={this.props.allDayAccessor}
+        eventPropGetter={this.props.eventPropGetter}
+        onSelect={this._selectEvent}
+        slots={this._slots}
+        key={idx}
+        segments={segs}
+        start={first}
+        end={last}
+      />
+    )
+  }
+
   render() {
+    const addGutterRef = i => ref => this._gutters[i] = ref
+
     const range = dates.range(this.props.start, this.props.end, 'day')
+    const { allDayEvents, rangeEvents } = this.separateEvents()
 
     return (
       <div className='rbc-time-view'>
-        <div className='rbc-time-header'>
-          <TimeGridHeader range={range} />
-          <TimeGridAllDay range={range} selectable={this.props.selectable}>
+        <div className='rbc-time-header' ref="headerCell">
+          <TimeGridHeader range={range} gutterRef={addGutterRef(0)} />
+          <TimeGridAllDay range={range} selectable={this.props.selectable} gutterRef={addGutterRef(1)}>
+            { this.renderAllDayEvents(allDayEvents, range) }
           </TimeGridAllDay>
-          <div className="rbc-time-content">
-            <TimeGutter {...this.props} />
-            {this.renderEvents(range, this.props.events)}
+          <div className="rbc-time-content" ref="content">
+            <TimeGutter {...this.props} ref="gutter"/>
+            {this.renderEvents(range, rangeEvents)}
           </div>
         </div>
       </div>

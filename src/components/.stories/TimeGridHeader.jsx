@@ -8,9 +8,10 @@ storiesOf('components.TimeGridHeader', module)
     return (
       <div className='rbc-time-view'>
         <TimeGridHeader range={[
-          moment().toDate(),
-          moment().add(1, 'days').toDate()
-        ]}/>
+                          moment().toDate(),
+                          moment().add(1, 'days').toDate()
+                        ]}
+                        gutterWidth={90}/>
       </div>
     )
   })
@@ -27,7 +28,8 @@ storiesOf('components.TimeGridHeader', module)
           moment().add(5, 'days').toDate(),
           moment().add(6, 'days').toDate(),
           moment().add(7, 'days').toDate()
-        ]}/>
+        ]}
+        gutterWidth={90}/>
       </div>
     )
   })

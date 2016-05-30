@@ -254,8 +254,10 @@ let MonthView = React.createClass({
              className="rbc-date-cell-day">
             { localizer.format(day, this.props.dateFormat, this.props.culture) }
           </a>
-          <p className="rbc-date-cell-header">{dayProps.header}</p>
-          <p className="rbc-date-cell-description">{dayProps.description}</p>
+          <p key={'date-cell-day-header_' + colIdx}
+             className="rbc-date-cell-header">{dayProps.header}</p>
+          <p key={'date-cell-day-description_' + colIdx}
+             className="rbc-date-cell-description">{dayProps.description}</p>
         </div>
       )
     })

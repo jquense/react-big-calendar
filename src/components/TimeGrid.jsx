@@ -75,7 +75,7 @@ export default class TimeGrid extends Component {
 
   _adjustGutter() {
     const isRtl = this.props.rtl;
-    const header = this.refs.headerCell;
+    const header = this._headerCell;
     const gutterCells = [findDOMNode(this.refs.gutter), ...this._gutters]
     const isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
 
@@ -92,8 +92,8 @@ export default class TimeGrid extends Component {
 
     if (isOverflowing) {
       classes.addClass(header, 'rbc-header-overflowing')
-      this.refs.headerCell.style[!isRtl ? 'marginLeft' : 'marginRight'] = '';
-      this.refs.headerCell.style[isRtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
+      header.style[!isRtl ? 'marginLeft' : 'marginRight'] = '';
+      header.style[isRtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
     }
     else {
       classes.removeClass(header, 'rbc-header-overflowing')
@@ -216,22 +216,21 @@ export default class TimeGrid extends Component {
 
     return (
       <div className='rbc-time-view'>
-        <div className='rbc-time-header' ref="headerCell">
-          <TimeGridHeader range={range}
-                          gutterRef={addGutterRef(0)}
-                          format={this.props.dayFormat}
-                          culture={this.props.culture}
-          />
-          <TimeGridAllDay range={range}
-                          selectable={this.props.selectable}
-                          gutterRef={addGutterRef(1)}
-          >
-            { this.renderAllDayEvents(allDayEvents, range) }
-          </TimeGridAllDay>
-          <div className="rbc-time-content" ref="content">
-            <TimeGutter {...this.props} ref="gutter"/>
-            {this.renderEvents(range, rangeEvents)}
-          </div>
+        <TimeGridHeader range={range}
+                        gutterRef={addGutterRef(0)}
+                        headerRef={(ref) => { this._headerCell = ref }}
+                        format={this.props.dayFormat}
+                        culture={this.props.culture}
+        />
+        <TimeGridAllDay range={range}
+                        selectable={this.props.selectable}
+                        gutterRef={addGutterRef(1)}
+        >
+          { this.renderAllDayEvents(allDayEvents, range) }
+        </TimeGridAllDay>
+        <div className="rbc-time-content" ref="content">
+          <TimeGutter {...this.props} ref="gutter"/>
+          {this.renderEvents(range, rangeEvents)}
         </div>
       </div>
     )

@@ -33,20 +33,15 @@ class DisplayCells extends React.Component {
   }
 
   render(){
-    let { slots } = this.props;
+    let { slots, row, dayPropGetter } = this.props
     let { selecting, startIdx, endIdx } = this.state
 
     let children = [];
 
     for (var i = 0; i < slots; i++) {
+      var dayProps = this._getDayProps(dayPropGetter, row, i, slots)
       children.push(
-        <div
-          key={'bg_' + i}
-          style={segStyle(1, slots)}
-          className={cn('rbc-day-bg', {
-            'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
-          })}
-        />
+        this.renderDay(i, selecting, startIdx, endIdx, dayProps)
       )
     }
 
@@ -56,6 +51,33 @@ class DisplayCells extends React.Component {
       </div>
     )
   }
+
+  renderDay(i, selecting, startIdx, endIdx, dayProps) {
+      return(
+      <div key={'bg_' + i}
+           style={dayProps.style}
+           className={cn('rbc-day-bg', {
+           'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
+           }, dayProps.className)}>
+      </div>)
+  }
+
+  _getDayProps(dayPropGetter, row, i, slots){
+      if(dayPropGetter){
+          let dayProps = dayPropGetter(row[i]);
+          var style = segStyle(1, slots);
+          this._updateDayLayout(dayProps, style);
+          return dayProps
+      }
+    return {}
+   }
+
+    _updateDayLayout(dayProps, style) {
+        if (!dayProps.style)
+            dayProps.style = {}
+        dayProps.style.flexBasis = style.flexBasis;
+        dayProps.style.maxWidth = style.maxWidth;
+    }
 
   _selectable(){
     let node = findDOMNode(this);

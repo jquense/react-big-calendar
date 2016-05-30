@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react'
-import TimeSlice from './TimeSlice.jsx'
 import SelectableTimeSlice from '../containers/SelectableTimeSlice.jsx'
 import date from '../utils/dates.js'
 
@@ -8,7 +7,6 @@ export default class TimeSliceGroup extends Component {
     slices: PropTypes.oneOf([2,3,4,5]),
     step: PropTypes.number.isRequired,
     value: PropTypes.instanceOf(Date).isRequired,
-    timesliceComponent: PropTypes.oneOf([TimeSlice, SelectableTimeSlice]),
     showlabels: PropTypes.bool,
     isNow: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
@@ -20,14 +18,12 @@ export default class TimeSliceGroup extends Component {
     step: 10,
     isNow: false,
     showlabels: true,
-    timesliceComponent: TimeSlice,
     timesliceClassnames: '',
     culture: 'en'
   }
 
   renderSlice(i, classNames, value) {
-    const T = this.props.timesliceComponent
-    return <T key={i}
+    return <SelectableTimeSlice key={i}
               classNames={classNames}
               showlabel={this.props.showlabels && !i}
               format={this.props.timeGutterFormat}

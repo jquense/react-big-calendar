@@ -11,7 +11,6 @@ export default class TimeGutter extends Component {
     now: PropTypes.instanceOf(Date).isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
-    selectable: PropTypes.bool,
     hidelabels: PropTypes.bool,
     timesliceClassnames: PropTypes.string,
     timeGutterFormat: PropTypes.string
@@ -25,7 +24,6 @@ export default class TimeGutter extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    const TS = this.props.selectable ? SelectableTimeSlice : TimeSlice
     return <TimeSliceGroup key={key}
                            isNow={isNow}
                            slices={this.props.slices}
@@ -34,7 +32,6 @@ export default class TimeGutter extends Component {
                            timeGutterFormat={this.props.timeGutterFormat}
                            timesliceClassnames={this.props.timesliceClassnames}
                            value={date}
-                           timesliceComponent={TS}
     />
   }
   

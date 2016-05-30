@@ -4,7 +4,6 @@ import localizer from '../localizer'
 import { segStyle } from '../utils/eventLevels';
 import formats from '../formats.js'
 
-console.log(formats.dayFormat)
 export default class TimeGridHeader extends Component {
   static propTypes = {
     range: PropTypes.arrayOf(React.PropTypes.instanceOf(Date)).isRequired,

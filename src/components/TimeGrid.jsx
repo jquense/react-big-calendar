@@ -216,18 +216,19 @@ export default class TimeGrid extends Component {
 
     return (
       <div className='rbc-time-view'>
-        <TimeGridHeader range={range}
-                        gutterRef={addGutterRef(0)}
-                        headerRef={(ref) => { this._headerCell = ref }}
-                        format={this.props.dayFormat}
-                        culture={this.props.culture}
-        />
-        <TimeGridAllDay range={range}
-                        selectable={this.props.selectable}
-                        gutterRef={addGutterRef(1)}
-        >
-          { this.renderAllDayEvents(allDayEvents, range) }
-        </TimeGridAllDay>
+        <div className="rbc-time-header" ref={ref => this._headerCell = ref}>
+          <TimeGridHeader range={range}
+                          gutterRef={addGutterRef(0)}
+                          format={this.props.dayFormat}
+                          culture={this.props.culture}
+          />
+          <TimeGridAllDay range={range}
+                          selectable={this.props.selectable}
+                          gutterRef={addGutterRef(1)}
+          >
+            { this.renderAllDayEvents(allDayEvents, range) }
+          </TimeGridAllDay>
+        </div>
         <div className="rbc-time-content" ref="content">
           <TimeGutter {...this.props} ref="gutter"/>
           {this.renderEvents(range, rangeEvents)}

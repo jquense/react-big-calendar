@@ -66,12 +66,18 @@ class DisplayCells extends React.Component {
       if(dayPropGetter){
           let dayProps = dayPropGetter(row[i]);
           var style = segStyle(1, slots);
-          dayProps.style.flexBasis = style.flexBasis;
-          dayProps.style.maxWidth = style.maxWidth;
+          this._updateDayLayout(dayProps, style);
           return dayProps
       }
     return {}
    }
+
+    _updateDayLayout(dayProps, style) {
+        if (!dayProps.style)
+            dayProps.style = {}
+        dayProps.style.flexBasis = style.flexBasis;
+        dayProps.style.maxWidth = style.maxWidth;
+    }
 
   _selectable(){
     let node = findDOMNode(this);

@@ -1,7 +1,11 @@
 import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
-import TimeGridHeader from '../TimeGridHeader.jsx';
 import moment from 'moment'
+import { storiesOf, action, linkTo } from '@kadira/storybook';
+
+import TimeGridHeader from '../TimeGridHeader.jsx';
+import momentLocalizer, { formats } from '../../localizers/moment.js'
+
+momentLocalizer(moment); // or globalizeLocalizer
 
 storiesOf('components.TimeGridHeader', module)
   .add('default view', () => {
@@ -11,6 +15,8 @@ storiesOf('components.TimeGridHeader', module)
                           moment().toDate(),
                           moment().add(1, 'days').toDate()
                         ]}
+                        culture="en"
+                        format={formats.dayFormat}
                         gutterWidth={90}/>
       </div>
     )
@@ -29,6 +35,8 @@ storiesOf('components.TimeGridHeader', module)
           moment().add(6, 'days').toDate(),
           moment().add(7, 'days').toDate()
         ]}
+        format={formats.dayFormat}
+        culture="en"
         gutterWidth={90}/>
       </div>
     )

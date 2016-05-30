@@ -34,6 +34,7 @@ export default class TimeGrid extends Component {
     selectRangeFormat: PropTypes.func.isRequired,
     eventTimeRangeFormat: PropTypes.func.isRequired,
     timeGutterFormat: PropTypes.string,
+    dayFormat: PropTypes.string.isRequired,
     culture: PropTypes.string.isRequired,
     components: PropTypes.shape({
       event: elementType,
@@ -216,8 +217,15 @@ export default class TimeGrid extends Component {
     return (
       <div className='rbc-time-view'>
         <div className='rbc-time-header' ref="headerCell">
-          <TimeGridHeader range={range} gutterRef={addGutterRef(0)} />
-          <TimeGridAllDay range={range} selectable={this.props.selectable} gutterRef={addGutterRef(1)}>
+          <TimeGridHeader range={range}
+                          gutterRef={addGutterRef(0)}
+                          format={this.props.dayFormat}
+                          culture={this.props.culture}
+          />
+          <TimeGridAllDay range={range}
+                          selectable={this.props.selectable}
+                          gutterRef={addGutterRef(1)}
+          >
             { this.renderAllDayEvents(allDayEvents, range) }
           </TimeGridAllDay>
           <div className="rbc-time-content" ref="content">

@@ -45,6 +45,7 @@ storiesOf('components.TimeGrid', module)
                   selectRangeFormat={formats.selectRangeFormat}
                   timeGutterFormat={formats.timeGutterFormat}
                   eventTimeRangeFormat={formats.eventTimeRangeFormat}
+                  dayFormat={formats.dayFormat}
         />
       </div>
     )
@@ -62,6 +63,7 @@ storiesOf('components.TimeGrid', module)
                   selectRangeFormat={formats.selectRangeFormat}
                   timeGutterFormat={formats.timeGutterFormat}
                   eventTimeRangeFormat={formats.eventTimeRangeFormat}
+                  dayFormat={formats.dayFormat}
         />
       </div>
     )
@@ -81,6 +83,7 @@ storiesOf('components.TimeGrid', module)
                   selectRangeFormat={formats.selectRangeFormat}
                   timeGutterFormat={formats.timeGutterFormat}
                   eventTimeRangeFormat={formats.eventTimeRangeFormat}
+                  dayFormat={formats.dayFormat}
         />
       </div>
     )
@@ -100,6 +103,7 @@ storiesOf('components.TimeGrid', module)
                   selectRangeFormat={formats.selectRangeFormat}
                   timeGutterFormat={formats.timeGutterFormat}
                   eventTimeRangeFormat={formats.eventTimeRangeFormat}
+                  dayFormat={formats.dayFormat}
         />
       </div>
     )

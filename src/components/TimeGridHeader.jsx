@@ -1,19 +1,24 @@
 import React, {Component, PropTypes} from 'react'
-import moment from 'moment'
-import { segStyle } from '../utils/eventLevels';
 
+import localizer from '../localizer'
+import { segStyle } from '../utils/eventLevels';
+import formats from '../formats.js'
+
+console.log(formats.dayFormat)
 export default class TimeGridHeader extends Component {
   static propTypes = {
     range: PropTypes.arrayOf(React.PropTypes.instanceOf(Date)).isRequired,
     onClick: PropTypes.func,
     formatter: PropTypes.func,
     gutterWidth: PropTypes.number,
-    gutterRef: PropTypes.func
+    gutterRef: PropTypes.func,
+    culture: PropTypes.string.isRequired,
+    format: PropTypes.string.isRequired
   }
   static defaultProps = {
     range: [],
     onClick: () => null,
-    formatter: (date) => moment(date).format('ddd D/M'),
+    format: formats.dayFormat,
     gutterRef: () => null
   }
 
@@ -29,7 +34,7 @@ export default class TimeGridHeader extends Component {
                  style={segStyle(1, this.props.range.length)}
             >
               <a href='#' onClick={this.props.onClick.bind(null, date)}>
-                { this.props.formatter(date) }
+                { localizer.format(date, this.props.format, this.props.culture) }
               </a>
             </div>
           )}

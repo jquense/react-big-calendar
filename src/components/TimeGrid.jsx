@@ -37,19 +37,7 @@ export default class TimeGrid extends Component {
     dayFormat: PropTypes.string.isRequired,
     culture: PropTypes.string.isRequired,
     components: PropTypes.shape({
-      event: elementType,
-
-      toolbar: PropTypes.element,
-
-      agenda: PropTypes.shape({
-        date: elementType,
-        time: elementType,
-        event: elementType
-      }),
-
-      day: PropTypes.shape({ event: elementType }),
-      week: PropTypes.shape({ event: elementType }),
-      month: PropTypes.shape({ event: elementType })
+      event: elementType
     }),
 
     allDayAccessor: accessor,

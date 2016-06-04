@@ -61,6 +61,11 @@ export default class TimeGrid extends Component {
     titleAccessor: 'title'
   }
 
+  constructor(props) {
+    super(props)
+    this.selectionFormatter = this.selectionFormatter.bind(this)
+  }
+
   _adjustGutter() {
     const isRtl = this.props.rtl;
     const header = this._headerCell;
@@ -126,6 +131,19 @@ export default class TimeGrid extends Component {
     }
   }
 
+  selectionFormatter({start, end}) {
+    if (start+'' === end+'') {
+      return localizer.format(
+        {start, end: dates.add(end, this.props.step, 'minutes')},
+      this.props.selectRangeFormat, this.props.culture)
+    }
+    return localizer.format(
+      {start, end},
+      this.props.selectRangeFormat,
+      this.props.culture
+    )
+  }
+
   renderEvents(range, events){
     let { min, max, endAccessor, startAccessor, components } = this.props;
     let today = new Date(), daysEvents=[]
@@ -144,18 +162,7 @@ export default class TimeGrid extends Component {
           max={dates.merge(date, max)}
           now={new Date()}
           eventTimeRangeFormat={this.props.eventTimeRangeFormat}
-          formatter={({start, end}) => {
-            if (start+'' === end+'') {
-              return localizer.format(
-                {start, end: dates.add(end, this.props.step, 'minutes')},
-                this.props.selectRangeFormat,
-                this.props.culture)
-            }
-            return localizer.format(
-              {start, end},
-              this.props.selectRangeFormat,
-              this.props.culture)
-          }}
+          formatter={this.selectionFormatter}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, range.length)}
           key={idx}

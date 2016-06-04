@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import SelectableTimeSlice from '../containers/SelectableTimeSlice.jsx'
 import date from '../utils/dates.js'
+import localizer from '../localizer'
 
 export default class TimeSliceGroup extends Component {
   static propTypes = {
@@ -10,49 +11,33 @@ export default class TimeSliceGroup extends Component {
     showlabels: PropTypes.bool,
     isNow: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
-    timesliceClassnames: PropTypes.string,
     culture: PropTypes.string
   }
   static defaultProps = {
     slices: 2,
-    step: 10,
+    step: 30,
     isNow: false,
     showlabels: true,
-    timesliceClassnames: '',
     culture: 'en'
   }
 
-  renderSlice(i, classNames, value) {
+  renderSlice(i, content, value) {
+
     return <SelectableTimeSlice key={i}
-              classNames={classNames}
               showlabel={this.props.showlabels && !i}
-              format={this.props.timeGutterFormat}
+              content={content}
               culture={this.props.culture}
               isNow={this.props.isNow}
               value={value} />
   }
 
   renderSlices() {
-    let classNames = this.props.timesliceClassnames
-    switch (this.props.slices) {
-      case 2 :
-        break
-      case 3 :
-        classNames += ' three'
-        break
-      case 4 :
-        classNames += ' four'
-        break
-      case 5 :
-      default :
-        classNames += ' five'
-        break
-    }
     const ret = []
     const sliceLength = this.props.step
     let sliceValue = this.props.value
     for (let i = 0; i < this.props.slices; i++) {
-      ret.push(this.renderSlice(i, classNames, sliceValue))
+      const content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
+      ret.push(this.renderSlice(i, content, sliceValue))
       sliceValue = date.add(sliceValue, sliceLength , 'minutes')
     }
     return ret

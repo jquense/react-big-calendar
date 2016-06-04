@@ -160,7 +160,7 @@ export default class TimeGrid extends Component {
           {...this.props }
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}
-          now={new Date()}
+          now={today}
           eventTimeRangeFormat={this.props.eventTimeRangeFormat}
           formatter={this.selectionFormatter}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}

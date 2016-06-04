@@ -24,12 +24,16 @@ export default class TimeGridHeader extends Component {
   render() {
     return (
       <div className="rbc-row">
-        <div ref={this.props.gutterRef} className='rbc-gutter-cell' style={this.props.gutterWidth ?
-        {width: this.props.gutterWidth} : {}} />
+        <div
+          ref={this.props.gutterRef}
+          className='rbc-gutter-cell'
+          style={{width: this.props.gutterWidth}}
+        />
         {this.props.range.map((date, i) =>
-          <div key={i}
-               className='rbc-header'
-               style={segStyle(1, this.props.range.length)}
+          <div
+            key={i}
+            className='rbc-header'
+            style={segStyle(1, this.props.range.length)}
           >
             <a href='#' onClick={this.props.onClick.bind(null, date)}>
               { localizer.format(date, this.props.format, this.props.culture) }

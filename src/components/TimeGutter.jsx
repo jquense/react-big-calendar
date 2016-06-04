@@ -12,14 +12,12 @@ export default class TimeGutter extends Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     hidelabels: PropTypes.bool,
-    timesliceClassnames: PropTypes.string,
     timeGutterFormat: PropTypes.string
   }
   static defaultProps = {
     step: 10,
     slices: 2,
     selectable: false,
-    timesliceClassnames: '',
     hidelabels: false
   }
 
@@ -30,7 +28,6 @@ export default class TimeGutter extends Component {
                            step={this.props.step}
                            showlabels={!this.props.hidelabels}
                            timeGutterFormat={this.props.timeGutterFormat}
-                           timesliceClassnames={this.props.timesliceClassnames}
                            value={date}
     />
   }

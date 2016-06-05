@@ -13,7 +13,7 @@ export default class TimeColumn extends Component {
     timeGutterFormat: PropTypes.string
   }
   static defaultProps = {
-    step: 10,
+    step: 30,
     slices: 2,
     showLabels: true
   }

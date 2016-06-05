@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import cn from 'classnames';
+
 import dates from './utils/dates';
+
 import TimeSliceGroup from './TimeSliceGroup.jsx'
 
 export default class TimeColumn extends Component {
@@ -10,12 +13,16 @@ export default class TimeColumn extends Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
-    timeGutterFormat: PropTypes.string
+    timeGutterFormat: PropTypes.string,
+    type: PropTypes.string.isRequired,
+    className: PropTypes.string
   }
   static defaultProps = {
     step: 30,
     slices: 2,
-    showLabels: true
+    showLabels: true,
+    type: 'day',
+    className: ''
   }
 
   renderTimeSliceGroup(key, isNow, date) {
@@ -32,8 +39,19 @@ export default class TimeColumn extends Component {
   render() {
     const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
     const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
-    const children = []
+    const timeslots = []
     const groupLengthInMinutes = this.props.step * this.props.slices
+    let baseCss
+    
+    switch (this.props.type) {
+      case 'gutter' :
+        baseCss = 'rbc-time-gutter'
+        break;
+      case 'day' :
+      default:
+        baseCss = 'rbc-day-slot'
+        break
+    }
 
     let date = this.props.min
     let next = date
@@ -42,14 +60,15 @@ export default class TimeColumn extends Component {
     for (var i = 0; i < numGroups; i++) {
       isNow = dates.inRange(this.props.now, date, dates.add(next, groupLengthInMinutes - 1, 'minutes'), 'minutes')
       next = dates.add(date, groupLengthInMinutes, 'minutes');
-      children.push(this.renderTimeSliceGroup(i, isNow, date))
+      timeslots.push(this.renderTimeSliceGroup(i, isNow, date))
 
       date = next
     }
 
     return (
-      <div className='rbc-time-gutter'>
-        {children}
+      <div className={cn(baseCss, this.props.className)}>
+        {timeslots}
+        {this.props.children}
       </div>
     )
   }

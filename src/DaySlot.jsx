@@ -56,7 +56,9 @@ let DaySlot = React.createClass({
 
     onSelecting: React.PropTypes.func,
     onSelectSlot: React.PropTypes.func.isRequired,
-    onSelectEvent: React.PropTypes.func.isRequired
+    onSelectEvent: React.PropTypes.func.isRequired,
+
+    className: React.PropTypes.string
   },
 
   getInitialState() {
@@ -102,15 +104,15 @@ let DaySlot = React.createClass({
     };
 
     return (
-      <div {...props} className={cn('rbc-day-slot', this.props.className)}>
-        <TimeColumn
-          showLabels={false}
-          slices={slices}
-          now={now}
-          min={min}
-          max={max}
-          step={step}
-        />
+      <TimeColumn {...props}
+        type="day"
+        showLabels={false}
+        slices={slices}
+        now={now}
+        min={min}
+        max={max}
+        step={step}
+      >
         {this.renderEvents()}
         {
           selecting &&
@@ -120,7 +122,7 @@ let DaySlot = React.createClass({
               </span>
           </div>
         }
-      </div>
+      </TimeColumn>
     );
   },
 

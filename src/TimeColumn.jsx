@@ -15,7 +15,6 @@ export default class TimeColumn extends Component {
   static defaultProps = {
     step: 10,
     slices: 2,
-    selectable: false,
     hidelabels: false
   }
 

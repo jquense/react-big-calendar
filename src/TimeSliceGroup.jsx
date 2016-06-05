@@ -17,8 +17,7 @@ export default class TimeSliceGroup extends Component {
     slices: 2,
     step: 30,
     isNow: false,
-    showLabels: true,
-    culture: 'en'
+    showLabels: true
   }
 
   renderSlice(i, content, value) {

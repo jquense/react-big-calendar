@@ -15,8 +15,7 @@ export default class TimeSlice extends Component {
     isNow: false,
     showLabel: true,
     selected: false,
-    culture: 'en',
-    content: '',
+    content: ''
   }
 
   render() {

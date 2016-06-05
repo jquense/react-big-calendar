@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom';
 import dates from './utils/dates';
 import localizer from './localizer'
 
-import DaySlot from './DaySlot';
+import DayColumn from './DayColumn';
 import EventRow from './EventRow';
 import TimeColumn from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
@@ -30,7 +30,7 @@ const MIN_ROWS = 2;
 let TimeGrid = React.createClass({
 
   propTypes: {
-    ...DaySlot.propTypes,
+    ...DayColumn.propTypes,
     ...TimeColumn.propTypes,
 
     step: React.PropTypes.number,
@@ -144,7 +144,7 @@ let TimeGrid = React.createClass({
       )
 
       return (
-        <DaySlot
+        <DayColumn
           {...this.props }
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}

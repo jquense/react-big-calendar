@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import dates from './utils/dates';
 import TimeSliceGroup from './TimeSliceGroup.jsx'
 
-export default class TimeGutter extends Component {
+export default class TimeColumn extends Component {
   static propTypes = {
     step: PropTypes.number.isRequired,
     slices: PropTypes.number.isRequired,

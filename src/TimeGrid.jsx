@@ -6,7 +6,7 @@ import localizer from './localizer'
 
 import DaySlot from './DaySlot';
 import EventRow from './EventRow';
-import TimeGutter from './TimeGutter';
+import TimeGutter from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
 
 import classes from 'dom-helpers/class';
@@ -122,7 +122,7 @@ let TimeGrid = React.createClass({
           </div>
         </div>
         <div ref='content' className='rbc-time-content'>
-          <TimeGutter ref='gutter' {...this.props} />
+          <TimeColumn ref='gutter' {...this.props} />
           {
             this.renderEvents(range, rangeEvents, this.props.now)
           }

@@ -11,7 +11,7 @@ let Day = React.createClass({
     return {
       now: new Date(),
       type: 'gutter',
-      slices: 2
+      timeslots: 2
     }
   },
 

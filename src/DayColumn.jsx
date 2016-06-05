@@ -87,7 +87,7 @@ let DaySlot = React.createClass({
       min,
       max,
       step,
-      slices,
+      timeslots,
       now,
       selectRangeFormat,
       culture,
@@ -107,7 +107,7 @@ let DaySlot = React.createClass({
       <TimeColumn {...props}
         type="day"
         showLabels={false}
-        slices={slices}
+        timeslots={timeslots}
         now={now}
         min={min}
         max={max}

@@ -3,12 +3,12 @@ import cn from 'classnames';
 
 import dates from './utils/dates';
 
-import TimeSliceGroup from './TimeSliceGroup.jsx'
+import TimeSlotGroup from './TimeSlotGroup.jsx'
 
 export default class TimeColumn extends Component {
   static propTypes = {
     step: PropTypes.number.isRequired,
-    slices: PropTypes.number.isRequired,
+    timeslots: PropTypes.number.isRequired,
     now: PropTypes.instanceOf(Date).isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
@@ -19,28 +19,28 @@ export default class TimeColumn extends Component {
   }
   static defaultProps = {
     step: 30,
-    slices: 2,
+    timeslots: 2,
     showLabels: true,
     type: 'day',
     className: ''
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    return <TimeSliceGroup key={key}
-                           isNow={isNow}
-                           slices={this.props.slices}
-                           step={this.props.step}
-                           showLabels={this.props.showLabels}
-                           timeGutterFormat={this.props.timeGutterFormat}
-                           value={date}
+    return <TimeSlotGroup key={key}
+                          isNow={isNow}
+                          timeslots={this.props.timeslots}
+                          step={this.props.step}
+                          showLabels={this.props.showLabels}
+                          timeGutterFormat={this.props.timeGutterFormat}
+                          value={date}
     />
   }
 
   render() {
     const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
-    const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
+    const numGroups = Math.ceil(totalMin / (this.props.step * this.props.timeslots))
     const timeslots = []
-    const groupLengthInMinutes = this.props.step * this.props.slices
+    const groupLengthInMinutes = this.props.step * this.props.timeslots
     let baseCss
     
     switch (this.props.type) {

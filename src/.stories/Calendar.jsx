@@ -22,11 +22,12 @@ const events = [{
     allDay: true
   }]
 
-storiesOf('module.Calendar', module)
+storiesOf('module.Calendar.week', module)
   .add('default view', () => {
     return (
       <div style={{height: 600}}>
         <Calendar
+          defaultView="week"
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
@@ -41,7 +42,46 @@ storiesOf('module.Calendar', module)
     return (
       <div style={{height: 600}}>
         <Calendar
+          defaultView="week"
           selectable
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
+          onSelectEvent={action('event selected')}
+          onSelectSlot={action('slot selected')}
+          defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+
+  .add('selectable, step 15, 4 timeslots', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultView="week"
+          selectable
+          timeslots={4}
+          step={15}
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
+          onSelectEvent={action('event selected')}
+          onSelectSlot={action('slot selected')}
+          defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+
+  .add('selectable, step 10, 6 timeslots', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultView="week"
+          selectable
+          timeslots={6}
+          step={10}
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
@@ -57,6 +97,7 @@ storiesOf('module.Calendar', module)
     return (
       <div style={{height: 600}}>
         <Calendar
+          defaultView="week"
           selectable
           timeslots={3}
           min={moment('12:00am', 'h:mma').toDate()}
@@ -74,6 +115,7 @@ storiesOf('module.Calendar', module)
     return (
       <div style={{height: 600}}>
         <Calendar
+          defaultView="week"
           selectable
           timeslots={9}
           now={moment('9:30am', 'h:mma').toDate()}

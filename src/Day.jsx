@@ -7,6 +7,13 @@ let Day = React.createClass({
 
   propTypes: TimeGrid.propTypes,
 
+  getDefaultProps() {
+    return {
+      now: new Date(),
+      type: 'gutter'
+    }
+  },
+
   render() {
     let { date } = this.props;
     let { start, end } = Day.range(date)

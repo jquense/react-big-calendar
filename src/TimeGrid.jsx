@@ -44,7 +44,9 @@ let TimeGrid = React.createClass({
     return {
       step: 30,
       min: dates.startOf(new Date(), 'day'),
-      max: dates.endOf(new Date(), 'day')
+      max: dates.endOf(new Date(), 'day'),
+      type: 'gutter',
+      now: new Date()
     }
   },
 

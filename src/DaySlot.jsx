@@ -11,7 +11,7 @@ import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
-import TimeGutter from './TimeColumn'
+import TimeColumn from './TimeColumn'
 
 function snapToSlot(date, step){
   var roundTo = 1000 * 60 * step;
@@ -104,7 +104,7 @@ let DaySlot = React.createClass({
     return (
       <div {...props} className={cn('rbc-day-slot', this.props.className)}>
         <TimeColumn
-          hidelabels={true}
+          showLabels={false}
           slices={slices}
           now={now}
           min={min}

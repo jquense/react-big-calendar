@@ -9,13 +9,13 @@ export default class TimeColumn extends Component {
     now: PropTypes.instanceOf(Date).isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
-    hidelabels: PropTypes.bool,
+    showLabels: PropTypes.bool,
     timeGutterFormat: PropTypes.string
   }
   static defaultProps = {
     step: 10,
     slices: 2,
-    hidelabels: false
+    showLabels: true
   }
 
   renderTimeSliceGroup(key, isNow, date) {
@@ -23,7 +23,7 @@ export default class TimeColumn extends Component {
                            isNow={isNow}
                            slices={this.props.slices}
                            step={this.props.step}
-                           showlabels={!this.props.hidelabels}
+                           showLabels={this.props.showLabels}
                            timeGutterFormat={this.props.timeGutterFormat}
                            value={date}
     />

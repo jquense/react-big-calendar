@@ -8,7 +8,7 @@ export default class TimeSliceGroup extends Component {
     slices: PropTypes.number.isRequired,
     step: PropTypes.number.isRequired,
     value: PropTypes.instanceOf(Date).isRequired,
-    showlabels: PropTypes.bool,
+    showLabels: PropTypes.bool,
     isNow: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
     culture: PropTypes.string
@@ -17,14 +17,14 @@ export default class TimeSliceGroup extends Component {
     slices: 2,
     step: 30,
     isNow: false,
-    showlabels: true,
+    showLabels: true,
     culture: 'en'
   }
 
   renderSlice(i, content, value) {
 
     return <TimeSlice key={i}
-              showlabel={this.props.showlabels && !i}
+              showLabel={this.props.showLabels && !i}
               content={content}
               culture={this.props.culture}
               isNow={this.props.isNow}

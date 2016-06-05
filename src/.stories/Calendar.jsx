@@ -93,6 +93,25 @@ storiesOf('module.Calendar.week', module)
     )
   })
 
+  .add('selectable, step 5, 6 timeslots', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultView="week"
+          selectable
+          timeslots={6}
+          step={5}
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
+          onSelectEvent={action('event selected')}
+          onSelectSlot={action('slot selected')}
+          defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+
   .add('selectable, 3 timeslots', () => {
     return (
       <div style={{height: 600}}>

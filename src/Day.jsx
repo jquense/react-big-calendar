@@ -10,7 +10,8 @@ let Day = React.createClass({
   getDefaultProps() {
     return {
       now: new Date(),
-      type: 'gutter'
+      type: 'gutter',
+      slices: 2
     }
   },
 

@@ -20,7 +20,7 @@ export default class TimeSlice extends Component {
 
   render() {
     return (
-      <div className={cn('rbc-time-slot', this.props.isNow ? 'rbc-now' : '')} {...this.props.style}>
+      <div className={cn('rbc-time-slot', this.props.isNow && 'rbc-now')} {...this.props.style}>
         {this.props.showLabel ? <span>{this.props.content}</span> : ''}
       </div>
     )

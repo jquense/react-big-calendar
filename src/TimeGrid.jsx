@@ -21,7 +21,7 @@ import { navigate } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 
 import {
-    inRange, eventSegments, endOfRange
+  inRange, eventSegments, endOfRange
   , eventLevels, sortEvents, segStyle } from './utils/eventLevels';
 
 const MIN_ROWS = 2;
@@ -62,7 +62,7 @@ let TimeGrid = React.createClass({
 
   render() {
     let {
-        events, start, end, messages
+      events, start, end, messages
       , startAccessor, endAccessor, allDayAccessor } = this.props;
 
     let addGutterRef = i => ref => this._gutters[i] = ref;
@@ -80,7 +80,7 @@ let TimeGrid = React.createClass({
           , eEnd = get(event, endAccessor);
 
         if (
-             get(event, allDayAccessor)
+          get(event, allDayAccessor)
           || !dates.eq(eStart, eEnd, 'day')
           || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
         {
@@ -122,18 +122,17 @@ let TimeGrid = React.createClass({
           </div>
         </div>
         <div ref='content' className='rbc-time-content'>
-          <TimeGutter ref='gutter' {...this.props}/>
+          <TimeGutter ref='gutter' {...this.props} />
           {
-            this.renderEvents(range, rangeEvents)
+            this.renderEvents(range, rangeEvents, this.props.now)
           }
         </div>
       </div>
     );
   },
 
-  renderEvents(range, events){
+  renderEvents(range, events, today){
     let { min, max, endAccessor, startAccessor, components } = this.props;
-    let today = new Date();
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(
@@ -187,8 +186,8 @@ let TimeGrid = React.createClass({
 
     return range.map((date, i) =>
       <div key={i}
-        className='rbc-header'
-        style={segStyle(1, this._slots)}
+           className='rbc-header'
+           style={segStyle(1, this._slots)}
       >
         <a href='#' onClick={this._headerClick.bind(null, date)}>
           { localizer.format(date, dayFormat, culture) }

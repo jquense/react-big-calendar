@@ -1,39 +1,49 @@
-import React from 'react';
-import cn from 'classnames';
+import React, { Component, PropTypes } from 'react'
 import dates from './utils/dates';
-import localizer from './localizer'
+import TimeSliceGroup from './TimeSliceGroup.jsx'
 
-let TimeGutter = React.createClass({
+export default class TimeGutter extends Component {
+  static propTypes = {
+    step: PropTypes.number.isRequired,
+    slices: PropTypes.number.isRequired,
+    now: PropTypes.instanceOf(Date).isRequired,
+    min: PropTypes.instanceOf(Date).isRequired,
+    max: PropTypes.instanceOf(Date).isRequired,
+    hidelabels: PropTypes.bool,
+    timeGutterFormat: PropTypes.string
+  }
+  static defaultProps = {
+    step: 10,
+    slices: 2,
+    selectable: false,
+    hidelabels: false
+  }
 
-  propTypes: {
-    step: React.PropTypes.number.isRequired,
-    min: React.PropTypes.instanceOf(Date).isRequired,
-    max: React.PropTypes.instanceOf(Date).isRequired
-  },
+  renderTimeSliceGroup(key, isNow, date) {
+    return <TimeSliceGroup key={key}
+                           isNow={isNow}
+                           slices={this.props.slices}
+                           step={this.props.step}
+                           showlabels={!this.props.hidelabels}
+                           timeGutterFormat={this.props.timeGutterFormat}
+                           value={date}
+    />
+  }
 
   render() {
-    let { min, max, step, timeGutterFormat, culture } = this.props;
-    let today = new Date()
-    let totalMin = dates.diff(min, max, 'minutes')
-    let numSlots = Math.ceil(totalMin / step)
-    let date = min;
-    let children = []; //<div key={-1} className='rbc-time-slot rbc-day-header'>&nbsp;</div>
+    const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
+    const numGroups = Math.ceil(totalMin / (this.props.step * this.props.slices))
+    const children = []
+    const groupLengthInMinutes = this.props.step * this.props.slices
 
-    for (var i = 0; i < numSlots; i++) {
-      let isEven = (i % 2) === 0;
-      let next = dates.add(date, step, 'minutes');
-      children.push(
-        <div key={i}
-          className={cn('rbc-time-slot', {
-            'rbc-now': dates.inRange(today, date, next, 'minutes')
-          })}
-        >
-        { isEven && (
-            <span>{localizer.format(date, timeGutterFormat, culture)}</span>
-          )
-        }
-        </div>
-      )
+    let date = this.props.min
+    let next = date
+    let isNow = false
+
+    for (var i = 0; i < numGroups; i++) {
+      isNow = dates.inRange(this.props.now, date, dates.add(next, groupLengthInMinutes - 1, 'minutes'), 'minutes')
+      next = dates.add(date, groupLengthInMinutes, 'minutes');
+      children.push(this.renderTimeSliceGroup(i, isNow, date))
 
       date = next
     }
@@ -42,8 +52,6 @@ let TimeGutter = React.createClass({
       <div className='rbc-time-gutter'>
         {children}
       </div>
-    );
+    )
   }
-});
-
-export default TimeGutter
+}

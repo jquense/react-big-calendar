@@ -3,7 +3,7 @@
 
 .rbc-day-slot {
   position: relative;
-  display: inline-flex;
+  display: flex;
   overflow: hidden;
   flex-direction: column;
 
@@ -50,8 +50,7 @@
 
 .rbc-timeslice-group {
   border-bottom: 1px solid @cell-border;
-  min-height: 40px;
-  height: 40px;
+  flex: 1;
   display: flex;
   flex-flow: column nowrap;
 }

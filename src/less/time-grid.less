@@ -1,6 +1,5 @@
 @import './variables.less';
-@import './gutter.less';
-@import './day-slot.less';
+@import './time-column.less';
 
 .rbc-slot-selection {
   z-index: 10;
@@ -41,11 +40,11 @@
   flex: 0 0 auto; // should not shrink below height
   flex-direction: column;
 
-  &.rbc-header-overflowing {
+  &.rbc-overflowing {
     border-right: 1px solid @cell-border;
   }
 
-  .rbc-rtl &.rbc-header-overflowing {
+  .rbc-rtl &.rbc-overflowing {
     border-right-width: 0;
     border-left: 1px solid @cell-border;
   }
@@ -84,11 +83,11 @@
     flex: none;
   }
 
-  > * + * {
+  > * + * > * {
     border-left: 1px solid @cell-border;
   }
 
-  .rbc-rtl & > * + * {
+  .rbc-rtl & > * + * > * {
     border-left-width: 0;
     border-right: 1px solid @cell-border;
   }

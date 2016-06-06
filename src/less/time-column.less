@@ -1,11 +1,28 @@
 @import './variables.less';
 
 
+.rbc-time-column {
+  display: flex;
+  flex-direction: column;
+  // for Chrome
+  min-height: min-content;
+
+  .rbc-timeslot-group {
+    flex: 1;
+  }
+}
+
+.rbc-time-gutter,
+.rbc-header-gutter {
+  flex: none;
+}
+
+.rbc-label {
+  padding: 0 5px;
+}
+
 .rbc-day-slot {
   position: relative;
-  display: inline-flex;
-  overflow: hidden;
-  flex-direction: column;
 
   .rbc-event {
     border: 1px solid @event-border;
@@ -34,11 +51,6 @@
   .rbc-time-slot {
     border-top: 1px solid lighten(@cell-border, 10%);
   }
-
-  .rbc-timeslice-group {
-    padding: 0;
-    flex: 1 0 0
-  }
 }
 
 .rbc-time-slot {
@@ -49,7 +61,7 @@
   }
 }
 
-.rbc-timeslice-group {
+.rbc-timeslot-group {
   border-bottom: 1px solid @cell-border;
   min-height: 40px;
   display: flex;

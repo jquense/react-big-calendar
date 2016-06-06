@@ -308,7 +308,7 @@ let MonthView = React.createClass({
     )
   },
 
-  _measureRowLimit(props) {
+  _measureRowLimit() {
     let eventHeight = getHeight(this._measureEvent);
     let labelHeight = getHeight(this._firstDateRow);
     let eventSpace = getHeight(this._firstRow) - labelHeight;

@@ -51,6 +51,11 @@ export default class TimeGrid extends Component {
     now: new Date()
   }
 
+  constructor(props) {
+    super(props)
+    this._selectEvent = this._selectEvent.bind(this)
+  }
+
   componentWillMount() {
     this._gutters = [];
   }

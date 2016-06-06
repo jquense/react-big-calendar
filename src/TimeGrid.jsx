@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 import dates from './utils/dates';
 import localizer from './localizer'
 
-import DaySlot from './DaySlot';
+import DayColumn from './DayColumn';
 import EventRow from './EventRow';
-import TimeGutter from './TimeGutter';
+import TimeColumn from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
 
 import classes from 'dom-helpers/class';
@@ -21,48 +21,57 @@ import { navigate } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 
 import {
-    inRange, eventSegments, endOfRange
+  inRange, eventSegments, endOfRange
   , eventLevels, sortEvents, segStyle } from './utils/eventLevels';
 
 const MIN_ROWS = 2;
 
 
-let TimeGrid = React.createClass({
+export default class TimeGrid extends Component {
 
-  propTypes: {
-    ...DaySlot.propTypes,
-    ...TimeGutter.propTypes,
+  static propTypes = {
+    ...DayColumn.propTypes,
+    ...TimeColumn.propTypes,
 
     step: React.PropTypes.number,
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
     dayFormat: dateFormat,
     rtl: React.PropTypes.bool
-  },
+  }
 
-  getDefaultProps(){
-    return {
-      step: 30,
-      min: dates.startOf(new Date(), 'day'),
-      max: dates.endOf(new Date(), 'day')
-    }
-  },
+  static defaultProps = {
+    step: 30,
+    min: dates.startOf(new Date(), 'day'),
+    max: dates.endOf(new Date(), 'day'),
+    /* these 2 are needed to satisfy requirements from TimeColumn required props
+     * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
+     */
+    type: 'gutter',
+    now: new Date()
+  }
+
+  constructor(props) {
+    super(props)
+    this._selectEvent = this._selectEvent.bind(this)
+    this._headerClick = this._headerClick.bind(this)
+  }
 
   componentWillMount() {
     this._gutters = [];
-  },
+  }
 
   componentDidMount() {
     this._adjustGutter()
-  },
+  }
 
   componentDidUpdate() {
     this._adjustGutter()
-  },
+  }
 
   render() {
     let {
-        events, start, end, messages
+      events, start, end, messages
       , startAccessor, endAccessor, allDayAccessor } = this.props;
 
     let addGutterRef = i => ref => this._gutters[i] = ref;
@@ -80,7 +89,7 @@ let TimeGrid = React.createClass({
           , eEnd = get(event, endAccessor);
 
         if (
-             get(event, allDayAccessor)
+          get(event, allDayAccessor)
           || !dates.eq(eStart, eEnd, 'day')
           || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
         {
@@ -122,18 +131,17 @@ let TimeGrid = React.createClass({
           </div>
         </div>
         <div ref='content' className='rbc-time-content'>
-          <TimeGutter ref='gutter' {...this.props}/>
+          <TimeColumn ref='gutter' {...this.props} type="gutter" showLabels />
           {
-            this.renderEvents(range, rangeEvents)
+            this.renderEvents(range, rangeEvents, this.props.now)
           }
         </div>
       </div>
     );
-  },
+  }
 
-  renderEvents(range, events){
+  renderEvents(range, events, today){
     let { min, max, endAccessor, startAccessor, components } = this.props;
-    let today = new Date();
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(
@@ -143,7 +151,7 @@ let TimeGrid = React.createClass({
       )
 
       return (
-        <DaySlot
+        <DayColumn
           {...this.props }
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}
@@ -156,7 +164,7 @@ let TimeGrid = React.createClass({
         />
       )
     })
-  },
+  }
 
   renderAllDayEvents(range, levels){
     let { first, last } = endOfRange(range);
@@ -180,31 +188,31 @@ let TimeGrid = React.createClass({
         end={last}
       />
     )
-  },
+  }
 
   renderHeader(range){
     let { dayFormat, culture } = this.props;
 
     return range.map((date, i) =>
       <div key={i}
-        className='rbc-header'
-        style={segStyle(1, this._slots)}
+           className='rbc-header'
+           style={segStyle(1, this._slots)}
       >
         <a href='#' onClick={this._headerClick.bind(null, date)}>
           { localizer.format(date, dayFormat, culture) }
         </a>
       </div>
     )
-  },
+  }
 
   _headerClick(date, e){
     e.preventDefault()
     notify(this.props.onNavigate, [navigate.DATE, date])
-  },
+  }
 
   _selectEvent(...args){
     notify(this.props.onSelectEvent, args)
-  },
+  }
 
   _adjustGutter() {
     let isRtl = this.props.rtl;
@@ -232,7 +240,4 @@ let TimeGrid = React.createClass({
     }
   }
 
-});
-
-
-export default TimeGrid
+}

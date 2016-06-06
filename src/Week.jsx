@@ -9,6 +9,10 @@ let Week = React.createClass({
 
   propTypes: TimeGrid.propTypes,
 
+  getDefaultProps() {
+    return TimeGrid.defaultProps
+  },
+
   render() {
     let { date } = this.props
     let { start, end } = Week.range(date, this.props)

@@ -124,7 +124,7 @@ let TimeGrid = React.createClass({
           </div>
         </div>
         <div ref='content' className='rbc-time-content'>
-          <TimeColumn ref='gutter' {...this.props} type="gutter" />
+          <TimeColumn ref='gutter' {...this.props} type="gutter" showLabels />
           {
             this.renderEvents(range, rangeEvents, this.props.now)
           }

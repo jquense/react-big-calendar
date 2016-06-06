@@ -13,7 +13,7 @@ export default class TimeSlice extends Component {
 
   static defaultProps = {
     isNow: false,
-    showLabel: true,
+    showLabel: false,
     selected: false,
     content: ''
   }

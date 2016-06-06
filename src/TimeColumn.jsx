@@ -20,7 +20,7 @@ export default class TimeColumn extends Component {
   static defaultProps = {
     step: 30,
     timeslots: 2,
-    showLabels: true,
+    showLabels: false,
     type: 'day',
     className: ''
   }

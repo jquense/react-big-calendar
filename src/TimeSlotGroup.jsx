@@ -17,13 +17,13 @@ export default class TimeSlotGroup extends Component {
     timeslots: 2,
     step: 30,
     isNow: false,
-    showLabels: true
+    showLabels: false
   }
 
-  renderSlice(i, content, value) {
+  renderSlice(slotNumber, content, value) {
 
-    return <TimeSlot key={i}
-                     showLabel={this.props.showLabels && !i}
+    return <TimeSlot key={slotNumber}
+                     showLabel={this.props.showLabels && !slotNumber}
                      content={content}
                      culture={this.props.culture}
                      isNow={this.props.isNow}

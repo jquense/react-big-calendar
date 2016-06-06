@@ -377,6 +377,7 @@ let Calendar = React.createClass({
     )
 
     let ToolbarToRender = components.toolbar || Toolbar
+    const now = new Date()
 
     return (
       <div {...elementProps}
@@ -410,6 +411,7 @@ let Calendar = React.createClass({
           onSelectEvent={this._select}
           onSelectSlot={this._selectSlot}
           onShowMore={this._showMore}
+          now={props.now ? props.now : now }
         />
       </div>
     );

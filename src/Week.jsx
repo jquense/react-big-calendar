@@ -10,11 +10,7 @@ let Week = React.createClass({
   propTypes: TimeGrid.propTypes,
 
   getDefaultProps() {
-    return {
-      now: new Date(),
-      type: 'gutter',
-      timeslots: 2
-    }
+    return TimeGrid.defaultProps
   },
 
   render() {

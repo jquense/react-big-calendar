@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 import dates from './utils/dates';
@@ -27,9 +27,9 @@ import {
 const MIN_ROWS = 2;
 
 
-let TimeGrid = React.createClass({
+export default class TimeGrid extends Component {
 
-  propTypes: {
+  static propTypes = {
     ...DayColumn.propTypes,
     ...TimeColumn.propTypes,
 
@@ -38,29 +38,27 @@ let TimeGrid = React.createClass({
     max: React.PropTypes.instanceOf(Date),
     dayFormat: dateFormat,
     rtl: React.PropTypes.bool
-  },
+  }
 
-  getDefaultProps(){
-    return {
-      step: 30,
-      min: dates.startOf(new Date(), 'day'),
-      max: dates.endOf(new Date(), 'day'),
-      type: 'gutter',
-      now: new Date()
-    }
-  },
+  static defaultProps = {
+    step: 30,
+    min: dates.startOf(new Date(), 'day'),
+    max: dates.endOf(new Date(), 'day'),
+    type: 'gutter',
+    now: new Date()
+  }
 
   componentWillMount() {
     this._gutters = [];
-  },
+  }
 
   componentDidMount() {
     this._adjustGutter()
-  },
+  }
 
   componentDidUpdate() {
     this._adjustGutter()
-  },
+  }
 
   render() {
     let {
@@ -131,7 +129,7 @@ let TimeGrid = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
   renderEvents(range, events, today){
     let { min, max, endAccessor, startAccessor, components } = this.props;
@@ -157,7 +155,7 @@ let TimeGrid = React.createClass({
         />
       )
     })
-  },
+  }
 
   renderAllDayEvents(range, levels){
     let { first, last } = endOfRange(range);
@@ -181,7 +179,7 @@ let TimeGrid = React.createClass({
         end={last}
       />
     )
-  },
+  }
 
   renderHeader(range){
     let { dayFormat, culture } = this.props;
@@ -196,16 +194,16 @@ let TimeGrid = React.createClass({
         </a>
       </div>
     )
-  },
+  }
 
   _headerClick(date, e){
     e.preventDefault()
     notify(this.props.onNavigate, [navigate.DATE, date])
-  },
+  }
 
   _selectEvent(...args){
     notify(this.props.onSelectEvent, args)
-  },
+  }
 
   _adjustGutter() {
     let isRtl = this.props.rtl;
@@ -233,7 +231,4 @@ let TimeGrid = React.createClass({
     }
   }
 
-});
-
-
-export default TimeGrid
+}

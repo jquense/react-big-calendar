@@ -30,7 +30,7 @@ export let formats = {
   timeGutterFormat: 'LT',
 
   monthHeaderFormat: 'MMMM YYYY',
-  dayHeaderFormat: 'dddd MMM dd',
+  dayHeaderFormat: 'dddd MMM DD',
   dayRangeHeaderFormat: weekRangeFormat,
   agendaHeaderFormat: dateRangeFormat,
 

@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var autoprefixer = require('autoprefixer-core');
+var Autoprefixer = require('less-plugin-autoprefix');
 
 // be able to choose the port from the command line (1st argument or env var):
 const port = Number(process.argv[2]) || Number(process.env.PORT) || 3000
@@ -41,9 +41,11 @@ module.exports = {
     ]
   },
 
-  postcss: [
-    autoprefixer({
-      browsers: ['last 2 versions']
-    })
-  ]
+  lessLoader: {
+    lessPlugins: [
+      new Autoprefixer({
+        browsers: ['last 2 versions', "ie >= 10"]
+      })
+    ]
+  }
 };

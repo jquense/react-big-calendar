@@ -31,7 +31,7 @@
     "examples": "npm run clean:examples && babel-node ./examples/server.js",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
-    "test": "npm run lint && karma start --single-run",
+    "test": "npm run lint",
     "tdd": "karma start",
     "lint": "eslint src --ext .jsx --ext .js",
     "release": "release"

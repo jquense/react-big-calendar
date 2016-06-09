@@ -11,6 +11,7 @@ localizer(globalize);
 
 import 'react-big-calendar/less/styles.less';
 import './styles.less';
+import './prism.less';
 
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
@@ -28,7 +29,8 @@ const Example = React.createClass({
       selectable: require('./demos/selectable'),
       cultures: require('./demos/cultures'),
       popup: require('./demos/popup'),
-      rendering: require('./demos/rendering')
+      rendering: require('./demos/rendering'),
+      customView: require('./demos/customView'),
     }[selected];
 
     return (
@@ -54,7 +56,7 @@ const Example = React.createClass({
       </div>
         <div className='examples contain'>
           <aside>
-            <ul className='nav nav-pills nav-stacked'>
+            <ul className='nav nav-pills'>
               <li className={cn({active: selected === 'basic' })}>
                 <a href='#' onClick={this.select.bind(null, 'basic')}>Basic</a>
               </li>
@@ -70,15 +72,20 @@ const Example = React.createClass({
               <li className={cn({active: selected === 'rendering' })}>
                 <a href='#' onClick={this.select.bind(null, 'rendering')}>Custom rendering</a>
               </li>
+              {/* temporary hide link to documentation
+              <li className={cn({active: selected === 'customView' })}>
+                <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
+              </li>
+              */}
             </ul>
           </aside>
           <div className='example'>
-            <div  style={{ marginBottom: 15 }}>
+            <div className='view-source'>
               <a target='_blank' href={demoRoot + '/' + selected + '.js' }>
-                <strong><i className='fa fa-code'/>{' view example source code'}</strong>
+                <strong><i className='fa fa-code'/>{' View example source code'}</strong>
               </a>
             </div>
-            <Current />
+            <Current className='demo' />
           </div>
         </div>
         <div className='docs'>

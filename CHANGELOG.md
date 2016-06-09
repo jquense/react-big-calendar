@@ -1,3 +1,84 @@
+v0.10.0 - Thu, 09 Jun 2016 15:33:06 GMT
+---------------------------------------
+
+
+
+
+
+v0.9.12 - Fri, 20 May 2016 12:54:29 GMT
+---------------------------------------
+
+
+
+
+
+v0.9.11 - Fri, 15 Apr 2016 13:39:50 GMT
+---------------------------------------
+
+
+
+
+
+v0.9.10 - Fri, 15 Apr 2016 13:31:58 GMT
+---------------------------------------
+
+
+
+
+
+v0.9.9 - Fri, 15 Apr 2016 12:28:00 GMT
+--------------------------------------
+
+- [a2a49c8](../../commit/a2a49c8) [fixed] consistent handling of end dates as _exclusive_ ranges
+- [1c12b16](../../commit/1c12b16) [fixed] DST issue with events
+- [f526e23](../../commit/f526e23) [added] onSelecting callback
+- [18c0234](../../commit/18c0234) [fixed] incorrect page offset
+- [4eeacd4](../../commit/4eeacd4) [fixed] more cross browser flex issues.
+- [2dc61ec](../../commit/2dc61ec) [fixed] add minHeight for week view overflow
+
+
+
+v0.9.8 - Thu, 14 Jan 2016 19:35:07 GMT
+--------------------------------------
+
+- [5fa7012](../../commit/5fa7012) [fixed] Incorrect gutter widths
+
+
+
+v0.9.7 - Sun, 13 Dec 2015 22:01:09 GMT
+--------------------------------------
+
+- [ebf8908](../../commit/ebf8908) [fixed] agenda header display
+
+
+
+v0.9.6 - Sun, 13 Dec 2015 21:39:49 GMT
+--------------------------------------
+
+- [a69600b](../../commit/a69600b) [fixed] Pass correct date to DaySlot for selections.
+- [5ac5c30](../../commit/5ac5c30) [fixed] reset gutter widths before calculations
+
+
+
+v0.9.5 - Wed, 02 Dec 2015 18:09:32 GMT
+--------------------------------------
+
+- [c2e8aa4](../../commit/c2e8aa4) [fixed] accidental breaking change on the localizers
+- [dc90943](../../commit/dc90943) [fixed] some style issues
+- [ea8e085](../../commit/ea8e085) [added] modern globalize support
+- [4b3d3ba](../../commit/4b3d3ba) [fixed] have gutter use culture prop
+- [7922882](../../commit/7922882) [fixed] better gutter width detection
+
+
+
+v0.9.4 - Sun, 29 Nov 2015 02:19:49 GMT
+--------------------------------------
+
+- [a41c9f9](../../commit/a41c9f9) [added] right-to-left support
+- [8bb6589](../../commit/8bb6589) [fixed] properly select time ranges with min/max set
+
+
+
 v0.9.3 - Sat, 28 Nov 2015 20:00:24 GMT
 --------------------------------------
 

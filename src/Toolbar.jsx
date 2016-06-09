@@ -6,9 +6,7 @@ import { navigate } from './utils/constants';
 let Toolbar = React.createClass({
 
   render() {
-    let {
-        messages, label
-      , views: viewNames, view } = this.props;
+    let { messages, label } = this.props;
 
     messages = message(messages)
 
@@ -40,16 +38,9 @@ let Toolbar = React.createClass({
         </span>
 
         <span className='rbc-btn-group'>
-          {
-            viewNames.map(name =>
-              <button type='button' key={name}
-                className={cn({'rbc-active': view === name})}
-                onClick={this.view.bind(null, name)}
-              >
-                {messages[name]}
-              </button>
-            )
-          }
+        {
+          this.viewNamesGroup(messages)
+        }
         </span>
       </div>
     );
@@ -61,6 +52,24 @@ let Toolbar = React.createClass({
 
   view(view){
     this.props.onViewChange(view)
+  },
+
+  viewNamesGroup(messages) {
+    let viewNames = this.props.views
+    const view = this.props.view
+
+    if (viewNames.length > 1) {
+      return (
+        viewNames.map(name =>
+          <button type='button' key={name}
+            className={cn({'rbc-active': view === name})}
+            onClick={this.view.bind(null, name)}
+          >
+            {messages[name]}
+          </button>
+        )
+      )
+    }
   }
 });
 

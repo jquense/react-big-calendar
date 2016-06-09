@@ -1,10 +1,8 @@
-## <a id='intro' href='#intro'>Getting Started</a>
+# <a id='intro' href='#intro'>Getting Started</a>
 
-You can install `react-big-calendar` via npm:
+You can install `react-big-calendar` via [npm](https://www.npmjs.com/):
 
-```js
-npm i --save react-big-calendar
-```
+    npm i --save react-big-calendar
 
 Styles can be found at: `react-big-calendar/lib/css/react-big-calendar.css`, and should be included on the page
 with the calendar component.
@@ -12,7 +10,7 @@ with the calendar component.
 Date internationalization and localization is __hard__ and `react-big-calendar` doesn't even attempt to
 solve that problem. Instead you can use one of the many excellent solutions already
 out there, via adapters called "localizers". Big Calendar comes with two localizers for use
-with [Globalize.js](https://github.com/jquery/globalize) (v0.1.0 supported) or [Moment.js](http://momentjs.com/).
+with [Globalize.js](https://github.com/jquery/globalize) or [Moment.js](http://momentjs.com/).
 
 Choose the localizer that best suits your needs, or write your own. Whatever you do, you'll need to set it up
 before you can use the calendar (you only need to set it up once).
@@ -25,7 +23,7 @@ import moment from 'moment';
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
-let MyCalendar = props => (
+const MyCalendar = props => (
   <div>
     <BigCalendar
       events={myEventsList}

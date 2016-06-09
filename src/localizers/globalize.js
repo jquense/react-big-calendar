@@ -1,56 +1,72 @@
 import dates from '../utils/dates';
+import oldGlobalize from './oldGlobalize';
+import warning from 'warning';
 import { set } from '../formats';
 import { set as setLocalizer } from '../localizer';
 
-function inSame12Hr(start, end){
-  let s = 12 - dates.hours(start)
-  let e = 12 - dates.hours(end)
-  return (s <= 0 && e <= 0) || (s >= 0 && e >= 0)
-}
-
 let dateRangeFormat = ({ start, end }, culture, local)=>
-  local.format(start, 'd', culture) + ' — ' + local.format(end, 'd', culture)
+  local.format(start, { date: 'short' }, culture) + ' — ' + local.format(end, { date: 'short' }, culture)
 
 let timeRangeFormat = ({ start, end }, culture, local)=>
-  local.format(start, 'h:mmtt', culture) +
-    ' — ' + local.format(end, inSame12Hr(start, end) ? 'h:mm' : 'h:mmtt', culture)
+  local.format(start, { time: 'short' }, culture) +
+    ' — ' + local.format(end, { time: 'short' }, culture)
 
 let weekRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'MMM dd', culture) +
-    ' - ' + local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
+    ' — ' + local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
 
 export let formats = {
   dateFormat: 'dd',
-  dayFormat: 'ddd dd/MM',
-  weekdayFormat: 'ddd',
+  dayFormat: 'eee dd/MM',
+  weekdayFormat: 'eee',
 
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
 
-  timeGutterFormat: 't',
+  timeGutterFormat: { time: 'short' },
 
-  monthHeaderFormat: 'Y',
-  dayHeaderFormat: 'dddd MMM dd',
+  monthHeaderFormat: 'MMMM yyyy',
+  dayHeaderFormat: 'eeee MMM dd',
   dayRangeHeaderFormat: weekRangeFormat,
   agendaHeaderFormat: dateRangeFormat,
 
-  agendaDateFormat: 'ddd MMM dd',
-  agendaTimeFormat: 't',
+  agendaDateFormat: 'eee MMM dd',
+  agendaTimeFormat: { time: 'short' },
   agendaTimeRangeFormat: timeRangeFormat
 }
 
 export default function(globalize) {
+  let locale = culture => culture ? globalize(culture) : globalize;
 
-  function getCulture(culture){
-    return culture
-      ? globalize.findClosestCulture(culture)
-      : globalize.culture()
-  }
-
+  // return the first day of the week from the locale data. Defaults to 'world'
+  // territory if no territory is derivable from CLDR.
+  // Failing to use CLDR supplemental (not loaded?), revert to the original
+  // method of getting first day of week.
   function firstOfWeek(culture) {
-    culture = getCulture(culture)
-    return (culture && culture.calendar.firstDay) || 0
+    try {
+        const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+        const cldr = locale(culture).cldr;
+        const territory = cldr.attributes.territory;
+        const weekData = cldr.get('supplemental').weekData;
+        const firstDay = weekData.firstDay[territory || '001'];
+        return days.indexOf(firstDay);
+    } catch (e) {
+        warning(true,
+            `Failed to accurately determine first day of the week.
+            Is supplemental data loaded into CLDR?`);
+        // maybe cldr supplemental is not loaded? revert to original method
+        const date = new Date();
+        //cldr-data doesn't seem to be zero based
+        let localeDay = Math.max(
+          parseInt(locale(culture).formatDate(date, { raw: 'e' }), 10) - 1, 0)
+
+        return Math.abs(date.getDay() - localeDay)
+    }
   }
+
+  if (!globalize.load)
+    return oldGlobalize(globalize);
+
 
   set(formats)
 
@@ -58,11 +74,13 @@ export default function(globalize) {
     firstOfWeek,
 
     parse(value, format, culture){
-      return globalize.parseDate(value, format, culture)
+      format = typeof format === 'string' ? { raw: format } : format;
+      return locale(culture).parseDate(value, format)
     },
 
     format(value, format, culture){
-      return globalize.format(value, format, culture)
+      format = typeof format === 'string' ? { raw: format } : format;
+      return locale(culture).formatDate(value, format)
     }
   })
 }

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
@@ -24,7 +24,7 @@ function EventAgenda({ event }) {
 let Rendering = React.createClass({
   render(){
     return (
-      <div>
+      <div {...this.props}>
         <BigCalendar
           events={events}
           defaultDate={new Date(2015, 3, 1)}

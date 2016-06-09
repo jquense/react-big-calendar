@@ -1,14 +1,16 @@
+
+
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
 
-  entry: path.join(__dirname, '../examples/App.js'),
+  entry: path.join(__dirname, '../test/visual-test.js'),
 
   output: {
-    path: path.join(__dirname, '../examples/'),
-    filename: 'static/bundle.js',
-    publicPath: '/static/'
+    path: path.join(__dirname, '../test/'),
+    filename: 'bundle.js'
   },
 
   resolve: {
@@ -19,11 +21,7 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    })
+    new HtmlWebpackPlugin({ filename: 'visual-test.html' })
   ],
 
   module: {

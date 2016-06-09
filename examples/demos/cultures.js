@@ -18,8 +18,8 @@ let Cultures = React.createClass({
     let rtl = this.state.culture === 'ar-AE';
 
     return (
-      <div>
-        <h3 style={{ marginBottom: 20 }}>
+      <div {...this.props}>
+        <h3 className="callout">
           <label>Select a Culture</label>
           {' '}
           <select

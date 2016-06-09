@@ -52,8 +52,13 @@ let localizer = {
   startOfWeek: error
 }
 
-export function set(newLocalizer){
-  localizer = new DateLocalizer(newLocalizer);
+export function set(newLocalizer) {
+  if (!newLocalizer.__isLocalizer__) {
+    newLocalizer = new DateLocalizer(newLocalizer);
+    newLocalizer.__isLocalizer__ = true
+  }
+
+  localizer = newLocalizer;
   return localizer;
 }
 

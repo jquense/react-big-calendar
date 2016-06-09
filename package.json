@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.9.12",
+  "version": "0.10.0",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
@@ -30,11 +30,10 @@
     "build:examples": "npm run clean:examples && webpack --config webpack/docs.config.es6.js",
     "build:visual-test": "webpack --config webpack/visual-test.es6.js",
     "examples": "npm run clean:examples && babel-node ./examples/server.js",
-    "lint": "eslint src test",
+    "lint": "eslint src --ext .jsx --ext .js",
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint",
     "tdd": "karma start",
-    "lint": "eslint src --ext .jsx --ext .js",
     "release": "release"
   },
   "peerDependencies": {

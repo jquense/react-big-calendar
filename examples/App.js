@@ -80,12 +80,12 @@ const Example = React.createClass({
             </ul>
           </aside>
           <div className='example'>
-            <div  style={{ marginBottom: 15 }}>
+            <div className='view-source'>
               <a target='_blank' href={demoRoot + '/' + selected + '.js' }>
-                <strong><i className='fa fa-code'/>{' view example source code'}</strong>
+                <strong><i className='fa fa-code'/>{' View example source code'}</strong>
               </a>
             </div>
-            <Current />
+            <Current className='demo' />
           </div>
         </div>
         <div className='docs'>

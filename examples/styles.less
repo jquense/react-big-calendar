@@ -2,23 +2,20 @@
 // .panel-default {
 //   border-radius: 0;
 // }
+@blue: #3174ad;
 
 body {
   font-size: 16px;
 }
 
 .jumbotron {
-  background-color: #3174ad;
+  background-color: @blue;
   color: white;
 
   a {
     font-size: 85%;
     color: darken(white, 10%);
   }
-}
-
-.example {
-  font-size: 14px;
 }
 
 .contain {
@@ -30,14 +27,36 @@ body {
 }
 
 .docs {
-  background-color: #3174ad;
+  background-color: @blue;
   margin-top: 20px;
   padding: 30px;
 }
 
 .examples {
   position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+.example {
+  font-size: 14px;
+  flex: 1;
+
+  &,
+  & > * {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .demo,
+  .rbc-calendar {
+    flex: 1;
+    min-height: 580px;
+  }
+}
+
 
 .section {
   margin-bottom: 20px;
@@ -48,9 +67,25 @@ aside {
 }
 
 h3 > a > code {
-  color: #3174ad;
+  color: @blue;
   background: none;
   padding: 0;
+}
+
+.view-source {
+  font-size: 90%;
+  float: right;
+  margin-bottom: 15px;
+  margin-left: auto;
+}
+
+.callout {
+  border-left: 4px solid @blue;
+  padding: 10px;
+  color: darken(@blue, 10%);
+  font-size: 20px;
+  margin-bottom: 15px;
+  margin-top: 0;
 }
 
 pre {

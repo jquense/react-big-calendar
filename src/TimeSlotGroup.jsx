@@ -43,7 +43,7 @@ export default class TimeSlotGroup extends Component {
   }
   render() {
     return (
-      <div className="rbc-timeslice-group">
+      <div className="rbc-timeslot-group">
         {this.renderSlices()}
       </div>
     )

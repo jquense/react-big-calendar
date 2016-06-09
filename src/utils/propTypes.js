@@ -17,9 +17,8 @@ export let eventComponent = PropTypes.oneOfType([
   })
 ])
 
-let viewNames = PropTypes.oneOf(
-  Object.keys(Views).map(k => Views[k])
-);
+
+let viewNames = Object.keys(Views).map(k => Views[k])
 
 export let accessor = PropTypes.oneOfType([
   PropTypes.string,
@@ -29,16 +28,24 @@ export let accessor = PropTypes.oneOfType([
 export let dateFormat = createChainableTypeChecker(
     (...args) => localizer.propType && localizer.propType(...args))
 
+
 export let views = PropTypes.oneOfType([
-  PropTypes.arrayOf(viewNames),
+  PropTypes.arrayOf(
+    PropTypes.oneOf(viewNames)
+  ),
   all([
     PropTypes.object,
     (props, name, component)=>{
       let prop = props[name]
         , err;
 
-      Object.keys(prop).every(
-        key => !(err = elementType(prop, key, component)))
+      Object.keys(prop).every(key => {
+        let isBuiltinView =
+          viewNames.indexOf(key) !== -1 &&
+          typeof prop[key] === 'boolean';
+
+        return isBuiltinView || !(err = elementType(prop, key, component))
+      })
 
       return err || null
     }

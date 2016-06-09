@@ -24,7 +24,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
-    "less": "lessc -x src/less/styles.less ./lib/css/react-big-calendar.css",
+    "less": "lessc --autoprefix=\"ie >= 10, last 2 versions\" src/less/styles.less ./lib/css/react-big-calendar.css",
     "assets": "cpy src/less/* lib/less",
     "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less",
     "build:examples": "npm run clean:examples && webpack --config webpack/docs.config.es6.js",
@@ -32,8 +32,9 @@
     "examples": "npm run clean:examples && babel-node ./examples/server.js",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
-    "test": "npm run lint && karma start --single-run",
+    "test": "npm run lint",
     "tdd": "karma start",
+    "lint": "eslint src --ext .jsx --ext .js",
     "release": "release"
   },
   "peerDependencies": {
@@ -42,7 +43,6 @@
   },
   "devDependencies": {
     "@kadira/storybook": "^1.28.1",
-    "autoprefixer-core": "^5.2.1",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
@@ -75,6 +75,7 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
+    "less-plugin-autoprefix": "^1.5.1",
     "lolex": "^1.4.0",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",

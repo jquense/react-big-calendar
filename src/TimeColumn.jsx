@@ -26,14 +26,17 @@ export default class TimeColumn extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    return <TimeSlotGroup key={key}
-                          isNow={isNow}
-                          timeslots={this.props.timeslots}
-                          step={this.props.step}
-                          showLabels={this.props.showLabels}
-                          timeGutterFormat={this.props.timeGutterFormat}
-                          value={date}
-    />
+    return (
+      <TimeSlotGroup
+        key={key}
+        isNow={isNow}
+        timeslots={this.props.timeslots}
+        step={this.props.step}
+        showLabels={this.props.showLabels}
+        timeGutterFormat={this.props.timeGutterFormat}
+        value={date}
+      />
+    )
   }
 
   render() {
@@ -41,24 +44,19 @@ export default class TimeColumn extends Component {
     const numGroups = Math.ceil(totalMin / (this.props.step * this.props.timeslots))
     const timeslots = []
     const groupLengthInMinutes = this.props.step * this.props.timeslots
-    let baseCss
-    
-    switch (this.props.type) {
-      case 'gutter' :
-        baseCss = 'rbc-time-gutter'
-        break;
-      case 'day' :
-      default:
-        baseCss = 'rbc-day-slot'
-        break
-    }
 
     let date = this.props.min
     let next = date
     let isNow = false
 
     for (var i = 0; i < numGroups; i++) {
-      isNow = dates.inRange(this.props.now, date, dates.add(next, groupLengthInMinutes - 1, 'minutes'), 'minutes')
+      isNow = dates.inRange(
+          this.props.now
+        , date
+        , dates.add(next, groupLengthInMinutes - 1, 'minutes')
+        , 'minutes'
+      )
+
       next = dates.add(date, groupLengthInMinutes, 'minutes');
       timeslots.push(this.renderTimeSliceGroup(i, isNow, date))
 
@@ -66,7 +64,10 @@ export default class TimeColumn extends Component {
     }
 
     return (
-      <div className={cn(baseCss, this.props.className)}>
+      <div
+        className={cn(this.props.className, 'rbc-time-column')}
+        style={this.props.style}
+      >
         {timeslots}
         {this.props.children}
       </div>

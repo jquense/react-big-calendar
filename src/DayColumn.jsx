@@ -18,7 +18,7 @@ function snapToSlot(date, step){
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-function positionFromDate(date, min, step){
+function positionFromDate(date, min){
   return dates.diff(min, dates.merge(min, date), 'minutes')
 }
 
@@ -105,8 +105,7 @@ let DaySlot = React.createClass({
 
     return (
       <TimeColumn {...props}
-        type="day"
-        showLabels={false}
+        className='rbc-day-slot'
         timeslots={timeslots}
         now={now}
         min={min}
@@ -126,7 +125,7 @@ let DaySlot = React.createClass({
     );
   },
 
-  renderEvents(numSlots, totalMin) {
+  renderEvents() {
     let {
       events, step, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
@@ -220,7 +219,7 @@ let DaySlot = React.createClass({
       this.setState(state)
     }
 
-    let selectionState = ({ x, y }) => {
+    let selectionState = ({ y }) => {
       let { step, min, max } = this.props;
       let { top, bottom } = getBoundsForNode(node)
 
@@ -279,7 +278,7 @@ let DaySlot = React.createClass({
     this._selector = null;
   },
 
-  _selectSlot({ startDate, endDate, endSlot, startSlot }) {
+  _selectSlot({ startDate, endDate }) {
     let current = startDate
       , slots = [];
 

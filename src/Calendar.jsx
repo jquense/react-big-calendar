@@ -283,7 +283,7 @@ let Calendar = React.createClass({
     components: PropTypes.shape({
       event: elementType,
 
-      toolbar: PropTypes.element,
+      toolbar: elementType,
 
       agenda: PropTypes.shape({
         date: elementType,
@@ -457,4 +457,8 @@ let Calendar = React.createClass({
   }
 });
 
-export default uncontrollable(Calendar, { view: 'onView', date: 'onNavigate', selected: 'onSelectEvent' })
+export default uncontrollable(Calendar, {
+  view: 'onView',
+  date: 'onNavigate',
+  selected: 'onSelectEvent'
+})

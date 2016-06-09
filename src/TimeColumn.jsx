@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import dates from './utils/dates';
 
-import TimeSlotGroup from './TimeSlotGroup.jsx'
+import TimeSlotGroup from './TimeSlotGroup'
 
 export default class TimeColumn extends Component {
   static propTypes = {

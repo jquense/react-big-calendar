@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
 let Selectable = React.createClass({
   render(){
     return (
-      <div>
-        <h3 className='text-info text-center demo-info'>
+      <div {...this.props}>
+        <h3 className="callout">
           Click an event to see more info, or
           drag the mouse over the calendar to select a date/time range.
         </h3>

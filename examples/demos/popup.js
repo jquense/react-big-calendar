@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 let Popup = React.createClass({
   render(){
     return (
-      <div>
-        <h3 className='text-info text-center demo-info'>
+      <div {...this.props}>
+        <h3 className='callout'>
           Click the "+x more" link on any calendar day that cannot fit all the days events to
           see an inline popup of all the events.
         </h3>

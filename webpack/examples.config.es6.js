@@ -7,12 +7,8 @@ const port = Number(process.argv[2]) || Number(process.env.PORT) || 3000
 
 module.exports = {
   port,
-  devtool: 'eval',
-  entry: [
-    'webpack-dev-server/client?http://localhost:' + port,
-    'webpack/hot/only-dev-server',
-    path.join(__dirname, '../examples/App.js')
-  ],
+  devtool: 'source-map',
+  entry: path.join(__dirname, '../examples/App.js'),
   output: {
     path: path.join(__dirname, '../examples/'),
     filename: 'bundle.js',
@@ -20,7 +16,6 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
   resolve: {

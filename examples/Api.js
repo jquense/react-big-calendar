@@ -34,7 +34,7 @@ let Api = React.createClass({
     let typeInfo = this.renderType(data);
 
     return (
-      <section>
+      <section key={name}>
         <Heading id={`prop-${name}`}>
           <a href={`#prop-${name}`}>
             <code>{name}</code>

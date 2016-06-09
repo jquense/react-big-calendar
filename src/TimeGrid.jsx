@@ -9,7 +9,6 @@ import EventRow from './EventRow';
 import TimeColumn from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
 
-import classes from 'dom-helpers/class';
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
 import message from './utils/messages';
@@ -41,6 +40,9 @@ export default class TimeGrid extends Component {
   }
 
   static defaultProps = {
+    ...DayColumn.defaultProps,
+    ...TimeColumn.defaultProps,
+
     step: 30,
     min: dates.startOf(new Date(), 'day'),
     max: dates.endOf(new Date(), 'day'),
@@ -268,7 +270,7 @@ export default class TimeGrid extends Component {
 
     if (!width) {
       width = Math.max(...gutterCells.map(getWidth));
-      console.log(gutterCells.map(getWidth))
+
       if (width) {
         this.setState({ gutterWidth: width })
       }

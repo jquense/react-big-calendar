@@ -125,7 +125,7 @@ let DaySlot = React.createClass({
     );
   },
 
-  renderEvents(numSlots, totalMin) {
+  renderEvents() {
     let {
       events, step, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent

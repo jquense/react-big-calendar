@@ -6,9 +6,7 @@ import { navigate } from './utils/constants';
 let Toolbar = React.createClass({
 
   render() {
-    let {
-        messages, label
-      , views: viewNames, view } = this.props;
+    let { messages, label } = this.props;
 
     messages = message(messages)
 
@@ -40,9 +38,9 @@ let Toolbar = React.createClass({
         </span>
 
         <span className='rbc-btn-group'>
-          {
-            this.viewNamesGroup(messages)
-          }
+        {
+          this.viewNamesGroup(messages)
+        }
         </span>
       </div>
     );
@@ -57,7 +55,6 @@ let Toolbar = React.createClass({
   },
 
   viewNamesGroup(messages) {
-    let component = null
     let viewNames = this.props.views
     const view = this.props.view
 

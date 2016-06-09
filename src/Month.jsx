@@ -97,7 +97,7 @@ let MonthView = React.createClass({
     }, false)
   },
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     if (this.state.needLimitMeasure)
       this._measureRowLimit(this.props)
   },

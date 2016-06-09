@@ -33,6 +33,7 @@
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint && karma start --single-run",
     "tdd": "karma start",
+    "lint": "eslint src --ext .jsx --ext .js",
     "release": "release"
   },
   "peerDependencies": {

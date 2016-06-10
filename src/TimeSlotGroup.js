@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
-import TimeSlot from './TimeSlot.jsx'
-import date from './utils/dates.js'
+import TimeSlot from './TimeSlot'
+import date from './utils/dates'
 import localizer from './localizer'
 
 export default class TimeSlotGroup extends Component {

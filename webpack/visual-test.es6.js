@@ -17,7 +17,7 @@ module.exports = {
     alias: {
       'react-big-calendar': path.join(__dirname, '..', 'src')
     },
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js']
   },
 
   plugins: [

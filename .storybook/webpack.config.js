@@ -3,7 +3,7 @@ const Autoprefixer = require('less-plugin-autoprefix');
 
 module.exports = {
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js']
   },
   module: {
     loaders: [

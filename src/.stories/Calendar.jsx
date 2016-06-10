@@ -1,6 +1,6 @@
 import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Calendar from '../Calendar.jsx';
+import { storiesOf, action } from '@kadira/storybook';
+import Calendar from '../Calendar';
 import moment from 'moment';
 import momentLocalizer from '../localizers/moment.js'
 import '../less/styles.less'

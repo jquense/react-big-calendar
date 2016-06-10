@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import TimeSlot from './TimeSlot.jsx'
+import TimeSlot from './TimeSlot'
 import date from './utils/dates.js'
 import localizer from './localizer'
 

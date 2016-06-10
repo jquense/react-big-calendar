@@ -30,3 +30,8 @@ node_modules
 
 # Webstorm ide files
 .idea
+
+# Project specific
+examples/bundle.*
+test/bundle.*
+test/visual-test.html

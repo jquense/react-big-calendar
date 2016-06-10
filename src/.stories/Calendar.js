@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Calendar from '../Calendar.jsx';
+import Calendar from '../Calendar';
 import moment from 'moment';
-import momentLocalizer from '../localizers/moment.js'
+import momentLocalizer from '../localizers/moment'
 import '../less/styles.less'
 
 // Setup the localizer by providing the moment (or globalize) Object

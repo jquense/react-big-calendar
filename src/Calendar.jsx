@@ -17,10 +17,11 @@ import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
 
-import omit from 'lodash/object/omit';
-import defaults from 'lodash/object/defaults';
-import transform from 'lodash/object/transform';
-import mapValues from 'lodash/object/mapValues';
+import {
+    omit
+  , defaults
+  , transform
+  , mapValues } from 'lodash/object';
 
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views

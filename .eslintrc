@@ -1,15 +1,15 @@
 {
   "parser": "babel-eslint",
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
   "env": {
     "browser": true,
     "node": true
   },
-  "ecmaFeatures": {
-    "jsx": true
-  },
   "plugins": [
-    "eslint-plugin-react"
+    "react"
   ],
   "rules": {
     "no-eval": 2,

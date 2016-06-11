@@ -3,8 +3,8 @@ import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './localizer'
-import chunk from 'lodash/array/chunk';
-import omit from 'lodash/object/omit';
+import { chunk } from 'lodash/array';
+import { omit } from 'lodash/object';
 
 import { navigate } from './utils/constants';
 import { notify } from './utils/helpers';

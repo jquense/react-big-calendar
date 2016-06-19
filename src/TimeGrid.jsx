@@ -269,8 +269,8 @@ export default class TimeGrid extends Component {
               selectable={this.props.selectable}
               onSelectSlot={handleSelectSlot}
             />
-            <div style={{ zIndex: 1, position: 'relative' }}>
-              {this.renderAllDayEvents(range, levels)}
+            <div className='rbc-allday-events'>
+              { this.renderAllDayEvents(range, levels) }
             </div>
           </div>
         </div>

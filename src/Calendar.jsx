@@ -158,6 +158,11 @@ let Calendar = React.createClass({
     selectable: PropTypes.bool,
 
     /**
+     * Determines the selectable time increments in week and day views
+     */
+    step: React.PropTypes.number,
+
+    /**
      * switch the calendar to a `right-to-left` read direction.
      */
     rtl: PropTypes.bool,
@@ -319,6 +324,7 @@ let Calendar = React.createClass({
       view: views.MONTH,
       views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
       date: now,
+      step: 30,
 
       titleAccessor: 'title',
       allDayAccessor: 'allDay',

@@ -12,7 +12,7 @@ class DisplayCells extends React.Component {
     selectable: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
     slots: React.PropTypes.number,
-    rtl: React.PropTypes.bool
+    rtl: React.PropTypes.bool,
   }
 
   state = { selecting: false }

@@ -1,8 +1,11 @@
 import React, { PropTypes, Component } from 'react'
 import cn from 'classnames'
+import { elementType } from './utils/propTypes'
+
 
 export default class TimeSlot extends Component {
   static propTypes = {
+    backgroundWrapperComponent: elementType,
     value: PropTypes.instanceOf(Date).isRequired,
     isNow: PropTypes.bool,
     showLabel: PropTypes.bool,
@@ -17,18 +20,22 @@ export default class TimeSlot extends Component {
   }
 
   render() {
+    const BackgroundWrapper = this.props.backgroundWrapperComponent;
+
     return (
-      <div
-        className={cn(
-          'rbc-time-slot',
-          this.props.showLabel && 'rbc-label',
-          this.props.isNow && 'rbc-now',
-        )}
-      >
-      {this.props.showLabel &&
-        <span>{this.props.content}</span>
-      }
-      </div>
+      <BackgroundWrapper>
+        <div
+          className={cn(
+            'rbc-time-slot',
+            this.props.showLabel && 'rbc-label',
+            this.props.isNow && 'rbc-now',
+          )}
+        >
+        {this.props.showLabel &&
+          <span>{this.props.content}</span>
+        }
+        </div>
+      </BackgroundWrapper>
     )
   }
 }

@@ -86,6 +86,8 @@
     "raw-loader": "^0.5.1",
     "react": "^15.0.0",
     "react-bootstrap": "^0.28.0",
+    "react-dnd": "^2.1.4",
+    "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^15.0.0",
     "release-script": "^1.0.0",
     "rimraf": "^2.4.2",

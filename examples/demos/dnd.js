@@ -4,6 +4,7 @@ import { DragSource, DragDropContext, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import HTML5Backend from 'react-dnd-html5-backend';
 import events from '../events';
+import merge from 'lodash/object/merge';
 
 /* drag sources */
 
@@ -69,14 +70,24 @@ class DroppableBackgroundWrapper extends React.Component {
 
 DroppableBackgroundWrapper = DropTarget(['event'], dropTarget, collectTarget)(DroppableBackgroundWrapper);
 
+class DndBigCalendar extends React.Component {
+  propTypes: BigCalendar.propTypes
+
+  render() {
+    const propsCopy = merge({}, this.props);
+    propsCopy.components = merge({}, this.props.components, {
+      eventWrapper: DraggableEventWrapper,
+      backgroundWrapper: DroppableBackgroundWrapper
+    })
+    return <BigCalendar {...propsCopy} />
+  }
+}
+
+
 let Dnd = React.createClass({
   render(){
     return (
-      <BigCalendar
-        components={{
-          eventWrapper: DraggableEventWrapper,
-          backgroundWrapper: DroppableBackgroundWrapper
-        }}
+      <DndBigCalendar
         events={events}
         defaultDate={new Date(2015, 3, 1)}
       />

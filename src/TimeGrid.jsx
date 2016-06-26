@@ -179,6 +179,7 @@ export default class TimeGrid extends Component {
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}
           eventComponent={components.event}
+          eventWrapperComponent={components.eventWrapper}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, this._slots)}
           key={idx}
@@ -198,6 +199,7 @@ export default class TimeGrid extends Component {
     return levels.map((segs, idx) =>
       <EventRow
         eventComponent={this.props.components.event}
+        eventWrapperComponent={this.props.components.eventWrapper}
         titleAccessor={this.props.titleAccessor}
         startAccessor={this.props.startAccessor}
         endAccessor={this.props.endAccessor}

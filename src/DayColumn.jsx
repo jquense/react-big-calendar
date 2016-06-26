@@ -129,6 +129,7 @@ let DaySlot = React.createClass({
     let {
       events, step, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
+      , eventWrapperComponent: EventWrapper
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
@@ -155,24 +156,26 @@ let DaySlot = React.createClass({
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected);
 
       return (
-        <div
-          key={'evt_' + idx}
-          style={{...xStyle, ...style}}
-          title={label + ': ' + title }
-          onClick={this._select.bind(null, event)}
-          className={cn('rbc-event', className, {
-            'rbc-selected': _isSelected,
-            'rbc-event-overlaps': lastLeftOffset !== 0
-          })}
-        >
-          <div className='rbc-event-label'>{label}</div>
-          <div className='rbc-event-content'>
-            { EventComponent
-              ? <EventComponent event={event} title={title}/>
-              : title
-            }
+        <EventWrapper event={event}>
+          <div 
+            key={'evt_' + idx}
+            style={{...xStyle, ...style}}
+            title={label + ': ' + title }
+            onClick={this._select.bind(null, event)}
+            className={cn('rbc-event', className, {
+              'rbc-selected': _isSelected,
+              'rbc-event-overlaps': lastLeftOffset !== 0
+            })}
+          >
+            <div className='rbc-event-label'>{label}</div>
+            <div className='rbc-event-content'>
+              { EventComponent
+                ? <EventComponent event={event} title={title}/>
+                : title
+              }
+            </div>
           </div>
-        </div>
+        </EventWrapper>
       )
     })
   },

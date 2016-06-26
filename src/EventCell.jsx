@@ -8,9 +8,9 @@ let EventCell = React.createClass({
     let {
         className, event, selected, eventPropGetter
       , startAccessor, endAccessor, titleAccessor
-      , slotStart, slotEnd, onSelect, component, ...props } = this.props;
-
-    let Component = component;
+      , slotStart, slotEnd, onSelect
+      , eventComponent: Event, eventWrapperComponent: EventWrapper
+      , ...props } = this.props;
 
     let title = get(event, titleAccessor)
       , end = get(event, endAccessor)
@@ -23,23 +23,25 @@ let EventCell = React.createClass({
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
 
     return (
-      <div
-        style={{...props.style, ...style}}
-        className={cn('rbc-event', className, xClassName, {
-          'rbc-selected': selected,
-          'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
-          'rbc-event-continues-prior': continuesPrior,
-          'rbc-event-continues-after': continuesAfter
-        })}
-        onClick={()=> onSelect(event)}
-      >
-        <div className='rbc-event-content' title={title}>
-          { Component
-            ? <Component event={event} title={title}/>
-            : title
-          }
+      <EventWrapper event={event}>
+        <div
+          style={{...props.style, ...style}}
+          className={cn('rbc-event', className, xClassName, {
+            'rbc-selected': selected,
+            'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
+            'rbc-event-continues-prior': continuesPrior,
+            'rbc-event-continues-after': continuesAfter
+          })}
+          onClick={()=> onSelect(event)}
+        >
+          <div className='rbc-event-content' title={title}>
+            { Event
+              ? <Event event={event} title={title}/>
+              : title
+            }
+          </div>
         </div>
-      </div>
+      </EventWrapper>
     );
   }
 });

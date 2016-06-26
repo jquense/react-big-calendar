@@ -180,6 +180,7 @@ export default class TimeGrid extends Component {
           max={dates.merge(date, max)}
           eventComponent={components.event}
           eventWrapperComponent={components.eventWrapper}
+          backgroundWrapperComponent={components.backgroundWrapper}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, this._slots)}
           key={idx}
@@ -261,6 +262,7 @@ export default class TimeGrid extends Component {
           </div>
           <div ref='allDay' className='rbc-allday-cell'>
             <BackgroundCells
+              backgroundWrapperComponent={this.props.components.backgroundWrapper}
               slots={range.length}
               container={()=> this.refs.allDay}
               selectable={this.props.selectable}

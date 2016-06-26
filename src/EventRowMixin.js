@@ -36,11 +36,14 @@ export default {
     let {
         eventPropGetter, selected, start, end
       , startAccessor, endAccessor, titleAccessor
-      , allDayAccessor, eventComponent, onSelect } = this.props;
+      , allDayAccessor, eventComponent
+      , eventWrapperComponent
+      , onSelect } = this.props;
 
     return (
       <EventCell
         event={event}
+        eventWrapperComponent={eventWrapperComponent}
         eventPropGetter={eventPropGetter}
         onSelect={onSelect}
         selected={isSelected(event, selected)}

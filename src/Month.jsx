@@ -287,6 +287,7 @@ let MonthView = React.createClass({
 
   _renderOverlay(){
     let overlay = (this.state && this.state.overlay) || {};
+    let { components } = this.props;
 
     return (
       <Overlay
@@ -298,6 +299,7 @@ let MonthView = React.createClass({
       >
         <Popup
           {...this.props}
+          eventComponent={components.event}
           position={overlay.position}
           events={overlay.events}
           slotStart={overlay.date}

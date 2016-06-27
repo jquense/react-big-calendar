@@ -218,9 +218,14 @@ let Calendar = React.createClass({
     min: PropTypes.instanceOf(Date),
 
     /**
-     * Constrains the maximum _time_ of the Day and Week views..
+     * Constrains the maximum _time_ of the Day and Week views.
      */
     max: PropTypes.instanceOf(Date),
+
+    /**
+     * Determines how far down the scroll pane is initially scrolled down.
+     */
+    scrollToTime: PropTypes.instanceOf(Date),
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.

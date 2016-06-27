@@ -35,6 +35,7 @@ export default class TimeGrid extends Component {
     step: React.PropTypes.number,
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
+    scrollToTime: React.PropTypes.instanceOf(Date),
     dayFormat: dateFormat,
     rtl: React.PropTypes.bool
   }
@@ -46,6 +47,7 @@ export default class TimeGrid extends Component {
     step: 30,
     min: dates.startOf(new Date(), 'day'),
     max: dates.endOf(new Date(), 'day'),
+    scrollToTime: dates.startOf(new Date(), 'day'),
     /* these 2 are needed to satisfy requirements from TimeColumn required props
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
@@ -62,6 +64,7 @@ export default class TimeGrid extends Component {
 
   componentWillMount() {
     this._gutters = [];
+    this.adjustScroll();
   }
 
   componentDidMount() {
@@ -77,7 +80,22 @@ export default class TimeGrid extends Component {
       this.measureGutter()
     }
 
+    if (this._scrollRatio) {
+      const { content } = this.refs;
+      content.scrollTop = content.scrollHeight * this._scrollRatio;
+      // Only do this once
+      this._scrollRatio = null;
+    }
+
     //this.checkOverflow()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { start, scrollTop } = this.props;
+    // When paginating, reset scroll
+    if (!dates.eq(nextProps.start, start) || nextProps.scrollTop !== scrollTop) {
+      this.adjustScroll();
+    }
   }
 
   render() {
@@ -275,6 +293,15 @@ export default class TimeGrid extends Component {
         this.setState({ gutterWidth: width })
       }
     }
+  }
+
+  adjustScroll() {
+    const { min, max, scrollToTime } = this.props;
+
+    const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day');
+    const totalMillis = dates.diff(max, min);
+
+    this._scrollRatio = diffMillis / totalMillis;
   }
 
   checkOverflow() {

@@ -64,7 +64,7 @@ export default class TimeGrid extends Component {
 
   componentWillMount() {
     this._gutters = [];
-    this.adjustScroll();
+    this.calculateScroll();
   }
 
   componentDidMount() {
@@ -91,10 +91,10 @@ export default class TimeGrid extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { start, scrollTop } = this.props;
+    const { start, scrollToTime } = this.props;
     // When paginating, reset scroll
-    if (!dates.eq(nextProps.start, start) || nextProps.scrollTop !== scrollTop) {
-      this.adjustScroll();
+    if (!dates.eq(nextProps.start, start) || nextProps.scrollToTime !== scrollToTime) {
+      this.calculateScroll();
     }
   }
 
@@ -295,7 +295,7 @@ export default class TimeGrid extends Component {
     }
   }
 
-  adjustScroll() {
+  calculateScroll() {
     const { min, max, scrollToTime } = this.props;
 
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day');

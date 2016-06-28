@@ -73,6 +73,7 @@ export default class TimeGrid extends Component {
     if (this.props.width == null) {
       this.measureGutter()
     }
+    this.applyScroll();
   }
 
   componentDidUpdate() {
@@ -80,13 +81,7 @@ export default class TimeGrid extends Component {
       this.measureGutter()
     }
 
-    if (this._scrollRatio) {
-      const { content } = this.refs;
-      content.scrollTop = content.scrollHeight * this._scrollRatio;
-      // Only do this once
-      this._scrollRatio = null;
-    }
-
+    this.applyScroll();
     //this.checkOverflow()
   }
 
@@ -295,6 +290,15 @@ export default class TimeGrid extends Component {
     }
   }
 
+  applyScroll() {
+    if (this._scrollRatio) {
+      const { content } = this.refs;
+      content.scrollTop = content.scrollHeight * this._scrollRatio;
+      // Only do this once
+      this._scrollRatio = null;
+    }
+  }
+
   calculateScroll() {
     const { min, max, scrollToTime } = this.props;
 
@@ -309,7 +313,7 @@ export default class TimeGrid extends Component {
 
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
 
-    if (this.setState.isOverflowing !== isOverflowing) {
+    if (this.state.isOverflowing !== isOverflowing) {
       this._updatingOverflow = true;
       this.setState({ isOverflowing }, () => {
         this._updatingOverflow = false;

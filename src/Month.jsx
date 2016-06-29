@@ -235,8 +235,15 @@ let MonthView = React.createClass({
   },
 
   _dates(row){
+    const { dateLink } = this.props;
     return row.map((day, colIdx) => {
       var offRange = dates.month(day) !== dates.month(this.props.date);
+      const dateNumber = localizer.format(day, this.props.dateFormat, this.props.culture);
+      const dateNumberElement = dateLink
+        ? (<a href='#' onClick={this._dateClick.bind(null, day)}>
+            { dateNumber }
+          </a>)
+        : dateNumber;
 
       return (
         <div
@@ -248,9 +255,7 @@ let MonthView = React.createClass({
             'rbc-current': dates.eq(day, this.props.date, 'day')
           })}
         >
-          <a href='#' onClick={this._dateClick.bind(null, day)}>
-            { localizer.format(day, this.props.dateFormat, this.props.culture) }
-          </a>
+          { dateNumberElement }
         </div>
       )
     })

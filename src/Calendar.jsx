@@ -152,6 +152,12 @@ let Calendar = React.createClass({
       PropTypes.number,
       PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
     ]),
+
+    /**
+     * Whether date numbers should have links to the date
+     */
+    dateLink: PropTypes.bool,
+
     /**
      * Allows mouse selection of ranges of dates/times.
      */
@@ -330,6 +336,7 @@ let Calendar = React.createClass({
       views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
       date: now,
       step: 30,
+      dateLink: true,
 
       titleAccessor: 'title',
       allDayAccessor: 'allDay',

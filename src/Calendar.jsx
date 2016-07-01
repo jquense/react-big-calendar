@@ -141,6 +141,11 @@ let Calendar = React.createClass({
     popup: PropTypes.bool,
 
     /**
+     * Determines whether the column representing today is highlighted.
+     */
+    highlightToday: PropTypes.bool,
+
+    /**
      * Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
      *
      * ```js
@@ -326,6 +331,7 @@ let Calendar = React.createClass({
     return {
       popup: false,
       toolbar: true,
+      highlightToday: false,
       view: views.MONTH,
       views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
       date: now,

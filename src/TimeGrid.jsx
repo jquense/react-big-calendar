@@ -268,6 +268,8 @@ export default class TimeGrid extends Component {
               backgroundWrapperComponent={this.props.components.backgroundWrapper}
 >>>>>>> Wrap background cells in BackgroundWrapper
               slots={range.length}
+              values={range}
+              type="AllDay"
               container={()=> this.refs.allDay}
               selectable={this.props.selectable}
               onSelectSlot={handleSelectSlot}

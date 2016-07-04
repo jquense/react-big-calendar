@@ -37,9 +37,9 @@ DraggableEventWrapper = DragSource('event', eventSource, collectSource)(Draggabl
 
 /* drop targets */
 const dropTarget = {
-  drop(props, monitor) {
+  drop(props, monitor, backgroundWrapper) {
     const event = monitor.getItem();
-    alert(`${event.title} was dropped`);
+    alert(`${event.title} was dropped onto ${backgroundWrapper.props.type} ${backgroundWrapper.props.value}`);
   }
 };
 

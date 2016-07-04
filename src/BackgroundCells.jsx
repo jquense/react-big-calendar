@@ -13,7 +13,9 @@ class DisplayCells extends React.Component {
     backgroundWrapperComponent: elementType,
     selectable: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
-    slots: React.PropTypes.number
+    slots: React.PropTypes.number,
+    values: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
+    type: React.PropTypes.string
   }
 
   state = { selecting: false }
@@ -35,14 +37,14 @@ class DisplayCells extends React.Component {
   }
 
   render(){
-    let { slots, backgroundWrapperComponent: BackgroundWrapper } = this.props;
-    let { selecting, startIdx, endIdx } = this.state
+    let { slots, values, type, backgroundWrapperComponent: BackgroundWrapper } = this.props;
+    let { selecting, startIdx, endIdx } = this.state;
 
     let children = [];
 
     for (var i = 0; i < slots; i++) {
       children.push(
-        <BackgroundWrapper key={'bg_' + i}>
+        <BackgroundWrapper key={'bg_' + i} value={values[i]} type={type}>
           <div
             style={segStyle(1, slots)}
             className={cn('rbc-day-bg', {

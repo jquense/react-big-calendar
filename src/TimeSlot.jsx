@@ -23,7 +23,7 @@ export default class TimeSlot extends Component {
     const BackgroundWrapper = this.props.backgroundWrapperComponent;
 
     return (
-      <BackgroundWrapper>
+      <BackgroundWrapper value={this.props.value} type='TimeSlot'>
         <div
           className={cn(
             'rbc-time-slot',

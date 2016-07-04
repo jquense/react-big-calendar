@@ -189,6 +189,8 @@ let MonthView = React.createClass({
       onSelectSlot={onSelectSlot}
       container={() => findDOMNode(this)}
       selectable={this.props.selectable}
+      values={row}
+      type="Day"
       ref={r => this._bgRows[idx] = r}
     />
     )

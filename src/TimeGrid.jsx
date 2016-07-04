@@ -265,6 +265,8 @@ export default class TimeGrid extends Component {
               rtl={this.props.rtl}
               backgroundWrapperComponent={this.props.components.backgroundWrapper}
               slots={range.length}
+              values={range}
+              type="AllDay"
               container={()=> this.refs.allDay}
               selectable={this.props.selectable}
               onSelectSlot={handleSelectSlot}

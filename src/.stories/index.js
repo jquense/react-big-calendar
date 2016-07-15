@@ -1,1 +1,1 @@
-import './Calendar.jsx'
+import './Calendar'

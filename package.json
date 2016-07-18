@@ -7,9 +7,10 @@
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "typings": "lib/react-big-calendar.d.ts",
+  "typings": "typings/react-big-calendar.d.ts",
   "files": [
     "lib/",
+    "typings/",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"

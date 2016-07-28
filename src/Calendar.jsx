@@ -228,6 +228,12 @@ let Calendar = React.createClass({
     scrollToTime: PropTypes.instanceOf(Date),
 
     /**
+     * Pass Custom Dates to Month. This will be useful, when you want to display something like a fiscal calendar
+     * Where a month in June 2015 can have 4 weeks with weeks which are in May 2015 and April 2015.
+     */
+     customDatesForMonth: PropTypes.func,
+
+    /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
      */
     formats: PropTypes.shape({

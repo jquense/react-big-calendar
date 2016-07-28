@@ -108,8 +108,8 @@ let MonthView = React.createClass({
 
   render() {
     var { date, culture, weekdayFormat } = this.props
-      , month = dates.visibleDays(date, culture)
-      , weeks  = chunk(month, 7);
+    var month = this.getDates(date, culture)
+    var weeks  = chunk(month, 7);
 
     let measure = this.state.needLimitMeasure
 
@@ -130,6 +130,15 @@ let MonthView = React.createClass({
         }
       </div>
     )
+  },
+
+  getDates(date, culture) {
+    if(this.props.customDatesForMonth !== undefined) {
+      return this.props.customDatesForMonth(this, date)
+    }
+    else {
+      return dates.visibleDays(date, culture)
+    }
   },
 
   renderWeek(week, weekIdx, content) {

@@ -32,7 +32,7 @@ const Example = React.createClass({
       rendering: require('./demos/rendering'),
       customView: require('./demos/customView'),
       timeslots: require('./demos/timeslots'),
-      dnd: require('./demos/dnd')
+      dnd: require('./demos/dnd/dnd')
     }[selected];
 
     return (

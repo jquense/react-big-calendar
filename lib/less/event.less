@@ -1,0 +1,32 @@
+@import './variables.less';
+
+.rbc-event {
+  cursor: pointer;
+  padding: @event-padding;
+  background-color: @event-bg;
+  border-radius: @event-border-radius;
+  color: @event-color;
+
+  &.rbc-selected {
+    background-color: darken(@event-bg, 10%);
+  }
+}
+
+.rbc-event-label {
+  &:extend(.rbc-ellipsis);
+  font-size: 80%;
+}
+
+.rbc-event-overlaps {
+  box-shadow: -1px 1px 5px 0px rgba(51,51,51,.5);
+}
+
+.rbc-event-continues-after {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rbc-event-continues-prior {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

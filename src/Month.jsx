@@ -119,7 +119,6 @@ let MonthView = React.createClass({
 
     return (
       <div
-        {...elementProps}
         className={cn('rbc-month-view', elementProps.className)}
       >
         <div className='rbc-row rbc-month-header'>

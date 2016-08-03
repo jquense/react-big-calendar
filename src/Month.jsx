@@ -133,7 +133,6 @@ let MonthView = React.createClass({
   },
 
   renderWeek(week, weekIdx, content) {
-  	console.log(this.props);
     let { first, last } = endOfRange(week);
     let evts = eventsForWeek(this.props.events, week[0], week[week.length - 1], this.props)
 
@@ -141,8 +140,6 @@ let MonthView = React.createClass({
 
     let segments = evts = evts.map(evt => eventSegments(evt, first, last, this.props))
     let limit = this.props.truncateEvents ? (this.state.rowLimit - 1) || 1 : Infinity;
-    console.log('this.props.truncateEvents', this.props.truncateEvents);
-    console.log('limit is', limit);
 
     let { levels, extra } = eventLevels(segments, limit)
 

@@ -4,7 +4,16 @@ import omit from 'lodash/object/omit';
 import dates from './utils/dates';
 import { accessor as get } from './utils/accessors';
 
-const omitProps = ['allDayAccessor']
+const omitProps = [
+  'allDayAccessor', 'popup', 'defaultDate', 'onView', 'onNavigate',
+  'onSelectEvent', 'views', 'dateFormat', 'dayFormat', 'weekdayFormat',
+  'selectRangeFormat', 'eventTimeRangeFormat', 'timeGutterFormat',
+  'monthHeaderFormat', 'dayHeaderFormat', 'dayRangeHeaderFormat',
+  'agendaHeaderFormat', 'agendaDateFormat', 'agendaTimeFormat',
+  'agendaTimeRangeFormat', 'culture', 'formats', 'date', 'components',
+  'onHeaderClick', 'onSelectSlot', 'onShowMore', 'position', 'placement',
+  'arrowOffsetLeft', 'arrowOffsetTop', 'positionLeft', 'positionTop',
+]
 
 let EventCell = React.createClass({
   render() {

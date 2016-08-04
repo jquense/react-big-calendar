@@ -4,7 +4,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './localizer'
 import chunk from 'lodash/array/chunk';
-import { pickHTMLProps } from 'pick-react-known-prop';
+import pick from 'lodash/object/pick';
 
 import { navigate } from './utils/constants';
 import { notify } from './utils/helpers';
@@ -115,9 +115,11 @@ let MonthView = React.createClass({
 
     this._weekCount = weeks.length;
 
+    let elementProps = pick(this.props, ['selected', 'step'])
+
     return (
       <div
-        {...pickHTMLProps(this.props)}
+        {...elementProps}
         className={cn('rbc-month-view', className)}
       >
         <div className='rbc-row rbc-month-header'>

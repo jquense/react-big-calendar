@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { pickHTMLProps } from 'pick-react-known-prop';
+import pick from 'lodash/object/pick';
 import dates from './utils/dates';
 import { accessor as get } from './utils/accessors';
 
@@ -23,9 +23,11 @@ let EventCell = React.createClass({
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
 
+    let elementProps = pick(this.props, ['selected'])
+
     return (
       <div
-        {...pickHTMLProps(this.props)}
+        {...elementProps}
         style={{...props.style, ...style}}
         className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,

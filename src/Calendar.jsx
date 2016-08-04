@@ -17,6 +17,7 @@ import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
 
+import { pickHTMLProps } from 'pick-react-known-prop';
 import omit from 'lodash/object/omit';
 import defaults from 'lodash/object/defaults';
 import transform from 'lodash/object/transform';
@@ -30,8 +31,6 @@ function isValidView(view, { views: _views }) {
   let names = viewNames(_views)
   return names.indexOf(view) !== -1
 }
-
-const omitProps = ['defaultView', 'defaultDate', 'culture', 'rtl']
 
 let now = new Date();
 
@@ -382,8 +381,6 @@ let Calendar = React.createClass({
     let View = this.getView();
     let names = viewNames(this.props.views)
 
-    let elementProps = omit(this.props, Object.keys(Calendar.propTypes).concat(omitProps))
-
     let viewComponents = defaults(
       components[view] || {},
       omit(components, names)
@@ -392,7 +389,7 @@ let Calendar = React.createClass({
     let ToolbarToRender = components.toolbar || Toolbar
 
     return (
-      <div {...elementProps}
+      <div {...pickHTMLProps(this.props)}
         className={cn('rbc-calendar', className, {
           'rbc-rtl': props.rtl
         })}

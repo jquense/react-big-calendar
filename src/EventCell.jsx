@@ -1,19 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
-import omit from 'lodash/object/omit';
+import { pickHTMLProps } from 'pick-react-known-prop';
 import dates from './utils/dates';
 import { accessor as get } from './utils/accessors';
-
-const omitProps = [
-  'allDayAccessor', 'popup', 'defaultDate', 'onView', 'onNavigate',
-  'onSelectEvent', 'views', 'dateFormat', 'dayFormat', 'weekdayFormat',
-  'selectRangeFormat', 'eventTimeRangeFormat', 'timeGutterFormat',
-  'monthHeaderFormat', 'dayHeaderFormat', 'dayRangeHeaderFormat',
-  'agendaHeaderFormat', 'agendaDateFormat', 'agendaTimeFormat',
-  'agendaTimeRangeFormat', 'culture', 'formats', 'date', 'components',
-  'onHeaderClick', 'onSelectSlot', 'onShowMore', 'position', 'placement',
-  'arrowOffsetLeft', 'arrowOffsetTop', 'positionLeft', 'positionTop'
-]
 
 let EventCell = React.createClass({
   render() {
@@ -34,11 +23,9 @@ let EventCell = React.createClass({
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
 
-    let elementProps = omit(props, omitProps);
-
     return (
       <div
-        {...elementProps}
+        {...pickHTMLProps(this.props)}
         style={{...props.style, ...style}}
         className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,

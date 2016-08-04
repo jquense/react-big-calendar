@@ -4,7 +4,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './localizer'
 import chunk from 'lodash/array/chunk';
-import omit from 'lodash/object/omit';
+import { pickHTMLProps } from 'pick-react-known-prop';
 
 import { navigate } from './utils/constants';
 import { notify } from './utils/helpers';
@@ -27,17 +27,6 @@ let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props));
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
-
-const omitProps = [
-  'defaultView', 'defaultDate', 'onView', 'onNavigate', 'views',
-  'titleAccessor', 'allDayAccessor', 'startAccessor', 'endAccessor',
-  'dayFormat', 'selectRangeFormat', 'eventTimeRangeFormat',
-  'timeGutterFormat', 'monthHeaderFormat', 'dayHeaderFormat',
-  'dayRangeHeaderFormat', 'agendaHeaderFormat', 'agendaDateFormat',
-  'agendaTimeFormat', 'agendaTimeRangeFormat', 'formats', 'events',
-  'components', 'onHeaderClick', 'onShowMore', 'rtl', 'selectable',
-  'scrollToTime'
-]
 
 let propTypes = {
   ...EventRow.PropTypes,
@@ -118,7 +107,7 @@ let MonthView = React.createClass({
   },
 
   render() {
-    let { date, culture, weekdayFormat } = this.props
+    let { date, culture, weekdayFormat, className } = this.props
       , month = dates.visibleDays(date, culture)
       , weeks  = chunk(month, 7);
 
@@ -126,12 +115,10 @@ let MonthView = React.createClass({
 
     this._weekCount = weeks.length;
 
-    let elementProps = omit(this.props, Object.keys(propTypes).concat(omitProps))
-
     return (
       <div
-        {...elementProps}
-        className={cn('rbc-month-view', elementProps.className)}
+        {...pickHTMLProps(this.props)}
+        className={cn('rbc-month-view', className)}
       >
         <div className='rbc-row rbc-month-header'>
           {this._headers(weeks[0], weekdayFormat, culture)}

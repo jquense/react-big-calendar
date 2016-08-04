@@ -12,7 +12,7 @@ const omitProps = [
   'agendaHeaderFormat', 'agendaDateFormat', 'agendaTimeFormat',
   'agendaTimeRangeFormat', 'culture', 'formats', 'date', 'components',
   'onHeaderClick', 'onSelectSlot', 'onShowMore', 'position', 'placement',
-  'arrowOffsetLeft', 'arrowOffsetTop', 'positionLeft', 'positionTop',
+  'arrowOffsetLeft', 'arrowOffsetTop', 'positionLeft', 'positionTop'
 ]
 
 let EventCell = React.createClass({

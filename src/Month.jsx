@@ -36,7 +36,7 @@ const omitProps = [
   'dayRangeHeaderFormat', 'agendaHeaderFormat', 'agendaDateFormat',
   'agendaTimeFormat', 'agendaTimeRangeFormat', 'formats', 'events',
   'components', 'onHeaderClick', 'onShowMore', 'rtl', 'selectable',
-  'scrollToTime',
+  'scrollToTime'
 ]
 
 let propTypes = {

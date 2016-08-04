@@ -28,6 +28,17 @@ let eventsForWeek = (evts, start, end, props) =>
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
+const omitProps = [
+  'defaultView', 'defaultDate', 'onView', 'onNavigate', 'views',
+  'titleAccessor', 'allDayAccessor', 'startAccessor', 'endAccessor',
+  'dayFormat', 'selectRangeFormat', 'eventTimeRangeFormat',
+  'timeGutterFormat', 'monthHeaderFormat', 'dayHeaderFormat',
+  'dayRangeHeaderFormat', 'agendaHeaderFormat', 'agendaDateFormat',
+  'agendaTimeFormat', 'agendaTimeRangeFormat', 'formats', 'events',
+  'components', 'onHeaderClick', 'onShowMore', 'rtl', 'selectable',
+  'scrollToTime',
+]
+
 let propTypes = {
   ...EventRow.PropTypes,
 
@@ -107,7 +118,7 @@ let MonthView = React.createClass({
   },
 
   render() {
-    var { date, culture, weekdayFormat } = this.props
+    let { date, culture, weekdayFormat } = this.props
       , month = dates.visibleDays(date, culture)
       , weeks  = chunk(month, 7);
 
@@ -115,7 +126,7 @@ let MonthView = React.createClass({
 
     this._weekCount = weeks.length;
 
-    var elementProps = omit(this.props, Object.keys(propTypes));
+    let elementProps = omit(this.props, Object.keys(propTypes).concat(omitProps))
 
     return (
       <div

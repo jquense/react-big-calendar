@@ -31,6 +31,8 @@ function isValidView(view, { views: _views }) {
   return names.indexOf(view) !== -1
 }
 
+const omitProps = ['defaultView', 'defaultDate', 'culture', 'rtl']
+
 let now = new Date();
 
 /**
@@ -380,7 +382,7 @@ let Calendar = React.createClass({
     let View = this.getView();
     let names = viewNames(this.props.views)
 
-    let elementProps = omit(this.props, Object.keys(Calendar.propTypes))
+    let elementProps = omit(this.props, Object.keys(Calendar.propTypes).concat(omitProps))
 
     let viewComponents = defaults(
       components[view] || {},

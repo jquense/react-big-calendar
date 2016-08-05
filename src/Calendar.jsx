@@ -17,7 +17,6 @@ import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
 
-import pick from 'lodash/object/pick';
 import omit from 'lodash/object/omit';
 import defaults from 'lodash/object/defaults';
 import transform from 'lodash/object/transform';
@@ -381,8 +380,6 @@ let Calendar = React.createClass({
     let View = this.getView();
     let names = viewNames(this.props.views)
 
-    let elementProps = pick(this.props, ['selected', 'step'])
-
     let viewComponents = defaults(
       components[view] || {},
       omit(components, names)
@@ -391,7 +388,7 @@ let Calendar = React.createClass({
     let ToolbarToRender = components.toolbar || Toolbar
 
     return (
-      <div {...elementProps}
+      <div
         className={cn('rbc-calendar', className, {
           'rbc-rtl': props.rtl
         })}

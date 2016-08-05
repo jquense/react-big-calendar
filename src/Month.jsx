@@ -4,7 +4,6 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './localizer'
 import chunk from 'lodash/array/chunk';
-import pick from 'lodash/object/pick';
 
 import { navigate } from './utils/constants';
 import { notify } from './utils/helpers';
@@ -55,7 +54,6 @@ let propTypes = {
   onSelectEvent: React.PropTypes.func,
   onSelectSlot: React.PropTypes.func
 };
-
 
 let MonthView = React.createClass({
 
@@ -115,13 +113,8 @@ let MonthView = React.createClass({
 
     this._weekCount = weeks.length;
 
-    let elementProps = pick(this.props, ['selected', 'step'])
-
     return (
-      <div
-        {...elementProps}
-        className={cn('rbc-month-view', className)}
-      >
+      <div className={cn('rbc-month-view', className)}>
         <div className='rbc-row rbc-month-header'>
           {this._headers(weeks[0], weekdayFormat, culture)}
         </div>

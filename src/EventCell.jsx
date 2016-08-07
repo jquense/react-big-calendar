@@ -24,7 +24,6 @@ let EventCell = React.createClass({
 
     return (
       <div
-        {...props}
         style={{...props.style, ...style}}
         className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,

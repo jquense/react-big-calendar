@@ -78,6 +78,7 @@
   width: 100%;
   border-top: 2px solid @calendar-border;
   overflow-y: auto;
+  position: relative;
 
   > .rbc-time-gutter {
     flex: none;
@@ -95,4 +96,15 @@
   > .rbc-day-slot {
     width: 100%
   }
+}
+
+.rbc-current-time-indicator {
+  position: absolute;
+  z-index: 1;
+
+  width: 100%;
+  height: 1px;
+
+  background-color: @current-time-color;
+  pointer-events: none;
 }

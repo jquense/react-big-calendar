@@ -150,7 +150,7 @@ export default class TimeGrid extends Component {
           this.renderHeader(range, segments, width)
         }
         <div ref='content' className='rbc-time-content'>
-          <div className='rbc-current-time-indicator' ref='timeIndicator'></div>
+          <div ref='timeIndicator' className='rbc-current-time-indicator'></div>
           <TimeColumn
             {...this.props}
             showLabels
@@ -344,8 +344,10 @@ export default class TimeGrid extends Component {
     if (timeGutter) {
       const pixelHeight = timeGutter.offsetHeight;
       const offset = Math.floor(factor * pixelHeight);
+      const timeIndicator = this.refs.timeIndicator;
 
-      this.refs.timeIndicator.style.top = offset + 'px';
+      timeIndicator.style.left = timeGutter.offsetWidth + 'px';
+      timeIndicator.style.top = offset + 'px';
     }
   }
 

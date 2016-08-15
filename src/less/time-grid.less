@@ -107,4 +107,17 @@
 
   background-color: @current-time-color;
   pointer-events: none;
+
+  &::before {
+    display: block;
+
+    position: absolute;
+    left: -4px;
+    top: -12px;
+
+    content: '•';
+
+    font-size: 18px;
+    color: @current-time-color;
+  }
 }

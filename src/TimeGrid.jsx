@@ -8,6 +8,7 @@ import DayColumn from './DayColumn';
 import EventRow from './EventRow';
 import TimeColumn from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
+import TimeIndicator from './TimeIndicator';
 
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
@@ -146,7 +147,7 @@ export default class TimeGrid extends Component {
           this.renderHeader(range, segments, width)
         }
         <div ref='content' className='rbc-time-content'>
-          <div ref='timeIndicator' className='rbc-current-time-indicator'></div>
+          <TimeIndicator ref='timeIndicator' />
           <TimeColumn
             {...this.props}
             showLabels
@@ -343,14 +344,17 @@ export default class TimeGrid extends Component {
 
     if (timeGutter && now >= min && now <= max) {
       const pixelHeight = timeGutter.offsetHeight;
-      const offset = Math.floor(factor * pixelHeight);
+      const offsetTop = Math.floor(factor * pixelHeight);
 
-      timeIndicator.style.display = 'block';
-      timeIndicator.style.left = timeGutter.offsetWidth + 'px';
-      timeIndicator.style.top = offset + 'px';
+      timeIndicator.show();
+      timeIndicator.positionItems(timeGutter.offsetWidth, offsetTop);
+      timeIndicator.setTimeLineWidth(this.refs.content.offsetWidth - timeGutter.offsetWidth);
+
+      timeIndicator.setCurrentTime(localizer.format(now, this.props.timeGutterFormat, this.props.culture));
     } else {
-      timeIndicator.style.display = 'none';
+      timeIndicator.hide();
     }
+
   }
 
   triggerTimeIndicatorUpdate() {

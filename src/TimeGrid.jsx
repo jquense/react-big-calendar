@@ -147,7 +147,7 @@ export default class TimeGrid extends Component {
           this.renderHeader(range, segments, width)
         }
         <div ref='content' className='rbc-time-content'>
-          <TimeIndicator ref='timeIndicator' />
+          <TimeIndicator {...this.state.timeIndicator} ref='timeIndicator' />
           <TimeColumn
             {...this.props}
             showLabels
@@ -338,21 +338,27 @@ export default class TimeGrid extends Component {
     const secondsGrid = dates.diff(max, min, 'seconds');
     const secondsPassed = dates.diff(now, min, 'seconds');
 
-    const timeIndicator = this.refs.timeIndicator;
     const factor = secondsPassed / secondsGrid;
     const timeGutter = this._gutters[this._gutters.length - 1];
 
     if (timeGutter && now >= min && now <= max) {
+      const timeIndicator = this.refs.timeIndicator;
       const pixelHeight = timeGutter.offsetHeight;
-      const offsetTop = Math.floor(factor * pixelHeight);
+      const timeIndicatorProps = {
+        lineWidth: this.refs.content.offsetWidth - timeGutter.offsetWidth,
+        text: localizer.format(now, this.props.timeGutterFormat, this.props.culture),
+        visible: true,
+        x: timeGutter.offsetWidth,
+        y: Math.floor(factor * pixelHeight)
+      };
 
-      timeIndicator.show();
-      timeIndicator.positionItems(timeGutter.offsetWidth, offsetTop);
-      timeIndicator.setTimeLineWidth(this.refs.content.offsetWidth - timeGutter.offsetWidth);
-
-      timeIndicator.setCurrentTime(localizer.format(now, this.props.timeGutterFormat, this.props.culture));
+      if (timeIndicator.needsUpdate(timeIndicatorProps)) {
+        this.setState({ timeIndicator: timeIndicatorProps });
+      }
     } else {
-      timeIndicator.hide();
+      if (this.state.timeIndicator.visible) {
+        this.setState({ timeIndicator: { visible: false } });
+      }
     }
 
   }

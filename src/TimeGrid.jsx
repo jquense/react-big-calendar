@@ -202,7 +202,7 @@ export default class TimeGrid extends Component {
         endAccessor={this.props.endAccessor}
         allDayAccessor={this.props.allDayAccessor}
         eventPropGetter={this.props.eventPropGetter}
-        selected={this.props.Selected}
+        selected={this.props.selected}
         onSelect={this._selectEvent}
         slots={this._slots}
         key={idx}

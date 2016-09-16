@@ -8,6 +8,7 @@ import DayColumn from './DayColumn';
 import EventRow from './EventRow';
 import TimeColumn from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
+import TimeIndicator from './TimeIndicator';
 
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
@@ -146,7 +147,7 @@ export default class TimeGrid extends Component {
           this.renderHeader(range, segments, width)
         }
         <div ref='content' className='rbc-time-content'>
-          <div ref='timeIndicator' className='rbc-current-time-indicator'></div>
+          <TimeIndicator {...this.state.timeIndicator} ref='timeIndicator' />
           <TimeColumn
             {...this.props}
             showLabels
@@ -338,20 +339,29 @@ export default class TimeGrid extends Component {
     const secondsGrid = dates.diff(max, min, 'seconds');
     const secondsPassed = dates.diff(now, min, 'seconds');
 
-    const timeIndicator = this.refs.timeIndicator;
     const factor = secondsPassed / secondsGrid;
     const timeGutter = this._gutters[this._gutters.length - 1];
 
     if (timeGutter && now >= min && now <= max) {
+      const timeIndicator = this.refs.timeIndicator;
       const pixelHeight = timeGutter.offsetHeight;
-      const offset = Math.floor(factor * pixelHeight);
+      const timeIndicatorProps = {
+        lineWidth: this.refs.content.offsetWidth - timeGutter.offsetWidth,
+        text: localizer.format(now, this.props.timeGutterFormat, this.props.culture),
+        visible: true,
+        x: timeGutter.offsetWidth,
+        y: Math.floor(factor * pixelHeight)
+      };
 
-      timeIndicator.style.display = 'block';
-      timeIndicator.style.left = timeGutter.offsetWidth + 'px';
-      timeIndicator.style.top = offset + 'px';
+      if (timeIndicator.needsUpdate(timeIndicatorProps)) {
+        this.setState({ timeIndicator: timeIndicatorProps });
+      }
     } else {
-      timeIndicator.style.display = 'none';
+      if (this.state.timeIndicator.visible) {
+        this.setState({ timeIndicator: { visible: false } });
+      }
     }
+
   }
 
   triggerTimeIndicatorUpdate() {

@@ -24,7 +24,7 @@ let Week = React.createClass({
 
 });
 
-Week.navigate = (date, action)=>{
+Week.navigate = (date, action) => {
   switch (action){
     case navigate.PREVIOUS:
       return dates.add(date, -1, 'week');

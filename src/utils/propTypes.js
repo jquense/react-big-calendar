@@ -28,6 +28,7 @@ export let accessor = PropTypes.oneOfType([
 export let dateFormat = createChainableTypeChecker(
     (...args) => localizer.propType && localizer.propType(...args))
 
+export let dateRangeFormat = PropTypes.func
 
 export let views = PropTypes.oneOfType([
   PropTypes.arrayOf(

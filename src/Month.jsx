@@ -183,11 +183,11 @@ let MonthView = React.createClass({
 
     return (
     <BackgroundCells
+      slots={7}
+      onSelectSlot={onSelectSlot}
       container={() => findDOMNode(this)}
       selectable={this.props.selectable}
-      slots={7}
       ref={r => this._bgRows[idx] = r}
-      onSelectSlot={onSelectSlot}
     />
     )
   },
@@ -199,7 +199,7 @@ let MonthView = React.createClass({
       <EventRow
         {...this.props}
         eventComponent={this.props.components.event}
-        onSelect={this._selectEvent}
+        onSelect={this.handleSelectEvent}
         key={idx}
         segments={segments}
         start={first}
@@ -217,7 +217,7 @@ let MonthView = React.createClass({
       <EventEndingRow
         {...this.props}
         eventComponent={this.props.components.event}
-        onSelect={this._selectEvent}
+        onSelect={this.handleSelectEvent}
         onShowMore={onClick}
         key={'last_row_' + weekIdx}
         segments={extraSegments}
@@ -227,7 +227,7 @@ let MonthView = React.createClass({
     )
   },
 
-  _dates(row){
+  _dates(row) {
     return row.map((day, colIdx) => {
       var offRange = dates.month(day) !== dates.month(this.props.date);
 
@@ -249,7 +249,7 @@ let MonthView = React.createClass({
     })
   },
 
-  _headers(row, format, culture){
+  _headers(row, format, culture) {
     let first = row[0]
     let last = row[row.length - 1]
 
@@ -278,7 +278,7 @@ let MonthView = React.createClass({
     ) : <span/>
   },
 
-  _renderOverlay(){
+  _renderOverlay() {
     let overlay = (this.state && this.state.overlay) || {};
     let { components } = this.props;
 
@@ -297,7 +297,7 @@ let MonthView = React.createClass({
           events={overlay.events}
           slotStart={overlay.date}
           slotEnd={overlay.end}
-          onSelect={this._selectEvent}
+          onSelect={this.handleSelectEvent}
         />
       </Overlay>
     )
@@ -323,14 +323,14 @@ let MonthView = React.createClass({
     notify(this.props.onNavigate, [navigate.DATE, date])
   },
 
-  _selectEvent(...args){
+  handleSelectEvent(...args){
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
 
     notify(this.props.onSelectEvent, args)
   },
 
-  _selectDates(){
+  _selectDates() {
     let slots = this._pendingSelection.slice()
 
     this._pendingSelection = []
@@ -344,7 +344,7 @@ let MonthView = React.createClass({
     })
   },
 
-  _showMore(segments, date, weekIdx, slot){
+  _showMore(segments, date, weekIdx, slot) {
     let cell = findDOMNode(this._bgRows[weekIdx]).children[slot - 1];
 
     let events = segments
@@ -375,7 +375,7 @@ let MonthView = React.createClass({
 
 });
 
-MonthView.navigate = (date, action)=>{
+MonthView.navigate = (date, action)=> {
   switch (action){
     case navigate.PREVIOUS:
       return dates.add(date, -1, 'month');

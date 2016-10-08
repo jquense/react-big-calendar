@@ -4,14 +4,14 @@ import warning from 'warning';
 import { set } from '../formats';
 import { set as setLocalizer } from '../localizer';
 
-let dateRangeFormat = ({ start, end }, culture, local)=>
+let dateRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, { date: 'short' }, culture) + ' — ' + local.format(end, { date: 'short' }, culture)
 
-let timeRangeFormat = ({ start, end }, culture, local)=>
+let timeRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, { time: 'short' }, culture) +
     ' — ' + local.format(end, { time: 'short' }, culture)
 
-let weekRangeFormat = ({ start, end }, culture, local)=>
+let weekRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'MMM dd', culture) +
     ' — ' + local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
 

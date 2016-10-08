@@ -19,18 +19,16 @@ let Api = React.createClass({
         <p dangerouslySetInnerHTML={{ __html: calData.descHtml }} />
 
         <h2>Props</h2>
-        {
-          Object.keys(calData.props).map(propName => {
-            let data = calData.props[propName];
+        {Object.keys(calData.props).map(propName => {
+          let data = calData.props[propName];
 
-            return this.renderProp(data, propName, 'h3');
-          })
-        }
+          return this.renderProp(data, propName, 'h3');
+        })}
       </div>
     )
   },
 
-  renderProp(data, name, Heading){
+  renderProp(data, name, Heading) {
     let typeInfo = this.renderType(data);
 
     return (
@@ -39,23 +37,31 @@ let Api = React.createClass({
           <a href={`#prop-${name}`}>
             <code>{name}</code>
           </a>
-          { data.required &&
+          {data.required &&
             <strong>{' required'}</strong>
           }
-          {
-            this.renderControllableNote(data, name)
-          }
+          {this.renderControllableNote(data, name)}
         </Heading>
-        <p dangerouslySetInnerHTML={{ __html: data.descHtml }}/>
-        <div style={{ paddingLeft: 0 }}>
-          <div>
-            {'type: '}
-            { typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code> }
+        <div dangerouslySetInnerHTML={{ __html: data.descHtml }} />
+
+        {name !== 'formats' ? (
+          <div style={{ paddingLeft: 0 }}>
+            <div>
+              {'type: '}
+              { typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code> }
+            </div>
+            { data.defaultValue &&
+              <div>default: <code>{data.defaultValue.trim()}</code></div>
+            }
           </div>
-          { data.defaultValue &&
-            <div>default: <code>{data.defaultValue.trim()}</code></div>
-          }
-        </div>
+        ) : (
+          <div>
+            {Object.keys(data.type.value).map(propName =>
+              this.renderProp(data.type.value[propName], name + '.' + propName, 'h4')
+            )}
+          </div>
+        )}
+
       </section>
     )
   },
@@ -68,6 +74,8 @@ let Api = React.createClass({
     switch (name) {
       case 'elementType':
         return 'Component';
+      case 'dateRangeFormat':
+        return 'function({ start: Date, end: Date }, culture: ?string, localizer) -> string';
       case 'object':
         if (type.value)
           return (
@@ -124,7 +132,7 @@ let Api = React.createClass({
   },
 
   renderControllableNote(prop, propName) {
-    let controllable = prop.doclets.controllable;
+    let controllable = prop.doclets && prop.doclets.controllable;
     let isHandler = prop.type && getDisplayTypeName(prop.type.name) === 'function';
 
     if (!controllable) {
@@ -164,8 +172,6 @@ function renderObject(props){
   return transform(props, (obj, val, key) => {
     obj[key] = simpleType(val)
 
-    // if (val.desc && typeof obj[key] === 'string')
-    //   obj[key] = obj[key] + ': ' + val.desc
   }, {})
 }
 

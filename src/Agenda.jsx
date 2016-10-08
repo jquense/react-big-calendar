@@ -138,7 +138,7 @@ let Agenda = React.createClass({
         label = localizer.format(start, this.props.agendaTimeFormat, culture)
       }
       else if (dates.eq(day, end, 'day')){
-        label = localizer.format(start, this.props.agendaTimeFormat, culture)
+        label = localizer.format(end, this.props.agendaTimeFormat, culture)
       }
     }
 

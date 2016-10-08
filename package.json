@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
@@ -51,7 +51,7 @@
     "babel-register": "^6.7.2",
     "chai": "^3.2.0",
     "chance": "^0.7.6",
-    "component-metadata-loader": "^2.0.3",
+    "component-metadata-loader": "^2.1.0",
     "cpy": "^3.4.1",
     "css-loader": "^0.15.6",
     "es5-shim": "^4.1.7",

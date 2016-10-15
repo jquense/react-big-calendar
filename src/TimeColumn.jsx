@@ -65,7 +65,7 @@ export default class TimeColumn extends Component {
 
     return (
       <div
-        className={cn(this.props.className, 'rbc-time-column')}
+        className={cn(this.props.className, 'rbc-time-column', {'rbc-today': dates.isToday(this.props.max)})}
         style={this.props.style}
       >
         {timeslots}

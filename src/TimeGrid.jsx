@@ -288,7 +288,7 @@ export default class TimeGrid extends Component {
             date={date}
             label={localizer.format(date, dayFormat, culture)}
             localizer={localizer}
-            dayFormat={dayFormat}
+            format={dayFormat}
             culture={culture} />
         </a>
       </div>

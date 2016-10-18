@@ -265,7 +265,7 @@ let MonthView = React.createClass({
           date={day}
           label={localizer.format(day, format, culture)}
           localizer={localizer}
-          dayFormat={format}
+          format={format}
           culture={culture} />
       </div>
     )

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-const Header = ({culture, dayFormat, date, label, localizer}) => {
+const Header = ({label}) => {
   return <span>{ label }</span>
 }
 
-export default Header;
+export default Header

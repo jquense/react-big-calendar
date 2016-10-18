@@ -286,6 +286,7 @@ export default class TimeGrid extends Component {
         <a href='#' onClick={this._headerClick.bind(null, date)}>
           <HeaderComponent
             date={date}
+            label={localizer.format(date, dayFormat, culture)}
             localizer={localizer}
             dayFormat={dayFormat}
             culture={culture} />

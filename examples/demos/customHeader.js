@@ -11,11 +11,11 @@ let MyOtherNestedComponent = React.createClass({
 
 let MyCustomHeader = React.createClass({
   render(){
-    const {date, localizer, dayFormat, culture} = this.props
+    const {label} = this.props
     return (
       <div>
         CUSTOM HEADER:
-        <div>{ localizer.format(date, dayFormat, culture) }</div>
+        <div>{ label }</div>
         <MyOtherNestedComponent />
       </div>
     )

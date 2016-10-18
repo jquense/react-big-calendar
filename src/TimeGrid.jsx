@@ -8,6 +8,7 @@ import DayColumn from './DayColumn';
 import EventRow from './EventRow';
 import TimeColumn from './TimeColumn';
 import BackgroundCells from './BackgroundCells';
+import Header from './Header';
 
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
@@ -273,7 +274,8 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderCells(range){
-    let { dayFormat, culture } = this.props;
+    let { dayFormat, culture, components } = this.props;
+    let HeaderComponent = components.header || Header
 
     return range.map((date, i) =>
       <div
@@ -282,7 +284,12 @@ export default class TimeGrid extends Component {
         style={segStyle(1, this._slots)}
       >
         <a href='#' onClick={this._headerClick.bind(null, date)}>
-          { localizer.format(date, dayFormat, culture) }
+          <HeaderComponent
+            date={date}
+            label={localizer.format(date, dayFormat, culture)}
+            localizer={localizer}
+            format={dayFormat}
+            culture={culture} />
         </a>
       </div>
     )

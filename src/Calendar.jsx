@@ -348,9 +348,18 @@ let Calendar = React.createClass({
         event: elementType
       }),
 
-      day: PropTypes.shape({ event: elementType }),
-      week: PropTypes.shape({ event: elementType }),
-      month: PropTypes.shape({ event: elementType })
+      day: PropTypes.shape({
+        header: elementType,
+        event: elementType
+      }),
+      week: PropTypes.shape({
+        header: elementType,
+        event: elementType
+      }),
+      month: PropTypes.shape({
+        header: elementType,
+        event: elementType
+      })
     }),
 
     /**

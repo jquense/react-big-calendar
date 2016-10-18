@@ -16,6 +16,7 @@ import EventEndingRow from './EventEndingRow';
 import Popup from './Popup';
 import Overlay from 'react-overlays/lib/Overlay';
 import BackgroundCells from './BackgroundCells';
+import Header from './Header';
 
 import { dateFormat } from './utils/propTypes';
 import {
@@ -252,6 +253,7 @@ let MonthView = React.createClass({
   _headers(row, format, culture) {
     let first = row[0]
     let last = row[row.length - 1]
+    let HeaderComponent = this.props.components.header || Header
 
     return dates.range(first, last, 'day').map((day, idx) =>
       <div
@@ -259,7 +261,12 @@ let MonthView = React.createClass({
         className='rbc-header'
         style={segStyle(1, 7)}
       >
-        { localizer.format(day, format, culture) }
+        <HeaderComponent
+          date={day}
+          label={localizer.format(day, format, culture)}
+          localizer={localizer}
+          format={format}
+          culture={culture} />
       </div>
     )
   },

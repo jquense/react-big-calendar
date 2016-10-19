@@ -97,6 +97,10 @@ let dates = Object.assign(dateMath, {
     return dates.eq(dateA, dateB, 'month')
   },
 
+  isToday(date) {
+    return dates.eq(date, dates.today(), 'day')
+  },
+
   eqTime(dateA, dateB){
     return dates.hours(dateA) === dates.hours(dateB)
       && dates.minutes(dateA) === dates.minutes(dateB)

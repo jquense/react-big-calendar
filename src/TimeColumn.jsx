@@ -13,6 +13,7 @@ export default class TimeColumn extends Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
+    highlightToday: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
     type: PropTypes.string.isRequired,
     className: PropTypes.string
@@ -21,6 +22,7 @@ export default class TimeColumn extends Component {
     step: 30,
     timeslots: 2,
     showLabels: false,
+    highlightToday: false,
     type: 'day',
     className: ''
   }
@@ -63,9 +65,18 @@ export default class TimeColumn extends Component {
       date = next
     }
 
+    const classes = cn(
+      this.props.className,
+      'rbc-time-column',
+      {
+        'rbc-today': dates.isToday(this.props.max),
+        'rbc-highlight': this.props.highlightToday
+      }
+    )
+
     return (
       <div
-        className={cn(this.props.className, 'rbc-time-column')}
+        className={classes}
         style={this.props.style}
       >
         {timeslots}

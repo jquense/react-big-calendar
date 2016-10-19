@@ -38,6 +38,22 @@ storiesOf('module.Calendar.week', module)
     )
   })
 
+  .add('highlighting today', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultView="week"
+          highlightToday
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
+          onSelectEvent={action('event selected')}
+          defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+
   .add('selectable', () => {
     return (
       <div style={{height: 600}}>

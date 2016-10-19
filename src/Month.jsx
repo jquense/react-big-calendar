@@ -121,7 +121,9 @@ let MonthView = React.createClass({
         { weeks.map((week, idx) =>
             this.renderWeek(week, idx, measure && this._renderMeasureRows))
         }
-        { this.props.popup && this.state.overlay?this._renderOverlay():null}
+        { this.props.popup &&
+            this._renderOverlay()
+        }
       </div>
     )
   },

@@ -259,6 +259,7 @@ export default class TimeGrid extends Component {
           </div>
           <div ref='allDay' className='rbc-allday-cell'>
             <BackgroundCells
+              rtl={this.props.rtl}
               slots={range.length}
               container={()=> this.refs.allDay}
               selectable={this.props.selectable}

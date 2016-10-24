@@ -11,7 +11,8 @@ class DisplayCells extends React.Component {
   static propTypes = {
     selectable: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
-    slots: React.PropTypes.number
+    slots: React.PropTypes.number,
+    rtl: React.PropTypes.bool
   }
 
   state = { selecting: false }
@@ -62,7 +63,7 @@ class DisplayCells extends React.Component {
     let selector = this._selector = new Selection(this.props.container)
 
     selector.on('selecting', box => {
-      let { slots } = this.props;
+      let { slots, rtl } = this.props;
 
       let startIdx = -1;
       let endIdx = -1;
@@ -78,7 +79,8 @@ class DisplayCells extends React.Component {
             this._initial
           , nodeBox
           , box
-          , slots));
+          , slots
+          , rtl));
       }
 
       this.setState({
@@ -90,10 +92,11 @@ class DisplayCells extends React.Component {
     selector
       .on('click', point => {
         let rowBox = getBoundsForNode(node)
+        let { slots, rtl } = this.props;
 
         if (pointInBox(rowBox, point)) {
           let width = slotWidth(getBoundsForNode(node),  this.props.slots);
-          let currentCell = getCellAtX(rowBox, point.x, width);
+          let currentCell = getCellAtX(rowBox, point.x, width, rtl, slots);
 
           this._selectSlot({
             startIdx: currentCell,

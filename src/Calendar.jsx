@@ -70,6 +70,10 @@ let Calendar = React.createClass({
     /**
      * The current view of the calendar.
      *
+     * Possible `month`, `week`, `day` & `agenda`
+     *
+     * `agenda` is a list of upcoming events
+     *
      * @default 'month'
      * @controllable onView
      */

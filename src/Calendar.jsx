@@ -182,7 +182,7 @@ let Calendar = React.createClass({
 
     /**
      * Optionally provide a function that returns an object of className or style props
-     * to be applied to the the event node.
+     * to be applied to the event node.
      *
      * ```js
      * function(
@@ -195,6 +195,20 @@ let Calendar = React.createClass({
      */
     eventPropGetter: PropTypes.func,
 
+    /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the backgroundEvent node.
+     *
+     * ```js
+     * function(
+     * 	backgroundEvent: object,
+     * 	start: date,
+     * 	end: date
+     * ) -> { className: string?, style: object? }
+     * ```
+     */
+
+    backgroundEventPropGetter: PropTypes.func,
     /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
@@ -329,6 +343,7 @@ let Calendar = React.createClass({
      * ```jsx
      * let components = {
      *   event: MyEvent, // used by each view (Month, Day, Week)
+     *   backgroundEvent: MyBackgroundEvent,
      *   toolbar: MyToolbar,
      *   agenda: {
      *   	 event: MyAgendaEvent // with the agenda view use a different component to render events
@@ -340,6 +355,8 @@ let Calendar = React.createClass({
     components: PropTypes.shape({
       event: elementType,
 
+      backgroundEvent: elementType,
+
       toolbar: elementType,
 
       agenda: PropTypes.shape({
@@ -350,14 +367,17 @@ let Calendar = React.createClass({
 
       day: PropTypes.shape({
         header: elementType,
+        backgroundEvent: elementType,
         event: elementType
       }),
       week: PropTypes.shape({
         header: elementType,
+        backgroundEvent: elementType,
         event: elementType
       }),
       month: PropTypes.shape({
         header: elementType,
+        backgroundEvent: elementType,
         event: elementType
       })
     }),

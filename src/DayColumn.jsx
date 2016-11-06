@@ -156,9 +156,8 @@ let DaySlot = React.createClass({
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected);
 
       return (
-        <EventWrapper event={event}>
-          <div 
-            key={'evt_' + idx}
+        <EventWrapper event={event} key={'evt_' + idx}>
+          <div
             style={{...xStyle, ...style}}
             title={label + ': ' + title }
             onClick={this._select.bind(null, event)}

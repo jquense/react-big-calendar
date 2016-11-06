@@ -262,17 +262,14 @@ export default class TimeGrid extends Component {
           </div>
           <div ref='allDay' className='rbc-allday-cell'>
             <BackgroundCells
-<<<<<<< HEAD
               rtl={this.props.rtl}
-=======
-              backgroundWrapperComponent={this.props.components.backgroundWrapper}
->>>>>>> Wrap background cells in BackgroundWrapper
               slots={range.length}
               values={range}
               type="AllDay"
               container={()=> this.refs.allDay}
               selectable={this.props.selectable}
               onSelectSlot={handleSelectSlot}
+              backgroundWrapperComponent={this.props.components.backgroundWrapper}
             />
             <div className='rbc-allday-events'>
               { this.renderAllDayEvents(range, levels) }

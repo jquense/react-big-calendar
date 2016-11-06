@@ -28,6 +28,7 @@ export default class TimeColumn extends Component {
   renderTimeSliceGroup(key, isNow, date) {
     return (
       <TimeSlotGroup
+        backgroundWrapperComponent={this.props.components.backgroundWrapper}
         key={key}
         isNow={isNow}
         timeslots={this.props.timeslots}

@@ -3,15 +3,19 @@ import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 import { segStyle } from './utils/eventLevels';
 import { notify } from './utils/helpers';
+import { elementType } from './utils/propTypes';
 import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode } from './Selection';
 
 class DisplayCells extends React.Component {
 
   static propTypes = {
+    backgroundWrapperComponent: elementType,
     selectable: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
-    slots: React.PropTypes.number
+    slots: React.PropTypes.number,
+    values: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
+    type: React.PropTypes.string
   }
 
   state = { selecting: false }
@@ -33,20 +37,21 @@ class DisplayCells extends React.Component {
   }
 
   render(){
-    let { slots } = this.props;
-    let { selecting, startIdx, endIdx } = this.state
+    let { slots, values, type, backgroundWrapperComponent: BackgroundWrapper } = this.props;
+    let { selecting, startIdx, endIdx } = this.state;
 
     let children = [];
 
     for (var i = 0; i < slots; i++) {
       children.push(
-        <div
-          key={'bg_' + i}
-          style={segStyle(1, slots)}
-          className={cn('rbc-day-bg', {
-            'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
-          })}
-        />
+        <BackgroundWrapper key={'bg_' + i} value={values[i]} type={type}>
+          <div
+            style={segStyle(1, slots)}
+            className={cn('rbc-day-bg', {
+              'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
+            })}
+          />
+        </BackgroundWrapper>
       )
     }
 

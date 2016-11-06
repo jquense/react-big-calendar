@@ -1,6 +1,5 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
-import { findDOMNode } from 'react-dom'
 import { DragSource } from 'react-dnd'
 
 /* drag sources */
@@ -24,8 +23,7 @@ let DraggableEventWrapper = React.createClass({
 
     return (<EventWrapper
       event={event}
-      children={children}
-      ref={instance => connectDragSource(findDOMNode(instance))}
+      children={connectDragSource(children)}
     />);
   }
 });

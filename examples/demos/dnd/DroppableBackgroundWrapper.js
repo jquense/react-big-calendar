@@ -1,7 +1,6 @@
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import BigCalendar from 'react-big-calendar'
-import { findDOMNode } from 'react-dom'
 import { updateEventTime } from './dropActions'
 import cn from 'classnames';
 
@@ -33,12 +32,8 @@ class DroppableBackgroundWrapper extends React.Component {
       : children;
 
     return (<BackgroundWrapper
-      children={resultingChildren}
-      ref={instance => {
-        const domNode = findDOMNode(instance);
-        return connectDropTarget(domNode);
-      }}
-            />);
+      children={connectDropTarget(resultingChildren)}
+    />);
   }
 }
 

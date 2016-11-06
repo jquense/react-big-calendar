@@ -3,6 +3,7 @@ import { DropTarget } from 'react-dnd'
 import BigCalendar from 'react-big-calendar'
 import { findDOMNode } from 'react-dom'
 import { updateEventTime } from './dropActions'
+import cn from 'classnames';
 
 
 /* drop targets */
@@ -27,13 +28,14 @@ class DroppableBackgroundWrapper extends React.Component {
     const { connectDropTarget, children, isOver } = this.props;
     const BackgroundWrapper = BigCalendar.components.backgroundWrapper;
 
+    const resultingChildren = isOver ?
+        React.cloneElement(children, { className: cn(children.props.className, 'dnd-over') })
+      : children;
+
     return (<BackgroundWrapper
-      children={children}
+      children={resultingChildren}
       ref={instance => {
         const domNode = findDOMNode(instance);
-        if(domNode) {
-          domNode.style.backgroundColor = isOver ? '#dddddd' : '';
-        }
         return connectDropTarget(domNode);
       }}
             />);

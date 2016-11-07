@@ -54,6 +54,7 @@ let propTypes = {
 
   onSelectEvent: React.PropTypes.func,
   onSelectSlot: React.PropTypes.func
+
 };
 
 let MonthView = React.createClass({
@@ -131,7 +132,7 @@ let MonthView = React.createClass({
 
   renderWeek(week, weekIdx, content) {
     let { first, last } = endOfRange(week);
-    let evts = eventsForWeek(this.props.events, week[0], week[week.length - 1], this.props)
+    let evts = eventsForWeek(this.props.events.filter(e => !e.background), week[0], week[week.length - 1], this.props)
 
     evts.sort((a, b) => sortEvents(a, b, this.props))
 
@@ -174,6 +175,8 @@ let MonthView = React.createClass({
   renderBackground(row, idx){
     let self = this;
 
+    let evts = eventsForWeek(this.props.events.filter(e => e.background), row[0], row[row.length - 1], this.props)
+
     function onSelectSlot({ start, end }) {
       self._pendingSelection = self._pendingSelection
         .concat(row.slice(start, end + 1))
@@ -189,6 +192,10 @@ let MonthView = React.createClass({
       container={() => findDOMNode(this)}
       selectable={this.props.selectable}
       ref={r => this._bgRows[idx] = r}
+      week={row}
+      backgroundEventComponent={this.props.components.backgroundEvent}
+      backgroundEvents={evts}
+      backgroundEventPropGetter={this.props.backgroundEventPropGetter}
     />
     )
   },

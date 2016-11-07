@@ -97,6 +97,10 @@ let dates = Object.assign(dateMath, {
     return dates.eq(dateA, dateB, 'month')
   },
 
+  sameDay(dateA, dateB){
+    return dates.eq(dateA, dateB, 'day')
+  },
+
   isToday(date) {
     return dates.eq(date, dates.today(), 'day')
   },

@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
+import { elementType } from './utils/propTypes';
 import { segStyle } from './utils/eventLevels';
 import { notify } from './utils/helpers';
+import dates from './utils/dates';
 import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode } from './Selection';
 
 class DisplayCells extends React.Component {
 
   static propTypes = {
-    selectable: React.PropTypes.bool,
-    onSelect: React.PropTypes.func,
-    slots: React.PropTypes.number
+    selectable: PropTypes.bool,
+    onSelect: PropTypes.func,
+    slots: PropTypes.number,
+    week: PropTypes.array,
+    backgroundEvents: PropTypes.array,
+    backgroundEventComponent: elementType,
+    backgroundEventPropGetter: PropTypes.func
   }
 
   state = { selecting: false }
@@ -33,20 +39,43 @@ class DisplayCells extends React.Component {
   }
 
   render(){
-    let { slots } = this.props;
+    let { slots, week, backgroundEvents, backgroundEventComponent,
+          backgroundEventPropGetter, ...props } = this.props;
     let { selecting, startIdx, endIdx } = this.state
 
     let children = [];
 
     for (var i = 0; i < slots; i++) {
+      let backgroundEvent = backgroundEvents.find(event => {
+        return dates.sameDay(event.start, week[i])
+      })
+
+      let Component = backgroundEventComponent;
+      let title = (backgroundEvent || {}).title;
+
+      var style, xClassName;
+      if (backgroundEvent && backgroundEventPropGetter)
+        ({ style, className: xClassName } = backgroundEventPropGetter(backgroundEvent));
+      else
+        ({ style, className: xClassName } = {});
+
       children.push(
         <div
           key={'bg_' + i}
-          style={segStyle(1, slots)}
-          className={cn('rbc-day-bg', {
+          style={{...segStyle(1, slots), ...style, ...props.style}}
+          className={cn('rbc-day-bg', xClassName, {
             'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
           })}
-        />
+        >
+        { Component && backgroundEvent
+          ? <Component
+              event={backgroundEvent}
+              eventPropGetter={backgroundEventPropGetter}
+            />
+          : title
+        }
+
+        </div>
       )
     }
 

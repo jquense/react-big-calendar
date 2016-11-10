@@ -485,8 +485,9 @@ let Calendar = React.createClass({
 
   handleNavigate(action, newDate) {
     let { view, date, onNavigate } = this.props;
+    let ViewComponent = this.getView();
 
-    date = moveDate(action, newDate || date, view)
+    date = moveDate(action, newDate || date, ViewComponent)
 
     onNavigate(date, view)
 

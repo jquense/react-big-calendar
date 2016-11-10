@@ -113,7 +113,7 @@ let Calendar = React.createClass({
      * Callback fired when a calendar event is selected.
      *
      * ```js
-     * function(event: object)
+     * function(event: object, e: SyntheticEvent)
      * ```
      */
     onSelectEvent: PropTypes.func,
@@ -507,8 +507,8 @@ let Calendar = React.createClass({
       this.props.onView(view)
   },
 
-  handleSelectEvent(event){
-    notify(this.props.onSelectEvent, event)
+  handleSelectEvent(...args){
+    notify(this.props.onSelectEvent, args)
   },
 
   handleSelectSlot(slotInfo){

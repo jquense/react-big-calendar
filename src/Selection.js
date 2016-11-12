@@ -8,7 +8,7 @@ function addEventListener(type, handler) {
   }
 }
 
-function isOverContainer(container, x, y){
+function isOverContainer(container, x, y) {
   return !container || contains(container, document.elementFromPoint(x, y))
 }
 
@@ -46,8 +46,13 @@ class Selection {
   }
 
   emit(type, ...args){
+    let result;
     let handlers = this._listeners[type] || [];
-    handlers.forEach(fn => fn(...args))
+    handlers.forEach(fn => {
+      if (result === undefined)
+        result = fn(...args);
+    })
+    return result;
   }
 
   teardown() {
@@ -82,7 +87,12 @@ class Selection {
       , collides, offsetData;
 
     // Right clicks
-    if (e.which === 3 || e.button === 2 || !isOverContainer(node, e.clientX, e.clientY))
+    if (
+      e.which === 3 ||
+      e.button === 2 ||
+      !isOverContainer(node, e.clientX, e.clientY)
+
+    )
       return;
 
     if (!this.globalMouse && node && !contains(node, e.target)) {
@@ -102,12 +112,15 @@ class Selection {
       if (!collides) return;
     }
 
-    this.emit('mousedown', this._mouseDownData = {
+    let result = this.emit('mousedown', this._mouseDownData = {
       x: e.pageX,
       y: e.pageY,
       clientX: e.clientX,
       clientY: e.clientY
     });
+
+    if (result === false)
+      return;
 
     e.preventDefault();
 

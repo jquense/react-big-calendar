@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
+import closest from 'dom-helpers/query/closest';
 
 import Selection, { getBoundsForNode } from './Selection';
 import dates from './utils/dates';
@@ -51,20 +52,24 @@ let DaySlot = React.createClass({
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
-    selectable: React.PropTypes.bool,
+    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
     eventOffset: React.PropTypes.number,
 
     onSelecting: React.PropTypes.func,
     onSelectSlot: React.PropTypes.func.isRequired,
     onSelectEvent: React.PropTypes.func.isRequired,
 
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    dragThroughEvents: React.PropTypes.bool,
+  },
+
+  getDefaultProps() {
+    return { dragThroughEvents: true }
   },
 
   getInitialState() {
     return { selecting: false };
   },
-
 
   componentDidMount() {
     this.props.selectable
@@ -113,8 +118,8 @@ let DaySlot = React.createClass({
         step={step}
       >
         {this.renderEvents()}
-        {
-          selecting &&
+
+        {selecting &&
           <div className='rbc-slot-selection' style={style}>
               <span>
               { localizer.format(selectDates, selectRangeFormat, culture) }
@@ -255,6 +260,13 @@ let DaySlot = React.createClass({
 
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
+
+    selector.on('mousedown', ({ clientX, clientY }) => {
+      if (this.props.selectable !== 'ignoreEvents') return
+      
+      let target = document.elementFromPoint(clientX, clientY);
+      return !closest(target, '.rbc-event', findDOMNode(this))
+    })
 
     selector
       .on('click', ({ x, y }) => {

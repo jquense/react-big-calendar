@@ -14,10 +14,14 @@ class DndBigCalendar extends React.Component {
 
   render() {
     const propsCopy = merge({}, this.props);
+
+    propsCopy.selectable = propsCopy.selectable ? 'ignoreEvents' : false;
+
     propsCopy.components = merge({}, this.props.components, {
       eventWrapper: DraggableEventWrapper,
       backgroundWrapper: DroppableBackgroundWrapper
     })
+
     return <BigCalendar {...propsCopy} />
   }
 }

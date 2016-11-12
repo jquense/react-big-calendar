@@ -23,6 +23,7 @@ function collectTarget(connect, monitor) {
 }
 
 class DroppableBackgroundWrapper extends React.Component {
+
   render() {
     const { connectDropTarget, children, isOver } = this.props;
     const BackgroundWrapper = BigCalendar.components.backgroundWrapper;
@@ -38,7 +39,8 @@ class DroppableBackgroundWrapper extends React.Component {
 }
 
 DroppableBackgroundWrapper.contextTypes = {
-  moveEvent: React.PropTypes.func
+  moveEvent: React.PropTypes.func,
+  dragDropManager: React.PropTypes.object.isRequired
 }
 
 export default DropTarget(['event'], dropTarget, collectTarget)(DroppableBackgroundWrapper)

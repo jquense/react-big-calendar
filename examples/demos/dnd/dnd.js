@@ -32,6 +32,7 @@ class Dnd extends React.Component {
   render(){
     return (
       <DndBigCalendar
+        selectable
         events={this.state.events}
         moveEvent={this.moveEvent}
         defaultDate={new Date(2015, 3, 1)}

@@ -172,27 +172,26 @@ let MonthView = React.createClass({
   },
 
   renderBackground(row, idx){
-    let self = this;
+    const { selectable, components } = this.props;
 
-    function onSelectSlot({ start, end }) {
-      self._pendingSelection = self._pendingSelection
+    let onSelectSlot = ({ start, end }) => {
+      this._pendingSelection = this._pendingSelection
         .concat(row.slice(start, end + 1))
 
-      clearTimeout(self._selectTimer)
-      self._selectTimer = setTimeout(()=> self._selectDates())
+      clearTimeout(this._selectTimer)
+      this._selectTimer = setTimeout(()=> this._selectDates())
     }
 
     return (
     <BackgroundCells
-      rtl={this.props.rtl}
-      backgroundWrapperComponent={this.props.components.backgroundWrapper}
       slots={7}
-      onSelectSlot={onSelectSlot}
-      container={() => findDOMNode(this)}
-      selectable={this.props.selectable}
       values={row}
-      type="Day"
+      rtl={this.props.rtl}
+      selectable={selectable}
+      onSelectSlot={onSelectSlot}
       ref={r => this._bgRows[idx] = r}
+      container={() => findDOMNode(this)}
+      cellWrapperComponent={components.dateCellWrapper}
     />
     )
   },

@@ -5,7 +5,7 @@ import { elementType } from './utils/propTypes'
 
 export default class TimeSlot extends Component {
   static propTypes = {
-    backgroundWrapperComponent: elementType,
+    dayWrapperComponent: elementType,
     value: PropTypes.instanceOf(Date).isRequired,
     isNow: PropTypes.bool,
     showLabel: PropTypes.bool,
@@ -20,10 +20,11 @@ export default class TimeSlot extends Component {
   }
 
   render() {
-    const BackgroundWrapper = this.props.backgroundWrapperComponent;
+    const { value } = this.props;
+    const Wrapper = this.props.dayWrapperComponent;
 
     return (
-      <BackgroundWrapper value={this.props.value} type='TimeSlot'>
+      <Wrapper value={value}>
         <div
           className={cn(
             'rbc-time-slot',
@@ -35,7 +36,7 @@ export default class TimeSlot extends Component {
           <span>{this.props.content}</span>
         }
         </div>
-      </BackgroundWrapper>
+      </Wrapper>
     )
   }
 }

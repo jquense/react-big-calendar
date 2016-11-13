@@ -180,7 +180,7 @@ export default class TimeGrid extends Component {
           max={dates.merge(date, max)}
           eventComponent={components.event}
           eventWrapperComponent={components.eventWrapper}
-          backgroundWrapperComponent={components.backgroundWrapper}
+          dayWrapperComponent={components.dayWrapper}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, this._slots)}
           key={idx}
@@ -218,7 +218,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, segments, width) {
-    let { messages, rtl, onSelectSlot } = this.props;
+    let { messages, rtl, onSelectSlot, selectable, components } = this.props;
     let { isOverflowing } = this.state || {};
 
     let { levels } = eventLevels(segments);
@@ -265,11 +265,10 @@ export default class TimeGrid extends Component {
               rtl={this.props.rtl}
               slots={range.length}
               values={range}
-              type="AllDay"
               container={()=> this.refs.allDay}
-              selectable={this.props.selectable}
+              selectable={selectable}
               onSelectSlot={handleSelectSlot}
-              backgroundWrapperComponent={this.props.components.backgroundWrapper}
+              cellWrapperComponent={components.dateCellWrapper}
             />
             <div className='rbc-allday-events'>
               { this.renderAllDayEvents(range, levels) }

@@ -122,7 +122,7 @@ let dates = Object.assign(dateMath, {
   },
 
   diff(dateA, dateB, unit){
-    if (!unit)
+    if (!unit || unit === 'milliseconds')
       return Math.abs(+dateA - +dateB)
 
     // the .round() handles an edge case

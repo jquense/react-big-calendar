@@ -1,21 +1,24 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
+import closest from 'dom-helpers/query/closest';
+
 import { segStyle } from './utils/eventLevels';
 import { notify } from './utils/helpers';
 import { elementType } from './utils/propTypes';
 import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode } from './Selection';
 
-class DisplayCells extends React.Component {
+class BackgroundCells extends React.Component {
 
   static propTypes = {
-    backgroundWrapperComponent: elementType,
+    cellWrapperComponent: elementType,
     selectable: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
     slots: React.PropTypes.number,
-    values: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
-    type: React.PropTypes.string
+    values: React.PropTypes.arrayOf(
+      React.PropTypes.instanceOf(Date)
+    ),
   }
 
   state = { selecting: false }
@@ -37,21 +40,21 @@ class DisplayCells extends React.Component {
   }
 
   render(){
-    let { slots, values, type, backgroundWrapperComponent: BackgroundWrapper } = this.props;
+    let { slots, values, cellWrapperComponent: Wrapper } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     let children = [];
 
     for (var i = 0; i < slots; i++) {
       children.push(
-        <BackgroundWrapper key={'bg_' + i} value={values[i]} type={type}>
+        <Wrapper key={'bg_' + i} value={values[i]}>
           <div
             style={segStyle(1, slots)}
             className={cn('rbc-day-bg', {
               'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
             })}
           />
-        </BackgroundWrapper>
+        </Wrapper>
       )
     }
 
@@ -90,6 +93,13 @@ class DisplayCells extends React.Component {
         selecting: true,
         startIdx, endIdx
       })
+    })
+
+    selector.on('mousedown', ({ clientX, clientY }) => {
+      if (this.props.selectable !== 'ignoreEvents') return
+
+      let target = document.elementFromPoint(clientX, clientY);
+      return !closest(target, '.rbc-event', findDOMNode(this))
     })
 
     selector
@@ -133,4 +143,4 @@ class DisplayCells extends React.Component {
   }
 }
 
-export default DisplayCells;
+export default BackgroundCells;

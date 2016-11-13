@@ -346,7 +346,8 @@ let Calendar = React.createClass({
     components: PropTypes.shape({
       event: elementType,
       eventWrapper: elementType,
-      backgroundWrapper: elementType,
+      dayWrapper: elementType,
+      dateCellWrapper: elementType,
 
       toolbar: elementType,
 
@@ -451,7 +452,8 @@ let Calendar = React.createClass({
       omit(components, names),
       {
         eventWrapper: EventWrapper,
-        backgroundWrapper: BackgroundWrapper
+        dayWrapper: BackgroundWrapper,
+        dateCellWrapper: BackgroundWrapper
       }
     )
 

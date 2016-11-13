@@ -6,7 +6,7 @@ import { elementType } from './utils/propTypes'
 
 export default class TimeSlotGroup extends Component {
   static propTypes = {
-    backgroundWrapperComponent: elementType,
+    dayWrapperComponent: elementType,
     timeslots: PropTypes.number.isRequired,
     step: PropTypes.number.isRequired,
     value: PropTypes.instanceOf(Date).isRequired,
@@ -23,14 +23,18 @@ export default class TimeSlotGroup extends Component {
   }
 
   renderSlice(slotNumber, content, value) {
-
-    return <TimeSlot key={slotNumber}
-                     backgroundWrapperComponent={this.props.backgroundWrapperComponent}
-                     showLabel={this.props.showLabels && !slotNumber}
-                     content={content}
-                     culture={this.props.culture}
-                     isNow={this.props.isNow}
-                     value={value} />
+    const { dayWrapperComponent, showLabels, isNow, culture } = this.props;
+    return (
+      <TimeSlot
+        key={slotNumber}
+        dayWrapperComponent={dayWrapperComponent}
+        showLabel={showLabels && !slotNumber}
+        content={content}
+        culture={culture}
+        isNow={isNow}
+        value={value}
+      />
+    )
   }
 
   renderSlices() {

@@ -18,7 +18,7 @@ let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/ma
 const Example = React.createClass({
   getInitialState(){
     return {
-      selected: 'basic'
+      selected: 'dnd'
     };
   },
 
@@ -32,7 +32,7 @@ const Example = React.createClass({
       rendering: require('./demos/rendering'),
       customView: require('./demos/customView'),
       timeslots: require('./demos/timeslots'),
-      dnd: require('./demos/dnd/dnd')
+      dnd: require('./demos/dnd')
     }[selected];
 
     return (

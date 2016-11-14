@@ -159,7 +159,7 @@ let DaySlot = React.createClass({
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
           title={label + ': ' + title }
-          onClick={this._select.bind(null, event)}
+          onClick={(e) => this._select(event, e)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,
             'rbc-event-overlaps': lastLeftOffset !== 0

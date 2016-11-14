@@ -159,7 +159,7 @@ let DaySlot = React.createClass({
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
           title={label + ': ' + title }
-          onClick={this._select.bind(null, event)}
+          onClick={(e) => this._select(event, e)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,
             'rbc-event-overlaps': lastLeftOffset !== 0
@@ -294,9 +294,9 @@ let DaySlot = React.createClass({
     })
   },
 
-  _select(event){
+  _select(...args){
     clearTimeout(this._clickTimer);
-    notify(this.props.onSelectEvent, event)
+    notify(this.props.onSelectEvent, args)
   }
 });
 

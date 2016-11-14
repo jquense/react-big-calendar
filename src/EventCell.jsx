@@ -31,7 +31,7 @@ let EventCell = React.createClass({
           'rbc-event-continues-prior': continuesPrior,
           'rbc-event-continues-after': continuesAfter
         })}
-        onClick={()=> onSelect(event)}
+        onClick={(e)=> onSelect(event, e)}
       >
         <div className='rbc-event-content' title={title}>
           { Component

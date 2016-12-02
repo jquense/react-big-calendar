@@ -36,7 +36,7 @@ export let views = PropTypes.oneOfType([
   ),
   all([
     PropTypes.object,
-    (props, name, component)=>{
+    (props, name, ...args)=>{
       let prop = props[name]
         , err;
 
@@ -45,7 +45,7 @@ export let views = PropTypes.oneOfType([
           viewNames.indexOf(key) !== -1 &&
           typeof prop[key] === 'boolean';
 
-        return isBuiltinView || !(err = elementType(prop, key, component))
+        return isBuiltinView || !(err = elementType(prop, key, ...args))
       })
 
       return err || null

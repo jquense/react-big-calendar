@@ -178,6 +178,7 @@ let DaySlot = React.createClass({
                 : title
               }
             </div>
+          </div>
         </EventWrapper>
       )
     })

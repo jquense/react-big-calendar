@@ -40,6 +40,7 @@ let EventCell = React.createClass({
               : title
             }
           </div>
+        </div>
       </EventWrapper>
     );
   }

@@ -13,12 +13,12 @@ class BackgroundCells extends React.Component {
 
   static propTypes = {
     cellWrapperComponent: elementType,
-    selectable: React.PropTypes.bool,
+    selectable: React.PropTypes.string,
     onSelect: React.PropTypes.func,
     slots: React.PropTypes.number,
     rtl: React.PropTypes.bool,
     values: React.PropTypes.arrayOf(
-      React.PropTypes.instanceOf(Date)
+    React.PropTypes.instanceOf(Date)
     ),
   }
 

@@ -26,15 +26,18 @@ export default class TimeColumn extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
+    const { components, timeslots, showLabels, step, timeGutterFormat } = this.props;
+
     return (
       <TimeSlotGroup
         key={key}
         isNow={isNow}
-        timeslots={this.props.timeslots}
-        step={this.props.step}
-        showLabels={this.props.showLabels}
-        timeGutterFormat={this.props.timeGutterFormat}
         value={date}
+        step={step}
+        timeslots={timeslots}
+        showLabels={showLabels}
+        timeGutterFormat={timeGutterFormat}
+        dayWrapperComponent={components.dayWrapper}
       />
     )
   }

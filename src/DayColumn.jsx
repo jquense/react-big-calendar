@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
+import closest from 'dom-helpers/query/closest';
 
 import Selection, { getBoundsForNode } from './Selection';
 import dates from './utils/dates';
@@ -51,20 +52,24 @@ let DaySlot = React.createClass({
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
-    selectable: React.PropTypes.bool,
+    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
     eventOffset: React.PropTypes.number,
 
     onSelecting: React.PropTypes.func,
     onSelectSlot: React.PropTypes.func.isRequired,
     onSelectEvent: React.PropTypes.func.isRequired,
 
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    dragThroughEvents: React.PropTypes.bool,
+  },
+
+  getDefaultProps() {
+    return { dragThroughEvents: true }
   },
 
   getInitialState() {
     return { selecting: false };
   },
-
 
   componentDidMount() {
     this.props.selectable
@@ -113,8 +118,8 @@ let DaySlot = React.createClass({
         step={step}
       >
         {this.renderEvents()}
-        {
-          selecting &&
+
+        {selecting &&
           <div className='rbc-slot-selection' style={style}>
               <span>
               { localizer.format(selectDates, selectRangeFormat, culture) }
@@ -129,6 +134,7 @@ let DaySlot = React.createClass({
     let {
       events, step, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
+      , eventWrapperComponent: EventWrapper
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
@@ -155,24 +161,25 @@ let DaySlot = React.createClass({
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected);
 
       return (
-        <div
-          key={'evt_' + idx}
-          style={{...xStyle, ...style}}
-          title={label + ': ' + title }
-          onClick={(e) => this._select(event, e)}
-          className={cn('rbc-event', className, {
-            'rbc-selected': _isSelected,
-            'rbc-event-overlaps': lastLeftOffset !== 0
-          })}
-        >
-          <div className='rbc-event-label'>{label}</div>
-          <div className='rbc-event-content'>
-            { EventComponent
-              ? <EventComponent event={event} title={title}/>
-              : title
-            }
+        <EventWrapper event={event} key={'evt_' + idx}>
+          <div
+            style={{...xStyle, ...style}}
+            title={label + ': ' + title }
+            onClick={(e) => this._select(event, e)}
+            className={cn('rbc-event', className, {
+              'rbc-selected': _isSelected,
+              'rbc-event-overlaps': lastLeftOffset !== 0
+            })}
+          >
+            <div className='rbc-event-label'>{label}</div>
+            <div className='rbc-event-content'>
+              { EventComponent
+                ? <EventComponent event={event} title={title}/>
+                : title
+              }
+            </div>
           </div>
-        </div>
+        </EventWrapper>
       )
     })
   },
@@ -253,6 +260,13 @@ let DaySlot = React.createClass({
 
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
+
+    selector.on('mousedown', ({ clientX, clientY }) => {
+      if (this.props.selectable !== 'ignoreEvents') return
+      
+      let target = document.elementFromPoint(clientX, clientY);
+      return !closest(target, '.rbc-event', findDOMNode(this))
+    })
 
     selector
       .on('click', ({ x, y }) => {

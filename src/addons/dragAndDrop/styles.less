@@ -1,0 +1,35 @@
+@import '../../less/variables.less';
+
+.rbc-row-content {
+  pointer-events: none;
+
+  & .rbc-event:not(.rbc-dnd-dragging) {
+    pointer-events: all;
+  }
+}
+
+.rbc-dnd-over {
+  background-color: rgba(
+    red(@date-selection-bg-color),
+    green(@date-selection-bg-color),
+    blue(@date-selection-bg-color),
+    .3
+  );
+}
+
+.rbc-event {
+  transition: opacity 250ms;
+  pointer-events: all;
+}
+
+.rbc-dnd-is-dragging {
+  & .rbc-event {
+    pointer-events: none;
+    opacity: .35;
+  }
+}
+
+.rbc-dnd-dragging {
+  pointer-events: none;
+  opacity: .35;
+}

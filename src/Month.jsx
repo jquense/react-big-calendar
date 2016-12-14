@@ -172,24 +172,26 @@ let MonthView = React.createClass({
   },
 
   renderBackground(row, idx){
-    let self = this;
+    const { selectable, components } = this.props;
 
-    function onSelectSlot({ start, end }) {
-      self._pendingSelection = self._pendingSelection
+    let onSelectSlot = ({ start, end }) => {
+      this._pendingSelection = this._pendingSelection
         .concat(row.slice(start, end + 1))
 
-      clearTimeout(self._selectTimer)
-      self._selectTimer = setTimeout(()=> self._selectDates())
+      clearTimeout(this._selectTimer)
+      this._selectTimer = setTimeout(()=> this._selectDates())
     }
 
     return (
     <BackgroundCells
-      rtl={this.props.rtl}
       slots={7}
+      values={row}
+      rtl={this.props.rtl}
+      selectable={selectable}
       onSelectSlot={onSelectSlot}
-      container={() => findDOMNode(this)}
-      selectable={this.props.selectable}
       ref={r => this._bgRows[idx] = r}
+      container={() => findDOMNode(this)}
+      cellWrapperComponent={components.dateCellWrapper}
     />
     )
   },
@@ -201,6 +203,7 @@ let MonthView = React.createClass({
       <EventRow
         {...this.props}
         eventComponent={this.props.components.event}
+        eventWrapperComponent={this.props.components.eventWrapper}
         onSelect={this.handleSelectEvent}
         key={idx}
         segments={segments}
@@ -219,6 +222,7 @@ let MonthView = React.createClass({
       <EventEndingRow
         {...this.props}
         eventComponent={this.props.components.event}
+        eventWrapperComponent={this.props.components.eventWrapper}
         onSelect={this.handleSelectEvent}
         onShowMore={onClick}
         key={'last_row_' + weekIdx}
@@ -301,6 +305,7 @@ let MonthView = React.createClass({
         <Popup
           {...this.props}
           eventComponent={components.event}
+          eventWrapperComponent={components.eventWrapper}
           position={overlay.position}
           events={overlay.events}
           slotStart={overlay.date}

@@ -18,7 +18,7 @@ let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/ma
 const Example = React.createClass({
   getInitialState(){
     return {
-      selected: 'basic'
+      selected: 'dnd'
     };
   },
 
@@ -32,6 +32,7 @@ const Example = React.createClass({
       rendering: require('./demos/rendering'),
       customView: require('./demos/customView'),
       timeslots: require('./demos/timeslots'),
+      dnd: require('./demos/dnd')
     }[selected];
 
     return (
@@ -81,6 +82,9 @@ const Example = React.createClass({
                 <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
               </li>
               */}
+              <li className={cn({active: selected === 'dnd' })}>
+                <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
+              </li>
             </ul>
           </aside>
           <div className='example'>

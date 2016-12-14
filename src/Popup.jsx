@@ -29,7 +29,7 @@ class Popup extends React.Component {
   }
 
   render() {
-    let { events, selected, eventComponent, ...props } = this.props;
+    let { events, selected, eventComponent, eventWrapperComponent, ...props } = this.props;
 
     let { left, width, top } = this.props.position
       , topOffset = (this.state || {}).topOffset || 0
@@ -51,7 +51,8 @@ class Popup extends React.Component {
             <EventCell key={idx}
               {...props}
               event={event}
-              component={eventComponent}
+              eventComponent={eventComponent}
+              eventWrapperComponent={eventWrapperComponent}
               selected={isSelected(event, selected)}
             />
           )

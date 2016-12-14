@@ -17,6 +17,8 @@ import viewLabel from './utils/viewLabel';
 import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
+import EventWrapper from './EventWrapper';
+import BackgroundWrapper from './BackgroundWrapper';
 
 import omit from 'lodash/object/omit';
 import defaults from 'lodash/object/defaults';
@@ -161,8 +163,12 @@ let Calendar = React.createClass({
     ]),
     /**
      * Allows mouse selection of ranges of dates/times.
+     *
+     * The 'ignoreEvents' option prevents selection code from running when a
+     * drag begins over an event. Useful when you want custom event click or drag
+     * logic
      */
-    selectable: PropTypes.bool,
+    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
 
     /**
      * Determines the selectable time increments in week and day views
@@ -173,7 +179,7 @@ let Calendar = React.createClass({
      * the number of slots per "section" in the Time grid views. Adjust with `step`
      * to change the default of Hour long sections, with 30 minute slots.
      */
-    timeslots: React.PropTypes.number.isRequired,
+    timeslots: React.PropTypes.number,
 
     /**
      * switch the calendar to a `right-to-left` read direction.
@@ -339,6 +345,9 @@ let Calendar = React.createClass({
      */
     components: PropTypes.shape({
       event: elementType,
+      eventWrapper: elementType,
+      dayWrapper: elementType,
+      dateCellWrapper: elementType,
 
       toolbar: elementType,
 
@@ -440,7 +449,12 @@ let Calendar = React.createClass({
 
     let viewComponents = defaults(
       components[view] || {},
-      omit(components, names)
+      omit(components, names),
+      {
+        eventWrapper: EventWrapper,
+        dayWrapper: BackgroundWrapper,
+        dateCellWrapper: BackgroundWrapper
+      }
     )
 
     let ToolbarToRender = components.toolbar || Toolbar

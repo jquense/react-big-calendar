@@ -324,7 +324,17 @@ let Calendar = React.createClass({
 
       agendaDateFormat: dateFormat,
       agendaTimeFormat: dateFormat,
-      agendaTimeRangeFormat: dateRangeFormat
+      agendaTimeRangeFormat: dateRangeFormat,
+    
+      /**
+       * Time range displayed on events.
+       */
+      eventTimeRangeFormat: dateRangeFormat,
+        
+      /**
+       * Range displayed while dragging a selection.
+       */
+      selectRangeFormat: dateRangeFormat
     }),
 
     /**

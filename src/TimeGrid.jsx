@@ -97,7 +97,7 @@ export default class TimeGrid extends Component {
   componentWillReceiveProps(nextProps) {
     const { start, scrollToTime } = this.props;
     // When paginating, reset scroll
-    if (!dates.eq(nextProps.start, start) || nextProps.scrollToTime !== scrollToTime) {
+    if (!dates.eq(nextProps.start, start, 'minute') || !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')) {
       this.calculateScroll();
     }
   }

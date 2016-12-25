@@ -8,9 +8,9 @@
   align-items: center;
   margin-bottom: 10px;
   font-size: 16px;
+  justify-content: space-between;
 
   .rbc-toolbar-label {
-    width: 100%;
     padding: 0 10px;
     text-align: center;
   }
@@ -59,8 +59,13 @@
 }
 
 .rbc-btn-group {
-  display: inline-block;
-  white-space: nowrap;
+  display: flex;
+  width: 38%;
+  flex-wrap: wrap;
+
+  &:last-child {
+    justify-content: flex-end;
+  }
 
   > button:first-child:not(:last-child) {
     border-top-right-radius: 0;

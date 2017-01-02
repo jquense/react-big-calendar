@@ -132,7 +132,7 @@ let DaySlot = React.createClass({
 
   renderEvents() {
     let {
-      events, step, min, culture, eventPropGetter
+      events, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
       , eventWrapperComponent: EventWrapper
       , startAccessor, endAccessor, titleAccessor } = this.props;

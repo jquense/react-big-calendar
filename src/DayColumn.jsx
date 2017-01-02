@@ -145,8 +145,8 @@ let DaySlot = React.createClass({
     return events.map((event, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
-      let startSlot = positionFromDate(start, min, step);
-      let endSlot = positionFromDate(end, min, step);
+      let startSlot = positionFromDate(start, min);
+      let endSlot = positionFromDate(end, min);
 
       lastLeftOffset = Math.max(0,
         overlaps(event, events.slice(0, idx), this.props, lastLeftOffset + 1))

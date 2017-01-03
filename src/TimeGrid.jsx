@@ -29,33 +29,6 @@ const MIN_ROWS = 2;
 
 export default class TimeGrid extends Component {
 
-  static propTypes = {
-    ...DayColumn.propTypes,
-    ...TimeColumn.propTypes,
-
-    step: React.PropTypes.number,
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date),
-    scrollToTime: React.PropTypes.instanceOf(Date),
-    dayFormat: dateFormat,
-    rtl: React.PropTypes.bool
-  }
-
-  static defaultProps = {
-    ...DayColumn.defaultProps,
-    ...TimeColumn.defaultProps,
-
-    step: 30,
-    min: dates.startOf(new Date(), 'day'),
-    max: dates.endOf(new Date(), 'day'),
-    scrollToTime: dates.startOf(new Date(), 'day'),
-    /* these 2 are needed to satisfy requirements from TimeColumn required props
-     * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
-     */
-    type: 'gutter',
-    now: new Date()
-  }
-
   constructor(props) {
     super(props)
     this.state = { gutterWidth: undefined, isOverflowing: null };
@@ -387,3 +360,31 @@ export default class TimeGrid extends Component {
   }
 
 }
+
+TimeGrid.propTypes = {
+  ...DayColumn.propTypes,
+  ...TimeColumn.propTypes,
+
+  step: React.PropTypes.number,
+  min: React.PropTypes.instanceOf(Date),
+  max: React.PropTypes.instanceOf(Date),
+  scrollToTime: React.PropTypes.instanceOf(Date),
+  dayFormat: dateFormat,
+  rtl: React.PropTypes.bool
+};
+
+TimeGrid.defaultProps = {
+  ...DayColumn.defaultProps,
+  ...TimeColumn.defaultProps,
+
+  step: 30,
+  min: dates.startOf(new Date(), 'day'),
+  max: dates.endOf(new Date(), 'day'),
+  scrollToTime: dates.startOf(new Date(), 'day'),
+  /* these 2 are needed to satisfy requirements from TimeColumn required props
+   * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
+   */
+  type: 'gutter',
+  now: new Date()
+};
+

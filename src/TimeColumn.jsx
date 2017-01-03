@@ -6,24 +6,6 @@ import dates from './utils/dates';
 import TimeSlotGroup from './TimeSlotGroup'
 
 export default class TimeColumn extends Component {
-  static propTypes = {
-    step: PropTypes.number.isRequired,
-    timeslots: PropTypes.number.isRequired,
-    now: PropTypes.instanceOf(Date).isRequired,
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
-    showLabels: PropTypes.bool,
-    timeGutterFormat: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    className: PropTypes.string
-  }
-  static defaultProps = {
-    step: 30,
-    timeslots: 2,
-    showLabels: false,
-    type: 'day',
-    className: ''
-  }
 
   renderTimeSliceGroup(key, isNow, date) {
     const { components, timeslots, showLabels, step, timeGutterFormat } = this.props;
@@ -76,4 +58,24 @@ export default class TimeColumn extends Component {
       </div>
     )
   }
+}
+
+TimeColumn. propTypes = {
+  step: PropTypes.number.isRequired,
+  timeslots: PropTypes.number.isRequired,
+  now: PropTypes.instanceOf(Date).isRequired,
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
+  showLabels: PropTypes.bool,
+  timeGutterFormat: PropTypes.string,
+  type: PropTypes.string.isRequired,
+  className: PropTypes.string
+}
+
+TimeColumn.defaultProps = {
+  step: 30,
+  timeslots: 2,
+  showLabels: false,
+  type: 'day',
+  className: ''
 }

@@ -5,23 +5,6 @@ import localizer from './localizer'
 import { elementType } from './utils/propTypes'
 
 export default class TimeSlotGroup extends Component {
-  static propTypes = {
-    dayWrapperComponent: elementType,
-    timeslots: PropTypes.number.isRequired,
-    step: PropTypes.number.isRequired,
-    value: PropTypes.instanceOf(Date).isRequired,
-    showLabels: PropTypes.bool,
-    isNow: PropTypes.bool,
-    timeGutterFormat: PropTypes.string,
-    culture: PropTypes.string
-  }
-  static defaultProps = {
-    timeslots: 2,
-    step: 30,
-    isNow: false,
-    showLabels: false
-  }
-
   renderSlice(slotNumber, content, value) {
     const { dayWrapperComponent, showLabels, isNow, culture } = this.props;
     return (
@@ -56,3 +39,22 @@ export default class TimeSlotGroup extends Component {
     )
   }
 }
+
+TimeSlotGroup.propTypes = {
+  dayWrapperComponent: elementType,
+  timeslots: PropTypes.number.isRequired,
+  step: PropTypes.number.isRequired,
+  value: PropTypes.instanceOf(Date).isRequired,
+  showLabels: PropTypes.bool,
+  isNow: PropTypes.bool,
+  timeGutterFormat: PropTypes.string,
+  culture: PropTypes.string
+};
+
+TimeSlotGroup.defaultProps = {
+  timeslots: 2,
+  step: 30,
+  isNow: false,
+  showLabels: false
+};
+

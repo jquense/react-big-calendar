@@ -11,19 +11,10 @@ import Selection, { getBoundsForNode } from './Selection';
 
 class BackgroundCells extends React.Component {
 
-  static propTypes = {
-    cellWrapperComponent: elementType,
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
-    onSelect: React.PropTypes.func,
-    slots: React.PropTypes.number,
-    rtl: React.PropTypes.bool,
-    type: React.PropTypes.string,
-    values: React.PropTypes.arrayOf(
-      React.PropTypes.instanceOf(Date)
-    ),
+  constructor() {
+    super();
+    this.state = { selecting: false }
   }
-
-  state = { selecting: false }
 
   componentDidMount(){
     this.props.selectable
@@ -145,6 +136,18 @@ class BackgroundCells extends React.Component {
         start: startIdx, end: endIdx
       })
   }
+}
+
+BackgroundCells.propTypes = {
+  cellWrapperComponent: elementType,
+  selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+  onSelect: React.PropTypes.func,
+  slots: React.PropTypes.number,
+  rtl: React.PropTypes.bool,
+  type: React.PropTypes.string,
+  values: React.PropTypes.arrayOf(
+      React.PropTypes.instanceOf(Date)
+  ),
 }
 
 export default BackgroundCells;

@@ -4,21 +4,6 @@ import { elementType } from './utils/propTypes'
 
 
 export default class TimeSlot extends Component {
-  static propTypes = {
-    dayWrapperComponent: elementType,
-    value: PropTypes.instanceOf(Date).isRequired,
-    isNow: PropTypes.bool,
-    showLabel: PropTypes.bool,
-    content: PropTypes.string,
-    culture: PropTypes.string
-  }
-
-  static defaultProps = {
-    isNow: false,
-    showLabel: false,
-    content: ''
-  }
-
   render() {
     const { value } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
@@ -40,3 +25,19 @@ export default class TimeSlot extends Component {
     )
   }
 }
+
+TimeSlot.propTypes = {
+  dayWrapperComponent: elementType,
+  value: PropTypes.instanceOf(Date).isRequired,
+  isNow: PropTypes.bool,
+  showLabel: PropTypes.bool,
+  content: PropTypes.string,
+  culture: PropTypes.string
+};
+
+TimeSlot.defaultProps = {
+  isNow: false,
+  showLabel: false,
+  content: ''
+};
+

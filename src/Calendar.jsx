@@ -20,10 +20,10 @@ import Toolbar from './Toolbar';
 import EventWrapper from './EventWrapper';
 import BackgroundWrapper from './BackgroundWrapper';
 
-import omit from 'lodash/object/omit';
-import defaults from 'lodash/object/defaults';
-import transform from 'lodash/object/transform';
-import mapValues from 'lodash/object/mapValues';
+import omit from 'lodash/omit';
+import defaults from 'lodash/defaults';
+import transform from 'lodash/transform';
+import mapValues from 'lodash/mapValues';
 
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -325,12 +325,12 @@ let Calendar = React.createClass({
       agendaDateFormat: dateFormat,
       agendaTimeFormat: dateFormat,
       agendaTimeRangeFormat: dateRangeFormat,
-    
+
       /**
        * Time range displayed on events.
        */
       eventTimeRangeFormat: dateRangeFormat,
-        
+
       /**
        * Range displayed while dragging a selection.
        */

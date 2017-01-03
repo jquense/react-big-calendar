@@ -140,7 +140,7 @@ class BackgroundCells extends React.Component {
 
 BackgroundCells.propTypes = {
   cellWrapperComponent: elementType,
-  selectable: React.PropTypes.bool,
+  selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
   onSelect: React.PropTypes.func,
   slots: React.PropTypes.number,
   rtl: React.PropTypes.bool,

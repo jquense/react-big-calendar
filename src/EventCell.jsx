@@ -8,7 +8,7 @@ let EventCell = React.createClass({
     let {
         className, event, selected, eventPropGetter
       , startAccessor, endAccessor, titleAccessor
-      , slotStart, slotEnd, onSelect
+      , slotStart, slotEnd
       , eventComponent: Event, eventWrapperComponent: EventWrapper
       , ...props } = this.props;
 

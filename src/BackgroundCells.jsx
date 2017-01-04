@@ -20,7 +20,7 @@ class BackgroundCells extends React.Component {
     type: React.PropTypes.string,
     values: React.PropTypes.arrayOf(
       React.PropTypes.instanceOf(Date)
-    ),
+    )
   }
 
   state = { selecting: false }

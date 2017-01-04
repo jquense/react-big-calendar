@@ -1,6 +1,6 @@
 import React from 'react';
 import metadata from 'component-metadata!react-big-calendar/Calendar';
-import transform from 'lodash/object/transform';
+import transform from 'lodash/transform';
 
 function displayObj(obj){
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '')

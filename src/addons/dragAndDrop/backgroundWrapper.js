@@ -92,7 +92,7 @@ function createWrapper(type) {
     return {
       type,
       connectDropTarget: connect.dropTarget(),
-      isOver: monitor.isOver(),
+      isOver: monitor.isOver()
     };
   }
 

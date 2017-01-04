@@ -13,7 +13,7 @@ try {
 
 
 export default function withDragAndDrop(Calendar, {
-  backend = html5Backend,
+  backend = html5Backend
 } = {}) {
 
   class DragAndDropCalendar extends React.Component {
@@ -63,7 +63,7 @@ export default function withDragAndDrop(Calendar, {
         ...components,
         eventWrapper: DraggableEventWrapper,
         dateCellWrapper: DateCellWrapper,
-        dayWrapper: DayWrapper,
+        dayWrapper: DayWrapper
       }
 
       return <Calendar {...props} />

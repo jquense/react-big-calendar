@@ -60,7 +60,7 @@ let DaySlot = React.createClass({
     onSelectEvent: React.PropTypes.func.isRequired,
 
     className: React.PropTypes.string,
-    dragThroughEvents: React.PropTypes.bool,
+    dragThroughEvents: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -263,7 +263,7 @@ let DaySlot = React.createClass({
 
     selector.on('mousedown', ({ clientX, clientY }) => {
       if (this.props.selectable !== 'ignoreEvents') return
-      
+
       let target = document.elementFromPoint(clientX, clientY);
       return !closest(target, '.rbc-event', findDOMNode(this))
     })

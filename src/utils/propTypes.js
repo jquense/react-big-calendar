@@ -3,7 +3,7 @@ import localizer from '../localizer';
 import elementType from 'react-prop-types/lib/elementType';
 import all from 'react-prop-types/lib/all';
 import { views as Views } from './constants';
-import {createChainableTypeChecker} from 'react-prop-types/lib/common';
+import createChainableTypeChecker from 'react-prop-types/lib/utils/createChainableTypeChecker';
 
 export { elementType }
 

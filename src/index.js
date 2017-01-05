@@ -6,7 +6,7 @@ import momentLocalizer from './localizers/moment';
 import globalizeLocalizer from './localizers/globalize';
 import viewLabel from './utils/viewLabel';
 import move from './utils/move';
-import { views } from './utils/constants';
+import { views, navigate } from './utils/constants';
 
 Object.assign(Calendar, {
   setLocalizer,
@@ -14,6 +14,7 @@ Object.assign(Calendar, {
   momentLocalizer,
   label: viewLabel,
   views,
+  navigate,
   move,
   components: {
     eventWrapper: EventWrapper,

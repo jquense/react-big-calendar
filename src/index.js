@@ -14,6 +14,7 @@ Object.assign(Calendar, {
   momentLocalizer,
   label: viewLabel,
   views,
+  Views: views,
   Navigate: navigate,
   move,
   components: {

@@ -136,7 +136,7 @@ let MonthView = React.createClass({
     evts.sort((a, b) => sortEvents(a, b, this.props))
 
     let segments = evts = evts.map(evt => eventSegments(evt, first, last, this.props))
-    let limit = (this.state.rowLimit - 1) || 1;
+    let limit = this.props.truncateEvents ? (this.state.rowLimit - 1) || 1 : Infinity;
 
     let { levels, extra } = eventLevels(segments, limit)
 

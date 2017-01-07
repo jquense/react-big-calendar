@@ -2,18 +2,11 @@ import dates from '../utils/dates';
 import { set } from '../formats';
 import { set as setLocalizer } from '../localizer';
 
-function inSame12Hr(start, end){
-  let s = 12 - dates.hours(start)
-  let e = 12 - dates.hours(end)
-  return (s <= 0 && e <= 0) || (s >= 0 && e >= 0)
-}
-
 let dateRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'L', culture) + ' — ' + local.format(end, 'L', culture)
 
-let timeRangeFormat = ({ start, end }, culture, local)=>
-  local.format(start, 'h:mma', culture) +
-    ' — ' + local.format(end, inSame12Hr(start, end) ? 'h:mm' : 'h:mma', culture)
+let timeRangeFormat = ({ start, end }, culture, local) =>
+  local.format(start, 'LT', culture) + ' — ' + local.format(end, 'h:mm' : 'LT', culture)
 
 let weekRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'MMM DD', culture) +

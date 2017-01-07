@@ -4,12 +4,12 @@ import Intro from './Intro.md';
 import cn from 'classnames';
 import { render } from 'react-dom';
 
-import localizer from 'react-big-calendar/localizers/globalize';
+import localizer from 'react-big-calendar/lib/localizers/globalize';
 import globalize from 'globalize';
 
 localizer(globalize);
 
-import 'react-big-calendar/less/styles.less';
+import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
 

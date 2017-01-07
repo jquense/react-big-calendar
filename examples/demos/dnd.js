@@ -3,9 +3,9 @@ import events from '../events'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 import BigCalendar from 'react-big-calendar'
-import withDragAndDrop from 'react-big-calendar/addons/dragAndDrop';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 
-import 'react-big-calendar/addons/dragAndDrop/styles.less';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 

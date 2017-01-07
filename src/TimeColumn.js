@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import cn from 'classnames';
 
 import dates from './utils/dates';
-
+import { elementType } from './utils/propTypes';
+import BackgroundWrapper from './BackgroundWrapper';
 import TimeSlotGroup from './TimeSlotGroup'
 
 export default class TimeColumn extends Component {
@@ -15,18 +16,21 @@ export default class TimeColumn extends Component {
     showLabels: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
     type: PropTypes.string.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
+
+    dayWrapperComponent: elementType,
   }
   static defaultProps = {
     step: 30,
     timeslots: 2,
     showLabels: false,
     type: 'day',
-    className: ''
+    className: '',
+    dayWrapperComponent: BackgroundWrapper,
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    const { components, timeslots, showLabels, step, timeGutterFormat } = this.props;
+    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat } = this.props;
 
     return (
       <TimeSlotGroup
@@ -37,42 +41,43 @@ export default class TimeColumn extends Component {
         timeslots={timeslots}
         showLabels={showLabels}
         timeGutterFormat={timeGutterFormat}
-        dayWrapperComponent={components.dayWrapper}
+        dayWrapperComponent={dayWrapperComponent}
       />
     )
   }
 
   render() {
-    const totalMin = dates.diff(this.props.min, this.props.max, 'minutes')
-    const numGroups = Math.ceil(totalMin / (this.props.step * this.props.timeslots))
-    const timeslots = []
-    const groupLengthInMinutes = this.props.step * this.props.timeslots
+    const { className, children, style, now, min, max, step, timeslots } = this.props;
+    const totalMin = dates.diff(min, max, 'minutes')
+    const numGroups = Math.ceil(totalMin / (step * timeslots))
+    const renderedSlots = []
+    const groupLengthInMinutes = step * timeslots
 
-    let date = this.props.min
+    let date = min
     let next = date
     let isNow = false
 
     for (var i = 0; i < numGroups; i++) {
       isNow = dates.inRange(
-          this.props.now
+          now
         , date
         , dates.add(next, groupLengthInMinutes - 1, 'minutes')
         , 'minutes'
       )
 
       next = dates.add(date, groupLengthInMinutes, 'minutes');
-      timeslots.push(this.renderTimeSliceGroup(i, isNow, date))
+      renderedSlots.push(this.renderTimeSliceGroup(i, isNow, date))
 
       date = next
     }
 
     return (
       <div
-        className={cn(this.props.className, 'rbc-time-column', {'rbc-today': dates.isToday(this.props.max)})}
-        style={this.props.style}
+        className={cn(className, 'rbc-time-column')}
+        style={style}
       >
-        {timeslots}
-        {this.props.children}
+        {renderedSlots}
+        {children}
       </div>
     )
   }

@@ -1,15 +1,14 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
-import closest from 'dom-helpers/query/closest';
 
-import Selection, { getBoundsForNode } from './Selection';
+import Selection, { getBoundsForNode, isEvent } from './Selection';
 import dates from './utils/dates';
 import { isSelected } from './utils/selection';
 import localizer from './localizer'
 
 import { notify } from './utils/helpers';
-import { accessor } from './utils/propTypes';
+import { accessor, elementType, dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
 import TimeColumn from './TimeColumn'
@@ -19,8 +18,20 @@ function snapToSlot(date, step){
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-function positionFromDate(date, min){
-  return dates.diff(min, dates.merge(min, date), 'minutes')
+function startsBefore(date, min) {
+  return dates.lt(dates.merge(min, date), min, 'minutes')
+}
+
+function startsAfter(date, max) {
+  return dates.gt(dates.merge(max, date), max, 'minutes')
+}
+
+function positionFromDate(date, min, total) {
+  if (startsBefore(date, min))
+    return 0
+
+  let diff = dates.diff(min, dates.merge(min, date), 'minutes')
+  return Math.min(diff, total)
 }
 
 function overlaps(event, events, { startAccessor, endAccessor }, last) {
@@ -47,11 +58,19 @@ let DaySlot = React.createClass({
     step: React.PropTypes.number.isRequired,
     min: React.PropTypes.instanceOf(Date).isRequired,
     max: React.PropTypes.instanceOf(Date).isRequired,
+    now: React.PropTypes.instanceOf(Date),
 
+    rtl: React.PropTypes.bool,
+    titleAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
+    selectRangeFormat: dateFormat,
+    eventTimeRangeFormat: dateFormat,
+    culture: React.PropTypes.string,
+
+    selected: React.PropTypes.object,
     selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
     eventOffset: React.PropTypes.number,
 
@@ -60,7 +79,11 @@ let DaySlot = React.createClass({
     onSelectEvent: React.PropTypes.func.isRequired,
 
     className: React.PropTypes.string,
-    dragThroughEvents: React.PropTypes.bool
+    dragThroughEvents: React.PropTypes.bool,
+    eventPropGetter: React.PropTypes.func,
+    dayWrapperComponent: elementType,
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
   },
 
   getDefaultProps() {
@@ -92,12 +115,12 @@ let DaySlot = React.createClass({
       min,
       max,
       step,
-      timeslots,
       now,
       selectRangeFormat,
       culture,
       ...props
     } = this.props
+
     this._totalMin = dates.diff(min, max, 'minutes')
 
     let { selecting, startSlot, endSlot } = this.state
@@ -109,9 +132,12 @@ let DaySlot = React.createClass({
     };
 
     return (
-      <TimeColumn {...props}
-        className='rbc-day-slot'
-        timeslots={timeslots}
+      <TimeColumn
+        {...props}
+        className={cn(
+          'rbc-day-slot',
+          dates.isToday(max) && 'rbc-today'
+        )}
         now={now}
         min={min}
         max={max}
@@ -132,7 +158,11 @@ let DaySlot = React.createClass({
 
   renderEvents() {
     let {
-      events, step, min, culture, eventPropGetter
+        events
+      , min
+      , max
+      , culture
+      , eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
       , eventWrapperComponent: EventWrapper
       , startAccessor, endAccessor, titleAccessor } = this.props;
@@ -145,8 +175,11 @@ let DaySlot = React.createClass({
     return events.map((event, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
-      let startSlot = positionFromDate(start, min, step);
-      let endSlot = positionFromDate(end, min, step);
+      let startSlot = positionFromDate(start, min, this._totalMin);
+      let endSlot = positionFromDate(end, min, this._totalMin);
+
+      let continuesPrior = startsBefore(start, min)
+      let continuesAfter = startsAfter(end, max)
 
       lastLeftOffset = Math.max(0,
         overlaps(event, events.slice(0, idx), this.props, lastLeftOffset + 1))
@@ -168,7 +201,9 @@ let DaySlot = React.createClass({
             onClick={(e) => this._select(event, e)}
             className={cn('rbc-event', className, {
               'rbc-selected': _isSelected,
-              'rbc-event-overlaps': lastLeftOffset !== 0
+              'rbc-event-overlaps': lastLeftOffset !== 0,
+              'rbc-event-continues-earlier': continuesPrior,
+              'rbc-event-continues-later': continuesAfter
             })}
           >
             <div className='rbc-event-label'>{label}</div>
@@ -253,26 +288,24 @@ let DaySlot = React.createClass({
         selecting: true,
         startDate: start,
         endDate: end,
-        startSlot: positionFromDate(start, min, step),
-        endSlot: positionFromDate(end, min, step)
+        startSlot: positionFromDate(start, min, this._totalMin),
+        endSlot: positionFromDate(end, min, this._totalMin)
       }
     }
 
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
 
-    selector.on('mousedown', ({ clientX, clientY }) => {
+    selector.on('mousedown', (box) => {
       if (this.props.selectable !== 'ignoreEvents') return
 
-      let target = document.elementFromPoint(clientX, clientY);
-      return !closest(target, '.rbc-event', findDOMNode(this))
+      return !isEvent(findDOMNode(this), box)
     })
 
     selector
-      .on('click', ({ x, y }) => {
-        this._clickTimer = setTimeout(()=> {
-          this._selectSlot(selectionState({ x, y }))
-        })
+      .on('click', (box) => {
+        if (!isEvent(findDOMNode(this), box))
+          this._selectSlot(selectionState(box))
 
         this.setState({ selecting: false })
       })
@@ -308,8 +341,7 @@ let DaySlot = React.createClass({
     })
   },
 
-  _select(...args){
-    clearTimeout(this._clickTimer);
+  _select(...args) {
     notify(this.props.onSelectEvent, args)
   }
 });

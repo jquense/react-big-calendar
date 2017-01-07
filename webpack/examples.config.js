@@ -20,7 +20,8 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      'react-big-calendar': path.join(__dirname, '..', 'src')
+      'react-big-calendar$': require.resolve(__dirname + '/../src/index.js'),
+      'react-big-calendar/lib': path.join(__dirname, '..', 'src')
     },
     extensions: ['', '.js', '.jsx']
   },

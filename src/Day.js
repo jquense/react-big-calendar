@@ -5,18 +5,16 @@ import { navigate } from './utils/constants';
 
 let Day = React.createClass({
 
-  propTypes: TimeGrid.propTypes,
-
-  getDefaultProps() {
-    return TimeGrid.defaultProps
+  propTypes: {
+    date: React.PropTypes.instanceOf(Date).isRequired,
   },
 
   render() {
-    let { date } = this.props;
+    let { date, ...props } = this.props;
     let { start, end } = Day.range(date)
 
     return (
-      <TimeGrid {...this.props} start={start} end={end} eventOffset={10}/>
+      <TimeGrid {...props} start={start} end={end} eventOffset={10} />
     );
   }
 });

@@ -1,9 +1,11 @@
-import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import Calendar from '../Calendar';
 import moment from 'moment';
-import momentLocalizer from '../localizers/moment.js'
-import '../less/styles.less'
+import React from 'react';
+
+import Calendar from '../src';
+import momentLocalizer from '../src/localizers/moment.js'
+import '../src/less/styles.less'
+import demoEvents from '../examples/events';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -16,6 +18,19 @@ const events = [{
     allDay: false
   },
   {
+    title: 'test larger',
+    start: moment().startOf('day').add(5, 'hours').toDate(),
+    end: moment().startOf('day').add(10, 'hours').toDate(),
+    allDay: false
+  },
+
+  {
+    title: 'test larger',
+    start: moment().startOf('day').add(15, 'hours').toDate(),
+    end: moment().startOf('day').add(23, 'hours').toDate(),
+    allDay: false
+  },
+  {
     title: 'test all day',
     start: moment().toDate(),
     end: moment().toDate(),
@@ -23,6 +38,19 @@ const events = [{
   }]
 
 storiesOf('module.Calendar.week', module)
+  .add('demo', () => {
+    return (
+      <div style={{height: 500}}>
+        <Calendar
+          popup
+          events={demoEvents}
+          onSelectEvent={action('event selected')}
+          defaultDate={new Date(2015, 3, 1)}
+        />
+      </div>
+    )
+  })
+
   .add('default view', () => {
     return (
       <div style={{height: 600}}>
@@ -144,6 +172,105 @@ storiesOf('module.Calendar.week', module)
           onSelectEvent={action('event selected')}
           onSelectSlot={action('slot selected')}
           defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+  .add('first of the week all-day event', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultDate={new Date(2016, 11, 4)}
+          events={[{
+              allDay: true,
+              title: 'All Day Event',
+              start: new Date(2016, 11, 4),
+              end: new Date(2016, 11, 4)
+          }]}
+        />
+      </div>
+    )
+  })
+  .add('end of the week all-day event', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultDate={new Date(2016, 11, 3)}
+          events={[{
+              allDay: true,
+              title: 'All Day Event',
+              start: new Date(2016, 11, 3),
+              end: new Date(2016, 11, 3)
+          }]}
+        />
+      </div>
+    )
+  })
+  .add('event at end of week', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultDate={new Date(2016, 11, 3)}
+          events={[
+            {
+              title: 'has time',
+              start: moment(new Date(2016, 11, 3)).add(1, 'days').subtract(5, 'hours').toDate(),
+              end: moment(new Date(2016, 11, 3)).add(1, 'days').subtract(4, 'hours').toDate(),
+            },
+          ]}
+        />
+      </div>
+    )
+  })
+  .add('event at start of week', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultDate={new Date(2016, 11, 4)}
+          events={[{
+            title: 'has time',
+            start: moment(new Date(2016, 11, 4)).add(1, 'days').subtract(5, 'hours').toDate(),
+            end: moment(new Date(2016, 11, 4)).add(1, 'days').subtract(4, 'hours').toDate(),
+          }]}
+        />
+      </div>
+    )
+  })
+  .add('events on a constrained day column', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultView={Calendar.Views.DAY}
+          min={moment('8 am', 'h a').toDate()}
+          max={moment('5 pm', 'h a').toDate()}
+          events={events}
+        />
+      </div>
+    )
+  })
+  .add('no duration', () => {
+    return (
+      <div style={{height: 600}}>
+        {/* should display all three events */}
+        <Calendar
+          defaultDate={new Date(2016, 11, 4)}
+          events={[
+            {
+              title: 'start of the week',
+              start: new Date(2016, 11, 4),
+              end: new Date(2016, 11, 4)
+            },
+            {
+                title: 'end of the week',
+                start: new Date(2016, 11, 3),
+                end: new Date(2016, 11, 3)
+            },
+            {
+                title: 'middle',
+                start: new Date(2016, 11, 6),
+                end: new Date(2016, 11, 6)
+            }
+          ]}
         />
       </div>
     )

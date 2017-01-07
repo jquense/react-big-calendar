@@ -1,36 +1,29 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
+
 import dates from './utils/dates';
 import localizer from './localizer'
 import chunk from 'lodash/chunk';
 
 import { navigate } from './utils/constants';
 import { notify } from './utils/helpers';
-import getHeight from 'dom-helpers/query/height';
 import getPosition from 'dom-helpers/query/position';
 import raf from 'dom-helpers/util/requestAnimationFrame';
 
-import EventRow from './EventRow';
-import EventEndingRow from './EventEndingRow';
 import Popup from './Popup';
 import Overlay from 'react-overlays/lib/Overlay';
-import BackgroundCells from './BackgroundCells';
+import DateContentRow from './DateContentRow';
 import Header from './Header';
 
 import { dateFormat } from './utils/propTypes';
-import {
-    segStyle, inRange, eventSegments
-  , endOfRange, eventLevels, sortEvents } from './utils/eventLevels';
+import { segStyle, inRange, sortEvents } from './utils/eventLevels';
 
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props));
 
-let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 let propTypes = {
-  ...EventRow.PropTypes,
-
   culture: React.PropTypes.string,
 
   date: React.PropTypes.instanceOf(Date),
@@ -84,7 +77,7 @@ let MonthView = React.createClass({
     let running;
 
     if (this.state.needLimitMeasure)
-      this._measureRowLimit(this.props)
+      this.measureRowLimit(this.props)
 
     window.addEventListener('resize', this._resizeListener = ()=> {
       if (!running) {
@@ -98,19 +91,21 @@ let MonthView = React.createClass({
 
   componentDidUpdate() {
     if (this.state.needLimitMeasure)
-      this._measureRowLimit(this.props)
+      this.measureRowLimit(this.props)
   },
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._resizeListener, false)
   },
 
+  getContainer() {
+    return findDOMNode(this)
+  },
+
   render() {
     let { date, culture, weekdayFormat, className } = this.props
       , month = dates.visibleDays(date, culture)
       , weeks  = chunk(month, 7);
-
-    let measure = this.state.needLimitMeasure
 
     this._weekCount = weeks.length;
 
@@ -120,7 +115,7 @@ let MonthView = React.createClass({
           {this._headers(weeks[0], weekdayFormat, culture)}
         </div>
         { weeks.map((week, idx) =>
-            this.renderWeek(week, idx, measure && this._renderMeasureRows))
+            this.renderWeek(week, idx))
         }
         { this.props.popup &&
             this._renderOverlay()
@@ -129,130 +124,77 @@ let MonthView = React.createClass({
     )
   },
 
-  renderWeek(week, weekIdx, content) {
-    let { first, last } = endOfRange(week);
-    let evts = eventsForWeek(this.props.events, week[0], week[week.length - 1], this.props)
+  renderWeek(week, weekIdx) {
+    let {
+      events,
+      components,
+      selectable,
+      titleAccessor,
+      startAccessor,
+      endAccessor,
+      allDayAccessor,
+      eventPropGetter,
+      selected } = this.props;
 
-    evts.sort((a, b) => sortEvents(a, b, this.props))
+    const { needLimitMeasure, rowLimit } = this.state;
 
-    let segments = evts = evts.map(evt => eventSegments(evt, first, last, this.props))
-    let limit = (this.state.rowLimit - 1) || 1;
-
-    let { levels, extra } = eventLevels(segments, limit)
-
-    content = content || ((lvls, wk) => lvls.map((lvl, idx) => this.renderRowLevel(lvl, wk, idx)))
+    events = eventsForWeek(events, week[0], week[week.length - 1], this.props)
+    events.sort((a, b) => sortEvents(a, b, this.props))
 
     return (
-      <div key={'week_' + weekIdx}
-        className='rbc-month-row'
-        ref={!weekIdx && (r => this._firstRow = r)}
-      >
-        {
-          this.renderBackground(week, weekIdx)
+      <DateContentRow
+        key={weekIdx}
+        ref={weekIdx === 0
+          ? 'slotRow' : undefined
         }
-        <div
-          className='rbc-row-content'
-        >
-          <div
-            className='rbc-row'
-            ref={!weekIdx && (r => this._firstDateRow = r)}
-          >
-            { this._dates(week) }
-          </div>
-          {
-            content(levels, week, weekIdx)
-          }
-          {
-            !!extra.length &&
-              this.renderShowMore(segments, extra, week, weekIdx, levels.length)
-          }
-        </div>
+        container={this.getContainer}
+        className='rbc-month-row'
+        range={week}
+        events={events}
+        maxRows={rowLimit}
+        selected={selected}
+        selectable={selectable}
+
+        titleAccessor={titleAccessor}
+        startAccessor={startAccessor}
+        endAccessor={endAccessor}
+        allDayAccessor={allDayAccessor}
+        eventPropGetter={eventPropGetter}
+
+        renderHeader={this.readerDateHeading}
+        renderForMeasure={needLimitMeasure}
+
+        onShowMore={this.handleShowMore}
+        onSelect={this.handleSelectEvent}
+        onSelectSlot={this.handleSelectSlot}
+
+        eventComponent={components.event}
+        eventWrapperComponent={components.eventWrapper}
+        dateCellWrapper={components.dateCellWrapper}
+      />
+    )
+  },
+
+  readerDateHeading({ date, className, ...props }) {
+    let { date: currentDate, dateFormat, culture  } = this.props;
+
+    let isOffRange = dates.month(date) !== dates.month(currentDate);
+    let isCurrent = dates.eq(date, currentDate, 'day');
+
+    return (
+      <div
+        {...props}
+        className={cn(
+          className,
+          isOffRange && 'rbc-off-range',
+          isCurrent && 'rbc-current'
+        )}
+      >
+        <a href='#' onClick={e => this.handleHeadingClick(date, e)}>
+          {localizer.format(date, dateFormat, culture)}
+        </a>
       </div>
     )
-  },
-
-  renderBackground(row, idx){
-    const { selectable, components } = this.props;
-
-    let onSelectSlot = ({ start, end }) => {
-      this._pendingSelection = this._pendingSelection
-        .concat(row.slice(start, end + 1))
-
-      clearTimeout(this._selectTimer)
-      this._selectTimer = setTimeout(()=> this._selectDates())
-    }
-
-    return (
-    <BackgroundCells
-      slots={7}
-      values={row}
-      rtl={this.props.rtl}
-      selectable={selectable}
-      onSelectSlot={onSelectSlot}
-      ref={r => this._bgRows[idx] = r}
-      container={() => findDOMNode(this)}
-      cellWrapperComponent={components.dateCellWrapper}
-    />
-    )
-  },
-
-  renderRowLevel(segments, week, idx){
-    let { first, last } = endOfRange(week);
-
-    return (
-      <EventRow
-        {...this.props}
-        eventComponent={this.props.components.event}
-        eventWrapperComponent={this.props.components.eventWrapper}
-        onSelect={this.handleSelectEvent}
-        key={idx}
-        segments={segments}
-        start={first}
-        end={last}
-      />
-    )
-  },
-
-  renderShowMore(segments, extraSegments, week, weekIdx) {
-    let { first, last } = endOfRange(week);
-
-    let onClick = slot => this._showMore(segments, week[slot - 1], weekIdx, slot)
-
-    return (
-      <EventEndingRow
-        {...this.props}
-        eventComponent={this.props.components.event}
-        eventWrapperComponent={this.props.components.eventWrapper}
-        onSelect={this.handleSelectEvent}
-        onShowMore={onClick}
-        key={'last_row_' + weekIdx}
-        segments={extraSegments}
-        start={first}
-        end={last}
-      />
-    )
-  },
-
-  _dates(row) {
-    return row.map((day, colIdx) => {
-      var offRange = dates.month(day) !== dates.month(this.props.date);
-
-      return (
-        <div
-          key={'header_' + colIdx}
-          style={segStyle(1, 7)}
-          className={cn('rbc-date-cell', {
-            'rbc-off-range': offRange,
-            'rbc-now': dates.eq(day, new Date(), 'day'),
-            'rbc-current': dates.eq(day, this.props.date, 'day')
-          })}
-        >
-          <a href='#' onClick={this._dateClick.bind(null, day)}>
-            { localizer.format(day, this.props.dateFormat, this.props.culture) }
-          </a>
-        </div>
-      )
-    })
   },
 
   _headers(row, format, culture) {
@@ -271,23 +213,10 @@ let MonthView = React.createClass({
           label={localizer.format(day, format, culture)}
           localizer={localizer}
           format={format}
-          culture={culture} />
+          culture={culture}
+        />
       </div>
     )
-  },
-
-  _renderMeasureRows(levels, row, idx) {
-    let first = idx === 0;
-
-    return first ? (
-      <div className='rbc-row'>
-        <div className='rbc-row-segment' style={segStyle(1, 7)}>
-          <div ref={r => this._measureEvent = r} className={cn('rbc-event')}>
-            <div className='rbc-event-content'>&nbsp;</div>
-          </div>
-        </div>
-      </div>
-    ) : <span/>
   },
 
   _renderOverlay() {
@@ -316,30 +245,29 @@ let MonthView = React.createClass({
     )
   },
 
-  _measureRowLimit() {
-    let eventHeight = getHeight(this._measureEvent);
-    let labelHeight = getHeight(this._firstDateRow);
-    let eventSpace = getHeight(this._firstRow) - labelHeight;
-
-    this._needLimitMeasure = false;
-
+  measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
-      rowLimit: Math.max(
-        Math.floor(eventSpace / eventHeight), 1)
+      rowLimit: this.refs.slotRow.getRowLimit(),
     })
   },
 
-  _dateClick(date, e){
+  handleSelectSlot(range) {
+    this._pendingSelection = this._pendingSelection
+      .concat(range)
+
+    clearTimeout(this._selectTimer)
+    this._selectTimer = setTimeout(()=> this._selectDates())
+  },
+
+  handleHeadingClick(date, e){
     e.preventDefault();
     this.clearSelection()
     notify(this.props.onNavigate, [navigate.DATE, date])
   },
 
   handleSelectEvent(...args){
-    //cancel any pending selections so only the event click goes through.
     this.clearSelection()
-
     notify(this.props.onSelectEvent, args)
   },
 
@@ -357,17 +285,12 @@ let MonthView = React.createClass({
     })
   },
 
-  _showMore(segments, date, weekIdx, slot) {
-    let cell = findDOMNode(this._bgRows[weekIdx]).children[slot - 1];
-
-    let events = segments
-      .filter(seg => isSegmentInSlot(seg, slot))
-      .map(seg => seg.event)
-
+  handleShowMore(events, date, cell, slot) {
+    const { popup, onNavigate, onShowMore } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
 
-    if (this.props.popup) {
+    if (popup) {
       let position = getPosition(cell, findDOMNode(this));
 
       this.setState({
@@ -375,10 +298,10 @@ let MonthView = React.createClass({
       })
     }
     else {
-      notify(this.props.onNavigate, [navigate.DATE, date])
+      notify(onNavigate, [navigate.DATE, date])
     }
 
-    notify(this.props.onShowMore, [events, date, slot])
+    notify(onShowMore, [events, date, slot])
   },
 
   clearSelection(){

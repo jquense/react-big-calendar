@@ -29,9 +29,8 @@
   }
 
   .rbc-allday-events {
-    pointer-events: none;
     position: relative;
-    z-index: 1;
+    z-index: 4;
   }
 
   .rbc-row > {
@@ -99,14 +98,15 @@
   }
 
   > .rbc-day-slot {
-    width: 100%
+    width: 100%;
+    user-select: none;
   }
 }
 
 .rbc-current-time-indicator {
   position: absolute;
   z-index: 1;
-  right: 0;
+  left: 0;
   height: 1px;
 
   background-color: @current-time-color;

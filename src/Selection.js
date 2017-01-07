@@ -1,4 +1,5 @@
 import contains from 'dom-helpers/query/contains';
+import closest from 'dom-helpers/query/closest';
 import events from 'dom-helpers/events';
 
 function addEventListener(type, handler) {
@@ -10,6 +11,11 @@ function addEventListener(type, handler) {
 
 function isOverContainer(container, x, y) {
   return !container || contains(container, document.elementFromPoint(x, y))
+}
+
+export function isEvent(node, { clientX, clientY, }) {
+  let target = document.elementFromPoint(clientX, clientY);
+  return !!closest(target, '.rbc-event', node)
 }
 
 const clickTolerance = 5;
@@ -122,7 +128,7 @@ class Selection {
     if (result === false)
       return;
 
-    e.preventDefault();
+    //e.preventDefault();
 
     this._onMouseUpListener = addEventListener('mouseup', this._mouseUp)
     this._onMouseMoveListener = addEventListener('mousemove', this._openSelector)
@@ -146,7 +152,12 @@ class Selection {
     }
 
     if(click && inRoot)
-      return this.emit('click', { x: e.pageX, y: e.pageY })
+      return this.emit('click', {
+        x: e.pageX,
+        y: e.pageY,
+        clientX: e.clientX,
+        clientY: e.clientY,
+      })
 
     // User drag-clicked in the Selectable area
     if(!click)

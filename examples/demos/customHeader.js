@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
@@ -11,7 +11,7 @@ let MyOtherNestedComponent = React.createClass({
 
 let MyCustomHeader = React.createClass({
   render(){
-    const {label} = this.props
+    const { label } = this.props
     return (
       <div>
         CUSTOM HEADER:
@@ -25,7 +25,6 @@ let MyCustomHeader = React.createClass({
 
 let CustomHeader = React.createClass({
   render(){
-    console.log('CUSTOM HEADER DEMO');
     return (
       <BigCalendar
         {...this.props}

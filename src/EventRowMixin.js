@@ -21,6 +21,7 @@ export default {
     endAccessor: accessor,
 
     eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
     onSelect: React.PropTypes.func
   },
 
@@ -32,7 +33,7 @@ export default {
     }
   },
 
-  renderEvent(event){
+  renderEvent(event) {
     let {
         eventPropGetter, selected, start, end
       , startAccessor, endAccessor, titleAccessor

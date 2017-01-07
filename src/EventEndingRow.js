@@ -13,7 +13,9 @@ let EventRow = React.createClass({
 
   propTypes: {
     segments: React.PropTypes.array,
-    slots: React.PropTypes.number
+    slots: React.PropTypes.number,
+    messages: React.PropTypes.object,
+    onShowMore: React.PropTypes.func,
   },
 
   mixins: [ EventRowMixin ],

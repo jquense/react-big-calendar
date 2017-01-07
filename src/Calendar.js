@@ -176,13 +176,13 @@ let Calendar = React.createClass({
     step: React.PropTypes.number,
 
     /**
-     * the number of slots per "section" in the Time grid views. Adjust with `step`
-     * to change the default of Hour long sections, with 30 minute slots.
+     * The number of slots per "section" in the time grid views. Adjust with `step`
+     * to change the default of 1 hour long groups, with 30 minute slots.
      */
     timeslots: React.PropTypes.number,
 
     /**
-     * switch the calendar to a `right-to-left` read direction.
+     *Switch the calendar to a `right-to-left` read direction.
      */
     rtl: PropTypes.bool,
 
@@ -245,6 +245,13 @@ let Calendar = React.createClass({
      * Determines how far down the scroll pane is initially scrolled down.
      */
     scrollToTime: PropTypes.instanceOf(Date),
+
+    /**
+     * Specify a specific culture code for the Calendar.
+     *
+     * **Note: it's generally better to handle this globally via your i18n library.**
+     */
+    culture: React.PropTypes.string,
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.

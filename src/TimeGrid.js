@@ -127,8 +127,9 @@ export default class TimeGrid extends Component {
       , start
       , end
       , width
-      , components
-      , startAccessor, endAccessor, allDayAccessor } = this.props;
+      , startAccessor
+      , endAccessor
+      , allDayAccessor } = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -366,7 +367,7 @@ export default class TimeGrid extends Component {
   }
 
   positionTimeIndicator() {
-    const {min, max} = this.props
+    const { rtl, min, max } = this.props
     const now = new Date();
 
     const secondsGrid = dates.diff(max, min, 'seconds');
@@ -381,8 +382,8 @@ export default class TimeGrid extends Component {
       const offset = Math.floor(factor * pixelHeight);
 
       timeIndicator.style.display = 'block';
-      timeIndicator.style.right = 0;
-      timeIndicator.style.left = timeGutter.offsetWidth + 'px';
+      timeIndicator.style[rtl ? 'left' : 'right'] = 0;
+      timeIndicator.style[rtl ? 'right' : 'left'] = timeGutter.offsetWidth + 'px';
       timeIndicator.style.top = offset + 'px';
     } else {
       timeIndicator.style.display = 'none';

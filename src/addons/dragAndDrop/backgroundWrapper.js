@@ -22,6 +22,11 @@ export function getEventTimes({ start, end }, dropDate, type) {
   }
 }
 
+const propTypes = {
+  connectDropTarget: React.PropTypes.func.isRequired,
+  type: React.PropTypes.string,
+  isOver: React.PropTypes.bool,
+}
 
 class DraggableBackgroundWrapper extends React.Component {
   // constructor(...args) {
@@ -71,7 +76,7 @@ class DraggableBackgroundWrapper extends React.Component {
     let resultingChildren = children
     if (isOver)
       resultingChildren = React.cloneElement(children, {
-        className: cn(children.props.className, 'rbc-dnd-over')
+        className: cn(children.props.className, 'rbc-addons-dnd-over')
       })
 
     return (
@@ -81,6 +86,7 @@ class DraggableBackgroundWrapper extends React.Component {
     );
   }
 }
+DraggableBackgroundWrapper.propTypes = propTypes;
 
 DraggableBackgroundWrapper.contextTypes = {
   onEventDrop: React.PropTypes.func,

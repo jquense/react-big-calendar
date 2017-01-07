@@ -1,7 +1,6 @@
 /* eslint no-fallthrough: 0 */
 import dateMath from 'date-arithmetic';
 import localizer from '../localizer';
-import { directions } from './constants';
 
 const MILLI = {
   seconds: 1000,
@@ -10,14 +9,16 @@ const MILLI = {
   day: 1000 * 60 * 60 * 24
 }
 
+const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
-let dates = Object.assign(dateMath, {
+let dates = {
+
+  ...dateMath,
 
   monthsInYear(year){
-    let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-      , date = new Date(year, 0, 1)
+    let date = new Date(year, 0, 1)
 
-    return months.map(i => dates.month(date, i))
+    return MONTHS.map(i => dates.month(date, i))
   },
 
   firstVisibleDay(date, culture){
@@ -49,22 +50,6 @@ let dates = Object.assign(dateMath, {
     let floor = dates.startOf(date, unit)
 
     return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
-  },
-
-  move(date, min, max, unit, direction){
-    let isUpOrDown = direction === directions.UP || direction === directions.DOWN
-      , addUnit = isUpOrDown ? 'week' : 'day'
-      , amount = isUpOrDown ? 4 : 1
-      , newDate;
-
-    if (direction === directions.UP || direction === directions.LEFT)
-      amount *= -1
-
-    newDate = dates.add(date, amount, addUnit)
-
-    return dates.inRange(newDate, min, max, 'day')
-      ? newDate
-      : date
   },
 
   range(start, end, unit = 'day'){
@@ -171,6 +156,6 @@ let dates = Object.assign(dateMath, {
   tomorrow() {
     return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
   }
-})
+}
 
 export default dates;

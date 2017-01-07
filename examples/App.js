@@ -18,7 +18,7 @@ let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/ma
 const Example = React.createClass({
   getInitialState(){
     return {
-      selected: 'dnd'
+      selected: 'basic',
     };
   },
 

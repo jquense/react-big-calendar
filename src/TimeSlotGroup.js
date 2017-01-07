@@ -44,7 +44,7 @@ export default class TimeSlotGroup extends Component {
     for (let i = 0; i < this.props.timeslots; i++) {
       const content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
       ret.push(this.renderSlice(i, content, sliceValue))
-      sliceValue = date.add(sliceValue, sliceLength , 'minutes')
+      sliceValue = date.add(sliceValue, sliceLength, 'minutes')
     }
     return ret
   }

@@ -1,9 +1,9 @@
 import React from 'react';
 
-let BackgroundWrapper = React.createClass({
+class BackgroundWrapper extends React.Component {
   render() {
     return this.props.children;
   }
-});
+}
 
 export default BackgroundWrapper;

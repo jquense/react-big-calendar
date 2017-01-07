@@ -19,7 +19,13 @@ function collectSource(connect, monitor) {
   };
 }
 
-let DraggableEventWrapper = React.createClass({
+const propTypes = {
+  connectDragSource: React.PropTypes.func.isRequired,
+  isDragging: React.PropTypes.bool.isRequired,
+  event: React.PropTypes.object.isRequired,
+}
+
+class DraggableEventWrapper extends React.Component {
   render() {
     let { connectDragSource, isDragging, children, event } = this.props;
     let EventWrapper = BigCalendar.components.eventWrapper;
@@ -27,7 +33,7 @@ let DraggableEventWrapper = React.createClass({
     children = React.cloneElement(children, {
       className: cn(
         children.props.className,
-        isDragging && 'rbc-dnd-dragging'
+        isDragging && 'rbc-addons-dnd-dragging'
       )
     })
 
@@ -37,6 +43,8 @@ let DraggableEventWrapper = React.createClass({
       </EventWrapper>
     );
   }
-});
+}
+
+DraggableEventWrapper.propTypes = propTypes;
 
 export default DragSource('event', eventSource, collectSource)(DraggableEventWrapper);

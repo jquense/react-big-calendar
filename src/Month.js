@@ -16,7 +16,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import DateContentRow from './DateContentRow';
 import Header from './Header';
 
-import { dateFormat } from './utils/propTypes';
+import { accessor, dateFormat } from './utils/propTypes';
 import { segStyle, inRange, sortEvents } from './utils/eventLevels';
 
 let eventsForWeek = (evts, start, end, props) =>
@@ -24,19 +24,43 @@ let eventsForWeek = (evts, start, end, props) =>
 
 
 let propTypes = {
-  culture: React.PropTypes.string,
-
+  events: React.PropTypes.array.isRequired,
   date: React.PropTypes.instanceOf(Date),
 
   min: React.PropTypes.instanceOf(Date),
   max: React.PropTypes.instanceOf(Date),
 
+  step: React.PropTypes.number,
+  now: React.PropTypes.instanceOf(Date),
+
+  scrollToTime: React.PropTypes.instanceOf(Date),
+  eventPropGetter: React.PropTypes.func,
+
+  culture: React.PropTypes.string,
+  dayFormat: dateFormat,
+
+  rtl: React.PropTypes.bool,
+  width: React.PropTypes.number,
+
+  titleAccessor: accessor.isRequired,
+  allDayAccessor: accessor.isRequired,
+  startAccessor: accessor.isRequired,
+  endAccessor: accessor.isRequired,
+
+  selected: React.PropTypes.object,
+  selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+  onNavigate: React.PropTypes.func,
+  onSelectSlot: React.PropTypes.func,
+  onSelectEvent: React.PropTypes.func,
+  onShowMore: React.PropTypes.func,
+
   dateFormat,
 
   weekdayFormat: dateFormat,
-
   popup: React.PropTypes.bool,
 
+  components: React.PropTypes.object.isRequired,
   popupOffset: React.PropTypes.oneOfType([
     React.PropTypes.number,
     React.PropTypes.shape({
@@ -44,9 +68,6 @@ let propTypes = {
       y: React.PropTypes.number
     })
   ]),
-
-  onSelectEvent: React.PropTypes.func,
-  onSelectSlot: React.PropTypes.func
 };
 
 let MonthView = React.createClass({

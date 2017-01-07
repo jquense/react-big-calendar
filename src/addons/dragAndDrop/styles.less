@@ -1,35 +1,38 @@
 @import '../../less/variables.less';
 
-.rbc-row-content {
-  pointer-events: none;
+.rbc-addons-dnd {
+  .rbc-row-content {
+    pointer-events: none;
 
-  & .rbc-event:not(.rbc-dnd-dragging) {
+    & .rbc-show-more,
+    & .rbc-event:not(.rbc-addons-dnd-dragging) {
+      pointer-events: all;
+    }
+  }
+
+  .rbc-addons-dnd-over {
+    background-color: rgba(
+      red(@date-selection-bg-color),
+      green(@date-selection-bg-color),
+      blue(@date-selection-bg-color),
+      .3
+    );
+  }
+
+  .rbc-event {
+    transition: opacity 250ms;
     pointer-events: all;
   }
-}
 
-.rbc-dnd-over {
-  background-color: rgba(
-    red(@date-selection-bg-color),
-    green(@date-selection-bg-color),
-    blue(@date-selection-bg-color),
-    .3
-  );
-}
+  .rbc-addons-dnd-is-dragging {
+    & .rbc-event {
+      pointer-events: none;
+      opacity: .35;
+    }
+  }
 
-.rbc-event {
-  transition: opacity 250ms;
-  pointer-events: all;
-}
-
-.rbc-dnd-is-dragging {
-  & .rbc-event {
+  .rbc-addons-dnd-dragging {
     pointer-events: none;
     opacity: .35;
   }
-}
-
-.rbc-dnd-dragging {
-  pointer-events: none;
-  opacity: .35;
 }

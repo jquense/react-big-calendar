@@ -17,6 +17,10 @@ export default function withDragAndDrop(Calendar, {
 } = {}) {
 
   class DragAndDropCalendar extends React.Component {
+    static propTypes = {
+      selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
+      components: React.PropTypes.object,
+    }
     getChildContext () {
       return { onEventDrop: this.props.onEventDrop }
     }
@@ -56,7 +60,8 @@ export default function withDragAndDrop(Calendar, {
 
       props.className = cn(
         props.className,
-        this.state.isDragging && 'rbc-dnd-is-dragging'
+        'rbc-addons-dnd',
+        this.state.isDragging && 'rbc-addons-dnd-is-dragging'
       )
 
       props.components = {

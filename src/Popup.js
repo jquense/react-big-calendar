@@ -1,11 +1,22 @@
 import React from 'react';
-import EventCell from './EventCell';
-import { isSelected } from './utils/selection';
-import localizer from './localizer';
 import getOffset from 'dom-helpers/query/offset';
 import getScrollTop from 'dom-helpers/query/scrollTop';
 import getScrollLeft from 'dom-helpers/query/scrollLeft';
 
+import EventCell from './EventCell';
+import { isSelected } from './utils/selection';
+import localizer from './localizer';
+import { elementType, dateFormat } from './utils/propTypes';
+
+const propTypes = {
+  position: React.PropTypes.object,
+  popupOffset: React.PropTypes.number,
+  events: React.PropTypes.array,
+  selected: React.PropTypes.object,
+  eventComponent: elementType,
+  eventWrapperComponent: elementType,
+  dayHeaderFormat: dateFormat
+}
 class Popup extends React.Component {
 
   componentDidMount(){
@@ -61,5 +72,7 @@ class Popup extends React.Component {
     )
   }
 }
+
+Popup.propTypes = propTypes;
 
 export default Popup;

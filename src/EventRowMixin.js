@@ -54,7 +54,7 @@ export default {
         allDayAccessor={allDayAccessor}
         slotStart={start}
         slotEnd={end}
-        component={eventComponent}
+        eventComponent={eventComponent}
       />
     )
   },

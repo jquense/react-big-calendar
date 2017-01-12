@@ -21,6 +21,7 @@ export default {
     endAccessor: accessor,
 
     eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
     onSelect: React.PropTypes.func
   },
 
@@ -32,15 +33,18 @@ export default {
     }
   },
 
-  renderEvent(event){
+  renderEvent(event) {
     let {
         eventPropGetter, selected, start, end
       , startAccessor, endAccessor, titleAccessor
-      , allDayAccessor, eventComponent, onSelect } = this.props;
+      , allDayAccessor, eventComponent
+      , eventWrapperComponent
+      , onSelect } = this.props;
 
     return (
       <EventCell
         event={event}
+        eventWrapperComponent={eventWrapperComponent}
         eventPropGetter={eventPropGetter}
         onSelect={onSelect}
         selected={isSelected(event, selected)}
@@ -50,7 +54,7 @@ export default {
         allDayAccessor={allDayAccessor}
         slotStart={start}
         slotEnd={end}
-        component={eventComponent}
+        eventComponent={eventComponent}
       />
     )
   },

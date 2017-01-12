@@ -15,11 +15,8 @@
 }
 
 .rbc-selected-cell {
-  background-color: @selection-bg-color;
-  color: @selection-color;
-  opacity: 0.05
+  background-color: @date-selection-bg-color;
 }
-
 
 
 .rbc-show-more {
@@ -40,6 +37,7 @@
   flex-direction: column;
   flex: 1 0 0;
   width: 100%;
+  user-select: none;
 
   height: 100%; // ie-fix
 
@@ -90,11 +88,6 @@
       text-decoration: none;
     }
   }
-}
-
-.rbc-row-content {
-  position: relative;
-  z-index: 4;
 }
 
 .rbc-row-bg {

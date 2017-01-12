@@ -4,12 +4,12 @@ import Intro from './Intro.md';
 import cn from 'classnames';
 import { render } from 'react-dom';
 
-import localizer from 'react-big-calendar/localizers/globalize';
+import localizer from 'react-big-calendar/lib/localizers/globalize';
 import globalize from 'globalize';
 
 localizer(globalize);
 
-import 'react-big-calendar/less/styles.less';
+import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
 
@@ -18,7 +18,7 @@ let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/ma
 const Example = React.createClass({
   getInitialState(){
     return {
-      selected: 'basic'
+      selected: 'basic',
     };
   },
 
@@ -32,6 +32,7 @@ const Example = React.createClass({
       rendering: require('./demos/rendering'),
       customView: require('./demos/customView'),
       timeslots: require('./demos/timeslots'),
+      dnd: require('./demos/dnd')
     }[selected];
 
     return (
@@ -81,6 +82,9 @@ const Example = React.createClass({
                 <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
               </li>
               */}
+              <li className={cn({active: selected === 'dnd' })}>
+                <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
+              </li>
             </ul>
           </aside>
           <div className='example'>

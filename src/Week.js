@@ -7,18 +7,20 @@ import TimeGrid from './TimeGrid';
 
 let Week = React.createClass({
 
-  propTypes: TimeGrid.propTypes,
+  propTypes: {
+    date: React.PropTypes.instanceOf(Date).isRequired,
+  },
 
   getDefaultProps() {
     return TimeGrid.defaultProps
   },
 
   render() {
-    let { date } = this.props
+    let { date, ...props } = this.props
     let { start, end } = Week.range(date, this.props)
 
     return (
-      <TimeGrid {...this.props} start={start} end={end} eventOffset={15}/>
+      <TimeGrid {...props} start={start} end={end} eventOffset={15} />
     );
   }
 

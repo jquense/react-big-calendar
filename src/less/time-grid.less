@@ -5,9 +5,8 @@
   z-index: 10;
   position: absolute;
   cursor: default;
-  background-color: @selection-bg-color;
-  color: @selection-color;
-  opacity: .5;
+  background-color: @time-selection-bg-color;
+  color: @time-selection-color;
   font-size: 75%;
   padding: 3px;
 }
@@ -27,6 +26,11 @@
   .rbc-allday-cell {
     width: 100%;
     position: relative;
+  }
+
+  .rbc-allday-events {
+    position: relative;
+    z-index: 4;
   }
 
   .rbc-row > {
@@ -94,14 +98,15 @@
   }
 
   > .rbc-day-slot {
-    width: 100%
+    width: 100%;
+    user-select: none;
   }
 }
 
 .rbc-current-time-indicator {
   position: absolute;
   z-index: 1;
-  right: 0;
+  left: 0;
   height: 1px;
 
   background-color: @current-time-color;
@@ -120,5 +125,10 @@
     border-radius: 50%;
     width: 8px;
     height: 8px;
+  }
+
+  .rbc-rtl &::before {
+    left: 0;
+    right: -3px;
   }
 }

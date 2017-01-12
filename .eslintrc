@@ -1,42 +1,5 @@
-{
-  "parser": "babel-eslint",
-  "extends": "eslint:recommended",
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "ecmaFeatures": {
-    "jsx": true
-  },
-  "plugins": [
-    "eslint-plugin-react"
-  ],
-  "rules": {
-    "no-eval": 2,
-    "strict": 0,
-    "eol-last": 2,
-    "dot-notation": [2, { "allowKeywords": true }],
-    "semi": [0, "never"],
-    "semi-spacing": 0,
-    "curly": 0,
-    "eqeqeq": [2, "allow-null"],
-    "no-undef": 2,
-    "quotes": [2, "single", "avoid-escape"],
-    "no-trailing-spaces": 0,
-    "no-underscore-dangle": 0,
-    "no-multi-spaces": 0,
-    "no-unused-expressions": 0,
-    "no-unused-vars": [2, {"vars": "all", "args": "after-used", "varsIgnorePattern": "^_$"}],
-    "no-use-before-define": 0,
-    "key-spacing": 0,
-    "consistent-return": 0,
-    "no-shadow": 0,
-    "no-sequences": 0,
-    "no-return-assign": 0,
-    "react/jsx-no-undef": 1,
-    "react/jsx-uses-react": 1,
-    "react/jsx-uses-vars": 1,
-    "react/react-in-jsx-scope": 1,
-    "react/self-closing-comp": 1
-  }
-}
+parser: babel-eslint
+extends: jason/react
+
+rules:
+  global-require: off

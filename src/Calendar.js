@@ -8,20 +8,20 @@ import {
   , dateRangeFormat
   , views as componentViews } from './utils/propTypes';
 
-import localizer from './localizer'
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
-import dates from './utils/dates';
 import defaultFormats from './formats';
 import viewLabel from './utils/viewLabel';
 import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
+import EventWrapper from './EventWrapper';
+import BackgroundWrapper from './BackgroundWrapper';
 
-import omit from 'lodash/object/omit';
-import defaults from 'lodash/object/defaults';
-import transform from 'lodash/object/transform';
-import mapValues from 'lodash/object/mapValues';
+import omit from 'lodash/omit';
+import defaults from 'lodash/defaults';
+import transform from 'lodash/transform';
+import mapValues from 'lodash/mapValues';
 
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -113,7 +113,7 @@ let Calendar = React.createClass({
      * Callback fired when a calendar event is selected.
      *
      * ```js
-     * function(event: object)
+     * function(event: object, e: SyntheticEvent)
      * ```
      */
     onSelectEvent: PropTypes.func,
@@ -161,8 +161,12 @@ let Calendar = React.createClass({
     ]),
     /**
      * Allows mouse selection of ranges of dates/times.
+     *
+     * The 'ignoreEvents' option prevents selection code from running when a
+     * drag begins over an event. Useful when you want custom event click or drag
+     * logic
      */
-    selectable: PropTypes.bool,
+    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
 
     /**
      * Determines the selectable time increments in week and day views
@@ -170,13 +174,13 @@ let Calendar = React.createClass({
     step: React.PropTypes.number,
 
     /**
-     * the number of slots per "section" in the Time grid views. Adjust with `step`
-     * to change the default of Hour long sections, with 30 minute slots.
+     * The number of slots per "section" in the time grid views. Adjust with `step`
+     * to change the default of 1 hour long groups, with 30 minute slots.
      */
-    timeslots: React.PropTypes.number.isRequired,
+    timeslots: React.PropTypes.number,
 
     /**
-     * switch the calendar to a `right-to-left` read direction.
+     *Switch the calendar to a `right-to-left` read direction.
      */
     rtl: PropTypes.bool,
 
@@ -239,6 +243,13 @@ let Calendar = React.createClass({
      * Determines how far down the scroll pane is initially scrolled down.
      */
     scrollToTime: PropTypes.instanceOf(Date),
+
+    /**
+     * Specify a specific culture code for the Calendar.
+     *
+     * **Note: it's generally better to handle this globally via your i18n library.**
+     */
+    culture: React.PropTypes.string,
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
@@ -318,7 +329,12 @@ let Calendar = React.createClass({
 
       agendaDateFormat: dateFormat,
       agendaTimeFormat: dateFormat,
-      agendaTimeRangeFormat: dateRangeFormat
+      agendaTimeRangeFormat: dateRangeFormat,
+
+      /**
+       * Time range displayed on events.
+       */
+      eventTimeRangeFormat: dateRangeFormat
     }),
 
     /**
@@ -339,6 +355,9 @@ let Calendar = React.createClass({
      */
     components: PropTypes.shape({
       event: elementType,
+      eventWrapper: elementType,
+      dayWrapper: elementType,
+      dateCellWrapper: elementType,
 
       toolbar: elementType,
 
@@ -348,9 +367,18 @@ let Calendar = React.createClass({
         event: elementType
       }),
 
-      day: PropTypes.shape({ event: elementType }),
-      week: PropTypes.shape({ event: elementType }),
-      month: PropTypes.shape({ event: elementType })
+      day: PropTypes.shape({
+        header: elementType,
+        event: elementType
+      }),
+      week: PropTypes.shape({
+        header: elementType,
+        event: elementType
+      }),
+      month: PropTypes.shape({
+        header: elementType,
+        event: elementType
+      })
     }),
 
     /**
@@ -431,7 +459,12 @@ let Calendar = React.createClass({
 
     let viewComponents = defaults(
       components[view] || {},
-      omit(components, names)
+      omit(components, names),
+      {
+        eventWrapper: EventWrapper,
+        dayWrapper: BackgroundWrapper,
+        dateCellWrapper: BackgroundWrapper
+      }
     )
 
     let ToolbarToRender = components.toolbar || Toolbar
@@ -476,21 +509,14 @@ let Calendar = React.createClass({
 
   handleNavigate(action, newDate) {
     let { view, date, onNavigate } = this.props;
+    let ViewComponent = this.getView();
 
-    date = moveDate(action, newDate || date, view)
+    date = moveDate(action, newDate || date, ViewComponent)
 
     onNavigate(date, view)
 
     if (action === navigate.DATE)
-      this._viewNavigate(date)
-  },
-
-  _viewNavigate(nextDate) {
-    let { view, date, culture } = this.props;
-
-    if (dates.eq(date, nextDate, view, localizer.startOfWeek(culture))) {
       this.handleViewChange(views.DAY)
-    }
   },
 
   handleViewChange(view){
@@ -498,8 +524,8 @@ let Calendar = React.createClass({
       this.props.onView(view)
   },
 
-  handleSelectEvent(event){
-    notify(this.props.onSelectEvent, event)
+  handleSelectEvent(...args){
+    notify(this.props.onSelectEvent, args)
   },
 
   handleSelectSlot(slotInfo){

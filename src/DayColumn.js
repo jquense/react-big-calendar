@@ -2,13 +2,13 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 
-import Selection, { getBoundsForNode } from './Selection';
+import Selection, { getBoundsForNode, isEvent } from './Selection';
 import dates from './utils/dates';
 import { isSelected } from './utils/selection';
 import localizer from './localizer'
 
 import { notify } from './utils/helpers';
-import { accessor } from './utils/propTypes';
+import { accessor, elementType, dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
 import TimeColumn from './TimeColumn'
@@ -18,8 +18,20 @@ function snapToSlot(date, step){
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-function positionFromDate(date, min){
-  return dates.diff(min, dates.merge(min, date), 'minutes')
+function startsBefore(date, min) {
+  return dates.lt(dates.merge(min, date), min, 'minutes')
+}
+
+function startsAfter(date, max) {
+  return dates.gt(dates.merge(max, date), max, 'minutes')
+}
+
+function positionFromDate(date, min, total) {
+  if (startsBefore(date, min))
+    return 0
+
+  let diff = dates.diff(min, dates.merge(min, date), 'minutes')
+  return Math.min(diff, total)
 }
 
 function overlaps(event, events, { startAccessor, endAccessor }, last) {
@@ -46,25 +58,41 @@ let DaySlot = React.createClass({
     step: React.PropTypes.number.isRequired,
     min: React.PropTypes.instanceOf(Date).isRequired,
     max: React.PropTypes.instanceOf(Date).isRequired,
+    now: React.PropTypes.instanceOf(Date),
 
+    rtl: React.PropTypes.bool,
+    titleAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
-    selectable: React.PropTypes.bool,
+    selectRangeFormat: dateFormat,
+    eventTimeRangeFormat: dateFormat,
+    culture: React.PropTypes.string,
+
+    selected: React.PropTypes.object,
+    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
     eventOffset: React.PropTypes.number,
 
     onSelecting: React.PropTypes.func,
     onSelectSlot: React.PropTypes.func.isRequired,
     onSelectEvent: React.PropTypes.func.isRequired,
 
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    dragThroughEvents: React.PropTypes.bool,
+    eventPropGetter: React.PropTypes.func,
+    dayWrapperComponent: elementType,
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
+  },
+
+  getDefaultProps() {
+    return { dragThroughEvents: true }
   },
 
   getInitialState() {
     return { selecting: false };
   },
-
 
   componentDidMount() {
     this.props.selectable
@@ -87,12 +115,12 @@ let DaySlot = React.createClass({
       min,
       max,
       step,
-      timeslots,
       now,
       selectRangeFormat,
       culture,
       ...props
     } = this.props
+
     this._totalMin = dates.diff(min, max, 'minutes')
 
     let { selecting, startSlot, endSlot } = this.state
@@ -104,17 +132,20 @@ let DaySlot = React.createClass({
     };
 
     return (
-      <TimeColumn {...props}
-        className='rbc-day-slot'
-        timeslots={timeslots}
+      <TimeColumn
+        {...props}
+        className={cn(
+          'rbc-day-slot',
+          dates.isToday(max) && 'rbc-today'
+        )}
         now={now}
         min={min}
         max={max}
         step={step}
       >
         {this.renderEvents()}
-        {
-          selecting &&
+
+        {selecting &&
           <div className='rbc-slot-selection' style={style}>
               <span>
               { localizer.format(selectDates, selectRangeFormat, culture) }
@@ -127,8 +158,13 @@ let DaySlot = React.createClass({
 
   renderEvents() {
     let {
-      events, step, min, culture, eventPropGetter
+        events
+      , min
+      , max
+      , culture
+      , eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
+      , eventWrapperComponent: EventWrapper
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
@@ -139,8 +175,11 @@ let DaySlot = React.createClass({
     return events.map((event, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
-      let startSlot = positionFromDate(start, min, step);
-      let endSlot = positionFromDate(end, min, step);
+      let startSlot = positionFromDate(start, min, this._totalMin);
+      let endSlot = positionFromDate(end, min, this._totalMin);
+
+      let continuesPrior = startsBefore(start, min)
+      let continuesAfter = startsAfter(end, max)
 
       lastLeftOffset = Math.max(0,
         overlaps(event, events.slice(0, idx), this.props, lastLeftOffset + 1))
@@ -155,24 +194,27 @@ let DaySlot = React.createClass({
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected);
 
       return (
-        <div
-          key={'evt_' + idx}
-          style={{...xStyle, ...style}}
-          title={label + ': ' + title }
-          onClick={this._select.bind(null, event)}
-          className={cn('rbc-event', className, {
-            'rbc-selected': _isSelected,
-            'rbc-event-overlaps': lastLeftOffset !== 0
-          })}
-        >
-          <div className='rbc-event-label'>{label}</div>
-          <div className='rbc-event-content'>
-            { EventComponent
-              ? <EventComponent event={event} title={title}/>
-              : title
-            }
+        <EventWrapper event={event} key={'evt_' + idx}>
+          <div
+            style={{...xStyle, ...style}}
+            title={label + ': ' + title }
+            onClick={(e) => this._select(event, e)}
+            className={cn('rbc-event', className, {
+              'rbc-selected': _isSelected,
+              'rbc-event-overlaps': lastLeftOffset !== 0,
+              'rbc-event-continues-earlier': continuesPrior,
+              'rbc-event-continues-later': continuesAfter
+            })}
+          >
+            <div className='rbc-event-label'>{label}</div>
+            <div className='rbc-event-content'>
+              { EventComponent
+                ? <EventComponent event={event} title={title}/>
+                : title
+              }
+            </div>
           </div>
-        </div>
+        </EventWrapper>
       )
     })
   },
@@ -246,19 +288,24 @@ let DaySlot = React.createClass({
         selecting: true,
         startDate: start,
         endDate: end,
-        startSlot: positionFromDate(start, min, step),
-        endSlot: positionFromDate(end, min, step)
+        startSlot: positionFromDate(start, min, this._totalMin),
+        endSlot: positionFromDate(end, min, this._totalMin)
       }
     }
 
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
 
+    selector.on('mousedown', (box) => {
+      if (this.props.selectable !== 'ignoreEvents') return
+
+      return !isEvent(findDOMNode(this), box)
+    })
+
     selector
-      .on('click', ({ x, y }) => {
-        this._clickTimer = setTimeout(()=> {
-          this._selectSlot(selectionState({ x, y }))
-        })
+      .on('click', (box) => {
+        if (!isEvent(findDOMNode(this), box))
+          this._selectSlot(selectionState(box))
 
         this.setState({ selecting: false })
       })
@@ -294,9 +341,8 @@ let DaySlot = React.createClass({
     })
   },
 
-  _select(event){
-    clearTimeout(this._clickTimer);
-    notify(this.props.onSelectEvent, event)
+  _select(...args) {
+    notify(this.props.onSelectEvent, args)
   }
 });
 

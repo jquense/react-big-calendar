@@ -11,8 +11,9 @@ export function slotWidth(rowBox, slots){
   return cellWidth
 }
 
-export function getCellAtX(rowBox, x, cellWidth) {
-   return Math.floor((x - rowBox.left) / cellWidth);
+export function getCellAtX(rowBox, x, cellWidth, rtl, slots) {
+   return (rtl ? slots - 1 - Math.floor((x - rowBox.left) / cellWidth) :
+                 Math.floor((x - rowBox.left) / cellWidth));
 }
 
 export function pointInBox(box, { x, y }) {
@@ -22,7 +23,7 @@ export function pointInBox(box, { x, y }) {
    )
 }
 
-export function dateCellSelection(start, rowBox, box, slots){
+export function dateCellSelection(start, rowBox, box, slots, rtl){
   let startIdx = -1;
   let endIdx = -1;
   let lastSlotIdx = slots - 1
@@ -30,7 +31,7 @@ export function dateCellSelection(start, rowBox, box, slots){
   let cellWidth = slotWidth(rowBox, slots);
 
   // cell under the mouse
-  let currentSlot = getCellAtX(rowBox, box.x, cellWidth);
+  let currentSlot = getCellAtX(rowBox, box.x, cellWidth, rtl, slots);
 
   // Identify row as either the initial row
   // or the row under the current mouse point
@@ -61,7 +62,8 @@ export function dateCellSelection(start, rowBox, box, slots){
 
   if (isStartRow) {
     // select the cell under the initial point
-    startIdx = endIdx = Math.floor((start.x - rowBox.left) / cellWidth)
+    startIdx = endIdx = ( rtl ? lastSlotIdx - Math.floor((start.x - rowBox.left) / cellWidth) :
+                                Math.floor((start.x - rowBox.left) / cellWidth));
 
     if (isCurrentRow) {
       if (currentSlot < startIdx) startIdx = currentSlot

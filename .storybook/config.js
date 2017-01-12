@@ -1,8 +1,7 @@
 import { configure } from '@kadira/storybook';
 
 function loadStories() {
-  require('../src/.stories');
-  // require as many as stories you need.
+  require('../stories');
 }
 
 configure(loadStories, module);

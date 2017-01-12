@@ -913,17 +913,6 @@
 	  }
 	};
 	
-	var fiveArgumentPooler = function (a1, a2, a3, a4, a5) {
-	  var Klass = this;
-	  if (Klass.instancePool.length) {
-	    var instance = Klass.instancePool.pop();
-	    Klass.call(instance, a1, a2, a3, a4, a5);
-	    return instance;
-	  } else {
-	    return new Klass(a1, a2, a3, a4, a5);
-	  }
-	};
-	
 	var standardReleaser = function (instance) {
 	  var Klass = this;
 	  !(instance instanceof Klass) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Trying to release an instance into a pool of a different type.') : _prodInvariant('25') : void 0;
@@ -963,8 +952,7 @@
 	  oneArgumentPooler: oneArgumentPooler,
 	  twoArgumentPooler: twoArgumentPooler,
 	  threeArgumentPooler: threeArgumentPooler,
-	  fourArgumentPooler: fourArgumentPooler,
-	  fiveArgumentPooler: fiveArgumentPooler
+	  fourArgumentPooler: fourArgumentPooler
 	};
 	
 	module.exports = PooledClass;
@@ -3304,7 +3292,14 @@
 	    // We warn in this case but don't throw. We expect the element creation to
 	    // succeed and there will likely be errors in render.
 	    if (!validType) {
-	      process.env.NODE_ENV !== 'production' ? warning(false, 'React.createElement: type should not be null, undefined, boolean, or ' + 'number. It should be a string (for DOM elements) or a ReactClass ' + '(for composite components).%s', getDeclarationErrorAddendum()) : void 0;
+	      if (typeof type !== 'function' && typeof type !== 'string') {
+	        var info = '';
+	        if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+	          info += ' You likely forgot to export your component from the file ' + 'it\'s defined in.';
+	        }
+	        info += getDeclarationErrorAddendum();
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'React.createElement: type is invalid -- expected a string (for ' + 'built-in components) or a class/function (for composite ' + 'components) but got: %s.%s', type == null ? type : typeof type, info) : void 0;
+	      }
 	    }
 	
 	    var element = ReactElement.createElement.apply(this, arguments);
@@ -4275,7 +4270,7 @@
 	
 	'use strict';
 	
-	module.exports = '15.4.1';
+	module.exports = '15.4.2';
 
 /***/ },
 /* 39 */
@@ -8537,7 +8532,7 @@
 /* 163 */
 /***/ function(module, exports) {
 
-	module.exports = {"Calendar":{"props":{"elementProps":{"type":{"name":"object"},"required":false,"desc":"Props passed to main calendar `<div>`.","defaultValue":"{}","computed":true,"doclets":{},"descHtml":"<p>Props passed to main calendar <code>&lt;div&gt;</code>.</p>\n"},"date":{"type":{"name":"Date"},"required":false,"desc":"The current date value of the calendar. Determines the visible view range","defaultValue":"now","computed":true,"doclets":{"controllable":"onNavigate"},"descHtml":"<p>The current date value of the calendar. Determines the visible view range</p>\n"},"view":{"type":{"name":"string"},"required":false,"desc":"The current view of the calendar.","defaultValue":"'month'","computed":true,"doclets":{"default":"'month'","controllable":"onView"},"descHtml":"<p>The current view of the calendar.</p>\n"},"events":{"type":{"name":"array","value":{"name":"object"}},"required":false,"desc":"An array of event objects to display on the calendar","doclets":{},"descHtml":"<p>An array of event objects to display on the calendar</p>\n"},"onNavigate":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `date` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>date</code> value changes.</p>\n"},"onView":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `view` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>view</code> value changes.</p>\n"},"onSelectSlot":{"type":{"name":"func"},"required":false,"desc":"A callback fired when a date selection is made. Only fires when `selectable` is `true`.\n\n```js\nfunction(\n  slotInfo: object {\n    start: Date,\n    end: Date,\n    slots: array<Date>\n  }\n)\n```","doclets":{},"descHtml":"<p>A callback fired when a date selection is made. Only fires when <code>selectable</code> is <code>true</code>.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span><span class=\"token punctuation\">(</span>\n  slotInfo<span class=\"token punctuation\">:</span> object <span class=\"token punctuation\">{</span>\n    start<span class=\"token punctuation\">:</span> Date<span class=\"token punctuation\">,</span>\n    end<span class=\"token punctuation\">:</span> Date<span class=\"token punctuation\">,</span>\n    slots<span class=\"token punctuation\">:</span> array<span class=\"token operator\">&lt;</span>Date<span class=\"token operator\">></span>\n  <span class=\"token punctuation\">}</span>\n<span class=\"token punctuation\">)</span>\n</code></pre>\n"},"onSelectEvent":{"type":{"name":"func"},"required":false,"desc":"Callback fired when a calendar event is selected.\n\n```js\nfunction(event: object, e: SyntheticEvent)\n```","doclets":{},"descHtml":"<p>Callback fired when a calendar event is selected.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span><span class=\"token punctuation\">(</span>event<span class=\"token punctuation\">:</span> object<span class=\"token punctuation\">,</span> e<span class=\"token punctuation\">:</span> SyntheticEvent<span class=\"token punctuation\">)</span>\n</code></pre>\n"},"onSelecting":{"type":{"name":"func"},"required":false,"desc":"Callback fired when dragging a selection in the Time views.\n\nReturning `false` from the handler will prevent a selection.\n\n```js\nfunction ({ start: Date, end: Date }) : boolean\n```","doclets":{},"descHtml":"<p>Callback fired when dragging a selection in the Time views.</p>\n<p>Returning <code>false</code> from the handler will prevent a selection.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span> <span class=\"token punctuation\">(</span><span class=\"token punctuation\">{</span> start<span class=\"token punctuation\">:</span> Date<span class=\"token punctuation\">,</span> end<span class=\"token punctuation\">:</span> Date <span class=\"token punctuation\">}</span><span class=\"token punctuation\">)</span> <span class=\"token punctuation\">:</span> boolean\n</code></pre>\n"},"views":{"type":{"name":"Calendar.views"},"required":false,"desc":"An array of built-in view names to allow the calendar to display.","defaultValue":"['month', 'week', 'day', 'agenda']","computed":true,"doclets":{"type":"Calendar.views","default":"['month', 'week', 'day', 'agenda']"},"descHtml":"<p>An array of built-in view names to allow the calendar to display.</p>\n"},"toolbar":{"type":{"name":"bool"},"required":false,"desc":"Determines whether the toolbar is displayed","defaultValue":"true","computed":false,"doclets":{},"descHtml":"<p>Determines whether the toolbar is displayed</p>\n"},"popup":{"type":{"name":"bool"},"required":false,"desc":"Show truncated events in an overlay when you click the \"+_x_ more\" link.","defaultValue":"false","computed":false,"doclets":{},"descHtml":"<p>Show truncated events in an overlay when you click the &quot;+<em>x</em> more&quot; link.</p>\n"},"popupOffset":{"type":{"name":"union","value":[{"name":"number"},{"name":"object","value":{"x":{"type":{"name":"number"},"required":false,"desc":""},"y":{"type":{"name":"number"},"required":false,"desc":""}}}]},"required":false,"desc":"Distance in pixels, from the edges of the viewport, the \"show more\" overlay should be positioned.\n\n```js\n<BigCalendar popupOffset={30}/>\n<BigCalendar popupOffset={{x: 30, y: 20}}/>\n```","doclets":{},"descHtml":"<p>Distance in pixels, from the edges of the viewport, the &quot;show more&quot; overlay should be positioned.</p>\n<pre><code class=\"lang-js\"><span class=\"token operator\">&lt;</span>BigCalendar popupOffset<span class=\"token operator\">=</span><span class=\"token punctuation\">{</span><span class=\"token number\">30</span><span class=\"token punctuation\">}</span><span class=\"token operator\">/</span><span class=\"token operator\">></span>\n<span class=\"token operator\">&lt;</span>BigCalendar popupOffset<span class=\"token operator\">=</span><span class=\"token punctuation\">{</span><span class=\"token punctuation\">{</span>x<span class=\"token punctuation\">:</span> <span class=\"token number\">30</span><span class=\"token punctuation\">,</span> y<span class=\"token punctuation\">:</span> <span class=\"token number\">20</span><span class=\"token punctuation\">}</span><span class=\"token punctuation\">}</span><span class=\"token operator\">/</span><span class=\"token operator\">></span>\n</code></pre>\n"},"selectable":{"type":{"name":"enum","value":["true","false","'ignoreEvents'"]},"required":false,"desc":"Allows mouse selection of ranges of dates/times.\n\nThe 'ignoreEvents' option prevents selection code from running when a\ndrag begins over an event. Useful when you want custom event click or drag\nlogic","doclets":{},"descHtml":"<p>Allows mouse selection of ranges of dates/times.</p>\n<p>The &#39;ignoreEvents&#39; option prevents selection code from running when a\ndrag begins over an event. Useful when you want custom event click or drag\nlogic</p>\n"},"step":{"type":{"name":"number"},"required":false,"desc":"Determines the selectable time increments in week and day views","defaultValue":"30","computed":false,"doclets":{},"descHtml":"<p>Determines the selectable time increments in week and day views</p>\n"},"timeslots":{"type":{"name":"number"},"required":false,"desc":"The number of slots per \"section\" in the time grid views. Adjust with `step`\nto change the default of 1 hour long groups, with 30 minute slots.","doclets":{},"descHtml":"<p>The number of slots per &quot;section&quot; in the time grid views. Adjust with <code>step</code>\nto change the default of 1 hour long groups, with 30 minute slots.</p>\n"},"rtl":{"type":{"name":"bool"},"required":false,"desc":"Switch the calendar to a `right-to-left` read direction.","doclets":{},"descHtml":"<p>Switch the calendar to a <code>right-to-left</code> read direction.</p>\n"},"eventPropGetter":{"type":{"name":"func"},"required":false,"desc":"Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.\n\n```js\nfunction(\n\tevent: object,\n\tstart: date,\n\tend: date,\n\tisSelected: bool\n) -> { className: string?, style: object? }\n```","doclets":{},"descHtml":"<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span><span class=\"token punctuation\">(</span>\n    event<span class=\"token punctuation\">:</span> object<span class=\"token punctuation\">,</span>\n    start<span class=\"token punctuation\">:</span> date<span class=\"token punctuation\">,</span>\n    end<span class=\"token punctuation\">:</span> date<span class=\"token punctuation\">,</span>\n    isSelected<span class=\"token punctuation\">:</span> bool\n<span class=\"token punctuation\">)</span> <span class=\"token operator\">-</span><span class=\"token operator\">></span> <span class=\"token punctuation\">{</span> className<span class=\"token punctuation\">:</span> string<span class=\"token operator\">?</span><span class=\"token punctuation\">,</span> style<span class=\"token punctuation\">:</span> object<span class=\"token operator\">?</span> <span class=\"token punctuation\">}</span>\n</code></pre>\n"},"titleAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Accessor for the event title, used to display event information. Should\nresolve to a `renderable` value.","defaultValue":"'title'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Accessor for the event title, used to display event information. Should\nresolve to a <code>renderable</code> value.</p>\n"},"allDayAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Determines whether the event should be considered an \"all day\" event and ignore time.\nMust resolve to a `boolean` value.","defaultValue":"'allDay'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Determines whether the event should be considered an &quot;all day&quot; event and ignore time.\nMust resolve to a <code>boolean</code> value.</p>\n"},"startAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The start date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'start'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The start date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"endAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The end date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'end'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The end date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"min":{"type":{"name":"Date"},"required":false,"desc":"Constrains the minimum _time_ of the Day and Week views.","doclets":{},"descHtml":"<p>Constrains the minimum <em>time</em> of the Day and Week views.</p>\n"},"max":{"type":{"name":"Date"},"required":false,"desc":"Constrains the maximum _time_ of the Day and Week views.","doclets":{},"descHtml":"<p>Constrains the maximum <em>time</em> of the Day and Week views.</p>\n"},"scrollToTime":{"type":{"name":"Date"},"required":false,"desc":"Determines how far down the scroll pane is initially scrolled down.","doclets":{},"descHtml":"<p>Determines how far down the scroll pane is initially scrolled down.</p>\n"},"culture":{"type":{"name":"string"},"required":false,"desc":"Specify a specific culture code for the Calendar.\n\n**Note: it's generally better to handle this globally via your i18n library.**","doclets":{},"descHtml":"<p>Specify a specific culture code for the Calendar.</p>\n<p><strong>Note: it&#39;s generally better to handle this globally via your i18n library.</strong></p>\n"},"formats":{"type":{"name":"object","value":{"dateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Format for the day of the month heading in the Month view.\ne.g. \"01\", \"02\", \"03\", etc","doclets":{},"descHtml":"<p>Format for the day of the month heading in the Month view.\ne.g. &quot;01&quot;, &quot;02&quot;, &quot;03&quot;, etc</p>\n"},"dayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"A day of the week format for Week and Day headings,\ne.g. \"Wed 01/04\"","doclets":{},"descHtml":"<p>A day of the week format for Week and Day headings,\ne.g. &quot;Wed 01/04&quot;</p>\n"},"weekdayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Week day name format for the Month week day headings,\ne.g: \"Sun\", \"Mon\", \"Tue\", etc","doclets":{},"descHtml":"<p>Week day name format for the Month week day headings,\ne.g: &quot;Sun&quot;, &quot;Mon&quot;, &quot;Tue&quot;, etc</p>\n"},"timeGutterFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"The timestamp cell formats in Week and Time views, e.g. \"4:00 AM\"","doclets":{},"descHtml":"<p>The timestamp cell formats in Week and Time views, e.g. &quot;4:00 AM&quot;</p>\n"},"monthHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Month view, e.g \"2015 April\"","doclets":{},"descHtml":"<p>Toolbar header format for the Month view, e.g &quot;2015 April&quot;</p>\n"},"dayRangeHeaderFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"Toolbar header format for the Week views, e.g. \"Mar 29 - Apr 04\"","doclets":{},"descHtml":"<p>Toolbar header format for the Week views, e.g. &quot;Mar 29 - Apr 04&quot;</p>\n"},"dayHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Day view, e.g. \"Wednesday Apr 01\"","doclets":{},"descHtml":"<p>Toolbar header format for the Day view, e.g. &quot;Wednesday Apr 01&quot;</p>\n"},"agendaHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Agenda view, e.g. \"4/1/2015 — 5/1/2015\"","doclets":{},"descHtml":"<p>Toolbar header format for the Agenda view, e.g. &quot;4/1/2015 — 5/1/2015&quot;</p>\n"},"selectRangeFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"A time range format for selecting time slots, e.g \"8:00am — 2:00pm\"","doclets":{},"descHtml":"<p>A time range format for selecting time slots, e.g &quot;8:00am — 2:00pm&quot;</p>\n"},"agendaDateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"","doclets":{},"descHtml":""},"agendaTimeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"","doclets":{},"descHtml":""},"agendaTimeRangeFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"","doclets":{},"descHtml":""},"eventTimeRangeFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"Time range displayed on events.","doclets":{},"descHtml":"<p>Time range displayed on events.</p>\n"}}},"required":false,"desc":"Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, culture, localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, local) =>\n    local.format(start, { date: 'short' }, culture) + ' — ' +\n    local.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`","doclets":{},"descHtml":"<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n<p><code>format</code> types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: <code>&#39;DD mm yyyy&#39;</code>.</p>\n<pre><code class=\"lang-jsx\"><span class=\"token keyword\">let</span> formats <span class=\"token operator\">=</span> <span class=\"token punctuation\">{</span>\n  dateFormat<span class=\"token punctuation\">:</span> <span class=\"token string\">'dd'</span><span class=\"token punctuation\">,</span>\n\n  dayFormat<span class=\"token punctuation\">:</span> <span class=\"token punctuation\">(</span>date<span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">,</span> localizer<span class=\"token punctuation\">)</span> <span class=\"token operator\">=</span><span class=\"token operator\">></span>\n    localizer<span class=\"token punctuation\">.</span><span class=\"token function\">format</span><span class=\"token punctuation\">(</span>date<span class=\"token punctuation\">,</span> <span class=\"token string\">'DDD'</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">)</span><span class=\"token punctuation\">,</span>\n\n  dayRangeHeaderFormat<span class=\"token punctuation\">:</span> <span class=\"token punctuation\">(</span><span class=\"token punctuation\">{</span> start<span class=\"token punctuation\">,</span> end <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">,</span> local<span class=\"token punctuation\">)</span> <span class=\"token operator\">=</span><span class=\"token operator\">></span>\n    local<span class=\"token punctuation\">.</span><span class=\"token function\">format</span><span class=\"token punctuation\">(</span>start<span class=\"token punctuation\">,</span> <span class=\"token punctuation\">{</span> date<span class=\"token punctuation\">:</span> <span class=\"token string\">'short'</span> <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">)</span> <span class=\"token operator\">+</span> <span class=\"token string\">' — '</span> <span class=\"token operator\">+</span>\n    local<span class=\"token punctuation\">.</span><span class=\"token function\">format</span><span class=\"token punctuation\">(</span>end<span class=\"token punctuation\">,</span> <span class=\"token punctuation\">{</span> date<span class=\"token punctuation\">:</span> <span class=\"token string\">'short'</span> <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">)</span>\n<span class=\"token punctuation\">}</span>\n\n<span class=\"token tag\"><span class=\"token tag\"><span class=\"token punctuation\">&lt;</span>Calendar</span> <span class=\"token attr-name\">formats</span><span class=\"token script language-javascript\"><span class=\"token punctuation\">=</span><span class=\"token punctuation\">{</span>formats<span class=\"token punctuation\">}</span></span> <span class=\"token punctuation\">/></span></span>\n</code></pre>\n<p>All localizers accept a function of\nthe form <code>(date: Date, culture: ?string, localizer: Localizer) -&gt; string</code></p>\n"},"components":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"eventWrapper":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"dayWrapper":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"dateCellWrapper":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"toolbar":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"agenda":{"type":{"name":"object","value":{"date":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"time":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""},"day":{"type":{"name":"object","value":{"header":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""},"week":{"type":{"name":"object","value":{"header":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""},"month":{"type":{"name":"object","value":{"header":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"Customize how different sections of the calendar render by providing custom Components.\nIn particular the `Event` component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.\n\n```jsx\nlet components = {\n  event: MyEvent, // used by each view (Month, Day, Week)\n  toolbar: MyToolbar,\n  agenda: {\n  \t event: MyAgendaEvent // with the agenda view use a different component to render events\n  }\n}\n<Calendar components={components} />\n```","doclets":{},"descHtml":"<p>Customize how different sections of the calendar render by providing custom Components.\nIn particular the <code>Event</code> component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.</p>\n<pre><code class=\"lang-jsx\"><span class=\"token keyword\">let</span> components <span class=\"token operator\">=</span> <span class=\"token punctuation\">{</span>\n  event<span class=\"token punctuation\">:</span> MyEvent<span class=\"token punctuation\">,</span> <span class=\"token comment\" spellcheck=\"true\">// used by each view (Month, Day, Week)</span>\n  toolbar<span class=\"token punctuation\">:</span> MyToolbar<span class=\"token punctuation\">,</span>\n  agenda<span class=\"token punctuation\">:</span> <span class=\"token punctuation\">{</span>\n       event<span class=\"token punctuation\">:</span> MyAgendaEvent <span class=\"token comment\" spellcheck=\"true\">// with the agenda view use a different component to render events</span>\n  <span class=\"token punctuation\">}</span>\n<span class=\"token punctuation\">}</span>\n<span class=\"token tag\"><span class=\"token tag\"><span class=\"token punctuation\">&lt;</span>Calendar</span> <span class=\"token attr-name\">components</span><span class=\"token script language-javascript\"><span class=\"token punctuation\">=</span><span class=\"token punctuation\">{</span>components<span class=\"token punctuation\">}</span></span> <span class=\"token punctuation\">/></span></span>\n</code></pre>\n"},"messages":{"type":{"name":"object","value":{"allDay":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"previous":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"next":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"today":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"month":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"week":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"day":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"agenda":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"showMore":{"type":{"name":"func"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"String messages used throughout the component, override to provide localizations","doclets":{},"descHtml":"<p>String messages used throughout the component, override to provide localizations</p>\n"}},"composes":[],"methods":{"getViews":{},"getView":{},"handleNavigate":{},"_viewNavigate":{},"handleViewChange":{},"handleSelectEvent":{},"handleSelectSlot":{},"handleHeaderClick":{}},"desc":"react-big-calendar is full featured Calendar component for managing events and dates. It uses\nmodern `flexbox` for layout making it super responsive and performant. Leaving most of the layout heavy lifting\nto the browser. __note:__ The default styles use `height: 100%` which means your container must set an explicit\nheight (feel free to adjust the styles to suit your specific needs).\n\nBig Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\nhow to find the start and end datetimes and you can pass it whatever you want.\n\nOne thing to note is that, `react-big-calendar` treats event start/end dates as an _exclusive_ range.\nwhich means that the event spans up to, but not including, the end date. In the case\nof displaying events on whole days, end dates are rounded _up_ to the next day. So an\nevent ending on `Apr 8th 12:00:00 am` will not appear on the 8th, whereas one ending\non `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a\nfunction `endAccessor` that returns the end date + 1 day for those events that end at midnight.","doclets":{},"descHtml":"<p>react-big-calendar is full featured Calendar component for managing events and dates. It uses\nmodern <code>flexbox</code> for layout making it super responsive and performant. Leaving most of the layout heavy lifting\nto the browser. <strong>note:</strong> The default styles use <code>height: 100%</code> which means your container must set an explicit\nheight (feel free to adjust the styles to suit your specific needs).</p>\n<p>Big Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\nhow to find the start and end datetimes and you can pass it whatever you want.</p>\n<p>One thing to note is that, <code>react-big-calendar</code> treats event start/end dates as an <em>exclusive</em> range.\nwhich means that the event spans up to, but not including, the end date. In the case\nof displaying events on whole days, end dates are rounded <em>up</em> to the next day. So an\nevent ending on <code>Apr 8th 12:00:00 am</code> will not appear on the 8th, whereas one ending\non <code>Apr 8th 12:01:00 am</code> will. If you want <em>inclusive</em> ranges consider providing a\nfunction <code>endAccessor</code> that returns the end date + 1 day for those events that end at midnight.</p>\n"}}
+	module.exports = {"Calendar":{"props":{"elementProps":{"type":{"name":"object"},"required":false,"desc":"Props passed to main calendar `<div>`.","defaultValue":"{}","computed":true,"doclets":{},"descHtml":"<p>Props passed to main calendar <code>&lt;div&gt;</code>.</p>\n"},"date":{"type":{"name":"Date"},"required":false,"desc":"The current date value of the calendar. Determines the visible view range","defaultValue":"now","computed":true,"doclets":{"controllable":"onNavigate"},"descHtml":"<p>The current date value of the calendar. Determines the visible view range</p>\n"},"view":{"type":{"name":"string"},"required":false,"desc":"The current view of the calendar.","defaultValue":"'month'","computed":true,"doclets":{"default":"'month'","controllable":"onView"},"descHtml":"<p>The current view of the calendar.</p>\n"},"events":{"type":{"name":"array","value":{"name":"object"}},"required":false,"desc":"An array of event objects to display on the calendar","doclets":{},"descHtml":"<p>An array of event objects to display on the calendar</p>\n"},"onNavigate":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `date` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>date</code> value changes.</p>\n"},"onView":{"type":{"name":"func"},"required":false,"desc":"Callback fired when the `view` value changes.","doclets":{"controllable":"date"},"descHtml":"<p>Callback fired when the <code>view</code> value changes.</p>\n"},"onSelectSlot":{"type":{"name":"func"},"required":false,"desc":"A callback fired when a date selection is made. Only fires when `selectable` is `true`.\n\n```js\nfunction(\n  slotInfo: object {\n    start: Date,\n    end: Date,\n    slots: array<Date>\n  }\n)\n```","doclets":{},"descHtml":"<p>A callback fired when a date selection is made. Only fires when <code>selectable</code> is <code>true</code>.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span><span class=\"token punctuation\">(</span>\n  slotInfo<span class=\"token punctuation\">:</span> object <span class=\"token punctuation\">{</span>\n    start<span class=\"token punctuation\">:</span> Date<span class=\"token punctuation\">,</span>\n    end<span class=\"token punctuation\">:</span> Date<span class=\"token punctuation\">,</span>\n    slots<span class=\"token punctuation\">:</span> array<span class=\"token operator\">&lt;</span>Date<span class=\"token operator\">></span>\n  <span class=\"token punctuation\">}</span>\n<span class=\"token punctuation\">)</span>\n</code></pre>\n"},"onSelectEvent":{"type":{"name":"func"},"required":false,"desc":"Callback fired when a calendar event is selected.\n\n```js\nfunction(event: object, e: SyntheticEvent)\n```","doclets":{},"descHtml":"<p>Callback fired when a calendar event is selected.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span><span class=\"token punctuation\">(</span>event<span class=\"token punctuation\">:</span> object<span class=\"token punctuation\">,</span> e<span class=\"token punctuation\">:</span> SyntheticEvent<span class=\"token punctuation\">)</span>\n</code></pre>\n"},"onSelecting":{"type":{"name":"func"},"required":false,"desc":"Callback fired when dragging a selection in the Time views.\n\nReturning `false` from the handler will prevent a selection.\n\n```js\nfunction ({ start: Date, end: Date }) : boolean\n```","doclets":{},"descHtml":"<p>Callback fired when dragging a selection in the Time views.</p>\n<p>Returning <code>false</code> from the handler will prevent a selection.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span> <span class=\"token punctuation\">(</span><span class=\"token punctuation\">{</span> start<span class=\"token punctuation\">:</span> Date<span class=\"token punctuation\">,</span> end<span class=\"token punctuation\">:</span> Date <span class=\"token punctuation\">}</span><span class=\"token punctuation\">)</span> <span class=\"token punctuation\">:</span> boolean\n</code></pre>\n"},"views":{"type":{"name":"Calendar.views"},"required":false,"desc":"An array of built-in view names to allow the calendar to display.","defaultValue":"['month', 'week', 'day', 'agenda']","computed":true,"doclets":{"type":"Calendar.views","default":"['month', 'week', 'day', 'agenda']"},"descHtml":"<p>An array of built-in view names to allow the calendar to display.</p>\n"},"toolbar":{"type":{"name":"bool"},"required":false,"desc":"Determines whether the toolbar is displayed","defaultValue":"true","computed":false,"doclets":{},"descHtml":"<p>Determines whether the toolbar is displayed</p>\n"},"popup":{"type":{"name":"bool"},"required":false,"desc":"Show truncated events in an overlay when you click the \"+_x_ more\" link.","defaultValue":"false","computed":false,"doclets":{},"descHtml":"<p>Show truncated events in an overlay when you click the &quot;+<em>x</em> more&quot; link.</p>\n"},"popupOffset":{"type":{"name":"union","value":[{"name":"number"},{"name":"object","value":{"x":{"type":{"name":"number"},"required":false,"desc":""},"y":{"type":{"name":"number"},"required":false,"desc":""}}}]},"required":false,"desc":"Distance in pixels, from the edges of the viewport, the \"show more\" overlay should be positioned.\n\n```js\n<BigCalendar popupOffset={30}/>\n<BigCalendar popupOffset={{x: 30, y: 20}}/>\n```","doclets":{},"descHtml":"<p>Distance in pixels, from the edges of the viewport, the &quot;show more&quot; overlay should be positioned.</p>\n<pre><code class=\"lang-js\"><span class=\"token operator\">&lt;</span>BigCalendar popupOffset<span class=\"token operator\">=</span><span class=\"token punctuation\">{</span><span class=\"token number\">30</span><span class=\"token punctuation\">}</span><span class=\"token operator\">/</span><span class=\"token operator\">></span>\n<span class=\"token operator\">&lt;</span>BigCalendar popupOffset<span class=\"token operator\">=</span><span class=\"token punctuation\">{</span><span class=\"token punctuation\">{</span>x<span class=\"token punctuation\">:</span> <span class=\"token number\">30</span><span class=\"token punctuation\">,</span> y<span class=\"token punctuation\">:</span> <span class=\"token number\">20</span><span class=\"token punctuation\">}</span><span class=\"token punctuation\">}</span><span class=\"token operator\">/</span><span class=\"token operator\">></span>\n</code></pre>\n"},"selectable":{"type":{"name":"enum","value":["true","false","'ignoreEvents'"]},"required":false,"desc":"Allows mouse selection of ranges of dates/times.\n\nThe 'ignoreEvents' option prevents selection code from running when a\ndrag begins over an event. Useful when you want custom event click or drag\nlogic","doclets":{},"descHtml":"<p>Allows mouse selection of ranges of dates/times.</p>\n<p>The &#39;ignoreEvents&#39; option prevents selection code from running when a\ndrag begins over an event. Useful when you want custom event click or drag\nlogic</p>\n"},"step":{"type":{"name":"number"},"required":false,"desc":"Determines the selectable time increments in week and day views","defaultValue":"30","computed":false,"doclets":{},"descHtml":"<p>Determines the selectable time increments in week and day views</p>\n"},"timeslots":{"type":{"name":"number"},"required":false,"desc":"The number of slots per \"section\" in the time grid views. Adjust with `step`\nto change the default of 1 hour long groups, with 30 minute slots.","doclets":{},"descHtml":"<p>The number of slots per &quot;section&quot; in the time grid views. Adjust with <code>step</code>\nto change the default of 1 hour long groups, with 30 minute slots.</p>\n"},"rtl":{"type":{"name":"bool"},"required":false,"desc":"Switch the calendar to a `right-to-left` read direction.","doclets":{},"descHtml":"<p>Switch the calendar to a <code>right-to-left</code> read direction.</p>\n"},"eventPropGetter":{"type":{"name":"func"},"required":false,"desc":"Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.\n\n```js\nfunction(\n\tevent: object,\n\tstart: date,\n\tend: date,\n\tisSelected: bool\n) -> { className: string?, style: object? }\n```","doclets":{},"descHtml":"<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.</p>\n<pre><code class=\"lang-js\"><span class=\"token keyword\">function</span><span class=\"token punctuation\">(</span>\n    event<span class=\"token punctuation\">:</span> object<span class=\"token punctuation\">,</span>\n    start<span class=\"token punctuation\">:</span> date<span class=\"token punctuation\">,</span>\n    end<span class=\"token punctuation\">:</span> date<span class=\"token punctuation\">,</span>\n    isSelected<span class=\"token punctuation\">:</span> bool\n<span class=\"token punctuation\">)</span> <span class=\"token operator\">-</span><span class=\"token operator\">></span> <span class=\"token punctuation\">{</span> className<span class=\"token punctuation\">:</span> string<span class=\"token operator\">?</span><span class=\"token punctuation\">,</span> style<span class=\"token punctuation\">:</span> object<span class=\"token operator\">?</span> <span class=\"token punctuation\">}</span>\n</code></pre>\n"},"titleAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Accessor for the event title, used to display event information. Should\nresolve to a `renderable` value.","defaultValue":"'title'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Accessor for the event title, used to display event information. Should\nresolve to a <code>renderable</code> value.</p>\n"},"allDayAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"Determines whether the event should be considered an \"all day\" event and ignore time.\nMust resolve to a `boolean` value.","defaultValue":"'allDay'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>Determines whether the event should be considered an &quot;all day&quot; event and ignore time.\nMust resolve to a <code>boolean</code> value.</p>\n"},"startAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The start date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'start'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The start date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"endAccessor":{"type":{"name":"union","value":["func","string"]},"required":false,"desc":"The end date/time of the event. Must resolve to a JavaScript `Date` object.","defaultValue":"'end'","computed":false,"doclets":{"type":"{(func|string)}"},"descHtml":"<p>The end date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n"},"min":{"type":{"name":"Date"},"required":false,"desc":"Constrains the minimum _time_ of the Day and Week views.","doclets":{},"descHtml":"<p>Constrains the minimum <em>time</em> of the Day and Week views.</p>\n"},"max":{"type":{"name":"Date"},"required":false,"desc":"Constrains the maximum _time_ of the Day and Week views.","doclets":{},"descHtml":"<p>Constrains the maximum <em>time</em> of the Day and Week views.</p>\n"},"scrollToTime":{"type":{"name":"Date"},"required":false,"desc":"Determines how far down the scroll pane is initially scrolled down.","doclets":{},"descHtml":"<p>Determines how far down the scroll pane is initially scrolled down.</p>\n"},"culture":{"type":{"name":"string"},"required":false,"desc":"Specify a specific culture code for the Calendar.\n\n**Note: it's generally better to handle this globally via your i18n library.**","doclets":{},"descHtml":"<p>Specify a specific culture code for the Calendar.</p>\n<p><strong>Note: it&#39;s generally better to handle this globally via your i18n library.</strong></p>\n"},"formats":{"type":{"name":"object","value":{"dateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Format for the day of the month heading in the Month view.\ne.g. \"01\", \"02\", \"03\", etc","doclets":{},"descHtml":"<p>Format for the day of the month heading in the Month view.\ne.g. &quot;01&quot;, &quot;02&quot;, &quot;03&quot;, etc</p>\n"},"dayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"A day of the week format for Week and Day headings,\ne.g. \"Wed 01/04\"","doclets":{},"descHtml":"<p>A day of the week format for Week and Day headings,\ne.g. &quot;Wed 01/04&quot;</p>\n"},"weekdayFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Week day name format for the Month week day headings,\ne.g: \"Sun\", \"Mon\", \"Tue\", etc","doclets":{},"descHtml":"<p>Week day name format for the Month week day headings,\ne.g: &quot;Sun&quot;, &quot;Mon&quot;, &quot;Tue&quot;, etc</p>\n"},"timeGutterFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"The timestamp cell formats in Week and Time views, e.g. \"4:00 AM\"","doclets":{},"descHtml":"<p>The timestamp cell formats in Week and Time views, e.g. &quot;4:00 AM&quot;</p>\n"},"monthHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Month view, e.g \"2015 April\"","doclets":{},"descHtml":"<p>Toolbar header format for the Month view, e.g &quot;2015 April&quot;</p>\n"},"dayRangeHeaderFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"Toolbar header format for the Week views, e.g. \"Mar 29 - Apr 04\"","doclets":{},"descHtml":"<p>Toolbar header format for the Week views, e.g. &quot;Mar 29 - Apr 04&quot;</p>\n"},"dayHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Day view, e.g. \"Wednesday Apr 01\"","doclets":{},"descHtml":"<p>Toolbar header format for the Day view, e.g. &quot;Wednesday Apr 01&quot;</p>\n"},"agendaHeaderFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"Toolbar header format for the Agenda view, e.g. \"4/1/2015 — 5/1/2015\"","doclets":{},"descHtml":"<p>Toolbar header format for the Agenda view, e.g. &quot;4/1/2015 — 5/1/2015&quot;</p>\n"},"selectRangeFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"A time range format for selecting time slots, e.g \"8:00am — 2:00pm\"","doclets":{},"descHtml":"<p>A time range format for selecting time slots, e.g &quot;8:00am — 2:00pm&quot;</p>\n"},"agendaDateFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"","doclets":{},"descHtml":""},"agendaTimeFormat":{"type":{"name":"dateFormat"},"required":false,"desc":"","doclets":{},"descHtml":""},"agendaTimeRangeFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"","doclets":{},"descHtml":""},"eventTimeRangeFormat":{"type":{"name":"dateRangeFormat"},"required":false,"desc":"Time range displayed on events.","doclets":{},"descHtml":"<p>Time range displayed on events.</p>\n"}}},"required":false,"desc":"Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, culture, localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, local) =>\n    local.format(start, { date: 'short' }, culture) + ' — ' +\n    local.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`","doclets":{},"descHtml":"<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n<p><code>format</code> types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: <code>&#39;DD mm yyyy&#39;</code>.</p>\n<pre><code class=\"lang-jsx\"><span class=\"token keyword\">let</span> formats <span class=\"token operator\">=</span> <span class=\"token punctuation\">{</span>\n  dateFormat<span class=\"token punctuation\">:</span> <span class=\"token string\">'dd'</span><span class=\"token punctuation\">,</span>\n\n  dayFormat<span class=\"token punctuation\">:</span> <span class=\"token punctuation\">(</span>date<span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">,</span> localizer<span class=\"token punctuation\">)</span> <span class=\"token operator\">=</span><span class=\"token operator\">></span>\n    localizer<span class=\"token punctuation\">.</span><span class=\"token function\">format</span><span class=\"token punctuation\">(</span>date<span class=\"token punctuation\">,</span> <span class=\"token string\">'DDD'</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">)</span><span class=\"token punctuation\">,</span>\n\n  dayRangeHeaderFormat<span class=\"token punctuation\">:</span> <span class=\"token punctuation\">(</span><span class=\"token punctuation\">{</span> start<span class=\"token punctuation\">,</span> end <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">,</span> local<span class=\"token punctuation\">)</span> <span class=\"token operator\">=</span><span class=\"token operator\">></span>\n    local<span class=\"token punctuation\">.</span><span class=\"token function\">format</span><span class=\"token punctuation\">(</span>start<span class=\"token punctuation\">,</span> <span class=\"token punctuation\">{</span> date<span class=\"token punctuation\">:</span> <span class=\"token string\">'short'</span> <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">)</span> <span class=\"token operator\">+</span> <span class=\"token string\">' — '</span> <span class=\"token operator\">+</span>\n    local<span class=\"token punctuation\">.</span><span class=\"token function\">format</span><span class=\"token punctuation\">(</span>end<span class=\"token punctuation\">,</span> <span class=\"token punctuation\">{</span> date<span class=\"token punctuation\">:</span> <span class=\"token string\">'short'</span> <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span> culture<span class=\"token punctuation\">)</span>\n<span class=\"token punctuation\">}</span>\n\n<span class=\"token tag\"><span class=\"token tag\"><span class=\"token punctuation\">&lt;</span>Calendar</span> <span class=\"token attr-name\">formats</span><span class=\"token script language-javascript\"><span class=\"token punctuation\">=</span><span class=\"token punctuation\">{</span>formats<span class=\"token punctuation\">}</span></span> <span class=\"token punctuation\">/></span></span>\n</code></pre>\n<p>All localizers accept a function of\nthe form <code>(date: Date, culture: ?string, localizer: Localizer) -&gt; string</code></p>\n"},"components":{"type":{"name":"object","value":{"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"eventWrapper":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"dayWrapper":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"dateCellWrapper":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"toolbar":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"agenda":{"type":{"name":"object","value":{"date":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"time":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""},"day":{"type":{"name":"object","value":{"header":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""},"week":{"type":{"name":"object","value":{"header":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""},"month":{"type":{"name":"object","value":{"header":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""},"event":{"type":{"name":"elementType"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"Customize how different sections of the calendar render by providing custom Components.\nIn particular the `Event` component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.\n\n```jsx\nlet components = {\n  event: MyEvent, // used by each view (Month, Day, Week)\n  toolbar: MyToolbar,\n  agenda: {\n  \t event: MyAgendaEvent // with the agenda view use a different component to render events\n  }\n}\n<Calendar components={components} />\n```","doclets":{},"descHtml":"<p>Customize how different sections of the calendar render by providing custom Components.\nIn particular the <code>Event</code> component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.</p>\n<pre><code class=\"lang-jsx\"><span class=\"token keyword\">let</span> components <span class=\"token operator\">=</span> <span class=\"token punctuation\">{</span>\n  event<span class=\"token punctuation\">:</span> MyEvent<span class=\"token punctuation\">,</span> <span class=\"token comment\" spellcheck=\"true\">// used by each view (Month, Day, Week)</span>\n  toolbar<span class=\"token punctuation\">:</span> MyToolbar<span class=\"token punctuation\">,</span>\n  agenda<span class=\"token punctuation\">:</span> <span class=\"token punctuation\">{</span>\n       event<span class=\"token punctuation\">:</span> MyAgendaEvent <span class=\"token comment\" spellcheck=\"true\">// with the agenda view use a different component to render events</span>\n  <span class=\"token punctuation\">}</span>\n<span class=\"token punctuation\">}</span>\n<span class=\"token tag\"><span class=\"token tag\"><span class=\"token punctuation\">&lt;</span>Calendar</span> <span class=\"token attr-name\">components</span><span class=\"token script language-javascript\"><span class=\"token punctuation\">=</span><span class=\"token punctuation\">{</span>components<span class=\"token punctuation\">}</span></span> <span class=\"token punctuation\">/></span></span>\n</code></pre>\n"},"messages":{"type":{"name":"object","value":{"allDay":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"previous":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"next":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"today":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"month":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"week":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"day":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"agenda":{"type":{"name":"node"},"required":false,"desc":"","doclets":{},"descHtml":""},"showMore":{"type":{"name":"func"},"required":false,"desc":"","doclets":{},"descHtml":""}}},"required":false,"desc":"String messages used throughout the component, override to provide localizations","doclets":{},"descHtml":"<p>String messages used throughout the component, override to provide localizations</p>\n"}},"composes":[],"methods":{"getViews":{},"getView":{},"handleNavigate":{},"handleViewChange":{},"handleSelectEvent":{},"handleSelectSlot":{},"handleHeaderClick":{}},"desc":"react-big-calendar is full featured Calendar component for managing events and dates. It uses\nmodern `flexbox` for layout making it super responsive and performant. Leaving most of the layout heavy lifting\nto the browser. __note:__ The default styles use `height: 100%` which means your container must set an explicit\nheight (feel free to adjust the styles to suit your specific needs).\n\nBig Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\nhow to find the start and end datetimes and you can pass it whatever you want.\n\nOne thing to note is that, `react-big-calendar` treats event start/end dates as an _exclusive_ range.\nwhich means that the event spans up to, but not including, the end date. In the case\nof displaying events on whole days, end dates are rounded _up_ to the next day. So an\nevent ending on `Apr 8th 12:00:00 am` will not appear on the 8th, whereas one ending\non `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a\nfunction `endAccessor` that returns the end date + 1 day for those events that end at midnight.","doclets":{},"descHtml":"<p>react-big-calendar is full featured Calendar component for managing events and dates. It uses\nmodern <code>flexbox</code> for layout making it super responsive and performant. Leaving most of the layout heavy lifting\nto the browser. <strong>note:</strong> The default styles use <code>height: 100%</code> which means your container must set an explicit\nheight (feel free to adjust the styles to suit your specific needs).</p>\n<p>Big Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes\nthe most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it\nhow to find the start and end datetimes and you can pass it whatever you want.</p>\n<p>One thing to note is that, <code>react-big-calendar</code> treats event start/end dates as an <em>exclusive</em> range.\nwhich means that the event spans up to, but not including, the end date. In the case\nof displaying events on whole days, end dates are rounded <em>up</em> to the next day. So an\nevent ending on <code>Apr 8th 12:00:00 am</code> will not appear on the 8th, whereas one ending\non <code>Apr 8th 12:01:00 am</code> will. If you want <em>inclusive</em> ranges consider providing a\nfunction <code>endAccessor</code> that returns the end date + 1 day for those events that end at midnight.</p>\n"}}
 
 /***/ },
 /* 164 */
@@ -8870,6 +8865,13 @@
 	var internalInstanceKey = '__reactInternalInstance$' + Math.random().toString(36).slice(2);
 	
 	/**
+	 * Check if a given node should be cached.
+	 */
+	function shouldPrecacheNode(node, nodeID) {
+	  return node.nodeType === 1 && node.getAttribute(ATTR_NAME) === String(nodeID) || node.nodeType === 8 && node.nodeValue === ' react-text: ' + nodeID + ' ' || node.nodeType === 8 && node.nodeValue === ' react-empty: ' + nodeID + ' ';
+	}
+	
+	/**
 	 * Drill down (through composites and empty components) until we get a host or
 	 * host text component.
 	 *
@@ -8934,7 +8936,7 @@
 	    }
 	    // We assume the child nodes are in the same order as the child instances.
 	    for (; childNode !== null; childNode = childNode.nextSibling) {
-	      if (childNode.nodeType === 1 && childNode.getAttribute(ATTR_NAME) === String(childID) || childNode.nodeType === 8 && childNode.nodeValue === ' react-text: ' + childID + ' ' || childNode.nodeType === 8 && childNode.nodeValue === ' react-empty: ' + childID + ' ') {
+	      if (shouldPrecacheNode(childNode, childID)) {
 	        precacheNode(childInst, childNode);
 	        continue outer;
 	      }
@@ -11175,17 +11177,6 @@
 	  }
 	};
 	
-	var fiveArgumentPooler = function (a1, a2, a3, a4, a5) {
-	  var Klass = this;
-	  if (Klass.instancePool.length) {
-	    var instance = Klass.instancePool.pop();
-	    Klass.call(instance, a1, a2, a3, a4, a5);
-	    return instance;
-	  } else {
-	    return new Klass(a1, a2, a3, a4, a5);
-	  }
-	};
-	
 	var standardReleaser = function (instance) {
 	  var Klass = this;
 	  !(instance instanceof Klass) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Trying to release an instance into a pool of a different type.') : _prodInvariant('25') : void 0;
@@ -11225,8 +11216,7 @@
 	  oneArgumentPooler: oneArgumentPooler,
 	  twoArgumentPooler: twoArgumentPooler,
 	  threeArgumentPooler: threeArgumentPooler,
-	  fourArgumentPooler: fourArgumentPooler,
-	  fiveArgumentPooler: fiveArgumentPooler
+	  fourArgumentPooler: fourArgumentPooler
 	};
 	
 	module.exports = PooledClass;
@@ -16044,12 +16034,18 @@
 	    } else {
 	      var contentToUse = CONTENT_TYPES[typeof props.children] ? props.children : null;
 	      var childrenToUse = contentToUse != null ? null : props.children;
+	      // TODO: Validate that text is allowed as a child of this node
 	      if (contentToUse != null) {
-	        // TODO: Validate that text is allowed as a child of this node
-	        if (process.env.NODE_ENV !== 'production') {
-	          setAndValidateContentChildDev.call(this, contentToUse);
+	        // Avoid setting textContent when the text is empty. In IE11 setting
+	        // textContent on a text area will cause the placeholder to not
+	        // show within the textarea until it has been focused and blurred again.
+	        // https://github.com/facebook/react/issues/6731#issuecomment-254874553
+	        if (contentToUse !== '') {
+	          if (process.env.NODE_ENV !== 'production') {
+	            setAndValidateContentChildDev.call(this, contentToUse);
+	          }
+	          DOMLazyTree.queueText(lazyTree, contentToUse);
 	        }
-	        DOMLazyTree.queueText(lazyTree, contentToUse);
 	      } else if (childrenToUse != null) {
 	        var mountImages = this.mountChildren(childrenToUse, transaction, context);
 	        for (var i = 0; i < mountImages.length; i++) {
@@ -17969,7 +17965,17 @@
 	      }
 	    } else {
 	      if (props.value == null && props.defaultValue != null) {
-	        node.defaultValue = '' + props.defaultValue;
+	        // In Chrome, assigning defaultValue to certain input types triggers input validation.
+	        // For number inputs, the display value loses trailing decimal points. For email inputs,
+	        // Chrome raises "The specified value <x> is not a valid email address".
+	        //
+	        // Here we check to see if the defaultValue has actually changed, avoiding these problems
+	        // when the user is inputting text
+	        //
+	        // https://github.com/facebook/react/issues/7253
+	        if (node.defaultValue !== '' + props.defaultValue) {
+	          node.defaultValue = '' + props.defaultValue;
+	        }
 	      }
 	      if (props.checked == null && props.defaultChecked != null) {
 	        node.defaultChecked = !!props.defaultChecked;
@@ -18716,9 +18722,15 @@
 	    // This is in postMount because we need access to the DOM node, which is not
 	    // available until after the component has mounted.
 	    var node = ReactDOMComponentTree.getNodeFromInstance(inst);
+	    var textContent = node.textContent;
 	
-	    // Warning: node.value may be the empty string at this point (IE11) if placeholder is set.
-	    node.value = node.textContent; // Detach value from defaultValue
+	    // Only set node.value if textContent is equal to the expected
+	    // initial value. In IE10/IE11 there is a bug where the placeholder attribute
+	    // will populate textContent as well.
+	    // https://developer.microsoft.com/microsoft-edge/platform/issues/101525/
+	    if (textContent === inst._wrapperState.initialValue) {
+	      node.value = textContent;
+	    }
 	  }
 	};
 	
@@ -19520,7 +19532,17 @@
 	    instance = ReactEmptyComponent.create(instantiateReactComponent);
 	  } else if (typeof node === 'object') {
 	    var element = node;
-	    !(element && (typeof element.type === 'function' || typeof element.type === 'string')) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : _prodInvariant('130', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : void 0;
+	    var type = element.type;
+	    if (typeof type !== 'function' && typeof type !== 'string') {
+	      var info = '';
+	      if (process.env.NODE_ENV !== 'production') {
+	        if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+	          info += ' You likely forgot to export your component from the file ' + 'it\'s defined in.';
+	        }
+	      }
+	      info += getDeclarationErrorAddendum(element._owner);
+	       true ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s', type == null ? type : typeof type, info) : _prodInvariant('130', type == null ? type : typeof type, info) : void 0;
+	    }
 	
 	    // Special case string values
 	    if (typeof element.type === 'string') {
@@ -19810,7 +19832,7 @@
 	      // Since plain JS classes are defined without any special initialization
 	      // logic, we can not catch common errors early. Therefore, we have to
 	      // catch them here, at initialization time, instead.
-	      process.env.NODE_ENV !== 'production' ? warning(!inst.getInitialState || inst.getInitialState.isReactClassApproved, 'getInitialState was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Did you mean to define a state property instead?', this.getName() || 'a component') : void 0;
+	      process.env.NODE_ENV !== 'production' ? warning(!inst.getInitialState || inst.getInitialState.isReactClassApproved || inst.state, 'getInitialState was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Did you mean to define a state property instead?', this.getName() || 'a component') : void 0;
 	      process.env.NODE_ENV !== 'production' ? warning(!inst.getDefaultProps || inst.getDefaultProps.isReactClassApproved, 'getDefaultProps was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Use a static property to define defaultProps instead.', this.getName() || 'a component') : void 0;
 	      process.env.NODE_ENV !== 'production' ? warning(!inst.propTypes, 'propTypes was defined as an instance property on %s. Use a static ' + 'property to define propTypes instead.', this.getName() || 'a component') : void 0;
 	      process.env.NODE_ENV !== 'production' ? warning(!inst.contextTypes, 'contextTypes was defined as an instance property on %s. Use a ' + 'static property to define contextTypes instead.', this.getName() || 'a component') : void 0;
@@ -20814,14 +20836,11 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(169),
-	    _assign = __webpack_require__(12);
+	var _prodInvariant = __webpack_require__(169);
 	
 	var invariant = __webpack_require__(16);
 	
 	var genericComponentClass = null;
-	// This registry keeps track of wrapper classes around host tags.
-	var tagToComponentClass = {};
 	var textComponentClass = null;
 	
 	var ReactHostComponentInjection = {
@@ -20834,11 +20853,6 @@
 	  // rendered as props.
 	  injectTextComponentClass: function (componentClass) {
 	    textComponentClass = componentClass;
-	  },
-	  // This accepts a keyed object with classes as values. Each key represents a
-	  // tag. That particular tag will use this class instead of the generic one.
-	  injectComponentClasses: function (componentClasses) {
-	    _assign(tagToComponentClass, componentClasses);
 	  }
 	};
 	
@@ -25693,7 +25707,7 @@
 	
 	'use strict';
 	
-	module.exports = '15.4.1';
+	module.exports = '15.4.2';
 
 /***/ },
 /* 306 */
@@ -29121,17 +29135,9 @@
 	
 	var _propTypes = __webpack_require__(335);
 	
-	var _localizer = __webpack_require__(315);
-	
-	var _localizer2 = _interopRequireDefault(_localizer);
-	
 	var _helpers = __webpack_require__(340);
 	
 	var _constants = __webpack_require__(339);
-	
-	var _dates = __webpack_require__(313);
-	
-	var _dates2 = _interopRequireDefault(_dates);
 	
 	var _formats = __webpack_require__(318);
 	
@@ -29672,17 +29678,7 @@
 	
 	    onNavigate(date, view);
 	
-	    if (action === _constants.navigate.DATE) this._viewNavigate(date);
-	  },
-	  _viewNavigate: function _viewNavigate(nextDate) {
-	    var _props3 = this.props,
-	        view = _props3.view,
-	        date = _props3.date,
-	        culture = _props3.culture;
-	
-	    if (_dates2.default.eq(date, nextDate, view, _localizer2.default.startOfWeek(culture))) {
-	      this.handleViewChange(_constants.views.DAY);
-	    }
+	    if (action === _constants.navigate.DATE) this.handleViewChange(_constants.views.DAY);
 	  },
 	  handleViewChange: function handleViewChange(view) {
 	    if (view !== this.props.view && isValidView(view, this.props)) this.props.onView(view);
@@ -35054,7 +35050,7 @@
 	      allDayAccessor: allDayAccessor,
 	      slotStart: start,
 	      slotEnd: end,
-	      component: eventComponent
+	      eventComponent: eventComponent
 	    });
 	  },
 	  renderSpan: function renderSpan(len, key) {
@@ -35605,6 +35601,16 @@
 	
 	    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 	
+	    _this.handleSelectAllDaySlot = function (slots) {
+	      var onSelectSlot = _this.props.onSelectSlot;
+	
+	      (0, _helpers.notify)(onSelectSlot, {
+	        slots: slots,
+	        start: slots[0],
+	        end: slots[slots.length - 1]
+	      });
+	    };
+	
 	    _this.state = { gutterWidth: undefined, isOverflowing: null };
 	    _this.handleSelectEvent = _this.handleSelectEvent.bind(_this);
 	    _this.handleHeaderClick = _this.handleHeaderClick.bind(_this);
@@ -35737,7 +35743,6 @@
 	    var _props4 = this.props,
 	        messages = _props4.messages,
 	        rtl = _props4.rtl,
-	        onSelectSlot = _props4.onSelectSlot,
 	        selectable = _props4.selectable,
 	        components = _props4.components;
 	
@@ -35747,18 +35752,6 @@
 	    var style = {};
 	    if (isOverflowing) style[rtl ? 'marginLeft' : 'marginRight'] = (0, _scrollbarSize2.default)() + 'px';
 	
-	    function handleSelectSlot(_ref2) {
-	      var start = _ref2.start,
-	          end = _ref2.end;
-	
-	      var slots = range.slice(start, end + 1);
-	      (0, _helpers.notify)(onSelectSlot, {
-	        slots: slots,
-	        start: slots[0],
-	        end: slots[slots.length - 1]
-	      });
-	    }
-	
 	    return _react2.default.createElement('div', {
 	      ref: 'headerCell',
 	      className: (0, _classnames2.default)('rbc-time-header', isOverflowing && 'rbc-overflowing'),
@@ -35767,8 +35760,8 @@
 	      className: 'rbc-label rbc-header-gutter',
 	      style: { width: width }
 	    }), this.renderHeaderCells(range)), _react2.default.createElement('div', { className: 'rbc-row' }, _react2.default.createElement('div', {
-	      ref: function ref(_ref3) {
-	        return _this4._gutters[0] = _ref3;
+	      ref: function ref(_ref2) {
+	        return _this4._gutters[0] = _ref2;
 	      },
 	      className: 'rbc-label rbc-header-gutter',
 	      style: { width: width }
@@ -35779,7 +35772,7 @@
 	      events: events,
 	      className: 'rbc-allday-cell',
 	      selectable: selectable,
-	      onSelectSlot: handleSelectSlot,
+	      onSelectSlot: this.handleSelectAllDaySlot,
 	      dateCellWrapper: components.dateCellWrapper,
 	      eventComponent: this.props.components.event,
 	      eventWrapperComponent: this.props.components.eventWrapper,
@@ -35813,7 +35806,8 @@
 	        label: _localizer2.default.format(date, dayFormat, culture),
 	        localizer: _localizer2.default,
 	        format: dayFormat,
-	        culture: culture })));
+	        culture: culture
+	      })));
 	    });
 	  };
 	

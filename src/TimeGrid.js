@@ -121,6 +121,15 @@ export default class TimeGrid extends Component {
     }
   }
 
+  handleSelectAllDaySlot = (slots) => {
+    const { onSelectSlot } = this.props;
+    notify(onSelectSlot, {
+      slots,
+      start: slots[0],
+      end: slots[slots.length - 1]
+    })
+  }
+
   render() {
     let {
         events
@@ -213,21 +222,12 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, onSelectSlot, selectable, components } = this.props;
+    let { messages, rtl, selectable, components } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
     if (isOverflowing)
       style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
-
-    function handleSelectSlot({ start, end }) {
-      let slots = range.slice(start, end + 1)
-      notify(onSelectSlot, {
-        slots,
-        start: slots[0],
-        end: slots[slots.length - 1]
-      })
-    }
 
     return (
       <div
@@ -260,7 +260,7 @@ export default class TimeGrid extends Component {
             events={events}
             className='rbc-allday-cell'
             selectable={selectable}
-            onSelectSlot={handleSelectSlot}
+            onSelectSlot={this.handleSelectAllDaySlot}
             dateCellWrapper={components.dateCellWrapper}
             eventComponent={this.props.components.event}
             eventWrapperComponent={this.props.components.eventWrapper}
@@ -296,7 +296,8 @@ export default class TimeGrid extends Component {
             label={localizer.format(date, dayFormat, culture)}
             localizer={localizer}
             format={dayFormat}
-            culture={culture} />
+            culture={culture}
+          />
         </a>
       </div>
     )

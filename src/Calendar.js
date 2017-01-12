@@ -8,10 +8,8 @@ import {
   , dateRangeFormat
   , views as componentViews } from './utils/propTypes';
 
-import localizer from './localizer'
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
-import dates from './utils/dates';
 import defaultFormats from './formats';
 import viewLabel from './utils/viewLabel';
 import moveDate from './utils/move';

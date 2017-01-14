@@ -6,7 +6,9 @@ var Autoprefixer = require('less-plugin-autoprefix');
 const port = Number(process.argv[2]) || Number(process.env.PORT) || 3000
 
 module.exports = {
-  port,
+  devServer: {
+    port
+  },
   devtool: 'source-map',
   entry: path.join(__dirname, '../examples/App.js'),
   output: {

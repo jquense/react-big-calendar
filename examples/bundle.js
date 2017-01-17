@@ -152,10 +152,10 @@
 	      ),
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'examples contain' },
+	        { className: 'examples' },
 	        _react2.default.createElement(
-	          'aside',
-	          null,
+	          'header',
+	          { className: 'contain' },
 	          _react2.default.createElement(
 	            'ul',
 	            { className: 'nav nav-pills' },
@@ -26220,7 +26220,7 @@
 	      }
 	    }
 	  }return target;
-	}; /* eslint no-fallthrough: 0 */
+	}; /* eslint no-fallthrough: off */
 	
 	var _dateArithmetic = __webpack_require__(314);
 	
@@ -28940,7 +28940,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  font-size: 16px;\n}\nh4 {\n  margin-top: 20px;\n}\n.jumbotron {\n  background-color: #3174ad;\n  color: white;\n}\n.jumbotron a {\n  font-size: 85%;\n  color: #e6e6e6;\n}\n.contain {\n  background-color: white;\n  border-radius: 3px;\n  padding: 20px;\n  max-width: 900px;\n  margin: auto;\n}\n.docs {\n  background-color: #3174ad;\n  margin-top: 20px;\n  padding: 30px;\n}\n.examples {\n  position: relative;\n  height: 100vh;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n.example {\n  font-size: 14px;\n  -ms-flex: 1;\n      flex: 1;\n}\n.example,\n.example > * {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  min-height: 0;\n}\n.example .demo,\n.example .rbc-calendar {\n  -ms-flex: 1;\n      flex: 1;\n  min-height: 580px;\n}\n.section {\n  margin-bottom: 20px;\n}\naside {\n  margin-bottom: 40px;\n}\nh3 > a > code,\nh4 > a > code {\n  color: #3174ad;\n  background: none;\n  padding: 0;\n}\n.view-source {\n  font-size: 90%;\n  float: right;\n  margin-bottom: 15px;\n  margin-left: auto;\n}\n.callout {\n  border-left: 4px solid #3174ad;\n  padding: 10px;\n  color: #265985;\n  font-size: 20px;\n  margin-bottom: 15px;\n  margin-top: 0;\n}\npre {\n  border-radius: 0;\n  border: none;\n  border-left: 4px solid #ccc;\n}\npre.shape-prop {\n  border: none;\n}\ncode {\n  color: #555;\n  background-color: rgba(0, 0, 0, 0.04);\n}\n.playgroundStage,\n.cm-s-neo.CodeMirror {\n  background-color: #F4F4F4;\n  height: auto;\n  min-height: 75px;\n}\n.CodeMirror {\n  font-size: 12px;\n}\n.cm-s-neo div.CodeMirror-cursor {\n  border-left: 1px solid #9b9da2;\n}\n.cm-s-neo .CodeMirror-linenumber {\n  color: #ccc;\n}\n.cm-s-neo .cm-atom,\n.cm-s-neo .cm-number {\n  color: #905;\n}\n.prop-table {\n  font-size: 14 px;\n}\n.playgroundStage {\n  padding: 15px 0 15px 15px;\n}\n.playground.collapsableCode .playgroundCode {\n  height: 0;\n  overflow: hidden;\n}\n.playground.collapsableCode .playgroundCode.expandedCode {\n  height: auto;\n}\n.playgroundPreview {\n  position: relative;\n  padding: 40px 15px 15px 15px;\n}\n.playgroundPreview:before {\n  position: absolute;\n  top: 3px;\n  left: 7px;\n  color: #959595;\n  border-bottom: 1px solid  #eee;\n  padding: 0 3px;\n  content: 'Result';\n}\n.playground {\n  position: relative;\n  margin: 0;\n  margin-bottom: 20px;\n  border-top: 1px solid #ccc;\n}\n.playgroundCode,\n.playgroundPreview {\n  border-left: 1px solid #ccc;\n  border-right: 1px solid #ccc;\n}\n.playgroundToggleCodeBar {\n  padding: 1px;\n  border-top: 1px solid #ccc;\n}\n.playgroundToggleCodeLink {\n  color: #333;\n  background-color: #ccc;\n  margin-top: 1px;\n  margin-left: -1px;\n  border-bottom-left-radius: 3px;\n  border-bottom-right-radius: 3px;\n  padding: 3px 5px;\n}\n.playgroundToggleCodeLink:hover,\n.playgroundToggleCodeLink:focus {\n  color: black;\n}\n.anchor,\n.anchor:hover,\n.anchor:active,\n.anchor:focus {\n  color: black;\n  text-decoration: none;\n  position: relative;\n}\n.anchor-icon {\n  font-size: 90%;\n  padding-top: 0.1em;\n  position: absolute;\n  left: -0.8em;\n  opacity: 0;\n}\nh1:hover .anchor-icon,\nh1 a:focus .anchor-icon,\nh2:hover .anchor-icon,\nh2 a:focus .anchor-icon,\nh3:hover .anchor-icon,\nh3 a:focus .anchor-icon,\nh4:hover .anchor-icon,\nh4 a:focus .anchor-icon {\n  opacity: 0.5;\n}\n", ""]);
+	exports.push([module.id, "body {\n  font-size: 16px;\n}\nh4 {\n  margin-top: 20px;\n}\n.jumbotron {\n  background-color: #3174ad;\n  color: white;\n}\n.jumbotron a {\n  font-size: 85%;\n  color: #e6e6e6;\n}\n.contain {\n  background-color: white;\n  border-radius: 3px;\n  padding: 20px;\n  max-width: 900px;\n  margin: auto;\n}\n.docs {\n  background-color: #3174ad;\n  margin-top: 20px;\n  padding: 30px;\n}\n.examples {\n  position: relative;\n  height: 100vh;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n.example {\n  font-size: 14px;\n  padding: 0 40px;\n  max-width: 1900px;\n  margin: auto;\n  -ms-flex: 1;\n      flex: 1;\n}\n.example,\n.example > * {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  min-height: 0;\n}\n.example .demo,\n.example .rbc-calendar {\n  -ms-flex: 1;\n      flex: 1;\n  min-height: 580px;\n}\n.section {\n  margin-bottom: 20px;\n}\naside {\n  margin-bottom: 40px;\n}\nh3 > a > code,\nh4 > a > code {\n  color: #3174ad;\n  background: none;\n  padding: 0;\n}\n.view-source {\n  font-size: 90%;\n  float: right;\n  margin-bottom: 15px;\n  margin-left: auto;\n}\n.callout {\n  border-left: 4px solid #3174ad;\n  padding: 10px;\n  color: #265985;\n  font-size: 20px;\n  margin-bottom: 15px;\n  margin-top: 0;\n}\npre {\n  border-radius: 0;\n  border: none;\n  border-left: 4px solid #ccc;\n}\npre.shape-prop {\n  border: none;\n}\ncode {\n  color: #555;\n  background-color: rgba(0, 0, 0, 0.04);\n}\n.playgroundStage,\n.cm-s-neo.CodeMirror {\n  background-color: #F4F4F4;\n  height: auto;\n  min-height: 75px;\n}\n.CodeMirror {\n  font-size: 12px;\n}\n.cm-s-neo div.CodeMirror-cursor {\n  border-left: 1px solid #9b9da2;\n}\n.cm-s-neo .CodeMirror-linenumber {\n  color: #ccc;\n}\n.cm-s-neo .cm-atom,\n.cm-s-neo .cm-number {\n  color: #905;\n}\n.prop-table {\n  font-size: 14 px;\n}\n.playgroundStage {\n  padding: 15px 0 15px 15px;\n}\n.playground.collapsableCode .playgroundCode {\n  height: 0;\n  overflow: hidden;\n}\n.playground.collapsableCode .playgroundCode.expandedCode {\n  height: auto;\n}\n.playgroundPreview {\n  position: relative;\n  padding: 40px 15px 15px 15px;\n}\n.playgroundPreview:before {\n  position: absolute;\n  top: 3px;\n  left: 7px;\n  color: #959595;\n  border-bottom: 1px solid  #eee;\n  padding: 0 3px;\n  content: 'Result';\n}\n.playground {\n  position: relative;\n  margin: 0;\n  margin-bottom: 20px;\n  border-top: 1px solid #ccc;\n}\n.playgroundCode,\n.playgroundPreview {\n  border-left: 1px solid #ccc;\n  border-right: 1px solid #ccc;\n}\n.playgroundToggleCodeBar {\n  padding: 1px;\n  border-top: 1px solid #ccc;\n}\n.playgroundToggleCodeLink {\n  color: #333;\n  background-color: #ccc;\n  margin-top: 1px;\n  margin-left: -1px;\n  border-bottom-left-radius: 3px;\n  border-bottom-right-radius: 3px;\n  padding: 3px 5px;\n}\n.playgroundToggleCodeLink:hover,\n.playgroundToggleCodeLink:focus {\n  color: black;\n}\n.anchor,\n.anchor:hover,\n.anchor:active,\n.anchor:focus {\n  color: black;\n  text-decoration: none;\n  position: relative;\n}\n.anchor-icon {\n  font-size: 90%;\n  padding-top: 0.1em;\n  position: absolute;\n  left: -0.8em;\n  opacity: 0;\n}\nh1:hover .anchor-icon,\nh1 a:focus .anchor-icon,\nh2:hover .anchor-icon,\nh2 a:focus .anchor-icon,\nh3:hover .anchor-icon,\nh3 a:focus .anchor-icon,\nh4:hover .anchor-icon,\nh4 a:focus .anchor-icon {\n  opacity: 0.5;\n}\n", ""]);
 	
 	// exports
 
@@ -36439,13 +36439,15 @@
 	        timeslots = _props.timeslots,
 	        showLabels = _props.showLabels,
 	        step = _props.step,
-	        timeGutterFormat = _props.timeGutterFormat;
+	        timeGutterFormat = _props.timeGutterFormat,
+	        culture = _props.culture;
 	
 	    return _react2.default.createElement(_TimeSlotGroup2.default, {
 	      key: key,
 	      isNow: isNow,
 	      value: date,
 	      step: step,
+	      culture: culture,
 	      timeslots: timeslots,
 	      showLabels: showLabels,
 	      timeGutterFormat: timeGutterFormat,
@@ -36493,6 +36495,7 @@
 	
 	TimeColumn.propTypes = {
 	  step: _react.PropTypes.number.isRequired,
+	  culture: _react.PropTypes.string,
 	  timeslots: _react.PropTypes.number.isRequired,
 	  now: _react.PropTypes.instanceOf(Date).isRequired,
 	  min: _react.PropTypes.instanceOf(Date).isRequired,
@@ -37227,9 +37230,23 @@
 	exports.__esModule = true;
 	exports.default = moveDate;
 	
+	var _invariant = __webpack_require__(316);
+	
+	var _invariant2 = _interopRequireDefault(_invariant);
+	
 	var _constants = __webpack_require__(339);
 	
+	var _Views = __webpack_require__(342);
+	
+	var _Views2 = _interopRequireDefault(_Views);
+	
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+	
 	function moveDate(action, date, View) {
+	  View = typeof View === 'string' ? _Views2.default[View] : View;
+	
 	  switch (action) {
 	    case _constants.navigate.TODAY:
 	      date = new Date();
@@ -37237,9 +37254,9 @@
 	    case _constants.navigate.DATE:
 	      break;
 	    default:
+	      (0, _invariant2.default)(View && typeof View.navigate === 'function', 'Calendar View components must implement a static `.navigate(date, action)` method.s');
 	      date = View.navigate(date, action);
 	  }
-	
 	  return date;
 	}
 	module.exports = exports['default'];

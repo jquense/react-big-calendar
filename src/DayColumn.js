@@ -11,6 +11,8 @@ import { notify } from './utils/helpers';
 import { accessor, elementType, dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
+import getStyledEvents, { positionFromDate, startsBefore } from './utils/dayViewLayout'
+
 import TimeColumn from './TimeColumn'
 
 function snapToSlot(date, step){
@@ -18,37 +20,8 @@ function snapToSlot(date, step){
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-function startsBefore(date, min) {
-  return dates.lt(dates.merge(min, date), min, 'minutes')
-}
-
 function startsAfter(date, max) {
   return dates.gt(dates.merge(max, date), max, 'minutes')
-}
-
-function positionFromDate(date, min, total) {
-  if (startsBefore(date, min))
-    return 0
-
-  let diff = dates.diff(min, dates.merge(min, date), 'minutes')
-  return Math.min(diff, total)
-}
-
-function overlaps(event, events, { startAccessor, endAccessor }, last) {
-  let eStart = get(event, startAccessor);
-  let offset = last;
-
-  function overlap(eventB){
-    return dates.lt(eStart, get(eventB, endAccessor))
-  }
-
-  if (!events.length) return last - 1
-  events.reverse().some(prevEvent => {
-    if (overlap(prevEvent)) return true
-    offset = offset - 1
-  })
-
-  return offset
 }
 
 let DaySlot = React.createClass({
@@ -158,18 +131,24 @@ let DaySlot = React.createClass({
 
   renderEvents() {
     let {
-        min
+        events
+      , min
       , max
       , culture
       , eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
+      , step
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
 
-    return this._getStyledEvents().map((event, idx) => {
+    let styledEvents = getStyledEvents({
+      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
+    })
+
+    return styledEvents.map((event, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
 
@@ -215,148 +194,6 @@ let DaySlot = React.createClass({
         </EventWrapper>
       )
     })
-  },
-
-  _getStyledEvents() {
-    let { min, startAccessor, endAccessor, step } = this.props
-
-    let events = this.props.events.sort((a, b) => {
-      let startA = +get(a, startAccessor)
-      let startB = +get(b, startAccessor)
-
-      if (startA === startB) {
-        return +get(b, endAccessor) - +get(a, endAccessor)
-      }
-
-      return startA - startB
-    })
-
-    let getSlot = (event, accessor) => event && positionFromDate(
-      get(event, accessor), min, this._totalMin
-    )
-
-    let isSibling = (idx1, idx2) => {
-      let event1 = events[idx1]
-      let event2 = events[idx2]
-
-      if (!event1 || !event2) return false
-
-      let start1 = getSlot(event1, startAccessor)
-      let start2 = getSlot(event2, startAccessor)
-
-      return (Math.abs(start1 - start2) < 60)
-    }
-
-    let isChild = (parentIdx, childIdx) => {
-      if (isSibling(parentIdx, childIdx)) return false
-
-      let parentEnd = getSlot(events[parentIdx], endAccessor)
-      let childStart = getSlot(events[childIdx], startAccessor)
-
-      return parentEnd > childStart
-    }
-
-    let getSiblings = (idx) => {
-      let nextIdx = idx
-      let siblings = []
-
-      while (isSibling(idx, ++nextIdx)) siblings.push(nextIdx)
-
-      return siblings
-    }
-
-    let getChildGroups = (idx, nextIdx) => {
-      let groups = []
-      let nbrOfColumns = 0
-
-      while (isChild(idx, nextIdx)) {
-        let childGroup = [nextIdx]
-        let siblingIdx = nextIdx
-
-        while (isSibling(nextIdx, ++siblingIdx)) childGroup.push(siblingIdx)
-
-        nbrOfColumns = Math.max(nbrOfColumns, childGroup.length)
-        groups.push(childGroup)
-        nextIdx = siblingIdx
-      }
-
-      return { childGroups: groups, nbrOfChildColumns: nbrOfColumns }
-    }
-
-    let getYStyles = (idx) => {
-      let event = events[idx]
-      let start = getSlot(event, startAccessor)
-      let end = Math.max(getSlot(event, endAccessor), start + step)
-      let top = start / this._totalMin * 100
-      let bottom = end / this._totalMin * 100
-
-      return {
-        top,
-        height: bottom - top
-      }
-    }
-
-    let OVERLAP_MULTIPLIER = 0.3
-    let idx = 0
-
-    // Each iteration goes over all related/overlapping events
-    while (idx < events.length) {
-      let siblings = getSiblings(idx)
-      let { childGroups, nbrOfChildColumns } = getChildGroups(
-        idx, idx + siblings.length + 1
-      )
-      let nbrOfColumns = Math.max(nbrOfChildColumns, siblings.length) + 1
-
-      // Set styles to top level events
-      Array.of(idx).concat(siblings).forEach((eventIdx, siblingIdx) => {
-        let width = 100 / nbrOfColumns
-        let xAdjustment = width * (nbrOfColumns > 1 ? OVERLAP_MULTIPLIER : 0)
-        let { top, height } = getYStyles(eventIdx)
-
-        events[eventIdx].styles = {
-          top,
-          height,
-          width: width + xAdjustment,
-          xOffset: (width * siblingIdx) - xAdjustment
-        }
-      })
-
-      childGroups.forEach(group => {
-        let parentIdx = idx
-        let siblingIdx = 0
-
-        // Move child group to sibling if possible, since this will makes
-        // room for more events
-        while (isChild(siblings[siblingIdx], group[0])) {
-          parentIdx = siblings[siblingIdx]
-          siblingIdx++
-        }
-
-        // Set styles to child events
-        group.forEach((eventIdx, i) => {
-          let parentStyles = events[parentIdx].styles
-          let spaceOccupiedByParent = parentStyles.width + parentStyles.xOffset
-          let columns = Math.min(group.length, nbrOfColumns)
-          let width = (100 - spaceOccupiedByParent) / columns
-          let xAdjustment = spaceOccupiedByParent * OVERLAP_MULTIPLIER
-          let { top, height } = getYStyles(eventIdx)
-
-          events[eventIdx].styles = {
-            top,
-            height,
-            width: width + xAdjustment,
-            xOffset: spaceOccupiedByParent + (width * i) - xAdjustment
-          }
-        })
-      })
-
-      // Move past all events we just went through
-      idx += 1 + siblings.length + childGroups.reduce(
-        (total, group) => total + group.length, 0
-      )
-    }
-
-    return events
   },
 
   _slotStyle(startSlot, endSlot) {

@@ -1,4 +1,4 @@
-/* eslint no-fallthrough: 0 */
+/* eslint no-fallthrough: off */
 import dateMath from 'date-arithmetic';
 import localizer from '../localizer';
 

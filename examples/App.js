@@ -56,8 +56,8 @@ const Example = React.createClass({
           </p>
         </div>
       </div>
-        <div className='examples contain'>
-          <aside>
+        <div className='examples'>
+          <header className="contain">
             <ul className='nav nav-pills'>
               <li className={cn({active: selected === 'basic' })}>
                 <a href='#' onClick={this.select.bind(null, 'basic')}>Basic</a>
@@ -86,7 +86,7 @@ const Example = React.createClass({
                 <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
               </li>
             </ul>
-          </aside>
+          </header>
           <div className='example'>
             <div className='view-source'>
               <a target='_blank' href={demoRoot + '/' + selected + '.js' }>

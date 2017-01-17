@@ -148,7 +148,7 @@ let DaySlot = React.createClass({
       events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
     })
 
-    return styledEvents.map((event, idx) => {
+    return styledEvents.map(({ event, style }, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
 
@@ -162,19 +162,18 @@ let DaySlot = React.createClass({
       if (eventPropGetter)
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected)
 
-      let { height, top, width, xOffset } = event.styles
-      let style = {
-        ...xStyle,
-        top: `${top}%`,
-        height: `${height}%`,
-        [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-        width: `${width}%`
-      }
+      let { height, top, width, xOffset } = style
 
       return (
         <EventWrapper event={event} key={'evt_' + idx}>
           <div
-            style={style}
+            style={{
+              ...xStyle,
+              top: `${top}%`,
+              height: `${height}%`,
+              [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
+              width: `${width}%`
+            }}
             title={label + ': ' + title }
             onClick={(e) => this._select(event, e)}
             className={cn('rbc-event', className, {

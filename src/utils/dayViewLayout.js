@@ -149,7 +149,7 @@ let getYStyles = (idx, {
  * Starting at the first event, each of its siblings and children, placed in
  * groups of siblings, will be found. Both are needed in order to calculate the
  * width of the first event. When the width is known, its siblings will be
- * given the same width, but with an incremental x-offet.
+ * given the same width, but with an incremental x-offset.
  *
  * Each group of children will be looking to move as far away from its original
  * parent as possible. A move can be made to one of the parent's siblings, if
@@ -173,7 +173,7 @@ export default function getStyledEvents ({
   let OVERLAP_MULTIPLIER = 0.3
   let events = sort(unsortedEvents, { startAccessor, endAccessor })
   let helperArgs = { events, startAccessor, endAccessor, min, totalMin, step }
-
+  let styledEvents = []
   let idx = 0
 
   // One iteration will cover all connected events.
@@ -190,11 +190,14 @@ export default function getStyledEvents ({
       let xAdjustment = width * (nbrOfColumns > 1 ? OVERLAP_MULTIPLIER : 0)
       let { top, height } = getYStyles(eventIdx, helperArgs)
 
-      events[eventIdx].styles = {
-        top,
-        height,
-        width: width + xAdjustment,
-        xOffset: (width * siblingIdx) - xAdjustment
+      styledEvents[eventIdx] = {
+        event: events[eventIdx],
+        style: {
+          top,
+          height,
+          width: width + xAdjustment,
+          xOffset: (width * siblingIdx) - xAdjustment
+        }
       }
     })
 
@@ -211,18 +214,21 @@ export default function getStyledEvents ({
 
       // Set styles to child events.
       group.forEach((eventIdx, i) => {
-        let parentStyles = events[parentIdx].styles
-        let spaceOccupiedByParent = parentStyles.width + parentStyles.xOffset
+        let { style: parentStyle } = styledEvents[parentIdx]
+        let spaceOccupiedByParent = parentStyle.width + parentStyle.xOffset
         let columns = Math.min(group.length, nbrOfColumns)
         let width = (100 - spaceOccupiedByParent) / columns
         let xAdjustment = spaceOccupiedByParent * OVERLAP_MULTIPLIER
         let { top, height } = getYStyles(eventIdx, helperArgs)
 
-        events[eventIdx].styles = {
-          top,
-          height,
-          width: width + xAdjustment,
-          xOffset: spaceOccupiedByParent + (width * i) - xAdjustment
+        styledEvents[eventIdx] = {
+          event: events[eventIdx],
+          style: {
+            top,
+            height,
+            width: width + xAdjustment,
+            xOffset: spaceOccupiedByParent + (width * i) - xAdjustment
+          }
         }
       })
     })
@@ -233,5 +239,5 @@ export default function getStyledEvents ({
     )
   }
 
-  return events
+  return styledEvents
 }

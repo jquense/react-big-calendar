@@ -6,6 +6,7 @@ import Calendar from '../src';
 import momentLocalizer from '../src/localizers/moment.js'
 import '../src/less/styles.less'
 import demoEvents from '../examples/events';
+import createEvents from './createEvents';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -61,6 +62,18 @@ storiesOf('module.Calendar.week', module)
           events={events}
           onSelectEvent={action('event selected')}
           defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+
+  .add('day view', () => {
+    return (
+      <div style={{height: 600}}>
+        <Calendar
+          defaultView={Calendar.Views.DAY}
+          defaultDate={new Date()}
+          events={createEvents(1)}
         />
       </div>
     )

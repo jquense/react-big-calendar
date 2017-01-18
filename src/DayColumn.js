@@ -11,6 +11,8 @@ import { notify } from './utils/helpers';
 import { accessor, elementType, dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
+import getStyledEvents, { positionFromDate, startsBefore } from './utils/dayViewLayout'
+
 import TimeColumn from './TimeColumn'
 
 function snapToSlot(date, step){
@@ -18,37 +20,8 @@ function snapToSlot(date, step){
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 }
 
-function startsBefore(date, min) {
-  return dates.lt(dates.merge(min, date), min, 'minutes')
-}
-
 function startsAfter(date, max) {
   return dates.gt(dates.merge(max, date), max, 'minutes')
-}
-
-function positionFromDate(date, min, total) {
-  if (startsBefore(date, min))
-    return 0
-
-  let diff = dates.diff(min, dates.merge(min, date), 'minutes')
-  return Math.min(diff, total)
-}
-
-function overlaps(event, events, { startAccessor, endAccessor }, last) {
-  let eStart = get(event, startAccessor);
-  let offset = last;
-
-  function overlap(eventB){
-    return dates.lt(eStart, get(eventB, endAccessor))
-  }
-
-  if (!events.length) return last - 1
-  events.reverse().some(prevEvent => {
-    if (overlap(prevEvent)) return true
-    offset = offset - 1
-  })
-
-  return offset
 }
 
 let DaySlot = React.createClass({
@@ -124,7 +97,7 @@ let DaySlot = React.createClass({
     this._totalMin = dates.diff(min, max, 'minutes')
 
     let { selecting, startSlot, endSlot } = this.state
-      , style = this._slotStyle(startSlot, endSlot, 0)
+    let style = this._slotStyle(startSlot, endSlot)
 
     let selectDates = {
       start: this.state.startDate,
@@ -165,43 +138,46 @@ let DaySlot = React.createClass({
       , eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
       , eventWrapperComponent: EventWrapper
+      , rtl: isRtl
+      , step
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
-      , lastLeftOffset = 0;
 
-    events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor))
+    let styledEvents = getStyledEvents({
+      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
+    })
 
-    return events.map((event, idx) => {
+    return styledEvents.map(({ event, style }, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
-      let startSlot = positionFromDate(start, min, this._totalMin);
-      let endSlot = positionFromDate(end, min, this._totalMin);
 
       let continuesPrior = startsBefore(start, min)
       let continuesAfter = startsAfter(end, max)
 
-      lastLeftOffset = Math.max(0,
-        overlaps(event, events.slice(0, idx), this.props, lastLeftOffset + 1))
-
-      let style = this._slotStyle(startSlot, endSlot, lastLeftOffset)
-
       let title = get(event, titleAccessor)
-      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture);
-      let _isSelected = isSelected(event, selected);
+      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture)
+      let _isSelected = isSelected(event, selected)
 
       if (eventPropGetter)
-        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected);
+        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected)
+
+      let { height, top, width, xOffset } = style
 
       return (
         <EventWrapper event={event} key={'evt_' + idx}>
           <div
-            style={{...xStyle, ...style}}
+            style={{
+              ...xStyle,
+              top: `${top}%`,
+              height: `${height}%`,
+              [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
+              width: `${width}%`
+            }}
             title={label + ': ' + title }
             onClick={(e) => this._select(event, e)}
             className={cn('rbc-event', className, {
               'rbc-selected': _isSelected,
-              'rbc-event-overlaps': lastLeftOffset !== 0,
               'rbc-event-continues-earlier': continuesPrior,
               'rbc-event-continues-later': continuesAfter
             })}
@@ -219,23 +195,13 @@ let DaySlot = React.createClass({
     })
   },
 
-  _slotStyle(startSlot, endSlot, leftOffset){
-
-    endSlot = Math.max(endSlot, startSlot + this.props.step) //must be at least one `step` high
-
-    let eventOffset = this.props.eventOffset || 10
-      , isRtl = this.props.rtl;
-
+  _slotStyle(startSlot, endSlot) {
     let top = ((startSlot / this._totalMin) * 100);
     let bottom = ((endSlot / this._totalMin) * 100);
-    let per = leftOffset === 0 ? 0 : leftOffset * eventOffset;
-    let rightDiff = (eventOffset / (leftOffset + 1));
 
     return {
       top: top + '%',
-      height: bottom - top + '%',
-      [isRtl ? 'right' : 'left']: per + '%',
-      width: (leftOffset === 0 ? (100 - eventOffset) : (100 - per) - rightDiff) + '%'
+      height: bottom - top + '%'
     }
   },
 

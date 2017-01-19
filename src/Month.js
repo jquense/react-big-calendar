@@ -155,6 +155,7 @@ let MonthView = React.createClass({
       endAccessor,
       allDayAccessor,
       eventPropGetter,
+      messages,
       selected } = this.props;
 
     const { needLimitMeasure, rowLimit } = this.state;
@@ -175,6 +176,7 @@ let MonthView = React.createClass({
         maxRows={rowLimit}
         selected={selected}
         selectable={selectable}
+        messages={messages}
 
         titleAccessor={titleAccessor}
         startAccessor={startAccessor}

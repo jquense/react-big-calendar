@@ -156,10 +156,35 @@ export default class TimeGrid extends Component {
 
         if (
           get(event, allDayAccessor)
-          || !dates.eq(eStart, eEnd, 'day')
           || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
         {
           allDayEvents.push(event)
+        }
+        else if (!dates.eq(eStart, eEnd, 'day'))
+        {
+          const numberOfEvents = dates.diff(eStart, dates.ceil(eEnd, 'day'), 'day')
+          let tempStart = eStart
+            , tempEnd = dates.endOf(eStart, 'day')
+          rangeEvents.push({
+            id: event.id,
+            title: event.title,
+            start: tempStart,
+            end: tempEnd,
+          })
+          for (let i = 0; i < numberOfEvents - 1; i++) {
+            tempStart = dates.startOf(new Date(new Date(tempStart).setDate(tempStart.getDate() + 1)), 'day');
+            if (i === numberOfEvents - 2) {
+              tempEnd = eEnd;
+            } else {
+              tempEnd = dates.endOf(new Date(new Date(eStart).setDate(eStart.getDate() + (i + 1))), 'day');
+            }
+            rangeEvents.push({
+              id: event.id,
+              title: event.title,
+              start: tempStart,
+              end: tempEnd,
+            })
+          }
         }
         else
           rangeEvents.push(event)

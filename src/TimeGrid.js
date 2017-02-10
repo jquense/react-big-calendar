@@ -16,7 +16,6 @@ import message from './utils/messages';
 import { accessor, dateFormat } from './utils/propTypes';
 
 import { notify } from './utils/helpers';
-import { navigate } from './utils/constants';
 
 import { accessor as get } from './utils/accessors';
 
@@ -55,6 +54,8 @@ export default class TimeGrid extends Component {
     onSelectEnd: React.PropTypes.func,
     onSelectStart: React.PropTypes.func,
     onSelectEvent: React.PropTypes.func,
+    onDrillDown: React.PropTypes.func,
+    getDrilldownView: React.PropTypes.func.isRequired,
 
     messages: React.PropTypes.object,
     components: React.PropTypes.object.isRequired,
@@ -278,41 +279,59 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderCells(range){
-    let { dayFormat, culture, components } = this.props;
+    let { dayFormat, culture, components, getDrilldownView } = this.props;
     let HeaderComponent = components.header || Header
 
-    return range.map((date, i) =>
-      <div
-        key={i}
-        className={cn(
-          'rbc-header',
-          dates.isToday(date) && 'rbc-today',
-        )}
-        style={segStyle(1, this.slots)}
-      >
-        <a href='#' onClick={this.handleHeaderClick.bind(null, date)}>
-          <HeaderComponent
-            date={date}
-            label={localizer.format(date, dayFormat, culture)}
-            localizer={localizer}
-            format={dayFormat}
-            culture={culture}
-          />
-        </a>
-      </div>
-    )
+    return range.map((date, i) => {
+      let drilldownView = getDrilldownView(date);
+      let label = localizer.format(date, dayFormat, culture);
+
+      let header = (
+        <HeaderComponent
+          date={date}
+          label={label}
+          localizer={localizer}
+          format={dayFormat}
+          culture={culture}
+        />
+      )
+
+      return (
+        <div
+          key={i}
+          className={cn(
+            'rbc-header',
+            dates.isToday(date) && 'rbc-today',
+          )}
+          style={segStyle(1, this.slots)}
+        >
+          {drilldownView ? (
+            <a
+              href='#'
+              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
+            >
+              {header}
+            </a>
+          ) : (
+            <span>
+              {header}
+            </span>
+          )}
+        </div>
+      )
+    })
   }
 
-  handleHeaderClick(date, e){
+  handleHeaderClick(date, view, e){
     e.preventDefault()
-    notify(this.props.onNavigate, [navigate.DATE, date])
+    notify(this.props.onDrillDown, [date, view])
   }
 
-  handleSelectEvent(...args){
+  handleSelectEvent(...args) {
     notify(this.props.onSelectEvent, args)
   }
 
-  handleSelectAlldayEvent(...args){
+  handleSelectAlldayEvent(...args) {
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
     notify(this.props.onSelectEvent, args)

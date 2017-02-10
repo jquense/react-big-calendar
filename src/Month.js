@@ -54,12 +54,15 @@ let propTypes = {
   onSelectSlot: React.PropTypes.func,
   onSelectEvent: React.PropTypes.func,
   onShowMore: React.PropTypes.func,
+  onDrillDown: React.PropTypes.func,
+  getDrilldownView: React.PropTypes.func.isRequired,
 
   dateFormat,
 
   weekdayFormat: dateFormat,
   popup: React.PropTypes.bool,
 
+  messages: React.PropTypes.object,
   components: React.PropTypes.object.isRequired,
   popupOffset: React.PropTypes.oneOfType([
     React.PropTypes.number,
@@ -199,10 +202,12 @@ let MonthView = React.createClass({
   },
 
   readerDateHeading({ date, className, ...props }) {
-    let { date: currentDate, dateFormat, culture  } = this.props;
+    let { date: currentDate, getDrilldownView, dateFormat, culture  } = this.props;
 
     let isOffRange = dates.month(date) !== dates.month(currentDate);
     let isCurrent = dates.eq(date, currentDate, 'day');
+    let drilldownView = getDrilldownView(date);
+    let label = localizer.format(date, dateFormat, culture);
 
     return (
       <div
@@ -213,9 +218,18 @@ let MonthView = React.createClass({
           isCurrent && 'rbc-current'
         )}
       >
-        <a href='#' onClick={e => this.handleHeadingClick(date, e)}>
-          {localizer.format(date, dateFormat, culture)}
-        </a>
+        {drilldownView ? (
+          <a
+            href='#'
+            onClick={e => this.handleHeadingClick(date, drilldownView, e)}
+          >
+            {label}
+          </a>
+        ) : (
+          <span>
+            {label}
+          </span>
+        )}
       </div>
     )
   },
@@ -283,10 +297,10 @@ let MonthView = React.createClass({
     this._selectTimer = setTimeout(()=> this._selectDates())
   },
 
-  handleHeadingClick(date, e){
+  handleHeadingClick(date, view, e){
     e.preventDefault();
     this.clearSelection()
-    notify(this.props.onNavigate, [navigate.DATE, date])
+    notify(this.props.onDrillDown, [date, view])
   },
 
   handleSelectEvent(...args){
@@ -309,7 +323,7 @@ let MonthView = React.createClass({
   },
 
   handleShowMore(events, date, cell, slot) {
-    const { popup, onNavigate, onShowMore } = this.props
+    const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
 
@@ -321,7 +335,7 @@ let MonthView = React.createClass({
       })
     }
     else {
-      notify(onNavigate, [navigate.DATE, date])
+      notify(onDrillDown, [date, getDrilldownView(date) || 'day'])
     }
 
     notify(onShowMore, [events, date, slot])

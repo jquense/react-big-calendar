@@ -6,7 +6,7 @@ import dates from './utils/dates';
 import localizer from './localizer'
 import chunk from 'lodash/chunk';
 
-import { navigate } from './utils/constants';
+import { navigate, views } from './utils/constants';
 import { notify } from './utils/helpers';
 import getPosition from 'dom-helpers/query/position';
 import raf from 'dom-helpers/util/requestAnimationFrame';
@@ -335,7 +335,7 @@ let MonthView = React.createClass({
       })
     }
     else {
-      notify(onDrillDown, [date, getDrilldownView(date) || 'day'])
+      notify(onDrillDown, [date, getDrilldownView(date) || views.DAY])
     }
 
     notify(onShowMore, [events, date, slot])

@@ -145,7 +145,9 @@ let Calendar = React.createClass({
      * Set to `null` to disable drill-down actions.
      *
      * ```js
-     * drilldownView="agenda"
+     * <BigCalendar
+     *   drilldownView="agenda"
+     * />
      * ```
      */
     drilldownView: React.PropTypes.string,
@@ -158,12 +160,14 @@ let Calendar = React.createClass({
      * Return `null` to disable drill-down actions.
      *
      * ```js
-     * drilldownView={(targetDate, currentViewName, configuredViewNames)
-     *  if (currentViewName === 'month' && configuredViewNames.includes('week'))
-     *    return 'week'
+     * <BigCalendar
+     *   getDrilldownView={(targetDate, currentViewName, configuredViewNames) =>
+     *     if (currentViewName === 'month' && configuredViewNames.includes('week'))
+     *       return 'week'
      *
-     *  return null;
-     * }}
+     *     return null;
+     *   }}
+     * />
      * ```
      */
     getDrilldownView: React.PropTypes.func,

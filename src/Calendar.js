@@ -153,7 +153,7 @@ let Calendar = React.createClass({
     drilldownView: React.PropTypes.string,
 
     /**
-     * Functionally equivilent to `drilldownView` but accepts a function
+     * Functionally equivalent to `drilldownView`, but accepts a function
      * that can return a view name. It's useful for customizing the drill-down
      * actions depending on the target date and triggering view.
      *

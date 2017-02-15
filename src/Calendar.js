@@ -138,6 +138,41 @@ let Calendar = React.createClass({
     views: componentViews,
 
     /**
+     * The string name of the destination view for drill-down actions, such
+     * as clicking a date header, or the truncated events links. If
+     * `getDrilldownView` is also specified it will be used instead.
+     *
+     * Set to `null` to disable drill-down actions.
+     *
+     * ```js
+     * <BigCalendar
+     *   drilldownView="agenda"
+     * />
+     * ```
+     */
+    drilldownView: React.PropTypes.string,
+
+    /**
+     * Functionally equivalent to `drilldownView`, but accepts a function
+     * that can return a view name. It's useful for customizing the drill-down
+     * actions depending on the target date and triggering view.
+     *
+     * Return `null` to disable drill-down actions.
+     *
+     * ```js
+     * <BigCalendar
+     *   getDrilldownView={(targetDate, currentViewName, configuredViewNames) =>
+     *     if (currentViewName === 'month' && configuredViewNames.includes('week'))
+     *       return 'week'
+     *
+     *     return null;
+     *   }}
+     * />
+     * ```
+     */
+    getDrilldownView: React.PropTypes.func,
+
+    /**
      * Determines whether the toolbar is displayed
      */
     toolbar: PropTypes.bool,
@@ -407,6 +442,8 @@ let Calendar = React.createClass({
       date: now,
       step: 30,
 
+      drilldownView: views.DAY,
+
       titleAccessor: 'title',
       allDayAccessor: 'allDay',
       startAccessor: 'start',
@@ -438,6 +475,14 @@ let Calendar = React.createClass({
     const views = this.getViews();
 
     return views[this.props.view];
+  },
+
+  getDrilldownView(date) {
+    const { view, drilldownView, getDrilldownView } = this.props
+
+    if (!getDrilldownView) return drilldownView
+
+    return getDrilldownView(date, view, Object.keys(this.getViews()));
   },
 
   render() {
@@ -497,8 +542,9 @@ let Calendar = React.createClass({
           events={events}
           date={current}
           components={viewComponents}
+          getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
-          onHeaderClick={this.handleHeaderClick}
+          onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
@@ -514,29 +560,24 @@ let Calendar = React.createClass({
     date = moveDate(action, newDate || date, ViewComponent)
 
     onNavigate(date, view)
-
-    if (action === navigate.DATE)
-      this.handleViewChange(views.DAY)
   },
 
-  handleViewChange(view){
+  handleViewChange(view) {
     if (view !== this.props.view && isValidView(view, this.props))
       this.props.onView(view)
   },
 
-  handleSelectEvent(...args){
+  handleSelectEvent(...args) {
     notify(this.props.onSelectEvent, args)
   },
 
-  handleSelectSlot(slotInfo){
+  handleSelectSlot(slotInfo) {
     notify(this.props.onSelectSlot, slotInfo)
   },
 
-  handleHeaderClick(date){
-    let { view } = this.props;
-
-    if ( view === views.MONTH || view === views.WEEK)
-      this._view(views.day)
+  handleDrillDown(date, view) {
+    if (view)
+      this.handleViewChange(view)
 
     this.handleNavigate(navigate.DATE, date)
   }

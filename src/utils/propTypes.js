@@ -42,6 +42,24 @@ export let dateFormat = createChainableTypeChecker(
 
 export let dateRangeFormat = PropTypes.func
 
+/**
+ * accepts either an array of builtin view names:
+ *
+ * ```
+ * views={['month', 'day', 'agenda']}
+ * ```
+ *
+ * or an object hash of the view name and the component (or boolean for builtin)
+ *
+ * ```
+ * views={{
+ *   month: true,
+ *   week: false,
+ *   workweek: WorkWeekViewComponent,
+ * }}
+ * ```
+ * @type {[type]}
+ */
 export let views = PropTypes.oneOfType([
   PropTypes.arrayOf(
     PropTypes.oneOf(viewNames)

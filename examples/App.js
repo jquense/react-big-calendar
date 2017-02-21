@@ -13,19 +13,19 @@ import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
 
-let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
 const Example = React.createClass({
   getInitialState(){
     return {
-      selected: 'basic',
+      selected: 'elation',
     };
   },
 
   render() {
     let selected = this.state.selected;
     let Current = {
-      basic: require('./demos/basic'),
+      // basic: require('./demos/basic'),
+      elation: require('./demos/elation'),
       selectable: require('./demos/selectable'),
       cultures: require('./demos/cultures'),
       popup: require('./demos/popup'),
@@ -37,30 +37,16 @@ const Example = React.createClass({
 
     return (
       <div className='app'>
-      <div className="jumbotron">
-        <div className="container">
-          <h1>Big Calendar <i className='fa fa-calendar'/></h1>
-          <p>such enterprise, very business.</p>
-          <p>
-            <a href="#intro">
-              <i className='fa fa-play'/> Getting started
-            </a>
-            {' | '}
-            <a href="#api">
-              <i className='fa fa-book'/> API documentation
-            </a>
-            {' | '}
-            <a target='_blank' href="https://github.com/intljusticemission/react-big-calendar">
-              <i className='fa fa-github'/> github
-            </a>
-          </p>
-        </div>
-      </div>
         <div className='examples'>
           <header className="contain">
             <ul className='nav nav-pills'>
+              {/*
               <li className={cn({active: selected === 'basic' })}>
                 <a href='#' onClick={this.select.bind(null, 'basic')}>Basic</a>
+              </li>
+              */}
+              <li className={cn({active: selected === 'elation' })}>
+                <a href='#' onClick={this.select.bind(null, 'elation')}>Elation</a>
               </li>
               <li className={cn({active: selected === 'selectable' })}>
                 <a href='#' onClick={this.select.bind(null, 'selectable')}>Selectable</a>
@@ -87,13 +73,10 @@ const Example = React.createClass({
               </li>
             </ul>
           </header>
-          <div className='example'>
-            <div className='view-source'>
-              <a target='_blank' href={demoRoot + '/' + selected + '.js' }>
-                <strong><i className='fa fa-code'/>{' View example source code'}</strong>
-              </a>
+          <div className="example-wrapper">
+            <div className='example'>
+              <Current className='demo' />
             </div>
-            <Current className='demo' />
           </div>
         </div>
         <div className='docs'>

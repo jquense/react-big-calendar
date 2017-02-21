@@ -1,0 +1,19 @@
+.container {
+  > button:first-child:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > button:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+
+  > button:last-child:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  > button + button {
+    margin-left: -1px;
+  }
+}

@@ -3,12 +3,17 @@ import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
 let Basic = React.createClass({
-  render(){
+  render() {
     return (
       <BigCalendar
         {...this.props}
         events={events}
         defaultDate={new Date(2015, 3, 1)}
+        dayPropGetter={(date, isToday) => {
+          if (isToday) {
+            return { style: { backgroundColor: 'red' } }
+          }
+        }}
       />
     )
   }

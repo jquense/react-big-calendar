@@ -2,11 +2,12 @@ import React, { PropTypes } from 'react';
 import uncontrollable from 'uncontrollable';
 import cn from 'classnames';
 import {
-    accessor
+  accessor
   , elementType
   , dateFormat
   , dateRangeFormat
-  , views as componentViews } from './utils/propTypes';
+  , views as componentViews
+} from './utils/propTypes';
 
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
@@ -23,7 +24,7 @@ import defaults from 'lodash/defaults';
 import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
-function viewNames(_views){
+function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
 }
 
@@ -233,6 +234,19 @@ let Calendar = React.createClass({
      * ```
      */
     eventPropGetter: PropTypes.func,
+
+    /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the the day node.
+     *
+     * ```js
+     * function(
+     * 	day: Date,
+     * 	isCurrent: bool
+     * ) -> { className: string?, style: object? }
+     * ```
+     */
+    dayPropGetter: PropTypes.func,
 
     /**
      * Accessor for the event title, used to display event information. Should
@@ -487,7 +501,7 @@ let Calendar = React.createClass({
 
   render() {
     let {
-        view, toolbar, events
+      view, toolbar, events
       , culture
       , components = {}
       , formats = {}

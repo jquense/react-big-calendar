@@ -25,6 +25,8 @@ class BackgroundCells extends React.Component {
     ),
     rtl: React.PropTypes.bool,
     type: React.PropTypes.string,
+
+    dayPropGetter: React.PropTypes.func,
   }
 
   constructor(props, context) {
@@ -35,7 +37,7 @@ class BackgroundCells extends React.Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.selectable
       && this._selectable()
   }
@@ -52,20 +54,39 @@ class BackgroundCells extends React.Component {
       this._teardownSelectable();
   }
 
-  render(){
-    let { range, cellWrapperComponent: Wrapper } = this.props;
+  render() {
+    let { range, cellWrapperComponent: Wrapper, dayPropGetter, date: currentDate } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     return (
       <div className='rbc-row-bg'>
         {range.map((date, index) => {
-          let selected =  selecting && index >= startIdx && index <= endIdx;
+          let selected = selecting && index >= startIdx && index <= endIdx;
+
+          if (dayPropGetter) {
+            const dayProps = dayPropGetter(date, dates.isToday(date));
+            if (dayProps && dayProps.style)
+              var xStyle = dayProps.style;
+
+            if (dayProps && dayProps.className)
+              var className = dayProps.className;
+          }
+
+          let isOffRange = false;
+          if (currentDate) // we only care about month view
+            isOffRange = dates.month(date) !== dates.month(currentDate);
+
           return (
             <Wrapper key={index} value={date}>
               <div
-                style={segStyle(1, range.length)}
+                style={{
+                  ...xStyle,
+                  ...segStyle(1, range.length)
+                }}
                 className={cn(
                   'rbc-day-bg',
+                  className,
+                  isOffRange && 'rbc-off-range',
                   selected && 'rbc-selected-cell',
                   dates.isToday(date) && 'rbc-today',
                 )}
@@ -77,7 +98,7 @@ class BackgroundCells extends React.Component {
     )
   }
 
-  _selectable(){
+  _selectable() {
     let node = findDOMNode(this);
     let selector = this._selector = new Selection(this.props.container)
 
@@ -95,7 +116,7 @@ class BackgroundCells extends React.Component {
         let nodeBox = getBoundsForNode(node);
 
         ({ startIdx, endIdx } = dateCellSelection(
-            this._initial
+          this._initial
           , nodeBox
           , box
           , range.length
@@ -121,7 +142,7 @@ class BackgroundCells extends React.Component {
           let { range, rtl } = this.props;
 
           if (pointInBox(rowBox, point)) {
-            let width = slotWidth(getBoundsForNode(node),  range.length);
+            let width = slotWidth(getBoundsForNode(node), range.length);
             let currentCell = getCellAtX(rowBox, point.x, width, rtl, range.length);
 
             this._selectSlot({

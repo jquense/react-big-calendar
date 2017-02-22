@@ -33,6 +33,8 @@ const propTypes = {
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
+  dayPropGetter: React.PropTypes.func,
+
   dateCellWrapper: elementType,
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
@@ -65,13 +67,13 @@ class DateContentRow extends React.Component {
     let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
 
     let cell;
-    if (row) cell = row.children[slot-1]
+    if (row) cell = row.children[slot - 1]
 
     let events = this.segments
       .filter(seg => isSegmentInSlot(seg, slot))
       .map(seg => seg.event)
 
-    onShowMore(events, range[slot-1], cell, slot)
+    onShowMore(events, range[slot - 1], cell, slot)
   }
 
   createHeadingRef = r => {
@@ -148,6 +150,8 @@ class DateContentRow extends React.Component {
       eventWrapperComponent,
       onSelectStart,
       onSelectEnd,
+      dayPropGetter,
+      date,
       ...props
     } = this.props;
 
@@ -162,11 +166,12 @@ class DateContentRow extends React.Component {
     }))
 
     let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1));
-    while (levels.length < minRows ) levels.push([])
+    while (levels.length < minRows) levels.push([])
 
     return (
       <div className={className}>
         <BackgroundCells
+          date={date}
           rtl={rtl}
           range={range}
           selectable={selectable}
@@ -175,6 +180,7 @@ class DateContentRow extends React.Component {
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}
           cellWrapperComponent={dateCellWrapper}
+          dayPropGetter={dayPropGetter}
         />
 
         <div className='rbc-row-content'>

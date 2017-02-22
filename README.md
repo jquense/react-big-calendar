@@ -1,7 +1,7 @@
 react-big-calendar
 ========================
 
-An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
+This is an ElationHealth fork of the original react-big-calendar.  It is an events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
 [__DEMO and Docs__](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
 

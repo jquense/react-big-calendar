@@ -5,9 +5,15 @@ import events from '../../events';
 
 
 const formats = {
+  dayFormat: (date, culture, localizer) => {
+    return localizer.format(date, 'dddd MM/dd', culture);
+  },
+  dayHeaderFormat: (date, culture, localizer) => {
+    return localizer.format(date, 'ddd, MMM dd, yyyy', culture);
+  },
   dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
-    return localizer.format(start, { skeleton: 'MMM' }, culture) + ' - ' +
-      localizer.format(end, { skeleton: 'yMMMd' }, culture);
+    return localizer.format(start, 'MMM dd', culture) + ' - ' +
+      localizer.format(end, 'MMM dd, yyyy', culture);
   }
 }
 
@@ -17,9 +23,10 @@ export default class Elation extends React.Component {
       <BigCalendar
         {...this.props}
         events={events}
+        singleDayEventsOnly
         formats={formats}
         step={10}
-        timeslots={8}
+        timeslots={6}
         defaultView="week"
         defaultDate={new Date(2015, 3, 12)}
         components={{

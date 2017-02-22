@@ -35,18 +35,22 @@ export default class Toolbar extends Component {
       <div className={styles.container}>
         <div className={styles.left}>
           <span className={styles.currentdate}>{label}</span>
-          <ButtonGroup style={{ padding: '0 3px' }}>
+          <ButtonGroup style={{ margin: '0 5px' }}>
             <Button onClick={this.navPrev}>&lt;</Button>
             <Button onClick={this.navNext}>&gt;</Button>
           </ButtonGroup>
-          <ButtonGroup style={{ padding: '0 3px' }}>
+          <ButtonGroup style={{ margin: '0 5px' }}>
             <Button onClick={this.createAppointment}>+ Appointment</Button>
             <Button onClick={this.navToday}>Today</Button>
             <Button onClick={this.refresh}>Refresh</Button>
           </ButtonGroup>
-          <Input type='search' style={{ position: 'relative', top: 1 }} />
+          <Input
+            type="search"
+            placeholder="Find appointments by patient..."
+            style={{ minWidth: 250, flex: '1 1 auto', margin: '0 5px' }}
+          />
         </div>
-        <span className={styles.viewPicker}>
+        <span className={styles.viewpicker}>
           View:
           <ButtonGroup style={{ padding: '0 3px' }}>
             <Button>7 Days</Button>

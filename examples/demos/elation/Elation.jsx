@@ -26,6 +26,7 @@ export default class Elation extends React.Component {
         singleDayEventsOnly
         formats={formats}
         step={10}
+        rightOffset={10}
         timeslots={6}
         defaultView="week"
         defaultDate={new Date(2015, 3, 12)}

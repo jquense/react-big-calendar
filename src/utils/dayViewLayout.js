@@ -168,7 +168,7 @@ let getYStyles = (idx, {
  * traversed, so the cursor will be moved past all of them.
  */
 export default function getStyledEvents ({
-  events: unsortedEvents, startAccessor, endAccessor, min, totalMin, step
+  events: unsortedEvents, startAccessor, endAccessor, min, totalMin, step, rightOffset = 0
 }) {
   let OVERLAP_MULTIPLIER = 0.3
   let events = sort(unsortedEvents, { startAccessor, endAccessor })
@@ -186,7 +186,7 @@ export default function getStyledEvents ({
 
     // Set styles to top level events.
     [idx, ...siblings].forEach((eventIdx, siblingIdx) => {
-      let width = 100 / nbrOfColumns
+      let width = (100 - rightOffset) / nbrOfColumns
       let xAdjustment = width * (nbrOfColumns > 1 ? OVERLAP_MULTIPLIER : 0)
       let { top, height } = getYStyles(eventIdx, helperArgs)
 
@@ -217,7 +217,7 @@ export default function getStyledEvents ({
         let { style: parentStyle } = styledEvents[parentIdx]
         let spaceOccupiedByParent = parentStyle.width + parentStyle.xOffset
         let columns = Math.min(group.length, nbrOfColumns)
-        let width = (100 - spaceOccupiedByParent) / columns
+        let width = (100 - rightOffset - spaceOccupiedByParent) / columns
         let xAdjustment = spaceOccupiedByParent * OVERLAP_MULTIPLIER
         let { top, height } = getYStyles(eventIdx, helperArgs)
 

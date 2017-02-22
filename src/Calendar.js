@@ -215,6 +215,13 @@ let Calendar = React.createClass({
     step: React.PropTypes.number,
 
     /**
+     * The number of pixels to reserve on the right side of each column for
+     * clickable space. This allows cells to be clicked even if there is an
+     * event that covers the timespan represented by the cell.
+     */
+    rightOffset: React.PropTypes.number,
+
+    /**
      * The number of slots per "section" in the time grid views. Adjust with `step`
      * to change the default of 1 hour long groups, with 30 minute slots.
      */

@@ -29,6 +29,7 @@ let DaySlot = React.createClass({
   propTypes: {
     events: React.PropTypes.array.isRequired,
     step: React.PropTypes.number.isRequired,
+    rightOffset: React.PropTypes.number.isRequired,
     min: React.PropTypes.instanceOf(Date).isRequired,
     max: React.PropTypes.instanceOf(Date).isRequired,
     now: React.PropTypes.instanceOf(Date),
@@ -60,7 +61,7 @@ let DaySlot = React.createClass({
   },
 
   getDefaultProps() {
-    return { dragThroughEvents: true }
+    return { dragThroughEvents: true, rightOffset: 0 }
   },
 
   getInitialState() {
@@ -140,12 +141,13 @@ let DaySlot = React.createClass({
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
       , step
+      , rightOffset
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
-      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
+      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step, rightOffset
     })
 
     return styledEvents.map(({ event, style }, idx) => {

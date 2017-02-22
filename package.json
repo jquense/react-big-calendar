@@ -30,7 +30,7 @@
     "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
     "build:visual-test": "webpack --config webpack/visual-test.js",
     "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
-    "lint": "",
+    "lint": "eslint src --ext .jsx",
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint",
     "tdd": "karma start",

@@ -32,7 +32,8 @@ const Example = React.createClass({
       rendering: require('./demos/rendering'),
       customView: require('./demos/customView'),
       timeslots: require('./demos/timeslots'),
-      dnd: require('./demos/dnd')
+      dnd: require('./demos/dnd'),
+      business_hours: require('./demos/business_hours')
     }[selected];
 
     return (
@@ -84,6 +85,9 @@ const Example = React.createClass({
               */}
               <li className={cn({active: selected === 'dnd' })}>
                 <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
+              </li>
+              <li className={cn({active: selected === 'business_hours' })}>
+                <a href='#' onClick={this.select.bind(null, 'business_hours')}>Business hours</a>
               </li>
             </ul>
           </header>

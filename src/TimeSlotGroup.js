@@ -13,7 +13,9 @@ export default class TimeSlotGroup extends Component {
     showLabels: PropTypes.bool,
     isNow: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
-    culture: PropTypes.string
+    culture: PropTypes.string,
+    businessHours: PropTypes.array,
+    isGutter: PropTypes.bool,
   }
   static defaultProps = {
     timeslots: 2,
@@ -23,7 +25,8 @@ export default class TimeSlotGroup extends Component {
   }
 
   renderSlice(slotNumber, content, value) {
-    const { dayWrapperComponent, showLabels, isNow, culture } = this.props;
+    const { dayWrapperComponent, showLabels, isNow, culture, businessHours, isGutter } = this.props;
+
     return (
       <TimeSlot
         key={slotNumber}
@@ -33,6 +36,8 @@ export default class TimeSlotGroup extends Component {
         culture={culture}
         isNow={isNow}
         value={value}
+        isGutter={isGutter}
+        businessHours={businessHours}
       />
     )
   }
@@ -41,6 +46,7 @@ export default class TimeSlotGroup extends Component {
     const ret = []
     const sliceLength = this.props.step
     let sliceValue = this.props.value
+
     for (let i = 0; i < this.props.timeslots; i++) {
       const content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
       ret.push(this.renderSlice(i, content, sliceValue))

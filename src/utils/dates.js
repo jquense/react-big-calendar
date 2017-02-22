@@ -65,16 +65,16 @@ let dates = {
   },
 
   merge(date, time){
-    if( time == null && date == null)
+    if (time == null && date == null)
       return null
 
     if (time == null) time = new Date()
     if (date == null) date = new Date()
 
     date = dates.startOf(date, 'day')
-    date = dates.hours(date,        dates.hours(time))
-    date = dates.minutes(date,      dates.minutes(time))
-    date = dates.seconds(date,      dates.seconds(time))
+    date = dates.hours(date, dates.hours(time))
+    date = dates.minutes(date, dates.minutes(time))
+    date = dates.seconds(date, dates.seconds(time))
     return dates.milliseconds(date, dates.milliseconds(time))
   },
 
@@ -94,7 +94,7 @@ let dates = {
 
   isJustDate(date){
     return (
-         dates.hours(date) === 0
+      dates.hours(date) === 0
       && dates.minutes(date) === 0
       && dates.seconds(date) === 0
       && dates.milliseconds(date) === 0
@@ -155,6 +155,16 @@ let dates = {
 
   tomorrow() {
     return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
+  },
+
+  extractHoursMinutesFromTime(time) {
+    // time : HH:MM
+    const values = time.split(":");
+
+    return {
+      hours: values[0] ? parseInt(values[0]) : 0,
+      minutes: values[1] ? parseInt(values[1]) : 0
+    };
   }
 }
 

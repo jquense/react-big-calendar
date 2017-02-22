@@ -369,7 +369,12 @@ let Calendar = React.createClass({
       /**
        * Time range displayed on events.
        */
-      eventTimeRangeFormat: dateRangeFormat
+      eventTimeRangeFormat: dateRangeFormat,
+
+      /**
+       * Business hours to disable some hours in week/day view.
+       */
+      businessHours: React.PropTypes.array
     }),
 
     /**
@@ -447,7 +452,7 @@ let Calendar = React.createClass({
       titleAccessor: 'title',
       allDayAccessor: 'allDay',
       startAccessor: 'start',
-      endAccessor: 'end'
+      endAccessor: 'end',
     };
   },
 
@@ -491,6 +496,7 @@ let Calendar = React.createClass({
       , culture
       , components = {}
       , formats = {}
+      , businessHours = []
       , style
       , className
       , elementProps
@@ -513,6 +519,7 @@ let Calendar = React.createClass({
     )
 
     let ToolbarToRender = components.toolbar || Toolbar
+
 
     return (
       <div
@@ -541,6 +548,7 @@ let Calendar = React.createClass({
           formats={undefined}
           events={events}
           date={current}
+          businessHours={businessHours}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}

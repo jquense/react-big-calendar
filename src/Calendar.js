@@ -228,6 +228,13 @@ let Calendar = React.createClass({
     timeslots: React.PropTypes.number,
 
     /**
+     * The height, in pixels, of each vertical time grouping in the calendar.
+     * If omitted, will default to the value specified in the stylesheet for
+     * the `rbc-timeslot-group` class.
+     */
+    groupHeight: React.PropTypes.number,
+
+    /**
      *Switch the calendar to a `right-to-left` read direction.
      */
     rtl: PropTypes.bool,

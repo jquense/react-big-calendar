@@ -13,7 +13,8 @@ export default class TimeSlotGroup extends Component {
     showLabels: PropTypes.bool,
     isNow: PropTypes.bool,
     timeGutterFormat: PropTypes.string,
-    culture: PropTypes.string
+    culture: PropTypes.string,
+    height: PropTypes.number
   }
   static defaultProps = {
     timeslots: 2,
@@ -49,8 +50,15 @@ export default class TimeSlotGroup extends Component {
     return ret
   }
   render() {
+    const { style, height } = this.props;
+
+    const groupStyle = { ...style };
+    if (height) {
+      groupStyle.minHeight = height;
+    }
+
     return (
-      <div className="rbc-timeslot-group">
+      <div className="rbc-timeslot-group" style={groupStyle}>
         {this.renderSlices()}
       </div>
     )

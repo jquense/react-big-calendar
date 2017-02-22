@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from './widgets/Button';
 import ButtonGroup from './widgets/ButtonGroup';
+import Input from './widgets/Input';
 import styles from './Toolbar.less';
 
 export default class Toolbar extends Component {
@@ -43,7 +44,7 @@ export default class Toolbar extends Component {
             <Button onClick={this.navToday}>Today</Button>
             <Button onClick={this.refresh}>Refresh</Button>
           </ButtonGroup>
-          <input type='search' />
+          <Input type='search' style={{ position: 'relative', top: 1 }} />
         </div>
         <span className={styles.viewPicker}>
           View:

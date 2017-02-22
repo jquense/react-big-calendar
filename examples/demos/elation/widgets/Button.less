@@ -1,7 +1,22 @@
 .button {
-  background: linear-gradient(white, #ccc);
-  border: 1px solid #999;
-  border-radius: 4px;
+  background-color: #f2f2f2;
+  border: 1px solid #a6a6a6;
+  border-radius: 3px;
+  color: #333;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.42857;
   outline: 0;
-  padding: 4px 7px;
+  padding: 4px 8px;
+  text-shadow: 0 1px 0 #fff;
+  user-select: none;
+  white-space: nowrap;
+  &:hover {
+    background-image: linear-gradient(to bottom, #fefefe 0%, #d0d0d0 100%);
+    background-repeat: repeat-x;
+    border-color: #888 #888 #666 #888;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
 }

@@ -81,6 +81,12 @@ let Calendar = React.createClass({
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * True if the calendar should only support single day events and exclude
+     * all-day and multi-day events.
+     */
+    singleDayEventsOnly: PropTypes.bool,
+
+    /**
      * Callback fired when the `date` value changes.
      *
      * @controllable date
@@ -487,7 +493,7 @@ let Calendar = React.createClass({
 
   render() {
     let {
-        view, toolbar, events
+        view, toolbar, events, singleDayEventsOnly
       , culture
       , components = {}
       , formats = {}
@@ -540,6 +546,7 @@ let Calendar = React.createClass({
           culture={culture}
           formats={undefined}
           events={events}
+          singleDayEventsOnly={singleDayEventsOnly}
           date={current}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}

@@ -25,6 +25,7 @@ export default class TimeGrid extends Component {
 
   static propTypes = {
     events: React.PropTypes.array.isRequired,
+    singleDayEventsOnly: React.PropTypes.bool,
 
     step: React.PropTypes.number,
     start: React.PropTypes.instanceOf(Date),
@@ -134,6 +135,7 @@ export default class TimeGrid extends Component {
   render() {
     let {
         events
+      , singleDayEventsOnly
       , start
       , end
       , width
@@ -155,15 +157,15 @@ export default class TimeGrid extends Component {
         let eStart = get(event, startAccessor)
           , eEnd = get(event, endAccessor);
 
-        if (
-          get(event, allDayAccessor)
-          || !dates.eq(eStart, eEnd, 'day')
-          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
-        {
-          allDayEvents.push(event)
+        if (get(event, allDayAccessor)
+            || !dates.eq(eStart, eEnd, 'day')
+            || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))) {
+          if (!singleDayEventsOnly) {
+            allDayEvents.push(event);
+          }
+        } else {
+          rangeEvents.push(event);
         }
-        else
-          rangeEvents.push(event)
       }
     })
 
@@ -223,12 +225,21 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components } = this.props;
+    let { messages, rtl, selectable, components, singleDayEventsOnly } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
     if (isOverflowing)
       style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
+
+    const firstGutterRef = ref => this._gutters[0] = ref;
+    const headerProps = {};
+    const messageProps = {};
+    if (singleDayEventsOnly) {
+      headerProps.ref = firstGutterRef;
+    } else {
+      messageProps.ref = firstGutterRef;
+    }
 
     return (
       <div
@@ -241,39 +252,42 @@ export default class TimeGrid extends Component {
       >
         <div className='rbc-row'>
           <div
+            {...headerProps}
             className='rbc-label rbc-header-gutter'
             style={{ width }}
           />
           { this.renderHeaderCells(range) }
         </div>
-        <div className='rbc-row'>
-          <div
-            ref={ref => this._gutters[0] = ref}
-            className='rbc-label rbc-header-gutter'
-            style={{ width }}
-          >
-            { message(messages).allDay }
+        {!singleDayEventsOnly &&
+          <div className='rbc-row'>
+            <div
+              {...messageProps}
+              className='rbc-label rbc-header-gutter'
+              style={{ width }}
+            >
+              { message(messages).allDay }
+            </div>
+            <DateContentRow
+              minRows={2}
+              range={range}
+              rtl={this.props.rtl}
+              events={events}
+              className='rbc-allday-cell'
+              selectable={selectable}
+              onSelectSlot={this.handleSelectAllDaySlot}
+              dateCellWrapper={components.dateCellWrapper}
+              eventComponent={this.props.components.event}
+              eventWrapperComponent={this.props.components.eventWrapper}
+              titleAccessor={this.props.titleAccessor}
+              startAccessor={this.props.startAccessor}
+              endAccessor={this.props.endAccessor}
+              allDayAccessor={this.props.allDayAccessor}
+              eventPropGetter={this.props.eventPropGetter}
+              selected={this.props.selected}
+              onSelect={this.handleSelectEvent}
+            />
           </div>
-          <DateContentRow
-            minRows={2}
-            range={range}
-            rtl={this.props.rtl}
-            events={events}
-            className='rbc-allday-cell'
-            selectable={selectable}
-            onSelectSlot={this.handleSelectAllDaySlot}
-            dateCellWrapper={components.dateCellWrapper}
-            eventComponent={this.props.components.event}
-            eventWrapperComponent={this.props.components.eventWrapper}
-            titleAccessor={this.props.titleAccessor}
-            startAccessor={this.props.startAccessor}
-            endAccessor={this.props.endAccessor}
-            allDayAccessor={this.props.allDayAccessor}
-            eventPropGetter={this.props.eventPropGetter}
-            selected={this.props.selected}
-            onSelect={this.handleSelectEvent}
-          />
-        </div>
+        }
       </div>
     )
   }

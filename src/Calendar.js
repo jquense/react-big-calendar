@@ -437,6 +437,50 @@ let Calendar = React.createClass({
     }),
 
     /**
+     * Customize the props provided to different sections of the calendar. This
+     * prop should typically be used when supplying custom components with
+     * the `components` prop, for example to supply callbacks to the custom
+     * components.
+     *
+     * ```jsx
+     * let componentProps = {
+     *   toolbar: { onUserChange: (event) => this.setState({ userId: event.target.value })},
+     *   [...]
+     * }
+     * <Calendar componentProps={componentProps} />
+     * ```
+     *
+     * Note: only implemented for toolbar at the moment.
+     */
+    componentProps: PropTypes.shape({
+      event: PropTypes.object,
+      eventWrapper: PropTypes.object,
+      dayWrapper: PropTypes.object,
+      dateCellWrapper: PropTypes.object,
+
+      toolbar: PropTypes.object,
+
+      agenda: PropTypes.shape({
+        date: PropTypes.object,
+        time: PropTypes.object,
+        event: PropTypes.object
+      }),
+
+      day: PropTypes.shape({
+        header: PropTypes.object,
+        event: PropTypes.object
+      }),
+      week: PropTypes.shape({
+        header: PropTypes.object,
+        event: PropTypes.object
+      }),
+      month: PropTypes.shape({
+        header: PropTypes.object,
+        event: PropTypes.object
+      })
+    }),
+
+    /**
      * String messages used throughout the component, override to provide localizations
      */
     messages: PropTypes.shape({
@@ -510,6 +554,7 @@ let Calendar = React.createClass({
         view, toolbar, events, singleDayEventsOnly
       , culture
       , components = {}
+      , componentProps = {}
       , formats = {}
       , style
       , className
@@ -532,7 +577,8 @@ let Calendar = React.createClass({
       }
     )
 
-    let ToolbarToRender = components.toolbar || Toolbar
+    let ToolbarToRender = components.toolbar || Toolbar;
+    let toolbarProps = componentProps.toolbar || {};
 
     return (
       <div
@@ -551,6 +597,7 @@ let Calendar = React.createClass({
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
             messages={this.props.messages}
+            {...toolbarProps}
           />
         }
         <View

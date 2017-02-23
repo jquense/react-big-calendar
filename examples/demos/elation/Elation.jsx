@@ -2,6 +2,8 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import Toolbar from './Toolbar';
 import events from '../../events';
+import physicians from './data/physicians';
+import getAppts from './data/appts';
 
 
 const formats = {
@@ -18,11 +20,23 @@ const formats = {
 }
 
 export default class Elation extends React.Component {
+
+  state = {
+    currentPhysicianId: physicians[0],
+    appts: getAppts(physicians[0])
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentPhysicianId !== this.state.currentPhysicianId) {
+      this.setState({ appts: getAppts(this.state.currentPhysicianId) });
+    }
+  }
+
   render(){
     return (
       <BigCalendar
         {...this.props}
-        events={events}
+        events={this.state.appts}
         singleDayEventsOnly
         formats={formats}
         step={10}
@@ -36,8 +50,18 @@ export default class Elation extends React.Component {
         }}
         defaultView="week"
         defaultDate={new Date(2015, 3, 12)}
+        titleAccessor="_patientName"
+        startAccessor={(event) => new Date(event._apptTime)}
+        endAccessor={(event) => new Date(event._apptEnd)}
         components={{
           toolbar: Toolbar
+        }}
+        componentProps={{
+          toolbar: {
+            onCurrentPhysicianChange: (event) => {
+              this.setState({ currentPhysicianId: event.target.value })
+            }
+          }
         }}
       />
     )

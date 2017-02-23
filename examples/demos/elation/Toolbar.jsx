@@ -17,6 +17,8 @@ export default class Toolbar extends Component {
     messages: React.PropTypes.object,
     onNavigate: React.PropTypes.func.isRequired,
     onViewChange: React.PropTypes.func.isRequired,
+
+    onCurrentPhysicianChange: React.PropTypes.func.isRequired,
   }
 
   createAppointment = () => alert('Pretend this is a create appointment dialog!');
@@ -32,7 +34,7 @@ export default class Toolbar extends Component {
   onViewChange = (view) => this.props.onViewChange(view)
 
   render() {
-    const { views, view, label, messages } = this.props;
+    const { views, view, label, messages, onCurrentPhysicianChange } = this.props;
 
     return (
       <div className={styles.container}>
@@ -42,19 +44,29 @@ export default class Toolbar extends Component {
             <Button onClick={this.navPrev}>&lt;</Button>
             <Button onClick={this.navNext}>&gt;</Button>
           </ButtonGroup>
-          <select style={{ height: 27, outline: 0 }}>
-            {(() => {
-              if (view === 'week') {
-                return physicians.map((physician) => (
-                  <option key={physician.id}>{physician.fullName}</option>
-                ));
-              } else {
-                return userGroups.map((userGroup) => (
-                  <option key={userGroup.id}>{userGroup.name}</option>
-                ));
-              }
-            })()}
-          </select>
+          {(() => {
+            if (view === 'week') {
+              return (
+                <select style={{ height: 27, outline: 0 }} onChange={onCurrentPhysicianChange}>
+                  {physicians.map((physician) => (
+                    <option key={physician.id} value={physician.id}>
+                      {physician.fullName}
+                    </option>
+                  ))}
+                </select>
+              );
+            } else {
+              return (
+                <select style={{ height: 27, outline: 0 }}>
+                  {userGroups.map((userGroup) => (
+                    <option key={userGroup.id} value={userGroup.id}>
+                      {userGroup.name}
+                    </option>
+                  ))}
+                </select>
+              )
+            }
+          })()}
           <ButtonGroup style={{ margin: '0 5px' }}>
             <Button onClick={this.createAppointment}>+ Appointment</Button>
             <Button onClick={this.navToday}>

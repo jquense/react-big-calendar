@@ -1,7 +1,6 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import Toolbar from './Toolbar';
-import events from '../../events';
 import physicians from './data/physicians';
 import getAppts from './data/appts';
 
@@ -56,6 +55,12 @@ export default class Elation extends React.Component {
               this.setState({
                 currentPhysicianId: event.target.value,
                 appts: getAppts(event.target.value)
+              })
+            },
+            onRefresh: () => {
+              console.log('Refreshing!');
+              this.setState({
+                appts: getAppts(this.state.currentPhysicianId)
               })
             }
           }

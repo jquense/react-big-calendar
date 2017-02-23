@@ -19,6 +19,7 @@ export default class Toolbar extends Component {
     onViewChange: React.PropTypes.func.isRequired,
 
     onCurrentPhysicianChange: React.PropTypes.func.isRequired,
+    onRefresh: React.PropTypes.func.isRequired,
   }
 
   createAppointment = () => alert('Pretend this is a create appointment dialog!');
@@ -29,12 +30,12 @@ export default class Toolbar extends Component {
 
   navToday = () => this.props.onNavigate('TODAY');
 
-  refresh = () => console.log('Dummy refresh!');
-
   onViewChange = (view) => this.props.onViewChange(view)
 
   render() {
-    const { views, view, label, messages, onCurrentPhysicianChange } = this.props;
+    const {
+      views, view, label, messages, onCurrentPhysicianChange, onRefresh
+    } = this.props;
 
     return (
       <div className={styles.container}>
@@ -72,7 +73,7 @@ export default class Toolbar extends Component {
             <Button onClick={this.navToday}>
               {view === 'week' ? 'This Week' : 'Today'}
             </Button>
-            <Button onClick={this.refresh}>Refresh</Button>
+            <Button onClick={onRefresh}>Refresh</Button>
           </ButtonGroup>
           <Input
             type="search"

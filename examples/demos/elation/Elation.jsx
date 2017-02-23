@@ -26,12 +26,6 @@ export default class Elation extends React.Component {
     appts: getAppts(physicians[0])
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.currentPhysicianId !== this.state.currentPhysicianId) {
-      this.setState({ appts: getAppts(this.state.currentPhysicianId) });
-    }
-  }
-
   render(){
     return (
       <BigCalendar
@@ -59,7 +53,10 @@ export default class Elation extends React.Component {
         componentProps={{
           toolbar: {
             onCurrentPhysicianChange: (event) => {
-              this.setState({ currentPhysicianId: event.target.value })
+              this.setState({
+                currentPhysicianId: event.target.value,
+                appts: getAppts(event.target.value)
+              })
             }
           }
         }}

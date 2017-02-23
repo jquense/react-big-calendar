@@ -4,6 +4,9 @@ import ButtonGroup from './widgets/ButtonGroup';
 import Input from './widgets/Input';
 import styles from './Toolbar.less';
 
+import physicians from './data/physicians';
+import userGroups from './data/userGroups';
+
 export default class Toolbar extends Component {
   static propTypes = {
     view: React.PropTypes.string.isRequired,
@@ -26,10 +29,10 @@ export default class Toolbar extends Component {
 
   refresh = () => console.log('Dummy refresh!');
 
-  view = (view) => this.props.onViewChange(view)
+  onViewChange = (view) => this.props.onViewChange(view)
 
   render() {
-    const { label } = this.props;
+    const { views, view, label, messages } = this.props;
 
     return (
       <div className={styles.container}>
@@ -39,9 +42,24 @@ export default class Toolbar extends Component {
             <Button onClick={this.navPrev}>&lt;</Button>
             <Button onClick={this.navNext}>&gt;</Button>
           </ButtonGroup>
+          <select style={{ height: 27, outline: 0 }}>
+            {(() => {
+              if (view === 'week') {
+                return physicians.map((physician) => (
+                  <option key={physician.id}>{physician.fullName}</option>
+                ));
+              } else {
+                return userGroups.map((userGroup) => (
+                  <option key={userGroup.id}>{userGroup.name}</option>
+                ));
+              }
+            })()}
+          </select>
           <ButtonGroup style={{ margin: '0 5px' }}>
             <Button onClick={this.createAppointment}>+ Appointment</Button>
-            <Button onClick={this.navToday}>Today</Button>
+            <Button onClick={this.navToday}>
+              {view === 'week' ? 'This Week' : 'Today'}
+            </Button>
             <Button onClick={this.refresh}>Refresh</Button>
           </ButtonGroup>
           <Input
@@ -53,8 +71,11 @@ export default class Toolbar extends Component {
         <span className={styles.viewpicker}>
           View:
           <ButtonGroup style={{ padding: '0 3px' }}>
-            <Button>7 Days</Button>
-            <Button>Multi-Providers</Button>
+            {views.map((view) => (
+              <Button key={view} onClick={this.onViewChange.bind(null, view)}>
+                {messages[view]}
+              </Button>
+            ))}
           </ButtonGroup>
         </span>
       </div>

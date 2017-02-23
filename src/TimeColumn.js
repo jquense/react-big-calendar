@@ -33,7 +33,7 @@ export default class TimeColumn extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat, culture, businessHours, isGutter} = this.props;
+    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat, culture, businessHours, isGutter } = this.props;
 
     return (
       <TimeSlotGroup

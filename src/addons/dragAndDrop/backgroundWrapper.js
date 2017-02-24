@@ -11,7 +11,7 @@ export function getEventTimes({ start, end }, dropDate, type) {
 
   // If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
   // the original start date and add it to newDate.value
-  const nextStart = type === 'dateWrapper'
+  const nextStart = type === 'dateCellWrapper'
     ? dates.merge(dropDate, start) : dropDate
 
   const nextEnd = dates.add(nextStart, duration, 'milliseconds')

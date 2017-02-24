@@ -46,6 +46,7 @@ export default class Elation extends React.Component {
         titleAccessor="_patientName"
         startAccessor={(event) => new Date(event._apptTime)}
         endAccessor={(event) => new Date(event._apptEnd)}
+        drilldownView={null}
         components={{
           toolbar: Toolbar
         }}

@@ -7,6 +7,18 @@ import styles from './Toolbar.less';
 import physicians from './data/physicians';
 import userGroups from './data/userGroups';
 
+const stylesJs = {
+  selectedView: {
+    color: '#eee',
+    border: '1px solid',
+    borderColor: '#555 #555 #333 #555',
+    textShadow: 'none',
+    boxShadow: '0 1px 1px 0 rgba(0, 0, 0, 0.4)',
+    backgroundImage: 'linear-gradient(to bottom, #77808d, #4c5c6b)',
+    backgroundRepeat: 'repeat-x'
+  }
+}
+
 export default class Toolbar extends Component {
   static propTypes = {
     view: React.PropTypes.string.isRequired,
@@ -84,9 +96,13 @@ export default class Toolbar extends Component {
         <span className={styles.viewpicker}>
           View:
           <ButtonGroup style={{ padding: '0 3px' }}>
-            {views.map((view) => (
-              <Button key={view} onClick={this.onViewChange.bind(null, view)}>
-                {messages[view]}
+            {views.map((v) => (
+              <Button
+                key={v}
+                onClick={this.onViewChange.bind(null, v)}
+                style={v === view ? stylesJs.selectedView : {}}
+              >
+                {messages[v]}
               </Button>
             ))}
           </ButtonGroup>

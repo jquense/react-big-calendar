@@ -36,10 +36,10 @@ export default class Elation extends React.Component {
         rightOffset={10}
         groupHeight={140}
         timeslots={6}
-        views={['week', 'day']}
+        views={['week', 'multi']}
         messages={{
           week: '7 Days',
-          day: 'Multi-Providers'
+          multi: 'Multi-Providers'
         }}
         defaultView="week"
         defaultDate={new Date(2015, 3, 12)}

@@ -8,12 +8,15 @@ const Formats = {
   [views.MONTH]: 'monthHeaderFormat',
   [views.WEEK]: 'dayRangeHeaderFormat',
   [views.DAY]: 'dayHeaderFormat',
-  [views.AGENDA]: 'agendaHeaderFormat'
+  [views.AGENDA]: 'agendaHeaderFormat',
+  [views.MULTI]: 'dayHeaderFormat',
 }
 
 export default function viewLabel(date, view, formats, culture){
   let View = VIEWS[view];
-  let headerSingle = view === views.MONTH || view === views.DAY
+  let headerSingle = view === views.MONTH ||
+                     view === views.DAY ||
+                     view === views.MULTI;
 
   formats = defaultFormats(formats || {})
 

@@ -28,9 +28,18 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
 }
 
 
-export function segStyle(span, slots){
+export function segStyle(span, slots) {
   let per = (span / slots) * 100 + '%';
   return { flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
+}
+
+export function multiSegStyle(span, slots) {
+  // if slots > 7, we're looking at a MultiView. Give each slot a width of 1/7th
+  // and let the width be > 100%, since MultiView can be horizontally scrolled.
+  if (slots > 7) slots = 7;
+
+  let per = (span / slots) * 100 + '%';
+  return { flexBasis: per, width: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
 }
 
 export function eventLevels(rowSegments, limit = Infinity){

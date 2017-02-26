@@ -1,6 +1,6 @@
 import React from 'react';
 import dates from './utils/dates';
-import TimeGrid from './TimeGrid';
+import MultiTimeGrid from './MultiTimeGrid';
 import { navigate } from './utils/constants';
 
 let MultiView = React.createClass({
@@ -14,7 +14,7 @@ let MultiView = React.createClass({
     let { start, end } = MultiView.range(date)
 
     return (
-      <TimeGrid {...props} start={start} end={end} eventOffset={10} />
+      <MultiTimeGrid {...props} start={start} end={end} eventOffset={10} />
     );
   }
 });

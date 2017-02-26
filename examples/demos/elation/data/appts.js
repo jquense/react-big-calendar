@@ -131,6 +131,10 @@ const appts = {
 }
 
 const NO_APPTS = [];
-export default function getAppts(physicianId) {
+export function getAppts(physicianId) {
   return appts[physicianId] || NO_APPTS;
+}
+
+export function getAllAppts() {
+  return appts;
 }

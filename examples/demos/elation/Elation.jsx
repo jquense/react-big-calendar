@@ -2,7 +2,7 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import Toolbar from './Toolbar';
 import physicians from './data/physicians';
-import getAppts from './data/appts';
+import { getAppts, getAllAppts } from './data/appts';
 
 
 const formats = {
@@ -30,6 +30,10 @@ export default class Elation extends React.Component {
       <BigCalendar
         {...this.props}
         events={this.state.appts}
+        eventMap={getAllAppts()}
+        entities={physicians}
+        entityKey="id"
+        entityNameAccessor="fullName"
         singleDayEventsOnly
         formats={formats}
         step={10}
@@ -59,7 +63,7 @@ export default class Elation extends React.Component {
               })
             },
             onRefresh: () => {
-              console.log('Refreshing!');
+              console.log('Refreshing!'); // eslint-disable-line no-console
               this.setState({
                 appts: getAppts(this.state.currentPhysicianId)
               })

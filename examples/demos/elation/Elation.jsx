@@ -1,8 +1,10 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import Toolbar from './Toolbar';
+import Event from './Event';
 import physicians from './data/physicians';
 import { getAppts, getAllAppts } from './data/appts';
+import eventStyler from './util/eventStyler';
 
 
 const formats = {
@@ -34,6 +36,7 @@ export default class Elation extends React.Component {
         entities={physicians}
         entityKey="id"
         entityNameAccessor="fullName"
+        eventPropGetter={eventStyler}
         singleDayEventsOnly
         formats={formats}
         step={10}
@@ -52,7 +55,8 @@ export default class Elation extends React.Component {
         endAccessor={(event) => new Date(event._apptEnd)}
         drilldownView={null}
         components={{
-          toolbar: Toolbar
+          toolbar: Toolbar,
+          event: Event
         }}
         componentProps={{
           toolbar: {

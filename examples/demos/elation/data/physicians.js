@@ -1,4 +1,14 @@
-export default [
+// extremely dumb/slow function just for demo
+export function getPhysicianName(id) {
+  for (let i = 0; i < physicians.length; i++) {
+    const phys = physicians[i];
+    if (phys.id === id) return phys.fullName;
+  }
+
+  return `Dr. Unknown (ID ${id})`;
+}
+
+const physicians = [
   {
     id: 28716,
     modelClass: 'User',
@@ -224,3 +234,5 @@ export default [
     name: 'Savannah Demo, MD'
   }
 ];
+
+export default physicians;

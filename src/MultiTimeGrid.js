@@ -24,7 +24,7 @@ export default class MultiTimeGrid extends Component {
   static propTypes = {
     eventMap: React.PropTypes.object.isRequired,
     entities: React.PropTypes.array.isRequired,
-    entityKey: React.PropTypes.string.isRequired,
+    entityKeyAccessor: React.PropTypes.string.isRequired,
     entityNameAccessor: accessor.isRequired,
 
     step: React.PropTypes.number,
@@ -79,7 +79,7 @@ export default class MultiTimeGrid extends Component {
     this.state = {
       gutterWidth: undefined,
       isOverflowing: null,
-      selectedEntityKeys: this.props.entities.map(entity => entity[this.props.entityKey])
+      selectedEntityKeys: this.props.entities.map(entity => entity[this.props.entityKeyAccessor])
     };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
@@ -216,6 +216,7 @@ export default class MultiTimeGrid extends Component {
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={segStyle(1, this.slots)}
           key={idx}
+          entityKey={selectedEntityKey}
           date={date}
           events={daysEvents}
         />
@@ -255,13 +256,13 @@ export default class MultiTimeGrid extends Component {
 
   renderHeaderCells(date) {
     const {
-      entities, entityKey, entityNameAccessor, dayFormat, culture, components
+      entities, entityKeyAccessor, entityNameAccessor, dayFormat, culture, components
     } = this.props;
 
     const HeaderComponent = components.header || Header;
 
     const entityOptions = entities.map((entity) => (
-      <option key={entity[entityKey]} value={entity[entityKey]}>
+      <option key={entity[entityKeyAccessor]} value={entity[entityKeyAccessor]}>
         {get(entity, entityNameAccessor)}
       </option>
     ));

@@ -37,7 +37,7 @@ function isFilledSlot(event) {
   return event._patientName === 'Savannah Banana';
 }
 
-export default function eventStyler(event, start, end, isSelected) {
+export default function eventStyler(event/*, start, end, isSelected*/) {
   if (isOpenSlot(event)) {
     return { style: styles.openSlot };
   } else if (isFilledSlot(event)) {

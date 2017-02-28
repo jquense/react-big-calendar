@@ -47,6 +47,7 @@ let DaySlot = React.createClass({
     selected: React.PropTypes.object,
     selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
     eventOffset: React.PropTypes.number,
+    entityKey: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
 
     onSelecting: React.PropTypes.func,
     onSelectSlot: React.PropTypes.func.isRequired,
@@ -304,8 +305,9 @@ let DaySlot = React.createClass({
 
     notify(this.props.onSelectSlot, {
       slots,
+      entityKey: this.props.entityKey,
       start: startDate,
-      end: endDate
+      end: endDate,
     })
   },
 

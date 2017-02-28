@@ -22,7 +22,7 @@ export default class Event extends React.Component {
   }
 
   render() {
-    const { event, title } = this.props;
+    const { /*event, */title } = this.props;
 
     return <div>{title}<div style={styles.bar}></div></div>
   }

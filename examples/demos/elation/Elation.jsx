@@ -2,7 +2,7 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import Toolbar from './Toolbar';
 import Event from './Event';
-import physicians from './data/physicians';
+import physicians, { getPhysicianName } from './data/physicians';
 import { getAppts, getAllAppts } from './data/appts';
 import eventStyler from './util/eventStyler';
 
@@ -23,8 +23,27 @@ const formats = {
 export default class Elation extends React.Component {
 
   state = {
-    currentPhysicianId: physicians[0],
-    appts: getAppts(physicians[0])
+    currentPhysicianId: physicians[0].id,
+    appts: getAppts(physicians[0].id)
+  }
+
+  onCurrentPhysicianChange = (event) => {
+    this.setState({
+      currentPhysicianId: Number(event.target.value),
+      appts: getAppts(event.target.value)
+    });
+  }
+
+  onRefresh = () => {
+    console.log('Refreshing!'); // eslint-disable-line no-console
+    this.setState({
+      appts: getAppts(this.state.currentPhysicianId)
+    })
+  }
+
+  onSelectSlot = ({ start, end, entityKey/*, slots */}) => {
+    const name = getPhysicianName(entityKey || this.state.currentPhysicianId);
+    alert(`Adding event from ${start.toLocaleString()} to ${end.toLocaleString()} for physician ${name}`);
   }
 
   render(){
@@ -34,7 +53,7 @@ export default class Elation extends React.Component {
         events={this.state.appts}
         eventMap={getAllAppts()}
         entities={physicians}
-        entityKey="id"
+        entityKeyAccessor="id"
         entityNameAccessor="fullName"
         eventPropGetter={eventStyler}
         singleDayEventsOnly
@@ -60,20 +79,12 @@ export default class Elation extends React.Component {
         }}
         componentProps={{
           toolbar: {
-            onCurrentPhysicianChange: (event) => {
-              this.setState({
-                currentPhysicianId: event.target.value,
-                appts: getAppts(event.target.value)
-              })
-            },
-            onRefresh: () => {
-              console.log('Refreshing!'); // eslint-disable-line no-console
-              this.setState({
-                appts: getAppts(this.state.currentPhysicianId)
-              })
-            }
+            onCurrentPhysicianChange: this.onCurrentPhysicianChange,
+            onRefresh: this.onRefresh
           }
         }}
+        selectable
+        onSelectSlot={this.onSelectSlot}
       />
     )
   }

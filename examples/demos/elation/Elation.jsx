@@ -79,6 +79,7 @@ export default class Elation extends React.Component {
         }}
         componentProps={{
           toolbar: {
+            currentPhysicianId: this.state.currentPhysicianId,
             onCurrentPhysicianChange: this.onCurrentPhysicianChange,
             onRefresh: this.onRefresh
           }

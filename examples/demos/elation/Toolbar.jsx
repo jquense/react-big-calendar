@@ -30,6 +30,7 @@ export default class Toolbar extends Component {
     onNavigate: React.PropTypes.func.isRequired,
     onViewChange: React.PropTypes.func.isRequired,
 
+    currentPhysicianId: React.PropTypes.number,
     onCurrentPhysicianChange: React.PropTypes.func.isRequired,
     onRefresh: React.PropTypes.func.isRequired,
   }
@@ -46,7 +47,13 @@ export default class Toolbar extends Component {
 
   render() {
     const {
-      views, view, label, messages, onCurrentPhysicianChange, onRefresh
+      views,
+      view,
+      label,
+      messages,
+      currentPhysicianId,
+      onCurrentPhysicianChange,
+      onRefresh
     } = this.props;
 
     return (
@@ -60,7 +67,11 @@ export default class Toolbar extends Component {
           {(() => {
             if (view === 'week') {
               return (
-                <select style={{ height: 27, outline: 0 }} onChange={onCurrentPhysicianChange}>
+                <select
+                  value={currentPhysicianId}
+                  style={{ height: 27, outline: 0 }}
+                  onChange={onCurrentPhysicianChange}
+                >
                   {physicians.map((physician) => (
                     <option key={physician.id} value={physician.id}>
                       {physician.fullName}

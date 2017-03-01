@@ -46,6 +46,11 @@ export default class Elation extends React.Component {
     alert(`Adding event from ${start.toLocaleString()} to ${end.toLocaleString()} for physician ${name}`);
   }
 
+  onSelectEvent = (event/*, e*/) => {
+    const name = getPhysicianName(event._physicianUserId);
+    alert(`Selected appointment with ${event._patientName} for ${name} starting at ${new Date(event._apptTime).toLocaleString()}`);
+  }
+
   render(){
     return (
       <BigCalendar
@@ -86,6 +91,7 @@ export default class Elation extends React.Component {
         }}
         selectable
         onSelectSlot={this.onSelectSlot}
+        onSelectEvent={this.onSelectEvent}
       />
     )
   }

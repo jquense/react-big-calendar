@@ -81,6 +81,36 @@ let Calendar = React.createClass({
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * <b>- MultiView ONLY -</b>
+     * An object containing key-value pairs where the key is an entity key,
+     * such as a person ID, and the value is an array of events associated with
+     * that entity
+     */
+    eventMap: PropTypes.object,
+
+    /**
+     * <b>- MultiView ONLY -</b>
+     * An array of entity objects
+     */
+    entities: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * <b>- MultiView ONLY -</b>
+     * The name of the property to treat as entities' unique identifiers,
+     * e.g. `id`
+     */
+    entityKeyAccessor: PropTypes.string,
+
+    /**
+     * <b>- MultiView ONLY -</b>
+     * The name of a given entity. Must resolve to a `renderable` object, but
+     * should specifically be a `string`.
+     *
+     * @type {(func|string)}
+     */
+    entityNameAccessor: accessor,
+
+    /**
      * True if the calendar should only support single day events and exclude
      * all-day and multi-day events.
      */
@@ -108,7 +138,8 @@ let Calendar = React.createClass({
      *   slotInfo: object {
      *     start: Date,
      *     end: Date,
-     *     slots: array<Date>
+     *     slots: array<Date>,
+     *     entityKey: number | string (undefined unless current view is MultiView)
      *   }
      * )
      * ```

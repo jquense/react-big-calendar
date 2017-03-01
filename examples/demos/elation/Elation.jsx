@@ -28,9 +28,10 @@ export default class Elation extends React.Component {
   }
 
   onCurrentPhysicianChange = (event) => {
+    const newPhysicianId = Number(event.target.value);
     this.setState({
-      currentPhysicianId: Number(event.target.value),
-      appts: getAppts(event.target.value)
+      currentPhysicianId: newPhysicianId,
+      appts: getAppts(newPhysicianId)
     });
   }
 

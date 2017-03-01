@@ -83,6 +83,7 @@ export default class MultiTimeGrid extends Component {
     };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
+    this.setEntityKeyTypeIfNecessary();
   }
 
   componentWillMount() {
@@ -118,6 +119,9 @@ export default class MultiTimeGrid extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { start, scrollToTime } = this.props;
+
+    this.setEntityKeyTypeIfNecessary();
+
     // When paginating, reset scroll
     if (
       !dates.eq(nextProps.start, start, 'minute') ||
@@ -125,12 +129,14 @@ export default class MultiTimeGrid extends Component {
     ) {
       this.calculateScroll();
     }
+
   }
 
   onHeaderSelectChange = ({ target }) => {
     const index = Number(target.getAttribute('data-header-index'));
+    const value = this._entityKeyIsNumber ? Number(target.value) : target.value;
     this.setState({ selectedEntityKeys: this.state.selectedEntityKeys.map(
-      (selectedEntityKey, i) => i === index ? target.value : selectedEntityKey
+      (selectedEntityKey, i) => i === index ? value : selectedEntityKey
     )});
   }
 
@@ -390,5 +396,16 @@ export default class MultiTimeGrid extends Component {
 
       this.triggerTimeIndicatorUpdate();
     }, 60000)
+  }
+
+  setEntityKeyTypeIfNecessary() {
+    if (this._entityKeyIsNumber === undefined) {
+      const { entities, entityKeyAccessor } = this.props;
+
+      if (entities.length > 0) {
+        const entityKey = entities[0][entityKeyAccessor];
+        this._entityKeyIsNumber = typeof entityKey === 'number';
+      }
+    }
   }
 }

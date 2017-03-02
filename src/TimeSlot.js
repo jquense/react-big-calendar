@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import cn from 'classnames'
 import { elementType } from './utils/propTypes'
+import { dateIsInBusinessHours } from './utils/helpers'
 
 
 export default class TimeSlot extends Component {
@@ -10,7 +11,8 @@ export default class TimeSlot extends Component {
     isNow: PropTypes.bool,
     showLabel: PropTypes.bool,
     content: PropTypes.string,
-    culture: PropTypes.string
+    culture: PropTypes.string,
+    isGutter: PropTypes.bool
   }
 
   static defaultProps = {
@@ -20,8 +22,9 @@ export default class TimeSlot extends Component {
   }
 
   render() {
-    const { value } = this.props;
+    const { value, businessHours } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
+    const isDisabled = businessHours.length > 0 ? !dateIsInBusinessHours(value, businessHours) : false;
 
     return (
       <Wrapper value={value}>
@@ -30,6 +33,7 @@ export default class TimeSlot extends Component {
             'rbc-time-slot',
             this.props.showLabel && 'rbc-label',
             this.props.isNow && 'rbc-now',
+            !this.props.isGutter && isDisabled && 'rbc-disabled'
           )}
         >
         {this.props.showLabel &&

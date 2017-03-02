@@ -59,11 +59,14 @@ export default class TimeGrid extends Component {
 
     messages: React.PropTypes.object,
     components: React.PropTypes.object.isRequired,
+
+    businessHours: React.PropTypes.array,
   }
 
   static defaultProps = {
     step: 30,
     min: dates.startOf(new Date(), 'day'),
+    businessHours: [],
     max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
     /* these 2 are needed to satisfy requirements from TimeColumn required props
@@ -184,6 +187,7 @@ export default class TimeGrid extends Component {
             showLabels
             style={{ width }}
             ref={gutterRef}
+            isGutter={true}
             className='rbc-time-gutter'
           />
 

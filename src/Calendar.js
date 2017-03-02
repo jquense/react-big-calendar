@@ -225,10 +225,10 @@ let Calendar = React.createClass({
      *
      * ```js
      * function(
-     * 	event: object,
-     * 	start: date,
-     * 	end: date,
-     * 	isSelected: bool
+     *         event: object,
+     *         start: date,
+     *         end: date,
+     *         isSelected: bool
      * ) -> { className: string?, style: object? }
      * ```
      */
@@ -285,6 +285,26 @@ let Calendar = React.createClass({
      * **Note: it's generally better to handle this globally via your i18n library.**
      */
     culture: React.PropTypes.string,
+
+    /**
+     * Business hours will allow to select only some interval in Day and Week views.
+     *
+     * ```jsx
+     * let businessHours = [{
+       *    dow: [0, 1, 2, 3, 4, 5, 6], // Sunday, Monday, Tuesday, Wednesday...
+       *    start: "08:30", // 8:30am
+       *    end: "12:30" // 12:30pm
+       *  }, {
+       *    dow: [0, 1, 2], // Sunday, Monday, Tuesday, Wednesday...
+       *    start: "14:30", // 2:30pm
+       *    end: "20:00" // 8pm
+       *  }]
+     *
+     * <Calendar businessHours={businessHours} />
+     * ```
+     *
+     */
+    businessHours: React.PropTypes.arrayOf(PropTypes.object),
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
@@ -495,6 +515,7 @@ let Calendar = React.createClass({
       , className
       , elementProps
       , date: current
+      , businessHours = []
       , ...props } = this.props;
 
     formats = defaultFormats(formats)
@@ -548,6 +569,7 @@ let Calendar = React.createClass({
           onSelectEvent={this.handleSelectEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
+          businessHours={businessHours}
         />
       </div>
     );

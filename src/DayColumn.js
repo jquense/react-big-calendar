@@ -7,7 +7,7 @@ import dates from './utils/dates';
 import { isSelected } from './utils/selection';
 import localizer from './localizer'
 
-import { notify } from './utils/helpers';
+import { notify, dateIsInBusinessHours } from './utils/helpers';
 import { accessor, elementType, dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
@@ -57,6 +57,8 @@ let DaySlot = React.createClass({
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
+
+    businessHours: React.PropTypes.array
   },
 
   getDefaultProps() {
@@ -90,6 +92,7 @@ let DaySlot = React.createClass({
       step,
       now,
       selectRangeFormat,
+      businessHours,
       culture,
       ...props
     } = this.props
@@ -112,6 +115,7 @@ let DaySlot = React.createClass({
           dates.isToday(max) && 'rbc-today'
         )}
         now={now}
+        businessHours={businessHours}
         min={min}
         max={max}
         step={step}
@@ -210,10 +214,15 @@ let DaySlot = React.createClass({
     let selector = this._selector = new Selection(()=> findDOMNode(this))
 
     let maybeSelect = (box) => {
-      let onSelecting = this.props.onSelecting
+      let { onSelecting, businessHours } = this.props
       let current = this.state || {};
       let state = selectionState(box);
       let { startDate: start, endDate: end } = state;
+
+      // Return if there are business hours and the start date is not included
+      if (businessHours.length > 0 && (!dateIsInBusinessHours(state.startDate, businessHours, true) || !dateIsInBusinessHours(state.endDate, businessHours, true))) {
+        return
+      }
 
       if (onSelecting) {
         if (

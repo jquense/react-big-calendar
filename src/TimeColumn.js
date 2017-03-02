@@ -18,6 +18,8 @@ export default class TimeColumn extends Component {
     timeGutterFormat: PropTypes.string,
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
+    businessHours: PropTypes.array,
+    isGutter: PropTypes.bool,
 
     dayWrapperComponent: elementType,
   }
@@ -31,7 +33,7 @@ export default class TimeColumn extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat, culture } = this.props;
+    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat, culture, businessHours, isGutter } = this.props;
 
     return (
       <TimeSlotGroup
@@ -44,6 +46,8 @@ export default class TimeColumn extends Component {
         showLabels={showLabels}
         timeGutterFormat={timeGutterFormat}
         dayWrapperComponent={dayWrapperComponent}
+        businessHours={businessHours}
+        isGutter={isGutter}
       />
     )
   }

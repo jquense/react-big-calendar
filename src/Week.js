@@ -8,7 +8,7 @@ import TimeGrid from './TimeGrid';
 let Week = React.createClass({
 
   propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: React.PropTypes.instanceOf(Date).isRequired
   },
 
   getDefaultProps() {

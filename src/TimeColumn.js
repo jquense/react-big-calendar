@@ -20,6 +20,9 @@ export default class TimeColumn extends Component {
     className: PropTypes.string,
     groupHeight: PropTypes.number,
     dayWrapperComponent: elementType,
+
+    // internal prop used only for MultiTimeGrid styling at the moment
+    reverseRendering: PropTypes.bool,
   }
   static defaultProps = {
     step: 30,
@@ -28,6 +31,8 @@ export default class TimeColumn extends Component {
     type: 'day',
     className: '',
     dayWrapperComponent: BackgroundWrapper,
+
+    reverseRendering: false,
   }
 
   renderTimeSliceGroup(key, isNow, date) {
@@ -50,7 +55,7 @@ export default class TimeColumn extends Component {
   }
 
   render() {
-    const { className, children, style, now, min, max, step, timeslots } = this.props;
+    const { className, children, style, now, min, max, step, timeslots, reverseRendering } = this.props;
     const totalMin = dates.diff(min, max, 'minutes')
     const numGroups = Math.ceil(totalMin / (step * timeslots))
     const renderedSlots = []
@@ -79,8 +84,8 @@ export default class TimeColumn extends Component {
         className={cn(className, 'rbc-time-column')}
         style={style}
       >
-        {renderedSlots}
-        {children}
+        {reverseRendering ? children : renderedSlots}
+        {reverseRendering ? renderedSlots : children}
       </div>
     )
   }

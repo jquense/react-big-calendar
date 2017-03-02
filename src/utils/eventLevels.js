@@ -39,7 +39,7 @@ export function multiSegStyle(span, slots) {
   if (slots > 7) slots = 7;
 
   let per = (span / slots) * 100 + '%';
-  return { flexBasis: per, width: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
+  return { width: per }
 }
 
 export function eventLevels(rowSegments, limit = Infinity){

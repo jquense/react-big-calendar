@@ -17,7 +17,7 @@ import { notify } from './utils/helpers';
 
 import { accessor as get } from './utils/accessors';
 
-import { inRange, segStyle, multiSegStyle } from './utils/eventLevels';
+import { inRange, multiSegStyle } from './utils/eventLevels';
 
 export default class MultiTimeGrid extends Component {
 
@@ -84,6 +84,10 @@ export default class MultiTimeGrid extends Component {
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
     this.setEntityKeyTypeIfNecessary();
+
+    // for checking which axis the content grid was scrolled
+    this._lastScrollTop = 0;
+    this._lastScrollLeft = 0;
   }
 
   componentWillMount() {
@@ -140,6 +144,21 @@ export default class MultiTimeGrid extends Component {
     )});
   }
 
+  onContentScroll = ({ target }) => {
+    if (target.scrollTop !== this._lastScrollTop) {
+      const timeGutter = this.getTimeGutter();
+      if (timeGutter) {
+        timeGutter.style.marginTop = `-${target.scrollTop}`;
+      }
+      this._lastScrollTop = target.scrollTop;
+    }
+
+    if (target.scrollLeft !== this._lastScrollLeft) {
+      this.headerScroller.style.marginLeft = `-${target.scrollLeft}`;
+      this._lastScrollLeft = target.scrollLeft;
+    }
+  }
+
   render() {
     let {
         eventMap
@@ -185,16 +204,25 @@ export default class MultiTimeGrid extends Component {
     return (
       <div className='rbc-time-view'>
         {this.renderHeader(width, date)}
-        <div ref='content' className='rbc-time-content'>
-          <div ref='timeIndicator' className='rbc-current-time-indicator' />
-          <TimeColumn
-            {...this.props}
-            showLabels
-            style={{ width }}
-            ref={gutterRef}
-            className='rbc-time-gutter'
-          />
-          {this.renderEvents(date, this.rangeEventsMap, this.props.now)}
+        <div className="rbc-mv-body">
+          <div className="rbc-mv-time-column">
+            <TimeColumn
+              {...this.props}
+              showLabels
+              style={{ width, flex: '1 0 0%' }}
+              ref={gutterRef}
+              className='rbc-time-gutter'
+            />
+            <div className="rbc-mv-scroll-footer" style={{ height: scrollbarSize() }}></div>
+          </div>
+          <div
+            ref={(div) => { this.refs.content = div; }}
+            className='rbc-time-content rbc-mv-time-content'
+            onScroll={this.onContentScroll}
+          >
+            <div ref='timeIndicator' className='rbc-current-time-indicator' />
+            {this.renderEvents(date, this.rangeEventsMap, this.props.now)}
+          </div>
         </div>
       </div>
     );
@@ -220,11 +248,12 @@ export default class MultiTimeGrid extends Component {
           eventWrapperComponent={components.eventWrapper}
           dayWrapperComponent={components.dayWrapper}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
-          style={segStyle(1, this.slots)}
+          style={multiSegStyle(1, this.slots)}
           key={idx}
           entityKey={selectedEntityKey}
           date={date}
           events={daysEvents}
+          reverseRendering
         />
       )
     })
@@ -232,30 +261,23 @@ export default class MultiTimeGrid extends Component {
 
   renderHeader(width, date) {
     let { rtl } = this.props;
-    let { isOverflowing } = this.state || {};
 
-    let style = {};
-    if (isOverflowing) {
-      style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize()}px`;
-    }
+    const scrollHeader = <div className="rbc-mv-scroll-header" style={{ width: scrollbarSize() }}></div>;
 
     return (
-      <div
-        ref={(div) => { this.headerCell = div; }}
-        className={cn(
-          'rbc-time-header',
-          isOverflowing && 'rbc-overflowing'
-        )}
-        style={style}
-      >
-        <div className='rbc-row'>
-          <div
-            ref={(ref) => { this._gutters[0] = ref; }}
-            className='rbc-label rbc-header-gutter'
-            style={{ width }}
-          />
-          {this.renderHeaderCells(date)}
+      <div className="rbc-mv-header">
+        {rtl && scrollHeader}
+        <div
+          ref={(ref) => { this._gutters[0] = ref; }}
+          className='rbc-header-gutter'
+          style={{ width }}
+        />
+        <div className="rbc-mv-header-content">
+          <div className="rbc-mv-header-content-scroller" ref={(div) => { this.headerScroller = div; }}>
+            {this.renderHeaderCells(date)}
+          </div>
         </div>
+        {!rtl && scrollHeader}
       </div>
     )
   }
@@ -279,6 +301,7 @@ export default class MultiTimeGrid extends Component {
           value={selectedEntityKey}
           onChange={this.onHeaderSelectChange}
           data-header-index={i}
+          style={{ width: '100%' }}
         >
           {entityOptions}
         </select>
@@ -293,15 +316,13 @@ export default class MultiTimeGrid extends Component {
           )}
           style={multiSegStyle(1, this.slots)}
         >
-          <span>
-            <HeaderComponent
-              date={date}
-              label={label}
-              localizer={localizer}
-              format={dayFormat}
-              culture={culture}
-            />
-          </span>
+          <HeaderComponent
+            date={date}
+            label={label}
+            localizer={localizer}
+            format={dayFormat}
+            culture={culture}
+          />
         </div>
       )
     })
@@ -365,6 +386,11 @@ export default class MultiTimeGrid extends Component {
     }
   }
 
+  // May return null/undefined, make sure to check the returned value
+  getTimeGutter() {
+    return this._gutters[this._gutters.length - 1];
+  }
+
   positionTimeIndicator() {
     const { rtl, min, max } = this.props
     const now = new Date();
@@ -374,7 +400,7 @@ export default class MultiTimeGrid extends Component {
 
     const timeIndicator = this.refs.timeIndicator;
     const factor = secondsPassed / secondsGrid;
-    const timeGutter = this._gutters[this._gutters.length - 1];
+    const timeGutter = this.getTimeGutter();
 
     if (timeGutter && now >= min && now <= max) {
       const pixelHeight = timeGutter.offsetHeight;

@@ -247,13 +247,12 @@ export default class MultiTimeGrid extends Component {
           eventComponent={components.event}
           eventWrapperComponent={components.eventWrapper}
           dayWrapperComponent={components.dayWrapper}
-          className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
           style={multiSegStyle(1, this.slots)}
           key={idx}
           entityKey={selectedEntityKey}
           date={date}
           events={daysEvents}
-          reverseRendering
+          isMultiGrid
         />
       )
     })
@@ -310,10 +309,7 @@ export default class MultiTimeGrid extends Component {
       return (
         <div
           key={i}
-          className={cn(
-            'rbc-header',
-            dates.isToday(date) && 'rbc-today',
-          )}
+          className="rbc-header"
           style={multiSegStyle(1, this.slots)}
         >
           <HeaderComponent

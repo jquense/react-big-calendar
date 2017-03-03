@@ -59,10 +59,13 @@ let DaySlot = React.createClass({
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
+
+    // internal prop used to make slight changes in rendering
+    isMultiGrid: React.PropTypes.bool,
   },
 
   getDefaultProps() {
-    return { dragThroughEvents: true, rightOffset: 0 }
+    return { dragThroughEvents: true, rightOffset: 0, isMultiGrid: false }
   },
 
   getInitialState() {
@@ -93,6 +96,7 @@ let DaySlot = React.createClass({
       now,
       selectRangeFormat,
       culture,
+      isMultiGrid,
       ...props
     } = this.props
 
@@ -111,12 +115,13 @@ let DaySlot = React.createClass({
         {...props}
         className={cn(
           'rbc-day-slot',
-          dates.isToday(max) && 'rbc-today'
+          !isMultiGrid && dates.isToday(max) && 'rbc-today'
         )}
         now={now}
         min={min}
         max={max}
         step={step}
+        isMultiGrid={isMultiGrid}
       >
         {this.renderEvents()}
 

@@ -148,13 +148,13 @@ export default class MultiTimeGrid extends Component {
     if (target.scrollTop !== this._lastScrollTop) {
       const timeGutter = this.getTimeGutter();
       if (timeGutter) {
-        timeGutter.style.marginTop = `-${target.scrollTop}`;
+        timeGutter.style.marginTop = `-${target.scrollTop}px`;
       }
       this._lastScrollTop = target.scrollTop;
     }
 
     if (target.scrollLeft !== this._lastScrollLeft) {
-      this.headerScroller.style.marginLeft = `-${target.scrollLeft}`;
+      this.headerScroller.style.marginLeft = `-${target.scrollLeft}px`;
       this._lastScrollLeft = target.scrollLeft;
     }
   }

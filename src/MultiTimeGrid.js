@@ -146,10 +146,7 @@ export default class MultiTimeGrid extends Component {
 
   onContentScroll = ({ target }) => {
     if (target.scrollTop !== this._lastScrollTop) {
-      const timeGutter = this.getTimeGutter();
-      if (timeGutter) {
-        timeGutter.style.marginTop = `-${target.scrollTop}px`;
-      }
+      this.leftScroller.scrollTop = target.scrollTop;
       this._lastScrollTop = target.scrollTop;
     }
 
@@ -206,13 +203,14 @@ export default class MultiTimeGrid extends Component {
         {this.renderHeader(width, date)}
         <div className="rbc-mv-body">
           <div className="rbc-mv-time-column">
-            <TimeColumn
-              {...this.props}
-              showLabels
-              style={{ width, flex: '1 0 0%' }}
-              ref={gutterRef}
-              className='rbc-time-gutter'
-            />
+            <div className="rbc-mv-left-scroller" style={{ width }} ref={(div) => { this.leftScroller = div; }}>
+              <TimeColumn
+                {...this.props}
+                showLabels
+                ref={gutterRef}
+                className='rbc-time-gutter'
+              />
+            </div>
             <div className="rbc-mv-scroll-footer" style={{ height: scrollbarSize() }}></div>
           </div>
           <div

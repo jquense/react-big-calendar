@@ -601,6 +601,11 @@ button.rbc-input::-moz-focus-inner {
   display: flex;
   border-top: 2px solid #DDD;
 }
+.rbc-mv-left-scroller {
+  -ms-flex: 1 0 0%;
+      flex: 1 0 0%;
+  overflow: hidden;
+}
 .rbc-mv-time-column {
   border-right: 1px solid #DDD;
   display: -ms-flexbox;

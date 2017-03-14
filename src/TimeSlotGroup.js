@@ -12,7 +12,10 @@ export default class TimeSlotGroup extends Component {
     value: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
     isNow: PropTypes.bool,
-    timeGutterFormat: PropTypes.string,
+    timeGutterFormat: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.func
+    ])
     culture: PropTypes.string
   }
   static defaultProps = {

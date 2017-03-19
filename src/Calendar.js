@@ -684,6 +684,5 @@ let Calendar = React.createClass({
 
 export default uncontrollable(Calendar, {
   view: 'onView',
-  date: 'onNavigate',
-  selected: 'onSelectEvent'
+  date: 'onNavigate'
 })

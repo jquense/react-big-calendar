@@ -271,7 +271,11 @@ let DaySlot = React.createClass({
     selector
       .on('click', (box) => {
         if (!isEvent(findDOMNode(this), box))
-          this._selectSlot(selectionState(box))
+          this._selectSlot(Object.assign({},
+            selectionState(box), {
+              action: 'click'
+            }
+          ))
 
         this.setState({ selecting: false })
       })
@@ -279,7 +283,11 @@ let DaySlot = React.createClass({
     selector
       .on('select', () => {
         if (this.state.selecting) {
-          this._selectSlot(this.state)
+          this._selectSlot(Object.assign({},
+            this.state, {
+              action: 'select'
+            }
+          ))
           this.setState({ selecting: false })
         }
       })
@@ -291,7 +299,7 @@ let DaySlot = React.createClass({
     this._selector = null;
   },
 
-  _selectSlot({ startDate, endDate }) {
+  _selectSlot({ startDate, endDate, action }) {
     let current = startDate
       , slots = [];
 
@@ -303,7 +311,8 @@ let DaySlot = React.createClass({
     notify(this.props.onSelectSlot, {
       slots,
       start: startDate,
-      end: endDate
+      end: endDate,
+      action
     })
   },
 

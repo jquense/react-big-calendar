@@ -289,12 +289,12 @@ let MonthView = React.createClass({
     })
   },
 
-  handleSelectSlot(range) {
+  handleSelectSlot(range, slotInfo) {
     this._pendingSelection = this._pendingSelection
       .concat(range)
 
     clearTimeout(this._selectTimer)
-    this._selectTimer = setTimeout(()=> this._selectDates())
+    this._selectTimer = setTimeout(()=> this._selectDates(slotInfo))
   },
 
   handleHeadingClick(date, view, e){
@@ -308,7 +308,7 @@ let MonthView = React.createClass({
     notify(this.props.onSelectEvent, args)
   },
 
-  _selectDates() {
+  _selectDates(slotInfo) {
     let slots = this._pendingSelection.slice()
 
     this._pendingSelection = []
@@ -318,7 +318,8 @@ let MonthView = React.createClass({
     notify(this.props.onSelectSlot, {
       slots,
       start: slots[0],
-      end: slots[slots.length - 1]
+      end: slots[slots.length - 1],
+      action: slotInfo.action
     })
   },
 

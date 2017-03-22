@@ -396,6 +396,7 @@ button.rbc-input::-moz-focus-inner {
       flex: none;
 }
 .rbc-label {
+  font-size: 12px;
   padding: 0 5px;
 }
 .rbc-day-slot {

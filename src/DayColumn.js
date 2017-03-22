@@ -190,7 +190,6 @@ let DaySlot = React.createClass({
               'rbc-event-continues-later': continuesAfter
             })}
           >
-            <div className='rbc-event-label'>{label}</div>
             <div className='rbc-event-content'>
               { EventComponent
                 ? <EventComponent event={event} title={title}/>

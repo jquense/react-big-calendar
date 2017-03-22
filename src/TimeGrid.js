@@ -326,11 +326,7 @@ export default class TimeGrid extends Component {
             >
               {header}
             </a>
-          ) : (
-            <span>
-              {header}
-            </span>
-          )}
+          ) : header}
         </div>
       )
     })

@@ -35,6 +35,7 @@ let propTypes = {
 
   scrollToTime: React.PropTypes.instanceOf(Date),
   eventPropGetter: React.PropTypes.func,
+  dayPropGetter: React.PropTypes.func,
 
   culture: React.PropTypes.string,
   dayFormat: dateFormat,
@@ -79,7 +80,7 @@ let MonthView = React.createClass({
 
   propTypes,
 
-  getInitialState(){
+  getInitialState() {
     return {
       rowLimit: 5,
       needLimitMeasure: true
@@ -103,9 +104,9 @@ let MonthView = React.createClass({
     if (this.state.needLimitMeasure)
       this.measureRowLimit(this.props)
 
-    window.addEventListener('resize', this._resizeListener = ()=> {
+    window.addEventListener('resize', this._resizeListener = () => {
       if (!running) {
-        raf(()=> {
+        raf(() => {
           running = false
           this.setState({ needLimitMeasure: true }) //eslint-disable-line
         })
@@ -129,7 +130,7 @@ let MonthView = React.createClass({
   render() {
     let { date, culture, weekdayFormat, className } = this.props
       , month = dates.visibleDays(date, culture)
-      , weeks  = chunk(month, 7);
+      , weeks = chunk(month, 7);
 
     this._weekCount = weeks.length;
 
@@ -138,11 +139,11 @@ let MonthView = React.createClass({
         <div className='rbc-row rbc-month-header'>
           {this._headers(weeks[0], weekdayFormat, culture)}
         </div>
-        { weeks.map((week, idx) =>
-            this.renderWeek(week, idx))
+        {weeks.map((week, idx) =>
+          this.renderWeek(week, idx))
         }
-        { this.props.popup &&
-            this._renderOverlay()
+        {this.props.popup &&
+          this._renderOverlay()
         }
       </div>
     )
@@ -150,6 +151,7 @@ let MonthView = React.createClass({
 
   renderWeek(week, weekIdx) {
     let {
+      date,
       events,
       components,
       selectable,
@@ -158,6 +160,7 @@ let MonthView = React.createClass({
       endAccessor,
       allDayAccessor,
       eventPropGetter,
+      dayPropGetter,
       messages,
       selected } = this.props;
 
@@ -168,6 +171,7 @@ let MonthView = React.createClass({
 
     return (
       <DateContentRow
+        date={date}
         key={weekIdx}
         ref={weekIdx === 0
           ? 'slotRow' : undefined
@@ -189,6 +193,8 @@ let MonthView = React.createClass({
 
         renderHeader={this.readerDateHeading}
         renderForMeasure={needLimitMeasure}
+
+        dayPropGetter={dayPropGetter}
 
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
@@ -226,10 +232,10 @@ let MonthView = React.createClass({
             {label}
           </a>
         ) : (
-          <span>
-            {label}
-          </span>
-        )}
+            <span>
+              {label}
+            </span>
+          )}
       </div>
     )
   },
@@ -294,16 +300,16 @@ let MonthView = React.createClass({
       .concat(range)
 
     clearTimeout(this._selectTimer)
-    this._selectTimer = setTimeout(()=> this._selectDates())
+    this._selectTimer = setTimeout(() => this._selectDates())
   },
 
-  handleHeadingClick(date, view, e){
+  handleHeadingClick(date, view, e) {
     e.preventDefault();
     this.clearSelection()
     notify(this.props.onDrillDown, [date, view])
   },
 
-  handleSelectEvent(...args){
+  handleSelectEvent(...args) {
     this.clearSelection()
     notify(this.props.onSelectEvent, args)
   },
@@ -341,15 +347,15 @@ let MonthView = React.createClass({
     notify(onShowMore, [events, date, slot])
   },
 
-  clearSelection(){
+  clearSelection() {
     clearTimeout(this._selectTimer)
     this._pendingSelection = [];
   }
 
 });
 
-MonthView.navigate = (date, action)=> {
-  switch (action){
+MonthView.navigate = (date, action) => {
+  switch (action) {
     case navigate.PREVIOUS:
       return dates.add(date, -1, 'month');
 

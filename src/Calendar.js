@@ -103,7 +103,7 @@ let Calendar = React.createClass({
      *     start: Date,
      *     end: Date,
      *     slots: array<Date>,
-     *     action: string
+     *     action: "select" | "click"
      *   }
      * )
      * ```

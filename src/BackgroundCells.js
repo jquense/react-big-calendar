@@ -138,10 +138,7 @@ class BackgroundCells extends React.Component {
 
     selector
       .on('select', () => {
-        this._selectSlot(Object.assign({},
-          this.state, {
-            action: 'select'
-          }))
+        this._selectSlot({ ...this.state, action: 'select' })
         this._initial = {}
         this.setState({ selecting: false })
         notify(this.props.onSelectEnd, [this.state]);

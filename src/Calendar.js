@@ -102,7 +102,8 @@ let Calendar = React.createClass({
      *   slotInfo: object {
      *     start: Date,
      *     end: Date,
-     *     slots: array<Date>
+     *     slots: array<Date>,
+     *     action: "select" | "click"
      *   }
      * )
      * ```

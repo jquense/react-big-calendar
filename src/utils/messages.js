@@ -8,7 +8,7 @@ import invariant from 'invariant';
   week: 'week',
   day: 'day',
   month: 'month',
-  previous: 'back',
+  previous: 'previous',
   next: 'next',
   yesterday: 'yesterday',
   tomorrow: 'tomorrow',

@@ -32,6 +32,7 @@ export default class TimeGrid extends Component {
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
     now: React.PropTypes.instanceOf(Date),
+    showAllDayEvents: React.PropTypes.bool,
 
     scrollToTime: React.PropTypes.instanceOf(Date),
     eventPropGetter: React.PropTypes.func,
@@ -70,7 +71,8 @@ export default class TimeGrid extends Component {
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    now: new Date()
+    now: new Date(),
+    showAllDayEvents: true
   }
 
   constructor(props) {
@@ -224,7 +226,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components } = this.props;
+    let { messages, rtl, selectable, components, showAllDayEvents } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
@@ -247,34 +249,36 @@ export default class TimeGrid extends Component {
           />
           { this.renderHeaderCells(range) }
         </div>
-        <div className='rbc-row'>
-          <div
-            ref={ref => this._gutters[0] = ref}
-            className='rbc-label rbc-header-gutter'
-            style={{ width }}
-          >
-            { message(messages).allDay }
-          </div>
-          <DateContentRow
-            minRows={2}
-            range={range}
-            rtl={this.props.rtl}
-            events={events}
-            className='rbc-allday-cell'
-            selectable={selectable}
-            onSelectSlot={this.handleSelectAllDaySlot}
-            dateCellWrapper={components.dateCellWrapper}
-            eventComponent={this.props.components.event}
-            eventWrapperComponent={this.props.components.eventWrapper}
-            titleAccessor={this.props.titleAccessor}
-            startAccessor={this.props.startAccessor}
-            endAccessor={this.props.endAccessor}
-            allDayAccessor={this.props.allDayAccessor}
-            eventPropGetter={this.props.eventPropGetter}
-            selected={this.props.selected}
-            onSelect={this.handleSelectEvent}
-          />
+        {showAllDayEvents && (
+          <div className='rbc-row'>
+            <div
+              ref={ref => this._gutters[0] = ref}
+              className='rbc-label rbc-header-gutter'
+              style={{ width }}
+            >
+              { message(messages).allDay }
+            </div>
+            <DateContentRow
+              minRows={2}
+              range={range}
+              rtl={this.props.rtl}
+              events={events}
+              className='rbc-allday-cell'
+              selectable={selectable}
+              onSelectSlot={this.handleSelectAllDaySlot}
+              dateCellWrapper={components.dateCellWrapper}
+              eventComponent={this.props.components.event}
+              eventWrapperComponent={this.props.components.eventWrapper}
+              titleAccessor={this.props.titleAccessor}
+              startAccessor={this.props.startAccessor}
+              endAccessor={this.props.endAccessor}
+              allDayAccessor={this.props.allDayAccessor}
+              eventPropGetter={this.props.eventPropGetter}
+              selected={this.props.selected}
+              onSelect={this.handleSelectEvent}
+            />
         </div>
+      )}
       </div>
     )
   }
@@ -348,7 +352,7 @@ export default class TimeGrid extends Component {
     let gutterCells = this._gutters;
 
     if (!width) {
-      width = Math.max(...gutterCells.map(getWidth));
+      width = Math.max(...gutterCells.map(getWidth).filter(Boolean));
 
       if (width) {
         this.setState({ gutterWidth: width })

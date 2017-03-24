@@ -60,6 +60,10 @@ export default class MultiTimeGrid extends Component {
 
     messages: React.PropTypes.object,
     components: React.PropTypes.object.isRequired,
+
+    // new props
+    selectedEntityKeys: React.PropTypes.array.isRequired,
+    onSelectedEntityChange: React.PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -79,7 +83,6 @@ export default class MultiTimeGrid extends Component {
     this.state = {
       gutterWidth: undefined,
       isOverflowing: null,
-      selectedEntityKeys: this.props.entities.map(entity => entity[this.props.entityKeyAccessor])
     };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
@@ -139,9 +142,9 @@ export default class MultiTimeGrid extends Component {
   onHeaderSelectChange = ({ target }) => {
     const index = Number(target.getAttribute('data-header-index'));
     const value = this._entityKeyIsNumber ? Number(target.value) : target.value;
-    this.setState({ selectedEntityKeys: this.state.selectedEntityKeys.map(
-      (selectedEntityKey, i) => i === index ? value : selectedEntityKey
-    )});
+    const newSelectedKeys = [ ...this.props.selectedEntityKeys ];
+    newSelectedKeys[index] = value;
+    this.props.onSelectedEntityChange(newSelectedKeys, { index, value });
   }
 
   onContentScroll = ({ target }) => {
@@ -163,9 +166,11 @@ export default class MultiTimeGrid extends Component {
       , width
       , startAccessor
       , endAccessor
-      , allDayAccessor } = this.props;
+      , allDayAccessor
+      , selectedEntityKeys
+    } = this.props;
 
-    const { selectedEntityKeys, gutterWidth } = this.state;
+    const { gutterWidth } = this.state;
 
     width = width || gutterWidth;
 
@@ -229,7 +234,7 @@ export default class MultiTimeGrid extends Component {
   renderEvents(date, rangeEventsMap, today){
     let { min, max, endAccessor, startAccessor, components } = this.props;
 
-    return this.state.selectedEntityKeys.map((selectedEntityKey, idx) => {
+    return this.props.selectedEntityKeys.map((selectedEntityKey, idx) => {
       let daysEvents = rangeEventsMap[selectedEntityKey] || [];
       daysEvents = daysEvents.filter(
         event => dates.inRange(date,
@@ -292,7 +297,7 @@ export default class MultiTimeGrid extends Component {
       </option>
     ));
 
-    return this.state.selectedEntityKeys.map((selectedEntityKey, i) => {
+    return this.props.selectedEntityKeys.map((selectedEntityKey, i) => {
       const label = (
         <select
           value={selectedEntityKey}

@@ -96,6 +96,13 @@ let Calendar = React.createClass({
 
     /**
      * <b>- MultiView ONLY -</b>
+     * An array of entity keys, which will be used to render the columns in the
+     * multi view.
+     */
+    selectedEntityKeys: PropTypes.array,
+
+    /**
+     * <b>- MultiView ONLY -</b>
      * The name of the property to treat as entities' unique identifiers,
      * e.g. `id`
      */
@@ -165,6 +172,17 @@ let Calendar = React.createClass({
      * ```
      */
     onSelecting: PropTypes.func,
+
+    /**
+     * <b>- MultiView ONLY -</b>
+     * Callback fired when an entity is selected in one of the multiview header
+     * columns' <select>.
+     *
+     * ```js
+     * function (newSelectedKeys: Array, { index: Number, value: Number | string })
+     * ```
+     */
+    onSelectedEntityChange: PropTypes.func,
 
     /**
      * An array of built-in view names to allow the calendar to display.

@@ -544,10 +544,10 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-current-time-indicator {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   left: 0;
   height: 1px;
-  background-color: #74ad31;
+  background-color: #1c94bc;
   pointer-events: none;
 }
 .rbc-current-time-indicator::before {
@@ -556,7 +556,7 @@ button.rbc-input::-moz-focus-inner {
   left: -3px;
   top: -3px;
   content: ' ';
-  background-color: #74ad31;
+  background-color: #1c94bc;
   border-radius: 50%;
   width: 8px;
   height: 8px;

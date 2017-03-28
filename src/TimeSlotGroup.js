@@ -29,7 +29,7 @@ export default class TimeSlotGroup extends Component {
       <TimeSlot
         key={slotNumber}
         dayWrapperComponent={dayWrapperComponent}
-        showLabel={showLabels && !slotNumber}
+        showLabel={showLabels}
         content={content}
         culture={culture}
         isNow={isNow}
@@ -42,10 +42,17 @@ export default class TimeSlotGroup extends Component {
     const ret = []
     const sliceLength = this.props.step
     let sliceValue = this.props.value
+    let stepInterval = 0;
     for (let i = 0; i < this.props.timeslots; i++) {
-      const content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
+      let content;
+      if (i === 0) {
+        content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
+      } else {
+        content = `:${stepInterval}`;
+      }
       ret.push(this.renderSlice(i, content, sliceValue))
       sliceValue = date.add(sliceValue, sliceLength, 'minutes')
+      stepInterval += this.props.step;
     }
     return ret
   }

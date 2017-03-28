@@ -395,6 +395,12 @@ button.rbc-input::-moz-focus-inner {
   -ms-flex: none;
       flex: none;
 }
+.rbc-time-gutter .rbc-label {
+  text-align: right;
+}
+.rbc-time-gutter .rbc-label:not(:first-child) {
+  font-size: 11px;
+}
 .rbc-label {
   font-size: 12px;
   padding: 0 5px;

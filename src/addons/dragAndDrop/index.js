@@ -2,6 +2,7 @@ import React from 'react'
 import { DragDropContext } from 'react-dnd'
 import cn from 'classnames';
 
+import { accessor } from '../../utils/propTypes';
 import DraggableEventWrapper from './DraggableEventWrapper'
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
 
@@ -22,7 +23,11 @@ export default function withDragAndDrop(Calendar, {
       components: React.PropTypes.object,
     }
     getChildContext () {
-      return { onEventDrop: this.props.onEventDrop }
+      return {
+        onEventDrop: this.props.onEventDrop,
+        startAccessor: this.props.startAccessor,
+        endAccessor: this.props.endAccessor
+      }
     }
 
     constructor(...args) {
@@ -76,15 +81,24 @@ export default function withDragAndDrop(Calendar, {
   }
 
   DragAndDropCalendar.propTypes = {
-    onEventDrop: React.PropTypes.func.isRequired
+    onEventDrop: React.PropTypes.func.isRequired,
+    startAccessor: accessor,
+    endAccessor: accessor
   }
+
+  DragAndDropCalendar.defaultProps = {
+    startAccessor: 'start',
+    endAccessor: 'end'
+  };
 
   DragAndDropCalendar.contextTypes = {
     dragDropManager: React.PropTypes.object
   }
 
   DragAndDropCalendar.childContextTypes = {
-    onEventDrop: React.PropTypes.func
+    onEventDrop: React.PropTypes.func,
+    startAccessor: accessor,
+    endAccessor: accessor
   }
 
   return DragDropContext(backend)(DragAndDropCalendar);

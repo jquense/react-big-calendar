@@ -35,9 +35,9 @@ let getSlot = (event, accessor, min, totalMin) => event && positionFromDate(
 
 /**
  * Two events are considered siblings if the difference between their
- * start time is less than 1 hour.
+ * start time is less than (step*timeslots) hour.
  */
-let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin }) => {
+let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin, step, timeslots }) => {
   let event1 = events[idx1]
   let event2 = events[idx2]
 
@@ -46,20 +46,20 @@ let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin }) => {
   let start1 = getSlot(event1, startAccessor, min, totalMin)
   let start2 = getSlot(event2, startAccessor, min, totalMin)
 
-  return (Math.abs(start1 - start2) < 60)
+  return (Math.abs(start1 - start2) < (step*timeslots))
 }
 
 /**
  * An event is considered a child of another event if its start time is
- * more than 1 hour later than the other event's start time,
+ * more than (step*timeslots) hour later than the other event's start time,
  * but before its end time.
  */
 let isChild = (parentIdx, childIdx, {
-  events, startAccessor, endAccessor, min, totalMin
+  events, startAccessor, endAccessor, min, totalMin, step, timeslots
 }) => {
   if (isSibling(
     parentIdx, childIdx,
-    { events, startAccessor, endAccessor, min, totalMin }
+    { events, startAccessor, endAccessor, min, totalMin, step, timeslots }
   )) return false
 
   let parentEnd = getSlot(events[parentIdx], endAccessor, min, totalMin)
@@ -73,13 +73,13 @@ let isChild = (parentIdx, childIdx, {
  * returned as an array of indexes.
  */
 let getSiblings = (idx, {
-  events, startAccessor, endAccessor, min, totalMin
+  events, startAccessor, endAccessor, min, totalMin, step, timeslots
 }) => {
   let nextIdx = idx
   let siblings = []
 
   while (isSibling(
-    idx, ++nextIdx, { events, startAccessor, endAccessor, min, totalMin })
+    idx, ++nextIdx, { events, startAccessor, endAccessor, min, totalMin, step, timeslots })
   ) {
     siblings.push(nextIdx)
   }
@@ -94,21 +94,21 @@ let getSiblings = (idx, {
  * size of the child groups.
  */
 let getChildGroups = (idx, nextIdx, {
-  events, startAccessor, endAccessor, min, totalMin
+  events, startAccessor, endAccessor, min, totalMin, step, timeslots
 }) => {
   let groups = []
   let nbrOfColumns = 0
 
   while (isChild(
     idx, nextIdx,
-    { events, startAccessor, endAccessor, min, totalMin }
+    { events, startAccessor, endAccessor, min, totalMin, step, timeslots }
   )) {
     let childGroup = [nextIdx]
     let siblingIdx = nextIdx
 
     while (isSibling(
       nextIdx, ++siblingIdx,
-      { events, startAccessor, endAccessor, min, totalMin }
+      { events, startAccessor, endAccessor, min, totalMin, step, timeslots }
     )) {
       childGroup.push(siblingIdx)
     }
@@ -168,11 +168,12 @@ let getYStyles = (idx, {
  * traversed, so the cursor will be moved past all of them.
  */
 export default function getStyledEvents ({
-  events: unsortedEvents, startAccessor, endAccessor, min, totalMin, step
+  events: unsortedEvents, startAccessor, endAccessor, min, totalMin,
+  step, timeslots
 }) {
   let OVERLAP_MULTIPLIER = 0.3
   let events = sort(unsortedEvents, { startAccessor, endAccessor })
-  let helperArgs = { events, startAccessor, endAccessor, min, totalMin, step }
+  let helperArgs = { events, startAccessor, endAccessor, min, totalMin, step, timeslots }
   let styledEvents = []
   let idx = 0
 

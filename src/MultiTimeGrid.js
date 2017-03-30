@@ -22,6 +22,7 @@ import { inRange, multiSegStyle } from './utils/eventLevels';
 export default class MultiTimeGrid extends Component {
 
   static propTypes = {
+    view: React.PropTypes.string.isRequired,
     eventMap: React.PropTypes.object.isRequired,
     entities: React.PropTypes.array.isRequired,
     entityKeyAccessor: React.PropTypes.string.isRequired,
@@ -131,8 +132,9 @@ export default class MultiTimeGrid extends Component {
 
     // When paginating, reset scroll
     if (
-      !dates.eq(nextProps.start, start, 'minute') ||
-      !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
+      nextProps.view !== this.props.view &&
+      (!dates.eq(nextProps.start, start, 'minute') ||
+       !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute'))
     ) {
       this.calculateScroll();
     }

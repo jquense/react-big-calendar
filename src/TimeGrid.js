@@ -24,6 +24,7 @@ import { inRange, sortEvents, segStyle } from './utils/eventLevels';
 export default class TimeGrid extends Component {
 
   static propTypes = {
+    view: React.PropTypes.string.isRequired,
     events: React.PropTypes.array.isRequired,
     singleDayEventsOnly: React.PropTypes.bool,
 
@@ -116,8 +117,9 @@ export default class TimeGrid extends Component {
     const { start, scrollToTime } = this.props;
     // When paginating, reset scroll
     if (
-      !dates.eq(nextProps.start, start, 'minute') ||
-      !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
+      nextProps.view !== this.props.view &&
+      (!dates.eq(nextProps.start, start, 'minute') ||
+       !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute'))
     ) {
       this.calculateScroll();
     }

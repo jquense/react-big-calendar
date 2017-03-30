@@ -651,6 +651,7 @@ let Calendar = React.createClass({
         }
         <View
           ref='view'
+          view={view}
           {...props}
           {...formats}
           culture={culture}

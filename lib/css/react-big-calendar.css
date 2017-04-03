@@ -555,24 +555,9 @@ button.rbc-input::-moz-focus-inner {
   position: absolute;
   z-index: 3;
   left: 0;
-  height: 1px;
+  height: 2px;
   background-color: #1c94bc;
   pointer-events: none;
-}
-.rbc-current-time-indicator::before {
-  display: block;
-  position: absolute;
-  left: -3px;
-  top: -3px;
-  content: ' ';
-  background-color: #1c94bc;
-  border-radius: 50%;
-  width: 8px;
-  height: 8px;
-}
-.rbc-rtl .rbc-current-time-indicator::before {
-  left: 0;
-  right: -3px;
 }
 .rbc-mv-header {
   display: -ms-flexbox;

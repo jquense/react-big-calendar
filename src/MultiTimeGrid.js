@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 
 import dates from './utils/dates';
@@ -106,13 +105,6 @@ export default class MultiTimeGrid extends Component {
       this.measureGutter()
     }
     this.applyScroll();
-
-    this.positionTimeIndicator();
-    this.triggerTimeIndicatorUpdate();
-  }
-
-  componentWillUnmount() {
-    window.clearTimeout(this._timeIndicatorTimeout);
   }
 
   componentDidUpdate() {
@@ -121,7 +113,6 @@ export default class MultiTimeGrid extends Component {
     }
 
     this.applyScroll();
-    this.positionTimeIndicator();
     //this.checkOverflow()
   }
 
@@ -221,11 +212,12 @@ export default class MultiTimeGrid extends Component {
             <div className="rbc-mv-scroll-footer" style={{ height: scrollbarSize() }}></div>
           </div>
           <div
-            ref={(div) => { this.refs.content = div; }}
+            ref={(div) => { this.content = div; }}
             className='rbc-time-content rbc-mv-time-content'
             onScroll={this.onContentScroll}
           >
-            <div ref='timeIndicator' className='rbc-current-time-indicator' />
+            {/* dummy div replacement for timeIndicator to keep css working */}
+            <div style={{ display: 'none' }} />
             {this.renderEvents(date, this.rangeEventsMap, this.props.now)}
           </div>
         </div>
@@ -233,7 +225,7 @@ export default class MultiTimeGrid extends Component {
     );
   }
 
-  renderEvents(date, rangeEventsMap, today){
+  renderEvents(date, rangeEventsMap /* , today */){
     let { min, max, endAccessor, startAccessor, components } = this.props;
 
     return this.props.selectedEntityKeys.map((selectedEntityKey, idx) => {
@@ -357,9 +349,8 @@ export default class MultiTimeGrid extends Component {
   }
 
   applyScroll() {
-    if (this._scrollRatio) {
-      const { content } = this.refs;
-      content.scrollTop = content.scrollHeight * this._scrollRatio;
+    if (this._scrollRatio && this.content) {
+      this.content.scrollTop = this.content.scrollHeight * this._scrollRatio;
       // Only do this once
       this._scrollRatio = null;
     }
@@ -377,7 +368,7 @@ export default class MultiTimeGrid extends Component {
   checkOverflow() {
     if (this._updatingOverflow) return;
 
-    let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
+    let isOverflowing = this.content.scrollHeight > this.content.clientHeight;
 
     if (this.state.isOverflowing !== isOverflowing) {
       this._updatingOverflow = true;
@@ -390,39 +381,6 @@ export default class MultiTimeGrid extends Component {
   // May return null/undefined, make sure to check the returned value
   getTimeGutter() {
     return this._gutters[this._gutters.length - 1];
-  }
-
-  positionTimeIndicator() {
-    const { rtl, min, max } = this.props
-    const now = new Date();
-
-    const secondsGrid = dates.diff(max, min, 'seconds');
-    const secondsPassed = dates.diff(now, min, 'seconds');
-
-    const timeIndicator = this.refs.timeIndicator;
-    const factor = secondsPassed / secondsGrid;
-    const timeGutter = this.getTimeGutter();
-
-    if (timeGutter && now >= min && now <= max) {
-      const pixelHeight = timeGutter.offsetHeight;
-      const offset = Math.floor(factor * pixelHeight);
-
-      timeIndicator.style.display = 'block';
-      timeIndicator.style[rtl ? 'left' : 'right'] = 0;
-      timeIndicator.style[rtl ? 'right' : 'left'] = timeGutter.offsetWidth + 'px';
-      timeIndicator.style.top = offset + 'px';
-    } else {
-      timeIndicator.style.display = 'none';
-    }
-  }
-
-  triggerTimeIndicatorUpdate() {
-    // Update the position of the time indicator every minute
-    this._timeIndicatorTimeout = window.setTimeout(() => {
-      this.positionTimeIndicator();
-
-      this.triggerTimeIndicatorUpdate();
-    }, 60000)
   }
 
   setEntityKeyTypeIfNecessary() {

@@ -21,6 +21,8 @@ export default class TimeColumn extends Component {
     groupHeight: PropTypes.number,
     dayWrapperComponent: elementType,
 
+    dragThroughEvents: PropTypes.bool,
+
     // internal prop used to make slight changes in rendering
     isMultiGrid: PropTypes.bool,
   }
@@ -33,6 +35,27 @@ export default class TimeColumn extends Component {
     dayWrapperComponent: BackgroundWrapper,
 
     isMultiGrid: false,
+  }
+
+  componentDidMount() {
+    this.positionTimeIndicator();
+    this.indicatorRefresh = window.setInterval(this.positionTimeIndicator, 60000);
+  }
+
+  componentDidUpdate() {
+    this.positionTimeIndicator();
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.indicatorRefresh);
+  }
+
+  rootRef = (div) => {
+    this.root = div;
+  }
+
+  indicatorRef = (div) => {
+    this.timeIndicator = div;
   }
 
   renderTimeSliceGroup(key, isNow, date) {
@@ -83,10 +106,40 @@ export default class TimeColumn extends Component {
       <div
         className={cn(className, 'rbc-time-column')}
         style={style}
+        ref={this.rootRef}
       >
+        <div ref={this.indicatorRef} className='rbc-current-time-indicator' />
         {isMultiGrid ? children : renderedSlots}
         {isMultiGrid ? renderedSlots : children}
       </div>
     )
+  }
+
+  positionTimeIndicator = () => {
+    const { min, max, dragThroughEvents } = this.props;
+
+    // this prop is only passed into this component from DayColumn, so here we're
+    // excluding the time gutter TimeColumn from having a time indicator.
+    if (!dragThroughEvents) return;
+
+    const now = new Date();
+
+    const secondsGrid = dates.diff(max, min, 'seconds');
+    const secondsPassed = dates.diff(now, min, 'seconds');
+
+    const timeIndicator = this.timeIndicator;
+    const factor = secondsPassed / secondsGrid;
+
+    if (this.root && now >= min && now <= max) {
+      const pixelHeight = this.root.offsetHeight;
+      const offset = Math.floor(factor * pixelHeight);
+
+      timeIndicator.style.display = 'block';
+      timeIndicator.style.left = 0;
+      timeIndicator.style.right = 0;
+      timeIndicator.style.top = offset + 'px';
+    } else {
+      timeIndicator.style.display = 'none';
+    }
   }
 }

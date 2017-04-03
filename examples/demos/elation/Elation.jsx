@@ -62,6 +62,7 @@ export default class Elation extends React.Component {
         entityKeyAccessor="id"
         entityNameAccessor="fullName"
         eventPropGetter={eventStyler}
+        selectedEntityKeys={[28716, 25454, 235]}
         singleDayEventsOnly
         formats={formats}
         step={10}

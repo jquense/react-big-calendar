@@ -62,9 +62,12 @@ button.rbc-input::-moz-focus-inner {
   padding: 0 3px;
   text-align: center;
   vertical-align: middle;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 90%;
   min-height: 0;
+}
+.rbc-header.rbc-today {
+  font-weight: bold;
 }
 .rbc-header > a,
 .rbc-header > a:active,

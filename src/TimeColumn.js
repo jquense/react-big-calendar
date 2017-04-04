@@ -43,7 +43,11 @@ export default class TimeColumn extends Component {
   }
 
   componentDidUpdate() {
-    this.positionTimeIndicator();
+    // Don't position indicator on update for multi grid, because it can de-sync
+    // the lines across the different columns if only some columns update but others don't.
+    if (!this.props.isMultiGrid) {
+      this.positionTimeIndicator();
+    }
   }
 
   componentWillUnmount() {

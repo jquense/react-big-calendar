@@ -28,7 +28,9 @@ export default class TimeSlotGroup extends Component {
       this.props.dayWrapperComponent !== nextProps.dayWrapperComponent ||
       this.props.timeslots !== nextProps.timeslots ||
       this.props.step !== nextProps.step ||
-      date.neq(this.props.value, nextProps.value) ||
+      /* highly experimental comment-out, based on the fact that value doesn't seem to be
+         used anywhere, even for slot selection events. */
+      // date.neq(this.props.value, nextProps.value) ||
       this.props.showLabels !== nextProps.showLabels ||
       this.props.isNow !== nextProps.isNow ||
       this.props.timeGutterFormat !== nextProps.timeGutterFormat ||

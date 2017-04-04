@@ -83,8 +83,8 @@ button.rbc-input::-moz-focus-inner {
           user-select: none;
   z-index: 4;
 }
-.rbc-today {
-  background-color: #fbfbfb;
+.rbc-time-view-week .rbc-today {
+  background-color: #f1f1f1;
 }
 .rbc-toolbar {
   display: -ms-flexbox;

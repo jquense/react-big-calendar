@@ -23,6 +23,24 @@ export default class TimeSlotGroup extends Component {
     showLabels: false
   }
 
+  shouldComponentUpdate(nextProps /* , nextState */) {
+    if (
+      this.props.dayWrapperComponent !== nextProps.dayWrapperComponent ||
+      this.props.timeslots !== nextProps.timeslots ||
+      this.props.step !== nextProps.step ||
+      date.neq(this.props.value, nextProps.value) ||
+      this.props.showLabels !== nextProps.showLabels ||
+      this.props.isNow !== nextProps.isNow ||
+      this.props.timeGutterFormat !== nextProps.timeGutterFormat ||
+      this.props.culture !== nextProps.culture ||
+      this.props.height !== nextProps.height
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   renderSlice(slotNumber, content, value) {
     const { dayWrapperComponent, showLabels, isNow, culture } = this.props;
     return (
@@ -56,7 +74,10 @@ export default class TimeSlotGroup extends Component {
     }
     return ret
   }
+
   render() {
+    // note that style is currently not passed to this component, but we're handling
+    // height so it doesn't break styling if style IS passed in.
     const { style, height } = this.props;
 
     const groupStyle = { ...style };

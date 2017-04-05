@@ -42,12 +42,13 @@ export default class TimeColumn extends Component {
     this.indicatorRefresh = window.setInterval(this.positionTimeIndicator, 60000);
   }
 
-  componentDidUpdate() {
-    // Don't position indicator on update for multi grid, because it can de-sync
-    // the lines across the different columns if only some columns update but others don't.
-    if (!this.props.isMultiGrid) {
-      this.positionTimeIndicator();
-    }
+  componentDidUpdate(prevProps/*, prevState */) {
+    // Don't position indicator on update for multi grid if day didn't change,
+    // because it can de-sync the lines across the different columns if only
+    // some columns update but others don't.
+    if (this.props.isMultiGrid && dates.eq(prevProps.min, this.props.min)) return;
+
+    this.positionTimeIndicator();
   }
 
   componentWillUnmount() {

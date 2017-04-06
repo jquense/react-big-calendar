@@ -14,8 +14,7 @@ try {
 
 
 export default function withDragAndDrop(Calendar, {
-  backend = html5Backend,
-  withDnDContext = true
+  backend = html5Backend
 } = {}) {
 
   class DragAndDropCalendar extends React.Component {
@@ -102,9 +101,9 @@ export default function withDragAndDrop(Calendar, {
     endAccessor: accessor
   }
 
-  if (withDnDContext) {
-    return DragDropContext(backend)(DragAndDropCalendar);
-  } else {
+  if (backend === false) {
     return DragAndDropCalendar;
+  } else {
+    return DragDropContext(backend)(DragAndDropCalendar);
   }
 }

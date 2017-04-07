@@ -126,7 +126,8 @@ class BackgroundCells extends React.Component {
 
             this._selectSlot({
               startIdx: currentCell,
-              endIdx: currentCell
+              endIdx: currentCell,
+              action: 'click',
             })
           }
         }
@@ -137,7 +138,7 @@ class BackgroundCells extends React.Component {
 
     selector
       .on('select', () => {
-        this._selectSlot(this.state)
+        this._selectSlot({ ...this.state, action: 'select' })
         this._initial = {}
         this.setState({ selecting: false })
         notify(this.props.onSelectEnd, [this.state]);
@@ -150,11 +151,13 @@ class BackgroundCells extends React.Component {
     this._selector = null;
   }
 
-  _selectSlot({ endIdx, startIdx }) {
+  _selectSlot({ endIdx, startIdx, action }) {
     if (endIdx !== -1 && startIdx !== -1)
       this.props.onSelectSlot &&
         this.props.onSelectSlot({
-          start: startIdx, end: endIdx
+          start: startIdx,
+          end: endIdx,
+          action
         })
   }
 }

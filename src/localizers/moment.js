@@ -6,7 +6,7 @@ let dateRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'L', culture) + ' — ' + local.format(end, 'L', culture)
 
 let timeRangeFormat = ({ start, end }, culture, local) =>
-  local.format(start, 'LT', culture) + ' — ' + local.format(end, 'h:mm' : 'LT', culture)
+  local.format(start, 'LT', culture) + ' — ' + local.format(end, 'LT', culture)
 
 let weekRangeFormat = ({ start, end }, culture, local)=>
   local.format(start, 'MMM DD', culture) +

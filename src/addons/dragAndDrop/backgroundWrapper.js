@@ -2,10 +2,12 @@ import React from 'react'
 import { DropTarget } from 'react-dnd'
 import cn from 'classnames';
 
+import { accessor } from '../../utils/propTypes';
+import { accessor as get } from '../../utils/accessors';
 import dates from '../../utils/dates';
 import BigCalendar from '../../index'
 
-export function getEventTimes({ start, end }, dropDate, type) {
+export function getEventTimes(start, end, dropDate, type) {
   // Calculate duration between original start and end dates
   const duration = dates.diff(start, end)
 
@@ -90,7 +92,9 @@ DraggableBackgroundWrapper.propTypes = propTypes;
 
 DraggableBackgroundWrapper.contextTypes = {
   onEventDrop: React.PropTypes.func,
-  dragDropManager: React.PropTypes.object
+  dragDropManager: React.PropTypes.object,
+  startAccessor: accessor,
+  endAccessor: accessor
 }
 
 function createWrapper(type) {
@@ -107,11 +111,13 @@ function createWrapper(type) {
     drop(_, monitor, { props, context }) {
       const event = monitor.getItem();
       const { value } = props
-      const { onEventDrop } = context
+      const { onEventDrop, startAccessor, endAccessor } = context
+      const start = get(event, startAccessor);
+      const end = get(event, endAccessor);
 
       onEventDrop({
         event,
-        ...getEventTimes(event, value, type)
+        ...getEventTimes(start, end, value, type)
       })
     }
   };

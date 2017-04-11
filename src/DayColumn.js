@@ -115,7 +115,8 @@ let DaySlot = React.createClass({
         {...props}
         className={cn(
           'rbc-day-slot',
-          !isMultiGrid && dates.isToday(max) && 'rbc-today'
+          !isMultiGrid && dates.isToday(max) && 'rbc-today',
+          dates.lt(max, dates.today(), 'day') && 'rbc-past',
         )}
         now={now}
         min={min}

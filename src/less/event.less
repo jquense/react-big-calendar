@@ -39,3 +39,21 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+.rbc-past {
+  .rbc-event {
+    &:before, &::before {
+      content: "";
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .rbc-event-content {
+      opacity: 0.7;
+    }
+  }
+}

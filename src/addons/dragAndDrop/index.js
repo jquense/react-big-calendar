@@ -101,5 +101,9 @@ export default function withDragAndDrop(Calendar, {
     endAccessor: accessor
   }
 
-  return DragDropContext(backend)(DragAndDropCalendar);
+  if (backend === false) {
+    return DragAndDropCalendar;
+  } else {
+    return DragDropContext(backend)(DragAndDropCalendar);
+  }
 }

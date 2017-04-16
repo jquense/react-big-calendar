@@ -1,46 +1,45 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import EventRowMixin from './EventRowMixin';
 
-
 let EventRow = React.createClass({
+    displayName: 'EventRow',
 
-  displayName: 'EventRow',
+    propTypes: {
+        segments: PropTypes.array
+    },
 
-  propTypes: {
-    segments: React.PropTypes.array
-  },
+    mixins: [EventRowMixin],
 
-  mixins: [EventRowMixin],
+    render(){
+        let {segments} = this.props;
 
-  render(){
-    let { segments } = this.props;
+        let lastEnd = 1;
 
-    let lastEnd = 1;
+        return (
+            <div className='rbc-row'>
+                {
+                    segments.reduce((row, {event, left, right, span}, li) => {
+                        let key = '_lvl_' + li;
+                        let gap = left - lastEnd;
 
-    return (
-      <div className='rbc-row'>
-      {
-        segments.reduce((row, { event, left, right, span }, li) => {
-          let key = '_lvl_' + li;
-          let gap = left - lastEnd;
+                        let content = this.renderEvent(event)
 
-          let content = this.renderEvent(event)
+                        if (gap)
+                            row.push(this.renderSpan(gap, key + '_gap'))
 
-          if (gap)
-            row.push(this.renderSpan(gap, key + '_gap'))
+                        row.push(
+                            this.renderSpan(span, key, content)
+                        )
 
-          row.push(
-            this.renderSpan(span, key, content)
-          )
+                        lastEnd = (right + 1);
 
-          lastEnd = (right + 1);
-
-          return row;
-        }, [])
-      }
-      </div>
-    )
-  }
+                        return row;
+                    }, [])
+                }
+            </div>
+        )
+    }
 });
 
 export default EventRow

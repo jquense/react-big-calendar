@@ -1,86 +1,87 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import message from './utils/messages';
-import { navigate } from './utils/constants';
+import {navigate} from './utils/constants';
 
 class Toolbar extends React.Component {
-  static propTypes = {
-    view: React.PropTypes.string.isRequired,
-    views: React.PropTypes.arrayOf(
-      React.PropTypes.string,
-    ).isRequired,
-    label: React.PropTypes.node.isRequired,
-    messages: React.PropTypes.object,
-    onNavigate: React.PropTypes.func.isRequired,
-    onViewChange: React.PropTypes.func.isRequired,
-  }
+    static propTypes = {
+        view: PropTypes.string.isRequired,
+        views: PropTypes.arrayOf(
+            PropTypes.string,
+        ).isRequired,
+        label: PropTypes.node.isRequired,
+        messages: PropTypes.object,
+        onNavigate: PropTypes.func.isRequired,
+        onViewChange: PropTypes.func.isRequired,
+    }
 
-  render() {
-    let { messages, label } = this.props;
+    render() {
+        let {messages, label} = this.props;
 
-    messages = message(messages)
+        messages = message(messages)
 
-    return (
-      <div className='rbc-toolbar'>
+        return (
+            <div className='rbc-toolbar'>
         <span className='rbc-btn-group'>
           <button
-            type='button'
-            onClick={this.navigate.bind(null, navigate.TODAY)}
+              type='button'
+              onClick={this.navigate.bind(null, navigate.TODAY)}
           >
             {messages.today}
           </button>
           <button
-            type='button'
-            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
+              type='button'
+              onClick={this.navigate.bind(null, navigate.PREVIOUS)}
           >
             {messages.previous}
           </button>
           <button
-            type='button'
-            onClick={this.navigate.bind(null, navigate.NEXT)}
+              type='button'
+              onClick={this.navigate.bind(null, navigate.NEXT)}
           >
             {messages.next}
           </button>
         </span>
 
-        <span className='rbc-toolbar-label'>
+                <span className='rbc-toolbar-label'>
           { label }
         </span>
 
-        <span className='rbc-btn-group'>
+                <span className='rbc-btn-group'>
         {
-          this.viewNamesGroup(messages)
+            this.viewNamesGroup(messages)
         }
         </span>
-      </div>
-    );
-  }
-
-  navigate = (action) => {
-    this.props.onNavigate(action)
-  }
-
-  view = (view) => {
-    this.props.onViewChange(view)
-  }
-
-  viewNamesGroup(messages) {
-    let viewNames = this.props.views
-    const view = this.props.view
-
-    if (viewNames.length > 1) {
-      return (
-        viewNames.map(name =>
-          <button type='button' key={name}
-            className={cn({'rbc-active': view === name})}
-            onClick={this.view.bind(null, name)}
-          >
-            {messages[name]}
-          </button>
-        )
-      )
+            </div>
+        );
     }
-  }
+
+    navigate = (action) => {
+        this.props.onNavigate(action)
+    }
+
+    view = (view) => {
+        this.props.onViewChange(view)
+    }
+
+    viewNamesGroup(messages) {
+        let viewNames = this.props.views
+        const view = this.props.view
+
+        if (viewNames.length > 1) {
+            return (
+                viewNames.map(name =>
+                    <button type='button' key={name}
+                            className={cn({'rbc-active': view === name})}
+                            onClick={this.view.bind(null, name)}
+                    >
+                        {messages[name]}
+                    </button>
+                )
+            )
+        }
+    }
 }
 
 export default Toolbar;

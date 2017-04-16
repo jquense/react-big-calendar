@@ -1,7 +1,9 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
-let Popup = React.createClass({
+
+let Popup = createReactClass({
   render(){
     return (
       <div {...this.props}>

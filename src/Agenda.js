@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import classes from 'dom-helpers/class';
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
@@ -12,7 +13,7 @@ import {accessor as get} from './utils/accessors';
 import {accessor, dateFormat, dateRangeFormat} from './utils/propTypes';
 import {inRange} from './utils/eventLevels';
 
-let Agenda = React.createClass({
+let Agenda = createReactClass({
     propTypes: {
         events: PropTypes.array,
         date: PropTypes.instanceOf(Date),

@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import transform from 'lodash/transform';
 
 import metadata from 'component-metadata!react-big-calendar/lib/Calendar';
@@ -10,7 +11,7 @@ function displayObj(obj){
 let capitalize = str => str[0].toUpperCase() + str.substr(1);
 let cleanDocletValue = str => str.trim().replace(/^\{/, '').replace(/\}$/, '');
 
-let Api = React.createClass({
+let Api = createReactClass({
   render(){
     let calData = metadata.Calendar;
 

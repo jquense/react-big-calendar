@@ -14,44 +14,7 @@ import EventEndingRow from './EventEndingRow';
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
-const propTypes = {
-    events: PropTypes.array.isRequired,
-    range: PropTypes.array.isRequired,
-
-    rtl: PropTypes.bool,
-    renderForMeasure: PropTypes.bool,
-    renderHeader: PropTypes.func,
-
-    container: PropTypes.func,
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-
-    onShowMore: PropTypes.func,
-    onSelectSlot: PropTypes.func,
-    onSelectEnd: PropTypes.func,
-    onSelectStart: PropTypes.func,
-
-    startAccessor: accessor.isRequired,
-    endAccessor: accessor.isRequired,
-
-    dateCellWrapper: elementType,
-    eventComponent: elementType,
-    eventWrapperComponent: elementType.isRequired,
-    minRows: PropTypes.number.isRequired,
-    maxRows: PropTypes.number.isRequired,
-};
-
-const defaultProps = {
-    minRows: 0,
-    maxRows: Infinity,
-}
-
-class DateContentRow extends React.Component {
-
-    constructor(...args) {
-        super(...args);
-    }
-
+const DateContentRow = class extends React.Component {
     handleSelectSlot = (slot) => {
         const {range, onSelectSlot} = this.props;
 
@@ -215,7 +178,36 @@ class DateContentRow extends React.Component {
     }
 }
 
-DateContentRow.propTypes = propTypes;
-DateContentRow.defaultProps = defaultProps;
+DateContentRow.propTypes = {
+    events: PropTypes.array.isRequired,
+    range: PropTypes.array.isRequired,
 
-export default DateContentRow
+    rtl: PropTypes.bool,
+    renderForMeasure: PropTypes.bool,
+    renderHeader: PropTypes.func,
+
+    container: PropTypes.func,
+    selected: PropTypes.object,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+    onShowMore: PropTypes.func,
+    onSelectSlot: PropTypes.func,
+    onSelectEnd: PropTypes.func,
+    onSelectStart: PropTypes.func,
+
+    startAccessor: accessor.isRequired,
+    endAccessor: accessor.isRequired,
+
+    dateCellWrapper: elementType,
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
+    minRows: PropTypes.number.isRequired,
+    maxRows: PropTypes.number.isRequired,
+};
+
+DateContentRow.defaultProps = {
+    minRows: 0,
+    maxRows: Infinity,
+};
+
+export default DateContentRow;

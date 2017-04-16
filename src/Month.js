@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import {findDOMNode} from 'react-dom';
 import cn from 'classnames';
 
@@ -23,62 +24,58 @@ import {segStyle, inRange, sortEvents} from './utils/eventLevels';
 let eventsForWeek = (evts, start, end, props) =>
     evts.filter(e => inRange(e, start, end, props));
 
-
-let propTypes = {
-    events: PropTypes.array.isRequired,
-    date: PropTypes.instanceOf(Date),
-
-    min: PropTypes.instanceOf(Date),
-    max: PropTypes.instanceOf(Date),
-
-    step: PropTypes.number,
-    now: PropTypes.instanceOf(Date),
-
-    scrollToTime: PropTypes.instanceOf(Date),
-    eventPropGetter: PropTypes.func,
-
-    culture: PropTypes.string,
-    dayFormat: dateFormat,
-
-    rtl: PropTypes.bool,
-    width: PropTypes.number,
-
-    titleAccessor: accessor.isRequired,
-    allDayAccessor: accessor.isRequired,
-    startAccessor: accessor.isRequired,
-    endAccessor: accessor.isRequired,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-
-    onNavigate: PropTypes.func,
-    onSelectSlot: PropTypes.func,
-    onSelectEvent: PropTypes.func,
-    onShowMore: PropTypes.func,
-    onDrillDown: PropTypes.func,
-    getDrilldownView: PropTypes.func.isRequired,
-
-    dateFormat,
-
-    weekdayFormat: dateFormat,
-    popup: PropTypes.bool,
-
-    messages: PropTypes.object,
-    components: PropTypes.object.isRequired,
-    popupOffset: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number
-        })
-    ]),
-};
-
-let MonthView = React.createClass({
-
+let MonthView = createReactClass({
     displayName: 'MonthView',
 
-    propTypes,
+    propTypes: {
+        events: PropTypes.array.isRequired,
+        date: PropTypes.instanceOf(Date),
+
+        min: PropTypes.instanceOf(Date),
+        max: PropTypes.instanceOf(Date),
+
+        step: PropTypes.number,
+        now: PropTypes.instanceOf(Date),
+
+        scrollToTime: PropTypes.instanceOf(Date),
+        eventPropGetter: PropTypes.func,
+
+        culture: PropTypes.string,
+        dayFormat: dateFormat,
+
+        rtl: PropTypes.bool,
+        width: PropTypes.number,
+
+        titleAccessor: accessor.isRequired,
+        allDayAccessor: accessor.isRequired,
+        startAccessor: accessor.isRequired,
+        endAccessor: accessor.isRequired,
+
+        selected: PropTypes.object,
+        selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+        onNavigate: PropTypes.func,
+        onSelectSlot: PropTypes.func,
+        onSelectEvent: PropTypes.func,
+        onShowMore: PropTypes.func,
+        onDrillDown: PropTypes.func,
+        getDrilldownView: PropTypes.func.isRequired,
+
+        dateFormat,
+
+        weekdayFormat: dateFormat,
+        popup: PropTypes.bool,
+
+        messages: PropTypes.object,
+        components: PropTypes.object.isRequired,
+        popupOffset: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.shape({
+                x: PropTypes.number,
+                y: PropTypes.number
+            })
+        ]),
+    },
 
     getInitialState(){
         return {
@@ -88,7 +85,7 @@ let MonthView = React.createClass({
     },
 
     componentWillMount() {
-        this._bgRows = []
+        this._bgRows = [];
         this._pendingSelection = []
     },
 
@@ -102,12 +99,12 @@ let MonthView = React.createClass({
         let running;
 
         if (this.state.needLimitMeasure)
-            this.measureRowLimit(this.props)
+            this.measureRowLimit(this.props);
 
         window.addEventListener('resize', this._resizeListener = () => {
             if (!running) {
                 raf(() => {
-                    running = false
+                    running = false;
                     this.setState({needLimitMeasure: true}) //eslint-disable-line
                 })
             }
@@ -128,9 +125,9 @@ let MonthView = React.createClass({
     },
 
     render() {
-        let {date, culture, weekdayFormat, className} = this.props
-            , month = dates.visibleDays(date, culture)
-            , weeks = chunk(month, 7);
+        let {date, culture, weekdayFormat, className} = this.props,
+            month = dates.visibleDays(date, culture),
+            weeks = chunk(month, 7);
 
         this._weekCount = weeks.length;
 
@@ -165,15 +162,13 @@ let MonthView = React.createClass({
 
         const {needLimitMeasure, rowLimit} = this.state;
 
-        events = eventsForWeek(events, week[0], week[week.length - 1], this.props)
-        events.sort((a, b) => sortEvents(a, b, this.props))
+        events = eventsForWeek(events, week[0], week[week.length - 1], this.props);
+        events.sort((a, b) => sortEvents(a, b, this.props));
 
         return (
             <DateContentRow
                 key={weekIdx}
-                ref={weekIdx === 0
-                    ? 'slotRow' : undefined
-                }
+                ref={weekIdx === 0 ? 'slotRow' : undefined}
                 container={this.getContainer}
                 className='rbc-month-row'
                 range={week}
@@ -189,7 +184,7 @@ let MonthView = React.createClass({
                 allDayAccessor={allDayAccessor}
                 eventPropGetter={eventPropGetter}
 
-                renderHeader={this.readerDateHeading}
+                renderHeader={this.renderDateHeading}
                 renderForMeasure={needLimitMeasure}
 
                 onShowMore={this.handleShowMore}
@@ -203,7 +198,7 @@ let MonthView = React.createClass({
         )
     },
 
-    readerDateHeading({date, className, ...props}) {
+    renderDateHeading({date, className, ...props}) {
         let {date: currentDate, getDrilldownView, dateFormat, culture} = this.props;
 
         let isOffRange = dates.month(date) !== dates.month(currentDate);
@@ -237,9 +232,9 @@ let MonthView = React.createClass({
     },
 
     _headers(row, format, culture) {
-        let first = row[0]
-        let last = row[row.length - 1]
-        let HeaderComponent = this.props.components.header || Header
+        let first = row[0];
+        let last = row[row.length - 1];
+        let HeaderComponent = this.props.components.header || Header;
 
         return dates.range(first, last, 'day').map((day, idx) =>
             <div
@@ -293,29 +288,29 @@ let MonthView = React.createClass({
 
     handleSelectSlot(range, slotInfo) {
         this._pendingSelection = this._pendingSelection
-            .concat(range)
+            .concat(range);
 
-        clearTimeout(this._selectTimer)
+        clearTimeout(this._selectTimer);
         this._selectTimer = setTimeout(() => this._selectDates(slotInfo))
     },
 
     handleHeadingClick(date, view, e){
         e.preventDefault();
-        this.clearSelection()
+        this.clearSelection();
         notify(this.props.onDrillDown, [date, view])
     },
 
     handleSelectEvent(...args){
-        this.clearSelection()
+        this.clearSelection();
         notify(this.props.onSelectEvent, args)
     },
 
     _selectDates(slotInfo) {
-        let slots = this._pendingSelection.slice()
+        let slots = this._pendingSelection.slice();
 
-        this._pendingSelection = []
+        this._pendingSelection = [];
 
-        slots.sort((a, b) => +a - +b)
+        slots.sort((a, b) => +a - +b);
 
         notify(this.props.onSelectSlot, {
             slots,
@@ -326,9 +321,9 @@ let MonthView = React.createClass({
     },
 
     handleShowMore(events, date, cell, slot) {
-        const {popup, onDrillDown, onShowMore, getDrilldownView} = this.props
+        const {popup, onDrillDown, onShowMore, getDrilldownView} = this.props;
         //cancel any pending selections so only the event click goes through.
-        this.clearSelection()
+        this.clearSelection();
 
         if (popup) {
             let position = getPosition(cell, findDOMNode(this));
@@ -345,7 +340,7 @@ let MonthView = React.createClass({
     },
 
     clearSelection(){
-        clearTimeout(this._selectTimer)
+        clearTimeout(this._selectTimer);
         this._pendingSelection = [];
     }
 
@@ -357,17 +352,17 @@ MonthView.navigate = (date, action) => {
             return dates.add(date, -1, 'month');
 
         case navigate.NEXT:
-            return dates.add(date, 1, 'month')
+            return dates.add(date, 1, 'month');
 
         default:
             return date;
     }
-}
+};
 
 MonthView.range = (date, {culture}) => {
-    let start = dates.firstVisibleDay(date, culture)
-    let end = dates.lastVisibleDay(date, culture)
+    let start = dates.firstVisibleDay(date, culture);
+    let end = dates.lastVisibleDay(date, culture);
     return {start, end}
-}
+};
 
 export default MonthView

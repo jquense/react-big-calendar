@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Api from './Api';
 import Intro from './Intro.md';
 import cn from 'classnames';
@@ -15,7 +16,7 @@ import './prism.less';
 
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
-const Example = React.createClass({
+const Example = createReactClass({
   getInitialState(){
     return {
       selected: 'basic',

@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
@@ -21,7 +22,7 @@ function EventAgenda({ event }) {
 }
 
 
-let Rendering = React.createClass({
+let Rendering = createReactClass({
   render(){
     return (
       <div {...this.props}>

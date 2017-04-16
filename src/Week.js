@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import dates from './utils/dates';
 import localizer from './localizer';
 import {navigate} from './utils/constants';
 
 import TimeGrid from './TimeGrid';
 
-let Week = React.createClass({
+let Week = createReactClass({
 
     propTypes: {
         date: PropTypes.instanceOf(Date).isRequired,

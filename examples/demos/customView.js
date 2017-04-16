@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 
 import events from '../events';
 import BigCalendar from 'react-big-calendar';
@@ -49,7 +50,7 @@ MyWeek.range = (date, { culture }) => {
 
 
 
-let CustomView = React.createClass({
+let CustomView = createReactClass({
   render(){
     return (
       <div>

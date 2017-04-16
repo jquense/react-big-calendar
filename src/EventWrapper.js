@@ -1,6 +1,6 @@
-import React from 'react';
+import createReactClass from 'create-react-class';
 
-let EventWrapper = React.createClass({
+let EventWrapper = createReactClass({
   render() {
     return this.props.children;
   }

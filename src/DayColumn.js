@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import {findDOMNode} from 'react-dom';
 import cn from 'classnames';
 
@@ -25,7 +26,7 @@ function startsAfter(date, max) {
     return dates.gt(dates.merge(max, date), max, 'minutes')
 }
 
-let DaySlot = React.createClass({
+let DaySlot = createReactClass({
     propTypes: {
         events: PropTypes.array.isRequired,
         step: PropTypes.number.isRequired,

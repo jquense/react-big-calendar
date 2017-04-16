@@ -1,8 +1,9 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
-let Basic = React.createClass({
+let Basic = createReactClass({
   render(){
     return (
       <BigCalendar

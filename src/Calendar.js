@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import uncontrollable from 'uncontrollable';
 import cn from 'classnames';
 import {
@@ -53,8 +54,7 @@ let now = new Date();
  * on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a
  * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
  */
-let Calendar = React.createClass({
-
+let Calendar = createReactClass({
     propTypes: {
 
         /**
@@ -490,15 +490,16 @@ let Calendar = React.createClass({
 
     render() {
         let {
-            view, toolbar, events
-            , culture
-            , components = {}
-            , formats = {}
-            , style
-            , className
-            , elementProps
-            , date: current
-            , ...props
+            view, toolbar, events,
+            culture,
+            components = {},
+            formats = {},
+            style,
+            className,
+            elementProps,
+            date: current,
+            rtl,
+            ...props
         } = this.props;
 
         formats = defaultFormats(formats)
@@ -522,7 +523,7 @@ let Calendar = React.createClass({
             <div
                 {...elementProps}
                 className={cn('rbc-calendar', className, {
-                    'rbc-rtl': props.rtl
+                    'rbc-rtl': rtl
                 })}
                 style={style}
             >

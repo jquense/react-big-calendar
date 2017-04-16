@@ -1,8 +1,9 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
-let Selectable = React.createClass({
+let Selectable = createReactClass({
   render(){
     return (
       <div {...this.props}>

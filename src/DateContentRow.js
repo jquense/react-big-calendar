@@ -14,7 +14,7 @@ import EventEndingRow from './EventEndingRow';
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
-const DateContentRow = class extends React.Component {
+class DateContentRow extends React.Component {
     handleSelectSlot = (slot) => {
         const {range, onSelectSlot} = this.props;
 
@@ -22,38 +22,38 @@ const DateContentRow = class extends React.Component {
             range.slice(slot.start, slot.end + 1),
             slot,
         )
-    }
+    };
 
     handleShowMore = (slot) => {
         const {range, onShowMore} = this.props;
-        let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
+        let row = qsa(findDOMNode(this), '.rbc-row-bg')[0];
 
         let cell;
-        if (row) cell = row.children[slot - 1]
+        if (row) cell = row.children[slot - 1];
 
         let events = this.segments
             .filter(seg => isSegmentInSlot(seg, slot))
-            .map(seg => seg.event)
+            .map(seg => seg.event);
 
         onShowMore(events, range[slot - 1], cell, slot)
-    }
+    };
 
     createHeadingRef = r => {
         this.headingRow = r;
-    }
+    };
 
     createEventRef = r => {
         this.eventRow = r;
-    }
+    };
 
     getContainer = () => {
         const {container} = this.props;
         return container ? container() : findDOMNode(this)
-    }
+    };
 
     getRowLimit() {
         let eventHeight = getHeight(this.eventRow);
-        let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
+        let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0;
         let eventSpace = getHeight(findDOMNode(this)) - headingHeight;
 
         return Math.max(Math.floor(eventSpace / eventHeight), 1)
@@ -71,7 +71,7 @@ const DateContentRow = class extends React.Component {
                 dates.eq(date, new Date(), 'day') && 'rbc-now', // FIXME use props.now
             )
         })
-    }
+    };
 
     renderDummy = () => {
         let {className, range, renderHeader} = this.props;
@@ -93,7 +93,7 @@ const DateContentRow = class extends React.Component {
                 </div>
             </div>
         )
-    }
+    };
 
     render() {
         const {
@@ -123,10 +123,10 @@ const DateContentRow = class extends React.Component {
         let segments = this.segments = events.map(evt => eventSegments(evt, first, last, {
             startAccessor,
             endAccessor
-        }))
+        }));
 
         let {levels, extra} = eventLevels(segments, Math.max(maxRows - 1, 1));
-        while (levels.length < minRows) levels.push([])
+        while (levels.length < minRows) levels.push([]);
 
         return (
             <div className={className}>

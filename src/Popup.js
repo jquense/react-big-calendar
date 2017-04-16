@@ -9,32 +9,24 @@ import {isSelected} from './utils/selection';
 import localizer from './localizer';
 import {elementType, dateFormat} from './utils/propTypes';
 
-const propTypes = {
-    position: PropTypes.object,
-    popupOffset: PropTypes.number,
-    events: PropTypes.array,
-    selected: PropTypes.object,
-    eventComponent: elementType,
-    eventWrapperComponent: elementType,
-    dayHeaderFormat: dateFormat
-}
 class Popup extends React.Component {
-
     componentDidMount() {
-        let {popupOffset = 5} = this.props
-            , {top, left, width, height} = getOffset(this.refs.root)
-            , viewBottom = window.innerHeight + getScrollTop(window)
-            , viewRight = window.innerWidth + getScrollLeft(window)
-            , bottom = top + height
-            , right = left + width
+        let {popupOffset = 5} = this.props,
+            {top, left, width, height} = getOffset(this.refs.root),
+            viewBottom = window.innerHeight + getScrollTop(window),
+            viewRight = window.innerWidth + getScrollLeft(window),
+            bottom = top + height,
+            right = left + width;
 
         if (bottom > viewBottom || right > viewRight) {
             let topOffset, leftOffset;
 
-            if (bottom > viewBottom)
-                topOffset = bottom - viewBottom + (popupOffset.y || +popupOffset || 0)
-            if (right > viewRight)
-                leftOffset = right - viewRight + (popupOffset.x || +popupOffset || 0)
+            if (bottom > viewBottom) {
+                topOffset = bottom - viewBottom + (popupOffset.y || +popupOffset || 0);
+            }
+            if (right > viewRight) {
+                leftOffset = right - viewRight + (popupOffset.x || +popupOffset || 0);
+            }
 
             this.setState({topOffset, leftOffset}) //eslint-disable-line
         }
@@ -43,15 +35,15 @@ class Popup extends React.Component {
     render() {
         let {events, selected, eventComponent, eventWrapperComponent, ...props} = this.props;
 
-        let {left, width, top} = this.props.position
-            , topOffset = (this.state || {}).topOffset || 0
-            , leftOffset = (this.state || {}).leftOffset || 0;
+        let {left, width, top} = this.props.position,
+            topOffset = (this.state || {}).topOffset || 0,
+            leftOffset = (this.state || {}).leftOffset || 0;
 
         let style = {
             top: top - topOffset,
             left: left - leftOffset,
-            minWidth: width + (width / 2)
-        }
+            minWidth: width + (width / 2),
+        };
 
         return (
             <div ref='root' style={style} className='rbc-overlay'>
@@ -60,13 +52,12 @@ class Popup extends React.Component {
                 </div>
                 {
                     events.map((event, idx) =>
-                        <EventCell key={idx}
-                                   {...props}
+                        <EventCell {...props}
                                    event={event}
                                    eventComponent={eventComponent}
                                    eventWrapperComponent={eventWrapperComponent}
-                                   selected={isSelected(event, selected)}
-                        />
+                                   key={idx}
+                                   selected={isSelected(event, selected)}/>
                     )
                 }
             </div>
@@ -74,6 +65,14 @@ class Popup extends React.Component {
     }
 }
 
-Popup.propTypes = propTypes;
+Popup.propTypes = {
+    position: PropTypes.object,
+    popupOffset: PropTypes.number,
+    events: PropTypes.array,
+    selected: PropTypes.object,
+    eventComponent: elementType,
+    eventWrapperComponent: elementType,
+    dayHeaderFormat: dateFormat
+};
 
 export default Popup;

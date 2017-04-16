@@ -10,25 +10,17 @@ import BigCalendar from '../../index'
 
 export function getEventTimes(start, end, dropDate, type) {
     // Calculate duration between original start and end dates
-    const duration = dates.diff(start, end)
+    const duration = dates.diff(start, end);
 
     // If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
     // the original start date and add it to newDate.value
-    const nextStart = type === 'dateCellWrapper'
-        ? dates.merge(dropDate, start) : dropDate
-
-    const nextEnd = dates.add(nextStart, duration, 'milliseconds')
+    const nextStart = type === 'dateCellWrapper' ? dates.merge(dropDate, start) : dropDate;
+    const nextEnd = dates.add(nextStart, duration, 'milliseconds');
 
     return {
         start: nextStart,
         end: nextEnd
     }
-}
-
-const propTypes = {
-    connectDropTarget: PropTypes.func.isRequired,
-    type: PropTypes.string,
-    isOver: PropTypes.bool,
 }
 
 class DraggableBackgroundWrapper extends React.Component {
@@ -76,11 +68,10 @@ class DraggableBackgroundWrapper extends React.Component {
         const {connectDropTarget, children, type, isOver} = this.props;
         const BackgroundWrapper = BigCalendar.components[type];
 
-        let resultingChildren = children
-        if (isOver)
-            resultingChildren = React.cloneElement(children, {
-                className: cn(children.props.className, 'rbc-addons-dnd-over')
-            })
+        let resultingChildren = children;
+        if (isOver) {
+            resultingChildren = React.cloneElement(children, {className: cn(children.props.className, 'rbc-addons-dnd-over')});
+        }
 
         return (
             <BackgroundWrapper>
@@ -89,14 +80,19 @@ class DraggableBackgroundWrapper extends React.Component {
         );
     }
 }
-DraggableBackgroundWrapper.propTypes = propTypes;
+
+DraggableBackgroundWrapper.propTypes = {
+    connectDropTarget: PropTypes.func.isRequired,
+    type: PropTypes.string,
+    isOver: PropTypes.bool,
+};
 
 DraggableBackgroundWrapper.contextTypes = {
     onEventDrop: PropTypes.func,
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor
-}
+};
 
 function createWrapper(type) {
     function collectTarget(connect, monitor) {

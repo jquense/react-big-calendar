@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import createReactClass from 'create-react-class';
 import {findDOMNode} from 'react-dom';
 import cn from 'classnames';
 
@@ -26,79 +25,40 @@ function startsAfter(date, max) {
     return dates.gt(dates.merge(max, date), max, 'minutes')
 }
 
-let DaySlot = createReactClass({
-    propTypes: {
-        events: PropTypes.array.isRequired,
-        step: PropTypes.number.isRequired,
-        min: PropTypes.instanceOf(Date).isRequired,
-        max: PropTypes.instanceOf(Date).isRequired,
-        now: PropTypes.instanceOf(Date),
+class DaySlot extends React.Component {
+    constructor() {
+        super();
 
-        rtl: PropTypes.bool,
-        titleAccessor: accessor,
-        allDayAccessor: accessor.isRequired,
-        startAccessor: accessor.isRequired,
-        endAccessor: accessor.isRequired,
-
-        selectRangeFormat: dateFormat,
-        eventTimeRangeFormat: dateFormat,
-        culture: PropTypes.string,
-
-        selected: PropTypes.object,
-        selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-        eventOffset: PropTypes.number,
-
-        onSelecting: PropTypes.func,
-        onSelectSlot: PropTypes.func.isRequired,
-        onSelectEvent: PropTypes.func.isRequired,
-
-        className: PropTypes.string,
-        dragThroughEvents: PropTypes.bool,
-        eventPropGetter: PropTypes.func,
-        dayWrapperComponent: elementType,
-        eventComponent: elementType,
-        eventWrapperComponent: elementType.isRequired,
-    },
-
-    getDefaultProps() {
-        return {dragThroughEvents: true}
-    },
-
-    getInitialState() {
-        return {selecting: false};
-    },
+        this.state = {
+            selecting: false
+        };
+    }
 
     componentDidMount() {
-        this.props.selectable
-        && this._selectable()
-    },
+        this.props.selectable && this._selectable();
+    }
 
     componentWillUnmount() {
         this._teardownSelectable();
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectable && !this.props.selectable)
+        if (nextProps.selectable && !this.props.selectable) {
             this._selectable();
-        if (!nextProps.selectable && this.props.selectable)
+        }
+
+        if (!nextProps.selectable && this.props.selectable) {
             this._teardownSelectable();
-    },
+        }
+    }
 
     render() {
-        const {
-            min,
-            max,
-            step,
-            now,
-            selectRangeFormat,
-            culture,
-            ...props
-        } = this.props
+        const {min, max, step, now, selectRangeFormat, culture, ...props} = this.props;
 
-        this._totalMin = dates.diff(min, max, 'minutes')
+        this._totalMin = dates.diff(min, max, 'minutes');
 
-        let {selecting, startSlot, endSlot} = this.state
-        let style = this._slotStyle(startSlot, endSlot)
+        let {selecting, startSlot, endSlot} = this.state;
+        let style = this._slotStyle(startSlot, endSlot);
 
         let selectDates = {
             start: this.state.startDate,
@@ -106,29 +66,20 @@ let DaySlot = createReactClass({
         };
 
         return (
-            <TimeColumn
-                {...props}
-                className={cn(
-                    'rbc-day-slot',
-                    dates.isToday(max) && 'rbc-today'
-                )}
-                now={now}
-                min={min}
-                max={max}
-                step={step}
-            >
+            <TimeColumn {...props}
+                        className={cn('rbc-day-slot', dates.isToday(max) && 'rbc-today')}
+                        now={now}
+                        min={min}
+                        max={max}
+                        step={step}>
                 {this.renderEvents()}
 
-                {selecting &&
-                <div className='rbc-slot-selection' style={style}>
-              <span>
-              { localizer.format(selectDates, selectRangeFormat, culture) }
-              </span>
-                </div>
-                }
+                {selecting && <div className='rbc-slot-selection' style={style}>
+                    <span>{ localizer.format(selectDates, selectRangeFormat, culture) }</span>
+                </div>}
             </TimeColumn>
         );
-    },
+    }
 
     renderEvents() {
         let {
@@ -144,27 +95,27 @@ let DaySlot = createReactClass({
             , startAccessor, endAccessor, titleAccessor
         } = this.props;
 
-        let EventComponent = eventComponent
+        let EventComponent = eventComponent;
 
         let styledEvents = getStyledEvents({
             events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
-        })
+        });
 
         return styledEvents.map(({event, style}, idx) => {
-            let start = get(event, startAccessor)
-            let end = get(event, endAccessor)
+            let start = get(event, startAccessor);
+            let end = get(event, endAccessor);
 
-            let continuesPrior = startsBefore(start, min)
-            let continuesAfter = startsAfter(end, max)
+            let continuesPrior = startsBefore(start, min);
+            let continuesAfter = startsAfter(end, max);
 
-            let title = get(event, titleAccessor)
-            let label = localizer.format({start, end}, eventTimeRangeFormat, culture)
-            let _isSelected = isSelected(event, selected)
+            let title = get(event, titleAccessor);
+            let label = localizer.format({start, end}, eventTimeRangeFormat, culture);
+            let _isSelected = isSelected(event, selected);
 
             if (eventPropGetter)
-                var {style: xStyle, className} = eventPropGetter(event, start, end, _isSelected)
+                var {style: xStyle, className} = eventPropGetter(event, start, end, _isSelected);
 
-            let {height, top, width, xOffset} = style
+            let {height, top, width, xOffset} = style;
 
             return (
                 <EventWrapper event={event} key={'evt_' + idx}>
@@ -195,7 +146,7 @@ let DaySlot = createReactClass({
                 </EventWrapper>
             )
         })
-    },
+    }
 
     _slotStyle(startSlot, endSlot) {
         let top = ((startSlot / this._totalMin) * 100);
@@ -205,14 +156,14 @@ let DaySlot = createReactClass({
             top: top + '%',
             height: bottom - top + '%'
         }
-    },
+    }
 
-    _selectable(){
+    _selectable() {
         let node = findDOMNode(this);
-        let selector = this._selector = new Selection(() => findDOMNode(this))
+        let selector = this._selector = new Selection(() => findDOMNode(this));
 
         let maybeSelect = (box) => {
-            let onSelecting = this.props.onSelecting
+            let onSelecting = this.props.onSelecting;
             let current = this.state || {};
             let state = selectionState(box);
             let {startDate: start, endDate: end} = state;
@@ -227,30 +178,30 @@ let DaySlot = createReactClass({
             }
 
             this.setState(state)
-        }
+        };
 
         let selectionState = ({y}) => {
             let {step, min, max} = this.props;
-            let {top, bottom} = getBoundsForNode(node)
+            let {top, bottom} = getBoundsForNode(node);
 
             let mins = this._totalMin;
 
-            let range = Math.abs(top - bottom)
+            let range = Math.abs(top - bottom);
 
             let current = (y - top) / range;
 
-            current = snapToSlot(minToDate(mins * current, min), step)
+            current = snapToSlot(minToDate(mins * current, min), step);
 
             if (!this.state.selecting)
-                this._initialDateSlot = current
+                this._initialDateSlot = current;
 
             let initial = this._initialDateSlot;
 
             if (dates.eq(initial, current, 'minutes'))
-                current = dates.add(current, step, 'minutes')
+                current = dates.add(current, step, 'minutes');
 
-            let start = dates.max(min, dates.min(initial, current))
-            let end = dates.min(max, dates.max(initial, current))
+            let start = dates.max(min, dates.min(initial, current));
+            let end = dates.min(max, dates.max(initial, current));
 
             return {
                 selecting: true,
@@ -259,46 +210,47 @@ let DaySlot = createReactClass({
                 startSlot: positionFromDate(start, min, this._totalMin),
                 endSlot: positionFromDate(end, min, this._totalMin)
             }
-        }
+        };
 
-        selector.on('selecting', maybeSelect)
-        selector.on('selectStart', maybeSelect)
+        selector.on('selecting', maybeSelect);
+        selector.on('selectStart', maybeSelect);
 
         selector.on('mousedown', (box) => {
-            if (this.props.selectable !== 'ignoreEvents') return
+            if (this.props.selectable !== 'ignoreEvents') return;
 
             return !isEvent(findDOMNode(this), box)
-        })
+        });
 
         selector
             .on('click', (box) => {
                 if (!isEvent(findDOMNode(this), box))
-                    this._selectSlot({...selectionState(box), action: 'click'})
+                    this._selectSlot({...selectionState(box), action: 'click'});
 
                 this.setState({selecting: false})
-            })
+            });
 
         selector
             .on('select', () => {
                 if (this.state.selecting) {
-                    this._selectSlot({...this.state, action: 'select'})
+                    this._selectSlot({...this.state, action: 'select'});
                     this.setState({selecting: false})
                 }
             })
-    },
+    }
 
     _teardownSelectable() {
-        if (!this._selector) return
-        this._selector.teardown();
-        this._selector = null;
-    },
+        if (this._selector) {
+            this._selector.teardown();
+            this._selector = null;
+        }
+    }
 
     _selectSlot({startDate, endDate, action}) {
-        let current = startDate
-            , slots = [];
+        let current = startDate,
+            slots = [];
 
         while (dates.lte(current, endDate)) {
-            slots.push(current)
+            slots.push(current);
             current = dates.add(current, this.props.step, 'minutes')
         }
 
@@ -308,21 +260,58 @@ let DaySlot = createReactClass({
             end: endDate,
             action
         })
-    },
+    }
 
     _select(...args) {
-        notify(this.props.onSelectEvent, args)
+        notify(this.props.onSelectEvent, args);
     }
-});
+}
+
+DaySlot.propTypes = {
+    events: PropTypes.array.isRequired,
+    step: PropTypes.number.isRequired,
+    min: PropTypes.instanceOf(Date).isRequired,
+    max: PropTypes.instanceOf(Date).isRequired,
+    now: PropTypes.instanceOf(Date),
+
+    rtl: PropTypes.bool,
+    titleAccessor: accessor,
+    allDayAccessor: accessor.isRequired,
+    startAccessor: accessor.isRequired,
+    endAccessor: accessor.isRequired,
+
+    selectRangeFormat: dateFormat,
+    eventTimeRangeFormat: dateFormat,
+    culture: PropTypes.string,
+
+    selected: PropTypes.object,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+    eventOffset: PropTypes.number,
+
+    onSelecting: PropTypes.func,
+    onSelectSlot: PropTypes.func.isRequired,
+    onSelectEvent: PropTypes.func.isRequired,
+
+    className: PropTypes.string,
+    dragThroughEvents: PropTypes.bool,
+    eventPropGetter: PropTypes.func,
+    dayWrapperComponent: elementType,
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
+};
+
+DaySlot.defaultProps = {
+    dragThroughEvents: true,
+};
 
 
 function minToDate(min, date) {
-    var dt = new Date(date)
-        , totalMins = dates.diff(dates.startOf(date, 'day'), date, 'minutes');
+    var dt = new Date(date),
+        totalMins = dates.diff(dates.startOf(date, 'day'), date, 'minutes');
 
     dt = dates.hours(dt, 0);
     dt = dates.minutes(dt, totalMins + min);
-    dt = dates.seconds(dt, 0)
+    dt = dates.seconds(dt, 0);
     return dates.milliseconds(dt, 0)
 }
 

@@ -1,9 +1,9 @@
-import createReactClass from 'create-react-class';
+import React from 'react';
 
-let EventWrapper = createReactClass({
-  render() {
-    return this.props.children;
-  }
-});
+class EventWrapper extends React.Component {
+    render() {
+        return this.props.children;
+    }
+}
 
 export default EventWrapper;

@@ -1,42 +1,35 @@
-import React, { PropTypes, Component } from 'react'
-import cn from 'classnames'
-import { elementType } from './utils/propTypes'
+import React from 'react';
+import PropTypes from 'prop-types';
+import cn from 'classnames';
+import {elementType} from './utils/propTypes';
 
+class TimeSlot extends React.Component {
+    render() {
+        const {content, dayWrapperComponent: Wrapper, isNow, value, showLabel} = this.props;
 
-export default class TimeSlot extends Component {
-  static propTypes = {
+        return (
+            <Wrapper value={value}>
+                <div className={cn('rbc-time-slot', showLabel && 'rbc-label', isNow && 'rbc-now')}>
+                    {showLabel && <span>{content}</span>}
+                </div>
+            </Wrapper>
+        )
+    }
+}
+
+TimeSlot.propTypes = {
     dayWrapperComponent: elementType,
     value: PropTypes.instanceOf(Date).isRequired,
     isNow: PropTypes.bool,
     showLabel: PropTypes.bool,
     content: PropTypes.string,
-    culture: PropTypes.string
-  }
+    culture: PropTypes.string,
+};
 
-  static defaultProps = {
+TimeSlot.defaultProps = {
     isNow: false,
     showLabel: false,
-    content: ''
-  }
+    content: '',
+};
 
-  render() {
-    const { value } = this.props;
-    const Wrapper = this.props.dayWrapperComponent;
-
-    return (
-      <Wrapper value={value}>
-        <div
-          className={cn(
-            'rbc-time-slot',
-            this.props.showLabel && 'rbc-label',
-            this.props.isNow && 'rbc-now',
-          )}
-        >
-        {this.props.showLabel &&
-          <span>{this.props.content}</span>
-        }
-        </div>
-      </Wrapper>
-    )
-  }
-}
+export default TimeSlot;

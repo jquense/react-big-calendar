@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import {findDOMNode} from 'react-dom';
@@ -22,62 +22,13 @@ import {accessor as get} from './utils/accessors';
 
 import {inRange, sortEvents, segStyle} from './utils/eventLevels';
 
-export default class TimeGrid extends Component {
-    static propTypes = {
-        events: PropTypes.array.isRequired,
+class TimeGrid extends React.Component {
+    constructor() {
+        super();
 
-        step: PropTypes.number,
-        start: PropTypes.instanceOf(Date),
-        end: PropTypes.instanceOf(Date),
-        min: PropTypes.instanceOf(Date),
-        max: PropTypes.instanceOf(Date),
-        now: PropTypes.instanceOf(Date),
-
-        scrollToTime: PropTypes.instanceOf(Date),
-        eventPropGetter: PropTypes.func,
-        dayFormat: dateFormat,
-        culture: PropTypes.string,
-
-        rtl: PropTypes.bool,
-        width: PropTypes.number,
-
-        titleAccessor: accessor.isRequired,
-        allDayAccessor: accessor.isRequired,
-        startAccessor: accessor.isRequired,
-        endAccessor: accessor.isRequired,
-
-        selected: PropTypes.object,
-        selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-
-        onNavigate: PropTypes.func,
-        onSelectSlot: PropTypes.func,
-        onSelectEnd: PropTypes.func,
-        onSelectStart: PropTypes.func,
-        onSelectEvent: PropTypes.func,
-        onDrillDown: PropTypes.func,
-        getDrilldownView: PropTypes.func.isRequired,
-
-        messages: PropTypes.object,
-        components: PropTypes.object.isRequired,
-    }
-
-    static defaultProps = {
-        step: 30,
-        min: dates.startOf(new Date(), 'day'),
-        max: dates.endOf(new Date(), 'day'),
-        scrollToTime: dates.startOf(new Date(), 'day'),
-        /* these 2 are needed to satisfy requirements from TimeColumn required props
-         * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
-         */
-        type: 'gutter',
-        now: new Date()
-    }
-
-    constructor(props) {
-        super(props)
         this.state = {gutterWidth: undefined, isOverflowing: null};
-        this.handleSelectEvent = this.handleSelectEvent.bind(this)
-        this.handleHeaderClick = this.handleHeaderClick.bind(this)
+        this.handleSelectEvent = this.handleSelectEvent.bind(this);
+        this.handleHeaderClick = this.handleHeaderClick.bind(this);
     }
 
     componentWillMount() {
@@ -130,66 +81,56 @@ export default class TimeGrid extends Component {
             end: slots[slots.length - 1],
             action: slotInfo.action
         })
-    }
+    };
 
     render() {
-        let {
-            events
-            , start
-            , end
-            , width
-            , startAccessor
-            , endAccessor
-            , allDayAccessor
-        } = this.props;
+        let {events, start, end, width, startAccessor, endAccessor, allDayAccessor} = this.props;
 
         width = width || this.state.gutterWidth;
 
-        let range = dates.range(start, end, 'day')
+        let range = dates.range(start, end, 'day');
 
         this.slots = range.length;
 
-        let allDayEvents = []
-            , rangeEvents = [];
+        let allDayEvents = [],
+            rangeEvents = [];
 
         events.forEach(event => {
             if (inRange(event, start, end, this.props)) {
-                let eStart = get(event, startAccessor)
-                    , eEnd = get(event, endAccessor);
+                let eStart = get(event, startAccessor),
+                    eEnd = get(event, endAccessor);
 
                 if (
                     get(event, allDayAccessor)
                     || !dates.eq(eStart, eEnd, 'day')
                     || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))) {
-                    allDayEvents.push(event)
+                    allDayEvents.push(event);
                 }
-                else
-                    rangeEvents.push(event)
-            }
-        })
+                else {
+                    rangeEvents.push(event);
+                }
 
-        allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
+            }
+        });
+
+        allDayEvents.sort((a, b) => sortEvents(a, b, this.props));
 
         let gutterRef = ref => this._gutters[1] = ref && findDOMNode(ref);
 
         return (
             <div className='rbc-time-view'>
-
                 {this.renderHeader(range, allDayEvents, width)}
 
                 <div ref='content' className='rbc-time-content'>
                     <div ref='timeIndicator' className='rbc-current-time-indicator'/>
 
-                    <TimeColumn
-                        {...this.props}
-                        showLabels
-                        style={{width}}
-                        ref={gutterRef}
-                        className='rbc-time-gutter'
-                    />
+                    <TimeColumn {...this.props}
+                                className='rbc-time-gutter'
+                                ref={gutterRef}
+                                showLabels
+                                style={{width}}/>
 
                     {this.renderEvents(range, rangeEvents, this.props.now)}
-
                 </div>
             </div>
         );
@@ -203,7 +144,7 @@ export default class TimeGrid extends Component {
                 event => dates.inRange(date,
                     get(event, startAccessor),
                     get(event, endAccessor), 'day')
-            )
+            );
 
             return (
                 <DayColumn
@@ -281,7 +222,7 @@ export default class TimeGrid extends Component {
 
     renderHeaderCells(range) {
         let {dayFormat, culture, components, getDrilldownView} = this.props;
-        let HeaderComponent = components.header || Header
+        let HeaderComponent = components.header || Header;
 
         return range.map((date, i) => {
             let drilldownView = getDrilldownView(date);
@@ -295,7 +236,7 @@ export default class TimeGrid extends Component {
                     format={dayFormat}
                     culture={culture}
                 />
-            )
+            );
 
             return (
                 <div
@@ -324,7 +265,7 @@ export default class TimeGrid extends Component {
     }
 
     handleHeaderClick(date, view, e) {
-        e.preventDefault()
+        e.preventDefault();
         notify(this.props.onDrillDown, [date, view])
     }
 
@@ -334,12 +275,12 @@ export default class TimeGrid extends Component {
 
     handleSelectAlldayEvent(...args) {
         //cancel any pending selections so only the event click goes through.
-        this.clearSelection()
+        this.clearSelection();
         notify(this.props.onSelectEvent, args)
     }
 
     clearSelection() {
-        clearTimeout(this._selectTimer)
+        clearTimeout(this._selectTimer);
         this._pendingSelection = [];
     }
 
@@ -388,7 +329,7 @@ export default class TimeGrid extends Component {
     }
 
     positionTimeIndicator() {
-        const {rtl, min, max} = this.props
+        const {rtl, min, max} = this.props;
         const now = new Date();
 
         const secondsGrid = dates.diff(max, min, 'seconds');
@@ -420,3 +361,55 @@ export default class TimeGrid extends Component {
         }, 60000)
     }
 }
+
+TimeGrid.propTypes = {
+    events: PropTypes.array.isRequired,
+
+    step: PropTypes.number,
+    start: PropTypes.instanceOf(Date),
+    end: PropTypes.instanceOf(Date),
+    min: PropTypes.instanceOf(Date),
+    max: PropTypes.instanceOf(Date),
+    now: PropTypes.instanceOf(Date),
+
+    scrollToTime: PropTypes.instanceOf(Date),
+    eventPropGetter: PropTypes.func,
+    dayFormat: dateFormat,
+    culture: PropTypes.string,
+
+    rtl: PropTypes.bool,
+    width: PropTypes.number,
+
+    titleAccessor: accessor.isRequired,
+    allDayAccessor: accessor.isRequired,
+    startAccessor: accessor.isRequired,
+    endAccessor: accessor.isRequired,
+
+    selected: PropTypes.object,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+    onNavigate: PropTypes.func,
+    onSelectSlot: PropTypes.func,
+    onSelectEnd: PropTypes.func,
+    onSelectStart: PropTypes.func,
+    onSelectEvent: PropTypes.func,
+    onDrillDown: PropTypes.func,
+    getDrilldownView: PropTypes.func.isRequired,
+
+    messages: PropTypes.object,
+    components: PropTypes.object.isRequired,
+};
+
+TimeGrid.defaultProps = {
+    step: 30,
+    min: dates.startOf(new Date(), 'day'),
+    max: dates.endOf(new Date(), 'day'),
+    scrollToTime: dates.startOf(new Date(), 'day'),
+    /* these 2 are needed to satisfy requirements from TimeColumn required props
+     * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
+     */
+    type: 'gutter',
+    now: new Date()
+};
+
+export default TimeGrid;

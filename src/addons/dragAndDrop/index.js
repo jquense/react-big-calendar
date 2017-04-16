@@ -17,11 +17,6 @@ try {
 
 export default function withDragAndDrop(Calendar, {backend = html5Backend} = {}) {
     class DragAndDropCalendar extends React.Component {
-        static propTypes = {
-            selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
-            components: PropTypes.object,
-        }
-
         getChildContext() {
             return {
                 onEventDrop: this.props.onEventDrop,
@@ -36,14 +31,13 @@ export default function withDragAndDrop(Calendar, {backend = html5Backend} = {})
         }
 
         componentWillMount() {
-            let monitor = this.context.dragDropManager.getMonitor()
-            this.monitor = monitor
-            this.unsubscribeToStateChange = monitor
-                .subscribeToStateChange(this.handleStateChange)
+            let monitor = this.context.dragDropManager.getMonitor();
+            this.monitor = monitor;
+            this.unsubscribeToStateChange = monitor.subscribeToStateChange(this.handleStateChange);
         }
 
         componentWillUnmount() {
-            this.monitor = null
+            this.monitor = null;
             this.unsubscribeToStateChange()
         }
 
@@ -60,46 +54,47 @@ export default function withDragAndDrop(Calendar, {backend = html5Backend} = {})
 
             delete props.onEventDrop;
 
-            props.selectable = selectable
-                ? 'ignoreEvents' : false;
+            props.selectable = selectable ? 'ignoreEvents' : false;
 
             props.className = cn(
                 props.className,
                 'rbc-addons-dnd',
                 this.state.isDragging && 'rbc-addons-dnd-is-dragging'
-            )
+            );
 
             props.components = {
                 ...components,
                 eventWrapper: DraggableEventWrapper,
                 dateCellWrapper: DateCellWrapper,
-                dayWrapper: DayWrapper
-            }
+                dayWrapper: DayWrapper,
+            };
 
             return <Calendar {...props} />
         }
     }
 
     DragAndDropCalendar.propTypes = {
+        components: PropTypes.object,
+        endAccessor: accessor,
         onEventDrop: PropTypes.func.isRequired,
+        selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
         startAccessor: accessor,
-        endAccessor: accessor
-    }
+    };
 
     DragAndDropCalendar.defaultProps = {
+        endAccessor: 'end',
         startAccessor: 'start',
-        endAccessor: 'end'
     };
 
     DragAndDropCalendar.contextTypes = {
-        dragDropManager: PropTypes.object
-    }
+        dragDropManager: PropTypes.object,
+    };
 
     DragAndDropCalendar.childContextTypes = {
+        endAccessor: accessor,
         onEventDrop: PropTypes.func,
         startAccessor: accessor,
-        endAccessor: accessor
-    }
+    };
 
     if (backend === false) {
         return DragAndDropCalendar;

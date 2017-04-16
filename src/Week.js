@@ -1,53 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import createReactClass from 'create-react-class';
 import dates from './utils/dates';
 import localizer from './localizer';
-import {navigate} from './utils/constants';
+import {navigate as navigateOptions} from './utils/constants';
 
 import TimeGrid from './TimeGrid';
 
-let Week = createReactClass({
+class Week extends React.Component {
+    navigate = (date, action) => {
+        switch (action) {
+            case navigateOptions.PREVIOUS:
+                return dates.add(date, -1, 'week');
+            case navigateOptions.NEXT:
+                return dates.add(date, 1, 'week');
+            default:
+                return date;
+        }
+    };
 
-    propTypes: {
-        date: PropTypes.instanceOf(Date).isRequired,
-    },
+    range = (date, {culture}) => {
+        let firstOfWeek = localizer.startOfWeek(culture);
+        let start = dates.startOf(date, 'week', firstOfWeek);
+        let end = dates.endOf(date, 'week', firstOfWeek);
 
-    getDefaultProps() {
-        return TimeGrid.defaultProps
-    },
+        return {
+            start,
+            end,
+        };
+    };
 
     render() {
-        let {date, ...props} = this.props
-        let {start, end} = Week.range(date, this.props)
+        let {date, ...props} = this.props;
+        let {start, end} = this.range(date, this.props);
 
-        return (
-            <TimeGrid {...props} start={start} end={end} eventOffset={15}/>
-        );
-    }
-
-});
-
-Week.navigate = (date, action) => {
-    switch (action) {
-        case navigate.PREVIOUS:
-            return dates.add(date, -1, 'week');
-
-        case navigate.NEXT:
-            return dates.add(date, 1, 'week')
-
-        default:
-            return date;
+        return <TimeGrid {...props} start={start} end={end} eventOffset={15}/>;
     }
 }
-
-Week.range = (date, {culture}) => {
-    let firstOfWeek = localizer.startOfWeek(culture)
-    let start = dates.startOf(date, 'week', firstOfWeek)
-    let end = dates.endOf(date, 'week', firstOfWeek)
-
-    return {start, end}
-}
-
+Week.propTypes = {
+    date: PropTypes.instanceOf(Date).isRequired,
+};
 
 export default Week

@@ -5,23 +5,6 @@ import dates from './utils/dates';
 import {accessor, elementType} from './utils/propTypes';
 import {accessor as get} from './utils/accessors';
 
-let propTypes = {
-    event: PropTypes.object.isRequired,
-    slotStart: PropTypes.instanceOf(Date),
-    slotEnd: PropTypes.instanceOf(Date),
-
-    selected: PropTypes.bool,
-    eventPropGetter: PropTypes.func,
-    titleAccessor: accessor,
-    allDayAccessor: accessor,
-    startAccessor: accessor,
-    endAccessor: accessor,
-
-    eventComponent: elementType,
-    eventWrapperComponent: elementType.isRequired,
-    onSelect: PropTypes.func
-}
-
 class EventCell extends React.Component {
     render() {
         let {
@@ -51,7 +34,6 @@ class EventCell extends React.Component {
         return (
             <EventWrapper event={event}>
                 <div
-                    style={{...props.style, ...style}}
                     className={cn('rbc-event', className, xClassName, {
                         'rbc-selected': selected,
                         'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
@@ -59,12 +41,9 @@ class EventCell extends React.Component {
                         'rbc-event-continues-after': continuesAfter
                     })}
                     onClick={(e) => onSelect(event, e)}
-                >
+                    style={{...props.style, ...style}}>
                     <div className='rbc-event-content' title={title}>
-                        { Event
-                            ? <Event event={event} title={title}/>
-                            : title
-                        }
+                        {Event ? <Event event={event} title={title}/> : title}
                     </div>
                 </div>
             </EventWrapper>
@@ -72,6 +51,21 @@ class EventCell extends React.Component {
     }
 }
 
-EventCell.propTypes = propTypes;
+EventCell.propTypes = {
+    event: PropTypes.object.isRequired,
+    slotStart: PropTypes.instanceOf(Date),
+    slotEnd: PropTypes.instanceOf(Date),
+
+    selected: PropTypes.bool,
+    eventPropGetter: PropTypes.func,
+    titleAccessor: accessor,
+    allDayAccessor: accessor,
+    startAccessor: accessor,
+    endAccessor: accessor,
+
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
+    onSelect: PropTypes.func
+};
 
 export default EventCell

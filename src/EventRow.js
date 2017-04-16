@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import createReactClass from 'create-react-class';
-import EventRowMixin from './EventRowMixin';
+import EventCell from './EventCell';
+import {accessor, elementType} from './utils/propTypes';
+import {segStyle} from './utils/eventLevels';
+import {isSelected} from './utils/selection';
 
-let EventRow = createReactClass({
-    displayName: 'EventRow',
-
-    propTypes: {
-        segments: PropTypes.array
-    },
-
-    mixins: [EventRowMixin],
-
-    render(){
+class EventRow extends React.Component {
+    render() {
         let {segments} = this.props;
 
         let lastEnd = 1;
@@ -41,6 +35,70 @@ let EventRow = createReactClass({
             </div>
         )
     }
-});
+
+    renderEvent(event) {
+        let {
+            eventPropGetter, selected, start, end,
+            startAccessor, endAccessor, titleAccessor,
+            allDayAccessor, eventComponent,
+            eventWrapperComponent,
+            onSelect
+        } = this.props;
+
+        return (
+            <EventCell
+                event={event}
+                eventWrapperComponent={eventWrapperComponent}
+                eventPropGetter={eventPropGetter}
+                onSelect={onSelect}
+                selected={isSelected(event, selected)}
+                startAccessor={startAccessor}
+                endAccessor={endAccessor}
+                titleAccessor={titleAccessor}
+                allDayAccessor={allDayAccessor}
+                slotStart={start}
+                slotEnd={end}
+                eventComponent={eventComponent}
+            />
+        )
+    }
+
+    renderSpan(len, key, content = ' ') {
+        let {slots} = this.props;
+
+        return (
+            <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>
+                {content}
+            </div>
+        )
+    }
+}
+
+EventRow.propTypes = {
+    slots: PropTypes.number.isRequired,
+    end: PropTypes.instanceOf(Date),
+    start: PropTypes.instanceOf(Date),
+
+    selected: PropTypes.array,
+    eventPropGetter: PropTypes.func,
+    titleAccessor: accessor,
+    allDayAccessor: accessor,
+    startAccessor: accessor,
+    endAccessor: accessor,
+
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
+    onSelect: PropTypes.func,
+
+    segments: PropTypes.array,
+};
+
+EventRow.defaultProps = {
+    segments: [],
+    selected: [],
+    slots: 7,
+};
+
+EventRow.displayName = 'EventRow';
 
 export default EventRow

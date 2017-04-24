@@ -217,6 +217,7 @@ let DaySlot = React.createClass({
     let node = findDOMNode(this);
     let selector = this._selector = new Selection(()=> findDOMNode(this))
 
+    /* Disabling drag-selection for now
     let maybeSelect = (box) => {
       let onSelecting = this.props.onSelecting
       let current = this.state || {};
@@ -234,6 +235,7 @@ let DaySlot = React.createClass({
 
       this.setState(state)
     }
+    */
 
     let selectionState = ({ y }) => {
       let { step, min, max } = this.props;
@@ -267,8 +269,10 @@ let DaySlot = React.createClass({
       }
     }
 
+    /* Disabling drag-selection for now
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
+    */
 
     selector.on('mousedown', (box) => {
       if (this.props.selectable !== 'ignoreEvents') return
@@ -284,6 +288,7 @@ let DaySlot = React.createClass({
         this.setState({ selecting: false })
       })
 
+    /* Disabling drag-selection for now
     selector
       .on('select', () => {
         if (this.state.selecting) {
@@ -291,6 +296,7 @@ let DaySlot = React.createClass({
           this.setState({ selecting: false })
         }
       })
+    */
   },
 
   _teardownSelectable() {

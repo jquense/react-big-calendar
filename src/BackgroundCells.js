@@ -68,6 +68,7 @@ class BackgroundCells extends React.Component {
                   'rbc-day-bg',
                   selected && 'rbc-selected-cell',
                   dates.isToday(date) && 'rbc-today',
+                  `rbc-weekday-${dates.weekday(date)}`,
                 )}
               />
             </Wrapper>

@@ -303,6 +303,7 @@ export default class TimeGrid extends Component {
           className={cn(
             'rbc-header',
             dates.isToday(date) && 'rbc-today',
+            `rbc-weekday-${dates.weekday(date)}`,
           )}
           style={segStyle(1, this.slots)}
         >

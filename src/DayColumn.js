@@ -15,6 +15,8 @@ import getStyledEvents, { positionFromDate, startsBefore } from './utils/dayView
 
 import TimeColumn from './TimeColumn'
 
+import bowser from 'bowser';
+
 function snapToSlot(date, step){
   var roundTo = 1000 * 60 * step;
   return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
@@ -117,6 +119,7 @@ let DaySlot = React.createClass({
           'rbc-day-slot',
           !isMultiGrid && dates.isToday(max) && 'rbc-today',
           dates.lt(max, dates.today(), 'day') && 'rbc-past',
+          (bowser.mobile || bowser.tablet) && 'rbc-mobile-clickable'
         )}
         now={now}
         min={min}

@@ -641,3 +641,6 @@ button.rbc-input::-moz-focus-inner {
 .rbc-mv-time-content .rbc-timeslot-group:last-child {
   border-bottom: 0;
 }
+.rbc-mobile-clickable {
+  cursor: pointer;
+}

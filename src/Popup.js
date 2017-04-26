@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import getOffset from 'dom-helpers/query/offset';
 import getScrollTop from 'dom-helpers/query/scrollTop';
@@ -9,10 +10,10 @@ import localizer from './localizer';
 import { elementType, dateFormat } from './utils/propTypes';
 
 const propTypes = {
-  position: React.PropTypes.object,
-  popupOffset: React.PropTypes.number,
-  events: React.PropTypes.array,
-  selected: React.PropTypes.object,
+  position: PropTypes.object,
+  popupOffset: PropTypes.number,
+  events: PropTypes.array,
+  selected: PropTypes.object,
   eventComponent: elementType,
   eventWrapperComponent: elementType,
   dayHeaderFormat: dateFormat

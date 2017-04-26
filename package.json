@@ -88,6 +88,7 @@
     "dom-helpers": "^2.3.0 || ^3.0.0",
     "invariant": "^2.1.0",
     "lodash": "^4.17.4",
+    "prop-types": "^15.5.8",
     "react-overlays": "^0.6.0",
     "react-prop-types": "^0.4.0",
     "uncontrollable": "^3.3.1 || ^4.0.0",

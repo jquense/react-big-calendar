@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
@@ -24,51 +25,51 @@ let eventsForWeek = (evts, start, end, props) =>
 
 
 let propTypes = {
-  events: React.PropTypes.array.isRequired,
-  date: React.PropTypes.instanceOf(Date),
+  events: PropTypes.array.isRequired,
+  date: PropTypes.instanceOf(Date),
 
-  min: React.PropTypes.instanceOf(Date),
-  max: React.PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
 
-  step: React.PropTypes.number,
-  now: React.PropTypes.instanceOf(Date),
+  step: PropTypes.number,
+  now: PropTypes.instanceOf(Date),
 
-  scrollToTime: React.PropTypes.instanceOf(Date),
-  eventPropGetter: React.PropTypes.func,
+  scrollToTime: PropTypes.instanceOf(Date),
+  eventPropGetter: PropTypes.func,
 
-  culture: React.PropTypes.string,
+  culture: PropTypes.string,
   dayFormat: dateFormat,
 
-  rtl: React.PropTypes.bool,
-  width: React.PropTypes.number,
+  rtl: PropTypes.bool,
+  width: PropTypes.number,
 
   titleAccessor: accessor.isRequired,
   allDayAccessor: accessor.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
-  selected: React.PropTypes.object,
-  selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
-  onNavigate: React.PropTypes.func,
-  onSelectSlot: React.PropTypes.func,
-  onSelectEvent: React.PropTypes.func,
-  onShowMore: React.PropTypes.func,
-  onDrillDown: React.PropTypes.func,
-  getDrilldownView: React.PropTypes.func.isRequired,
+  onNavigate: PropTypes.func,
+  onSelectSlot: PropTypes.func,
+  onSelectEvent: PropTypes.func,
+  onShowMore: PropTypes.func,
+  onDrillDown: PropTypes.func,
+  getDrilldownView: PropTypes.func.isRequired,
 
   dateFormat,
 
   weekdayFormat: dateFormat,
-  popup: React.PropTypes.bool,
+  popup: PropTypes.bool,
 
-  messages: React.PropTypes.object,
-  components: React.PropTypes.object.isRequired,
-  popupOffset: React.PropTypes.oneOfType([
-    React.PropTypes.number,
-    React.PropTypes.shape({
-      x: React.PropTypes.number,
-      y: React.PropTypes.number
+  messages: PropTypes.object,
+  components: PropTypes.object.isRequired,
+  popupOffset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
     })
   ]),
 };

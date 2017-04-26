@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import dates from './utils/dates';
 import localizer from './localizer';
@@ -8,7 +9,7 @@ import TimeGrid from './TimeGrid';
 let Week = React.createClass({
 
   propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
   },
 
   getDefaultProps() {

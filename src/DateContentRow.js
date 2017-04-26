@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import getHeight from 'dom-helpers/query/height';
 import qsa from 'dom-helpers/query/querySelectorAll';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 
@@ -14,21 +15,21 @@ import EventEndingRow from './EventEndingRow';
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 const propTypes = {
-  events: React.PropTypes.array.isRequired,
-  range: React.PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  range: PropTypes.array.isRequired,
 
-  rtl: React.PropTypes.bool,
-  renderForMeasure: React.PropTypes.bool,
-  renderHeader: React.PropTypes.func,
+  rtl: PropTypes.bool,
+  renderForMeasure: PropTypes.bool,
+  renderHeader: PropTypes.func,
 
-  container: React.PropTypes.func,
-  selected: React.PropTypes.object,
-  selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+  container: PropTypes.func,
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
-  onShowMore: React.PropTypes.func,
-  onSelectSlot: React.PropTypes.func,
-  onSelectEnd: React.PropTypes.func,
-  onSelectStart: React.PropTypes.func,
+  onShowMore: PropTypes.func,
+  onSelectSlot: PropTypes.func,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
 
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
@@ -36,8 +37,8 @@ const propTypes = {
   dateCellWrapper: elementType,
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  minRows: React.PropTypes.number.isRequired,
-  maxRows: React.PropTypes.number.isRequired,
+  minRows: PropTypes.number.isRequired,
+  maxRows: PropTypes.number.isRequired,
 };
 
 const defaultProps = {

@@ -98,10 +98,11 @@ let Api = React.createClass({
 
           return i === (list.length - 1) ? current : current.concat(' | ');
         }, []);
-      case 'array':
+      case 'array': {
         let child = this.renderType({ type: type.value });
 
         return <span>{'array<'}{ child }{'>'}</span>;
+      }
       case 'enum':
         return this.renderEnum(type);
       case 'custom':

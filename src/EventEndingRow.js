@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import EventRowMixin from './EventRowMixin';
 import { eventLevels } from './utils/eventLevels';
@@ -12,10 +13,10 @@ let EventRow = React.createClass({
   displayName: 'EventRow',
 
   propTypes: {
-    segments: React.PropTypes.array,
-    slots: React.PropTypes.number,
-    messages: React.PropTypes.object,
-    onShowMore: React.PropTypes.func,
+    segments: PropTypes.array,
+    slots: PropTypes.number,
+    messages: PropTypes.object,
+    onShowMore: PropTypes.func,
   },
 
   mixins: [ EventRowMixin ],

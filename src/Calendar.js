@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import uncontrollable from 'uncontrollable';
 import cn from 'classnames';
 import {
@@ -151,7 +152,7 @@ let Calendar = React.createClass({
      * />
      * ```
      */
-    drilldownView: React.PropTypes.string,
+    drilldownView: PropTypes.string,
 
     /**
      * Functionally equivalent to `drilldownView`, but accepts a function
@@ -171,7 +172,7 @@ let Calendar = React.createClass({
      * />
      * ```
      */
-    getDrilldownView: React.PropTypes.func,
+    getDrilldownView: PropTypes.func,
 
     /**
      * Determines whether the toolbar is displayed
@@ -202,18 +203,18 @@ let Calendar = React.createClass({
      * drag begins over an event. Useful when you want custom event click or drag
      * logic
      */
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
     /**
      * Determines the selectable time increments in week and day views
      */
-    step: React.PropTypes.number,
+    step: PropTypes.number,
 
     /**
      * The number of slots per "section" in the time grid views. Adjust with `step`
      * to change the default of 1 hour long groups, with 30 minute slots.
      */
-    timeslots: React.PropTypes.number,
+    timeslots: PropTypes.number,
 
     /**
      *Switch the calendar to a `right-to-left` read direction.
@@ -285,7 +286,7 @@ let Calendar = React.createClass({
      *
      * **Note: it's generally better to handle this globally via your i18n library.**
      */
-    culture: React.PropTypes.string,
+    culture: PropTypes.string,
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
 import dates from './utils/dates';
@@ -5,12 +6,12 @@ import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
 let propTypes = {
-  event: React.PropTypes.object.isRequired,
-  slotStart: React.PropTypes.instanceOf(Date),
-  slotEnd: React.PropTypes.instanceOf(Date),
+  event: PropTypes.object.isRequired,
+  slotStart: PropTypes.instanceOf(Date),
+  slotEnd: PropTypes.instanceOf(Date),
 
-  selected: React.PropTypes.bool,
-  eventPropGetter: React.PropTypes.func,
+  selected: PropTypes.bool,
+  eventPropGetter: PropTypes.func,
   titleAccessor: accessor,
   allDayAccessor: accessor,
   startAccessor: accessor,
@@ -18,7 +19,7 @@ let propTypes = {
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: React.PropTypes.func
+  onSelect: PropTypes.func
 }
 
 class EventCell extends React.Component {

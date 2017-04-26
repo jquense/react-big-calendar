@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 import { DragSource } from 'react-dnd';
 import cn from 'classnames';
@@ -20,9 +21,9 @@ function collectSource(connect, monitor) {
 }
 
 const propTypes = {
-  connectDragSource: React.PropTypes.func.isRequired,
-  isDragging: React.PropTypes.bool.isRequired,
-  event: React.PropTypes.object.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  isDragging: PropTypes.bool.isRequired,
+  event: PropTypes.object.isRequired,
 }
 
 class DraggableEventWrapper extends React.Component {

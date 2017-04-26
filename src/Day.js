@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import dates from './utils/dates';
 import TimeGrid from './TimeGrid';
@@ -6,7 +7,7 @@ import { navigate } from './utils/constants';
 let Day = React.createClass({
 
   propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
   },
 
   render() {

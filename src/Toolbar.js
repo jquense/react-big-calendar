@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
 import message from './utils/messages';
@@ -5,14 +6,14 @@ import { navigate } from './utils/constants';
 
 class Toolbar extends React.Component {
   static propTypes = {
-    view: React.PropTypes.string.isRequired,
-    views: React.PropTypes.arrayOf(
-      React.PropTypes.string,
+    view: PropTypes.string.isRequired,
+    views: PropTypes.arrayOf(
+      PropTypes.string,
     ).isRequired,
-    label: React.PropTypes.node.isRequired,
-    messages: React.PropTypes.object,
-    onNavigate: React.PropTypes.func.isRequired,
-    onViewChange: React.PropTypes.func.isRequired,
+    label: PropTypes.node.isRequired,
+    messages: PropTypes.object,
+    onNavigate: PropTypes.func.isRequired,
+    onViewChange: PropTypes.func.isRequired,
   }
 
   render() {

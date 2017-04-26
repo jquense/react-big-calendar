@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
@@ -27,13 +28,13 @@ function startsAfter(date, max) {
 let DaySlot = React.createClass({
 
   propTypes: {
-    events: React.PropTypes.array.isRequired,
-    step: React.PropTypes.number.isRequired,
-    min: React.PropTypes.instanceOf(Date).isRequired,
-    max: React.PropTypes.instanceOf(Date).isRequired,
-    now: React.PropTypes.instanceOf(Date),
+    events: PropTypes.array.isRequired,
+    step: PropTypes.number.isRequired,
+    min: PropTypes.instanceOf(Date).isRequired,
+    max: PropTypes.instanceOf(Date).isRequired,
+    now: PropTypes.instanceOf(Date),
 
-    rtl: React.PropTypes.bool,
+    rtl: PropTypes.bool,
     titleAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
@@ -41,19 +42,19 @@ let DaySlot = React.createClass({
 
     selectRangeFormat: dateFormat,
     eventTimeRangeFormat: dateFormat,
-    culture: React.PropTypes.string,
+    culture: PropTypes.string,
 
-    selected: React.PropTypes.object,
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
-    eventOffset: React.PropTypes.number,
+    selected: PropTypes.object,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+    eventOffset: PropTypes.number,
 
-    onSelecting: React.PropTypes.func,
-    onSelectSlot: React.PropTypes.func.isRequired,
-    onSelectEvent: React.PropTypes.func.isRequired,
+    onSelecting: PropTypes.func,
+    onSelectSlot: PropTypes.func.isRequired,
+    onSelectEvent: PropTypes.func.isRequired,
 
-    className: React.PropTypes.string,
-    dragThroughEvents: React.PropTypes.bool,
-    eventPropGetter: React.PropTypes.func,
+    className: PropTypes.string,
+    dragThroughEvents: PropTypes.bool,
+    eventPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,

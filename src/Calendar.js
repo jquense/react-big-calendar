@@ -81,6 +81,11 @@ let Calendar = React.createClass({
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * The element of events which is selected when the component mounts
+     */
+    initialSelection: PropTypes.object,
+
+    /**
      * Callback fired when the `date` value changes.
      *
      * @controllable date
@@ -581,6 +586,12 @@ let Calendar = React.createClass({
       this.handleViewChange(view)
 
     this.handleNavigate(navigate.DATE, date)
+  },
+  
+  componentDidMount () {
+    if (this.props.initialSelection) {
+      this.handleSelectEvent(this.props.initialSelection)
+    }
   }
 });
 

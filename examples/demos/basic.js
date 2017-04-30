@@ -8,6 +8,7 @@ let Basic = React.createClass({
       <BigCalendar
         {...this.props}
         events={events}
+        initialSelection={events[1]}
         defaultDate={new Date(2015, 3, 1)}
       />
     )

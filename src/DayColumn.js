@@ -57,6 +57,7 @@ let DaySlot = React.createClass({
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
+    resource: React.PropTypes.string,
   },
 
   getDefaultProps() {
@@ -304,6 +305,7 @@ let DaySlot = React.createClass({
       slots,
       start: startDate,
       end: endDate,
+      resourceId: this.props.resource,
       action
     })
   },

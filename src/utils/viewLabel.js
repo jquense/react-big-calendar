@@ -14,7 +14,7 @@ const Formats = {
 
 export default function viewLabel(date, view, formats, culture){
   let View = VIEWS[view];
-  let headerSingle = view === views.MONTH || view === views.DAY
+  let headerSingle = view === views.MONTH || view === views.DAY || view === views.RESOURCE
 
   formats = defaultFormats(formats || {})
 

@@ -210,6 +210,11 @@ let Calendar = React.createClass({
     step: React.PropTypes.number,
 
     /**
+     * Show all day events
+     */
+    showAllDayEvents: React.PropTypes.bool,
+
+    /**
      * The number of slots per "section" in the time grid views. Adjust with `step`
      * to change the default of 1 hour long groups, with 30 minute slots.
      */
@@ -442,6 +447,7 @@ let Calendar = React.createClass({
       views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
       date: now,
       step: 30,
+      showAllDayEvents: true,
 
       drilldownView: views.DAY,
 

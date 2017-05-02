@@ -1,12 +1,18 @@
 import { storiesOf, action } from '@kadira/storybook';
 import moment from 'moment';
 import React from 'react';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 
 import Calendar from '../src';
 import momentLocalizer from '../src/localizers/moment.js'
 import '../src/less/styles.less'
+import '../src/addons/dragAndDrop/styles.less'
+
 import demoEvents from '../examples/events';
 import createEvents from './createEvents';
+import resources from './resourceEvents';
+import withDragAndDrop from '../src/addons/dragAndDrop';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -37,6 +43,25 @@ const events = [{
     end: moment().toDate(),
     allDay: true
   }]
+
+const DragAndDropCalendar = withDragAndDrop(Calendar)
+
+const DragCalendar = () => {
+  return (
+    <DragAndDropCalendar
+      popup
+      selectable
+      events={resources.events}
+      resources={resources.list}
+      onEventDrop={(event) => { action(event) }}
+      onSelectEvent={action('event selected')}
+      onSelectSlot={action('slot selected')}
+      defaultDate={new Date(2015, 3, 1)}
+    />
+  )
+}
+
+const DragableCalendar = DragDropContext(HTML5Backend)(DragCalendar)
 
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
@@ -75,6 +100,14 @@ storiesOf('module.Calendar.week', module)
           defaultDate={new Date()}
           events={createEvents(1)}
         />
+      </div>
+    )
+  })
+
+  .add('resource', () => {
+    return (
+      <div style={{height: 500}}>
+        <DragableCalendar />
       </div>
     )
   })

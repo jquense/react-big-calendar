@@ -14,6 +14,7 @@ import invariant from 'invariant';
   tomorrow: 'tomorrow',
   today: 'today',
   agenda: 'agenda',
+  resource: 'resource',
 
   showMore: total => `+${total} more`
 }

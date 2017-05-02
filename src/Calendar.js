@@ -81,6 +81,11 @@ let Calendar = React.createClass({
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * An array of resource objects that map events to a specific resource
+     */
+    resources: PropTypes.arrayOf(PropTypes.object),
+
+    /**
      * Callback fired when the `date` value changes.
      *
      * @controllable date
@@ -439,7 +444,7 @@ let Calendar = React.createClass({
       popup: false,
       toolbar: true,
       view: views.MONTH,
-      views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
+      views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA, views.RESOURCE],
       date: now,
       step: 30,
 

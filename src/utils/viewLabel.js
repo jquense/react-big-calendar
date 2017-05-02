@@ -8,7 +8,8 @@ const Formats = {
   [views.MONTH]: 'monthHeaderFormat',
   [views.WEEK]: 'dayRangeHeaderFormat',
   [views.DAY]: 'dayHeaderFormat',
-  [views.AGENDA]: 'agendaHeaderFormat'
+  [views.AGENDA]: 'agendaHeaderFormat',
+  [views.RESOURCE]: 'dayHeaderFormat'
 }
 
 export default function viewLabel(date, view, formats, culture){

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 
 const Header = ({ label }) => {
@@ -5,7 +6,7 @@ const Header = ({ label }) => {
 }
 
 Header.propTypes = {
-  label: React.PropTypes.node,
+  label: PropTypes.node,
 }
 
 export default Header

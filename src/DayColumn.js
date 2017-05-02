@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
@@ -24,16 +25,15 @@ function startsAfter(date, max) {
   return dates.gt(dates.merge(max, date), max, 'minutes')
 }
 
-let DaySlot = React.createClass({
+class DaySlot extends React.Component {
+  static propTypes = {
+    events: PropTypes.array.isRequired,
+    step: PropTypes.number.isRequired,
+    min: PropTypes.instanceOf(Date).isRequired,
+    max: PropTypes.instanceOf(Date).isRequired,
+    now: PropTypes.instanceOf(Date),
 
-  propTypes: {
-    events: React.PropTypes.array.isRequired,
-    step: React.PropTypes.number.isRequired,
-    min: React.PropTypes.instanceOf(Date).isRequired,
-    max: React.PropTypes.instanceOf(Date).isRequired,
-    now: React.PropTypes.instanceOf(Date),
-
-    rtl: React.PropTypes.bool,
+    rtl: PropTypes.bool,
     titleAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
@@ -41,47 +41,42 @@ let DaySlot = React.createClass({
 
     selectRangeFormat: dateFormat,
     eventTimeRangeFormat: dateFormat,
-    culture: React.PropTypes.string,
+    culture: PropTypes.string,
 
-    selected: React.PropTypes.object,
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
-    eventOffset: React.PropTypes.number,
+    selected: PropTypes.object,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+    eventOffset: PropTypes.number,
 
-    onSelecting: React.PropTypes.func,
-    onSelectSlot: React.PropTypes.func.isRequired,
-    onSelectEvent: React.PropTypes.func.isRequired,
+    onSelecting: PropTypes.func,
+    onSelectSlot: PropTypes.func.isRequired,
+    onSelectEvent: PropTypes.func.isRequired,
 
-    className: React.PropTypes.string,
-    dragThroughEvents: React.PropTypes.bool,
-    eventPropGetter: React.PropTypes.func,
+    className: PropTypes.string,
+    dragThroughEvents: PropTypes.bool,
+    eventPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return { dragThroughEvents: true }
-  },
-
-  getInitialState() {
-    return { selecting: false };
-  },
+  static defaultProps = { dragThroughEvents: true };
+  state = { selecting: false };
 
   componentDidMount() {
     this.props.selectable
     && this._selectable()
-  },
+  }
 
   componentWillUnmount() {
     this._teardownSelectable();
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable)
       this._selectable();
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable();
-  },
+  }
 
   render() {
     const {
@@ -127,9 +122,9 @@ let DaySlot = React.createClass({
         }
       </TimeColumn>
     );
-  },
+  }
 
-  renderEvents() {
+  renderEvents = () => {
     let {
         events
       , min
@@ -193,9 +188,9 @@ let DaySlot = React.createClass({
         </EventWrapper>
       )
     })
-  },
+  };
 
-  _slotStyle(startSlot, endSlot) {
+  _slotStyle = (startSlot, endSlot) => {
     let top = ((startSlot / this._totalMin) * 100);
     let bottom = ((endSlot / this._totalMin) * 100);
 
@@ -203,9 +198,9 @@ let DaySlot = React.createClass({
       top: top + '%',
       height: bottom - top + '%'
     }
-  },
+  };
 
-  _selectable(){
+  _selectable = () => {
     let node = findDOMNode(this);
     let selector = this._selector = new Selection(()=> findDOMNode(this))
 
@@ -283,15 +278,15 @@ let DaySlot = React.createClass({
           this.setState({ selecting: false })
         }
       })
-  },
+  };
 
-  _teardownSelectable() {
+  _teardownSelectable = () => {
     if (!this._selector) return
     this._selector.teardown();
     this._selector = null;
-  },
+  };
 
-  _selectSlot({ startDate, endDate, action }) {
+  _selectSlot = ({ startDate, endDate, action }) => {
     let current = startDate
       , slots = [];
 
@@ -306,12 +301,12 @@ let DaySlot = React.createClass({
       end: endDate,
       action
     })
-  },
+  };
 
-  _select(...args) {
+  _select = (...args) => {
     notify(this.props.onSelectEvent, args)
-  }
-});
+  };
+}
 
 
 function minToDate(min, date){

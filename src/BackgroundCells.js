@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
@@ -13,18 +14,18 @@ class BackgroundCells extends React.Component {
 
   static propTypes = {
     cellWrapperComponent: elementType,
-    container: React.PropTypes.func,
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+    container: PropTypes.func,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
-    onSelectSlot: React.PropTypes.func.isRequired,
-    onSelectEnd: React.PropTypes.func,
-    onSelectStart: React.PropTypes.func,
+    onSelectSlot: PropTypes.func.isRequired,
+    onSelectEnd: PropTypes.func,
+    onSelectStart: PropTypes.func,
 
-    range: React.PropTypes.arrayOf(
-      React.PropTypes.instanceOf(Date)
+    range: PropTypes.arrayOf(
+      PropTypes.instanceOf(Date)
     ),
-    rtl: React.PropTypes.bool,
-    type: React.PropTypes.string,
+    rtl: PropTypes.bool,
+    type: PropTypes.string,
   }
 
   constructor(props, context) {

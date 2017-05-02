@@ -7,9 +7,9 @@ import { accessor, elementType } from './utils/propTypes';
 import { segStyle } from './utils/eventLevels';
 import { isSelected } from './utils/selection';
 
-
+/* eslint-disable react/prop-types */
 export default {
-  propType: {
+  propTypes: {
     slots: PropTypes.number.isRequired,
     end: PropTypes.instanceOf(Date),
     start: PropTypes.instanceOf(Date),
@@ -26,21 +26,19 @@ export default {
     onSelect: PropTypes.func
   },
 
-  getDefaultProps() {
-    return {
-      segments: [],
-      selected: [],
-      slots: 7
-    }
+  defaultProps: {
+    segments: [],
+    selected: [],
+    slots: 7
   },
 
-  renderEvent(event) {
+  renderEvent(props, event) {
     let {
         eventPropGetter, selected, start, end
       , startAccessor, endAccessor, titleAccessor
       , allDayAccessor, eventComponent
       , eventWrapperComponent
-      , onSelect } = this.props;
+      , onSelect } = props;
 
     return (
       <EventCell
@@ -60,8 +58,8 @@ export default {
     )
   },
 
-  renderSpan(len, key, content = ' '){
-    let { slots } = this.props;
+  renderSpan(props, len, key, content = ' '){
+    let { slots } = props;
 
     return (
       <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>

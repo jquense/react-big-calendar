@@ -7,43 +7,44 @@ require('globalize/lib/cultures/globalize.culture.es');
 require('globalize/lib/cultures/globalize.culture.fr');
 require('globalize/lib/cultures/globalize.culture.ar-AE');
 
-let Cultures = React.createClass({
+class Cultures extends React.Component {
+    constructor() {
+        super();
 
-  getInitialState(){
-    return { culture: 'fr' }
-  },
+        this.state = {
+            culture: 'fr',
+        };
+    }
 
-  render(){
-    let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
-    let rtl = this.state.culture === 'ar-AE';
+    render() {
+        const {culture} = this.state;
+        const cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE'];
+        const rtl = culture === 'ar-AE';
 
-    return (
-      <div {...this.props}>
-        <h3 className="callout">
-          <label>Select a Culture</label>
-          {' '}
-          <select
-            className='form-control'
-            style={{ width: 200, display: 'inline-block'}}
-            defaultValue={'fr'}
-            onChange={e => this.setState({ culture: e.target.value })}
-          >
-          {
-            cultures.map((c, idx) =>
-              <option key={idx} value={c}>{c}</option>
-            )
-          }
-          </select>
-        </h3>
-        <BigCalendar
-          rtl={rtl}
-          events={events}
-          culture={this.state.culture}
-          defaultDate={new Date(2015, 3, 1)}
-        />
-      </div>
-    )
-  }
-})
+        return (
+            <div {...this.props}>
+                <h3 className="callout">
+                    <label>Select a Culture</label>
+                    {' '}
+                    <select className='form-control'
+                            defaultValue={'fr'}
+                            onChange={e => this.setState({culture: e.target.value})}
+                            style={{width: 200, display: 'inline-block'}}>
+                        {
+                            cultures.map((c, idx) =>
+                                <option key={idx} value={c}>{c}</option>
+                            )
+                        }
+                    </select>
+                </h3>
+
+                <BigCalendar culture={culture}
+                             defaultDate={new Date(2015, 3, 1)}
+                             events={events}
+                             rtl={rtl}/>
+            </div>
+        )
+    }
+}
 
 export default Cultures;

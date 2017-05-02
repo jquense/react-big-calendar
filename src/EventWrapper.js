@@ -1,9 +1,9 @@
 import React from 'react';
 
-let EventWrapper = React.createClass({
-  render() {
-    return this.props.children;
-  }
-});
+class EventWrapper extends React.Component {
+    render() {
+        return this.props.children;
+    }
+}
 
 export default EventWrapper;

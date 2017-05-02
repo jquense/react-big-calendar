@@ -1,11 +1,16 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Header = ({ label }) => {
-  return <span>{label}</span>
+class Header extends React.Component {
+    render() {
+        const {label} = this.props;
+
+        return <span>{label}</span>;
+    }
 }
 
 Header.propTypes = {
-  label: React.PropTypes.node,
-}
+    label: PropTypes.node,
+};
 
 export default Header

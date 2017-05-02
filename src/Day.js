@@ -1,42 +1,45 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import dates from './utils/dates';
 import TimeGrid from './TimeGrid';
-import { navigate } from './utils/constants';
+import {navigate as navigateOptions} from './utils/constants';
 
-let Day = React.createClass({
+class Day extends React.Component {
+    navigate = (date, action) => {
+        switch (action) {
+            case navigateOptions.PREVIOUS:
+                return dates.add(date, -1, 'day');
+            case navigateOptions.NEXT:
+                return dates.add(date, 1, 'day');
+            default:
+                return date;
+        }
+    };
 
-  propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired,
-  },
+    range = (date) => {
+        date = dates.startOf(date, 'day');
 
-  render() {
-    let { date, ...props } = this.props;
-    let { start, end } = Day.range(date)
+        return {
+            start: date,
+            end: date,
+        };
+    };
 
-    return (
-      <TimeGrid {...props} start={start} end={end} eventOffset={10} />
-    );
-  }
-});
+    render() {
+        let {date, ...props} = this.props;
+        let {start, end} = this.range(date);
 
-Day.navigate = (date, action)=>{
-  switch (action){
-    case navigate.PREVIOUS:
-      return dates.add(date, -1, 'day');
-
-    case navigate.NEXT:
-      return dates.add(date, 1, 'day')
-
-    default:
-      return date;
-  }
+        return (
+            <TimeGrid {...props}
+                      end={end}
+                      eventOffset={10}
+                      start={start}/>
+        );
+    }
 }
 
+Day.propTypes = {
+    date: PropTypes.instanceOf(Date).isRequired,
+};
 
-Day.range = (date)=> {
-  date = dates.startOf(date, 'day')
-  return { start: date, end: date }
-}
-
-
-export default Day
+export default Day;

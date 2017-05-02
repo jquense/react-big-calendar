@@ -1,46 +1,104 @@
 import React from 'react';
-import EventRowMixin from './EventRowMixin';
+import PropTypes from 'prop-types';
+import EventCell from './EventCell';
+import {accessor, elementType} from './utils/propTypes';
+import {segStyle} from './utils/eventLevels';
+import {isSelected} from './utils/selection';
 
+class EventRow extends React.Component {
+    render() {
+        let {segments} = this.props;
 
-let EventRow = React.createClass({
+        let lastEnd = 1;
 
-  displayName: 'EventRow',
+        return (
+            <div className='rbc-row'>
+                {
+                    segments.reduce((row, {event, left, right, span}, li) => {
+                        let key = '_lvl_' + li;
+                        let gap = left - lastEnd;
 
-  propTypes: {
-    segments: React.PropTypes.array
-  },
+                        let content = this.renderEvent(event)
 
-  mixins: [EventRowMixin],
+                        if (gap)
+                            row.push(this.renderSpan(gap, key + '_gap'))
 
-  render(){
-    let { segments } = this.props;
+                        row.push(
+                            this.renderSpan(span, key, content)
+                        )
 
-    let lastEnd = 1;
+                        lastEnd = (right + 1);
 
-    return (
-      <div className='rbc-row'>
-      {
-        segments.reduce((row, { event, left, right, span }, li) => {
-          let key = '_lvl_' + li;
-          let gap = left - lastEnd;
+                        return row;
+                    }, [])
+                }
+            </div>
+        )
+    }
 
-          let content = this.renderEvent(event)
+    renderEvent(event) {
+        let {
+            eventPropGetter, selected, start, end,
+            startAccessor, endAccessor, titleAccessor,
+            allDayAccessor, eventComponent,
+            eventWrapperComponent,
+            onSelect
+        } = this.props;
 
-          if (gap)
-            row.push(this.renderSpan(gap, key + '_gap'))
+        return (
+            <EventCell
+                event={event}
+                eventWrapperComponent={eventWrapperComponent}
+                eventPropGetter={eventPropGetter}
+                onSelect={onSelect}
+                selected={isSelected(event, selected)}
+                startAccessor={startAccessor}
+                endAccessor={endAccessor}
+                titleAccessor={titleAccessor}
+                allDayAccessor={allDayAccessor}
+                slotStart={start}
+                slotEnd={end}
+                eventComponent={eventComponent}
+            />
+        )
+    }
 
-          row.push(
-            this.renderSpan(span, key, content)
-          )
+    renderSpan(len, key, content = ' ') {
+        let {slots} = this.props;
 
-          lastEnd = (right + 1);
+        return (
+            <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>
+                {content}
+            </div>
+        )
+    }
+}
 
-          return row;
-        }, [])
-      }
-      </div>
-    )
-  }
-});
+EventRow.propTypes = {
+    slots: PropTypes.number.isRequired,
+    end: PropTypes.instanceOf(Date),
+    start: PropTypes.instanceOf(Date),
+
+    selected: PropTypes.array,
+    eventPropGetter: PropTypes.func,
+    titleAccessor: accessor,
+    allDayAccessor: accessor,
+    startAccessor: accessor,
+    endAccessor: accessor,
+
+    eventComponent: elementType,
+    eventWrapperComponent: elementType.isRequired,
+    onSelect: PropTypes.func,
+
+    segments: PropTypes.array,
+};
+
+EventRow.defaultProps = {
+    segments: [],
+    selected: [],
+    slots: 7,
+};
+
+EventRow.displayName = 'EventRow';
 
 export default EventRow

@@ -6,11 +6,11 @@ import { navigate } from './utils/constants';
 const Resource = React.createClass({
   propTypes: {
     date: React.PropTypes.instanceOf(Date).isRequired
-  }
+  },
 
   render() {
     let { date, ...props } = this.props;
-    let { start, end } = Day.range(date);
+    let { start, end } = Resource.range(date);
 
     return (
       <ResourceGrid {...props} start={start} end={end} eventOffset={10} />

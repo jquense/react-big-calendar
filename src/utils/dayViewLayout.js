@@ -36,25 +36,19 @@ let getSlot = (event, accessor, min, totalMin) => event && positionFromDate(
 /**
  * Two events are considered siblings if their times are overlapping
  */
-var isSibling = function isSibling(idx1, idx2, _ref2) {
-  var events = _ref2.events,
-      startAccessor = _ref2.startAccessor,
-      endAccessor = _ref2.endAccessor,
-      min = _ref2.min,
-      totalMin = _ref2.totalMin;
+let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin }) => {
+  let event1 = events[idx1]
+  let event2 = events[idx2]
 
-  var event1 = events[idx1];
-  var event2 = events[idx2];
+  if (!event1 || !event2) return false
 
-  if (!event1 || !event2) return false;
+  var start1 = getSlot(event1, startAccessor, min, totalMin)
+  var start2 = getSlot(event2, startAccessor, min, totalMin)
+  var end1 = getSlot(event1, endAccessor, min, totalMin)
+  var end2 = getSlot(event2, endAccessor, min, totalMin)
 
-  var start1 = getSlot(event1, startAccessor, min, totalMin);
-  var start2 = getSlot(event2, startAccessor, min, totalMin);
-  var end1 = getSlot(event1, endAccessor, min, totalMin);
-  var end2 = getSlot(event2, endAccessor, min, totalMin);
-
-  return (start2 <= start1 && end2 > start1) || (start2 >= start1 && start2 < end1);
-};
+  return (start2 <= start1 && end2 > start1) || (start2 >= start1 && start2 < end1)
+}
 
 /**
  * An event is considered a child of another event if its start time is

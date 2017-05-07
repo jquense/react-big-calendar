@@ -36,7 +36,7 @@ let getSlot = (event, accessor, min, totalMin) => event && positionFromDate(
 /**
  * Two events are considered siblings if their times are overlapping
  */
-let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin }) => {
+let isSibling = (idx1, idx2, { events, startAccessor, endAccessor, min, totalMin }) => {
   let event1 = events[idx1]
   let event2 = events[idx2]
 

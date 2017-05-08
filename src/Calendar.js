@@ -9,6 +9,7 @@ import {
   , dateRangeFormat
   , views as componentViews } from './utils/propTypes';
 
+import { createAccessors } from './utils/accessors'
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import defaultFormats from './formats';

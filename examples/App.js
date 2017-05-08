@@ -25,14 +25,14 @@ const Example = React.createClass({
   render() {
     let selected = this.state.selected;
     let Current = {
-      basic: require('./demos/basic'),
-      selectable: require('./demos/selectable'),
-      cultures: require('./demos/cultures'),
-      popup: require('./demos/popup'),
-      rendering: require('./demos/rendering'),
-      customView: require('./demos/customView'),
-      timeslots: require('./demos/timeslots'),
-      dnd: require('./demos/dnd')
+      basic: require('./demos/basic').default,
+      selectable: require('./demos/selectable').default,
+      cultures: require('./demos/cultures').default,
+      popup: require('./demos/popup').default,
+      rendering: require('./demos/rendering').default,
+      customView: require('./demos/customView').default,
+      timeslots: require('./demos/timeslots').default,
+      dnd: require('./demos/dnd').default,
     }[selected];
 
     return (

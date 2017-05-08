@@ -11,10 +11,10 @@ class Day extends React.Component {
 
   render() {
     let { date, ...props } = this.props;
-    let { start, end } = Day.range(date)
+    let range = Day.range(date)
 
     return (
-      <TimeGrid {...props} start={start} end={end} eventOffset={10} />
+      <TimeGrid {...props} range={range} eventOffset={10} />
     );
   }
 }
@@ -34,8 +34,7 @@ Day.navigate = (date, action)=>{
 
 
 Day.range = (date)=> {
-  date = dates.startOf(date, 'day')
-  return { start: date, end: date }
+  return [dates.startOf(date, 'day')]
 }
 
 

@@ -155,6 +155,7 @@ class MonthView extends React.Component {
       eventPropGetter,
       messages,
       selected,
+      now,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -168,6 +169,7 @@ class MonthView extends React.Component {
         ref={weekIdx === 0 ? 'slotRow' : undefined}
         container={this.getContainer}
         className="rbc-month-row"
+        now={now}
         range={week}
         events={events}
         maxRows={rowLimit}

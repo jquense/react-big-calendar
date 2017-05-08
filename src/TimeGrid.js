@@ -28,8 +28,9 @@ export default class TimeGrid extends Component {
     events: PropTypes.array.isRequired,
 
     step: PropTypes.number,
-    start: PropTypes.instanceOf(Date),
-    end: PropTypes.instanceOf(Date),
+    range: PropTypes.arrayOf(
+      PropTypes.instanceOf(Date)
+    ),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     now: PropTypes.instanceOf(Date),
@@ -113,10 +114,10 @@ export default class TimeGrid extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { start, scrollToTime } = this.props;
+    const { range, scrollToTime } = this.props;
     // When paginating, reset scroll
     if (
-      !dates.eq(nextProps.start, start, 'minute') ||
+      !dates.eq(nextProps.range[0], range[0], 'minute') ||
       !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
     ) {
       this.calculateScroll();
@@ -136,8 +137,7 @@ export default class TimeGrid extends Component {
   render() {
     let {
         events
-      , start
-      , end
+      , range
       , width
       , startAccessor
       , endAccessor
@@ -145,7 +145,8 @@ export default class TimeGrid extends Component {
 
     width = width || this.state.gutterWidth;
 
-    let range = dates.range(start, end, 'day')
+    let start = range[0]
+      , end = range[range.length - 1]
 
     this.slots = range.length;
 
@@ -225,7 +226,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components } = this.props;
+    let { messages, rtl, selectable, components, now } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
@@ -257,6 +258,7 @@ export default class TimeGrid extends Component {
             { message(messages).allDay }
           </div>
           <DateContentRow
+            now={now}
             minRows={2}
             range={range}
             rtl={this.props.rtl}

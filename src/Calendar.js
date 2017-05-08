@@ -133,7 +133,7 @@ class Calendar extends React.Component {
    /**
     * An array of built-in view names to allow the calendar to display.
     *
-    * @type Calendar.views
+    * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
     * @default ['month', 'week', 'day', 'agenda']
     */
    views: componentViews,

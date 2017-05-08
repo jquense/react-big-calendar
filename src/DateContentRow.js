@@ -31,6 +31,7 @@ const propTypes = {
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
 
+  now: PropTypes.instanceOf(Date),
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
@@ -105,7 +106,7 @@ class DateContentRow extends React.Component {
       style: segStyle(1, range.length),
       className: cn(
         'rbc-date-cell',
-        dates.eq(date, new Date(), 'day') && 'rbc-now', // FIXME use props.now
+        dates.eq(date, this.props.now, 'day') && 'rbc-now', // FIXME use props.now
       )
     })
   }

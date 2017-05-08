@@ -41,5 +41,3 @@ module.exports = {
     plugins.extractText()
   ]
 }
-
-console.log(module.exports.module.rules[0])

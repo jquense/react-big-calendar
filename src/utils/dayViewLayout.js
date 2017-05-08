@@ -45,9 +45,8 @@ let isSibling = (idx1, idx2, { events, startAccessor, endAccessor, min, totalMin
   let start1 = getSlot(event1, startAccessor, min, totalMin)
   let start2 = getSlot(event2, startAccessor, min, totalMin)
   let end1 = getSlot(event1, endAccessor, min, totalMin)
-  let end2 = getSlot(event2, endAccessor, min, totalMin)
 
-  return (start2 <= start1 && end2 > start1) || (start2 >= start1 && start2 < end1)
+  return (Math.abs(start1 - start2) < 60 && start2 < end1)
 }
 
 /**

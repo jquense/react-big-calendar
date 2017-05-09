@@ -84,7 +84,7 @@ button.rbc-input::-moz-focus-inner {
   z-index: 4;
 }
 .rbc-time-view-week .rbc-today {
-  background-color: #f1f1f1;
+  background-color: #f4f4f4;
 }
 .rbc-toolbar {
   display: -ms-flexbox;
@@ -456,9 +456,11 @@ button.rbc-input::-moz-focus-inner {
 .rbc-time-slot {
   -ms-flex: 1 0 0px;
       flex: 1 0 0;
-}
-.rbc-time-slot.rbc-now {
-  font-weight: bold;
+  /* removing the bold time for now
+  &.rbc-now {
+    font-weight: bold;
+  }
+  */
 }
 .rbc-day-header {
   text-align: center;

@@ -30,6 +30,7 @@ let DaySlot = React.createClass({
 
   propTypes: {
     events: React.PropTypes.array.isRequired,
+    entityKeyAccessor: React.PropTypes.string,
     step: React.PropTypes.number.isRequired,
     rightOffset: React.PropTypes.number.isRequired,
     min: React.PropTypes.instanceOf(Date).isRequired,
@@ -152,7 +153,7 @@ let DaySlot = React.createClass({
       , rtl: isRtl
       , step
       , rightOffset
-      , startAccessor, endAccessor, titleAccessor } = this.props;
+      , startAccessor, endAccessor, titleAccessor, entityKeyAccessor } = this.props;
 
     let EventComponent = eventComponent
 
@@ -163,6 +164,7 @@ let DaySlot = React.createClass({
     return styledEvents.map(({ event, style }, idx) => {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
+      const key = entityKeyAccessor ? event[entityKeyAccessor] : `evt_${idx}`;
 
       let continuesPrior = startsBefore(start, min)
       let continuesAfter = startsAfter(end, max)
@@ -177,7 +179,7 @@ let DaySlot = React.createClass({
       let { height, top, width, xOffset } = style
 
       return (
-        <EventWrapper event={event} key={'evt_' + idx}>
+        <EventWrapper event={event} key={key}>
           <div
             style={{
               ...xStyle,

@@ -34,10 +34,9 @@ let getSlot = (event, accessor, min, totalMin) => event && positionFromDate(
 )
 
 /**
- * Two events are considered siblings if the difference between their
- * start time is less than 1 hour.
+ * Two events are considered siblings if their times are overlapping
  */
-let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin }) => {
+let isSibling = (idx1, idx2, { events, startAccessor, endAccessor, min, totalMin }) => {
   let event1 = events[idx1]
   let event2 = events[idx2]
 
@@ -45,8 +44,9 @@ let isSibling = (idx1, idx2, { events, startAccessor, min, totalMin }) => {
 
   let start1 = getSlot(event1, startAccessor, min, totalMin)
   let start2 = getSlot(event2, startAccessor, min, totalMin)
+  let end1 = getSlot(event1, endAccessor, min, totalMin)
 
-  return (Math.abs(start1 - start2) < 60)
+  return (Math.abs(start1 - start2) < 60 && start2 < end1)
 }
 
 /**

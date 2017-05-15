@@ -16,7 +16,8 @@ export function positionFromDate(date, min, total) {
 /**
  * Events will be sorted primarily according to earliest start time.
  * If two events start at the same time, the one with the longest duration will
- * be placed first.
+ * be placed first. If they also have the same duration, then they will be sorted
+ * by their entity keys if `entityKeyAccessor` prop was provided to the calendar.
  */
 let sort = (events, { startAccessor, endAccessor, entityKeyAccessor }) => events.sort((a, b) => {
   let startA = +get(a, startAccessor)
@@ -24,7 +25,6 @@ let sort = (events, { startAccessor, endAccessor, entityKeyAccessor }) => events
 
   if (startA === startB) {
     const endTimeSort = +get(b, endAccessor) - +get(a, endAccessor);
-    // break the tie by sorting by entityKey if available
     if (endTimeSort === 0 && entityKeyAccessor) {
       // entity key may be a number, so cast to string first... this breaks logical
       // sorting of numbers, but we're really just looking for a consistent sort.

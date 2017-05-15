@@ -158,7 +158,7 @@ let DaySlot = React.createClass({
     let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
-      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step, rightOffset
+      events, entityKeyAccessor, startAccessor, endAccessor, min, totalMin: this._totalMin, step, rightOffset
     })
 
     return styledEvents.map(({ event, style }, idx) => {

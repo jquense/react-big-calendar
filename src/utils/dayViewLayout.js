@@ -18,12 +18,19 @@ export function positionFromDate(date, min, total) {
  * If two events start at the same time, the one with the longest duration will
  * be placed first.
  */
-let sort = (events, { startAccessor, endAccessor }) => events.sort((a, b) => {
+let sort = (events, { startAccessor, endAccessor, entityKeyAccessor }) => events.sort((a, b) => {
   let startA = +get(a, startAccessor)
   let startB = +get(b, startAccessor)
 
   if (startA === startB) {
-    return +get(b, endAccessor) - +get(a, endAccessor)
+    const endTimeSort = +get(b, endAccessor) - +get(a, endAccessor);
+    // break the tie by sorting by entityKey if available
+    if (endTimeSort === 0 && entityKeyAccessor) {
+      // entity key may be a number, so cast to string first... this breaks logical
+      // sorting of numbers, but we're really just looking for a consistent sort.
+      return (String(a[entityKeyAccessor]).localeCompare(String(b[entityKeyAccessor])));
+    }
+    return endTimeSort;
   }
 
   return startA - startB
@@ -168,10 +175,10 @@ let getYStyles = (idx, {
  * traversed, so the cursor will be moved past all of them.
  */
 export default function getStyledEvents ({
-  events: unsortedEvents, startAccessor, endAccessor, min, totalMin, step, rightOffset = 0
+  events: unsortedEvents, entityKeyAccessor, startAccessor, endAccessor, min, totalMin, step, rightOffset = 0
 }) {
   let OVERLAP_MULTIPLIER = 0.3
-  let events = sort(unsortedEvents, { startAccessor, endAccessor })
+  let events = sort(unsortedEvents, { startAccessor, endAccessor, entityKeyAccessor })
   let helperArgs = { events, startAccessor, endAccessor, min, totalMin, step }
   let styledEvents = []
   let idx = 0

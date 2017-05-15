@@ -73,10 +73,8 @@ const Example = React.createClass({
               </li>
             </ul>
           </header>
-          <div className="example-wrapper">
-            <div className='example'>
-              <Current className='demo' />
-            </div>
+          <div className='example'>
+            <Current className='demo' />
           </div>
         </div>
         <div className='docs'>

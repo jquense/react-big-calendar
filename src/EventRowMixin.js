@@ -14,7 +14,7 @@ export default {
     end: PropTypes.instanceOf(Date),
     start: PropTypes.instanceOf(Date),
 
-    selected: PropTypes.array,
+    selected: PropTypes.object,
     eventPropGetter: PropTypes.func,
     titleAccessor: accessor,
     allDayAccessor: accessor,
@@ -28,7 +28,7 @@ export default {
 
   defaultProps: {
     segments: [],
-    selected: [],
+    selected: {},
     slots: 7
   },
 

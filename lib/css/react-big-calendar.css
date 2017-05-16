@@ -571,6 +571,7 @@ button.rbc-input::-moz-focus-inner {
   z-index: 3;
   left: 0;
   height: 2px;
+  opacity: 0.5;
   background-color: #1c94bc;
   pointer-events: none;
 }

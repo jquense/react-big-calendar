@@ -293,7 +293,12 @@ export default class TimeGrid extends Component {
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date);
-      let label = localizer.format(date, dayFormat, culture);
+
+      // HACK: note date here is on browser timezone, we're dropping the time and displaying
+      // the date in given localizer timezone, if it's not matching the browser timezone
+      let dateStr = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
+      let displayDate = localizer.parse(dateStr, 'YYYY/MM/DD');
+      let label = localizer.format(displayDate, dayFormat, culture);
 
       let header = (
         <HeaderComponent

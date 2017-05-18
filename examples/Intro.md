@@ -27,8 +27,8 @@ const MyCalendar = props => (
   <div>
     <BigCalendar
       events={myEventsList}
-      startAccessor='startDate'
-      endAccessor='endDate'
+      startAccessor='start'
+      endAccessor='end'
     />
   </div>
 );

@@ -23,11 +23,15 @@ import defaults from 'lodash/defaults';
 import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
+
 function viewNames(_views){
   return !Array.isArray(_views) ? Object.keys(_views) : _views
 }
 
-function isValidView(view, { views: _views }) {
+function isValidView(view, { views: _views, viewAliases }) {
+  if (viewAliases && viewAliases[view]) {
+    view = viewAliases[view];
+  }
   let names = viewNames(_views)
   return names.indexOf(view) !== -1
 }
@@ -74,6 +78,19 @@ let Calendar = React.createClass({
      * @controllable onView
      */
     view: PropTypes.string,
+
+    /**
+     * An object-map where the keys are view aliases and the values are
+     * the valid underlying views. For example, { 'day-wide': 'day' } could
+     * be used to treat 'day-wide' as a 'day' view under the hood.
+     *
+     * This is useful mostly just for the odd cases where you may want to show
+     * the same view in multiple different ways, for example with different
+     * container sizes. It allows you to specify different view names from the
+     * outside of this component and have this component understand them all to
+     * be the same logical view.
+     */
+    viewAliases: PropTypes.object,
 
     /**
      * An array of event objects to display on the calendar
@@ -564,6 +581,19 @@ let Calendar = React.createClass({
     };
   },
 
+  /**
+   * Gets the logical view - particularly important because this function can handle
+   * view aliases.
+   */
+  getLogicalView() {
+    const { view, viewAliases } = this.props;
+    let realView = view;
+    if (viewAliases && viewAliases[view]) {
+      realView = viewAliases[view];
+    }
+    return realView;
+  },
+
   getViews() {
     const views = this.props.views;
 
@@ -587,15 +617,15 @@ let Calendar = React.createClass({
   getView() {
     const views = this.getViews();
 
-    return views[this.props.view];
+    return views[this.getLogicalView()];
   },
 
   getDrilldownView(date) {
-    const { view, drilldownView, getDrilldownView } = this.props
+    const { drilldownView, getDrilldownView } = this.props
 
     if (!getDrilldownView) return drilldownView
 
-    return getDrilldownView(date, view, Object.keys(this.getViews()));
+    return getDrilldownView(date, this.getLogicalView(), Object.keys(this.getViews()));
   },
 
   render() {
@@ -610,6 +640,10 @@ let Calendar = React.createClass({
       , elementProps
       , date: current
       , ...props } = this.props;
+
+    const viewName = view;
+
+    view = this.getLogicalView();
 
     formats = defaultFormats(formats)
 
@@ -641,6 +675,7 @@ let Calendar = React.createClass({
           <ToolbarToRender
             date={current}
             view={view}
+            viewName={viewName}
             views={names}
             label={viewLabel(current, view, formats, culture)}
             onViewChange={this.handleViewChange}
@@ -672,12 +707,12 @@ let Calendar = React.createClass({
   },
 
   handleNavigate(action, newDate) {
-    let { view, date, onNavigate } = this.props;
+    let { date, onNavigate } = this.props;
     let ViewComponent = this.getView();
 
     date = moveDate(action, newDate || date, ViewComponent)
 
-    onNavigate(date, view)
+    onNavigate(date, this.getLogicalView())
   },
 
   handleViewChange(view) {

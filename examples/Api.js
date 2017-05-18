@@ -76,12 +76,11 @@ let Api = React.createClass({
       case 'elementType':
         return 'Component';
       case 'dateRangeFormat':
-        return 'function({ start: Date, end: Date }, culture: ?string, localizer) -> string';
+        return '(range: { start: Date, end: Date }, culture: ?string, localizer: any) => string';
       case 'object':
         if (type.value)
           return (
             <pre className='shape-prop'>
-              {'object -> \n'}
               { displayObj(renderObject(type.value))}
             </pre>
           )
@@ -101,7 +100,7 @@ let Api = React.createClass({
       case 'array': {
         let child = this.renderType({ type: type.value });
 
-        return <span>{'array<'}{ child }{'>'}</span>;
+        return <span>{'Array<'}{ child }{'>'}</span>;
       }
       case 'enum':
         return this.renderEnum(type);
@@ -192,7 +191,7 @@ function simpleType(prop) {
     case 'array':
       let child = simpleType({ type: type.value });
 
-      return 'array<' + child + '>';
+      return 'Array<' + child + '>';
     case 'custom':
       return cleanDocletValue(doclets.type || name);
     default:

@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DragSource } from 'react-dnd';
 
-class ExpandableEventComponent extends React.Component {
+class ResizableEventComponent extends React.Component {
   render () {
     const { title, connectDragSource } = this.props;
     return (
-      <div className="rbc-addons-dnd-expandable-event">
+      <div className="rbc-addons-dnd-resizable-event">
         {title}
         {
           connectDragSource(
-            <div className="rbc-addons-dnd-expand-anchor">
-              <div className="rbc-addons-dnd-expand-icon" />
+            <div className="rbc-addons-dnd-resize-anchor">
+              <div className="rbc-addons-dnd-resize-icon" />
             </div>
           )
         }
@@ -30,4 +30,4 @@ const collectSource = (connect, monitor) =>
     isDragging: monitor.isDragging()
   })
 
-export default DragSource('resize', eventSource, collectSource)(ExpandableEventComponent);
+export default DragSource('resize', eventSource, collectSource)(ResizableEventComponent);

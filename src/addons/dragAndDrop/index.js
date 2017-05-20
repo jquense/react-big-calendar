@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import { accessor } from '../../utils/propTypes';
 import DraggableEventWrapper from './DraggableEventWrapper'
-import ExpandableEventComponent from './ExpandableEventComponent'
+import ResizableEventComponent from './ResizableEventComponent'
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
 
 let html5Backend;
@@ -62,6 +62,7 @@ export default function withDragAndDrop(Calendar, {
       const { selectable, components, ...props } = this.props;
 
       delete props.onEventDrop;
+      delete props.onEventResize;
 
       props.selectable = selectable
         ? 'ignoreEvents' : false;
@@ -75,7 +76,7 @@ export default function withDragAndDrop(Calendar, {
       props.components = {
         ...components,
         eventWrapper: DraggableEventWrapper,
-        eventComponent: ExpandableEventComponent,
+        eventComponent: this.props.resizable && ResizableEventComponent,
         dateCellWrapper: DateCellWrapper,
         dayWrapper: DayWrapper
       }
@@ -86,6 +87,7 @@ export default function withDragAndDrop(Calendar, {
 
   DragAndDropCalendar.propTypes = {
     onEventDrop: PropTypes.func.isRequired,
+    resizable: PropTypes.bool,
     onEventResize: PropTypes.func,
     startAccessor: accessor,
     endAccessor: accessor

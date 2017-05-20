@@ -5,6 +5,7 @@ import cn from 'classnames';
 
 import { accessor } from '../../utils/propTypes';
 import DraggableEventWrapper from './DraggableEventWrapper'
+import ExpandableEventComponent from './ExpandableEventComponent'
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
 
 let html5Backend;
@@ -73,6 +74,7 @@ export default function withDragAndDrop(Calendar, {
       props.components = {
         ...components,
         eventWrapper: DraggableEventWrapper,
+        eventComponent: ExpandableEventComponent,
         dateCellWrapper: DateCellWrapper,
         dayWrapper: DayWrapper
       }

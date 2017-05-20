@@ -131,7 +131,7 @@ class DaySlot extends React.Component {
       , max
       , culture
       , eventPropGetter
-      , selected, eventTimeRangeFormat, eventComponent
+      , selected, eventTimeRangeFormat, components: { eventComponent }
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
       , step

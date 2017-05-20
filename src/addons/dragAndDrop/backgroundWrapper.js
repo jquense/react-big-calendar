@@ -93,6 +93,7 @@ DraggableBackgroundWrapper.propTypes = propTypes;
 
 DraggableBackgroundWrapper.contextTypes = {
   onEventDrop: PropTypes.func,
+  onEventResize: PropTypes.func,
   dragDropManager: PropTypes.object,
   startAccessor: accessor,
   endAccessor: accessor
@@ -112,18 +113,27 @@ function createWrapper(type) {
     drop(_, monitor, { props, context }) {
       const event = monitor.getItem();
       const { value } = props
-      const { onEventDrop, startAccessor, endAccessor } = context
+      const { onEventDrop, onEventResize, startAccessor, endAccessor } = context
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
-      onEventDrop({
-        event,
-        ...getEventTimes(start, end, value, type)
-      })
+      if (monitor.getItemType() === 'event') {
+        onEventDrop({
+          event,
+          ...getEventTimes(start, end, value, type)
+        })
+      }
+
+      if (monitor.getItemType() === 'resize') {
+        onEventResize({
+          event,
+          end: value
+        })
+      }
     }
   };
 
-  return DropTarget(['event'], dropTarget, collectTarget)(DraggableBackgroundWrapper);
+  return DropTarget(['event', 'resize'], dropTarget, collectTarget)(DraggableBackgroundWrapper);
 }
 
 export const DateCellWrapper = createWrapper('dateCellWrapper');

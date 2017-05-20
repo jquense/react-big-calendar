@@ -72,6 +72,18 @@ class DraggableBackgroundWrapper extends React.Component {
   //   }
   // };
 
+  componentWillReceiveProps(nextProps) {
+    const { isOver:wasOver} = this.props;
+    const { isOver } = nextProps;
+    if (isOver && !wasOver) {
+      const { onEventResize, dragDropManager } = this.context;
+      const { value } = this.props;
+      const monitor = dragDropManager.getMonitor()
+      if (monitor.getItemType() === 'resize')
+        onEventResize({event: monitor.getItem(), end: value});
+    }
+  }
+
   render() {
     const { connectDropTarget, children, type, isOver } = this.props;
     const BackgroundWrapper = BigCalendar.components[type];

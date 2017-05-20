@@ -16,6 +16,7 @@ import Popup from './Popup'
 import Overlay from 'react-overlays/lib/Overlay'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
+import DateHeader from './DateHeader'
 
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
@@ -193,7 +194,7 @@ class MonthView extends React.Component {
     )
   }
 
-  readerDateHeading = ({ date, className, ...props }) => {
+  readerDateHeading = ({ date, className, isFirstInRange, isLastInRange, ...props }) => {
     let {
       date: currentDate,
       getDrilldownView,
@@ -205,6 +206,7 @@ class MonthView extends React.Component {
     let isCurrent = dates.eq(date, currentDate, 'day')
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, dateFormat, culture)
+    let DateHeaderComponent = this.props.components.dateHeader || DateHeader
 
     return (
       <div
@@ -215,16 +217,15 @@ class MonthView extends React.Component {
           isCurrent && 'rbc-current'
         )}
       >
-        {drilldownView
-          ? <a
-              href="#"
-              onClick={e => this.handleHeadingClick(date, drilldownView, e)}
-            >
-              {label}
-            </a>
-          : <span>
-              {label}
-            </span>}
+        <DateHeaderComponent
+          label={label}
+          date={date}
+          drilldownView={drilldownView}
+          isFirstInRange={isFirstInRange}
+          isLastInRange={isLastInRange}
+          isOffRange={isOffRange}
+          isCurrent={isCurrent}
+          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)} />
       </div>
     )
   }

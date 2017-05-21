@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DragSource } from 'react-dnd';
 
-class ResizableEventComponent extends React.Component {
+class ResizableEvent extends React.Component {
   render () {
     const { title, connectDragSource } = this.props;
     return (
@@ -30,4 +30,4 @@ const collectSource = (connect, monitor) =>
     isDragging: monitor.isDragging()
   })
 
-export default DragSource('resize', eventSource, collectSource)(ResizableEventComponent);
+export default DragSource('resize', eventSource, collectSource)(ResizableEvent);

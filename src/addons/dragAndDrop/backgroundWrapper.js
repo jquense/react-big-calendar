@@ -80,7 +80,7 @@ class DraggableBackgroundWrapper extends React.Component {
       const { value } = this.props;
       const monitor = dragDropManager.getMonitor()
       if (monitor.getItemType() === 'resize')
-        onEventResize({event: monitor.getItem(), end: value});
+        onEventResize('drag', {event: monitor.getItem(), end: value});
     }
   }
 
@@ -137,7 +137,7 @@ function createWrapper(type) {
       }
 
       if (monitor.getItemType() === 'resize') {
-        onEventResize({
+        onEventResize('drop', {
           event,
           end: value
         })

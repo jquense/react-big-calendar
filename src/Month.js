@@ -18,10 +18,10 @@ import DateContentRow from './DateContentRow'
 import Header from './Header'
 
 import { accessor, dateFormat } from './utils/propTypes'
-import { segStyle, inRange, sortEvents } from './utils/eventLevels'
+import { segStyle, within, sortEvents } from './utils/eventLevels'
 
 let eventsForWeek = (evts, start, end, props) =>
-  evts.filter(e => inRange(e, start, end, props))
+  evts.filter(e => within(e, start, end, props))
 
 let propTypes = {
   events: PropTypes.array.isRequired,

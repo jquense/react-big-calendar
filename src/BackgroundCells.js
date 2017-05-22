@@ -62,7 +62,12 @@ class BackgroundCells extends React.Component {
         {range.map((date, index) => {
           let selected =  selecting && index >= startIdx && index <= endIdx;
           return (
-            <Wrapper key={index} value={date}>
+            <Wrapper
+              key={index}
+              value={date}
+              isFirstInRange={index === 0}
+              isLastInRange={index === range.length - 1}
+            >
               <div
                 style={segStyle(1, range.length)}
                 className={cn(

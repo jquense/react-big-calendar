@@ -311,7 +311,7 @@ export default class TimeGrid extends Component {
         >
           {drilldownView ? (
             <a
-              href='#'
+              href='javascript:void(0);'
               onClick={e => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}

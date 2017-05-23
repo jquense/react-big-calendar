@@ -118,6 +118,22 @@ let dates = {
     ))
   },
 
+  timeDiffLTE(dateA, dateB, value, unit) {
+    const timeDiff = Math.abs(dateA.getTime() - dateB.getTime());
+    if (!unit || unit === 'milliseconds') {
+      return timeDiff <= value;
+    }
+    return timeDiff <= (value * MILLI[unit]);
+  },
+
+  isDayBefore(baseDate, compareDate) {
+    return dates.eq(compareDate, dates.subtract(baseDate, 1, 'day'), 'day');
+  },
+
+  isDayAfter(baseDate, compareDate) {
+    return dates.eq(compareDate, dates.add(baseDate, 1, 'day'), 'day');
+  },
+
   total(date, unit) {
     let ms = date.getTime()
       , div = 1;

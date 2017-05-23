@@ -15,9 +15,7 @@ import message from './utils/messages';
 
 import { accessor, dateFormat } from './utils/propTypes';
 
-import { notify } from './utils/helpers';
-
-import { accessor as get } from './utils/accessors';
+import { notify, isAllDayEvent, makeEventFilter } from './utils/helpers';
 
 import { inRange, sortEvents, segStyle } from './utils/eventLevels';
 
@@ -148,12 +146,7 @@ export default class TimeGrid extends Component {
 
     events.forEach(event => {
       if (inRange(event, start, end, this.props)) {
-        let eStart = get(event, startAccessor)
-          , eEnd = get(event, endAccessor);
-
-        if (get(event, allDayAccessor)
-            || !dates.eq(eStart, eEnd, 'day')
-            || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))) {
+        if (isAllDayEvent(event, { startAccessor, endAccessor, allDayAccessor })) {
           if (!singleDayEventsOnly) {
             allDayEvents.push(event);
           }
@@ -195,11 +188,7 @@ export default class TimeGrid extends Component {
     let { min, max, endAccessor, startAccessor, components } = this.props;
 
     return range.map((date, idx) => {
-      let daysEvents = events.filter(
-        event => dates.inRange(date,
-          get(event, startAccessor),
-          get(event, endAccessor), 'day')
-      )
+      let daysEvents = events.filter(makeEventFilter(date, { startAccessor, endAccessor }));
 
       return (
         <DayColumn

@@ -12,7 +12,7 @@ import scrollbarSize from 'dom-helpers/util/scrollbarSize';
 
 import { accessor, dateFormat } from './utils/propTypes';
 
-import { notify } from './utils/helpers';
+import { notify, isAllDayEvent, makeEventFilter } from './utils/helpers';
 
 import { accessor as get } from './utils/accessors';
 
@@ -175,12 +175,7 @@ export default class MultiTimeGrid extends Component {
       const eventsForCurrentKey = eventMap[key];
       eventsForCurrentKey.forEach(event => {
         if (inRange(event, date, date, this.props)) {
-          let eStart = get(event, startAccessor)
-            , eEnd = get(event, endAccessor);
-
-          if (get(event, allDayAccessor)
-              || !dates.eq(eStart, eEnd, 'day')
-              || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))) {
+          if (isAllDayEvent(event, { startAccessor, endAccessor, allDayAccessor })) {
             // is an all day event - removed support for all day events for now,
             // but may add it back in the future
             //
@@ -230,11 +225,7 @@ export default class MultiTimeGrid extends Component {
 
     return this.props.selectedEntityKeys.map((selectedEntityKey, idx) => {
       let daysEvents = rangeEventsMap[selectedEntityKey] || [];
-      daysEvents = daysEvents.filter(
-        event => dates.inRange(date,
-          get(event, startAccessor),
-          get(event, endAccessor), 'day')
-      )
+      daysEvents = daysEvents.filter(makeEventFilter(date, { startAccessor, endAccessor }));
 
       return (
         <DayColumn

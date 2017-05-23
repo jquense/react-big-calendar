@@ -36,9 +36,36 @@ let sort = (events, { startAccessor, endAccessor, entityKeyAccessor }) => events
   return startA - startB
 })
 
-let getSlot = (event, accessor, min, totalMin) => event && positionFromDate(
-  get(event, accessor), min, totalMin
-)
+let getSlot = (event, accessor, min, totalMin, isEndAccessor = false) => {
+  // This is here for 'logic parity' with what was here before (event && positionFromDate(...)).
+  // Not actually sure under what conditions a falsy event is passed in yet. - Sidney
+  if (!event) return event;
+
+  let time = get(event, accessor);
+
+  // Handling long range events. Though long range events have a condition that
+  // start and end times are less than 24 hours apart, we don't perform that check
+  // here. That should already be handled at the TimeGrid/MultiTimeGrid level, and
+  // any events that are 24+ hours long will be filtered into the "all day" section
+  // of the calendar, not the "range events" section, so they shouldn't reach this
+  // function.
+  if (isEndAccessor) {
+    // handling the front end of long range events:
+    // if the end time is the day after `min`, use the end of day of `min` as the end time.
+    if (dates.isDayAfter(min, time)) {
+      time = new Date(min);
+      time.setHours(23);
+      time.setMinutes(59);
+    }
+  } else {
+    // handling the back end of long range events:
+    // if the start time is the day before `min`, use `min` as the start time
+    if (dates.isDayBefore(min, time)) {
+      time = new Date(min);
+    }
+  }
+  return event && positionFromDate(time, min, totalMin);
+}
 
 /**
  * Two events are considered siblings if the difference between their
@@ -69,7 +96,7 @@ let isChild = (parentIdx, childIdx, {
     { events, startAccessor, endAccessor, min, totalMin }
   )) return false
 
-  let parentEnd = getSlot(events[parentIdx], endAccessor, min, totalMin)
+  let parentEnd = getSlot(events[parentIdx], endAccessor, min, totalMin, true)
   let childStart = getSlot(events[childIdx], startAccessor, min, totalMin)
 
   return parentEnd > childStart
@@ -137,7 +164,7 @@ let getYStyles = (idx, {
 }) => {
   let event = events[idx]
   let start = getSlot(event, startAccessor, min, totalMin)
-  let end = Math.max(getSlot(event, endAccessor, min, totalMin), start + step)
+  let end = Math.max(getSlot(event, endAccessor, min, totalMin, true), start + step)
   let top = start / totalMin * 100
   let bottom = end / totalMin * 100
 

@@ -52,7 +52,7 @@ let now = new Date();
  * on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a
  * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
  */
-class Calendar extends React.Component {
+export class Calendar extends React.Component {
  static propTypes = {
 
    /**
@@ -131,7 +131,7 @@ class Calendar extends React.Component {
     * ```
     */
    onSelecting: PropTypes.func,
-     
+
    /**
     * The selected event, if any.
     */

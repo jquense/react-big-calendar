@@ -223,6 +223,13 @@ class Calendar extends React.Component {
    timeslots: PropTypes.number,
 
    /**
+    * Whether the slots should fit events start/end time on the day/week view.
+    * If set to true, the number of timeslots become irrelevant.
+    * @default false
+    */
+   areSlotsDynamic: PropTypes.bool,
+
+   /**
     *Switch the calendar to a `right-to-left` read direction.
     */
    rtl: PropTypes.bool,

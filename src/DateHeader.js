@@ -18,10 +18,7 @@ DateHeader.propTypes = {
   date: PropTypes.instanceOf(Date),
   drillDownView: PropTypes.string,
   onDrillDown: PropTypes.func,
-  isFirstInRange: PropTypes.bool,
-  isLastInRange: PropTypes.bool,
-  isOffRange: PropTypes.bool,
-  isCurrent: PropTypes.bool
+  isOffRange: PropTypes.bool
 }
 
 export default DateHeader

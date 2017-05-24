@@ -65,8 +65,7 @@ class BackgroundCells extends React.Component {
             <Wrapper
               key={index}
               value={date}
-              isFirstInRange={index === 0}
-              isLastInRange={index === range.length - 1}
+              range={range}
             >
               <div
                 style={segStyle(1, range.length)}

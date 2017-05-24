@@ -104,8 +104,6 @@ class DateContentRow extends React.Component {
       date,
       key: `header_${index}`,
       style: segStyle(1, range.length),
-      isFirstInRange: index === 0,
-      isLastInRange: index === range.length - 1,
       className: cn(
         'rbc-date-cell',
         dates.eq(date, this.props.now, 'day') && 'rbc-now', // FIXME use props.now

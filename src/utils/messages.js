@@ -9,7 +9,7 @@ import invariant from 'invariant';
   work_week: 'work week',
   day: 'day',
   month: 'month',
-  previous: 'back',
+  previous: 'previous',
   next: 'next',
   yesterday: 'yesterday',
   tomorrow: 'tomorrow',

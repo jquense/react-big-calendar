@@ -67,6 +67,8 @@ class BackgroundCells extends React.Component {
                 className={cn(
                   'rbc-day-bg',
                   selected && 'rbc-selected-cell',
+                  // TODO: have this use the `nowTimezone` prop... if we ever add
+                  // a view that uses this component, which is not a given.
                   dates.isToday(date) && 'rbc-today',
                 )}
               />

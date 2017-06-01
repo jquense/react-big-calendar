@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import cn from 'classnames';
+import moment from 'moment-timezone';
 
 import dates from './utils/dates';
 import { elementType } from './utils/propTypes';
@@ -22,6 +23,7 @@ export default class TimeColumn extends Component {
     dayWrapperComponent: elementType,
 
     dragThroughEvents: PropTypes.bool,
+    nowTimezone: PropTypes.string,
 
     // internal prop used to make slight changes in rendering
     isMultiGrid: PropTypes.bool,
@@ -121,13 +123,13 @@ export default class TimeColumn extends Component {
   }
 
   positionTimeIndicator = () => {
-    const { min, max, dragThroughEvents } = this.props;
+    const { min, max, dragThroughEvents, nowTimezone } = this.props;
 
     // this prop is only passed into this component from DayColumn, so here we're
     // excluding the time gutter TimeColumn from having a time indicator.
     if (!dragThroughEvents) return;
 
-    const now = new Date();
+    const now = dates.now(nowTimezone);
 
     const secondsGrid = dates.diff(max, min, 'seconds');
     const secondsPassed = dates.diff(now, min, 'seconds');

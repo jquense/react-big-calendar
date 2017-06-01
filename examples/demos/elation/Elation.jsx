@@ -65,6 +65,7 @@ export default class Elation extends React.Component {
         selectedEntityKeys={[28716, 25454, 235]}
         singleDayEventsOnly
         formats={formats}
+        nowTimezone="America/Los_Angeles"
         step={10}
         rightOffset={10}
         groupHeight={140}

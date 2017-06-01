@@ -38,7 +38,8 @@ module.exports = {
       { test: /\.less/, loader: 'style-loader!css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]!less-loader', include: ELATION_DEMO_DIR },
       { test: /\.md/, loader: 'babel!markdown-jsx-loader'},
       { test: /\.js/, loaders: ['babel'], exclude: /node_modules/},
-      { test: /\.js/, loaders: ['babel'], include: path.join(__dirname, '..', 'src')}
+      { test: /\.js/, loaders: ['babel'], include: path.join(__dirname, '..', 'src')},
+      { test: /\.json$/, loader: 'json-loader' }
     ]
   },
 

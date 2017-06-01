@@ -373,6 +373,15 @@ let Calendar = React.createClass({
     culture: React.PropTypes.string,
 
     /**
+     * The timezone to use for "now" calculations, such as determining the position
+     * of the time indicator line and determining if a DayColumn is for the current day.
+     * We've introduced a dependency on `moment-timezone` for this because of our unique
+     * use case where we want to display all times in a specific timezone regardless of
+     * what timezone the user is browsing from.
+     */
+    nowTimezone: React.PropTypes.string,
+
+    /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
      *
      * `format` types are dependent on the configured localizer; both Moment and Globalize
@@ -712,7 +721,7 @@ let Calendar = React.createClass({
 
     date = moveDate(action, newDate || date, ViewComponent)
 
-    onNavigate(date, this.getLogicalView())
+    onNavigate(date, this.getLogicalView(), action);
   },
 
   handleViewChange(view) {

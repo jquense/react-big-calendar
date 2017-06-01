@@ -1,4 +1,5 @@
 /* eslint no-fallthrough: off */
+import moment from 'moment-timezone';
 import dateMath from 'date-arithmetic';
 import localizer from '../localizer';
 
@@ -82,8 +83,8 @@ let dates = {
     return dates.eq(dateA, dateB, 'month')
   },
 
-  isToday(date) {
-    return dates.eq(date, dates.today(), 'day')
+  isToday(date, timezone) {
+    return dates.eq(date, dates.today(timezone), 'day');
   },
 
   eqTime(dateA, dateB){
@@ -161,8 +162,27 @@ let dates = {
     return Math.ceil((((d - new Date(d.getFullYear(), 0, 1)) / 8.64e7 ) + 1) / 7);
   },
 
-  today() {
+  today(timezone) {
+    if (timezone) {
+      return moment(dates.now(timezone)).startOf('day').toDate();
+    }
     return dates.startOf(new Date(), 'day')
+  },
+
+  now(timezone) {
+    if (timezone) {
+      const tzNow = moment().tz(timezone);
+      return new Date(
+        tzNow.year(),
+        tzNow.month(),
+        tzNow.date(),
+        tzNow.hour(),
+        tzNow.minute(),
+        tzNow.second(),
+        tzNow.millisecond()
+      );
+    }
+    return new Date();
   },
 
   yesterday() {

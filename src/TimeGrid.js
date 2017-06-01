@@ -32,6 +32,7 @@ export default class TimeGrid extends Component {
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
     now: React.PropTypes.instanceOf(Date),
+    nowTimezone: React.PropTypes.string,
 
     scrollToTime: React.PropTypes.instanceOf(Date),
     eventPropGetter: React.PropTypes.func,
@@ -277,7 +278,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderCells(range){
-    let { dayFormat, culture, components, getDrilldownView } = this.props;
+    let { dayFormat, culture, components, getDrilldownView, nowTimezone } = this.props;
     let HeaderComponent = components.header || Header
 
     return range.map((date, i) => {
@@ -300,7 +301,7 @@ export default class TimeGrid extends Component {
           key={i}
           className={cn(
             'rbc-header',
-            dates.isToday(date) && 'rbc-today',
+            dates.isToday(date, nowTimezone) && 'rbc-today',
           )}
           style={segStyle(1, this.slots)}
         >

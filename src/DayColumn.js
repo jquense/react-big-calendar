@@ -36,6 +36,7 @@ let DaySlot = React.createClass({
     min: React.PropTypes.instanceOf(Date).isRequired,
     max: React.PropTypes.instanceOf(Date).isRequired,
     now: React.PropTypes.instanceOf(Date),
+    nowTimezone: React.PropTypes.string,
 
     rtl: React.PropTypes.bool,
     titleAccessor: accessor,
@@ -97,6 +98,7 @@ let DaySlot = React.createClass({
       max,
       step,
       now,
+      nowTimezone,
       selectRangeFormat,
       culture,
       isMultiGrid,
@@ -118,11 +120,12 @@ let DaySlot = React.createClass({
         {...props}
         className={cn(
           'rbc-day-slot',
-          !isMultiGrid && dates.isToday(max) && 'rbc-today',
-          dates.lt(max, dates.today(), 'day') && 'rbc-past',
+          !isMultiGrid && dates.isToday(max, nowTimezone) && 'rbc-today',
+          dates.lt(max, dates.today(nowTimezone), 'day') && 'rbc-past',
           (bowser.mobile || bowser.tablet) && 'rbc-mobile-clickable'
         )}
         now={now}
+        nowTimezone={nowTimezone}
         min={min}
         max={max}
         step={step}

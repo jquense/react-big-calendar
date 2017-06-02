@@ -15,7 +15,8 @@ export default class TimeSlotGroup extends Component {
     isNow: PropTypes.bool,
     slotPropGetter: PropTypes.func,
     timeGutterFormat: dateFormat,
-    culture: PropTypes.string
+    culture: PropTypes.string,
+    resource: PropTypes.string
   }
   static defaultProps = {
     timeslots: 2,
@@ -25,7 +26,7 @@ export default class TimeSlotGroup extends Component {
   }
 
   renderSlice(slotNumber, content, value) {
-    const { dayWrapperComponent, showLabels, isNow, culture, slotPropGetter } = this.props;
+    const { dayWrapperComponent, showLabels, isNow, culture, resource, slotPropGetter } = this.props;
     return (
       <TimeSlot
         key={slotNumber}
@@ -35,6 +36,7 @@ export default class TimeSlotGroup extends Component {
         content={content}
         culture={culture}
         isNow={isNow}
+        resource={resource}
         value={value}
       />
     )

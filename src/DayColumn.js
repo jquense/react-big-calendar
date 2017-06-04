@@ -34,6 +34,7 @@ class DaySlot extends React.Component {
     now: PropTypes.instanceOf(Date),
 
     rtl: PropTypes.bool,
+    removeHoverTitle: PropTypes.bool,
     titleAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
@@ -134,6 +135,7 @@ class DaySlot extends React.Component {
       , selected, eventTimeRangeFormat, eventComponent
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
+      , removeHoverTitle
       , step
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
@@ -159,6 +161,8 @@ class DaySlot extends React.Component {
 
       let { height, top, width, xOffset } = style
 
+      let hoverTitle = removeHoverTitle ? '' : `${label}: ${title }`
+
       return (
         <EventWrapper event={event} key={'evt_' + idx}>
           <div
@@ -169,7 +173,7 @@ class DaySlot extends React.Component {
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
               width: `${width}%`
             }}
-            title={label + ': ' + title }
+            title={ hoverTitle }
             onClick={(e) => this._select(event, e)}
             className={cn('rbc-event', className, {
               'rbc-selected': _isSelected,

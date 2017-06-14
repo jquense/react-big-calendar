@@ -8,9 +8,19 @@
   align-items: center;
   margin-bottom: 10px;
   font-size: 16px;
+  justify-content: space-between;
+
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+
+    .rbc-btn-group:last-child {
+      margin-top: 0.5em;
+      width: 100%;
+    }
+  }
 
   .rbc-toolbar-label {
-    width: 100%;
+    font-weight: bold;
     padding: 0 10px;
     text-align: center;
   }

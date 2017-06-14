@@ -180,6 +180,13 @@ class Calendar extends React.Component {
    getDrilldownView: PropTypes.func,
 
    /**
+    * Number of all-day events displayed on `Week`, `WorkWeek` and `Day` view.
+    * Will add `+ x more` at the end if total number of all-day events exceeds the limit.
+    * TODO: Currently not working under `WorkWeek` because of column offset.
+    */
+   allDayEventsLimit: PropTypes.number,
+
+   /**
     * Determines whether the toolbar is displayed
     */
    toolbar: PropTypes.bool,
@@ -450,6 +457,7 @@ class Calendar extends React.Component {
    step: 30,
 
    drilldownView: views.DAY,
+   allDayEventsLimit: 5,
 
    titleAccessor: 'title',
    allDayAccessor: 'allDay',

@@ -4,11 +4,13 @@ import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 
 import dates from './utils/dates';
+import { views }from './utils/constants'
 import localizer from './localizer'
 import DayColumn from './DayColumn';
 import TimeColumn from './TimeColumn';
 import DateContentRow from './DateContentRow';
 import Header from './Header';
+
 
 import getWidth from 'dom-helpers/query/width';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
@@ -58,6 +60,7 @@ export default class TimeGrid extends Component {
     onSelectEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
+    allDayEventsLimit: PropTypes.number,
 
     messages: PropTypes.object,
     components: PropTypes.object.isRequired,
@@ -72,7 +75,7 @@ export default class TimeGrid extends Component {
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    now: new Date()
+    now: new Date(),
   }
 
   constructor(props) {
@@ -260,10 +263,12 @@ export default class TimeGrid extends Component {
           <DateContentRow
             now={now}
             minRows={2}
+            maxRows={this.props.allDayEventsLimit}
             range={range}
             rtl={this.props.rtl}
             events={events}
             className='rbc-allday-cell'
+            onShowMore={this.handleShowMore}
             selectable={selectable}
             onSelectSlot={this.handleSelectAllDaySlot}
             dateCellWrapper={components.dateCellWrapper}
@@ -324,6 +329,14 @@ export default class TimeGrid extends Component {
         </div>
       )
     })
+  }
+
+  handleShowMore = (events, date) => {
+    const { onDrillDown, getDrilldownView } = this.props
+    //cancel any pending selections so only the event click goes through.
+    this.clearSelection();
+
+    notify(onDrillDown, [date, getDrilldownView(date) || views.DAY]);
   }
 
   handleHeaderClick(date, view, e){

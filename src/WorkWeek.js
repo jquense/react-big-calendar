@@ -13,6 +13,8 @@ class WorkWeek extends React.Component {
 
   render() {
     let { date, ...props } = this.props
+    // Overrides allDayEventsLimit because the column offset is incorrect.
+    props.allDayEventsLimit = Infinity;
     let range = WorkWeek.range(date, this.props)
 
     return <TimeGrid {...props} range={range} eventOffset={15} />

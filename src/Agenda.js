@@ -211,7 +211,7 @@ Agenda.navigate = (date, action)=>{
 
 Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
   let end = dates.add(start, length, 'day')
-  return { start, end }
+  return [start, end]
 }
 
 export default Agenda

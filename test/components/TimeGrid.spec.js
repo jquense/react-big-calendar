@@ -3,7 +3,6 @@ import React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import moment from 'moment';
 
 import * as Helpers from '../../src/utils/helpers';
 

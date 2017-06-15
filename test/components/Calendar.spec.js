@@ -20,17 +20,25 @@ describe('<Calendar />', () => {
   });
 
   describe('on componentDidMount', () => {
-    it('has allDayEventsLimit prop', () => {
+    it('has correct props', () => {
       props.allDayEventsLimit = 3;
+      props.agendaLength = 0;
       const wrapper = shallow(<Calendar {...props} />);
 
-      expect(wrapper).to.have.prop('allDayEventsLimit', 3);   
+      expect(wrapper).to.have.prop('allDayEventsLimit', 3);
+      expect(wrapper).to.have.prop('agendaLength', 0);
     });
 
     it('has allDayEventsLimit default value', () => {
       const wrapper = shallow(<Calendar {...props} />);
 
       expect(wrapper).to.have.prop('allDayEventsLimit', 5);
-    })
-  })
+    });
+
+    it('has agendaLength default value', () => {
+      const wrapper = shallow(<Calendar {...props} />);
+
+      expect(wrapper).to.have.prop('agendaLength', 30);
+    });
+  });
 });

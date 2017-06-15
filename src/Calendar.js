@@ -187,6 +187,12 @@ class Calendar extends React.Component {
    allDayEventsLimit: PropTypes.number,
 
    /**
+    * Length of date range in agenda view.
+    * Default to 30
+    */
+   agendaLength: PropTypes.number,
+
+   /**
     * Determines whether the toolbar is displayed
     */
    toolbar: PropTypes.bool,
@@ -458,6 +464,7 @@ class Calendar extends React.Component {
 
    drilldownView: views.DAY,
    allDayEventsLimit: 5,
+   agendaLength: 30,
 
    titleAccessor: 'title',
    allDayAccessor: 'allDay',
@@ -541,7 +548,7 @@ class Calendar extends React.Component {
            date={current}
            view={view}
            views={names}
-           label={viewLabel(current, view, formats, culture)}
+           label={viewLabel(current, view, formats, culture, this.props.agendaLength)}
            onViewChange={this.handleViewChange}
            onNavigate={this.handleNavigate}
            messages={this.props.messages}

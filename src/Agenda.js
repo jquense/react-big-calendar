@@ -17,7 +17,7 @@ class Agenda extends React.Component {
   static propTypes = {
     events: PropTypes.array,
     date: PropTypes.instanceOf(Date),
-    length: PropTypes.number.isRequired,
+    agendaLength: PropTypes.number.isRequired,
     titleAccessor: accessor.isRequired,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
@@ -35,10 +35,6 @@ class Agenda extends React.Component {
     })
   };
 
-  static defaultProps = {
-    length: 30
-  };
-
   componentDidMount() {
     this._adjustHeader()
   }
@@ -48,9 +44,9 @@ class Agenda extends React.Component {
   }
 
   render() {
-    let { length, date, events, startAccessor } = this.props;
+    let { agendaLength, date, events, startAccessor } = this.props;
     let messages = message(this.props.messages);
-    let end = dates.add(date, length, 'day')
+    let end = dates.add(date, agendaLength, 'day')
 
     let range = dates.range(date, end, 'day');
 
@@ -65,9 +61,9 @@ class Agenda extends React.Component {
         <table ref='header'>
           <thead>
             <tr>
-              <th className='rbc-header' ref='dateCol'>
+              {agendaLength > 0 && <th className='rbc-header' ref='dateCol'>
                 {messages.date}
-              </th>
+              </th>}
               <th className='rbc-header' ref='timeCol'>
                 {messages.time}
               </th>
@@ -91,7 +87,7 @@ class Agenda extends React.Component {
   renderDay = (day, events, dayKey) => {
     let {
         culture, components
-      , titleAccessor, agendaDateFormat } = this.props;
+      , titleAccessor, agendaDateFormat, agendaLength } = this.props;
 
     let EventComponent = components.event;
     let DateComponent = components.date;
@@ -99,22 +95,24 @@ class Agenda extends React.Component {
     events = events.filter(e => inRange(e, day, day, this.props))
 
     return events.map((event, idx) => {
-      let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture)
-      let first = idx === 0
-          ? (
-            <td rowSpan={events.length} className='rbc-agenda-date-cell'>
-              { DateComponent
-                ? <DateComponent day={day} label={dateLabel}/>
-                : dateLabel
-              }
-            </td>
-          ) : false
-
+      let first;
+      if (agendaLength > 0) {
+        let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture)
+        first = idx === 0
+            ? (
+              <td rowSpan={events.length} className='rbc-agenda-date-cell'>
+                { DateComponent
+                  ? <DateComponent day={day} label={dateLabel}/>
+                  : dateLabel
+                }
+              </td>
+            ) : false
+      }
       let title = get(event, titleAccessor)
 
       return (
         <tr key={dayKey + '_' + idx}>
-          {first}
+          {agendaLength > 0 && first}
           <td className='rbc-agenda-time-cell'>
             { this.timeRangeLabel(day, event) }
           </td>
@@ -167,6 +165,7 @@ class Agenda extends React.Component {
   };
 
   _adjustHeader = () => {
+    const { agendaLength } = this.props;
     let header = this.refs.header;
     let firstRow = this.refs.tbody.firstChild
 
@@ -182,8 +181,12 @@ class Agenda extends React.Component {
     ]
 
     if (widths[0] !== this._widths[0] || widths[1] !== this._widths[1]) {
-      this.refs.dateCol.style.width = this._widths[0] + 'px'
-      this.refs.timeCol.style.width = this._widths[1] + 'px';
+      if (agendaLength > 0) {
+        this.refs.dateCol.style.width = this._widths[0] + 'px';
+        this.refs.timeCol.style.width = this._widths[1] + 'px';
+      } else {
+        this.refs.timeCol.style.width = this._widths[0] + 'px';
+      }
     }
 
     if (isOverflowing) {
@@ -209,7 +212,7 @@ Agenda.navigate = (date, action)=>{
   }
 }
 
-Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
+Agenda.range = (start, { length }) => {
   let end = dates.add(start, length, 'day')
   return [start, end]
 }

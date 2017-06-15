@@ -18,7 +18,7 @@ function getRangeBounds(range) {
   return { start, end }
 }
 
-export default function viewLabel(date, view, formats, culture) {
+export default function viewLabel(date, view, formats, culture, length) {
   let View = VIEWS[view]
   let headerSingle = view === views.MONTH || view === views.DAY
 
@@ -29,7 +29,7 @@ export default function viewLabel(date, view, formats, culture) {
   return headerSingle
     ? localizer.format(date, headerFormat, culture)
     : localizer.format(
-        getRangeBounds(View.range(date, { culture })),
+        getRangeBounds(View.range(date, { culture, length })),
         headerFormat,
         culture
       )

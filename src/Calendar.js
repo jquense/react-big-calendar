@@ -98,14 +98,14 @@ class Calendar extends React.Component {
     * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
     *
     * ```js
-    * function(
-    *   slotInfo: object {
+    * (
+    *   slotInfo: {
     *     start: Date,
     *     end: Date,
-    *     slots: array<Date>,
+    *     slots: Array<Date>,
     *     action: "select" | "click"
     *   }
-    * )
+    * ) => any
     * ```
     */
    onSelectSlot: PropTypes.func,
@@ -114,7 +114,7 @@ class Calendar extends React.Component {
     * Callback fired when a calendar event is selected.
     *
     * ```js
-    * function(event: object, e: SyntheticEvent)
+    * (event: Object, e: SyntheticEvent) => any
     * ```
     *
     * @controllable selected
@@ -127,7 +127,7 @@ class Calendar extends React.Component {
     * Returning `false` from the handler will prevent a selection.
     *
     * ```js
-    * function ({ start: Date, end: Date }) : boolean
+    * (range: { start: Date, end: Date }) => ?boolean
     * ```
     */
    onSelecting: PropTypes.func,
@@ -231,12 +231,12 @@ class Calendar extends React.Component {
     * to be applied to the the event node.
     *
     * ```js
-    * function(
-    * 	event: object,
-    * 	start: date,
-    * 	end: date,
-    * 	isSelected: bool
-    * ) -> { className: string?, style: object? }
+    * (
+    * 	event: Object,
+    * 	start: Date,
+    * 	end: Date,
+    * 	isSelected: boolean
+    * ) => { className?: string, style?: Object }
     * ```
     */
    eventPropGetter: PropTypes.func,
@@ -244,6 +244,10 @@ class Calendar extends React.Component {
    /**
     * Accessor for the event title, used to display event information. Should
     * resolve to a `renderable` value.
+    *
+    * ```js
+    * string | (event: Object) => any
+    * ```
     *
     * @type {(func|string)}
     */
@@ -253,6 +257,10 @@ class Calendar extends React.Component {
     * Determines whether the event should be considered an "all day" event and ignore time.
     * Must resolve to a `boolean` value.
     *
+    * ```js
+    * string | (event: Object) => boolean
+    * ```
+    *
     * @type {(func|string)}
     */
    allDayAccessor: accessor,
@@ -260,12 +268,20 @@ class Calendar extends React.Component {
    /**
     * The start date/time of the event. Must resolve to a JavaScript `Date` object.
     *
+    * ```js
+    * string | (event: Object) => Date
+    * ```
+    *
     * @type {(func|string)}
     */
    startAccessor: accessor,
 
    /**
     * The end date/time of the event. Must resolve to a JavaScript `Date` object.
+    *
+    * ```js
+    * string | (event: Object) => Date
+    * ```
     *
     * @type {(func|string)}
     */

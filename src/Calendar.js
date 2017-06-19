@@ -584,8 +584,10 @@ class Calendar extends React.Component {
  };
 
  handleViewChange = (view) => {
-   if (view !== this.props.view && isValidView(view, this.props))
-     this.props.onView(view)
+   if (view !== this.props.view && isValidView(view, this.props)) {
+     const currentDate = this.props.date;
+     this.props.onView(view, currentDate)
+   }
  };
 
  handleSelectEvent = (...args) => {

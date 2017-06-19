@@ -227,6 +227,11 @@ class Calendar extends React.Component {
    rtl: PropTypes.bool,
 
    /**
+    *Remove the text that appears when hovering an event
+    */
+   removeHoverTitle: PropTypes.bool,
+
+   /**
     * Optionally provide a function that returns an object of className or style props
     * to be applied to the the event node.
     *

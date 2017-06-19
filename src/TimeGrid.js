@@ -41,6 +41,7 @@ export default class TimeGrid extends Component {
     culture: PropTypes.string,
 
     rtl: PropTypes.bool,
+    removeHoverTitle: PropTypes.bool,
     width: PropTypes.number,
 
     titleAccessor: accessor.isRequired,

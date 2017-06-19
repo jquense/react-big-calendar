@@ -57,6 +57,7 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.8.0",
     "globalize": "^0.1.1",
+    "less": "^2.7.2",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",
     "moment": "^2.17.1",

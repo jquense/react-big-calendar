@@ -71,6 +71,7 @@
     "release-script": "^1.0.0",
     "rimraf": "^2.4.2",
     "webpack": "^2.4.1",
+    "webpack-atoms": "^1.0.2",
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
@@ -83,7 +84,6 @@
     "react-overlays": "^0.7.0",
     "react-prop-types": "^0.4.0",
     "uncontrollable": "^3.3.1 || ^4.0.0",
-    "warning": "^2.0.0",
-    "webpack-atoms": "^1.0.2"
+    "warning": "^2.0.0"
   }
 }

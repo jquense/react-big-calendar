@@ -113,7 +113,7 @@ class BackgroundCells extends React.Component {
       })
     })
 
-    selector.on('mousedown', (box) => {
+    selector.on('beforeSelect', (box) => {
       if (this.props.selectable !== 'ignoreEvents') return
 
       return !isEvent(findDOMNode(this), box)

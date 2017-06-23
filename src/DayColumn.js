@@ -257,7 +257,7 @@ class DaySlot extends React.Component {
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
 
-    selector.on('mousedown', (box) => {
+    selector.on('beforeSelect', (box) => {
       if (this.props.selectable !== 'ignoreEvents') return
 
       return !isEvent(findDOMNode(this), box)

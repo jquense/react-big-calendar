@@ -20,6 +20,8 @@ import { notify } from './utils/helpers';
 
 import { accessor as get } from './utils/accessors';
 
+import { getTimeslots } from './utils/slots'
+
 import { inRange, sortEvents, segStyle } from './utils/eventLevels';
 
 export default class TimeGrid extends Component {
@@ -58,6 +60,7 @@ export default class TimeGrid extends Component {
     onSelectEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
+    areSlotsDynamic: PropTypes.bool,
 
     messages: PropTypes.object,
     components: PropTypes.object.isRequired,
@@ -72,6 +75,7 @@ export default class TimeGrid extends Component {
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
+    areSlotsDynamic: false,
     now: new Date()
   }
 
@@ -141,7 +145,10 @@ export default class TimeGrid extends Component {
       , width
       , startAccessor
       , endAccessor
-      , allDayAccessor } = this.props;
+      , allDayAccessor
+      , min
+      , max
+      , areSlotsDynamic } = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -170,6 +177,8 @@ export default class TimeGrid extends Component {
       }
     })
 
+    let dynamicSlots = areSlotsDynamic ? getTimeslots(rangeEvents, min, max) : [];
+
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     let gutterRef = ref => this._gutters[1] = ref && findDOMNode(ref);
@@ -188,17 +197,18 @@ export default class TimeGrid extends Component {
             style={{ width }}
             ref={gutterRef}
             className='rbc-time-gutter'
+            dynamicSlots={dynamicSlots}
           />
 
-          {this.renderEvents(range, rangeEvents, this.props.now)}
+          {this.renderEvents(range, rangeEvents, this.props.now, dynamicSlots)}
 
         </div>
       </div>
     );
   }
 
-  renderEvents(range, events, today){
-    let { min, max, endAccessor, startAccessor, components } = this.props;
+  renderEvents(range, events, today, dynamicSlots){
+    let { min, max, endAccessor, startAccessor, components, areSlotsDynamic, timeslots } = this.props;
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(
@@ -206,6 +216,8 @@ export default class TimeGrid extends Component {
           get(event, startAccessor),
           get(event, endAccessor), 'day')
       )
+
+      let timeslotsBasedOnSlotsDynamic = areSlotsDynamic ? 1 : timeslots;
 
       return (
         <DayColumn
@@ -220,6 +232,8 @@ export default class TimeGrid extends Component {
           key={idx}
           date={date}
           events={daysEvents}
+          timeslots={timeslotsBasedOnSlotsDynamic}
+          dynamicSlots={dynamicSlots}
         />
       )
     })

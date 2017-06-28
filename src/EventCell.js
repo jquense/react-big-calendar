@@ -9,6 +9,7 @@ let propTypes = {
   event: PropTypes.object.isRequired,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.instanceOf(Date),
+  view: PropTypes.string.isRequired,
 
   selected: PropTypes.bool,
   eventPropGetter: PropTypes.func,
@@ -27,6 +28,7 @@ class EventCell extends React.Component {
     let {
         className
       , event
+      , view
       , selected
       , eventPropGetter
       , startAccessor, endAccessor, titleAccessor
@@ -45,7 +47,7 @@ class EventCell extends React.Component {
       , continuesAfter = dates.gt(end, slotEnd, 'day')
 
     if (eventPropGetter)
-      var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
+      var { style, className: xClassName } = eventPropGetter(event, start, end, selected, view);
 
     return (
       <EventWrapper event={event}>
@@ -59,12 +61,12 @@ class EventCell extends React.Component {
           })}
           onClick={(e) => onSelect(event, e)}
         >
-          <div className='rbc-event-content' title={title}>
+          <span className='rbc-event-content' title={title}>
             { Event
               ? <Event event={event} title={title}/>
               : title
             }
-          </div>
+          </span>
         </div>
       </EventWrapper>
     );

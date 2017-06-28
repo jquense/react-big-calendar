@@ -104,6 +104,7 @@ class Agenda extends React.Component {
           get(event, startAccessor),
           get(event, endAccessor),
           isSelected(event, selected),
+          views.AGENDA,
         ) : {};
 
       let first;

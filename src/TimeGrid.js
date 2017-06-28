@@ -28,6 +28,7 @@ export default class TimeGrid extends Component {
 
   static propTypes = {
     events: PropTypes.array.isRequired,
+    view: PropTypes.string.isRequired,
 
     step: PropTypes.number,
     range: PropTypes.arrayOf(
@@ -229,7 +230,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components, now } = this.props;
+    let { messages, rtl, selectable, components, now, view } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
@@ -281,6 +282,7 @@ export default class TimeGrid extends Component {
             eventPropGetter={this.props.eventPropGetter}
             selected={this.props.selected}
             onSelect={this.handleSelectEvent}
+            view={view}
           />
         </div>
       </div>

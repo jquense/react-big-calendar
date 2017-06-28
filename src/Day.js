@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import dates from './utils/dates';
 import TimeGrid from './TimeGrid';
-import { navigate } from './utils/constants';
+import { navigate, views } from './utils/constants';
 
 class Day extends React.Component {
   static propTypes = {
@@ -14,7 +14,7 @@ class Day extends React.Component {
     let range = Day.range(date)
 
     return (
-      <TimeGrid {...props} range={range} eventOffset={10} />
+      <TimeGrid {...props} range={range} eventOffset={10} view={views.DAY} />
     );
   }
 }

@@ -60,12 +60,12 @@ describe('<Agenda />', () => {
         expect(wrapper.find('.rbc-agenda-date-cell')).to.have.length(1);
       });
     });
-    
+
     context('agendaLength is 0', () => {
       beforeEach(() => {
         props.agendaLength = 0;
       });
-      
+
       it('does not render date header', () => {
         const wrapper = mount(<Agenda {...props} />);
 
@@ -76,6 +76,50 @@ describe('<Agenda />', () => {
         const wrapper = mount(<Agenda {...props} />);
 
         expect(wrapper.find('.rbc-agenda-date-cell')).to.have.length(0);
+      });
+    });
+
+    context('without an eventPropGetter', () => {
+      beforeEach(() => {
+        props.eventPropGetter = null;
+      });
+
+      it('does not have a className or style prop for all the event nodes', () => {
+        const wrapper = mount(<Agenda {...props} />);
+
+        const events = wrapper.ref('tbody').find('tr');
+        expect(events).to.have.length(2);
+        expect(events.at(0)).to.not.have.prop('className');
+        expect(events.at(0)).to.not.have.prop('style');
+        expect(events.at(1)).to.not.have.prop('className');
+        expect(events.at(1)).to.not.have.prop('style');
+      });
+    });
+
+    context('with an eventPropGetter', () => {
+      beforeEach(() => {
+        props.eventPropGetter = (event, start, end, selected, view) => ({ className: 'test', style: { width: '100px' } });
+      });
+
+      it('adds the returned className and style to all the event nodes', () => {
+        const wrapper = mount(<Agenda {...props} />);
+
+        const events = wrapper.ref('tbody').find('tr');
+        expect(events).to.have.length(2);
+        expect(events.at(0)).to.have.prop('className', 'test');
+        expect(events.at(0).prop('style')).to.deep.equal({ width: '100px' });
+        expect(events.at(1)).to.have.prop('className', 'test');
+        expect(events.at(1).prop('style')).to.deep.equal({ width: '100px' });
+      });
+
+      it('passes the right arguments to the eventPropGetter for all the event nodes', () => {
+        props.eventPropGetter = sandbox.stub().returns({});
+        mount(<Agenda {...props} />);
+
+        const firstEvent = events[0];
+        const secondEvent = events[1];
+        sinon.assert.calledWith(props.eventPropGetter, firstEvent, firstEvent[startAccessor], firstEvent[endAccessor], false, 'agenda');
+        sinon.assert.calledWith(props.eventPropGetter, secondEvent, secondEvent[startAccessor], secondEvent[endAccessor], false, 'agenda');
       });
     });
   });

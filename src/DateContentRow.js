@@ -17,6 +17,7 @@ let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 const propTypes = {
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
+  view: PropTypes.string.isRequired,
 
   rtl: PropTypes.bool,
   renderForMeasure: PropTypes.bool,

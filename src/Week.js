@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import dates from './utils/dates';
 import localizer from './localizer';
-import { navigate } from './utils/constants';
+import { navigate, views } from './utils/constants';
 
 import TimeGrid from './TimeGrid';
 
@@ -18,7 +18,7 @@ class Week extends React.Component {
     let range = Week.range(date, this.props)
 
     return (
-      <TimeGrid {...props} range={range} eventOffset={15} />
+      <TimeGrid {...props} range={range} eventOffset={15} view={views.WEEK} />
     );
   }
 }

@@ -8,6 +8,11 @@ import * as Helpers from '../../src/utils/helpers';
 
 import TimeGrid from '../../src/TimeGrid';
 import DateContentRow from '../../src/DateContentRow';
+import DayColumn from '../../src/DayColumn';
+import EventWrapper from '../../src/EventWrapper';
+import Week from '../../src/Week';
+
+import events from '../factories/events';
 
 describe('<TimeGrid />', () => {
   let props;
@@ -27,15 +32,20 @@ describe('<TimeGrid />', () => {
     getDrilldownView = sandbox.stub().returns('agenda');
 
     props = {
-      events: [],
-      components: {},
-      range:[],
+      events,
+      components: {
+        eventWrapper: EventWrapper,
+      },
+      range: Week.range(events[0].start, {}),
       titleAccessor,
       allDayAccessor,
       startAccessor,
       endAccessor,
       getDrilldownView,
       allDayEventsLimit: 10,
+      view: 'week',
+      onSelectSlot: sandbox.stub(),
+      onSelectEvent: sandbox.stub(),
     };
   });
 
@@ -47,6 +57,21 @@ describe('<TimeGrid />', () => {
       const contentRow = wrapper.find(DateContentRow);
 
       expect(contentRow).to.have.prop('maxRows', 10);
+    });
+
+    it('passes view prop to DateContentRow', () => {
+      const wrapper = shallow(<TimeGrid {...props} />);
+      const contentRow = wrapper.find(DateContentRow);
+
+      expect(contentRow).to.have.prop('view', 'week');
+    });
+
+    it('passes view prop to DayColumn', () => {
+      const wrapper = shallow(<TimeGrid {...props} />);
+
+      wrapper.find(DayColumn).forEach((dayColumn) => {
+        expect(dayColumn).to.have.prop('view', 'week');
+      });
     });
   });
 

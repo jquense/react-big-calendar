@@ -32,6 +32,7 @@ class DaySlot extends React.Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     now: PropTypes.instanceOf(Date),
+    view: PropTypes.string.isRequired,
 
     rtl: PropTypes.bool,
     titleAccessor: accessor,
@@ -127,6 +128,7 @@ class DaySlot extends React.Component {
   renderEvents = () => {
     let {
         events
+      , view
       , min
       , max
       , culture
@@ -137,27 +139,27 @@ class DaySlot extends React.Component {
       , step
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
-    let EventComponent = eventComponent
+    let EventComponent = eventComponent;
 
     let styledEvents = getStyledEvents({
       events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
-    })
+    });
 
     return styledEvents.map(({ event, style }, idx) => {
-      let start = get(event, startAccessor)
-      let end = get(event, endAccessor)
+      let start = get(event, startAccessor);
+      let end = get(event, endAccessor);
 
-      let continuesPrior = startsBefore(start, min)
-      let continuesAfter = startsAfter(end, max)
+      let continuesPrior = startsBefore(start, min);
+      let continuesAfter = startsAfter(end, max);
 
-      let title = get(event, titleAccessor)
-      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture)
-      let _isSelected = isSelected(event, selected)
+      let title = get(event, titleAccessor);
+      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture);
+      let _isSelected = isSelected(event, selected);
 
       if (eventPropGetter)
-        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected)
+        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected, view);
 
-      let { height, top, width, xOffset } = style
+      let { height, top, width, xOffset } = style;
 
       return (
         <EventWrapper event={event} key={'evt_' + idx}>
@@ -178,12 +180,12 @@ class DaySlot extends React.Component {
             })}
           >
             <div className='rbc-event-label'>{label}</div>
-            <div className='rbc-event-content'>
+            <span className='rbc-event-content'>
               { EventComponent
                 ? <EventComponent event={event} title={title}/>
                 : title
               }
-            </div>
+            </span>
           </div>
         </EventWrapper>
       )

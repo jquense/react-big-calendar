@@ -59,7 +59,10 @@ export default class TimeGrid extends Component {
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
     onSelectEvent: PropTypes.func,
-    onDrillDown: PropTypes.func,
+    onDrillDown: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string,
+    ]),
     getDrilldownView: PropTypes.func.isRequired,
     allDayEventsLimit: PropTypes.number,
 

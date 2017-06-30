@@ -41,11 +41,14 @@ const propTypes = {
   eventWrapperComponent: elementType.isRequired,
   minRows: PropTypes.number.isRequired,
   maxRows: PropTypes.number.isRequired,
+
+  style: PropTypes.object,
 };
 
 const defaultProps = {
   minRows: 0,
   maxRows: Infinity,
+  style: {},
 }
 
 class DateContentRow extends React.Component {
@@ -151,6 +154,7 @@ class DateContentRow extends React.Component {
       eventWrapperComponent,
       onSelectStart,
       onSelectEnd,
+      style,
       ...props
     } = this.props;
 
@@ -168,7 +172,7 @@ class DateContentRow extends React.Component {
     while (levels.length < minRows ) levels.push([])
 
     return (
-      <div className={className}>
+      <div className={className} style={style}>
         <BackgroundCells
           rtl={rtl}
           range={range}

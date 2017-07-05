@@ -45,5 +45,18 @@ describe('<DateContentRow />', () => {
         expect(eventRow).to.have.prop('view', 'month');
       });
     });
+
+    it('passes the style prop to the root div', () => {
+      props.style = { width: 'all-of-it' };
+      const wrapper = shallow(<DateContentRow {...props} />);
+
+      expect(wrapper.find('div').first().prop('style')).to.deep.equal({ width: 'all-of-it' });
+    });
+
+    it('passes empty object as the style prop of the root div if none passed to component', () => {
+      const wrapper = shallow(<DateContentRow {...props} />);
+
+      expect(wrapper.find('div').first().prop('style')).to.deep.equal({});
+    });
   });
 });

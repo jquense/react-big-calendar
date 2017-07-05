@@ -84,7 +84,7 @@ export default class TimeGrid extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { gutterWidth: undefined, isOverflowing: null };
+    this.state = { gutterWidth: undefined, isOverflowing: null, allDayRowWidth: undefined };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
   }
@@ -104,10 +104,12 @@ export default class TimeGrid extends Component {
 
     this.positionTimeIndicator();
     this.triggerTimeIndicatorUpdate();
+    this.listenForWindowResize();
   }
 
   componentWillUnmount() {
     window.clearTimeout(this._timeIndicatorTimeout);
+    this.stopListeningForWindowResize();
   }
 
   componentDidUpdate() {
@@ -240,6 +242,12 @@ export default class TimeGrid extends Component {
     if (isOverflowing)
       style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
 
+    const allDayRowStyle = {};
+    const allDayRowWidth = this.measureAllDayRowWidth();
+    if (allDayRowWidth) {
+      allDayRowStyle.width = `${allDayRowWidth}px`;
+    }
+
     return (
       <div
         ref='headerCell'
@@ -286,6 +294,7 @@ export default class TimeGrid extends Component {
             selected={this.props.selected}
             onSelect={this.handleSelectEvent}
             view={view}
+            style={allDayRowStyle}
           />
         </div>
       </div>
@@ -359,6 +368,15 @@ export default class TimeGrid extends Component {
     notify(this.props.onSelectEvent, args)
   }
 
+  handleWindowResize = () => {
+    const { allDayRowWidth } = this.state
+      , newAllDayRowWidth = this.measureAllDayRowWidth();
+
+    if (allDayRowWidth !== newAllDayRowWidth) {
+      this.setState({ allDayRowWidth: newAllDayRowWidth });
+    }
+  };
+
   clearSelection(){
     clearTimeout(this._selectTimer)
     this._pendingSelection = [];
@@ -375,6 +393,17 @@ export default class TimeGrid extends Component {
         this.setState({ gutterWidth: width })
       }
     }
+  }
+
+  measureAllDayRowWidth() {
+    let { allDayRowWidth } = this.state;
+    const gutterWidth = this.props.width || this.state.gutterWidth;
+
+    let headerCellsRow = this.refs.headerCell;
+    if (headerCellsRow && (headerCellsRow = headerCellsRow.querySelector('.rbc-row'))) {
+      allDayRowWidth = headerCellsRow.clientWidth - gutterWidth;
+    }
+    return allDayRowWidth;
   }
 
   applyScroll() {
@@ -439,5 +468,13 @@ export default class TimeGrid extends Component {
 
       this.triggerTimeIndicatorUpdate();
     }, 60000)
+  }
+
+  listenForWindowResize() {
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  stopListeningForWindowResize() {
+    window.removeEventListener('resize', this.handleWindowResize);
   }
 }

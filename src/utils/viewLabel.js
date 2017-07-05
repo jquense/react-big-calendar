@@ -13,7 +13,7 @@ const Formats = {
 }
 
 function getRangeBounds(range) {
-  if (range instanceof Array) {
+  if (Array.isArray(range)) {
     let start = range[0]
     let end = range[range.length - 1]
     return { start, end }

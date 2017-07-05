@@ -13,9 +13,12 @@ const Formats = {
 }
 
 function getRangeBounds(range) {
-  let start = range[0]
-  let end = range[range.length - 1]
-  return { start, end }
+  if (Array.isArray(range)) {
+    let start = range[0]
+    let end = range[range.length - 1]
+    return { start, end }
+  }
+  return range;
 }
 
 export default function viewLabel(date, view, formats, culture) {

@@ -421,6 +421,7 @@ class Calendar extends React.Component {
      toolbar: elementType,
 
      agenda: PropTypes.shape({
+       wrapper: elementType,
        date: elementType,
        time: elementType,
        event: elementType

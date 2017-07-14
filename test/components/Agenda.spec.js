@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import React from 'react';
 import sinon from 'sinon';
 import { mount } from 'enzyme';
@@ -56,6 +57,7 @@ describe('<Agenda />', () => {
 
     context('with an eventPropGetter', () => {
       beforeEach(() => {
+        // eslint-disable-next-line no-unused-vars
         props.eventPropGetter = (event, start, end, selected) => ({ className: 'test', style: { width: '100px' } });
       });
 

@@ -235,7 +235,8 @@ class Calendar extends React.Component {
     * 	event: Object,
     * 	start: Date,
     * 	end: Date,
-    * 	isSelected: boolean
+    * 	isSelected: boolean,
+    * 	view: string
     * ) => { className?: string, style?: Object }
     * ```
     */

@@ -170,6 +170,7 @@ class MonthView extends React.Component {
         ref={weekIdx === 0 ? 'slotRow' : undefined}
         container={this.getContainer}
         className="rbc-month-row"
+        view={views.MONTH}
         now={now}
         range={week}
         events={events}

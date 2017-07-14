@@ -7,7 +7,7 @@ import scrollbarSize from 'dom-helpers/util/scrollbarSize';
 import localizer from './localizer'
 import message from './utils/messages';
 import dates from './utils/dates';
-import { navigate } from './utils/constants';
+import { navigate, views } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 import { accessor, dateFormat, dateRangeFormat } from './utils/propTypes';
 import { inRange } from './utils/eventLevels';
@@ -109,6 +109,7 @@ class Agenda extends React.Component {
           get(event, startAccessor),
           get(event, endAccessor),
           isSelected(event, selected),
+          views.AGENDA,
         ) : {};
       let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture);
       let first = idx === 0

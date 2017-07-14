@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import dates from './utils/dates';
 import TimeGrid from './TimeGrid';
-import { navigate } from './utils/constants';
+import { navigate, views } from './utils/constants';
 
 class Day extends React.Component {
   static propTypes = {
@@ -11,10 +11,10 @@ class Day extends React.Component {
 
   render() {
     let { date, ...props } = this.props;
-    let range = Day.range(date)
+    let range = Day.range(date);
 
     return (
-      <TimeGrid {...props} range={range} eventOffset={10} />
+      <TimeGrid {...props} range={range} eventOffset={10} view={views.DAY} />
     );
   }
 }
@@ -25,17 +25,17 @@ Day.navigate = (date, action)=>{
       return dates.add(date, -1, 'day');
 
     case navigate.NEXT:
-      return dates.add(date, 1, 'day')
+      return dates.add(date, 1, 'day');
 
     default:
       return date;
   }
-}
+};
 
 
 Day.range = (date)=> {
   return [dates.startOf(date, 'day')]
-}
+};
 
 
-export default Day
+export default Day;

@@ -28,3 +28,8 @@ import dirtyChai from 'dirty-chai';
 chai.use(dirtyChai);
 chai.use(require('chai-enzyme')());
 chai.use(require('chai-moment'));
+
+// Default Calendar localizer to moment for tests
+import Calendar from '../src/index';
+import moment from 'moment';
+Calendar.setLocalizer(Calendar.momentLocalizer(moment));

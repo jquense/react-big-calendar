@@ -58,7 +58,7 @@ describe('<Agenda />', () => {
     context('with an eventPropGetter', () => {
       beforeEach(() => {
         // eslint-disable-next-line no-unused-vars
-        props.eventPropGetter = (event, start, end, selected) => ({ className: 'test', style: { width: '100px' } });
+        props.eventPropGetter = (event, start, end, selected, view) => ({ className: 'test', style: { width: '100px' } });
       });
 
       it('adds the returned className and style to all the event nodes', () => {
@@ -78,8 +78,8 @@ describe('<Agenda />', () => {
 
         const firstEvent = events[0];
         const secondEvent = events[1];
-        sinon.assert.calledWith(props.eventPropGetter, firstEvent, firstEvent[startAccessor], firstEvent[endAccessor], false);
-        sinon.assert.calledWith(props.eventPropGetter, secondEvent, secondEvent[startAccessor], secondEvent[endAccessor], false);
+        sinon.assert.calledWith(props.eventPropGetter, firstEvent, firstEvent[startAccessor], firstEvent[endAccessor], false, 'agenda');
+        sinon.assert.calledWith(props.eventPropGetter, secondEvent, secondEvent[startAccessor], secondEvent[endAccessor], false, 'agenda');
       });
     });
   });

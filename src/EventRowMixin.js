@@ -13,6 +13,7 @@ export default {
     slots: PropTypes.number.isRequired,
     end: PropTypes.instanceOf(Date),
     start: PropTypes.instanceOf(Date),
+    view: PropTypes.string.isRequired,
 
     selected: PropTypes.object,
     eventPropGetter: PropTypes.func,
@@ -34,7 +35,7 @@ export default {
 
   renderEvent(props, event) {
     let {
-        eventPropGetter, selected, start, end
+        eventPropGetter, selected, start, end, view
       , startAccessor, endAccessor, titleAccessor
       , allDayAccessor, eventComponent
       , eventWrapperComponent
@@ -54,6 +55,7 @@ export default {
         slotStart={start}
         slotEnd={end}
         eventComponent={eventComponent}
+        view={view}
       />
     )
   },

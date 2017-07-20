@@ -24,7 +24,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
-    "l": "lessc --autoprefix=\"ie >= 10, last 2 versions\" ",
+    "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
     "less": "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
     "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",

@@ -29,7 +29,7 @@
     "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
+    "build": "npm run clean && babel src --out-dir lib",
     "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
     "build:visual-test": "webpack --config webpack/visual-test.js",
     "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",

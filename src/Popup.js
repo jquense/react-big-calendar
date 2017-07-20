@@ -12,6 +12,7 @@ import { elementType, dateFormat } from './utils/propTypes';
 const propTypes = {
   position: PropTypes.object,
   popupOffset: PropTypes.number,
+  popupComponent: PropTypes.elementType,
   events: PropTypes.array,
   selected: PropTypes.object,
   eventComponent: elementType,
@@ -41,7 +42,7 @@ class Popup extends React.Component {
   }
 
   render() {
-    let { events, selected, eventComponent, eventWrapperComponent, ...props } = this.props;
+    let { events, selected, eventComponent, eventWrapperComponent, popupComponent: CustomContent, ...props } = this.props;
 
     let { left, width, top } = this.props.position
       , topOffset = (this.state || {}).topOffset || 0
@@ -53,24 +54,26 @@ class Popup extends React.Component {
       minWidth: width + (width / 2)
     }
 
-    return (
-      <div ref='root' style={style} className='rbc-overlay'>
-        <div className='rbc-overlay-header'>
-          { localizer.format(props.slotStart, props.dayHeaderFormat, props.culture) }
+    return CustomContent
+      ? <div ref='root' style={style} className='rbc-overlay'>
+          <CustomContent events={events} date={props.slotStart} />
         </div>
-        {
-          events.map((event, idx) =>
-            <EventCell key={idx}
-              {...props}
-              event={event}
-              eventComponent={eventComponent}
-              eventWrapperComponent={eventWrapperComponent}
-              selected={isSelected(event, selected)}
-            />
-          )
-        }
-      </div>
-    )
+      : <div ref='root' style={style} className='rbc-overlay'>
+          <div className='rbc-overlay-header'>
+            { localizer.format(props.slotStart, props.dayHeaderFormat, props.culture) }
+          </div>
+          {
+            events.map((event, idx) =>
+              <EventCell key={idx}
+                {...props}
+                event={event}
+                eventComponent={eventComponent}
+                eventWrapperComponent={eventWrapperComponent}
+                selected={isSelected(event, selected)}
+              />
+            )
+          }
+        </div>
   }
 }
 

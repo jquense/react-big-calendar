@@ -155,7 +155,7 @@ class DaySlot extends React.Component {
       let _isSelected = isSelected(event, selected)
 
       if (eventPropGetter)
-        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected)
+        var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected, continuesPrior, continuesAfter)
 
       let { height, top, width, xOffset } = style
 

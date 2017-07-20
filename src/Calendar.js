@@ -61,6 +61,11 @@ class Calendar extends React.Component {
    elementProps: PropTypes.object,
 
    /**
+    * Props passed to the toolbar `<div>`.
+    */
+   toolbarProps: PropTypes.object,
+
+   /**
     * The current date value of the calendar. Determines the visible view range
     *
     * @controllable onNavigate
@@ -518,6 +523,7 @@ class Calendar extends React.Component {
      , style
      , className
      , elementProps
+     , toolbarProps
      , date: current
      , ...props } = this.props;
 
@@ -555,6 +561,7 @@ class Calendar extends React.Component {
            onViewChange={this.handleViewChange}
            onNavigate={this.handleNavigate}
            messages={this.props.messages}
+           {...toolbarProps}
          />
        }
        <View

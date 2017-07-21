@@ -12,7 +12,7 @@ import { elementType, dateFormat } from './utils/propTypes';
 const propTypes = {
   position: PropTypes.object,
   popupOffset: PropTypes.number,
-  popupComponent: PropTypes.elementType,
+  popupComponent: PropTypes.any,
   events: PropTypes.array,
   selected: PropTypes.object,
   eventComponent: elementType,

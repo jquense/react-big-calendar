@@ -11,7 +11,8 @@ export default class TimeSlot extends Component {
     isNow: PropTypes.bool,
     showLabel: PropTypes.bool,
     content: PropTypes.string,
-    culture: PropTypes.string
+    culture: PropTypes.string,
+    slotPropGetter: PropTypes.func
   }
 
   static defaultProps = {
@@ -23,12 +24,15 @@ export default class TimeSlot extends Component {
   render() {
     const { value } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
+    const { className, style } = slotPropGetter(value) || {};
 
     return (
       <Wrapper value={value}>
         <div
+          style={style}
           className={cn(
             'rbc-time-slot',
+            className,
             this.props.showLabel && 'rbc-label',
             this.props.isNow && 'rbc-now',
           )}

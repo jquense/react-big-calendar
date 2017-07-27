@@ -30,7 +30,7 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
 
 export function segStyle(span, slots){
   let per = (span / slots) * 100 + '%';
-  return { flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
+  return { WebkitFlexBasis: per, flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
 }
 
 export function eventLevels(rowSegments, limit = Infinity){

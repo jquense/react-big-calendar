@@ -24,7 +24,7 @@ export default class TimeSlot extends Component {
   render() {
     const { value } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
-    const { className, style } = slotPropGetter(value) || {};
+    const { className, style } = (slotPropGetter && slotPropGetter(value)) || {};
 
     return (
       <Wrapper value={value}>

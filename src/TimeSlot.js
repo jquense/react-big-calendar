@@ -22,7 +22,7 @@ export default class TimeSlot extends Component {
   }
 
   render() {
-    const { value } = this.props;
+    const { value, slotPropGetter } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
     const { className, style } = (slotPropGetter && slotPropGetter(value)) || {};
 

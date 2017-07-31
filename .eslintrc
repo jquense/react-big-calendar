@@ -1,5 +1,0 @@
-parser: babel-eslint
-extends: jason/react
-
-rules:
-  global-require: off

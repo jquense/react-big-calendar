@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { findDOMNode } from 'react-dom';
 
 import dates from './utils/dates';
-import localizer from './localizer'
+import localizer from './localizer';
 import DayColumn from './DayColumn';
 import TimeColumn from './TimeColumn';
 import DateContentRow from './DateContentRow';
@@ -60,7 +60,7 @@ export default class TimeGrid extends Component {
     getDrilldownView: PropTypes.func.isRequired,
 
     messages: PropTypes.object,
-    components: PropTypes.object.isRequired,
+    components: PropTypes.object.isRequired
   }
 
   static defaultProps = {
@@ -76,10 +76,10 @@ export default class TimeGrid extends Component {
   }
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = { gutterWidth: undefined, isOverflowing: null };
-    this.handleSelectEvent = this.handleSelectEvent.bind(this)
-    this.handleHeaderClick = this.handleHeaderClick.bind(this)
+    this.handleSelectEvent = this.handleSelectEvent.bind(this);
+    this.handleHeaderClick = this.handleHeaderClick.bind(this);
   }
 
   componentWillMount() {
@@ -91,7 +91,7 @@ export default class TimeGrid extends Component {
     this.checkOverflow();
 
     if (this.props.width == null) {
-      this.measureGutter()
+      this.measureGutter();
     }
     this.applyScroll();
 
@@ -105,7 +105,7 @@ export default class TimeGrid extends Component {
 
   componentDidUpdate() {
     if (this.props.width == null && !this.state.gutterWidth) {
-      this.measureGutter()
+      this.measureGutter();
     }
 
     this.applyScroll();
@@ -131,7 +131,7 @@ export default class TimeGrid extends Component {
       start: slots[0],
       end: slots[slots.length - 1],
       action: slotInfo.action
-    })
+    });
   }
 
   render() {
@@ -146,7 +146,7 @@ export default class TimeGrid extends Component {
     width = width || this.state.gutterWidth;
 
     let start = range[0]
-      , end = range[range.length - 1]
+      , end = range[range.length - 1];
 
     this.slots = range.length;
 
@@ -163,31 +163,31 @@ export default class TimeGrid extends Component {
           || !dates.eq(eStart, eEnd, 'day')
           || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
         {
-          allDayEvents.push(event)
+          allDayEvents.push(event);
         }
         else
-          rangeEvents.push(event)
+          rangeEvents.push(event);
       }
-    })
+    });
 
-    allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
+    allDayEvents.sort((a, b) => sortEvents(a, b, this.props));
 
     let gutterRef = ref => this._gutters[1] = ref && findDOMNode(ref);
 
     return (
-      <div className='rbc-time-view'>
+      <div className="rbc-time-view">
 
         {this.renderHeader(range, allDayEvents, width)}
 
-        <div ref='content' className='rbc-time-content'>
-          <div ref='timeIndicator' className='rbc-current-time-indicator' />
+        <div ref="content" className="rbc-time-content">
+          <div ref="timeIndicator" className="rbc-current-time-indicator" />
 
           <TimeColumn
             {...this.props}
             showLabels
             style={{ width }}
             ref={gutterRef}
-            className='rbc-time-gutter'
+            className="rbc-time-gutter"
           />
 
           {this.renderEvents(range, rangeEvents, this.props.now)}
@@ -197,7 +197,7 @@ export default class TimeGrid extends Component {
     );
   }
 
-  renderEvents(range, events, today){
+  renderEvents(range, events, today) {
     let { min, max, endAccessor, startAccessor, components } = this.props;
 
     return range.map((date, idx) => {
@@ -205,7 +205,7 @@ export default class TimeGrid extends Component {
         event => dates.inRange(date,
           get(event, startAccessor),
           get(event, endAccessor), 'day')
-      )
+      );
 
       return (
         <DayColumn
@@ -221,8 +221,8 @@ export default class TimeGrid extends Component {
           date={date}
           events={daysEvents}
         />
-      )
-    })
+      );
+    });
   }
 
   renderHeader(range, events, width) {
@@ -235,24 +235,24 @@ export default class TimeGrid extends Component {
 
     return (
       <div
-        ref='headerCell'
+        ref="headerCell"
         className={cn(
           'rbc-time-header',
           isOverflowing && 'rbc-overflowing'
         )}
         style={style}
       >
-        <div className='rbc-row'>
+        <div className="rbc-row">
           <div
-            className='rbc-label rbc-header-gutter'
+            className="rbc-label rbc-header-gutter"
             style={{ width }}
           />
           { this.renderHeaderCells(range) }
         </div>
-        <div className='rbc-row'>
+        <div className="rbc-row">
           <div
             ref={ref => this._gutters[0] = ref}
-            className='rbc-label rbc-header-gutter'
+            className="rbc-label rbc-header-gutter"
             style={{ width }}
           >
             { message(messages).allDay }
@@ -263,7 +263,7 @@ export default class TimeGrid extends Component {
             range={range}
             rtl={this.props.rtl}
             events={events}
-            className='rbc-allday-cell'
+            className="rbc-allday-cell"
             selectable={selectable}
             onSelectSlot={this.handleSelectAllDaySlot}
             dateCellWrapper={components.dateCellWrapper}
@@ -279,12 +279,12 @@ export default class TimeGrid extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 
-  renderHeaderCells(range){
+  renderHeaderCells(range) {
     let { dayFormat, culture, components, getDrilldownView } = this.props;
-    let HeaderComponent = components.header || Header
+    let HeaderComponent = components.header || Header;
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date);
@@ -298,7 +298,7 @@ export default class TimeGrid extends Component {
           format={dayFormat}
           culture={culture}
         />
-      )
+      );
 
       return (
         <div
@@ -311,7 +311,6 @@ export default class TimeGrid extends Component {
         >
           {drilldownView ? (
             <a
-              href='#'
               onClick={e => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}
@@ -322,27 +321,27 @@ export default class TimeGrid extends Component {
             </span>
           )}
         </div>
-      )
-    })
+      );
+    });
   }
 
-  handleHeaderClick(date, view, e){
-    e.preventDefault()
-    notify(this.props.onDrillDown, [date, view])
+  handleHeaderClick(date, view, e) {
+    e.preventDefault();
+    notify(this.props.onDrillDown, [date, view]);
   }
 
   handleSelectEvent(...args) {
-    notify(this.props.onSelectEvent, args)
+    notify(this.props.onSelectEvent, args);
   }
 
   handleSelectAlldayEvent(...args) {
     //cancel any pending selections so only the event click goes through.
-    this.clearSelection()
-    notify(this.props.onSelectEvent, args)
+    this.clearSelection();
+    notify(this.props.onSelectEvent, args);
   }
 
-  clearSelection(){
-    clearTimeout(this._selectTimer)
+  clearSelection() {
+    clearTimeout(this._selectTimer);
     this._pendingSelection = [];
   }
 
@@ -354,7 +353,7 @@ export default class TimeGrid extends Component {
       width = Math.max(...gutterCells.map(getWidth));
 
       if (width) {
-        this.setState({ gutterWidth: width })
+        this.setState({ gutterWidth: width });
       }
     }
   }
@@ -386,12 +385,12 @@ export default class TimeGrid extends Component {
       this._updatingOverflow = true;
       this.setState({ isOverflowing }, () => {
         this._updatingOverflow = false;
-      })
+      });
     }
   }
 
   positionTimeIndicator() {
-    const { rtl, min, max } = this.props
+    const { rtl, min, max } = this.props;
     const now = new Date();
 
     const secondsGrid = dates.diff(max, min, 'seconds');
@@ -420,6 +419,6 @@ export default class TimeGrid extends Component {
       this.positionTimeIndicator();
 
       this.triggerTimeIndicatorUpdate();
-    }, 60000)
+    }, 60000);
   }
 }

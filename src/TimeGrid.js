@@ -87,6 +87,7 @@ export default class TimeGrid extends Component {
     this.state = { gutterWidth: undefined, isOverflowing: null, allDayRowWidth: undefined };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
+    this.headerInitialLoad = true;
   }
 
   componentWillMount() {
@@ -396,12 +397,16 @@ export default class TimeGrid extends Component {
   }
 
   measureAllDayRowWidth() {
-    let { allDayRowWidth } = this.state;
+    let { allDayRowWidth, isOverflowing } = this.state;
     const gutterWidth = this.props.width || this.state.gutterWidth;
 
     let headerCellsRow = this.refs.headerCell;
     if (headerCellsRow && (headerCellsRow = headerCellsRow.querySelector('.rbc-row'))) {
       allDayRowWidth = headerCellsRow.clientWidth - gutterWidth;
+      if (isOverflowing && this.headerInitialLoad) {
+        allDayRowWidth -= scrollbarSize();
+      }
+      this.headerInitialLoad = false;
     }
     return allDayRowWidth;
   }

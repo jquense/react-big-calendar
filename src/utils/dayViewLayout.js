@@ -121,6 +121,40 @@ let getChildGroups = (idx, nextIdx, {
   return { childGroups: groups, nbrOfChildColumns: nbrOfColumns }
 }
 
+let constructEvent = (title, start, end) => {
+  return {
+    title: title,
+    start: start,
+    end: end
+  }
+}
+
+let handleMultiDayEvents = (title, start, end, current) => {
+  let s = new Date(start).getDate()
+  let e = new Date(end).getDate()
+  let c = new Date(current).getDate()
+
+  // if current day is at the start, but spans multiple days, correct the end
+  if (c === s && c < e) {
+    return constructEvent(title, start, new Date(current.getYear(), current.getMonth(), c, 23, 59, 59, 59))
+  }
+
+  // if current day is in between start and end dates, span all day
+  else if (c > s && c < e) {
+    return constructEvent(title, current, new Date(current.getYear(), current.getMonth(), c, 23, 59, 59, 59))
+  }
+
+  // if current day is at the end of a multi day event, start at midnight
+  else if (c > s && c === e) {
+    return constructEvent(title, current, end)
+  }
+
+  // else, construct a normal event
+  else {
+    return constructEvent(title, start, end)
+  }
+}
+
 /**
  * Returns height and top offset, both in percentage, for an event at
  * the specified index.
@@ -134,38 +168,14 @@ let getYStyles = (idx, {
   let endDate = get(event, endAccessor) // end date
   let currentDate = new Date(min) // min is the current date at 00:00
 
-  let s = new Date(startDate).getDate()
-  let e = new Date(endDate).getDate()
-  let c = new Date(currentDate).getDate()
+  let newEvent = handleMultiDayEvents(event.title, startDate, endDate, currentDate)
 
-  // if current day is at the start, but spans multiple days, correct the end
-  if (c === s && c < e) {
-    console.log('start day')
-    // event.end = currentDate + 1
-  }
-
-  // if current day is in between start and end dates, span all day
-  if (c > s && c < e) {
-    console.log('middle day')
-    event.start = currentDate
-    event.end = currentDate + 1
-  }
-
-  // if current day is at the end of a multi day event, start at midnight
-  if (c > s && c === e) {
-    console.log('end day')
-    event.start = currentDate
-  }
-
-  let start = getSlot(event, startAccessor, min, totalMin)
-  let end = Math.max(getSlot(event, endAccessor, min, totalMin), start + step)
+  let start = getSlot(newEvent, startAccessor, min, totalMin)
+  let end = Math.max(getSlot(newEvent, endAccessor, min, totalMin), start + step)
   let top = start / totalMin * 100
   let bottom = end / totalMin * 100
 
   let height = bottom - top
-
-  event.start = startDate
-  event.end = endDate
 
   return {
     top,

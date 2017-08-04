@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 import React from 'react';
+import proxyquire from 'proxyquire';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
@@ -169,6 +170,56 @@ describe('<TimeGrid />', () => {
       window.dispatchEvent(new window.CustomEvent('resize'));
 
       expect(wrapper.state('allDayRowWidth')).to.equal(100);
+    });
+  });
+
+  describe('#measureAllDayRowWidth', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      const scrollbarSize = sandbox.stub();
+      scrollbarSize.returns(10);
+      const TimeGridWithDependency = proxyquire('../../src/TimeGrid', {
+        'dom-helpers/util/scrollbarSize': scrollbarSize
+      });
+
+      wrapper = mount(<TimeGridWithDependency {...props} />);
+      wrapper.setState({ allDayRowWidth: 100, gutterWidth: 50, isOverflowing: true });
+      const headerCellsRow = wrapper.ref('headerCell').node;
+      sandbox.stub(headerCellsRow, 'querySelector').returns({ clientWidth: 200 });
+    });
+
+    it('returns value subtracting scrollbar width on header initial load', () => {
+      const instance = wrapper.instance();
+      instance.headerInitialLoad = true;
+
+      const width = instance.measureAllDayRowWidth();
+
+      expect(instance.headerInitialLoad).to.be.false();
+      expect(wrapper.state('isOverflowing')).to.be.true();
+      expect(width).to.equal(140);
+    });
+
+    it('returns value without subtracting scrollbar width on header not initial load', () => {
+      const instance = wrapper.instance();
+
+      expect(instance.headerInitialLoad).to.be.false();
+
+      const width = instance.measureAllDayRowWidth();
+
+      expect(wrapper.state('isOverflowing')).to.be.true();
+      expect(width).to.equal(150);
+    });
+
+    it('returns value without subtracting scrollbar width if not overflowing', () => {
+      wrapper.setState({ isOverflowing: false });
+      const instance = wrapper.instance();
+      instance.headerInitialLoad = true;
+
+      const width = instance.measureAllDayRowWidth();
+
+      expect(instance.headerInitialLoad).to.be.false();
+      expect(width).to.equal(150);
     });
   });
 });

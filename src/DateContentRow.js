@@ -210,6 +210,7 @@ class DateContentRow extends React.Component {
               start={first}
               end={last}
               segments={extra}
+              slots={range.length}
               onShowMore={this.handleShowMore}
               eventComponent={eventComponent}
               eventWrapperComponent={eventWrapperComponent}

@@ -231,7 +231,7 @@ export default function getStyledEvents ({
     [idx, ...siblings].forEach((eventIdx, siblingIdx) => {
       let width = 100 / nbrOfColumns
       let xAdjustment = width * (nbrOfColumns > 1 ? OVERLAP_MULTIPLIER : 0)
-      let { top, height } = getYStyles(eventIdx, helperArgs, min)
+      let { top, height } = getYStyles(eventIdx, helperArgs)
 
       styledEvents[eventIdx] = {
         event: events[eventIdx],

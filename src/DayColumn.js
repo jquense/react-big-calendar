@@ -90,7 +90,6 @@ class DaySlot extends React.Component {
     } = this.props
 
     this._totalMin = dates.diff(min, max, 'minutes')
-
     let { selecting, startSlot, endSlot } = this.state
     let style = this._slotStyle(startSlot, endSlot)
 
@@ -131,7 +130,8 @@ class DaySlot extends React.Component {
       , max
       , culture
       , eventPropGetter
-      , selected, eventTimeRangeFormat, eventComponent
+      , selected, messages, eventTimeRangeFormat, eventComponent
+      , eventTimeRangeStartFormat, eventTimeRangeEndFormat
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
       , step
@@ -144,14 +144,34 @@ class DaySlot extends React.Component {
     })
 
     return styledEvents.map(({ event, style }, idx) => {
+      let _eventTimeRangeFormat = eventTimeRangeFormat;
+      let _continuesPrior = false;
+      let _continuesAfter = false;
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
+
+      if (start < min) {
+          start = min;
+          _continuesPrior = true;
+          _eventTimeRangeFormat = eventTimeRangeEndFormat;
+      }
+      if (end > max) {
+          end = max;
+          _continuesAfter = true;
+          _eventTimeRangeFormat = eventTimeRangeStartFormat;
+      }
 
       let continuesPrior = startsBefore(start, min)
       let continuesAfter = startsAfter(end, max)
 
       let title = get(event, titleAccessor)
-      let label = localizer.format({ start, end }, eventTimeRangeFormat, culture)
+      let label;
+      if (_continuesPrior && _continuesAfter) {
+          label = messages.allDay;
+      } else {
+          label = localizer.format({start, end}, _eventTimeRangeFormat, culture);
+      }
+
       let _isSelected = isSelected(event, selected)
 
       if (eventPropGetter)
@@ -169,12 +189,14 @@ class DaySlot extends React.Component {
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
               width: `${width}%`
             }}
-            title={label + ': ' + title }
+            title={(typeof label === 'string' ? label + ': ' : '') + title }
             onClick={(e) => this._select(event, e)}
             className={cn('rbc-event', className, {
               'rbc-selected': _isSelected,
               'rbc-event-continues-earlier': continuesPrior,
-              'rbc-event-continues-later': continuesAfter
+              'rbc-event-continues-later': continuesAfter,
+              'rbc-event-continues-day-prior': _continuesPrior,
+              'rbc-event-continues-day-after': _continuesAfter
             })}
           >
             <div className='rbc-event-label'>{label}</div>

@@ -160,8 +160,7 @@ export default class TimeGrid extends Component {
 
         if (
           get(event, allDayAccessor)
-          || !dates.eq(eStart, eEnd, 'day')
-          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
+          || (dates.isJustDate(eStart) && (dates.isJustDate(eEnd) || dates.isJustDate(dates.add(eEnd, 1, 'millisecond')))))
         {
           allDayEvents.push(event)
         }

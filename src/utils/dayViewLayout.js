@@ -129,14 +129,47 @@ let getYStyles = (idx, {
   events, startAccessor, endAccessor, min, totalMin, step
 }) => {
   let event = events[idx]
+
+  let startDate = get(event, startAccessor) // start date
+  let endDate = get(event, endAccessor) // end date
+  let currentDate = new Date(min) // min is the current date at 00:00
+
+  let s = new Date(startDate).getDate()
+  let e = new Date(endDate).getDate()
+  let c = new Date(currentDate).getDate()
+
+  // if current day is at the start, but spans multiple days, correct the end
+  if (c === s && c < e) {
+    console.log('start day')
+    // event.end = currentDate + 1
+  }
+
+  // if current day is in between start and end dates, span all day
+  if (c > s && c < e) {
+    console.log('middle day')
+    event.start = currentDate
+    event.end = currentDate + 1
+  }
+
+  // if current day is at the end of a multi day event, start at midnight
+  if (c > s && c === e) {
+    console.log('end day')
+    event.start = currentDate
+  }
+
   let start = getSlot(event, startAccessor, min, totalMin)
   let end = Math.max(getSlot(event, endAccessor, min, totalMin), start + step)
   let top = start / totalMin * 100
   let bottom = end / totalMin * 100
 
+  let height = bottom - top
+
+  event.start = startDate
+  event.end = endDate
+
   return {
     top,
-    height: bottom - top
+    height
   }
 }
 
@@ -188,7 +221,7 @@ export default function getStyledEvents ({
     [idx, ...siblings].forEach((eventIdx, siblingIdx) => {
       let width = 100 / nbrOfColumns
       let xAdjustment = width * (nbrOfColumns > 1 ? OVERLAP_MULTIPLIER : 0)
-      let { top, height } = getYStyles(eventIdx, helperArgs)
+      let { top, height } = getYStyles(eventIdx, helperArgs, min)
 
       styledEvents[eventIdx] = {
         event: events[eventIdx],

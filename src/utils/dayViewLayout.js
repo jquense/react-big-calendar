@@ -136,12 +136,12 @@ let handleMultiDayEvents = (title, start, end, current) => {
 
   // if current day is at the start, but spans multiple days, correct the end
   if (c === s && c < e) {
-    return constructEvent(title, start, new Date(current.getYear(), current.getMonth(), c, 23, 59, 59, 59))
+    return constructEvent(title, start, dates.endOf(start, 'day'))
   }
 
   // if current day is in between start and end dates, span all day
   else if (c > s && c < e) {
-    return constructEvent(title, current, new Date(current.getYear(), current.getMonth(), c, 23, 59, 59, 59))
+    return constructEvent(title, current, dates.endOf(current, 'day'))
   }
 
   // if current day is at the end of a multi day event, start at midnight

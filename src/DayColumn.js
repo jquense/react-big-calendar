@@ -41,6 +41,7 @@ class DaySlot extends React.Component {
 
     selectRangeFormat: dateFormat,
     eventTimeRangeFormat: dateFormat,
+    showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
 
     selected: PropTypes.object,
@@ -128,6 +129,7 @@ class DaySlot extends React.Component {
         events
       , min
       , max
+      , showMultiDayTimes
       , culture
       , eventPropGetter
       , selected, messages, eventTimeRangeFormat, eventComponent
@@ -140,7 +142,7 @@ class DaySlot extends React.Component {
     let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
-      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
+      events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin: this._totalMin, step
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -150,15 +152,16 @@ class DaySlot extends React.Component {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
 
-      if (start < min) {
-          start = min;
-          _continuesPrior = true;
-          _eventTimeRangeFormat = eventTimeRangeEndFormat;
+      if (start < min && end <= max) {
+        start = min;
+        _continuesPrior = true;
+        _eventTimeRangeFormat = eventTimeRangeEndFormat;
       }
-      if (end > max) {
-          end = max;
-          _continuesAfter = true;
-          _eventTimeRangeFormat = eventTimeRangeStartFormat;
+
+      if (end > max && start >= min) {
+        end = max;
+        _continuesAfter = true;
+        _eventTimeRangeFormat = eventTimeRangeStartFormat;
       }
 
       let continuesPrior = startsBefore(start, min)
@@ -166,8 +169,10 @@ class DaySlot extends React.Component {
 
       let title = get(event, titleAccessor)
       let label;
-      if (_continuesPrior && _continuesAfter) {
-          label = messages.allDay;
+      if (start < min && end > max) {
+        label = messages.allDay;
+        _continuesPrior = true;
+        _continuesAfter = true;
       } else {
           label = localizer.format({start, end}, _eventTimeRangeFormat, culture);
       }

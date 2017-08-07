@@ -38,6 +38,7 @@ export default class TimeGrid extends Component {
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
     dayFormat: dateFormat,
+    showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
 
     rtl: PropTypes.bool,
@@ -141,7 +142,8 @@ export default class TimeGrid extends Component {
       , width
       , startAccessor
       , endAccessor
-      , allDayAccessor } = this.props;
+      , allDayAccessor
+      , showMultiDayTimes} = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -158,14 +160,13 @@ export default class TimeGrid extends Component {
         let eStart = get(event, startAccessor)
           , eEnd = get(event, endAccessor);
 
-        if (
-          get(event, allDayAccessor)
-          || (dates.isJustDate(eStart) && (dates.isJustDate(eEnd) || dates.isJustDate(dates.add(eEnd, 1, 'millisecond')))))
-        {
+        if (get(event, allDayAccessor)
+          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))
+          || (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))) {
           allDayEvents.push(event)
-        }
-        else
+        } else {
           rangeEvents.push(event)
+        }
       }
     })
 

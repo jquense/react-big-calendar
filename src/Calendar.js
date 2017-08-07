@@ -289,6 +289,14 @@ class Calendar extends React.Component {
    endAccessor: accessor,
 
    /**
+    * Support to show multi-day events with specific start and end times. This
+    * will show these events in the week and day views throughout the day instead of
+    * in the all-day header. Note that if a day has multiple days in between the start
+    * and end dates, with this enabled the even will span throughout the entire day.
+    */
+   showMultiDayTimes: PropTypes.bool,
+
+   /**
     * Constrains the minimum _time_ of the Day and Week views.
     */
    min: PropTypes.instanceOf(Date),

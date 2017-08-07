@@ -144,14 +144,9 @@ let handleMultiDayEvents = (title, start, end, current) => {
     return constructEvent(title, current, dates.endOf(current, 'day'))
   }
 
-  // if current day is at the end of a multi day event, start at midnight
+  // if current day is at the end of a multi day event, start at midnight to the end
   else if (c > s && c === e) {
     return constructEvent(title, current, end)
-  }
-
-  // else, construct a normal event
-  else {
-    return constructEvent(title, start, end)
   }
 }
 
@@ -160,18 +155,21 @@ let handleMultiDayEvents = (title, start, end, current) => {
  * the specified index.
  */
 let getYStyles = (idx, {
-  events, startAccessor, endAccessor, min, totalMin, step
+  events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin, step
 }) => {
   let event = events[idx]
 
   let startDate = get(event, startAccessor) // start date
   let endDate = get(event, endAccessor) // end date
-  let currentDate = new Date(min) // min is the current date at 00:00
+  let currentDate = new Date(min) // min is the current date at midnight
 
-  let newEvent = handleMultiDayEvents(event.title, startDate, endDate, currentDate)
+  let multiDayEvent = {}
+  if (showMultiDayTimes) {
+    multiDayEvent = handleMultiDayEvents(event.title, startDate, endDate, currentDate)
+  }
 
-  let start = getSlot(newEvent, startAccessor, min, totalMin)
-  let end = Math.max(getSlot(newEvent, endAccessor, min, totalMin), start + step)
+  let start = getSlot(multiDayEvent || event, startAccessor, min, totalMin)
+  let end = Math.max(getSlot(multiDayEvent || event, endAccessor, min, totalMin), start + step)
   let top = start / totalMin * 100
   let bottom = end / totalMin * 100
 
@@ -211,11 +209,11 @@ let getYStyles = (idx, {
  * traversed, so the cursor will be moved past all of them.
  */
 export default function getStyledEvents ({
-  events: unsortedEvents, startAccessor, endAccessor, min, totalMin, step
+  events: unsortedEvents, startAccessor, endAccessor, min, showMultiDayTimes, totalMin, step
 }) {
   let OVERLAP_MULTIPLIER = 0.3
   let events = sort(unsortedEvents, { startAccessor, endAccessor })
-  let helperArgs = { events, startAccessor, endAccessor, min, totalMin, step }
+  let helperArgs = { events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin, step }
   let styledEvents = []
   let idx = 0
 

@@ -152,13 +152,13 @@ class DaySlot extends React.Component {
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
 
-      if (start < min && end <= max) {
+      if (start < min) {
         start = min;
         _continuesPrior = true;
         _eventTimeRangeFormat = eventTimeRangeEndFormat;
       }
 
-      if (end > max && start >= min) {
+      if (end > max) {
         end = max;
         _continuesAfter = true;
         _eventTimeRangeFormat = eventTimeRangeStartFormat;
@@ -169,10 +169,8 @@ class DaySlot extends React.Component {
 
       let title = get(event, titleAccessor)
       let label;
-      if (start < min && end > max) {
+      if (_continuesPrior && _continuesAfter) {
         label = messages.allDay;
-        _continuesPrior = true;
-        _continuesAfter = true;
       } else {
           label = localizer.format({start, end}, _eventTimeRangeFormat, culture);
       }

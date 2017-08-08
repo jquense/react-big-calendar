@@ -33,4 +33,24 @@
   //   pointer-events: none;
   //   opacity: .35;
   // }
+
+  .rbc-addons-dnd-resize-anchor {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 10px;
+    text-align: center;
+    margin-left: -5px;
+    .rbc-addons-dnd-resize-icon {
+      display: none;
+      border-top: 3px double;
+      margin: 0 auto;
+      width: 10px;
+    }
+    &:hover {
+      .rbc-addons-dnd-resize-icon {display: block;}
+      cursor: ns-resize;
+    }
+
+  }
 }

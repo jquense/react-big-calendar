@@ -16,3 +16,23 @@
   pointer-events: none;
   opacity: .50;
 }
+.rbc-addons-dnd .rbc-addons-dnd-resize-anchor {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  text-align: center;
+  margin-left: -5px;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-anchor .rbc-addons-dnd-resize-icon {
+  display: none;
+  border-top: 3px double;
+  margin: 0 auto;
+  width: 10px;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-anchor:hover {
+  cursor: ns-resize;
+}
+.rbc-addons-dnd .rbc-addons-dnd-resize-anchor:hover .rbc-addons-dnd-resize-icon {
+  display: block;
+}

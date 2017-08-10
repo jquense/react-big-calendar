@@ -249,35 +249,6 @@ export default class TimeGrid extends Component {
           />
           { this.renderHeaderCells(range) }
         </div>
-        <div className='rbc-row'>
-          <div
-            ref={ref => this._gutters[0] = ref}
-            className='rbc-label rbc-header-gutter'
-            style={{ width }}
-          >
-            { message(messages).allDay }
-          </div>
-          <DateContentRow
-            now={now}
-            minRows={2}
-            range={range}
-            rtl={this.props.rtl}
-            events={events}
-            className='rbc-allday-cell'
-            selectable={selectable}
-            onSelectSlot={this.handleSelectAllDaySlot}
-            dateCellWrapper={components.dateCellWrapper}
-            eventComponent={this.props.components.event}
-            eventWrapperComponent={this.props.components.eventWrapper}
-            titleAccessor={this.props.titleAccessor}
-            startAccessor={this.props.startAccessor}
-            endAccessor={this.props.endAccessor}
-            allDayAccessor={this.props.allDayAccessor}
-            eventPropGetter={this.props.eventPropGetter}
-            selected={this.props.selected}
-            onSelect={this.handleSelectEvent}
-          />
-        </div>
       </div>
     )
   }

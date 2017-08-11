@@ -41,6 +41,7 @@ export default class TimeGrid extends Component {
     culture: PropTypes.string,
 
     rtl: PropTypes.bool,
+    allDaySlot: PropTypes.bool,
     width: PropTypes.number,
 
     titleAccessor: accessor.isRequired,
@@ -72,7 +73,8 @@ export default class TimeGrid extends Component {
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    now: new Date()
+    now: new Date(),
+    allDaySlot: true
   }
 
   constructor(props) {
@@ -226,7 +228,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components, now } = this.props;
+    let { messages, rtl, selectable, components, now, allDaySlot } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
@@ -249,6 +251,37 @@ export default class TimeGrid extends Component {
           />
           { this.renderHeaderCells(range) }
         </div>
+        {allDaySlot &&
+          <div className='rbc-row'>
+            <div
+              ref={ref => this._gutters[0] = ref}
+              className='rbc-label rbc-header-gutter'
+              style={{ width }}
+              >
+                { message(messages).allDay }
+              </div>
+              <DateContentRow
+                now={now}
+                minRows={2}
+                range={range}
+                rtl={this.props.rtl}
+                events={events}
+                className='rbc-allday-cell'
+                selectable={selectable}
+                onSelectSlot={this.handleSelectAllDaySlot}
+                dateCellWrapper={components.dateCellWrapper}
+                eventComponent={this.props.components.event}
+                eventWrapperComponent={this.props.components.eventWrapper}
+                titleAccessor={this.props.titleAccessor}
+                startAccessor={this.props.startAccessor}
+                endAccessor={this.props.endAccessor}
+                allDayAccessor={this.props.allDayAccessor}
+                eventPropGetter={this.props.eventPropGetter}
+                selected={this.props.selected}
+                onSelect={this.handleSelectEvent}
+              />
+            </div>
+        }
       </div>
     )
   }

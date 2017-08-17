@@ -145,6 +145,14 @@ class Calendar extends React.Component {
    views: componentViews,
 
    /**
+    * The string name of the default view for the calendar to render.
+    * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+    * @default 'month'
+    */
+
+   defaultView: PropTypes.string,
+
+   /**
     * The string name of the destination view for drill-down actions, such
     * as clicking a date header, or the truncated events links. If
     * `getDrilldownView` is also specified it will be used instead.

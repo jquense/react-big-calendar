@@ -9,7 +9,7 @@ import BigCalendar from '../../index';
 
 let eventSource = {
   beginDrag(props) {
-    return props.event;
+    return props.dragEventPropsGetter ? props.dragEventPropsGetter(props.event) : props.event;
   }
 }
 

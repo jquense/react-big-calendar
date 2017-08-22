@@ -155,6 +155,14 @@ let dates = {
 
   tomorrow() {
     return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
+  },
+
+  isBefore(dateA, dateB, unit) {
+    return dates.diff(dateA, dateB, unit) !== 0 && dates.lt(dateA, dateB);
+  },
+
+  isAfter(dateA, dateB, unit) {
+    return dates.diff(dateA, dateB, unit) !== 0 && dates.gt(dateA, dateB);
   }
 }
 

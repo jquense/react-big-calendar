@@ -66,5 +66,15 @@ export default [
     'title': 'Birthday Party',
     'start':new Date(2015, 3, 13, 7, 0, 0),
     'end': new Date(2015, 3, 13, 10, 30, 0)
+  },
+  {
+    'title': 'Multiday Event',
+    'start':new Date(2015, 3, 15, 0, 0, 0),
+    'end': new Date(2015, 3, 16, 23, 0, 0)
+  },
+  {
+    'title': '1 min event',
+    'start':new Date(2015, 3, 12, 0, 0, 0),
+    'end': new Date(2015, 3, 12, 0, 1, 0)
   }
 ]

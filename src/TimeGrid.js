@@ -22,6 +22,8 @@ import { accessor as get } from './utils/accessors';
 
 import { inRange, sortEvents, segStyle } from './utils/eventLevels';
 
+window.dates = dates;
+
 export default class TimeGrid extends Component {
 
   static propTypes = {
@@ -164,6 +166,7 @@ export default class TimeGrid extends Component {
           || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
         {
           allDayEvents.push(event)
+          rangeEvents.push(event)
         }
         else
           rangeEvents.push(event)

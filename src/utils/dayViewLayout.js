@@ -121,6 +121,16 @@ let getChildGroups = (idx, nextIdx, {
   return { childGroups: groups, nbrOfChildColumns: nbrOfColumns }
 }
 
+let startsBeforeDay = (event, min, startAccessor) => {
+  const startDate = get(event, startAccessor)
+  return dates.isBefore(startDate, min, 'day')
+}
+
+let endsNextDay = (event, min, endAccessor) => {
+  const endDate = get(event, endAccessor)
+  return dates.isAfter(endDate, min, 'day')
+}
+
 /**
  * Returns height and top offset, both in percentage, for an event at
  * the specified index.
@@ -129,8 +139,15 @@ let getYStyles = (idx, {
   events, startAccessor, endAccessor, min, totalMin, step
 }) => {
   let event = events[idx]
-  let start = getSlot(event, startAccessor, min, totalMin)
-  let end = Math.max(getSlot(event, endAccessor, min, totalMin), start + step)
+
+  let start = startsBeforeDay(event, min, startAccessor)
+    ? 0
+    : getSlot(event, startAccessor, min, totalMin)
+
+  let end = endsNextDay(event, min, endAccessor)
+    ? totalMin
+    : Math.max(getSlot(event, endAccessor, min, totalMin), start + step)
+
   let top = start / totalMin * 100
   let bottom = end / totalMin * 100
 

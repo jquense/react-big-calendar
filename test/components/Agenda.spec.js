@@ -79,6 +79,22 @@ describe('<Agenda />', () => {
       });
     });
 
+    context('event length is 0',() => {
+      beforeEach(() => {
+        props.events = [];
+      });
+
+      it('renders empty agenda view', () => {
+        const wrapper = mount(<Agenda {...props} />);
+        const content = wrapper.find('.rbc-empty-agenda-content');
+        
+        expect(content).to.have.length(1);
+        expect(content.prop('style')).to.deep.equal({height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center'});
+        expect(content.children().first().prop('style')).to.deep.equal({textAlign: 'center', color: 'gray'});
+        expect(content.children().first().text()).to.equal('There are no events today that match your filters.');
+      });
+    })
+
     context('without an eventPropGetter', () => {
       beforeEach(() => {
         props.eventPropGetter = null;

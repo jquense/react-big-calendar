@@ -56,6 +56,34 @@ class Agenda extends React.Component {
     events = events.filter(event =>
       inRange(event, date, end, this.props)
     );
+
+    if (events.length === 0) {
+      return (
+        <div className='rbc-agenda-view'>
+          <table ref='header'>
+            <thead>
+              <tr>
+                {agendaLength > 0 && <th className='rbc-header' ref='dateCol'>
+                  {messages.date}
+                </th>}
+                <th className='rbc-header' ref='timeCol'>
+                  {messages.time}
+                </th>
+                <th className='rbc-header'>
+                  {messages.event}
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <div className='rbc-empty-agenda-content' ref='content' style={{height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <p style={{textAlign: 'center', color: 'gray'}}>
+              <strong>There are no events today that match your filters.</strong>
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor));
 
     return (
@@ -179,6 +207,9 @@ class Agenda extends React.Component {
   _adjustHeader = () => {
     const { agendaLength } = this.props;
     let header = this.refs.header;
+    if (!this.refs.tbody)
+      return
+    
     let firstRow = this.refs.tbody.firstChild
 
     if (!firstRow)

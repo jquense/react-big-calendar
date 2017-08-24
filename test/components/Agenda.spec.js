@@ -79,6 +79,23 @@ describe('<Agenda />', () => {
       });
     });
 
+    context('event length is 0',() => {
+      beforeEach(() => {
+        props.events = [];
+      });
+
+      it('renders empty agenda view', () => {
+        const wrapper = mount(<Agenda {...props} />);
+        const content = wrapper.find('.rbc-empty-agenda-content');
+        
+        expect(content).to.have.length(1);
+        expect(content.prop('className')).to.equal('rbc-empty-agenda-content');
+        expect(content.children()).to.have.length(1);
+        expect(content.children().first().prop('className')).to.equal('rbc-empty-agenda-message');
+        expect(content.children().first().text()).to.equal('There are no events today that match your filters.');
+      });
+    })
+
     context('without an eventPropGetter', () => {
       beforeEach(() => {
         props.eventPropGetter = null;

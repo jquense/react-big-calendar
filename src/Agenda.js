@@ -35,6 +35,7 @@ class Agenda extends React.Component {
     messages: PropTypes.shape({
       date: PropTypes.string,
       time: PropTypes.string,
+      emptyAgenda: PropTypes.string,
     })
   };
 
@@ -61,7 +62,7 @@ class Agenda extends React.Component {
     if (events.length === 0) {
       content = (
         <p className='rbc-empty-agenda-message'>
-          <strong>There are no events today that match your filters.</strong>
+          <strong>{messages.emptyAgenda}</strong>
         </p>
       );
     } else {

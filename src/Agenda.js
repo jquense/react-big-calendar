@@ -35,6 +35,7 @@ class Agenda extends React.Component {
     messages: PropTypes.shape({
       date: PropTypes.string,
       time: PropTypes.string,
+      emptyAgenda: PropTypes.string,
     })
   };
 
@@ -56,6 +57,24 @@ class Agenda extends React.Component {
     events = events.filter(event =>
       inRange(event, date, end, this.props)
     );
+
+    let content;
+    if (events.length === 0) {
+      content = (
+        <p className='rbc-empty-agenda-message'>
+          <strong>{messages.emptyAgenda}</strong>
+        </p>
+      );
+    } else {
+      content = (
+        <table>
+          <tbody ref='tbody'>
+            { range.map((day, idx) => this.renderDay(day, events, idx)) }
+          </tbody>
+        </table>
+      );
+    }
+
     events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor));
 
     return (
@@ -75,12 +94,8 @@ class Agenda extends React.Component {
             </tr>
           </thead>
         </table>
-        <div className='rbc-agenda-content' ref='content'>
-          <table>
-            <tbody ref='tbody'>
-              { range.map((day, idx) => this.renderDay(day, events, idx)) }
-            </tbody>
-          </table>
+        <div className={(events.length === 0) ? 'rbc-empty-agenda-content' : 'rbc-agenda-content'} ref='content'>
+          {content}
         </div>
       </div>
     );
@@ -179,10 +194,10 @@ class Agenda extends React.Component {
   _adjustHeader = () => {
     const { agendaLength } = this.props;
     let header = this.refs.header;
-    let firstRow = this.refs.tbody.firstChild
-
-    if (!firstRow)
+    if (!this.refs.tbody || !this.refs.tbody.firstChild)
       return
+    
+    let firstRow = this.refs.tbody.firstChild
 
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
     let widths = this._widths || []

@@ -15,6 +15,7 @@ import invariant from 'invariant';
   tomorrow: 'tomorrow',
   today: 'today',
   agenda: 'agenda',
+  emptyAgenda: 'You have no events planned for today.',
 
   showMore: total => `+${total} more`
 }

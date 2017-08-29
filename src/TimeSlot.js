@@ -12,7 +12,7 @@ export default class TimeSlot extends Component {
     showLabel: PropTypes.bool,
     content: PropTypes.string,
     culture: PropTypes.string,
-    slotPropGetter: PropTypes.func
+    slotPropGetter: PropTypes.func,
   }
 
   static defaultProps = {

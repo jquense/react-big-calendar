@@ -13,6 +13,7 @@ export default class TimeSlotGroup extends Component {
     value: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
     isNow: PropTypes.bool,
+    slotPropGetter: PropTypes.func,
     timeGutterFormat: PropTypes.string,
     culture: PropTypes.string
   }

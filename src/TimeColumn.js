@@ -20,6 +20,7 @@ export default class TimeColumn extends Component {
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
 
+    slotPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
   }
   static defaultProps = {

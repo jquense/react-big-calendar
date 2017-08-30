@@ -465,6 +465,9 @@ class Calendar extends React.Component {
      week: PropTypes.node,
      day: PropTypes.node,
      agenda: PropTypes.node,
+     date: PropTypes.node,
+     time: PropTypes.node,
+     event: PropTypes.node,
      showMore: PropTypes.func
    })
  };

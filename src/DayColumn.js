@@ -163,11 +163,11 @@ class DaySlot extends React.Component {
         <EventWrapper event={event} key={'evt_' + idx}>
           <div
             style={{
-              ...xStyle,
               top: `${top}%`,
               height: `${height}%`,
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-              width: `${width}%`
+              width: `${width}%`,
+			  ...xStyle
             }}
             title={label + ': ' + title }
             onClick={(e) => this._select(event, e)}

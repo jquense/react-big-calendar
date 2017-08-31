@@ -9,6 +9,7 @@ let propTypes = {
   event: PropTypes.object.isRequired,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.instanceOf(Date),
+  view: PropTypes.string.isRequired,
 
   selected: PropTypes.bool,
   eventPropGetter: PropTypes.func,
@@ -20,13 +21,14 @@ let propTypes = {
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
   onSelect: PropTypes.func
-}
+};
 
 class EventCell extends React.Component {
   render() {
     let {
         className
       , event
+      , view
       , selected
       , eventPropGetter
       , startAccessor, endAccessor, titleAccessor
@@ -42,10 +44,10 @@ class EventCell extends React.Component {
       , start = get(event, startAccessor)
       , isAllDay = get(event, props.allDayAccessor)
       , continuesPrior = dates.lt(start, slotStart, 'day')
-      , continuesAfter = dates.gt(end, slotEnd, 'day')
+      , continuesAfter = dates.gt(end, slotEnd, 'day');
 
     if (eventPropGetter)
-      var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
+      var { style, className: xClassName } = eventPropGetter(event, start, end, selected, view);
 
     return (
       <EventWrapper event={event}>
@@ -73,4 +75,4 @@ class EventCell extends React.Component {
 
 EventCell.propTypes = propTypes;
 
-export default EventCell
+export default EventCell;

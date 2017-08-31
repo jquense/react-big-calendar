@@ -227,6 +227,12 @@ class Calendar extends React.Component {
    rtl: PropTypes.bool,
 
    /**
+    * Determines if the "all-day" slot is displayed at the top of the calendar.
+    * When hidden with false, all-day events will not be displayed in agenda views.
+    */
+   allDaySlot: PropTypes.bool,
+
+   /**
     * Optionally provide a function that returns an object of className or style props
     * to be applied to the the event node.
     *

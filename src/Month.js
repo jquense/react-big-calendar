@@ -50,6 +50,7 @@ let propTypes = {
 
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
 
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
@@ -157,6 +158,7 @@ class MonthView extends React.Component {
       messages,
       selected,
       now,
+      longPressThreshold,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -190,6 +192,7 @@ class MonthView extends React.Component {
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
+        longPressThreshold={longPressThreshold}
       />
     )
   }

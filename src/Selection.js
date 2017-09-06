@@ -37,9 +37,10 @@ const clickTolerance = 5;
 
 class Selection {
 
-  constructor(node, global = false){
+  constructor(node, { global = false, longPressThreshold = 250 } = {}) {
     this.container = node;
     this.globalMouse = !node || global;
+    this.longPressThreshold = longPressThreshold;
 
     this._listeners = Object.create(null);
 
@@ -117,7 +118,7 @@ class Selection {
       timer = setTimeout(() => {
         cleanup();
         handler(initialEvent);
-      }, 250);
+      }, this.longPressThreshold);
       touchMoveListener = addEventListener('touchmove', () => cleanup());
       touchEndListener = addEventListener('touchend', () => cleanup());
     };

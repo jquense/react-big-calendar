@@ -50,6 +50,7 @@ export default class TimeGrid extends Component {
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+    longPressThreshold: PropTypes.number,
 
     onNavigate: PropTypes.func,
     onSelectSlot: PropTypes.func,
@@ -276,6 +277,7 @@ export default class TimeGrid extends Component {
             eventPropGetter={this.props.eventPropGetter}
             selected={this.props.selected}
             onSelect={this.handleSelectEvent}
+            longPressThreshold={this.props.longPressThreshold}
           />
         </div>
       </div>

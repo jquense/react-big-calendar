@@ -211,6 +211,16 @@ class Calendar extends React.Component {
    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
    /**
+    * Specifies the number of miliseconds the user must press and hold on the screen for a touch
+    * to be considered a "long press." Long presses are used for time slot selection on touch
+    * devices.
+    *
+    * @type {number}
+    * @default 250
+    */
+   longPressThreshold: PropTypes.number,
+
+   /**
     * Determines the selectable time increments in week and day views
     */
    step: PropTypes.number,
@@ -486,7 +496,9 @@ class Calendar extends React.Component {
    titleAccessor: 'title',
    allDayAccessor: 'allDay',
    startAccessor: 'start',
-   endAccessor: 'end'
+   endAccessor: 'end',
+
+   longPressThreshold: 250,
  };
 
  getViews = () => {

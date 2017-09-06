@@ -168,7 +168,7 @@ class Selection {
 
   _handleInitialEvent (e) {
     const { clientX, clientY, pageX, pageY } = getEventCoordinates(e);
-    var node = this.container()
+    let node = this.container()
       , collides, offsetData;
 
     // Right clicks
@@ -208,8 +208,6 @@ class Selection {
     if (result === false)
       return;
 
-    //e.preventDefault();
-
     switch (e.type) {
       case 'mousedown':
         this._onEndListener = addEventListener('mouseup', this._handleTerminatingEvent)
@@ -235,9 +233,9 @@ class Selection {
 
     if (!this._initialEventData) return;
 
-    var inRoot = !this.container || contains(this.container(), e.target);
-    var bounds = this._selectRect;
-    var click = this.isClick(pageX, pageY);
+    let inRoot = !this.container || contains(this.container(), e.target);
+    let bounds = this._selectRect;
+    let click = this.isClick(pageX, pageY);
 
     this._initialEventData = null
 
@@ -259,10 +257,10 @@ class Selection {
   }
 
   _handleMoveEvent(e) {
-    var { x, y } = this._initialEventData;
+    let { x, y } = this._initialEventData;
     const { pageX, pageY } = getEventCoordinates(e);
-    var w = Math.abs(x - pageX);
-    var h = Math.abs(y - pageY);
+    let w = Math.abs(x - pageX);
+    let h = Math.abs(y - pageY);
 
     let left = Math.min(pageX, x)
       , top = Math.min(pageY, y)
@@ -343,7 +341,7 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
 export function getBoundsForNode(node) {
   if (!node.getBoundingClientRect) return node;
 
-  var rect = node.getBoundingClientRect()
+  let rect = node.getBoundingClientRect()
     , left = rect.left + pageOffset('left')
     , top = rect.top + pageOffset('top');
 

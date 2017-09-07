@@ -12,7 +12,6 @@ let Basic = React.createClass({
         events={events}
         views={allViews}
         defaultDate={new Date(2015, 3, 1)}
-        showMultiDayTimes={true}
       />
     )
   }

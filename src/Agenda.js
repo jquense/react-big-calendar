@@ -11,6 +11,7 @@ import { navigate } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 import { accessor, dateFormat, dateRangeFormat } from './utils/propTypes';
 import { inRange } from './utils/eventLevels';
+import { isSelected } from './utils/selection';
 
 
 class Agenda extends React.Component {
@@ -22,6 +23,8 @@ class Agenda extends React.Component {
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
+    eventPropGetter: PropTypes.func,
+    selected: PropTypes.object,
 
     agendaDateFormat: dateFormat,
     agendaTimeFormat: dateFormat,
@@ -91,7 +94,8 @@ class Agenda extends React.Component {
   renderDay = (day, events, dayKey) => {
     let {
         culture, components
-      , titleAccessor, agendaDateFormat } = this.props;
+      , titleAccessor, agendaDateFormat
+      , eventPropGetter, startAccessor, endAccessor, selected } = this.props;
 
     let EventComponent = components.event;
     let DateComponent = components.date;
@@ -99,6 +103,13 @@ class Agenda extends React.Component {
     events = events.filter(e => inRange(e, day, day, this.props))
 
     return events.map((event, idx) => {
+      const { className, style } = eventPropGetter ?
+        eventPropGetter(
+          event,
+          get(event, startAccessor),
+          get(event, endAccessor),
+          isSelected(event, selected),
+        ) : {};
       let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture)
       let first = idx === 0
           ? (
@@ -113,7 +124,7 @@ class Agenda extends React.Component {
       let title = get(event, titleAccessor)
 
       return (
-        <tr key={dayKey + '_' + idx}>
+        <tr key={dayKey + '_' + idx} className={className} style={style}>
           {first}
           <td className='rbc-agenda-time-cell'>
             { this.timeRangeLabel(day, event) }

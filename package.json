@@ -48,6 +48,7 @@
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
+    "babel-plugin-object-assign": "^1.2.1",
     "babel-preset-jason": "^3.0.0",
     "component-metadata-loader": "^3.0.1",
     "cpy": "^3.4.1",

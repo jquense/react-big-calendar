@@ -122,6 +122,30 @@ class Calendar extends React.Component {
    onSelectEvent: PropTypes.func,
 
    /**
+    * Callback fired when a calendar event is resized.
+    *
+    * ```js
+    * (event: Object, e: SyntheticEvent) => any
+    * ```
+    *
+    * @controllable resize
+    */
+   onResizeInit: PropTypes.func,
+   onResizing: PropTypes.func,
+   onResizeEnd: PropTypes.func,
+
+   /**
+    * Callback fired when dragging an event in the Day column view.
+    *
+    * Returning `false` from the handler will prevent a resize.
+    *
+    * ```js
+    * (range: { start: Date, end: Date }) => ?boolean
+    * ```
+    */
+   onSelecting: PropTypes.func,
+
+   /**
     * Callback fired when dragging a selection in the Time views.
     *
     * Returning `false` from the handler will prevent a selection.
@@ -209,6 +233,11 @@ class Calendar extends React.Component {
     * logic
     */
    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+   /**
+    * Allows resizing.
+    */
+   resizable: PropTypes.oneOf([true, false]),
 
    /**
     * Determines the selectable time increments in week and day views
@@ -583,6 +612,7 @@ class Calendar extends React.Component {
          getDrilldownView={this.getDrilldownView}
          onNavigate={this.handleNavigate}
          onDrillDown={this.handleDrillDown}
+         onResizeEvent={this.handleResizeEvent}
          onSelectEvent={this.handleSelectEvent}
          onSelectSlot={this.handleSelectSlot}
          onShowMore={this._showMore}
@@ -603,6 +633,10 @@ class Calendar extends React.Component {
  handleViewChange = (view) => {
    if (view !== this.props.view && isValidView(view, this.props))
      this.props.onView(view)
+ };
+
+ handleResizeEvent = (...args) => {
+    notify(this.props.onResizeEvent, args)
  };
 
  handleSelectEvent = (...args) => {

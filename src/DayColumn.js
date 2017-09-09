@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 
 import Selection, { getBoundsForNode, isEvent } from './Selection';
+import Resizer from './Resizer';
 import dates from './utils/dates';
 import { isSelected } from './utils/selection';
 import localizer from './localizer'
@@ -42,6 +43,10 @@ class DaySlot extends React.Component {
     selectRangeFormat: dateFormat,
     eventTimeRangeFormat: dateFormat,
     culture: PropTypes.string,
+
+    resizable: PropTypes.oneOf([true, false]),
+    onResizing: PropTypes.func,
+    onResizeEvent: PropTypes.func.isRequired,
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
@@ -182,6 +187,16 @@ class DaySlot extends React.Component {
               { EventComponent
                 ? <EventComponent event={event} title={title}/>
                 : title
+              }
+            </div>
+            <div className='rbc-event-footer'>
+              {
+                this.props.resizable
+                ? <Resizer
+                  {...this.props}
+                  event={event}
+                  boundingNode={this} />
+                : ''
               }
             </div>
           </div>

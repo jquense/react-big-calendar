@@ -48,6 +48,8 @@ export default class TimeGrid extends Component {
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
+    resizable: PropTypes.oneOf([true, false]),
+
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
@@ -329,6 +331,10 @@ export default class TimeGrid extends Component {
   handleHeaderClick(date, view, e){
     e.preventDefault()
     notify(this.props.onDrillDown, [date, view])
+  }
+
+  handleResizeEvent(...args) {
+    notify(this.props.onResizeEvent, args)
   }
 
   handleSelectEvent(...args) {

@@ -55,6 +55,26 @@
     min-height: 1em;
   }
 
+
+  .rbc-event-footer {
+    text-align: center;
+    width: 100%;
+    word-wrap: break-word;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+
+    .rbc-event-risizer {
+      color: transparent;
+      padding: 2px 4px;
+
+      &:hover,
+      &:active {
+        color: @event-color;
+      }
+    }
+  }
+
   .rbc-time-slot {
     border-top: 1px solid lighten(@cell-border, 10%);
   }

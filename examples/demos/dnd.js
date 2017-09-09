@@ -17,22 +17,6 @@ class Dnd extends React.Component {
     }
 
     this.moveEvent = this.moveEvent.bind(this)
-    this.resizeEvent = this.resizeEvent.bind(this)
-  }
-  resizeEvent({originalEvent, startDate, endDate}){
-    const { events } = this.state;
-
-    const idx = events.indexOf(originalEvent);
-
-    originalEvent.start = startDate;
-    originalEvent.end = endDate;
-
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, originalEvent)
-
-    this.setState({
-      events: nextEvents
-    })
   }
 
   moveEvent({ event, start, end }) {
@@ -55,9 +39,6 @@ class Dnd extends React.Component {
     return (
       <DragAndDropCalendar
         selectable
-        resizable
-        onResizing={this.resizeEvent}
-        onResizeInit={() => true}
         events={this.state.events}
         onEventDrop={this.moveEvent}
         defaultView='week'

@@ -48,6 +48,7 @@ class Resizer extends React.Component {
   }
 
   _mouseDown (e) {
+    e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
 

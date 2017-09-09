@@ -333,10 +333,6 @@ export default class TimeGrid extends Component {
     notify(this.props.onDrillDown, [date, view])
   }
 
-  handleResizeEvent(...args) {
-    notify(this.props.onResizeEvent, args)
-  }
-
   handleSelectEvent(...args) {
     notify(this.props.onSelectEvent, args)
   }

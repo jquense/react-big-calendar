@@ -122,16 +122,26 @@ class Calendar extends React.Component {
    onSelectEvent: PropTypes.func,
 
    /**
-    * Callback fired when a calendar event is resized.
+    * Callback fired when mousedown occurs on resize element
+    * return false to cancel
     *
     * ```js
-    * (event: Object, e: SyntheticEvent) => any
-    * ```
-    *
-    * @controllable resize
+    * ({originalEvent: event}) => ?boolean
     */
    onResizeInit: PropTypes.func,
+   /**
+    * Callback fired when event is resized
+    *
+    * ```js
+    * ({originalEvent: event, startDate: date, endDate: date})
+    */
    onResizing: PropTypes.func,
+   /**
+    * Callback fired on mouseup event
+    *
+    * ```js
+    * ({originalEvent: event})
+    */
    onResizeEnd: PropTypes.func,
 
    /**
@@ -612,7 +622,6 @@ class Calendar extends React.Component {
          getDrilldownView={this.getDrilldownView}
          onNavigate={this.handleNavigate}
          onDrillDown={this.handleDrillDown}
-         onResizeEvent={this.handleResizeEvent}
          onSelectEvent={this.handleSelectEvent}
          onSelectSlot={this.handleSelectSlot}
          onShowMore={this._showMore}
@@ -633,10 +642,6 @@ class Calendar extends React.Component {
  handleViewChange = (view) => {
    if (view !== this.props.view && isValidView(view, this.props))
      this.props.onView(view)
- };
-
- handleResizeEvent = (...args) => {
-    notify(this.props.onResizeEvent, args)
  };
 
  handleSelectEvent = (...args) => {

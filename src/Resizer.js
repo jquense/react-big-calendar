@@ -65,9 +65,9 @@ class Resizer extends React.Component {
 
     if(typeof this.props.onResizeInit === 'function'){
       let result = this.props.onResizeInit({
-        eventData:    this.props.event,
-        boundingNode: this.props.boundingNode,
-        mouseData:    this._mouseDownData
+        originalEvent: this.props.event,
+        boundingNode:  this.props.boundingNode,
+        mouseData:     this._mouseDownData
       });
 
       if (result === false)
@@ -93,9 +93,9 @@ class Resizer extends React.Component {
     if(!click){
       if(typeof this.props.onResizeEnd === 'function'){
         this.props.onResizeEnd({
-          eventData:    this.props.event,
-          boundingNode: this.props.boundingNode,
-          mouseData:    this._mouseDownData
+          originalEvent: this.props.event,
+          boundingNode:  this.props.boundingNode,
+          mouseData:     this._mouseDownData
         });
       }
     }

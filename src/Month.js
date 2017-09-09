@@ -49,7 +49,9 @@ let propTypes = {
   endAccessor: accessor.isRequired,
 
   resizable: PropTypes.oneOf([true, false]),
-  onResizeEvent: PropTypes.func.isRequired,
+  onResizingInit: PropTypes.func,
+  onResizing: PropTypes.func,
+  onResizingEnd: PropTypes.func,
 
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),

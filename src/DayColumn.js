@@ -45,8 +45,9 @@ class DaySlot extends React.Component {
     culture: PropTypes.string,
 
     resizable: PropTypes.oneOf([true, false]),
+    onResizingInit: PropTypes.func,
     onResizing: PropTypes.func,
-    onResizeEvent: PropTypes.func.isRequired,
+    onResizingEnd: PropTypes.func,
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),

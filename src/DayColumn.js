@@ -46,6 +46,7 @@ class DaySlot extends React.Component {
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
     eventOffset: PropTypes.number,
+    longPressThreshold: PropTypes.number,
 
     onSelecting: PropTypes.func,
     onSelectSlot: PropTypes.func.isRequired,
@@ -202,7 +203,9 @@ class DaySlot extends React.Component {
 
   _selectable = () => {
     let node = findDOMNode(this);
-    let selector = this._selector = new Selection(()=> findDOMNode(this))
+    let selector = this._selector = new Selection(()=> findDOMNode(this), {
+      longPressThreshold: this.props.longPressThreshold,
+    })
 
     let maybeSelect = (box) => {
       let onSelecting = this.props.onSelecting
@@ -257,7 +260,7 @@ class DaySlot extends React.Component {
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
 
-    selector.on('mousedown', (box) => {
+    selector.on('beforeSelect', (box) => {
       if (this.props.selectable !== 'ignoreEvents') return
 
       return !isEvent(findDOMNode(this), box)

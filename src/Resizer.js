@@ -37,6 +37,8 @@ class Resizer extends React.Component {
       return;
     }
 
+    this._lastEndDate = null;
+
     this._mouseDown = this._mouseDown.bind(this)
     this._mouseMove = this._mouseMove.bind(this)
     this._mouseUp   = this._mouseUp.bind(this)
@@ -133,6 +135,13 @@ class Resizer extends React.Component {
         current = snapToSlot(minToDate(mins * current, min), step)
 
         let end = dates.min(max, dates.max(current))
+
+        if(this._lastEndDate && this._lastEndDate.getTime() === end.getTime()){
+          return false;
+        }
+
+        this._lastEndDate = end;
+
         // this is what gets passed to the onResizing prop
         return {
           originalEvent: this.props.event,
@@ -143,6 +152,10 @@ class Resizer extends React.Component {
 
       if(typeof this.props.onResizing === 'function'){
         let udpate     = resizingUpdate(box);
+
+        if(udpate === false){
+          return;
+        }
 
         this.props.onResizing({
           ...udpate

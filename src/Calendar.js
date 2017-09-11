@@ -12,6 +12,7 @@ import {
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import defaultFormats from './formats';
+import message from './utils/messages'
 import viewLabel from './utils/viewLabel';
 import moveDate from './utils/move';
 import VIEWS from './Views';
@@ -311,6 +312,15 @@ class Calendar extends React.Component {
    endAccessor: accessor,
 
    /**
+    * Support to show multi-day events with specific start and end times in the
+    * main time grid (rather than in the all day header).
+    *
+    * **Note: This may cause calendars with several events to look very busy in
+    * the week and day views.**
+    */
+   showMultiDayTimes: PropTypes.bool,
+
+   /**
     * Constrains the minimum _time_ of the Day and Week views.
     */
    min: PropTypes.instanceOf(Date),
@@ -541,6 +551,7 @@ class Calendar extends React.Component {
      , culture
      , components = {}
      , formats = {}
+     , messages = {}
      , style
      , className
      , elementProps
@@ -548,6 +559,7 @@ class Calendar extends React.Component {
      , ...props } = this.props;
 
    formats = defaultFormats(formats)
+   messages = message(messages)
 
    let View = this.getView();
    let names = viewNames(this.props.views)
@@ -580,13 +592,14 @@ class Calendar extends React.Component {
            label={viewLabel(current, view, formats, culture)}
            onViewChange={this.handleViewChange}
            onNavigate={this.handleNavigate}
-           messages={this.props.messages}
+           messages={messages}
          />
        }
        <View
          ref='view'
          {...props}
          {...formats}
+         messages={messages}
          culture={culture}
          formats={undefined}
          events={events}

@@ -121,22 +121,68 @@ let getChildGroups = (idx, nextIdx, {
   return { childGroups: groups, nbrOfChildColumns: nbrOfColumns }
 }
 
+let constructEvent = (title, start, end) => {
+  return {
+    title: title,
+    start: start,
+    end: end
+  }
+}
+
+let handleMultiDayEvents = (title, start, end, current) => {
+  let s = new Date(start)
+  let e = new Date(end)
+  let c = new Date(current)
+
+  // use noon to compare dates to avoid DST issues
+  s.setHours(12, 0, 0, 0)
+  e.setHours(12, 0, 0, 0)
+  c.setHours(12, 0, 0, 0)
+
+  // if current day is at the start, but spans multiple days, correct the end
+  if (+c === +s && c < e) {
+    return constructEvent(title, start, dates.endOf(start, 'day'))
+  }
+
+  // if current day is in between start and end dates, span all day
+  else if (c > s && c < e) {
+    return constructEvent(title, current, dates.endOf(current, 'day'))
+  }
+
+  // if current day is at the end of a multi day event, start at midnight to the end
+  else if (c > s && +c === +e) {
+    return constructEvent(title, current, end)
+  }
+}
+
 /**
  * Returns height and top offset, both in percentage, for an event at
  * the specified index.
  */
 let getYStyles = (idx, {
-  events, startAccessor, endAccessor, min, totalMin, step
+  events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin, step
 }) => {
   let event = events[idx]
-  let start = getSlot(event, startAccessor, min, totalMin)
-  let end = Math.max(getSlot(event, endAccessor, min, totalMin), start + step)
+
+  let startDate = get(event, startAccessor) // start date
+  let endDate = get(event, endAccessor) // end date
+  let currentDate = new Date(min) // min is the current date at midnight
+
+  let multiDayEvent = {}
+  if (showMultiDayTimes) {
+    multiDayEvent = handleMultiDayEvents(event.title, startDate, endDate, currentDate)
+  }
+
+  let start = getSlot(multiDayEvent || event, startAccessor, min, totalMin)
+  let end = Math.max(getSlot(multiDayEvent || event, endAccessor, min, totalMin), start + step)
   let top = start / totalMin * 100
   let bottom = end / totalMin * 100
 
+  let height = bottom - top
+
   return {
     top,
-    height: bottom - top
+    height
   }
 }
 
@@ -168,11 +214,11 @@ let getYStyles = (idx, {
  * traversed, so the cursor will be moved past all of them.
  */
 export default function getStyledEvents ({
-  events: unsortedEvents, startAccessor, endAccessor, min, totalMin, step
+  events: unsortedEvents, startAccessor, endAccessor, min, showMultiDayTimes, totalMin, step
 }) {
   let OVERLAP_MULTIPLIER = 0.3
   let events = sort(unsortedEvents, { startAccessor, endAccessor })
-  let helperArgs = { events, startAccessor, endAccessor, min, totalMin, step }
+  let helperArgs = { events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin, step }
   let styledEvents = []
   let idx = 0
 

@@ -122,6 +122,40 @@ class Calendar extends React.Component {
    onSelectEvent: PropTypes.func,
 
    /**
+    * Callback fired when mousedown occurs on resize element
+    * return false to cancel
+    *
+    * ```js
+    * ({originalEvent: event}) => ?boolean
+    */
+   onResizeInit: PropTypes.func,
+   /**
+    * Callback fired when event is resized
+    *
+    * ```js
+    * ({originalEvent: event, startDate: date, endDate: date})
+    */
+   onResizing: PropTypes.func,
+   /**
+    * Callback fired on mouseup event
+    *
+    * ```js
+    * ({originalEvent: event})
+    */
+   onResizeEnd: PropTypes.func,
+
+   /**
+    * Callback fired when dragging an event in the Day column view.
+    *
+    * Returning `false` from the handler will prevent a resize.
+    *
+    * ```js
+    * (range: { start: Date, end: Date }) => ?boolean
+    * ```
+    */
+   onSelecting: PropTypes.func,
+
+   /**
     * Callback fired when dragging a selection in the Time views.
     *
     * Returning `false` from the handler will prevent a selection.
@@ -209,6 +243,11 @@ class Calendar extends React.Component {
     * logic
     */
    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+   /**
+    * Allows resizing.
+    */
+   resizable: PropTypes.oneOf([true, false]),
 
    /**
     * Determines the selectable time increments in week and day views

@@ -20,6 +20,7 @@ import Rendering from './demos/rendering';
 import CustomView from './demos/customView';
 import Timeslots from './demos/timeslots';
 import Dnd from './demos/dnd';
+import Resizable from './demos/resizable';
 
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
@@ -41,6 +42,7 @@ const Example = React.createClass({
       customView: CustomView,
       timeslots: Timeslots,
       dnd: Dnd,
+      resizable: Resizable,
     }[selected];
 
     return (
@@ -92,6 +94,9 @@ const Example = React.createClass({
               */}
               <li className={cn({active: selected === 'dnd' })}>
                 <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
+              </li>
+              <li className={cn({active: selected === 'resizable' })}>
+                <a href='#' onClick={this.select.bind(null, 'resizable')}>Resizable</a>
               </li>
             </ul>
           </header>

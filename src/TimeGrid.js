@@ -48,6 +48,8 @@ export default class TimeGrid extends Component {
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
+    resizable: PropTypes.oneOf([true, false]),
+
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 

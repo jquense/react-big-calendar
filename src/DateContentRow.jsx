@@ -188,7 +188,7 @@ class DateContentRow extends React.Component {
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          <div className='rbc-row-bottom'>
+          
             <div className='rbc-row-bottomup'>
               {levels.map((segs, idx) =>
                 <EventRow
@@ -216,7 +216,7 @@ class DateContentRow extends React.Component {
                 />
               )}
             </div>
-          </div>
+
         </div>
       </div>
     );

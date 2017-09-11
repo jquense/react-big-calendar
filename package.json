@@ -37,6 +37,7 @@
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint",
     "tdd": "karma start",
+    "publish": "bash scripts/_githubPublish.sh",
     "release": "release"
   },
   "peerDependencies": {

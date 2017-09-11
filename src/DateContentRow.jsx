@@ -15,6 +15,7 @@ import EventEndingRow from './EventEndingRow';
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 const propTypes = {
+  date: PropTypes.instanceOf(Date),
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
 
@@ -136,6 +137,7 @@ class DateContentRow extends React.Component {
   render() {
     const {
       rtl,
+      date,
       events,
       range,
       className,
@@ -170,6 +172,7 @@ class DateContentRow extends React.Component {
       <div className={className}>
         <BackgroundCells
           rtl={rtl}
+          date={date}
           range={range}
           selectable={selectable}
           container={this.getContainer}
@@ -185,31 +188,35 @@ class DateContentRow extends React.Component {
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          {levels.map((segs, idx) =>
-            <EventRow
-              {...props}
-              key={idx}
-              start={first}
-              end={last}
-              segments={segs}
-              slots={range.length}
-              eventComponent={eventComponent}
-              eventWrapperComponent={eventWrapperComponent}
-              startAccessor={startAccessor}
-              endAccessor={endAccessor}
-            />
-          )}
-          {!!extra.length && (
-            <EventEndingRow
-              {...props}
-              start={first}
-              end={last}
-              segments={extra}
-              onShowMore={this.handleShowMore}
-              eventComponent={eventComponent}
-              eventWrapperComponent={eventWrapperComponent}
-            />
-          )}
+          <div className='rbc-row-bottom'>
+            <div className='rbc-row-bottomup'>
+              {levels.map((segs, idx) =>
+                <EventRow
+                  {...props}
+                  key={idx}
+                  start={first}
+                  end={last}
+                  segments={segs}
+                  slots={range.length}
+                  eventComponent={eventComponent}
+                  eventWrapperComponent={eventWrapperComponent}
+                  startAccessor={startAccessor}
+                  endAccessor={endAccessor}
+                />
+              )}
+              {!!extra.length && (
+                <EventEndingRow
+                  {...props}
+                  start={first}
+                  end={last}
+                  segments={extra}
+                  onShowMore={this.handleShowMore}
+                  eventComponent={eventComponent}
+                  eventWrapperComponent={eventWrapperComponent}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );

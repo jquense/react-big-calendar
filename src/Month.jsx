@@ -146,6 +146,7 @@ class MonthView extends React.Component {
 
   renderWeek = (week, weekIdx) => {
     let {
+      date,
       events,
       components,
       selectable,
@@ -172,6 +173,7 @@ class MonthView extends React.Component {
         className="rbc-month-row"
         now={now}
         range={week}
+        date={date}
         events={events}
         maxRows={rowLimit}
         selected={selected}

@@ -168,7 +168,7 @@ let getYStyles = (idx, {
   let endDate = get(event, endAccessor) // end date
   let currentDate = new Date(min) // min is the current date at midnight
 
-  let multiDayEvent = {}
+  let multiDayEvent
   if (showMultiDayTimes) {
     multiDayEvent = handleMultiDayEvents(event.title, startDate, endDate, currentDate)
   }

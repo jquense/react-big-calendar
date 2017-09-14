@@ -21,12 +21,14 @@ class BackgroundCells extends React.Component {
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
 
+    now: PropTypes.instanceOf(Date),
     date: PropTypes.instanceOf(Date),
     range: PropTypes.arrayOf(
       PropTypes.instanceOf(Date)
     ),
     rtl: PropTypes.bool,
     type: PropTypes.string,
+    renderHeader: PropTypes.func,
   }
 
   constructor(props, context) {
@@ -55,7 +57,7 @@ class BackgroundCells extends React.Component {
   }
 
   render(){
-    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate, renderHeader } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     return (
@@ -82,8 +84,27 @@ class BackgroundCells extends React.Component {
             </Wrapper>
           )
         })}
+        {renderHeader && (
+          <div className='rbc-row-bg rbc-abs-full'>
+            {range.map(this.renderHeadingCell)}
+          </div>
+        )}
       </div>
     )
+  }
+
+  renderHeadingCell = (date, index) => {
+    let { renderHeader, range } = this.props;
+
+    return renderHeader({
+      date,
+      key: `header_${index}`,
+      style: segStyle(1, range.length),
+      className: cn(
+        'rbc-date-cell',
+        dates.eq(date, this.props.now, 'day') && 'rbc-now', // FIXME use props.now
+      )
+    })
   }
 
   _selectable(){

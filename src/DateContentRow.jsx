@@ -44,7 +44,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  minRows: 0,
+  minRows: 3,
   maxRows: Infinity,
 }
 
@@ -98,30 +98,12 @@ class DateContentRow extends React.Component {
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
 
-  renderHeadingCell = (date, index) => {
-    let { renderHeader, range } = this.props;
-
-    return renderHeader({
-      date,
-      key: `header_${index}`,
-      style: segStyle(1, range.length),
-      className: cn(
-        'rbc-date-cell',
-        dates.eq(date, this.props.now, 'day') && 'rbc-now', // FIXME use props.now
-      )
-    })
-  }
 
   renderDummy = () => {
-    let { className, range, renderHeader } = this.props;
+    let { className, range } = this.props;
     return (
       <div className={className}>
         <div className='rbc-row-content'>
-          {renderHeader && (
-            <div className='rbc-row' ref={this.createHeadingRef}>
-              {range.map(this.renderHeadingCell)}
-            </div>
-          )}
           <div className='rbc-row' ref={this.createEventRef}>
             <div className='rbc-row-segment' style={segStyle(1, range.length)}>
               <div className='rbc-event'>
@@ -137,6 +119,7 @@ class DateContentRow extends React.Component {
   render() {
     const {
       rtl,
+      now,
       date,
       events,
       range,
@@ -172,8 +155,10 @@ class DateContentRow extends React.Component {
       <div className={className}>
         <BackgroundCells
           rtl={rtl}
+          now={now}
           date={date}
           range={range}
+          renderHeader={renderHeader}
           selectable={selectable}
           container={this.getContainer}
           onSelectStart={onSelectStart}
@@ -183,13 +168,7 @@ class DateContentRow extends React.Component {
         />
 
         <div className='rbc-row-content'>
-          {renderHeader && (
-            <div className='rbc-row' ref={this.createHeadingRef}>
-              {range.map(this.renderHeadingCell)}
-            </div>
-          )}
-          
-            <div className='rbc-row-bottomup'>
+          <div className='rbc-row body'>
               {levels.map((segs, idx) =>
                 <EventRow
                   {...props}
@@ -215,8 +194,7 @@ class DateContentRow extends React.Component {
                   eventWrapperComponent={eventWrapperComponent}
                 />
               )}
-            </div>
-
+          </div>
         </div>
       </div>
     );

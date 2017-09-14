@@ -84,7 +84,7 @@ class MonthView extends React.Component {
     this._bgRows = []
     this._pendingSelection = []
     this.state = {
-      rowLimit: 5,
+      rowLimit: 10,
       needLimitMeasure: true,
     }
   }
@@ -276,7 +276,7 @@ class MonthView extends React.Component {
   measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
-      rowLimit: this.refs.slotRow.getRowLimit(),
+      // rowLimit: this.refs.slotRow.getRowLimit(),
     })
   }
 

@@ -170,7 +170,7 @@ class Agenda extends React.Component {
     return (
       <span className={labelClass.trim()}>
         { TimeComponent
-          ? <TimeComponent event={event} label={label}/>
+          ? <TimeComponent event={event} day={day} label={label}/>
           : label
         }
       </span>

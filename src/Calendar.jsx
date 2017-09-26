@@ -222,6 +222,11 @@ class Calendar extends React.Component {
    timeslots: PropTypes.number,
 
    /**
+    * Set the calendar to a mobile optimized version
+    */
+   isDesktop: PropTypes.bool,
+
+   /**
     *Switch the calendar to a `right-to-left` read direction.
     */
    rtl: PropTypes.bool,

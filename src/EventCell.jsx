@@ -19,7 +19,9 @@ let propTypes = {
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+
+  isDesktop: PropTypes.bool,
 }
 
 class EventCell extends React.Component {
@@ -35,6 +37,7 @@ class EventCell extends React.Component {
       , onSelect
       , eventComponent: Event
       , eventWrapperComponent: EventWrapper
+      , isDesktop
       , ...props } = this.props;
 
     let title = get(event, titleAccessor)
@@ -61,7 +64,7 @@ class EventCell extends React.Component {
         >
           <div className='rbc-event-content' title={title}>
             { Event
-              ? <Event event={event} title={title}/>
+              ? <Event event={event} title={title} isDesktop={isDesktop} />
               : title
             }
           </div>

@@ -38,7 +38,7 @@ export default {
       , startAccessor, endAccessor, titleAccessor
       , allDayAccessor, eventComponent
       , eventWrapperComponent
-      , onSelect } = props;
+      , onSelect, isDesktop } = props;
 
     return (
       <EventCell
@@ -54,6 +54,7 @@ export default {
         slotStart={start}
         slotEnd={end}
         eventComponent={eventComponent}
+        isDesktop={isDesktop}
       />
     )
   },

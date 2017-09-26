@@ -42,6 +42,7 @@ let propTypes = {
 
   rtl: PropTypes.bool,
   width: PropTypes.number,
+  isDesktop: PropTypes.bool,
 
   titleAccessor: accessor.isRequired,
   allDayAccessor: accessor.isRequired,
@@ -84,7 +85,7 @@ class MonthView extends React.Component {
     this._bgRows = []
     this._pendingSelection = []
     this.state = {
-      rowLimit: 10,
+      rowLimit: 999,
       needLimitMeasure: true,
     }
   }
@@ -92,13 +93,14 @@ class MonthView extends React.Component {
   componentWillReceiveProps({ date }) {
     this.setState({
       needLimitMeasure: !dates.eq(date, this.props.date),
+      rowLimit: this.props.isDesktop ? 999 : 3,
     })
   }
 
   componentDidMount() {
     let running
 
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    if (this.state.needLimitMeasure) this.measureRowLimit(this.props.isDesktop)
 
     window.addEventListener(
       'resize',
@@ -115,7 +117,7 @@ class MonthView extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    if (this.state.needLimitMeasure) this.measureRowLimit(this.props.isDesktop)
   }
 
   componentWillUnmount() {
@@ -158,6 +160,7 @@ class MonthView extends React.Component {
       messages,
       selected,
       now,
+      isDesktop,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -175,6 +178,7 @@ class MonthView extends React.Component {
         range={week}
         date={date}
         events={events}
+        minRows={isDesktop ? 3 : 2}
         maxRows={rowLimit}
         selected={selected}
         selectable={selectable}
@@ -192,6 +196,7 @@ class MonthView extends React.Component {
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
+        isDesktop={isDesktop}
       />
     )
   }
@@ -273,10 +278,10 @@ class MonthView extends React.Component {
     )
   }
 
-  measureRowLimit() {
+  measureRowLimit(isDesktop) {
     this.setState({
       needLimitMeasure: false,
-      // rowLimit: this.refs.slotRow.getRowLimit(),
+      // rowLimit: isDesktop ? this.rowLimit : this.refs.slotRow.getRowLimit(),
     })
   }
 

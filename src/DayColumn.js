@@ -25,7 +25,7 @@ function startsAfter(date, max) {
   return dates.gt(dates.merge(max, date), max, 'minutes')
 }
 
-class DaySlot extends React.Component {
+class DayColumn extends React.Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
     step: PropTypes.number.isRequired,
@@ -63,7 +63,11 @@ class DaySlot extends React.Component {
     eventWrapperComponent: elementType.isRequired,
   };
 
-  static defaultProps = { dragThroughEvents: true };
+  static defaultProps = {
+    dragThroughEvents: true,
+    timeslots: 2,
+  };
+
   state = { selecting: false };
 
   componentDidMount() {
@@ -354,4 +358,4 @@ function minToDate(min, date){
   return dates.milliseconds(dt, 0)
 }
 
-export default DaySlot;
+export default DayColumn;

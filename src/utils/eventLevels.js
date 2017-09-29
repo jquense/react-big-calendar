@@ -1,3 +1,4 @@
+import findIndex from 'lodash/findIndex';
 import dates from './dates';
 import { accessor as get } from './accessors';
 
@@ -13,7 +14,7 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
   let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
   let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), last)
 
-  let padding = range.findIndex(x => dates.eq(x, start, 'day'));
+  let padding = findIndex(range, x => dates.eq(x, start, 'day'));
   let span = dates.diff(start, end, 'day');
 
   span = Math.min(span, slots)
@@ -93,34 +94,4 @@ export function sortEvents(evtA, evtB, { startAccessor, endAccessor, allDayAcces
     || Math.max(durB, 1) - Math.max(durA, 1) // events spanning multiple days go first
     || !!get(evtB, allDayAccessor) - !!get(evtA, allDayAccessor) // then allDay single day events
     || +get(evtA, startAccessor) - +get(evtB, startAccessor)     // then sort by start time
-}
-
-// Polyfill for IE11 
-if (!Array.prototype.findIndex) {
-  Object.defineProperty(Array.prototype, 'findIndex', {
-    value: function (predicate) {
-      'use strict';
-      if (this == null) {
-        throw new TypeError('Array.prototype.findIndex called on null or undefined');
-      }
-      if (typeof predicate !== 'function') {
-        throw new TypeError('predicate must be a function');
-      }
-      var list = Object(this);
-      var length = list.length >>> 0;
-      var thisArg = arguments[1];
-      var value;
-
-      for (var i = 0; i < length; i++) {
-        value = list[i];
-        if (predicate.call(thisArg, value, i, list)) {
-          return i;
-        }
-      }
-      return -1;
-    },
-    enumerable: false,
-    configurable: false,
-    writable: false
-  });
 }

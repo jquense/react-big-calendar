@@ -79,6 +79,10 @@ class MonthView extends React.Component {
   static displayName = 'MonthView'
   static propTypes = propTypes
 
+  static defaultProps = {
+    now: new Date()
+  }
+
   constructor(...args) {
     super(...args)
 

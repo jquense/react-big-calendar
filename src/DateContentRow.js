@@ -32,7 +32,7 @@ const propTypes = {
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
 
-  now: PropTypes.instanceOf(Date),
+  now: PropTypes.instanceOf(Date).isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 

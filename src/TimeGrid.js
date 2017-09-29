@@ -38,6 +38,7 @@ export default class TimeGrid extends Component {
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
     dayFormat: dateFormat,
+    showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
 
     rtl: PropTypes.bool,
@@ -50,6 +51,7 @@ export default class TimeGrid extends Component {
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+    longPressThreshold: PropTypes.number,
 
     onNavigate: PropTypes.func,
     onSelectSlot: PropTypes.func,
@@ -141,7 +143,8 @@ export default class TimeGrid extends Component {
       , width
       , startAccessor
       , endAccessor
-      , allDayAccessor } = this.props;
+      , allDayAccessor
+      , showMultiDayTimes} = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -158,15 +161,13 @@ export default class TimeGrid extends Component {
         let eStart = get(event, startAccessor)
           , eEnd = get(event, endAccessor);
 
-        if (
-          get(event, allDayAccessor)
-          || !dates.eq(eStart, eEnd, 'day')
-          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
-        {
+        if (get(event, allDayAccessor)
+          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))
+          || (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))) {
           allDayEvents.push(event)
-        }
-        else
+        } else {
           rangeEvents.push(event)
+        }
       }
     })
 
@@ -276,6 +277,7 @@ export default class TimeGrid extends Component {
             eventPropGetter={this.props.eventPropGetter}
             selected={this.props.selected}
             onSelect={this.handleSelectEvent}
+            longPressThreshold={this.props.longPressThreshold}
           />
         </div>
       </div>

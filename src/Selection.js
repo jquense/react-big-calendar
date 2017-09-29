@@ -2,10 +2,10 @@ import contains from 'dom-helpers/query/contains';
 import closest from 'dom-helpers/query/closest';
 import events from 'dom-helpers/events';
 
-function addEventListener(type, handler) {
-  events.on(document, type, handler)
+function addEventListener(type, handler, target = document) {
+  events.on(target, type, handler)
   return {
-    remove(){ events.off(document, type, handler) }
+    remove(){ events.off(target, type, handler) }
   }
 }
 
@@ -18,24 +18,43 @@ export function isEvent(node, { clientX, clientY, }) {
   return !!closest(target, '.rbc-event', node)
 }
 
+function getEventCoordinates(e) {
+  let target = e;
+
+  if (e.touches && e.touches.length) {
+    target = e.touches[0];
+  }
+
+  return {
+    clientX: target.clientX,
+    clientY: target.clientY,
+    pageX: target.pageX,
+    pageY: target.pageY
+  };
+}
+
 const clickTolerance = 5;
 
 class Selection {
 
-  constructor(node, global = false){
+  constructor(node, { global = false, longPressThreshold = 250 } = {}) {
     this.container = node;
     this.globalMouse = !node || global;
+    this.longPressThreshold = longPressThreshold;
 
     this._listeners = Object.create(null);
 
-    this._mouseDown = this._mouseDown.bind(this)
-    this._mouseUp = this._mouseUp.bind(this)
-    this._openSelector = this._openSelector.bind(this)
+    this._handleInitialEvent = this._handleInitialEvent.bind(this)
+    this._handleMoveEvent = this._handleMoveEvent.bind(this)
+    this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
     this._keyListener = this._keyListener.bind(this)
 
-    this._onMouseDownListener = addEventListener('mousedown', this._mouseDown)
+    // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
+    // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
+    this._onTouchMoveWindowListener = addEventListener('touchmove', () => {}, window);
     this._onKeyDownListener = addEventListener('keydown', this._keyListener)
     this._onKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._addInitialEventListener();
   }
 
   on(type, handler) {
@@ -63,9 +82,10 @@ class Selection {
 
   teardown() {
     this.listeners = Object.create(null)
-    this._onMouseDownListener && this._onMouseDownListener.remove()
-    this._onMouseUpListener && this._onMouseUpListener.remove();
-    this._onMouseMoveListener && this._onMouseMoveListener.remove();
+    this._onTouchMoveWindowListener && this._onTouchMoveWindowListener.remove();
+    this._onInitialEventListener && this._onInitialEventListener.remove()
+    this._onEndListener && this._onEndListener.remove();
+    this._onMoveListener && this._onMoveListener.remove();
     this._onKeyUpListener && this._onKeyUpListener.remove();
     this._onKeyDownListener && this._onKeyDownListener.remove()
   }
@@ -88,15 +108,74 @@ class Selection {
     return items.filter(this.isSelected, this)
   }
 
-  _mouseDown (e) {
-    var node = this.container()
+  // Adds a listener that will call the handler only after the user has pressed on the screen
+  // without moving their finger for 250ms.
+  _addLongPressListener(handler, initialEvent) {
+    let timer = null;
+    let touchMoveListener = null;
+    let touchEndListener = null;
+    const handleTouchStart = (initialEvent) => {
+      timer = setTimeout(() => {
+        cleanup();
+        handler(initialEvent);
+      }, this.longPressThreshold);
+      touchMoveListener = addEventListener('touchmove', () => cleanup());
+      touchEndListener = addEventListener('touchend', () => cleanup());
+    };
+    const touchStartListener = addEventListener('touchstart', handleTouchStart);
+    const cleanup = () => {
+      if (timer) { clearTimeout(timer); }
+      if (touchMoveListener) { touchMoveListener.remove(); }
+      if (touchEndListener) { touchEndListener.remove(); }
+
+      timer = null;
+      touchMoveListener = null;
+      touchEndListener = null;
+    }
+
+    if (initialEvent) {
+      handleTouchStart(initialEvent);
+    }
+
+    return {
+      remove() {
+        cleanup();
+        touchStartListener.remove();
+      },
+    };
+  }
+
+  // Listen for mousedown and touchstart events. When one is received, disable the other and setup
+  // future event handling based on the type of event.
+  _addInitialEventListener() {
+    const mouseDownListener = addEventListener('mousedown', (e) => {
+      this._onInitialEventListener.remove();
+      this._handleInitialEvent(e);
+      this._onInitialEventListener = addEventListener('mousedown', this._handleInitialEvent);
+    });
+    const touchStartListener = addEventListener('touchstart', (e) => {
+      this._onInitialEventListener.remove();
+      this._onInitialEventListener = this._addLongPressListener(this._handleInitialEvent, e);
+    });
+
+    this._onInitialEventListener = {
+      remove() {
+        mouseDownListener.remove();
+        touchStartListener.remove();
+      },
+    };
+  }
+
+  _handleInitialEvent (e) {
+    const { clientX, clientY, pageX, pageY } = getEventCoordinates(e);
+    let node = this.container()
       , collides, offsetData;
 
     // Right clicks
     if (
       e.which === 3 ||
       e.button === 2 ||
-      !isOverContainer(node, e.clientX, e.clientY)
+      !isOverContainer(node, clientX, clientY)
 
     )
       return;
@@ -113,39 +192,52 @@ class Selection {
         bottom: offsetData.bottom + bottom,
         right: offsetData.right + right
       },
-      { top: e.pageY, left: e.pageX });
+      { top: pageY, left: pageX });
 
       if (!collides) return;
     }
 
-    let result = this.emit('mousedown', this._mouseDownData = {
-      x: e.pageX,
-      y: e.pageY,
-      clientX: e.clientX,
-      clientY: e.clientY
+    let result = this.emit('beforeSelect', this._initialEventData = {
+      isTouch: /^touch/.test(e.type),
+      x: pageX,
+      y: pageY,
+      clientX,
+      clientY,
     });
 
     if (result === false)
       return;
 
-    //e.preventDefault();
-
-    this._onMouseUpListener = addEventListener('mouseup', this._mouseUp)
-    this._onMouseMoveListener = addEventListener('mousemove', this._openSelector)
+    switch (e.type) {
+      case 'mousedown':
+        this._onEndListener = addEventListener('mouseup', this._handleTerminatingEvent)
+        this._onMoveListener = addEventListener('mousemove', this._handleMoveEvent)
+        break;
+      case 'touchstart':
+        this._handleMoveEvent(e);
+        this._onEndListener = addEventListener('touchend', this._handleTerminatingEvent)
+        this._onMoveListener = addEventListener('touchmove', this._handleMoveEvent)
+        break;
+      default:
+        break;
+    }
   }
 
-  _mouseUp(e) {
+  _handleTerminatingEvent(e) {
+    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
 
-    this._onMouseUpListener && this._onMouseUpListener.remove();
-    this._onMouseMoveListener && this._onMouseMoveListener.remove();
+    this.selecting = false;
 
-    if (!this._mouseDownData) return;
+    this._onEndListener && this._onEndListener.remove();
+    this._onMoveListener && this._onMoveListener.remove();
 
-    var inRoot = !this.container || contains(this.container(), e.target);
-    var bounds = this._selectRect;
-    var click = this.isClick(e.pageX, e.pageY);
+    if (!this._initialEventData) return;
 
-    this._mouseDownData = null
+    let inRoot = !this.container || contains(this.container(), e.target);
+    let bounds = this._selectRect;
+    let click = this.isClick(pageX, pageY);
+
+    this._initialEventData = null
 
     if(click && !inRoot) {
       return this.emit('reset')
@@ -153,43 +245,45 @@ class Selection {
 
     if(click && inRoot)
       return this.emit('click', {
-        x: e.pageX,
-        y: e.pageY,
-        clientX: e.clientX,
-        clientY: e.clientY,
+        x: pageX,
+        y: pageY,
+        clientX: clientX,
+        clientY: clientY,
       })
 
     // User drag-clicked in the Selectable area
     if(!click)
       return this.emit('select', bounds)
-
-    this.selecting = false;
   }
 
-  _openSelector(e) {
-    var { x, y } = this._mouseDownData;
-    var w = Math.abs(x - e.pageX);
-    var h = Math.abs(y - e.pageY);
+  _handleMoveEvent(e) {
+    let { x, y } = this._initialEventData;
+    const { pageX, pageY } = getEventCoordinates(e);
+    let w = Math.abs(x - pageX);
+    let h = Math.abs(y - pageY);
 
-    let left = Math.min(e.pageX, x)
-      , top = Math.min(e.pageY, y)
+    let left = Math.min(pageX, x)
+      , top = Math.min(pageY, y)
       , old = this.selecting;
 
     this.selecting = true;
+    this._selectRect = {
+      top,
+      left,
+      x: pageX,
+      y: pageY,
+      right: left + w,
+      bottom: top + h
+    };
 
     if (!old) {
-      this.emit('selectStart', this._mouseDownData)
+      this.emit('selectStart', this._initialEventData);
     }
 
-    if (!this.isClick(e.pageX, e.pageY))
-      this.emit('selecting', this._selectRect = {
-        top,
-        left,
-        x: e.pageX,
-        y: e.pageY,
-        right: left + w,
-        bottom: top + h
-      });
+    if (!this.isClick(pageX, pageY))
+      this.emit('selecting', this._selectRect);
+
+    e.preventDefault();
   }
 
   _keyListener(e) {
@@ -197,8 +291,8 @@ class Selection {
   }
 
   isClick(pageX, pageY){
-    var { x, y } = this._mouseDownData;
-    return (
+    let { x, y, isTouch } = this._initialEventData;
+    return !isTouch && (
       Math.abs(pageX - x) <= clickTolerance &&
       Math.abs(pageY - y) <= clickTolerance
     );
@@ -247,7 +341,7 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
 export function getBoundsForNode(node) {
   if (!node.getBoundingClientRect) return node;
 
-  var rect = node.getBoundingClientRect()
+  let rect = node.getBoundingClientRect()
     , left = rect.left + pageOffset('left')
     , top = rect.top + pageOffset('top');
 

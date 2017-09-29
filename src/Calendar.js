@@ -12,6 +12,7 @@ import {
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import defaultFormats from './formats';
+import message from './utils/messages'
 import viewLabel from './utils/viewLabel';
 import moveDate from './utils/move';
 import VIEWS from './Views';
@@ -211,6 +212,16 @@ class Calendar extends React.Component {
    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
    /**
+    * Specifies the number of miliseconds the user must press and hold on the screen for a touch
+    * to be considered a "long press." Long presses are used for time slot selection on touch
+    * devices.
+    *
+    * @type {number}
+    * @default 250
+    */
+   longPressThreshold: PropTypes.number,
+
+   /**
     * Determines the selectable time increments in week and day views
     */
    step: PropTypes.number,
@@ -240,6 +251,19 @@ class Calendar extends React.Component {
     * ```
     */
    eventPropGetter: PropTypes.func,
+
+   /**
+    * Optionally provide a function that returns an object of className or style props
+    * to be applied to the the time-slot node. Caution! Styles that change layout or
+    * position may break the calendar in unexpected ways.
+    *
+    * ```js
+    * (
+    * 	date: Date,
+    * ) => { className?: string, style?: Object }
+    * ```
+    */
+   slotPropGetter: PropTypes.func,
 
    /**
     * Accessor for the event title, used to display event information. Should
@@ -286,6 +310,15 @@ class Calendar extends React.Component {
     * @type {(func|string)}
     */
    endAccessor: accessor,
+
+   /**
+    * Support to show multi-day events with specific start and end times in the
+    * main time grid (rather than in the all day header).
+    *
+    * **Note: This may cause calendars with several events to look very busy in
+    * the week and day views.**
+    */
+   showMultiDayTimes: PropTypes.bool,
 
    /**
     * Constrains the minimum _time_ of the Day and Week views.
@@ -452,6 +485,9 @@ class Calendar extends React.Component {
      week: PropTypes.node,
      day: PropTypes.node,
      agenda: PropTypes.node,
+     date: PropTypes.node,
+     time: PropTypes.node,
+     event: PropTypes.node,
      showMore: PropTypes.func
    })
  };
@@ -470,7 +506,9 @@ class Calendar extends React.Component {
    titleAccessor: 'title',
    allDayAccessor: 'allDay',
    startAccessor: 'start',
-   endAccessor: 'end'
+   endAccessor: 'end',
+
+   longPressThreshold: 250,
  };
 
  getViews = () => {
@@ -513,6 +551,7 @@ class Calendar extends React.Component {
      , culture
      , components = {}
      , formats = {}
+     , messages = {}
      , style
      , className
      , elementProps
@@ -520,6 +559,7 @@ class Calendar extends React.Component {
      , ...props } = this.props;
 
    formats = defaultFormats(formats)
+   messages = message(messages)
 
    let View = this.getView();
    let names = viewNames(this.props.views)
@@ -552,13 +592,14 @@ class Calendar extends React.Component {
            label={viewLabel(current, view, formats, culture)}
            onViewChange={this.handleViewChange}
            onNavigate={this.handleNavigate}
-           messages={this.props.messages}
+           messages={messages}
          />
        }
        <View
          ref='view'
          {...props}
          {...formats}
+         messages={messages}
          culture={culture}
          formats={undefined}
          events={events}

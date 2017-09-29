@@ -21,6 +21,7 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
+
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props))
 
@@ -357,10 +358,9 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-MonthView.range = (date, { culture }) => {
-  let start = dates.firstVisibleDay(date, culture)
-  let end = dates.lastVisibleDay(date, culture)
-  return { start, end }
-}
+
+MonthView.title = (date, { formats, culture }) =>
+  localizer.format(date, formats.monthHeaderFormat, culture);
+
 
 export default MonthView

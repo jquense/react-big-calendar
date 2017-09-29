@@ -58,7 +58,6 @@ export let dateRangeFormat = PropTypes.func
  *   workweek: WorkWeekViewComponent,
  * }}
  * ```
- * @type {[type]}
  */
 export let views = PropTypes.oneOfType([
   PropTypes.arrayOf(

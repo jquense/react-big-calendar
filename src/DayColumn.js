@@ -41,6 +41,8 @@ class DaySlot extends React.Component {
 
     selectRangeFormat: dateFormat,
     eventTimeRangeFormat: dateFormat,
+    eventTimeRangeStartFormat: dateFormat,
+    eventTimeRangeEndFormat: dateFormat,
     showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
 
@@ -133,8 +135,12 @@ class DaySlot extends React.Component {
       , showMultiDayTimes
       , culture
       , eventPropGetter
-      , selected, messages, eventTimeRangeFormat, eventComponent
-      , eventTimeRangeStartFormat, eventTimeRangeEndFormat
+      , selected
+      , messages
+      , eventComponent
+      , eventTimeRangeFormat
+      , eventTimeRangeStartFormat
+      , eventTimeRangeEndFormat
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
       , step

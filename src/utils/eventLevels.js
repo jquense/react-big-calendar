@@ -27,7 +27,6 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
   }
 }
 
-
 export function segStyle(span, slots){
   let per = (span / slots) * 100 + '%';
   return { WebkitFlexBasis: per, flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
@@ -94,4 +93,34 @@ export function sortEvents(evtA, evtB, { startAccessor, endAccessor, allDayAcces
     || Math.max(durB, 1) - Math.max(durA, 1) // events spanning multiple days go first
     || !!get(evtB, allDayAccessor) - !!get(evtA, allDayAccessor) // then allDay single day events
     || +get(evtA, startAccessor) - +get(evtB, startAccessor)     // then sort by start time
+}
+
+// Polyfill for IE11 
+if (!Array.prototype.findIndex) {
+  Object.defineProperty(Array.prototype, 'findIndex', {
+    value: function (predicate) {
+      'use strict';
+      if (this == null) {
+        throw new TypeError('Array.prototype.findIndex called on null or undefined');
+      }
+      if (typeof predicate !== 'function') {
+        throw new TypeError('predicate must be a function');
+      }
+      var list = Object(this);
+      var length = list.length >>> 0;
+      var thisArg = arguments[1];
+      var value;
+
+      for (var i = 0; i < length; i++) {
+        value = list[i];
+        if (predicate.call(thisArg, value, i, list)) {
+          return i;
+        }
+      }
+      return -1;
+    },
+    enumerable: false,
+    configurable: false,
+    writable: false
+  });
 }

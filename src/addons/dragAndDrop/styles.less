@@ -20,19 +20,17 @@
   }
 
   .rbc-event {
-    transition: opacity 250ms;
+    transition: opacity 150ms;
     pointer-events: all;
   }
 
-  .rbc-addons-dnd-is-dragging {
-    & .rbc-event {
-      pointer-events: none;
-      opacity: .35;
-    }
+  &.rbc-addons-dnd-is-dragging .rbc-event {
+    pointer-events: none;
+    opacity: .50;
   }
 
-  .rbc-addons-dnd-dragging {
-    pointer-events: none;
-    opacity: .35;
-  }
+  // .rbc-addons-dnd-dragging {
+  //   pointer-events: none;
+  //   opacity: .35;
+  // }
 }

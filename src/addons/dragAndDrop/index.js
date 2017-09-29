@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 import { DragDropContext } from 'react-dnd'
 import cn from 'classnames';
 
+import { accessor } from '../../utils/propTypes';
 import DraggableEventWrapper from './DraggableEventWrapper'
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
 
@@ -18,11 +20,15 @@ export default function withDragAndDrop(Calendar, {
 
   class DragAndDropCalendar extends React.Component {
     static propTypes = {
-      selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
-      components: React.PropTypes.object,
+      selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
+      components: PropTypes.object,
     }
     getChildContext () {
-      return { onEventDrop: this.props.onEventDrop }
+      return {
+        onEventDrop: this.props.onEventDrop,
+        startAccessor: this.props.startAccessor,
+        endAccessor: this.props.endAccessor
+      }
     }
 
     constructor(...args) {
@@ -76,16 +82,29 @@ export default function withDragAndDrop(Calendar, {
   }
 
   DragAndDropCalendar.propTypes = {
-    onEventDrop: React.PropTypes.func.isRequired
+    onEventDrop: PropTypes.func.isRequired,
+    startAccessor: accessor,
+    endAccessor: accessor
   }
 
+  DragAndDropCalendar.defaultProps = {
+    startAccessor: 'start',
+    endAccessor: 'end'
+  };
+
   DragAndDropCalendar.contextTypes = {
-    dragDropManager: React.PropTypes.object
+    dragDropManager: PropTypes.object
   }
 
   DragAndDropCalendar.childContextTypes = {
-    onEventDrop: React.PropTypes.func
+    onEventDrop: PropTypes.func,
+    startAccessor: accessor,
+    endAccessor: accessor
   }
 
-  return DragDropContext(backend)(DragAndDropCalendar);
+  if (backend === false) {
+    return DragAndDropCalendar;
+  } else {
+    return DragDropContext(backend)(DragAndDropCalendar);
+  }
 }

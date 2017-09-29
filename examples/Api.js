@@ -1,7 +1,7 @@
 import React from 'react';
 import transform from 'lodash/transform';
 
-import metadata from 'component-metadata!react-big-calendar/lib/Calendar';
+import metadata from 'component-metadata-loader!react-big-calendar/lib/Calendar';
 
 function displayObj(obj){
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '')
@@ -73,15 +73,21 @@ let Api = React.createClass({
     let doclets = prop.doclets || {};
 
     switch (name) {
+      case 'node':
+	return 'any';
+      case 'function':
+	return 'Function';
       case 'elementType':
-        return 'Component';
+        return 'ReactClass<any>';
+      case 'dateFormat':
+        return 'string | (date: Date, culture: ?string, localizer: Localizer) => string';
       case 'dateRangeFormat':
-        return 'function({ start: Date, end: Date }, culture: ?string, localizer) -> string';
+        return '(range: { start: Date, end: Date }, culture: ?string, localizer: Localizer) => string';
       case 'object':
+      case 'Object':
         if (type.value)
           return (
             <pre className='shape-prop'>
-              {'object -> \n'}
               { displayObj(renderObject(type.value))}
             </pre>
           )
@@ -99,9 +105,11 @@ let Api = React.createClass({
           return i === (list.length - 1) ? current : current.concat(' | ');
         }, []);
       case 'array':
+      case 'Array': {
         let child = this.renderType({ type: type.value });
 
-        return <span>{'array<'}{ child }{'>'}</span>;
+        return <span>{'Array<'}{ child }{'>'}</span>;
+      }
       case 'enum':
         return this.renderEnum(type);
       case 'custom':
@@ -113,23 +121,7 @@ let Api = React.createClass({
 
   renderEnum(enumType) {
     const enumValues = enumType.value || [];
-
-    const renderedEnumValues = [];
-    enumValues.forEach(function renderEnumValue(enumValue, i) {
-      if (i > 0) {
-        renderedEnumValues.push(
-          <span key={`${i}c`}>, </span>
-        );
-      }
-
-      renderedEnumValues.push(
-        <code key={i}>{enumValue}</code>
-      );
-    });
-
-    return (
-      <span>one of: {renderedEnumValues}</span>
-    );
+    return <code>{enumValues.join(' | ')}</code>;
   },
 
   renderControllableNote(prop, propName) {
@@ -164,6 +156,8 @@ function getDisplayTypeName(typeName) {
     return 'function';
   } else if (typeName === 'bool') {
     return 'boolean';
+  } else if (typeName === 'object') {
+    return 'Object';
   }
 
   return typeName;
@@ -171,7 +165,7 @@ function getDisplayTypeName(typeName) {
 
 function renderObject(props){
   return transform(props, (obj, val, key) => {
-    obj[key] = simpleType(val)
+    obj[val.required ? key : key + '?'] = simpleType(val)
 
   }, {})
 }
@@ -182,16 +176,22 @@ function simpleType(prop) {
   let doclets = prop.doclets || {};
 
   switch (name) {
+    case 'node':
+      return 'any';
+    case 'function':
+      return 'Function';
     case 'elementType':
-      return 'Component';
+      return 'ReactClass<any>';
     case 'object':
+    case 'Object':
       if (type.value)
         return renderObject(type.value)
       return name;
     case 'array':
+    case 'Array':
       let child = simpleType({ type: type.value });
 
-      return 'array<' + child + '>';
+      return 'Array<' + child + '>';
     case 'custom':
       return cleanDocletValue(doclets.type || name);
     default:

@@ -1,17 +1,19 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import uncontrollable from 'uncontrollable';
 import cn from 'classnames';
 import {
-    accessor
+  accessor
   , elementType
   , dateFormat
   , dateRangeFormat
-  , views as componentViews } from './utils/propTypes';
+  , views as componentViews
+} from './utils/propTypes';
 
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import defaultFormats from './formats';
-import viewLabel from './utils/viewLabel';
+import message from './utils/messages'
 import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
@@ -23,7 +25,7 @@ import defaults from 'lodash/defaults';
 import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
-function viewNames(_views){
+function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
 }
 
@@ -51,9 +53,8 @@ let now = new Date();
  * on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a
  * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
  */
-let Calendar = React.createClass({
-
-  propTypes: {
+class Calendar extends React.Component {
+  static propTypes = {
 
     /**
      * Props passed to main calendar `<div>`.
@@ -98,13 +99,14 @@ let Calendar = React.createClass({
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
-     * function(
-     *   slotInfo: object {
+     * (
+     *   slotInfo: {
      *     start: Date,
      *     end: Date,
-     *     slots: array<Date>
+     *     slots: Array<Date>,
+     *     action: "select" | "click"
      *   }
-     * )
+     * ) => any
      * ```
      */
     onSelectSlot: PropTypes.func,
@@ -113,8 +115,10 @@ let Calendar = React.createClass({
      * Callback fired when a calendar event is selected.
      *
      * ```js
-     * function(event: object, e: SyntheticEvent)
+     * (event: Object, e: SyntheticEvent) => any
      * ```
+     *
+     * @controllable selected
      */
     onSelectEvent: PropTypes.func,
 
@@ -124,18 +128,82 @@ let Calendar = React.createClass({
      * Returning `false` from the handler will prevent a selection.
      *
      * ```js
-     * function ({ start: Date, end: Date }) : boolean
+     * (range: { start: Date, end: Date }) => ?boolean
      * ```
      */
     onSelecting: PropTypes.func,
 
     /**
+     * The selected event, if any.
+     */
+    selected: PropTypes.object,
+
+    /**
      * An array of built-in view names to allow the calendar to display.
+     * accepts either an array of builtin view names,
      *
-     * @type Calendar.views
+     * ```jsx
+     * views={['month', 'day', 'agenda']}
+     * ```
+     * or an object hash of the view name and the component (or boolean for builtin).
+     *
+     * ```jsx
+     * views={{
+     *   month: true,
+     *   week: false,
+     *   myweek: WorkWeekViewComponent,
+     * }}
+     * ```
+     *
+     * Custom views can be any React component, that implements the following
+     * interface:
+     *
+     * ```js
+     * interface View {
+     *   static title(date: Date, { formats: DateFormat[], culture: string?, ...props }): string
+     *   static navigate(date: Date, action: 'PREV' | 'NEXT' | 'DATE'): Date
+     * }
+     * ```
+     *
+     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
      * @default ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
+
+    /**
+     * The string name of the destination view for drill-down actions, such
+     * as clicking a date header, or the truncated events links. If
+     * `getDrilldownView` is also specified it will be used instead.
+     *
+     * Set to `null` to disable drill-down actions.
+     *
+     * ```js
+     * <BigCalendar
+     *   drilldownView="agenda"
+     * />
+     * ```
+     */
+    drilldownView: PropTypes.string,
+
+    /**
+     * Functionally equivalent to `drilldownView`, but accepts a function
+     * that can return a view name. It's useful for customizing the drill-down
+     * actions depending on the target date and triggering view.
+     *
+     * Return `null` to disable drill-down actions.
+     *
+     * ```js
+     * <BigCalendar
+     *   getDrilldownView={(targetDate, currentViewName, configuredViewNames) =>
+     *     if (currentViewName === 'month' && configuredViewNames.includes('week'))
+     *       return 'week'
+     *
+     *     return null;
+     *   }}
+     * />
+     * ```
+     */
+    getDrilldownView: PropTypes.func,
 
     /**
      * Determines whether the toolbar is displayed
@@ -150,7 +218,7 @@ let Calendar = React.createClass({
     /**
      * Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
      *
-     * ```js
+     * ```jsx
      * <BigCalendar popupOffset={30}/>
      * <BigCalendar popupOffset={{x: 30, y: 20}}/>
      * ```
@@ -159,6 +227,7 @@ let Calendar = React.createClass({
       PropTypes.number,
       PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
     ]),
+
     /**
      * Allows mouse selection of ranges of dates/times.
      *
@@ -166,18 +235,28 @@ let Calendar = React.createClass({
      * drag begins over an event. Useful when you want custom event click or drag
      * logic
      */
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+
+    /**
+     * Specifies the number of miliseconds the user must press and hold on the screen for a touch
+     * to be considered a "long press." Long presses are used for time slot selection on touch
+     * devices.
+     *
+     * @type {number}
+     * @default 250
+     */
+    longPressThreshold: PropTypes.number,
 
     /**
      * Determines the selectable time increments in week and day views
      */
-    step: React.PropTypes.number,
+    step: PropTypes.number,
 
     /**
      * The number of slots per "section" in the time grid views. Adjust with `step`
      * to change the default of 1 hour long groups, with 30 minute slots.
      */
-    timeslots: React.PropTypes.number,
+    timeslots: PropTypes.number,
 
     /**
      *Switch the calendar to a `right-to-left` read direction.
@@ -189,19 +268,34 @@ let Calendar = React.createClass({
      * to be applied to the the event node.
      *
      * ```js
-     * function(
-     * 	event: object,
-     * 	start: date,
-     * 	end: date,
-     * 	isSelected: bool
-     * ) -> { className: string?, style: object? }
+     * (
+     * 	event: Object,
+     * 	start: Date,
+     * 	end: Date,
+     * 	isSelected: boolean
+     * ) => { className?: string, style?: Object }
      * ```
      */
     eventPropGetter: PropTypes.func,
 
     /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the the time-slot node. Caution! Styles that change layout or
+     * position may break the calendar in unexpected ways.
+     *
+     * ```js
+     * (date: Date) => { className?: string, style?: Object }
+     * ```
+     */
+    slotPropGetter: PropTypes.func,
+
+    /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
+     *
+     * ```js
+     * string | (event: Object) => any
+     * ```
      *
      * @type {(func|string)}
      */
@@ -211,12 +305,20 @@ let Calendar = React.createClass({
      * Determines whether the event should be considered an "all day" event and ignore time.
      * Must resolve to a `boolean` value.
      *
+     * ```js
+     * string | (event: Object) => boolean
+     * ```
+     *
      * @type {(func|string)}
      */
     allDayAccessor: accessor,
 
     /**
      * The start date/time of the event. Must resolve to a JavaScript `Date` object.
+     *
+     * ```js
+     * string | (event: Object) => Date
+     * ```
      *
      * @type {(func|string)}
      */
@@ -225,9 +327,22 @@ let Calendar = React.createClass({
     /**
      * The end date/time of the event. Must resolve to a JavaScript `Date` object.
      *
+     * ```js
+     * string | (event: Object) => Date
+     * ```
+     *
      * @type {(func|string)}
      */
     endAccessor: accessor,
+
+    /**
+     * Support to show multi-day events with specific start and end times in the
+     * main time grid (rather than in the all day header).
+     *
+     * **Note: This may cause calendars with several events to look very busy in
+     * the week and day views.**
+     */
+    showMultiDayTimes: PropTypes.bool,
 
     /**
      * Constrains the minimum _time_ of the Day and Week views.
@@ -249,7 +364,7 @@ let Calendar = React.createClass({
      *
      * **Note: it's generally better to handle this globally via your i18n library.**
      */
-    culture: React.PropTypes.string,
+    culture: PropTypes.string,
 
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
@@ -334,7 +449,18 @@ let Calendar = React.createClass({
       /**
        * Time range displayed on events.
        */
-      eventTimeRangeFormat: dateRangeFormat
+      eventTimeRangeFormat: dateRangeFormat,
+
+      /**
+       * An optional event time range for events that continue onto another day
+       */
+      eventTimeRangeStartFormat: dateFormat,
+
+      /**
+       * An optional event time range for events that continue from another day
+       */
+      eventTimeRangeEndFormat: dateFormat,
+
     }),
 
     /**
@@ -377,6 +503,7 @@ let Calendar = React.createClass({
       }),
       month: PropTypes.shape({
         header: elementType,
+        dateHeader: elementType,
         event: elementType
       })
     }),
@@ -393,28 +520,33 @@ let Calendar = React.createClass({
       week: PropTypes.node,
       day: PropTypes.node,
       agenda: PropTypes.node,
+      date: PropTypes.node,
+      time: PropTypes.node,
+      event: PropTypes.node,
       showMore: PropTypes.func
     })
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      elementProps: {},
-      popup: false,
-      toolbar: true,
-      view: views.MONTH,
-      views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-      date: now,
-      step: 30,
+  static defaultProps = {
+    elementProps: {},
+    popup: false,
+    toolbar: true,
+    view: views.MONTH,
+    views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
+    date: now,
+    step: 30,
 
-      titleAccessor: 'title',
-      allDayAccessor: 'allDay',
-      startAccessor: 'start',
-      endAccessor: 'end'
-    };
-  },
+    drilldownView: views.DAY,
 
-  getViews() {
+    titleAccessor: 'title',
+    allDayAccessor: 'allDay',
+    startAccessor: 'start',
+    endAccessor: 'end',
+
+    longPressThreshold: 250,
+  };
+
+  getViews = () => {
     const views = this.props.views;
 
     if (Array.isArray(views)) {
@@ -432,20 +564,29 @@ let Calendar = React.createClass({
     }
 
     return VIEWS;
-  },
+  };
 
-  getView() {
+  getView = () => {
     const views = this.getViews();
 
     return views[this.props.view];
-  },
+  };
+
+  getDrilldownView = (date) => {
+    const { view, drilldownView, getDrilldownView } = this.props
+
+    if (!getDrilldownView) return drilldownView
+
+    return getDrilldownView(date, view, Object.keys(this.getViews()));
+  };
 
   render() {
     let {
-        view, toolbar, events
+       view, toolbar, events
       , culture
       , components = {}
       , formats = {}
+      , messages = {}
       , style
       , className
       , elementProps
@@ -453,6 +594,7 @@ let Calendar = React.createClass({
       , ...props } = this.props;
 
     formats = defaultFormats(formats)
+    messages = message(messages)
 
     let View = this.getView();
     let names = viewNames(this.props.views)
@@ -467,7 +609,8 @@ let Calendar = React.createClass({
       }
     )
 
-    let ToolbarToRender = components.toolbar || Toolbar
+    let CalToolbar = components.toolbar || Toolbar
+    const label = View.title(current, { formats, culture })
 
     return (
       <div
@@ -478,69 +621,70 @@ let Calendar = React.createClass({
         style={style}
       >
         {toolbar &&
-          <ToolbarToRender
+          <CalToolbar
             date={current}
             view={view}
             views={names}
-            label={viewLabel(current, view, formats, culture)}
+            label={label}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
-            messages={this.props.messages}
+            messages={messages}
           />
         }
         <View
           ref='view'
           {...props}
           {...formats}
+          messages={messages}
           culture={culture}
           formats={undefined}
           events={events}
           date={current}
           components={viewComponents}
+          getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
-          onHeaderClick={this.handleHeaderClick}
+          onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
         />
       </div>
     );
-  },
+  }
 
-  handleNavigate(action, newDate) {
-    let { view, date, onNavigate } = this.props;
+  handleNavigate = (action, newDate) => {
+    let { view, date, onNavigate, ...props } = this.props;
     let ViewComponent = this.getView();
 
-    date = moveDate(action, newDate || date, ViewComponent)
+    date = moveDate(ViewComponent, {
+      ...props,
+      action,
+      date: newDate || date
+    })
 
-    onNavigate(date, view)
+    onNavigate(date, view, action)
+  };
 
-    if (action === navigate.DATE)
-      this.handleViewChange(views.DAY)
-  },
-
-  handleViewChange(view){
+  handleViewChange = (view) => {
     if (view !== this.props.view && isValidView(view, this.props))
       this.props.onView(view)
-  },
+  };
 
-  handleSelectEvent(...args){
+  handleSelectEvent = (...args) => {
     notify(this.props.onSelectEvent, args)
-  },
+  };
 
-  handleSelectSlot(slotInfo){
+  handleSelectSlot = (slotInfo) => {
     notify(this.props.onSelectSlot, slotInfo)
-  },
+  };
 
-  handleHeaderClick(date){
-    let { view } = this.props;
-
-    if ( view === views.MONTH || view === views.WEEK)
-      this._view(views.day)
+  handleDrillDown = (date, view) => {
+    if (view)
+      this.handleViewChange(view)
 
     this.handleNavigate(navigate.DATE, date)
-  }
-});
+  };
+}
 
 export default uncontrollable(Calendar, {
   view: 'onView',

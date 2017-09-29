@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import localizer from '../localizer';
 import elementType from 'react-prop-types/lib/elementType';
 import all from 'react-prop-types/lib/all';
@@ -42,11 +42,28 @@ export let dateFormat = createChainableTypeChecker(
 
 export let dateRangeFormat = PropTypes.func
 
+/**
+ * accepts either an array of builtin view names:
+ *
+ * ```
+ * views={['month', 'day', 'agenda']}
+ * ```
+ *
+ * or an object hash of the view name and the component (or boolean for builtin)
+ *
+ * ```
+ * views={{
+ *   month: true,
+ *   week: false,
+ *   workweek: WorkWeekViewComponent,
+ * }}
+ * ```
+ */
 export let views = PropTypes.oneOfType([
   PropTypes.arrayOf(
     PropTypes.oneOf(viewNames)
   ),
-  all([
+  all(
     PropTypes.object,
     (props, name, ...args)=>{
       let prop = props[name]
@@ -62,5 +79,5 @@ export let views = PropTypes.oneOfType([
 
       return err || null
     }
-  ])
+  )
 ])

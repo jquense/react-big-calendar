@@ -56,6 +56,7 @@ let propTypes = {
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
@@ -195,6 +196,7 @@ class MonthView extends React.Component {
         renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
+        onDoubleClick={this.handleDoubleClickEvent}
         onSelectSlot={this.handleSelectSlot}
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
@@ -304,6 +306,11 @@ class MonthView extends React.Component {
   handleSelectEvent = (...args) => {
     this.clearSelection()
     notify(this.props.onSelectEvent, args)
+  }
+
+  handleDoubleClickEvent = (...args) => {
+    this.clearSelection()
+    notify(this.props.onDoubleClickEvent, args)
   }
 
   handleShowMore = (events, date, cell, slot) => {

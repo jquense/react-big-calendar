@@ -58,6 +58,7 @@ export default class TimeGrid extends Component {
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
     onSelectEvent: PropTypes.func,
+    onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
 
@@ -81,6 +82,7 @@ export default class TimeGrid extends Component {
     super(props)
     this.state = { gutterWidth: undefined, isOverflowing: null };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
+    this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
   }
 
@@ -277,6 +279,7 @@ export default class TimeGrid extends Component {
             eventPropGetter={this.props.eventPropGetter}
             selected={this.props.selected}
             onSelect={this.handleSelectEvent}
+            onDoubleClick={this.handleDoubleClickEvent}
             longPressThreshold={this.props.longPressThreshold}
           />
         </div>
@@ -335,6 +338,10 @@ export default class TimeGrid extends Component {
 
   handleSelectEvent(...args) {
     notify(this.props.onSelectEvent, args)
+  }
+
+  handleDoubleClickEvent(...args) {
+    notify(this.props.onDoubleClickEvent, args)
   }
 
   handleSelectAlldayEvent(...args) {

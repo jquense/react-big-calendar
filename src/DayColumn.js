@@ -56,6 +56,7 @@ class DayColumn extends React.Component {
     onSelecting: PropTypes.func,
     onSelectSlot: PropTypes.func.isRequired,
     onSelectEvent: PropTypes.func.isRequired,
+    onDoubleClickEvent: PropTypes.func.isRequired,
 
     className: PropTypes.string,
     dragThroughEvents: PropTypes.bool,
@@ -208,6 +209,7 @@ class DayColumn extends React.Component {
             }}
             title={(typeof label === 'string' ? label + ': ' : '') + title }
             onClick={(e) => this._select(event, e)}
+            onDoubleClick={(e) => this._doubleClick(event, e)}
             className={cn('rbc-event', className, {
               'rbc-selected': _isSelected,
               'rbc-event-continues-earlier': continuesPrior,
@@ -346,6 +348,10 @@ class DayColumn extends React.Component {
 
   _select = (...args) => {
     notify(this.props.onSelectEvent, args)
+  };
+
+  _doubleClick = (...args) => {
+    notify(this.props.onDoubleClickEvent, args)
   };
 }
 

@@ -1,0 +1,10 @@
+# Find plugin in for your editor here : http://editorconfig.org/
+root = true
+
+[*.{js,json,jsx}]
+indent_style = space
+indent_size = 2
+
+[*.{html,htm,mustache,xml}]
+indent_style = space
+indent_size = 2

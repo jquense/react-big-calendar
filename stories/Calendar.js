@@ -261,6 +261,21 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('add custom date header', () => {
+    return (
+        <div style={{height: 600}}>
+          <Calendar
+            defaultView={Calendar.Views.MONTH}
+            events={events}
+            components={{
+              month: {
+                dateHeader: ({ label }) => <span>{label} - Custom date header</span>
+              }
+            }}
+          />
+        </div>
+    )
+  })
   .add('no duration', () => {
     return (
       <div style={{height: 600}}>

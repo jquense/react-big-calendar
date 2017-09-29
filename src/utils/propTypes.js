@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import localizer from '../localizer';
 import elementType from 'react-prop-types/lib/elementType';
 import all from 'react-prop-types/lib/all';
@@ -58,13 +58,12 @@ export let dateRangeFormat = PropTypes.func
  *   workweek: WorkWeekViewComponent,
  * }}
  * ```
- * @type {[type]}
  */
 export let views = PropTypes.oneOfType([
   PropTypes.arrayOf(
     PropTypes.oneOf(viewNames)
   ),
-  all([
+  all(
     PropTypes.object,
     (props, name, ...args)=>{
       let prop = props[name]
@@ -80,5 +79,5 @@ export let views = PropTypes.oneOfType([
 
       return err || null
     }
-  ])
+  )
 ])

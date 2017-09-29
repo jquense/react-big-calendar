@@ -158,6 +158,7 @@ class MonthView extends React.Component {
       messages,
       selected,
       now,
+      date,
       longPressThreshold,
     } = this.props
 
@@ -173,6 +174,7 @@ class MonthView extends React.Component {
         container={this.getContainer}
         className="rbc-month-row"
         now={now}
+        date={date}
         range={week}
         events={events}
         maxRows={rowLimit}

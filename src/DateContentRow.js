@@ -136,6 +136,7 @@ class DateContentRow extends React.Component {
 
   render() {
     const {
+      date,
       rtl,
       events,
       range,
@@ -171,6 +172,7 @@ class DateContentRow extends React.Component {
     return (
       <div className={className}>
         <BackgroundCells
+          date={date}
           rtl={rtl}
           range={range}
           selectable={selectable}

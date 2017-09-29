@@ -21,6 +21,7 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
+
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props))
 
@@ -50,6 +51,7 @@ let propTypes = {
 
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
 
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
@@ -77,6 +79,10 @@ let propTypes = {
 class MonthView extends React.Component {
   static displayName = 'MonthView'
   static propTypes = propTypes
+
+  static defaultProps = {
+    now: new Date()
+  }
 
   constructor(...args) {
     super(...args)
@@ -157,6 +163,8 @@ class MonthView extends React.Component {
       messages,
       selected,
       now,
+      date,
+      longPressThreshold,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -171,6 +179,7 @@ class MonthView extends React.Component {
         container={this.getContainer}
         className="rbc-month-row"
         now={now}
+        date={date}
         range={week}
         events={events}
         maxRows={rowLimit}
@@ -190,6 +199,7 @@ class MonthView extends React.Component {
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
+        longPressThreshold={longPressThreshold}
       />
     )
   }
@@ -348,10 +358,9 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-MonthView.range = (date, { culture }) => {
-  let start = dates.firstVisibleDay(date, culture)
-  let end = dates.lastVisibleDay(date, culture)
-  return { start, end }
-}
+
+MonthView.title = (date, { formats, culture }) =>
+  localizer.format(date, formats.monthHeaderFormat, culture);
+
 
 export default MonthView

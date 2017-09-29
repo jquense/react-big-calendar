@@ -11,6 +11,7 @@ import { navigate } from './utils/constants';
 import { accessor as get } from './utils/accessors';
 import { accessor, dateFormat, dateRangeFormat } from './utils/propTypes';
 import { inRange } from './utils/eventLevels';
+import { isSelected } from './utils/selection';
 
 
 class Agenda extends React.Component {
@@ -22,6 +23,8 @@ class Agenda extends React.Component {
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
+    eventPropGetter: PropTypes.func,
+    selected: PropTypes.object,
 
     agendaDateFormat: dateFormat,
     agendaTimeFormat: dateFormat,
@@ -40,25 +43,25 @@ class Agenda extends React.Component {
   };
 
   componentDidMount() {
-    this._adjustHeader()
+    this._adjustHeader();
   }
 
   componentDidUpdate() {
-    this._adjustHeader()
+    this._adjustHeader();
   }
 
   render() {
     let { length, date, events, startAccessor } = this.props;
     let messages = message(this.props.messages);
-    let end = dates.add(date, length, 'day')
+    let end = dates.add(date, length, 'day');
 
     let range = dates.range(date, end, 'day');
 
     events = events.filter(event =>
       inRange(event, date, end, this.props)
-    )
+    );
 
-    events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor))
+    events.sort((a, b) => +get(a, startAccessor) - +get(b, startAccessor));
 
     return (
       <div className='rbc-agenda-view'>
@@ -91,15 +94,23 @@ class Agenda extends React.Component {
   renderDay = (day, events, dayKey) => {
     let {
         culture, components
-      , titleAccessor, agendaDateFormat } = this.props;
+      , titleAccessor, agendaDateFormat
+      , eventPropGetter, startAccessor, endAccessor, selected } = this.props;
 
     let EventComponent = components.event;
     let DateComponent = components.date;
 
-    events = events.filter(e => inRange(e, day, day, this.props))
+    events = events.filter(e => inRange(e, day, day, this.props));
 
     return events.map((event, idx) => {
-      let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture)
+      const { className, style } = eventPropGetter ?
+        eventPropGetter(
+          event,
+          get(event, startAccessor),
+          get(event, endAccessor),
+          isSelected(event, selected),
+        ) : {};
+      let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture);
       let first = idx === 0
           ? (
             <td rowSpan={events.length} className='rbc-agenda-date-cell'>
@@ -108,12 +119,12 @@ class Agenda extends React.Component {
                 : dateLabel
               }
             </td>
-          ) : false
+          ) : false;
 
-      let title = get(event, titleAccessor)
+      let title = get(event, titleAccessor);
 
       return (
-        <tr key={dayKey + '_' + idx}>
+        <tr key={dayKey + '_' + idx} className={className} style={style}>
           {first}
           <td className='rbc-agenda-time-cell'>
             { this.timeRangeLabel(day, event) }
@@ -125,8 +136,8 @@ class Agenda extends React.Component {
             }
           </td>
         </tr>
-      )
-    }, [])
+      );
+    }, []);
   };
 
   timeRangeLabel = (day, event) => {
@@ -136,82 +147,87 @@ class Agenda extends React.Component {
 
     let labelClass = ''
       , TimeComponent = components.time
-      , label = message(messages).allDay
+      , label = message(messages).allDay;
 
-    let start = get(event, startAccessor)
-    let end = get(event, endAccessor)
+    let start = get(event, startAccessor);
+    let end = get(event, endAccessor);
 
     if (!get(event, allDayAccessor)) {
       if (dates.eq(start, end, 'day')){
-        label = localizer.format({ start, end }, this.props.agendaTimeRangeFormat, culture)
+        label = localizer.format({ start, end }, this.props.agendaTimeRangeFormat, culture);
       }
       else if (dates.eq(day, start, 'day')){
-        label = localizer.format(start, this.props.agendaTimeFormat, culture)
+        label = localizer.format(start, this.props.agendaTimeFormat, culture);
       }
       else if (dates.eq(day, end, 'day')){
-        label = localizer.format(end, this.props.agendaTimeFormat, culture)
+        label = localizer.format(end, this.props.agendaTimeFormat, culture);
       }
     }
 
-    if (dates.gt(day, start, 'day')) labelClass = 'rbc-continues-prior'
-    if (dates.lt(day, end, 'day'))   labelClass += ' rbc-continues-after'
+    if (dates.gt(day, start, 'day')) labelClass = 'rbc-continues-prior';
+    if (dates.lt(day, end, 'day'))   labelClass += ' rbc-continues-after';
 
     return (
       <span className={labelClass.trim()}>
         { TimeComponent
-          ? <TimeComponent event={event} label={label}/>
+          ? <TimeComponent event={event} day={day} label={label}/>
           : label
         }
       </span>
-    )
+    );
   };
 
   _adjustHeader = () => {
     let header = this.refs.header;
-    let firstRow = this.refs.tbody.firstChild
+    let firstRow = this.refs.tbody.firstChild;
 
     if (!firstRow)
-      return
+      return;
 
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;
-    let widths = this._widths || []
+    let widths = this._widths || [];
 
     this._widths = [
       getWidth(firstRow.children[0]),
       getWidth(firstRow.children[1])
-    ]
+    ];
 
     if (widths[0] !== this._widths[0] || widths[1] !== this._widths[1]) {
-      this.refs.dateCol.style.width = this._widths[0] + 'px'
+      this.refs.dateCol.style.width = this._widths[0] + 'px';
       this.refs.timeCol.style.width = this._widths[1] + 'px';
     }
 
     if (isOverflowing) {
-      classes.addClass(header, 'rbc-header-overflowing')
-      header.style.marginRight = scrollbarSize() + 'px'
+      classes.addClass(header, 'rbc-header-overflowing');
+      header.style.marginRight = scrollbarSize() + 'px';
     }
     else {
-      classes.removeClass(header, 'rbc-header-overflowing')
+      classes.removeClass(header, 'rbc-header-overflowing');
     }
   };
 }
 
-Agenda.navigate = (date, action)=>{
+Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   switch (action){
     case navigate.PREVIOUS:
-      return dates.add(date, -1, 'day');
+      return dates.add(date, -length, 'day');
 
     case navigate.NEXT:
-      return dates.add(date, 1, 'day')
+      return dates.add(date, length, 'day');
 
     default:
       return date;
   }
+};
+
+Agenda.title = (start, { length = length = Agenda.defaultProps.length, formats, culture }) => {
+  let end = dates.add(start, length, 'day');
+  return localizer.format(
+    { start, end },
+    formats.agendaHeaderFormat,
+    culture
+  );
 }
 
-Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
-  let end = dates.add(start, length, 'day')
-  return { start, end }
-}
 
-export default Agenda
+export default Agenda;

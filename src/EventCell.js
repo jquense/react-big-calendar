@@ -42,7 +42,7 @@ class EventCell extends React.Component {
       , start = get(event, startAccessor)
       , isAllDay = get(event, props.allDayAccessor)
       , continuesPrior = dates.lt(start, slotStart, 'day')
-      , continuesAfter = dates.gt(end, slotEnd, 'day')
+      , continuesAfter = dates.gte(end, slotEnd, 'day')
 
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);

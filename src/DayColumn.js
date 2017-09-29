@@ -45,6 +45,8 @@ class DayColumn extends React.Component {
     eventTimeRangeEndFormat: dateFormat,
     showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
+    timeslots: PropTypes.number,
+    messages: PropTypes.object,
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),

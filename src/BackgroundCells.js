@@ -13,6 +13,7 @@ import Selection, { getBoundsForNode, isEvent } from './Selection';
 class BackgroundCells extends React.Component {
 
   static propTypes = {
+    date: PropTypes.instanceOf(Date),
     cellWrapperComponent: elementType,
     container: PropTypes.func,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
@@ -55,7 +56,7 @@ class BackgroundCells extends React.Component {
   }
 
   render(){
-    let { range, cellWrapperComponent: Wrapper , date: currentDate } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     return (

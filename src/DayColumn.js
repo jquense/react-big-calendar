@@ -144,12 +144,13 @@ class DaySlot extends React.Component {
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
       , step
+      , timeslots
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
-      events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin: this._totalMin, step
+      events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin: this._totalMin, step, timeslots
     })
 
     return styledEvents.map(({ event, style }, idx) => {

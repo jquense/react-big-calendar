@@ -55,6 +55,7 @@ let propTypes = {
 
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
+  onDoubleClickSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
@@ -165,6 +166,7 @@ class MonthView extends React.Component {
       now,
       date,
       longPressThreshold,
+      onDoubleClickSlot,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -196,6 +198,7 @@ class MonthView extends React.Component {
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
         onSelectSlot={this.handleSelectSlot}
+        onDoubleClickSlot={onDoubleClickSlot}
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}

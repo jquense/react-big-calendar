@@ -112,6 +112,24 @@ class Calendar extends React.Component {
     onSelectSlot: PropTypes.func,
 
     /**
+     * Callback fired when empty calendar cell was clicked twice.
+     *
+     * ```js
+     * (date: Date, e: SyntheticEvent) => any
+     * ```
+     */
+    onDoubleClickSlot: PropTypes.func,
+
+    /**
+     * Callback fired when empty calendar all-day cell was clicked twice.
+     *
+     * ```js
+     * (date: Date, e: SyntheticEvent) => any
+     * ```
+     */
+    onDoubleClickAllDaySlot: PropTypes.func,
+
+    /**
      * Callback fired when a calendar event is selected.
      *
      * ```js
@@ -646,6 +664,8 @@ class Calendar extends React.Component {
           onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
           onSelectSlot={this.handleSelectSlot}
+          onDoubleClickSlot={this.handleDoubleClickSlot}
+          onDoubleClickAllDaySlot={this.handleDoubleClickAllDaySlot}
           onShowMore={this._showMore}
         />
       </div>
@@ -676,6 +696,14 @@ class Calendar extends React.Component {
 
   handleSelectSlot = (slotInfo) => {
     notify(this.props.onSelectSlot, slotInfo)
+  };
+
+  handleDoubleClickSlot = (slotInfo) => {
+    notify(this.props.onDoubleClickSlot, slotInfo)
+  };
+
+  handleDoubleClickAllDaySlot = (slotInfo) => {
+    notify(this.props.onDoubleClickAllDaySlot, slotInfo)
   };
 
   handleDrillDown = (date, view) => {

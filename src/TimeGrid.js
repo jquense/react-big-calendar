@@ -55,6 +55,8 @@ export default class TimeGrid extends Component {
 
     onNavigate: PropTypes.func,
     onSelectSlot: PropTypes.func,
+    onDoubleClickSlot: PropTypes.func,
+    onDoubleClickAllDaySlot: PropTypes.func,
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
     onSelectEvent: PropTypes.func,
@@ -227,7 +229,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components, now } = this.props;
+    let { messages, rtl, selectable, components, now, onDoubleClickAllDaySlot } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
@@ -267,6 +269,7 @@ export default class TimeGrid extends Component {
             className='rbc-allday-cell'
             selectable={selectable}
             onSelectSlot={this.handleSelectAllDaySlot}
+            onDoubleClickSlot={onDoubleClickAllDaySlot}
             dateCellWrapper={components.dateCellWrapper}
             eventComponent={this.props.components.event}
             eventWrapperComponent={this.props.components.eventWrapper}

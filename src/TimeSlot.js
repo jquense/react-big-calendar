@@ -13,6 +13,7 @@ export default class TimeSlot extends Component {
     content: PropTypes.string,
     culture: PropTypes.string,
     slotPropGetter: PropTypes.func,
+    onDoubleClick: PropTypes.func,
   }
 
   static defaultProps = {
@@ -22,7 +23,7 @@ export default class TimeSlot extends Component {
   }
 
   render() {
-    const { value, slotPropGetter } = this.props;
+    const { value, slotPropGetter, onDoubleClick } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
     const { className, style } = (slotPropGetter && slotPropGetter(value)) || {};
 
@@ -36,6 +37,7 @@ export default class TimeSlot extends Component {
             this.props.showLabel && 'rbc-label',
             this.props.isNow && 'rbc-now',
           )}
+          onDoubleClick={(e) => onDoubleClick(value, e)}
         >
         {this.props.showLabel &&
           <span>{this.props.content}</span>

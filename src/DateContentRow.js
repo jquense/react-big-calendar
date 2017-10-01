@@ -30,6 +30,7 @@ const propTypes = {
 
   onShowMore: PropTypes.func,
   onSelectSlot: PropTypes.func,
+  onDoubleClickSlot: PropTypes.func,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
 
@@ -153,6 +154,7 @@ class DateContentRow extends React.Component {
       eventWrapperComponent,
       onSelectStart,
       onSelectEnd,
+      onDoubleClickSlot,
       longPressThreshold,
       ...props
     } = this.props;
@@ -181,6 +183,7 @@ class DateContentRow extends React.Component {
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}
+          onDoubleClickSlot={onDoubleClickSlot}
           cellWrapperComponent={dateCellWrapper}
           longPressThreshold={longPressThreshold}
         />

@@ -20,6 +20,7 @@ class BackgroundCells extends React.Component {
     longPressThreshold: PropTypes.number,
 
     onSelectSlot: PropTypes.func.isRequired,
+    onDoubleClickSlot: PropTypes.func,
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
 
@@ -56,7 +57,7 @@ class BackgroundCells extends React.Component {
   }
 
   render(){
-    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate, onDoubleClickSlot } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     return (
@@ -77,6 +78,7 @@ class BackgroundCells extends React.Component {
                   dates.isToday(date) && 'rbc-today',
                   currentDate && dates.month(currentDate) !== dates.month(date) && 'rbc-off-range-bg',
                 )}
+                onDoubleClick={(e) => onDoubleClickSlot(date, e)}
               />
             </Wrapper>
           )

@@ -112,7 +112,7 @@ class Calendar extends React.Component {
     onSelectSlot: PropTypes.func,
 
     /**
-     * Callback fired when empty calendar cell was clicked twice.
+     * Callback fired when an empty calendar cell was clicked twice.
      *
      * ```js
      * (date: Date, e: SyntheticEvent) => any
@@ -121,7 +121,7 @@ class Calendar extends React.Component {
     onDoubleClickSlot: PropTypes.func,
 
     /**
-     * Callback fired when empty calendar all-day cell was clicked twice.
+     * Callback fired when an empty calendar all-day cell was clicked twice.
      *
      * ```js
      * (date: Date, e: SyntheticEvent) => any

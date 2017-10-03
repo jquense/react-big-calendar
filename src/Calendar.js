@@ -126,7 +126,7 @@ class Calendar extends React.Component {
      * Callback fired when a calendar event is clicked twice.
      *
      * ```js
-     * (event: Object, e: SyntheticEvent) => any
+     * (event: Object, e: SyntheticEvent) => void
      * ```
      */
     onDoubleClickEvent: PropTypes.func,

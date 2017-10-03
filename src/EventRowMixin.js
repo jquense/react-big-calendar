@@ -23,13 +23,15 @@ export default {
 
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
-    onSelect: PropTypes.func
+    onSelect: PropTypes.func,
+    resizable: PropTypes.bool
   },
 
   defaultProps: {
     segments: [],
     selected: {},
-    slots: 7
+    slots: 7,
+    resizable: false
   },
 
   renderEvent(props, event) {
@@ -38,7 +40,8 @@ export default {
       , startAccessor, endAccessor, titleAccessor
       , allDayAccessor, eventComponent
       , eventWrapperComponent
-      , onSelect } = props;
+      , onSelect
+      , resizable } = props;
 
     return (
       <EventCell
@@ -54,6 +57,7 @@ export default {
         slotStart={start}
         slotEnd={end}
         eventComponent={eventComponent}
+        resizable={resizable}
       />
     )
   },

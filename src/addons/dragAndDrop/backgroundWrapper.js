@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react'
+import { findDOMNode } from 'react-dom';
 import { DropTarget } from 'react-dnd'
 import cn from 'classnames';
 
@@ -122,7 +123,8 @@ function createWrapper(type) {
 
 
   const dropTarget = {
-    drop(_, monitor, { props, context }) {
+    drop(_, monitor, component) {
+      const { props, context } = component
       const event = monitor.getItem();
       const { value } = props
       const { onEventDrop, onEventResize, startAccessor, endAccessor } = context
@@ -137,6 +139,17 @@ function createWrapper(type) {
       }
 
       if (monitor.getItemType() === 'resize') {
+        const node = findDOMNode(component).getBoundingClientRect();
+        const middleX = ((node.right - node.left) / 2) + node.left
+        const clientOffset = monitor.getInitialClientOffset()
+
+        // if (clientOffset.x < middleX) {
+        //   onEventResize('drop', {
+        //     event,
+        //     start: value
+        //   })
+        // }
+
         onEventResize('drop', {
           event,
           end: value

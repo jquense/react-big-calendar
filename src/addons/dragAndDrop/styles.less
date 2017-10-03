@@ -53,4 +53,25 @@
     }
 
   }
+
+  .rbc-addons-dnd-resizable-event-left-right {
+    background-color: red;
+    display: flex;
+    .rbc-addons-dnd-resize-anchor-left {
+      width: 20px;
+      &:hover {
+        cursor: ew-resize;
+      }
+    }
+    .rbc-addons-dnd-resize-anchor-right {
+      width: 20px;
+      &:hover {
+        cursor: ew-resize;
+      }
+    }
+    .rbc-addons-dnd-resize-content {
+      flex: 2;
+      text-align: center;
+    }
+  }
 }

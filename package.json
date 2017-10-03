@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
@@ -41,8 +41,8 @@
     "release": "release"
   },
   "peerDependencies": {
-    "react": "^0.14.9 || ^15.3.0",
-    "react-dom": "^0.14.9 || ^15.3.0"
+    "react": "^0.14.9 || >=15.3.0",
+    "react-dom": "^0.14.9 || >=15.3.0"
   },
   "devDependencies": {
     "@kadira/storybook": "^1.28.1",

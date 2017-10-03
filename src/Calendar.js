@@ -123,6 +123,15 @@ class Calendar extends React.Component {
     onSelectEvent: PropTypes.func,
 
     /**
+     * Callback fired when a calendar event is clicked twice.
+     *
+     * ```js
+     * (event: Object, e: SyntheticEvent) => void
+     * ```
+     */
+    onDoubleClickEvent: PropTypes.func,
+
+    /**
      * Callback fired when dragging a selection in the Time views.
      *
      * Returning `false` from the handler will prevent a selection.
@@ -645,6 +654,7 @@ class Calendar extends React.Component {
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
+          onDoubleClickEvent={this.handleDoubleClickEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
         />
@@ -673,6 +683,10 @@ class Calendar extends React.Component {
   handleSelectEvent = (...args) => {
     notify(this.props.onSelectEvent, args)
   };
+
+  handleDoubleClickEvent = (...args) => {
+    notify(this.props.onDoubleClickEvent, args)
+  }
 
   handleSelectSlot = (slotInfo) => {
     notify(this.props.onSelectSlot, slotInfo)

@@ -12,6 +12,7 @@ localizer(globalize);
 import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
+
 import Basic from './demos/basic';
 import Selectable from './demos/selectable';
 import Cultures from './demos/cultures';
@@ -33,14 +34,14 @@ const Example = React.createClass({
   render() {
     let selected = this.state.selected;
     let Current = {
-      basic: require('./demos/basic'),
-      selectable: require('./demos/selectable'),
-      cultures: require('./demos/cultures'),
-      popup: require('./demos/popup'),
-      rendering: require('./demos/rendering'),
-      customView: require('./demos/customView'),
-      timeslots: require('./demos/timeslots'),
-      dnd: require('./demos/dnd'),
+      basic: Basic,
+      selectable: Selectable,
+      cultures: Cultures,
+      popup: Popup,
+      rendering: Rendering,
+      customView: CustomView,
+      timeslots: Timeslots,
+      dnd: Dnd,
     }[selected];
 
     return (

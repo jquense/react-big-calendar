@@ -34,6 +34,7 @@ function getEventCoordinates(e) {
 }
 
 const clickTolerance = 5;
+const clickInterval = 200;
 
 class Selection {
 
@@ -224,7 +225,7 @@ class Selection {
   }
 
   _handleTerminatingEvent(e) {
-    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
+    const { pageX, pageY } = getEventCoordinates(e);
 
     this.selecting = false;
 
@@ -243,17 +244,46 @@ class Selection {
       return this.emit('reset')
     }
 
-    if(click && inRoot)
+    if(click && inRoot) {
+      return this._handleClickEvent(e);
+    }
+
+    // User drag-clicked in the Selectable area
+    if(!click)
+      return this.emit('select', bounds)
+  }
+
+  _handleClickEvent(e) {
+    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
+    const now = new Date().getTime();
+    if (this._lastClickData && now - this._lastClickData.timestamp < clickInterval) {
+      // Double click event
+      this._lastClickData = {
+        timestamp: now,
+        isDblClick: true,
+      };
+      clearTimeout(this._clickTimer); // Don't emit first click of doubleClick event
+      return this.emit('doubleClick', {
+        x: pageX,
+        y: pageY,
+        clientX: clientX,
+        clientY: clientY,
+      })
+    }
+    this._lastClickData = {
+      timestamp: now,
+    };
+    this._clickTimer = setTimeout(() => {
+      this._lastClickData = {
+        timestamp: now,
+      }
       return this.emit('click', {
         x: pageX,
         y: pageY,
         clientX: clientX,
         clientY: clientY,
       })
-
-    // User drag-clicked in the Selectable area
-    if(!click)
-      return this.emit('select', bounds)
+    }, clickInterval);
   }
 
   _handleMoveEvent(e) {

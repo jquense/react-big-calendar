@@ -295,6 +295,13 @@ class DayColumn extends React.Component {
       }
     }
 
+    let selectorClicksHandler = (box, actionType) => {
+      if (!isEvent(findDOMNode(this), box))
+        this._selectSlot({ ...selectionState(box), action: actionType })
+
+      this.setState({ selecting: false })
+    }
+
     selector.on('selecting', maybeSelect)
     selector.on('selectStart', maybeSelect)
 
@@ -305,12 +312,10 @@ class DayColumn extends React.Component {
     })
 
     selector
-      .on('click', (box) => {
-        if (!isEvent(findDOMNode(this), box))
-          this._selectSlot({ ...selectionState(box), action: 'click' })
+      .on('click', box => selectorClicksHandler(box, 'click'))
 
-        this.setState({ selecting: false })
-      })
+    selector
+      .on('doubleClick', (box) => selectorClicksHandler(box, 'doubleClick'))
 
     selector
       .on('select', () => {

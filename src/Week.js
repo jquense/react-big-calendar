@@ -3,7 +3,6 @@ import React from 'react';
 import dates from './utils/dates';
 import localizer from './localizer';
 import { navigate } from './utils/constants';
-
 import TimeGrid from './TimeGrid';
 
 class Week extends React.Component {
@@ -44,5 +43,14 @@ Week.range = (date, { culture }) => {
   return dates.range(start, end)
 }
 
+
+Week.title = (date, { formats, culture }) => {
+  let [start, ...rest] = Week.range(date, { culture })
+  return localizer.format(
+    { start, end: rest.pop() },
+    formats.dayRangeHeaderFormat,
+    culture
+  );
+}
 
 export default Week

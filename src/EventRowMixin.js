@@ -23,7 +23,8 @@ export default {
 
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
-    onSelect: PropTypes.func
+    onSelect: PropTypes.func,
+    onDoubleClick: PropTypes.func
   },
 
   defaultProps: {
@@ -38,7 +39,8 @@ export default {
       , startAccessor, endAccessor, titleAccessor
       , allDayAccessor, eventComponent
       , eventWrapperComponent
-      , onSelect } = props;
+      , onSelect
+      , onDoubleClick } = props;
 
     return (
       <EventCell
@@ -46,6 +48,7 @@ export default {
         eventWrapperComponent={eventWrapperComponent}
         eventPropGetter={eventPropGetter}
         onSelect={onSelect}
+        onDoubleClick={onDoubleClick}
         selected={isSelected(event, selected)}
         startAccessor={startAccessor}
         endAccessor={endAccessor}

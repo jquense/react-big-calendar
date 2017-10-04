@@ -1,3 +1,4 @@
+import findIndex from 'lodash/findIndex';
 import dates from './dates';
 import { accessor as get } from './accessors';
 
@@ -13,7 +14,7 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
   let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
   let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), last)
 
-  let padding = range.findIndex(x => dates.eq(x, start, 'day'));
+  let padding = findIndex(range, x => dates.eq(x, start, 'day'));
   let span = dates.diff(start, end, 'day');
 
   span = Math.min(span, slots)
@@ -27,10 +28,9 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
   }
 }
 
-
 export function segStyle(span, slots){
   let per = (span / slots) * 100 + '%';
-  return { flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
+  return { WebkitFlexBasis: per, flexBasis: per, maxWidth: per } // IE10/11 need max-width. flex-basis doesn't respect box-sizing
 }
 
 export function eventLevels(rowSegments, limit = Infinity){

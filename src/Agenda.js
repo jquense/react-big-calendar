@@ -42,20 +42,18 @@ class Agenda extends React.Component {
     length: 30
   };
 
-  componentDidMount() {
-    this._adjustHeader();
-  }
-
-  componentDidUpdate() {
-    this._adjustHeader();
-  }
-
   render() {
-    let { length, date, events, startAccessor } = this.props;
+    let { length = 7, date, events, startAccessor, components } = this.props;
     let messages = message(this.props.messages);
     let end = dates.add(date, length, 'day');
 
+    const WrapperComponent = components.wrapper;
+
     let range = dates.range(date, end, 'day');
+
+    if (WrapperComponent) {
+      return <WrapperComponent date={date} events={events} />
+    }
 
     events = events.filter(event =>
       inRange(event, date, end, this.props)
@@ -210,17 +208,22 @@ class Agenda extends React.Component {
 Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   switch (action){
     case navigate.PREVIOUS:
-      return dates.add(date, -length, 'day');
+      return dates.add(date, -length, 'month');
 
     case navigate.NEXT:
-      return dates.add(date, length, 'day');
+      return dates.add(date, length, 'month');
 
     default:
       return date;
   }
 };
 
-Agenda.title = (start, { length = length = Agenda.defaultProps.length, formats, culture }) => {
+Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
+  let end = dates.add(start, length, 'day')
+  return { start, end }
+}
+
+Agenda.title = (start, { length = Agenda.defaultProps.length, formats, culture }) => {
   let end = dates.add(start, length, 'day');
   return localizer.format(
     { start, end },

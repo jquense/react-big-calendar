@@ -62,6 +62,11 @@ class Calendar extends React.Component {
     elementProps: PropTypes.object,
 
     /**
+    * Props passed to the toolbar `<div>`.
+    */
+   toolbarProps: PropTypes.object,
+
+   /**
      * The current date value of the calendar. Determines the visible view range
      *
      * @controllable onNavigate
@@ -493,14 +498,15 @@ class Calendar extends React.Component {
       eventWrapper: elementType,
       dayWrapper: elementType,
       dateCellWrapper: elementType,
+     popup: elementType,
 
       toolbar: elementType,
 
-      agenda: PropTypes.shape({
-        date: elementType,
-        time: elementType,
-        event: elementType
-      }),
+     agenda: PropTypes.shape({
+       wrapper: elementType,date: elementType,
+       time: elementType,
+       event: elementType
+     }),
 
       day: PropTypes.shape({
         header: elementType,
@@ -599,7 +605,8 @@ class Calendar extends React.Component {
       , style
       , className
       , elementProps
-      , date: current
+      , toolbarProps
+     , date: current
       , ...props } = this.props;
 
     formats = defaultFormats(formats)
@@ -621,46 +628,44 @@ class Calendar extends React.Component {
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { formats, culture })
 
-    return (
-      <div
-        {...elementProps}
-        className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl
-        })}
-        style={style}
-      >
-        {toolbar &&
-          <CalToolbar
-            date={current}
-            view={view}
-            views={names}
-            label={label}
-            onViewChange={this.handleViewChange}
-            onNavigate={this.handleNavigate}
-            messages={messages}
-          />
-        }
-        <View
-          ref='view'
-          {...props}
-          {...formats}
-          messages={messages}
-          culture={culture}
-          formats={undefined}
-          events={events}
-          date={current}
-          components={viewComponents}
-          getDrilldownView={this.getDrilldownView}
-          onNavigate={this.handleNavigate}
-          onDrillDown={this.handleDrillDown}
-          onSelectEvent={this.handleSelectEvent}
-          onDoubleClickEvent={this.handleDoubleClickEvent}
-          onSelectSlot={this.handleSelectSlot}
-          onShowMore={this._showMore}
-        />
-      </div>
-    );
-  }
+   return (
+     <div
+       {...elementProps}
+       className={cn('rbc-calendar', className, {
+         'rbc-rtl': props.rtl
+       })}
+       style={style}
+     >
+       {toolbar &&
+         <CalToolbar
+           date={current}
+           view={view}
+           views={names}
+           label={label}
+           onViewChange={this.handleViewChange}
+           onNavigate={this.handleNavigate}
+           messages={messages}
+         {...toolbarProps}/>
+       }
+       <View
+         ref='view'
+         {...props}
+         {...formats}
+         messages={messages}culture={culture}
+         formats={undefined}
+         events={events}
+         date={current}
+         components={viewComponents}
+         getDrilldownView={this.getDrilldownView}
+         onNavigate={this.handleNavigate}
+         onDrillDown={this.handleDrillDown}
+         onSelectEvent={this.handleSelectEvent}onDoubleClickEvent={this.handleDoubleClickEvent}
+         onSelectSlot={this.handleSelectSlot}
+         onShowMore={this._showMore}
+       />
+     </div>
+   );
+ }
 
   handleNavigate = (action, newDate) => {
     let { view, date, onNavigate, ...props } = this.props;

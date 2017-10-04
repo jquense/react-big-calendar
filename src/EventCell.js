@@ -47,7 +47,7 @@ class EventCell extends React.Component {
       , continuesAfter = dates.gte(end, slotEnd, 'day')
 
     if (eventPropGetter)
-      var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
+      var { style, className: xClassName } = eventPropGetter(event, start, end, selected, continuesPrior, continuesAfter);
 
     return (
       <EventWrapper event={event}>

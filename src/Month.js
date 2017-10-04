@@ -273,6 +273,7 @@ class MonthView extends React.Component {
           {...this.props}
           eventComponent={components.event}
           eventWrapperComponent={components.eventWrapper}
+          popupComponent={components.popup}
           position={overlay.position}
           events={overlay.events}
           slotStart={overlay.date}

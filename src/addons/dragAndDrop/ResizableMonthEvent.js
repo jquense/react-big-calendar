@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import compose from './compose';
 
 class ResizableMonthEvent extends React.Component {
 
@@ -16,11 +17,17 @@ class ResizableMonthEvent extends React.Component {
 
   render () {
     const { title, connectLeftDragSource, connectRightDragSource } = this.props;
+    const [Left, Right] = [connectLeftDragSource, connectRightDragSource]
+      .map(connectDragSource => {
+        return connectDragSource(
+          <div className="rbc-addons-dnd-resize-month-event-anchor">{" "}</div>
+        )
+      })
     return (
       <div className="rbc-addons-dnd-resizable-month-event">
-        {connectLeftDragSource(<div className="rbc-addons-dnd-resize-month-event-anchor">{" "}</div>)}
-        <div className='rbc-addons-dnd-resize-month-event-content'>{title}</div>
-        {connectRightDragSource(<div className="rbc-addons-dnd-resize-month-event-anchor">{" "}</div>)}
+        {Left}
+        {title}
+        {Right}
       </div>
     );
   }
@@ -34,16 +41,14 @@ const eventSourceRight = {
   beginDrag: ({ event }) => ({ ...event, type: 'resizeR' })
 }
 
-ResizableMonthEvent = DragSource('resize', eventSourceLeft, (connect, monitor) => ({
-  connectLeftDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-  connectLeftDragPreview: connect.dragPreview(),
-}))(ResizableMonthEvent);
+export default compose(
+  DragSource('resize', eventSourceLeft, (connect, monitor) => ({
+    connectLeftDragSource: connect.dragSource(),
+    connectLeftDragPreview: connect.dragPreview(),
+  })),
+  DragSource('resize', eventSourceRight, (connect, monitor) => ({
+    connectRightDragSource: connect.dragSource(),
+    connectRightDragPreview: connect.dragPreview(),
+  }))
+)(ResizableMonthEvent)
 
-ResizableMonthEvent = DragSource('resize', eventSourceRight, (connect, monitor) => ({
-  connectRightDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-  connectRightDragPreview: connect.dragPreview(),
-}))(ResizableMonthEvent);
-
-export default ResizableMonthEvent

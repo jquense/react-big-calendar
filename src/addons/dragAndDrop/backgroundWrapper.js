@@ -141,15 +141,23 @@ function createWrapper(type) {
 
       if (monitor.getItemType() === 'resize') {
 
-        if (event.type === 'resizeL') {
-          return onEventResize('drop', { event, start: value, end: event.end })
+        switch(event.type) {
+          case 'resizeT': {
+            return onEventResize('drop', { event, start: value, end: event.end });
+          }
+          case 'resizeB': {
+            return onEventResize('drop', { event, start: event.start, end: value })
+          }
+          case 'resizeL': {
+            return onEventResize('drop', { event, start: value, end: event.end });
+          }
+          case 'resizeR': {
+            const nextEnd = dates.add(value, 1, 'day')
+            return onEventResize('drop', { event, start: event.start, end: nextEnd })
+          }
         }
 
-        if (event.type === 'resizeR') {
-          const nextEnd = dates.add(value, 1, 'day')
-          return onEventResize('drop', { event, start: event.start, end: nextEnd })
-        }
-
+        // Catch all
         onEventResize('drop', {
           event,
           start: event.start,

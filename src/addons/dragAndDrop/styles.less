@@ -54,22 +54,16 @@
 
   }
 
-  .rbc-addons-dnd-resizable-event-left-right {
-    background-color: red;
+  .rbc-addons-dnd-resizable-month-event {
     display: flex;
-    .rbc-addons-dnd-resize-anchor-left {
+    user-drag: none;
+    .rbc-addons-dnd-resize-month-event-anchor {
       width: 20px;
       &:hover {
         cursor: ew-resize;
       }
     }
-    .rbc-addons-dnd-resize-anchor-right {
-      width: 20px;
-      &:hover {
-        cursor: ew-resize;
-      }
-    }
-    .rbc-addons-dnd-resize-content {
+    .rbc-addons-dnd-resize-month-event-content {
       flex: 2;
       text-align: center;
     }

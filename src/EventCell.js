@@ -4,7 +4,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
-import ResizableEventLR from './addons/dragAndDrop/ResizableEventLR';
+import ResizableMonthEvent from './addons/dragAndDrop/ResizableMonthEvent';
 
 let propTypes = {
   event: PropTypes.object.isRequired,
@@ -49,7 +49,7 @@ class EventCell extends React.Component {
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
 
     if (this.props.resizable) {
-      Event = ResizableEventLR
+      Event = ResizableMonthEvent
     }
 
     return (

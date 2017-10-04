@@ -24,7 +24,8 @@ export default {
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
     onSelect: PropTypes.func,
-    resizable: PropTypes.bool
+    resizable: PropTypes.bool,
+    onDoubleClick: PropTypes.func
   },
 
   defaultProps: {
@@ -41,7 +42,8 @@ export default {
       , allDayAccessor, eventComponent
       , eventWrapperComponent
       , onSelect
-      , resizable } = props;
+      , resizable
+      , onDoubleClick } = props;
 
     return (
       <EventCell
@@ -49,6 +51,7 @@ export default {
         eventWrapperComponent={eventWrapperComponent}
         eventPropGetter={eventPropGetter}
         onSelect={onSelect}
+        onDoubleClick={onDoubleClick}
         selected={isSelected(event, selected)}
         startAccessor={startAccessor}
         endAccessor={endAccessor}

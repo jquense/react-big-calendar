@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
-import message from './utils/messages';
 import { navigate } from './utils/constants';
 
 class Toolbar extends React.Component {
@@ -18,8 +17,6 @@ class Toolbar extends React.Component {
 
   render() {
     let { messages, label } = this.props;
-
-    messages = message(messages)
 
     return (
       <div className='rbc-toolbar'>

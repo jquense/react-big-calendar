@@ -12,6 +12,14 @@ localizer(globalize);
 import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
+import Basic from './demos/basic';
+import Selectable from './demos/selectable';
+import Cultures from './demos/cultures';
+import Popup from './demos/popup';
+import Rendering from './demos/rendering';
+import CustomView from './demos/customView';
+import Timeslots from './demos/timeslots';
+import Dnd from './demos/dnd';
 
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 

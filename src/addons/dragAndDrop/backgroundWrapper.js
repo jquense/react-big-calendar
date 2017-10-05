@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react'
-import { findDOMNode } from 'react-dom';
 import { DropTarget } from 'react-dnd'
 import cn from 'classnames';
 

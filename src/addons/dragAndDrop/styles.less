@@ -15,7 +15,7 @@
       red(@date-selection-bg-color),
       green(@date-selection-bg-color),
       blue(@date-selection-bg-color),
-      .3
+      0.3
     );
   }
 
@@ -26,7 +26,28 @@
 
   &.rbc-addons-dnd-is-dragging .rbc-event {
     pointer-events: none;
-    opacity: .50;
+    opacity: 0.5;
+  }
+
+  .rbc-addons-dnd-resizable-month-event {
+    position: relative;
+    /* user-drag: none; */
+    .rbc-addons-dnd-resize-month-event-anchor {
+      width: 20px;
+      height: 20px;
+      top: 0;
+      &:hover {
+        cursor: ew-resize;
+      }
+      &:first-child {
+        position: absolute;
+        left: -5px;
+      }
+      &:last-child {
+        position: absolute;
+        right: -5px;
+      }
+    }
   }
 
   // .rbc-addons-dnd-dragging {

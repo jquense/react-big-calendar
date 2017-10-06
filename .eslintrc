@@ -1,5 +1,7 @@
-parser: babel-eslint
-extends: jason/react
-
-rules:
-  global-require: off
+{
+  "parser": "babel-eslint",
+  "extends": ["prettier"],
+  "rules": {
+    "global-require": "off"
+  }
+}

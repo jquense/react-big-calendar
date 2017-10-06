@@ -1,29 +1,27 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import PropTypes from 'prop-types';
+import React from 'react';
+import { findDOMNode } from 'react-dom';
+import cn from 'classnames';
 
-import dates from './utils/dates'
-import localizer from './localizer'
-import chunk from 'lodash/chunk'
+import dates from './utils/dates';
+import localizer from './localizer';
+import chunk from 'lodash/chunk';
 
-import { navigate, views } from './utils/constants'
-import { notify } from './utils/helpers'
-import getPosition from 'dom-helpers/query/position'
-import raf from 'dom-helpers/util/requestAnimationFrame'
+import { navigate, views } from './utils/constants';
+import { notify } from './utils/helpers';
+import getPosition from 'dom-helpers/query/position';
+import raf from 'dom-helpers/util/requestAnimationFrame';
 
-import Popup from './Popup'
-import Overlay from 'react-overlays/lib/Overlay'
-import DateContentRow from './DateContentRow'
-import Header from './Header'
-import DateHeader from './DateHeader'
+import Popup from './Popup';
+import Overlay from 'react-overlays/lib/Overlay';
+import DateContentRow from './DateContentRow';
+import Header from './Header';
+import DateHeader from './DateHeader';
 
-import { accessor, dateFormat } from './utils/propTypes'
-import { segStyle, inRange, sortEvents } from './utils/eventLevels'
+import { accessor, dateFormat } from './utils/propTypes';
+import { segStyle, inRange, sortEvents } from './utils/eventLevels';
 
-
-let eventsForWeek = (evts, start, end, props) =>
-  evts.filter(e => inRange(e, start, end, props))
+let eventsForWeek = (evts, start, end, props) => evts.filter(e => inRange(e, start, end, props));
 
 let propTypes = {
   events: PropTypes.array.isRequired,
@@ -75,70 +73,72 @@ let propTypes = {
       y: PropTypes.number,
     }),
   ]),
-}
+};
 
 class MonthView extends React.Component {
-  static displayName = 'MonthView'
-  static propTypes = propTypes
+  static displayName = 'MonthView';
+  static propTypes = propTypes;
 
   static defaultProps = {
-    now: new Date()
-  }
+    now: new Date(),
+  };
 
-  constructor(...args) {
-    super(...args)
+  constructor(props) {
+    super(props);
 
-    this._bgRows = []
-    this._pendingSelection = []
+    this._bgRows = [];
+    this._pendingSelection = [];
     this.state = {
-      rowLimit: 5,
-      needLimitMeasure: true,
-    }
+      rowLimit: props.showAllEvents ? Infinity : 5,
+      needLimitMeasure: props.showAllEvents ? false : true,
+    };
   }
 
   componentWillReceiveProps({ date }) {
     this.setState({
       needLimitMeasure: !dates.eq(date, this.props.date),
-    })
+    });
   }
 
   componentDidMount() {
-    let running
+    let running;
 
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    if (this.state.needLimitMeasure) this.measureRowLimit(this.props);
 
     window.addEventListener(
       'resize',
       (this._resizeListener = () => {
         if (!running) {
           raf(() => {
-            running = false
-            this.setState({ needLimitMeasure: true }) //eslint-disable-line
-          })
+            running = false;
+            this.setState({
+              needLimitMeasure: this.props.showAllEvents ? false : true,
+            }); //eslint-disable-line
+          });
         }
       }),
-      false
-    )
+      false,
+    );
   }
 
   componentDidUpdate() {
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    if (this.state.needLimitMeasure) this.measureRowLimit(this.props);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this._resizeListener, false)
+    window.removeEventListener('resize', this._resizeListener, false);
   }
 
   getContainer = () => {
-    return findDOMNode(this)
-  }
+    return findDOMNode(this);
+  };
 
   render() {
     let { date, culture, weekdayFormat, className } = this.props,
       month = dates.visibleDays(date, culture),
-      weeks = chunk(month, 7)
+      weeks = chunk(month, 7);
 
-    this._weekCount = weeks.length
+    this._weekCount = weeks.length;
 
     return (
       <div className={cn('rbc-month-view', className)}>
@@ -148,7 +148,7 @@ class MonthView extends React.Component {
         {weeks.map((week, idx) => this.renderWeek(week, idx))}
         {this.props.popup && this.renderOverlay()}
       </div>
-    )
+    );
   }
 
   renderWeek = (week, weekIdx) => {
@@ -166,19 +166,21 @@ class MonthView extends React.Component {
       now,
       date,
       longPressThreshold,
-    } = this.props
+    } = this.props;
 
-    const { needLimitMeasure, rowLimit } = this.state
+    const { needLimitMeasure, rowLimit } = this.state;
 
-    events = eventsForWeek(events, week[0], week[week.length - 1], this.props)
-    events.sort((a, b) => sortEvents(a, b, this.props))
+    events = eventsForWeek(events, week[0], week[week.length - 1], this.props);
+    events.sort((a, b) => sortEvents(a, b, this.props));
 
     return (
       <DateContentRow
         key={weekIdx}
         ref={weekIdx === 0 ? 'slotRow' : undefined}
         container={this.getContainer}
-        className="rbc-month-row"
+        className={cn('rbc-month-row', {
+          'rbc-show-all-events': this.props.showAllEvents,
+        })}
         now={now}
         date={date}
         range={week}
@@ -203,46 +205,38 @@ class MonthView extends React.Component {
         dateCellWrapper={components.dateCellWrapper}
         longPressThreshold={longPressThreshold}
       />
-    )
-  }
+    );
+  };
 
   readerDateHeading = ({ date, className, ...props }) => {
-    let {
-      date: currentDate,
-      getDrilldownView,
-      dateFormat,
-      culture,
-    } = this.props
+    let { date: currentDate, getDrilldownView, dateFormat, culture } = this.props;
 
-    let isOffRange = dates.month(date) !== dates.month(currentDate)
-    let isCurrent = dates.eq(date, currentDate, 'day')
-    let drilldownView = getDrilldownView(date)
-    let label = localizer.format(date, dateFormat, culture)
-    let DateHeaderComponent = this.props.components.dateHeader || DateHeader
+    let isOffRange = dates.month(date) !== dates.month(currentDate);
+    let isCurrent = dates.eq(date, currentDate, 'day');
+    let drilldownView = getDrilldownView(date);
+    let label = localizer.format(date, dateFormat, culture);
+    let DateHeaderComponent = this.props.components.dateHeader || DateHeader;
 
     return (
       <div
         {...props}
-        className={cn(
-          className,
-          isOffRange && 'rbc-off-range',
-          isCurrent && 'rbc-current'
-        )}
+        className={cn(className, isOffRange && 'rbc-off-range', isCurrent && 'rbc-current')}
       >
         <DateHeaderComponent
           label={label}
           date={date}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
-          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)} />
+          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+        />
       </div>
-    )
-  }
+    );
+  };
 
   renderHeaders(row, format, culture) {
-    let first = row[0]
-    let last = row[row.length - 1]
-    let HeaderComponent = this.props.components.header || Header
+    let first = row[0];
+    let last = row[row.length - 1];
+    let HeaderComponent = this.props.components.header || Header;
 
     return dates.range(first, last, 'day').map((day, idx) => (
       <div key={'header_' + idx} className="rbc-header" style={segStyle(1, 7)}>
@@ -254,12 +248,12 @@ class MonthView extends React.Component {
           culture={culture}
         />
       </div>
-    ))
+    ));
   }
 
-  renderOverlay () {
-    let overlay = (this.state && this.state.overlay) || {}
-    let { components } = this.props
+  renderOverlay() {
+    let overlay = (this.state && this.state.overlay) || {};
+    let { components } = this.props;
 
     return (
       <Overlay
@@ -280,94 +274,92 @@ class MonthView extends React.Component {
           onSelect={this.handleSelectEvent}
         />
       </Overlay>
-    )
+    );
   }
 
   measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
       rowLimit: this.refs.slotRow.getRowLimit(),
-    })
+    });
   }
 
   handleSelectSlot = (range, slotInfo) => {
-    this._pendingSelection = this._pendingSelection.concat(range)
+    this._pendingSelection = this._pendingSelection.concat(range);
 
-    clearTimeout(this._selectTimer)
-    this._selectTimer = setTimeout(() => this.selectDates(slotInfo))
-  }
+    clearTimeout(this._selectTimer);
+    this._selectTimer = setTimeout(() => this.selectDates(slotInfo));
+  };
 
   handleHeadingClick = (date, view, e) => {
-    e.preventDefault()
-    this.clearSelection()
-    notify(this.props.onDrillDown, [date, view])
-  }
+    e.preventDefault();
+    this.clearSelection();
+    notify(this.props.onDrillDown, [date, view]);
+  };
 
   handleSelectEvent = (...args) => {
-    this.clearSelection()
-    notify(this.props.onSelectEvent, args)
-  }
+    this.clearSelection();
+    notify(this.props.onSelectEvent, args);
+  };
 
   handleDoubleClickEvent = (...args) => {
-    this.clearSelection()
-    notify(this.props.onDoubleClickEvent, args)
-  }
+    this.clearSelection();
+    notify(this.props.onDoubleClickEvent, args);
+  };
 
   handleShowMore = (events, date, cell, slot) => {
-    const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
+    const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props;
     //cancel any pending selections so only the event click goes through.
-    this.clearSelection()
+    this.clearSelection();
 
     if (popup) {
-      let position = getPosition(cell, findDOMNode(this))
+      let position = getPosition(cell, findDOMNode(this));
 
       this.setState({
         overlay: { date, events, position },
-      })
+      });
     } else {
-      notify(onDrillDown, [date, getDrilldownView(date) || views.DAY])
+      notify(onDrillDown, [date, getDrilldownView(date) || views.DAY]);
     }
 
-    notify(onShowMore, [events, date, slot])
-  }
+    notify(onShowMore, [events, date, slot]);
+  };
 
   selectDates(slotInfo) {
-    let slots = this._pendingSelection.slice()
+    let slots = this._pendingSelection.slice();
 
-    this._pendingSelection = []
+    this._pendingSelection = [];
 
-    slots.sort((a, b) => +a - +b)
+    slots.sort((a, b) => +a - +b);
 
     notify(this.props.onSelectSlot, {
       slots,
       start: slots[0],
       end: slots[slots.length - 1],
       action: slotInfo.action,
-    })
+    });
   }
 
   clearSelection() {
-    clearTimeout(this._selectTimer)
-    this._pendingSelection = []
+    clearTimeout(this._selectTimer);
+    this._pendingSelection = [];
   }
 }
 
 MonthView.navigate = (date, action) => {
   switch (action) {
     case navigate.PREVIOUS:
-      return dates.add(date, -1, 'month')
+      return dates.add(date, -1, 'month');
 
     case navigate.NEXT:
-      return dates.add(date, 1, 'month')
+      return dates.add(date, 1, 'month');
 
     default:
-      return date
+      return date;
   }
-}
-
+};
 
 MonthView.title = (date, { formats, culture }) =>
   localizer.format(date, formats.monthHeaderFormat, culture);
 
-
-export default MonthView
+export default MonthView;

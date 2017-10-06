@@ -7,12 +7,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": [
-    "lib/",
-    "LICENSE",
-    "README.md",
-    "CHANGELOG.md"
-  ],
+  "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
   "keywords": [
     "scheduler",
     "react-component",
@@ -21,18 +16,28 @@
     "events",
     "full calendar"
   ],
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
     "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
-    "less": "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
-    "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
+    "less":
+      "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
+    "less-dnd":
+      "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
-    "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
+    "build":
+      "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
+    "build:examples":
+      "npm run clean:examples && webpack --config webpack/examples.config.js",
     "build:visual-test": "webpack --config webpack/visual-test.js",
-    "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
+    "examples":
+      "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
     "lint": "eslint src --ext .jsx --ext .js",
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint",

@@ -655,6 +655,7 @@ class Calendar extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
           showAllEvents={this.props.showAllEvents}
+          resizable={this.props.resizable}
         />
       </div>
     );

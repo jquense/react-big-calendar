@@ -24,23 +24,30 @@ export default {
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
     onSelect: PropTypes.func,
-    onDoubleClick: PropTypes.func
+    onDoubleClick: PropTypes.func,
   },
 
   defaultProps: {
     segments: [],
     selected: {},
-    slots: 7
+    slots: 7,
   },
 
   renderEvent(props, event) {
     let {
-        eventPropGetter, selected, start, end
-      , startAccessor, endAccessor, titleAccessor
-      , allDayAccessor, eventComponent
-      , eventWrapperComponent
-      , onSelect
-      , onDoubleClick } = props;
+      eventPropGetter,
+      selected,
+      start,
+      end,
+      startAccessor,
+      endAccessor,
+      titleAccessor,
+      allDayAccessor,
+      eventComponent,
+      eventWrapperComponent,
+      onSelect,
+      onDoubleClick,
+    } = props;
 
     return (
       <EventCell
@@ -57,21 +64,22 @@ export default {
         slotStart={start}
         slotEnd={end}
         eventComponent={eventComponent}
+        resizable={props.resizable}
       />
-    )
+    );
   },
 
-  renderSpan(props, len, key, content = ' '){
+  renderSpan(props, len, key, content = ' ') {
     let { slots } = props;
 
     return (
-      <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>
+      <div key={key} className="rbc-row-segment" style={segStyle(Math.abs(len), slots)}>
         {content}
       </div>
-    )
+    );
   },
 
-  getRowHeight(){
-    getHeight(findDOMNode(this))
-  }
-}
+  getRowHeight() {
+    getHeight(findDOMNode(this));
+  },
+};

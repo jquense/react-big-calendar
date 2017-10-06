@@ -3,17 +3,17 @@ import React from 'react';
 import uncontrollable from 'uncontrollable';
 import cn from 'classnames';
 import {
-  accessor
-  , elementType
-  , dateFormat
-  , dateRangeFormat
-  , views as componentViews
+  accessor,
+  elementType,
+  dateFormat,
+  dateRangeFormat,
+  views as componentViews,
 } from './utils/propTypes';
 
 import { notify } from './utils/helpers';
 import { navigate, views } from './utils/constants';
 import defaultFormats from './formats';
-import message from './utils/messages'
+import message from './utils/messages';
 import moveDate from './utils/move';
 import VIEWS from './Views';
 import Toolbar from './Toolbar';
@@ -26,12 +26,12 @@ import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
 function viewNames(_views) {
-  return !Array.isArray(_views) ? Object.keys(_views) : _views
+  return !Array.isArray(_views) ? Object.keys(_views) : _views;
 }
 
 function isValidView(view, { views: _views }) {
-  let names = viewNames(_views)
-  return names.indexOf(view) !== -1
+  let names = viewNames(_views);
+  return names.indexOf(view) !== -1;
 }
 
 let now = new Date();
@@ -55,7 +55,6 @@ let now = new Date();
  */
 class Calendar extends React.Component {
   static propTypes = {
-
     /**
      * Props passed to main calendar `<div>`.
      */
@@ -234,7 +233,7 @@ class Calendar extends React.Component {
      */
     popupOffset: PropTypes.oneOfType([
       PropTypes.number,
-      PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
+      PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
     ]),
 
     /**
@@ -469,7 +468,6 @@ class Calendar extends React.Component {
        * An optional event time range for events that continue from another day
        */
       eventTimeRangeEndFormat: dateFormat,
-
     }),
 
     /**
@@ -499,22 +497,22 @@ class Calendar extends React.Component {
       agenda: PropTypes.shape({
         date: elementType,
         time: elementType,
-        event: elementType
+        event: elementType,
       }),
 
       day: PropTypes.shape({
         header: elementType,
-        event: elementType
+        event: elementType,
       }),
       week: PropTypes.shape({
         header: elementType,
-        event: elementType
+        event: elementType,
       }),
       month: PropTypes.shape({
         header: elementType,
         dateHeader: elementType,
-        event: elementType
-      })
+        event: elementType,
+      }),
     }),
 
     /**
@@ -532,8 +530,8 @@ class Calendar extends React.Component {
       date: PropTypes.node,
       time: PropTypes.node,
       event: PropTypes.node,
-      showMore: PropTypes.func
-    })
+      showMore: PropTypes.func,
+    }),
   };
 
   static defaultProps = {
@@ -559,7 +557,7 @@ class Calendar extends React.Component {
     const views = this.props.views;
 
     if (Array.isArray(views)) {
-      return transform(views, (obj, name) => obj[name] = VIEWS[name], {});
+      return transform(views, (obj, name) => (obj[name] = VIEWS[name]), {});
     }
 
     if (typeof views === 'object') {
@@ -581,55 +579,54 @@ class Calendar extends React.Component {
     return views[this.props.view];
   };
 
-  getDrilldownView = (date) => {
-    const { view, drilldownView, getDrilldownView } = this.props
+  getDrilldownView = date => {
+    const { view, drilldownView, getDrilldownView } = this.props;
 
-    if (!getDrilldownView) return drilldownView
+    if (!getDrilldownView) return drilldownView;
 
     return getDrilldownView(date, view, Object.keys(this.getViews()));
   };
 
   render() {
     let {
-       view, toolbar, events
-      , culture
-      , components = {}
-      , formats = {}
-      , messages = {}
-      , style
-      , className
-      , elementProps
-      , date: current
-      , ...props } = this.props;
+      view,
+      toolbar,
+      events,
+      culture,
+      components = {},
+      formats = {},
+      messages = {},
+      style,
+      className,
+      elementProps,
+      date: current,
+      ...props
+    } = this.props;
 
-    formats = defaultFormats(formats)
-    messages = message(messages)
+    formats = defaultFormats(formats);
+    messages = message(messages);
 
     let View = this.getView();
-    let names = viewNames(this.props.views)
+    let names = viewNames(this.props.views);
 
-    let viewComponents = defaults(
-      components[view] || {},
-      omit(components, names),
-      {
-        eventWrapper: EventWrapper,
-        dayWrapper: BackgroundWrapper,
-        dateCellWrapper: BackgroundWrapper
-      }
-    )
+    let viewComponents = defaults(components[view] || {}, omit(components, names), {
+      eventWrapper: EventWrapper,
+      dayWrapper: BackgroundWrapper,
+      dateCellWrapper: BackgroundWrapper,
+    });
 
-    let CalToolbar = components.toolbar || Toolbar
-    const label = View.title(current, { formats, culture })
+    let CalToolbar = components.toolbar || Toolbar;
+    const label = View.title(current, { formats, culture });
 
     return (
       <div
         {...elementProps}
         className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl
+          'rbc-rtl': props.rtl,
         })}
         style={style}
       >
-        {toolbar &&
+        {toolbar && (
           <CalToolbar
             date={current}
             view={view}
@@ -639,9 +636,9 @@ class Calendar extends React.Component {
             onNavigate={this.handleNavigate}
             messages={messages}
           />
-        }
+        )}
         <View
-          ref='view'
+          ref="view"
           {...props}
           {...formats}
           messages={messages}
@@ -657,6 +654,7 @@ class Calendar extends React.Component {
           onDoubleClickEvent={this.handleDoubleClickEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
+          showAllEvents={this.props.showAllEvents}
         />
       </div>
     );
@@ -669,39 +667,37 @@ class Calendar extends React.Component {
     date = moveDate(ViewComponent, {
       ...props,
       action,
-      date: newDate || date
-    })
+      date: newDate || date,
+    });
 
-    onNavigate(date, view, action)
+    onNavigate(date, view, action);
   };
 
-  handleViewChange = (view) => {
-    if (view !== this.props.view && isValidView(view, this.props))
-      this.props.onView(view)
+  handleViewChange = view => {
+    if (view !== this.props.view && isValidView(view, this.props)) this.props.onView(view);
   };
 
   handleSelectEvent = (...args) => {
-    notify(this.props.onSelectEvent, args)
+    notify(this.props.onSelectEvent, args);
   };
 
   handleDoubleClickEvent = (...args) => {
-    notify(this.props.onDoubleClickEvent, args)
-  }
+    notify(this.props.onDoubleClickEvent, args);
+  };
 
-  handleSelectSlot = (slotInfo) => {
-    notify(this.props.onSelectSlot, slotInfo)
+  handleSelectSlot = slotInfo => {
+    notify(this.props.onSelectSlot, slotInfo);
   };
 
   handleDrillDown = (date, view) => {
-    if (view)
-      this.handleViewChange(view)
+    if (view) this.handleViewChange(view);
 
-    this.handleNavigate(navigate.DATE, date)
+    this.handleNavigate(navigate.DATE, date);
   };
 }
 
 export default uncontrollable(Calendar, {
   view: 'onView',
   date: 'onNavigate',
-  selected: 'onSelectEvent'
-})
+  selected: 'onSelectEvent',
+});

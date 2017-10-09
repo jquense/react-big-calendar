@@ -1,9 +1,9 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.16.1",
+  "name": "citrusbyte-calendar",
+  "version": "1.0.0",
   "description": "React Calendar",
   "contributors": ["Adam Recvlohe <adam.recvlohe@citrusbyte.com>"],
-  "repository": "citrusbyte/react-big-calendar",
+  "repository": "https://github.com/citrusbyte/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",

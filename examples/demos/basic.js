@@ -5,10 +5,6 @@ import events from '../events';
 let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
 
 let Basic = React.createClass({
-  handleInlineEditEventTitle(title) {
-    console.log(title);
-  },
-
   render() {
     return (
       <BigCalendar
@@ -18,7 +14,6 @@ let Basic = React.createClass({
         showAllEvents
         step={60}
         views={allViews}
-        onInlineEditEventTitle={this.handleInlineEditEventTitle}
       />
     );
   },

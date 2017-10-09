@@ -656,6 +656,7 @@ class Calendar extends React.Component {
           onShowMore={this._showMore}
           showAllEvents={this.props.showAllEvents}
           resizable={this.props.resizable}
+          onInlineEditEventTitle={this.props.onInlineEditEventTitle}
         />
       </div>
     );

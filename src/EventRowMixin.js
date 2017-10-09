@@ -47,6 +47,7 @@ export default {
       eventWrapperComponent,
       onSelect,
       onDoubleClick,
+      onInlineEditEventTitle,
     } = props;
 
     return (
@@ -65,6 +66,7 @@ export default {
         slotEnd={end}
         eventComponent={eventComponent}
         resizable={props.resizable}
+        onInlineEditEventTitle={onInlineEditEventTitle}
       />
     );
   },

@@ -23,9 +23,47 @@ let propTypes = {
   eventWrapperComponent: elementType.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onInlineEditEventTitle: PropTypes.func.isRequired,
 };
 
 class EventCell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditingEventTitle: false,
+      title: get(props.event, props.titleAccessor),
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { event, titleAccessor } = this.props;
+    const { event: nextEvent } = nextProps;
+    const [eventTitle, nextEventTitle] = [get(event, titleAccessor), get(nextEvent, titleAccessor)];
+    if (eventTitle !== nextEventTitle) {
+      this.setState({ title: nextEventTitle });
+    }
+  }
+
+  handleEditing = () => {
+    this.setState({ isEditingEventTitle: true });
+  };
+
+  handleChange = ({ target: { value } }) => {
+    this.setState({ title: value });
+  };
+
+  handleKeyPress = e => {
+    const { onInlineEditEventTitle } = this.props;
+    if (e.key == 'Enter') {
+      onInlineEditEventTitle(this.state.title);
+      this.setState({ isEditingEventTitle: false });
+    }
+  };
+
+  handleBlur = () => {
+    this.setState({ isEditingEventTitle: false });
+  };
+
   render() {
     let {
       className,
@@ -42,6 +80,7 @@ class EventCell extends React.Component {
       slotStart,
       startAccessor,
       titleAccessor,
+      onInlineEditEventTitle,
       ...props
     } = this.props;
 
@@ -70,10 +109,24 @@ class EventCell extends React.Component {
             'rbc-event-continues-after': continuesAfter,
           })}
           onClick={e => onSelect(event, e)}
-          onDoubleClick={e => onDoubleClick(event, e)}
+          /*onDoubleClick={e => onDoubleClick(event, e)}*/
+          onDoubleClick={this.handleEditing}
         >
           <div className="rbc-event-content" title={title}>
-            {Event ? <Event event={event} title={title} /> : title}
+            {Event && !this.state.isEditingEventTitle ? (
+              <Event event={event} title={title} />
+            ) : this.state.isEditingEventTitle ? (
+              <input
+                type="text"
+                style={{ color: 'black' }}
+                value={this.state.title}
+                onChange={this.handleChange}
+                onKeyPress={this.handleKeyPress}
+                onBlur={this.handleBlur}
+              />
+            ) : (
+              title
+            )}
           </div>
         </div>
       </EventWrapper>
@@ -82,5 +135,9 @@ class EventCell extends React.Component {
 }
 
 EventCell.propTypes = propTypes;
+
+EventCell.defaultProps = {
+  onInlineEditEventTitle: () => {},
+};
 
 export default EventCell;

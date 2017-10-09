@@ -32,7 +32,8 @@
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint",
     "tdd": "karma start",
-    "release": "release"
+    "release": "release",
+    "prepublish": "npm run build"
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",

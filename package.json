@@ -1,14 +1,28 @@
 {
   "name": "citrusbyte-calendar",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React Calendar",
-  "contributors": ["Adam Recvlohe <adam.recvlohe@citrusbyte.com>"],
+  "contributors": [
+    "Adam Recvlohe <adam.recvlohe@citrusbyte.com>"
+  ],
   "repository": "https://github.com/citrusbyte/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
-  "keywords": ["scheduler", "react-component", "react", "calendar", "events", "full calendar"],
+  "files": [
+    "lib/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "scheduler",
+    "react-component",
+    "react",
+    "calendar",
+    "events",
+    "full calendar"
+  ],
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
@@ -22,12 +36,10 @@
     "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build":
-      "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
+    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
     "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
     "build:visual-test": "webpack --config webpack/visual-test.js",
-    "examples":
-      "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
+    "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
     "lint": "eslint src --ext .jsx --ext .js",
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint",

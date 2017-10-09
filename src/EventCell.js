@@ -47,7 +47,12 @@ class EventCell extends React.Component {
     const { onInlineEditEventTitle } = this.props;
     if (e.key == 'Enter') {
       onInlineEditEventTitle(this.state.title);
+      this.setState({ isEditingEventTitle: false });
     }
+  };
+
+  handleBlur = () => {
+    this.setState({ isEditingEventTitle: false });
   };
 
   render() {
@@ -94,9 +99,9 @@ class EventCell extends React.Component {
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
-          /* onClick={e => onSelect(event, e)} */
-          onClick={this.handleEditing}
-          onDoubleClick={e => onDoubleClick(event, e)}
+          onClick={e => onSelect(event, e)}
+          /*onDoubleClick={e => onDoubleClick(event, e)}*/
+          onDoubleClick={this.handleEditing}
         >
           <div className="rbc-event-content" title={title}>
             {Event && !this.state.isEditingEventTitle ? (
@@ -108,6 +113,7 @@ class EventCell extends React.Component {
                 value={this.state.title}
                 onChange={this.handleChange}
                 onKeyPress={this.handleKeyPress}
+                onBlur={this.handleBlur}
               />
             ) : (
               title
@@ -120,5 +126,9 @@ class EventCell extends React.Component {
 }
 
 EventCell.propTypes = propTypes;
+
+EventCell.defaultProps = {
+  onInlineEditEventTitle: () => {},
+};
 
 export default EventCell;

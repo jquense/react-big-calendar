@@ -35,6 +35,15 @@ class EventCell extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { event, titleAccessor } = this.props;
+    const { event: nextEvent } = nextProps;
+    const [eventTitle, nextEventTitle] = [get(event, titleAccessor), get(nextEvent, titleAccessor)];
+    if (eventTitle !== nextEventTitle) {
+      this.setState({ title: nextEventTitle });
+    }
+  }
+
   handleEditing = () => {
     this.setState({ isEditingEventTitle: true });
   };

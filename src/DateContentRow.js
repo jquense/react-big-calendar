@@ -206,6 +206,7 @@ class DateContentRow extends React.Component {
               startAccessor={startAccessor}
               endAccessor={endAccessor}
               resizable={this.props.resizable}
+              onInlineEditEventTitle={this.props.onInlineEditEventTitle}
             />
           ))}
           {!!extra.length && (

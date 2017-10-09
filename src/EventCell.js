@@ -5,7 +5,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
-import ResizableMonthEvent from '../src/addons/dragAndDrop/ResizableMonthEvent';
+import ResizableMonthEvent from './addons/dragAndDrop/ResizableMonthEvent';
 
 let propTypes = {
   event: PropTypes.object.isRequired,

@@ -1,6 +1,6 @@
 {
   "name": "citrusbyte-calendar",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "React Calendar",
   "contributors": ["Adam Recvlohe <adam.recvlohe@citrusbyte.com>"],
   "repository": "https://github.com/citrusbyte/react-big-calendar",

@@ -23,9 +23,33 @@ let propTypes = {
   eventWrapperComponent: elementType.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onInlineEditEventTitle: PropTypes.func.isRequired,
 };
 
 class EventCell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditingEventTitle: false,
+      title: get(props.event, props.titleAccessor),
+    };
+  }
+
+  handleEditing = () => {
+    this.setState({ isEditingEventTitle: true });
+  };
+
+  handleChange = ({ target: { value } }) => {
+    this.setState({ title: value });
+  };
+
+  handleKeyPress = e => {
+    const { onInlineEditEventTitle } = this.props;
+    if (e.key == 'Enter') {
+      onInlineEditEventTitle(this.state.title);
+    }
+  };
+
   render() {
     let {
       className,
@@ -42,6 +66,7 @@ class EventCell extends React.Component {
       slotStart,
       startAccessor,
       titleAccessor,
+      onInlineEditEventTitle,
       ...props
     } = this.props;
 
@@ -69,11 +94,24 @@ class EventCell extends React.Component {
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
-          onClick={e => onSelect(event, e)}
+          /* onClick={e => onSelect(event, e)} */
+          onClick={this.handleEditing}
           onDoubleClick={e => onDoubleClick(event, e)}
         >
           <div className="rbc-event-content" title={title}>
-            {Event ? <Event event={event} title={title} /> : title}
+            {Event && !this.state.isEditingEventTitle ? (
+              <Event event={event} title={title} />
+            ) : this.state.isEditingEventTitle ? (
+              <input
+                type="text"
+                style={{ color: 'black' }}
+                value={this.state.title}
+                onChange={this.handleChange}
+                onKeyPress={this.handleKeyPress}
+              />
+            ) : (
+              title
+            )}
           </div>
         </div>
       </EventWrapper>

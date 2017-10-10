@@ -14,7 +14,13 @@
 }
 
 .rbc-selected-cell {
-  background-color: @date-selection-bg-color;
+  background-color: fade(#2abec7, 15%);
+}
+
+.rbc-selected-cell-click {
+  background-color: transparent;
+  border: 2px solid #2abec7 !important;
+  z-index: 6666;
 }
 
 .rbc-show-more {
@@ -104,6 +110,8 @@
 }
 
 .rbc-day-bg {
+  cursor: pointer;
+
   & + & {
     border-left: 1px solid @cell-border;
   }

@@ -22,8 +22,8 @@
     "clean:examples": "bnr clean:examples",
     "clean": "bnr clean",
     "examples": "bnr examples",
-    "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
     "less": "bnr less",
+    "lessc": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
     "prepublish": "bnr build",
     "release": "release",
     "storybook": "bnr storybook",
@@ -52,7 +52,7 @@
     },
     "less": {
       "command":
-        "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css"
+        "npm run lessc src/less/styles.less ./lib/css/react-big-calendar.css && npm run lessc src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css"
     },
     "lint": {
       "command": "eslint src --ext .jsx --ext .js"

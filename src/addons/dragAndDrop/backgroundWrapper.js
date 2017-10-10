@@ -141,23 +141,23 @@ function createWrapper(type) {
       if (monitor.getItemType() === 'resize') {
         switch (event.type) {
           case 'resizeL': {
-            return onEventResize('drop', { event, start: value, end: event.end });
+            return onEventResize('drop', { event, start: value, end });
           }
           case 'resizeR': {
-            const [hrs, mins] = [getHours(event.end), getMinutes(event.end)];
+            const [hrs, mins] = [getHours(end), getMinutes(end)];
             const nextEnd = compose(
               v => addHours(v, hrs),
               v => addMinutes(v, mins),
               v => (hrs === 0 && mins === 0 ? addMilliseconds(v, 1) : value),
             )(value);
-            return onEventResize('drop', { event, start: event.start, end: nextEnd });
+            return onEventResize('drop', { event, start, end: nextEnd });
           }
         }
 
         // Catch All
         onEventResize('drop', {
           event,
-          start: event.start,
+          start,
           end: value,
         });
       }

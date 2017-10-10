@@ -9,9 +9,9 @@ new WebpackDevServer(webpack(config), {
   quiet: false,
   progress: true,
   stats: {
-    colors: true
-  }
-}).listen(config.port, 'localhost', function (err) {
+    colors: true,
+  },
+}).listen(config.port, 'localhost', function(err) {
   if (err) {
     console.log(err);
   } else {

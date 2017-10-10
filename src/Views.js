@@ -10,7 +10,7 @@ const VIEWS = {
   [views.WEEK]: Week,
   [views.WORK_WEEK]: WorkWeek,
   [views.DAY]: Day,
-  [views.AGENDA]: Agenda
+  [views.AGENDA]: Agenda,
 };
 
 export default VIEWS;

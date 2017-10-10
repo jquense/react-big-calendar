@@ -1,8 +1,8 @@
-var path = require('path')
-var webpack = require('webpack')
-const { rules, loaders, plugins, stats } = require('webpack-atoms')
+var path = require('path');
+var webpack = require('webpack');
+const { rules, loaders, plugins, stats } = require('webpack-atoms');
 
-const browsers = ['last 2 versions', 'ie >= 10']
+const browsers = ['last 2 versions', 'ie >= 10'];
 
 module.exports = {
   devtool: 'source-map',
@@ -37,7 +37,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    plugins.extractText()
-  ]
-}
+  plugins: [plugins.extractText()],
+};

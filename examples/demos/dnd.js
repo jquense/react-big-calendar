@@ -19,7 +19,7 @@ class Dnd extends React.Component {
     this.moveEvent = this.moveEvent.bind(this);
   }
 
-  handleInlineEditEventTitle = title => {
+  handleInlineEditEventTitle = ({ event, title }) => {
     alert(title);
   };
 

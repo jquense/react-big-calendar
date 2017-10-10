@@ -17,22 +17,25 @@
   "scripts": {
     "assets": "bnr assets",
     "build:examples": "bnr clean:examples && webpack --config webpack/examples.config.js",
-    "build:visual-test": "webpack --config webpack/visual-test.js",
+    "build:visual-test": "bnr build:visual-test",
     "build": "bnr build",
     "clean:examples": "bnr clean:examples",
     "clean": "bnr clean",
     "examples": "bnr examples",
     "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
     "less": "bnr less",
-    "prepublish": "brn build",
+    "prepublish": "bnr build",
     "release": "release",
-    "storybook": "brn storybook",
+    "storybook": "bnr storybook",
     "tdd": "karma start",
     "test": "bnr lint"
   },
   "betterScripts": {
     "assets": {
       "command": "cpy src/less/* lib/less && cpy addons/**/*.less ../lib/ --cwd=src --parents"
+    },
+    "build:visual-test": {
+      "command": "webpack --config webpack/visual-test.js"
     },
     "build": {
       "command": "npm run clean && babel src --out-dir lib && npm run assets && npm run less"

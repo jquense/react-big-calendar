@@ -53,9 +53,9 @@ class EventCell extends React.Component {
   };
 
   handleKeyPress = e => {
-    const { onInlineEditEventTitle } = this.props;
+    const { onInlineEditEventTitle, event } = this.props;
     if (e.key == 'Enter') {
-      onInlineEditEventTitle(this.state.title);
+      onInlineEditEventTitle({ event, title: this.state.title });
       this.setState({ isEditingEventTitle: false });
     }
   };

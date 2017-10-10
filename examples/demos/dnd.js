@@ -19,7 +19,7 @@ class Dnd extends React.Component {
     this.moveEvent = this.moveEvent.bind(this);
   }
 
-  handleInlineEditEventTitle = title => {
+  handleInlineEditEventTitle = ({ event, title }) => {
     alert(title);
   };
 
@@ -77,6 +77,7 @@ class Dnd extends React.Component {
         onEventResize={this.handleEventResize}
         defaultDate={new Date(2015, 3, 12)}
         onInlineEditEventTitle={this.handleInlineEditEventTitle}
+        showAllEvents
       />
     );
   }

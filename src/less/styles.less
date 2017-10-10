@@ -1,7 +1,6 @@
 @import './variables.less';
 @import './reset.less';
 
-
 .rbc-calendar {
   box-sizing: border-box;
   height: 100%;
@@ -56,7 +55,9 @@
   min-height: 0;
 
   > a {
-    &, &:active, &:visited {
+    &,
+    &:active,
+    &:visited {
       color: inherit;
       text-decoration: none;
     }
@@ -74,9 +75,9 @@
   background-color: @today-highlight-bg;
 }
 
-
-@import './toolbar.less';
+@import './agenda.less';
 @import './event.less';
 @import './month.less';
-@import './agenda.less';
+@import './time-column.less';
 @import './time-grid.less';
+@import './toolbar.less';

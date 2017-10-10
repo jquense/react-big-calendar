@@ -15,32 +15,57 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "clean": "rimraf lib",
-    "clean:examples": "rimraf examples/static",
-    "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
-    "less": "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
-    "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
-    "assets": "cpy src/less/* lib/less && npm run assets-addons",
-    "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build":
-      "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
-    "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
-    "build:visual-test": "webpack --config webpack/visual-test.js",
-    "examples":
-      "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
-    "lint": "eslint src --ext .jsx --ext .js",
-    "storybook": "start-storybook -p 9002",
-    "test": "npm run lint",
-    "tdd": "karma start",
+    "assets": "bnr assets",
+    "build:examples": "bnr clean:examples && webpack --config webpack/examples.config.js",
+    "build:visual-test": "bnr build:visual-test",
+    "build": "bnr build",
+    "clean:examples": "bnr clean:examples",
+    "clean": "bnr clean",
+    "examples": "bnr examples",
+    "less": "bnr less",
+    "lessc": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
+    "prepublish": "bnr build",
     "release": "release",
-    "prepublish": "npm run build"
+    "storybook": "bnr storybook",
+    "tdd": "karma start",
+    "test": "bnr lint"
+  },
+  "betterScripts": {
+    "assets": {
+      "command": "cpy src/less/* lib/less && cpy addons/**/*.less ../lib/ --cwd=src --parents"
+    },
+    "build:visual-test": {
+      "command": "webpack --config webpack/visual-test.js"
+    },
+    "build": {
+      "command": "npm run clean && babel src --out-dir lib && npm run assets && npm run less"
+    },
+    "clean:examples": {
+      "command": "rimraf examples/static"
+    },
+    "clean": {
+      "command": "rimraf lib"
+    },
+    "examples": {
+      "command":
+        "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js"
+    },
+    "less": {
+      "command":
+        "npm run lessc src/less/styles.less ./lib/css/react-big-calendar.css && npm run lessc src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css"
+    },
+    "lint": {
+      "command": "eslint src --ext .jsx --ext .js"
+    },
+    "storybook": {
+      "command": "start-storybook -p 9002"
+    }
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",
     "react-dom": "^0.14.9 || >=15.3.0"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.28.1",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
@@ -74,6 +99,8 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@kadira/storybook": "^2.35.3",
+    "better-npm-run": "^0.1.0",
     "classnames": "^2.1.3",
     "date-arithmetic": "^3.0.0",
     "date-fns": "^1.28.5",

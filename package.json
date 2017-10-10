@@ -2,50 +2,61 @@
   "name": "citrusbyte-calendar",
   "version": "1.1.4",
   "description": "React Calendar",
-  "contributors": [
-    "Adam Recvlohe <adam.recvlohe@citrusbyte.com>"
-  ],
+  "contributors": ["Adam Recvlohe <adam.recvlohe@citrusbyte.com>"],
   "repository": "https://github.com/citrusbyte/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": [
-    "lib/",
-    "LICENSE",
-    "README.md",
-    "CHANGELOG.md"
-  ],
-  "keywords": [
-    "scheduler",
-    "react-component",
-    "react",
-    "calendar",
-    "events",
-    "full calendar"
-  ],
+  "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
+  "keywords": ["scheduler", "react-component", "react", "calendar", "events", "full calendar"],
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
     "trailingComma": "all"
   },
   "scripts": {
-    "clean": "rimraf lib",
-    "clean:examples": "rimraf examples/static",
-    "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
-    "less": "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
-    "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
-    "assets": "cpy src/less/* lib/less && npm run assets-addons",
-    "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
-    "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
+    "assets": "bnr assets",
+    "build:examples": "bnr clean:examples && webpack --config webpack/examples.config.js",
     "build:visual-test": "webpack --config webpack/visual-test.js",
-    "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
-    "lint": "eslint src --ext .jsx --ext .js",
-    "storybook": "start-storybook -p 9002",
-    "test": "npm run lint",
-    "tdd": "karma start",
+    "build": "bnr build",
+    "clean:examples": "bnr clean:examples",
+    "clean": "bnr clean",
+    "examples": "bnr examples",
+    "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
+    "less": "bnr less",
+    "prepublish": "brn build",
     "release": "release",
-    "prepublish": "npm run build"
+    "storybook": "brn storybook",
+    "tdd": "karma start",
+    "test": "bnr lint"
+  },
+  "betterScripts": {
+    "assets": {
+      "command": "cpy src/less/* lib/less && cpy addons/**/*.less ../lib/ --cwd=src --parents"
+    },
+    "build": {
+      "command": "npm run clean && babel src --out-dir lib && npm run assets && npm run less"
+    },
+    "clean:examples": {
+      "command": "rimraf examples/static"
+    },
+    "clean": {
+      "command": "rimraf lib"
+    },
+    "examples": {
+      "command":
+        "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js"
+    },
+    "less": {
+      "command":
+        "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css"
+    },
+    "lint": {
+      "command": "eslint src --ext .jsx --ext .js"
+    },
+    "storybook": {
+      "command": "start-storybook -p 9002"
+    }
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",
@@ -86,6 +97,7 @@
   },
   "dependencies": {
     "@kadira/storybook": "^2.35.3",
+    "better-npm-run": "^0.1.0",
     "classnames": "^2.1.3",
     "date-arithmetic": "^3.0.0",
     "date-fns": "^1.28.5",

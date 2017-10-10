@@ -3,20 +3,26 @@ import transform from 'lodash/transform';
 
 import metadata from 'component-metadata-loader!react-big-calendar/lib/Calendar';
 
-function displayObj(obj){
-  return JSON.stringify(obj, null, 2).replace(/"|'/g, '')
+function displayObj(obj) {
+  return JSON.stringify(obj, null, 2).replace(/"|'/g, '');
 }
 
 let capitalize = str => str[0].toUpperCase() + str.substr(1);
-let cleanDocletValue = str => str.trim().replace(/^\{/, '').replace(/\}$/, '');
+let cleanDocletValue = str =>
+  str
+    .trim()
+    .replace(/^\{/, '')
+    .replace(/\}$/, '');
 
 let Api = React.createClass({
-  render(){
+  render() {
     let calData = metadata.Calendar;
 
     return (
       <div {...this.props}>
-        <h1 id='api'><a href='#api'>API</a></h1>
+        <h1 id="api">
+          <a href="#api">API</a>
+        </h1>
         <p dangerouslySetInnerHTML={{ __html: calData.descHtml }} />
 
         <h2>Props</h2>
@@ -26,7 +32,7 @@ let Api = React.createClass({
           return this.renderProp(data, propName, 'h3');
         })}
       </div>
-    )
+    );
   },
 
   renderProp(data, name, Heading) {
@@ -38,9 +44,7 @@ let Api = React.createClass({
           <a href={`#prop-${name}`}>
             <code>{name}</code>
           </a>
-          {data.required &&
-            <strong>{' required'}</strong>
-          }
+          {data.required && <strong>{' required'}</strong>}
           {this.renderControllableNote(data, name)}
         </Heading>
         <div dangerouslySetInnerHTML={{ __html: data.descHtml }} />
@@ -49,22 +53,23 @@ let Api = React.createClass({
           <div style={{ paddingLeft: 0 }}>
             <div>
               {'type: '}
-              { typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code> }
+              {typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code>}
             </div>
-            { data.defaultValue &&
-              <div>default: <code>{data.defaultValue.trim()}</code></div>
-            }
+            {data.defaultValue && (
+              <div>
+                default: <code>{data.defaultValue.trim()}</code>
+              </div>
+            )}
           </div>
         ) : (
           <div>
             {Object.keys(data.type.value).map(propName =>
-              this.renderProp(data.type.value[propName], name + '.' + propName, 'h4')
+              this.renderProp(data.type.value[propName], name + '.' + propName, 'h4'),
             )}
           </div>
         )}
-
       </section>
-    )
+    );
   },
 
   renderType(prop) {
@@ -74,9 +79,9 @@ let Api = React.createClass({
 
     switch (name) {
       case 'node':
-	return 'any';
+        return 'any';
       case 'function':
-	return 'Function';
+        return 'Function';
       case 'elementType':
         return 'ReactClass<any>';
       case 'dateFormat':
@@ -86,11 +91,7 @@ let Api = React.createClass({
       case 'object':
       case 'Object':
         if (type.value)
-          return (
-            <pre className='shape-prop'>
-              { displayObj(renderObject(type.value))}
-            </pre>
-          )
+          return <pre className="shape-prop">{displayObj(renderObject(type.value))}</pre>;
 
         return name;
       case 'union':
@@ -98,17 +99,23 @@ let Api = React.createClass({
           val = typeof val === 'string' ? { name: val } : val;
           let item = this.renderType({ type: val });
           if (React.isValidElement(item)) {
-            item = React.cloneElement(item, {key: i});
+            item = React.cloneElement(item, { key: i });
           }
           current = current.concat(item);
 
-          return i === (list.length - 1) ? current : current.concat(' | ');
+          return i === list.length - 1 ? current : current.concat(' | ');
         }, []);
       case 'array':
       case 'Array': {
         let child = this.renderType({ type: type.value });
 
-        return <span>{'Array<'}{ child }{'>'}</span>;
+        return (
+          <span>
+            {'Array<'}
+            {child}
+            {'>'}
+          </span>
+        );
       }
       case 'enum':
         return this.renderEnum(type);
@@ -138,18 +145,20 @@ let Api = React.createClass({
       </span>
     ) : (
       <span>
-        controlled by: <code>{controllable}</code>,
-        initialized with: <code>{'default' + capitalize(propName)}</code>
+        controlled by: <code>{controllable}</code>, initialized with:{' '}
+        <code>{'default' + capitalize(propName)}</code>
       </span>
     );
 
     return (
-      <div className='pull-right'>
-        <em><small>{ text }</small></em>
+      <div className="pull-right">
+        <em>
+          <small>{text}</small>
+        </em>
       </div>
     );
-  }
-})
+  },
+});
 
 function getDisplayTypeName(typeName) {
   if (typeName === 'func') {
@@ -163,11 +172,14 @@ function getDisplayTypeName(typeName) {
   return typeName;
 }
 
-function renderObject(props){
-  return transform(props, (obj, val, key) => {
-    obj[val.required ? key : key + '?'] = simpleType(val)
-
-  }, {})
+function renderObject(props) {
+  return transform(
+    props,
+    (obj, val, key) => {
+      obj[val.required ? key : key + '?'] = simpleType(val);
+    },
+    {},
+  );
 }
 
 function simpleType(prop) {
@@ -184,8 +196,7 @@ function simpleType(prop) {
       return 'ReactClass<any>';
     case 'object':
     case 'Object':
-      if (type.value)
-        return renderObject(type.value)
+      if (type.value) return renderObject(type.value);
       return name;
     case 'array':
     case 'Array':

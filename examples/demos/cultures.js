@@ -8,31 +8,29 @@ require('globalize/lib/cultures/globalize.culture.fr');
 require('globalize/lib/cultures/globalize.culture.ar-AE');
 
 let Cultures = React.createClass({
-
-  getInitialState(){
-    return { culture: 'fr' }
+  getInitialState() {
+    return { culture: 'fr' };
   },
 
-  render(){
-    let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
+  render() {
+    let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE'];
     let rtl = this.state.culture === 'ar-AE';
 
     return (
       <div {...this.props}>
         <h3 className="callout">
-          <label>Select a Culture</label>
-          {' '}
+          <label>Select a Culture</label>{' '}
           <select
-            className='form-control'
-            style={{ width: 200, display: 'inline-block'}}
+            className="form-control"
+            style={{ width: 200, display: 'inline-block' }}
             defaultValue={'fr'}
             onChange={e => this.setState({ culture: e.target.value })}
           >
-          {
-            cultures.map((c, idx) =>
-              <option key={idx} value={c}>{c}</option>
-            )
-          }
+            {cultures.map((c, idx) => (
+              <option key={idx} value={c}>
+                {c}
+              </option>
+            ))}
           </select>
         </h3>
         <BigCalendar
@@ -42,8 +40,8 @@ let Cultures = React.createClass({
           defaultDate={new Date(2015, 3, 1)}
         />
       </div>
-    )
-  }
-})
+    );
+  },
+});
 
 export default Cultures;

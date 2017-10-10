@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react'
+import React from 'react';
 import { DragSource } from 'react-dnd';
 import cn from 'classnames';
 
@@ -10,13 +10,13 @@ import BigCalendar from '../../index';
 let eventSource = {
   beginDrag(props) {
     return props.event;
-  }
-}
+  },
+};
 
 function collectSource(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   };
 }
 
@@ -24,7 +24,7 @@ const propTypes = {
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
   event: PropTypes.object.isRequired,
-}
+};
 
 class DraggableEventWrapper extends React.Component {
   render() {
@@ -32,17 +32,10 @@ class DraggableEventWrapper extends React.Component {
     let EventWrapper = BigCalendar.components.eventWrapper;
 
     children = React.cloneElement(children, {
-      className: cn(
-        children.props.className,
-        isDragging && 'rbc-addons-dnd-dragging'
-      )
-    })
+      className: cn(children.props.className, isDragging && 'rbc-addons-dnd-dragging'),
+    });
 
-    return (
-      <EventWrapper event={event}>
-        {connectDragSource(children)}
-      </EventWrapper>
-    );
+    return <EventWrapper event={event}>{connectDragSource(children)}</EventWrapper>;
   }
 }
 

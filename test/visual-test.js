@@ -9,9 +9,9 @@ import Example from '../examples/demos/basic';
 localizer(globalize);
 
 let App = () => (
-  <div style={{height: 400}}>
+  <div style={{ height: 400 }}>
     <Example />
   </div>
-)
+);
 
-render(<App />, document.body)
+render(<App />, document.body);

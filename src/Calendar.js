@@ -219,6 +219,11 @@ class Calendar extends React.Component {
     toolbar: PropTypes.bool,
 
     /**
+     * React component to be rendered at the right of the toolbar
+     */
+    toolbarExtras: PropTypes.element,
+
+    /**
      * Show truncated events in an overlay when you click the "+_x_ more" link.
      */
     popup: PropTypes.bool,
@@ -599,6 +604,7 @@ class Calendar extends React.Component {
       style,
       className,
       elementProps,
+      toolbarExtras,
       date: current,
       ...props
     } = this.props;
@@ -635,6 +641,7 @@ class Calendar extends React.Component {
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
             messages={messages}
+            toolbarExtras={toolbarExtras}
           />
         )}
         <View

@@ -140,6 +140,28 @@ storiesOf('module.Calendar.week', module)
       </div>
     );
   })
+  .add('toolbar extras', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <Calendar
+          defaultView="month"
+          views={['month']}
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
+          onSelectEvent={action('event selected')}
+          onSelectSlot={action('slot selected')}
+          defaultDate={new Date()}
+          toolbarExtras={
+            <div>
+              <button style={{ marginRight: '10px' }}>Extra</button>
+              <button>Buttons</button>
+            </div>
+          }
+        />
+      </div>
+    );
+  })
   .add('selectable', () => {
     return (
       <div style={{ height: 600 }}>

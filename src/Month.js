@@ -96,7 +96,7 @@ class MonthView extends React.Component {
 
   componentWillReceiveProps({ date }) {
     this.setState({
-      needLimitMeasure: !dates.eq(date, this.props.date),
+      needLimitMeasure: this.props.showAllEvents ? false : !dates.eq(date, this.props.date),
     });
   }
 

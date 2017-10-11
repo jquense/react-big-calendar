@@ -144,13 +144,7 @@ function createWrapper(type) {
             return onEventResize('drop', { event, start: value, end });
           }
           case 'resizeR': {
-            const [hrs, mins] = [getHours(end), getMinutes(end)];
-            const nextEnd = compose(
-              v => addHours(v, hrs),
-              v => addMinutes(v, mins),
-              v => (hrs === 0 && mins === 0 ? addMilliseconds(v, 1) : value),
-            )(value);
-            return onEventResize('drop', { event, start, end: nextEnd });
+            return onEventResize('drop', { event, start, end: value });
           }
         }
 

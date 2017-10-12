@@ -60,7 +60,16 @@ class EventCell extends React.Component {
     }
   };
 
+  handleMoveCaretToEnd = e => {
+    const { title } = this.state;
+    if (e.target.setSelectionRange) {
+      e.target.setSelectionRange(title.length, title.length);
+    }
+  };
+
   handleBlur = () => {
+    const { onInlineEditEventTitle, event } = this.props;
+    onInlineEditEventTitle({ event, title: this.state.title });
     this.setState({ isEditingEventTitle: false });
   };
 
@@ -117,12 +126,14 @@ class EventCell extends React.Component {
               <Event event={event} title={title} />
             ) : this.state.isEditingEventTitle ? (
               <input
-                type="text"
-                style={{ color: 'black' }}
-                value={this.state.title}
-                onChange={this.handleChange}
-                onKeyPress={this.handleKeyPress}
+                autoFocus={this.state.isEditingEventTitle}
                 onBlur={this.handleBlur}
+                onChange={this.handleChange}
+                onFocus={this.handleMoveCaretToEnd}
+                onKeyPress={this.handleKeyPress}
+                style={{ color: 'black' }}
+                type="text"
+                value={this.state.title}
               />
             ) : (
               title

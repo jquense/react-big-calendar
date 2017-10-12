@@ -3,6 +3,11 @@ import React from 'react';
 import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import compose from './compose';
+import styled from 'styled-components';
+
+const Title = styled.div`
+  padding: 2px 5px;
+`;
 
 class ResizableMonthEvent extends React.Component {
   componentDidMount() {
@@ -22,7 +27,7 @@ class ResizableMonthEvent extends React.Component {
     return (
       <div className="rbc-addons-dnd-resizable-month-event">
         {Left}
-        {title}
+        <Title>{title}</Title>
         {Right}
       </div>
     );

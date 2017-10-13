@@ -109,6 +109,7 @@ DraggableBackgroundWrapper.propTypes = propTypes;
 DraggableBackgroundWrapper.contextTypes = {
   onEventDrop: PropTypes.func,
   onEventResize: PropTypes.func,
+  onOutsideEventDrop: PropTypes.func,
   dragDropManager: PropTypes.object,
   startAccessor: accessor,
   endAccessor: accessor,
@@ -127,15 +128,28 @@ function createWrapper(type) {
     drop(_, monitor, { props, context }) {
       const event = monitor.getItem();
       const { value } = props;
-      const { onEventDrop, onEventResize, startAccessor, endAccessor } = context;
+      const {
+        onEventDrop,
+        onEventResize,
+        onOutsideEventDrop,
+        startAccessor,
+        endAccessor,
+      } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
       if (monitor.getItemType() === 'event') {
-        onEventDrop({
-          event,
-          ...getEventTimes(start, end, value, type),
-        });
+        if (event.type === 'outsideEvent') {
+          return onOutsideEventDrop({
+            event,
+            start: value,
+          });
+        } else {
+          return onEventDrop({
+            event,
+            ...getEventTimes(start, end, value, type),
+          });
+        }
       }
 
       if (monitor.getItemType() === 'resize') {

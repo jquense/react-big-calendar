@@ -25,6 +25,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       return {
         onEventDrop: this.props.onEventDrop,
         onEventResize: this.props.onEventResize,
+        onOutsideEventDrop: this.props.onOutsideEventDrop,
         startAccessor: this.props.startAccessor,
         endAccessor: this.props.endAccessor,
       };
@@ -59,6 +60,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
       delete props.onEventDrop;
       delete props.onEventResize;
+      delete props.onOutsideEventDrop;
 
       props.selectable = selectable ? 'ignoreEvents' : false;
 
@@ -83,6 +85,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     endAccessor: accessor,
     onEventDrop: PropTypes.func.isRequired,
     onEventResize: PropTypes.func,
+    onOutsideEventDrop: PropTypes.func,
     resizable: PropTypes.bool,
     startAccessor: accessor,
   };
@@ -100,6 +103,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     endAccessor: accessor,
     onEventDrop: PropTypes.func,
     onEventResize: PropTypes.func,
+    onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
   };
 

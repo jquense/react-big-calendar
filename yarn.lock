@@ -5452,6 +5452,13 @@ react-component-metadata@^3.0.0:
     babylon "^6.7.0"
     lodash "^3.8.0"
 
+react-contextmenu@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.8.0.tgz#b055477b9f2740a069ab001a9f7430935774cab9"
+  dependencies:
+    classnames "^2.2.5"
+    object-assign "^4.1.0"
+
 react-dnd-html5-backend@^2.1.2:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.5.4.tgz#974ad083f67b12d56977a5b171f5ffeb29d78352"

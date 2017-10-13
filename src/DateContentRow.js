@@ -30,6 +30,7 @@ const propTypes = {
 
   onShowMore: PropTypes.func,
   onSelectSlot: PropTypes.func,
+  onRightClickSlot: PropTypes.func,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
 
@@ -58,6 +59,12 @@ class DateContentRow extends React.Component {
     const { range, onSelectSlot } = this.props;
 
     onSelectSlot(range.slice(slot.start, slot.end + 1), slot);
+  };
+
+  handleRightClickSlot = slot => {
+    const { range, onRightClickSlot } = this.props;
+
+    onRightClickSlot(range.slice(slot.start, slot.end + 1), slot);
   };
 
   handleShowMore = slot => {
@@ -183,6 +190,7 @@ class DateContentRow extends React.Component {
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}
+          onRightClickSlot={this.handleRightClickSlot}
           cellWrapperComponent={dateCellWrapper}
           longPressThreshold={longPressThreshold}
         />

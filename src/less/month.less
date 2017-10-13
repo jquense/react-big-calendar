@@ -1,4 +1,5 @@
 @import './variables.less';
+@import './context-menu.less';
 
 .rbc-row {
   display: flex;
@@ -109,12 +110,14 @@
   overflow: hidden;
 }
 
-.rbc-day-bg {
-  cursor: pointer;
-
+.rbc-day-bg-wrapper {
   & + & {
     border-left: 1px solid @cell-border;
   }
+}
+
+.rbc-day-bg {
+  cursor: pointer;
 
   .rbc-rtl & + & {
     border-left-width: 0;

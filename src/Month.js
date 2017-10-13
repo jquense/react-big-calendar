@@ -54,6 +54,7 @@ let propTypes = {
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
+  onRightClickSlot: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
@@ -200,6 +201,7 @@ class MonthView extends React.Component {
         onSelect={this.handleSelectEvent}
         onDoubleClick={this.handleDoubleClickEvent}
         onSelectSlot={this.handleSelectSlot}
+        onRightClickSlot={this.handleRightClickSlot}
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
@@ -293,6 +295,13 @@ class MonthView extends React.Component {
     this._selectTimer = setTimeout(() => this.selectDates(slotInfo));
   };
 
+  handleRightClickSlot = (range, slotInfo) => {
+    this._pendingSelection = this._pendingSelection.concat(range);
+
+    clearTimeout(this._selectTimer);
+    this._selectTimer = setTimeout(() => this.rightClickDates(slotInfo));
+  };
+
   handleHeadingClick = (date, view, e) => {
     e.preventDefault();
     this.clearSelection();
@@ -335,6 +344,21 @@ class MonthView extends React.Component {
     slots.sort((a, b) => +a - +b);
 
     notify(this.props.onSelectSlot, {
+      slots,
+      start: slots[0],
+      end: slots[slots.length - 1],
+      action: slotInfo.action,
+    });
+  }
+
+  rightClickDates(slotInfo) {
+    let slots = this._pendingSelection.slice();
+
+    this._pendingSelection = [];
+
+    slots.sort((a, b) => +a - +b);
+
+    notify(this.props.onRightClickSlot, {
       slots,
       start: slots[0],
       end: slots[slots.length - 1],

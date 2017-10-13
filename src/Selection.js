@@ -178,7 +178,7 @@ class Selection {
       offsetData;
 
     // Right clicks
-    if (e.which === 3 || e.button === 2 || !isOverContainer(node, clientX, clientY)) return;
+    if (!isOverContainer(node, clientX, clientY)) return;
 
     if (!this.globalMouse && node && !contains(node, e.target)) {
       let { top, left, bottom, right } = normalizeDistance(0);
@@ -196,6 +196,16 @@ class Selection {
       );
 
       if (!collides) return;
+    }
+
+    if (e.which === 3 || e.button === 2) {
+      const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
+      return this.emit('rightclick', {
+        x: pageX,
+        y: pageY,
+        clientX: clientX,
+        clientY: clientY,
+      });
     }
 
     let result = this.emit(

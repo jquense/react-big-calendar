@@ -25,6 +25,8 @@ import defaults from 'lodash/defaults';
 import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
+import { ContextMenu, MenuItem } from 'react-contextmenu';
+
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views;
 }
@@ -109,6 +111,22 @@ class Calendar extends React.Component {
      * ```
      */
     onSelectSlot: PropTypes.func,
+
+    /**
+     * A callback fired when a date right click is made. Only fires when `selectable` is `true`.
+     *
+     * ```js
+     * (
+     *   slotInfo: {
+     *     start: Date,
+     *     end: Date,
+     *     slots: Array<Date>,
+     *     action: "select" | "click"
+     *   }
+     * ) => any
+     * ```
+     */
+    onRightClickSlot: PropTypes.func,
 
     /**
      * Callback fired when a calendar event is selected.
@@ -537,6 +555,12 @@ class Calendar extends React.Component {
       event: PropTypes.node,
       showMore: PropTypes.func,
     }),
+
+    /**
+     * A func that should return an array containing context menu objects.
+     * Object should contain: label [string], onClick [func], data [obj] props
+     */
+    contextMenuItems: PropTypes.func,
   };
 
   static defaultProps = {
@@ -590,6 +614,24 @@ class Calendar extends React.Component {
     if (!getDrilldownView) return drilldownView;
 
     return getDrilldownView(date, view, Object.keys(this.getViews()));
+  };
+
+  renderContextMenu = () => {
+    const { contextMenuItems } = this.props;
+
+    if (!contextMenuItems) return null;
+
+    const ctxMenuItems = contextMenuItems();
+
+    return (
+      <ContextMenu id="contextMenu">
+        {ctxMenuItems.map((m, i) => (
+          <MenuItem key={i} onClick={m.onClick} data={m.data}>
+            {m.label}
+          </MenuItem>
+        ))}
+      </ContextMenu>
+    );
   };
 
   render() {
@@ -660,11 +702,13 @@ class Calendar extends React.Component {
           onSelectEvent={this.handleSelectEvent}
           onDoubleClickEvent={this.handleDoubleClickEvent}
           onSelectSlot={this.handleSelectSlot}
+          onRightClickSlot={this.handleRightClickSlot}
           onShowMore={this._showMore}
           showAllEvents={this.props.showAllEvents}
           resizable={this.props.resizable}
           onInlineEditEventTitle={this.props.onInlineEditEventTitle}
         />
+        {this.renderContextMenu()}
       </div>
     );
   }
@@ -696,6 +740,10 @@ class Calendar extends React.Component {
 
   handleSelectSlot = slotInfo => {
     notify(this.props.onSelectSlot, slotInfo);
+  };
+
+  handleRightClickSlot = slotInfo => {
+    notify(this.props.onRightClickSlot, slotInfo);
   };
 
   handleDrillDown = (date, view) => {

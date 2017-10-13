@@ -66,19 +66,47 @@ class Dnd extends React.Component {
     });
   };
 
+  handleRightClickSlot = slot => {
+    console.log('right clicked slot', slot);
+  };
+
+  logMenuItemClick = ({ item, date }) => console.log(`clicked menu item ${item} w/ date ${date}`);
+
+  contextMenuItems = () => [
+    {
+      label: 'Menu Item 1',
+      data: { item: 1 },
+      onClick: (e, props) => this.logMenuItemClick(props),
+    },
+    {
+      label: 'Menu Item 2',
+      data: { item: 2 },
+      onClick: (e, props) => this.logMenuItemClick(props),
+    },
+    {
+      label: 'Menu Item 3',
+      data: { item: 3 },
+      onClick: (e, props) => this.logMenuItemClick(props),
+    },
+  ];
+
   render() {
     return (
-      <DragAndDropCalendar
-        selectable
-        events={this.state.events}
-        onEventDrop={this.moveEvent}
-        defaultView="month"
-        resizable
-        onEventResize={this.handleEventResize}
-        defaultDate={new Date(2015, 3, 12)}
-        onInlineEditEventTitle={this.handleInlineEditEventTitle}
-        showAllEvents
-      />
+      <div>
+        <DragAndDropCalendar
+          selectable
+          events={this.state.events}
+          onEventDrop={this.moveEvent}
+          defaultView="month"
+          resizable
+          onEventResize={this.handleEventResize}
+          defaultDate={new Date(2015, 3, 12)}
+          onInlineEditEventTitle={this.handleInlineEditEventTitle}
+          onRightClickSlot={this.handleRightClickSlot}
+          showAllEvents
+          contextMenuItems={this.contextMenuItems}
+        />
+      </div>
     );
   }
 }

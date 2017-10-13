@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ContextMenuTrigger } from 'react-contextmenu';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
 
@@ -60,17 +61,24 @@ class BackgroundCells extends React.Component {
           return (
             <Wrapper key={index} value={date} range={range}>
               <div
-                style={segStyle(1, range.length)}
-                className={cn(
-                  'rbc-day-bg',
-                  selected && 'rbc-selected-cell',
-                  selected && click && 'rbc-selected-cell-click',
-                  dates.isToday(date) && 'rbc-today',
-                  currentDate &&
-                    dates.month(currentDate) !== dates.month(date) &&
-                    'rbc-off-range-bg',
-                )}
-              />
+                className="rbc-day-bg-wrapper"
+                style={{ ...segStyle(1, range.length), height: '100%' }}
+              >
+                <ContextMenuTrigger id="contextMenu" collect={props => ({ ...props, date })}>
+                  <div
+                    style={{ height: '100%' }}
+                    className={cn(
+                      'rbc-day-bg',
+                      selected && 'rbc-selected-cell',
+                      selected && click && 'rbc-selected-cell-click',
+                      dates.isToday(date) && 'rbc-today',
+                      currentDate &&
+                        dates.month(currentDate) !== dates.month(date) &&
+                        'rbc-off-range-bg',
+                    )}
+                  />
+                </ContextMenuTrigger>
+              </div>
             </Wrapper>
           );
         })}
@@ -114,6 +122,24 @@ class BackgroundCells extends React.Component {
       return !isEvent(findDOMNode(this), box);
     });
 
+    selector.on('rightclick', point => {
+      this.setState({ selecting: false, click: false });
+      let rowBox = getBoundsForNode(node);
+      let { range, rtl } = this.props;
+
+      if (pointInBox(rowBox, point)) {
+        let width = slotWidth(getBoundsForNode(node), range.length);
+        let currentCell = getCellAtX(rowBox, point.x, width, rtl, range.length);
+
+        this._rightClickSlot({
+          startIdx: currentCell,
+          endIdx: currentCell,
+          action: 'click',
+        });
+      }
+      this._initial = {};
+    });
+
     selector.on('click', point => {
       this.setState({ selecting: false, click: false });
       if (!isEvent(findDOMNode(this), point)) {
@@ -151,6 +177,22 @@ class BackgroundCells extends React.Component {
   _selectSlot({ endIdx, startIdx, action }) {
     if (endIdx !== -1 && startIdx !== -1 && this.props.onSelectSlot) {
       this.props.onSelectSlot({
+        start: startIdx,
+        end: endIdx,
+        action,
+      });
+      this.setState({
+        startIdx,
+        endIdx,
+        selecting: true,
+        click: action === 'click',
+      });
+    }
+  }
+
+  _rightClickSlot({ endIdx, startIdx, action }) {
+    if (endIdx !== -1 && startIdx !== -1 && this.props.onRightClickSlot) {
+      this.props.onRightClickSlot({
         start: startIdx,
         end: endIdx,
         action,

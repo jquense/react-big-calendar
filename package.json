@@ -133,6 +133,7 @@
     "invariant": "^2.1.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
+    "react-contextmenu": "^2.8.0",
     "react-overlays": "^0.7.0",
     "react-prop-types": "^0.4.0",
     "styled-components": "^2.2.1",

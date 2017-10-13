@@ -13,6 +13,7 @@ import dates from '../../utils/dates';
 import BigCalendar from '../../index';
 import { accessor } from '../../utils/propTypes';
 import { accessor as get } from '../../utils/accessors';
+import * as helpers from './helpers';
 
 export function getEventTimes(start, end, dropDate, type) {
   // Calculate duration between original start and end dates
@@ -20,7 +21,8 @@ export function getEventTimes(start, end, dropDate, type) {
 
   // If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
   // the original start date and add it to newDate.value
-  const nextStart = type === 'dateCellWrapper' ? dates.merge(dropDate, start) : dropDate;
+
+  const nextStart = type === 'dateCellWrapper' ? helpers.merge(dropDate, start) : dropDate;
 
   const nextEnd = dates.add(nextStart, duration, 'milliseconds');
 

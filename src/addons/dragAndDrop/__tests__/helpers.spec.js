@@ -6,7 +6,7 @@ import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 
 describe('Helpers', () => {
   describe('merge()', () => {
-    test('merge() when drop date is greater than current date', () => {
+    test('when drop date is greater than current date', () => {
       const start = new Date('2017-10-13T22:42:42.790Z');
       const dropDate = addDays(start, 1);
       const nextDate = helpers.merge(dropDate, start);
@@ -19,7 +19,7 @@ describe('Helpers', () => {
       expect(hours).toEqual(18);
       expect(day).toEqual(14);
     });
-    test('merge() when drop date is less than current date', () => {
+    test('when drop date is less than current date', () => {
       const dropDate = new Date('2017-10-13T22:42:42.790Z');
       const start = addDays(dropDate, 1);
       const nextDate = helpers.merge(dropDate, start);
@@ -32,8 +32,9 @@ describe('Helpers', () => {
       expect(hours).toEqual(18);
       expect(day).toEqual(13);
     });
-    test('merge() when drop date is equal to current date', () => {
-      const dropDate = new Date('2017-10-13T00:00:00.000Z');
+    test('when drop date is equal to current date', () => {
+      /* T04:00 is the UTC Offset - AR Fri Oct 13 21:19:19 EDT 2017 */
+      const dropDate = new Date('2017-10-13T04:00:00.000Z');
       const start = new Date('2017-10-13T22:42:42.790Z');
       const nextDate = helpers.merge(dropDate, start);
 
@@ -41,9 +42,9 @@ describe('Helpers', () => {
       const hours = getHours(nextDate);
       const day = getDate(nextDate);
 
-      // expect(diffInDays).toEqual(0);
+      expect(diffInDays).toEqual(0);
       expect(hours).toEqual(18);
-      // expect(day).toEqual(13);
+      expect(day).toEqual(13);
     });
   });
 });

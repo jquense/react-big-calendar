@@ -8,6 +8,6 @@ import addMilliseconds from 'date-fns/add_milliseconds';
 
 export function merge(dropDate, start) {
   const [hours, mins] = [getHours(start), getMinutes(start)];
-  const drop = startOfDay(addMilliseconds(dropDate, 1));
+  const drop = startOfDay(dropDate);
   return compose(v => addHours(v, hours), v => addMinutes(v, mins))(drop);
 }

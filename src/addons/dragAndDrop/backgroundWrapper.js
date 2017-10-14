@@ -24,7 +24,7 @@ export function getEventTimes(start, end, dropDate, type) {
 
   const nextStart = type === 'dateCellWrapper' ? helpers.merge(dropDate, start) : dropDate;
 
-  const nextEnd = dates.add(nextStart, duration, 'milliseconds');
+  const nextEnd = addMilliseconds(nextStart, duration);
 
   return {
     start: nextStart,

@@ -5916,9 +5916,9 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-rambda@^0.9.6:
-  version "0.9.6"
-  resolved "https://registry.yarnpkg.com/rambda/-/rambda-0.9.6.tgz#3c252d1d4dd524ae8eb9a6c76038655f4e6624bf"
+ramda@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
 
 randomatic@^1.1.3:
   version "1.1.7"

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
 import styled from 'styled-components';
-import prop from 'rambda/modules/prop';
+import prop from 'ramda/src/prop';
 
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
+import styled from 'styled-components';
+import prop from 'rambda/modules/prop';
 
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
@@ -25,6 +27,18 @@ let propTypes = {
   onDoubleClick: PropTypes.func,
   onInlineEditEventTitle: PropTypes.func.isRequired,
 };
+
+const StyledEvent = styled.div`
+  background-color: ${prop('backgroundColor') || 'transparent'};
+  border-color: ${prop('borderColor') || 'currentColor'};
+  border-style: ${prop('borderStyle') || 'none'};
+  border-width: ${prop('borderWidth') || 'medium'};
+  color: ${prop('color') || 'currentColor'};
+  font-family: ${prop('fontFamily') || 'inherit'};
+  font-size: ${prop('fontSize') || 'medium'};
+  font-style: ${prop('fontStyle') || 'normal'};
+  font-weight: ${prop('fontWeight') || 'normal'};
+`;
 
 class EventCell extends React.Component {
   constructor(props) {
@@ -121,24 +135,26 @@ class EventCell extends React.Component {
           /*onDoubleClick={e => onDoubleClick(event, e)}*/
           onDoubleClick={this.handleEditing}
         >
-          <div className="rbc-event-content" title={title}>
-            {Event && !this.state.isEditingEventTitle ? (
-              <Event event={event} title={title} />
-            ) : this.state.isEditingEventTitle ? (
-              <input
-                autoFocus={this.state.isEditingEventTitle}
-                onBlur={this.handleBlur}
-                onChange={this.handleChange}
-                onFocus={this.handleMoveCaretToEnd}
-                onKeyPress={this.handleKeyPress}
-                style={{ color: 'black' }}
-                type="text"
-                value={this.state.title}
-              />
-            ) : (
-              title
-            )}
-          </div>
+          <StyledEvent {...event.styles}>
+            <div className="rbc-event-content" title={title}>
+              {Event && !this.state.isEditingEventTitle ? (
+                <Event event={event} title={title} />
+              ) : this.state.isEditingEventTitle ? (
+                <input
+                  autoFocus={this.state.isEditingEventTitle}
+                  onBlur={this.handleBlur}
+                  onChange={this.handleChange}
+                  onFocus={this.handleMoveCaretToEnd}
+                  onKeyPress={this.handleKeyPress}
+                  style={{ color: '#000' }}
+                  type="text"
+                  value={this.state.title}
+                />
+              ) : (
+                title
+              )}
+            </div>
+          </StyledEvent>
         </div>
       </EventWrapper>
     );

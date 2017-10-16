@@ -9,6 +9,17 @@ export default [
     title: 'Long Event',
     start: new Date(2015, 3, 7),
     end: new Date(2015, 3, 10),
+    styles: {
+      backgroundColor: '#FFFFFF',
+      borderColor: '#000000',
+      borderStyle: 'solid',
+      borderWidth: '0',
+      color: '#000000',
+      fontFamily: 'Arial',
+      fontSize: '16px',
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+    },
   },
 
   {

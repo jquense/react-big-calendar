@@ -204,17 +204,18 @@ class DateContentRow extends React.Component {
           {levels.map((segs, idx) => (
             <EventRow
               {...props}
-              key={idx}
-              start={first}
               end={last}
-              segments={segs}
-              slots={range.length}
+              endAccessor={endAccessor}
               eventComponent={eventComponent}
               eventWrapperComponent={eventWrapperComponent}
-              startAccessor={startAccessor}
-              endAccessor={endAccessor}
-              resizable={this.props.resizable}
+              key={idx}
               onInlineEditEventTitle={this.props.onInlineEditEventTitle}
+              onRightClickEvent={this.props.onRightClickEvent}
+              resizable={this.props.resizable}
+              segments={segs}
+              slots={range.length}
+              start={first}
+              startAccessor={startAccessor}
             />
           ))}
           {!!extra.length && (

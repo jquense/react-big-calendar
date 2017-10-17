@@ -687,26 +687,27 @@ class Calendar extends React.Component {
           />
         )}
         <View
-          ref="view"
-          {...props}
           {...formats}
-          messages={messages}
-          culture={culture}
-          formats={undefined}
-          events={events}
-          date={current}
+          {...props}
           components={viewComponents}
+          culture={culture}
+          date={current}
+          events={events}
+          formats={undefined}
           getDrilldownView={this.getDrilldownView}
-          onNavigate={this.handleNavigate}
-          onDrillDown={this.handleDrillDown}
-          onSelectEvent={this.handleSelectEvent}
+          messages={messages}
           onDoubleClickEvent={this.handleDoubleClickEvent}
-          onSelectSlot={this.handleSelectSlot}
-          onRightClickSlot={this.handleRightClickSlot}
-          onShowMore={this._showMore}
-          showAllEvents={this.props.showAllEvents}
-          resizable={this.props.resizable}
+          onDrillDown={this.handleDrillDown}
           onInlineEditEventTitle={this.props.onInlineEditEventTitle}
+          onNavigate={this.handleNavigate}
+          onRightClickEvent={this.props.onRightClickEvent}
+          onRightClickSlot={this.handleRightClickSlot}
+          onSelectEvent={this.handleSelectEvent}
+          onSelectSlot={this.handleSelectSlot}
+          onShowMore={this._showMore}
+          ref="view"
+          resizable={this.props.resizable}
+          showAllEvents={this.props.showAllEvents}
         />
         {this.renderContextMenu()}
       </div>

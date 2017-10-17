@@ -96,6 +96,8 @@ class EventCell extends React.Component {
       eventPropGetter,
       eventWrapperComponent: EventWrapper,
       onDoubleClick,
+      onInlineEditEventTitle,
+      onRightClickEvent,
       onSelect,
       resizable,
       selected,
@@ -103,7 +105,6 @@ class EventCell extends React.Component {
       slotStart,
       startAccessor,
       titleAccessor,
-      onInlineEditEventTitle,
       ...props
     } = this.props;
 
@@ -135,6 +136,7 @@ class EventCell extends React.Component {
           onMouseDown={e => {
             e.preventDefault();
             // this.props.onRightClickEvent
+            onRightClickEvent(event, e);
             console.log('right click over event');
           }}
           /*onDoubleClick={e => onDoubleClick(event, e)}*/
@@ -170,6 +172,7 @@ EventCell.propTypes = propTypes;
 
 EventCell.defaultProps = {
   onInlineEditEventTitle: () => {},
+  onRightClickEvent: () => {},
 };
 
 export default EventCell;

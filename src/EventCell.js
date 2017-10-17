@@ -132,6 +132,11 @@ class EventCell extends React.Component {
             'rbc-event-continues-after': continuesAfter,
           })}
           onClick={e => onSelect(event, e)}
+          onMouseDown={e => {
+            e.preventDefault();
+            // this.props.onRightClickEvent
+            console.log('right click over event');
+          }}
           /*onDoubleClick={e => onDoubleClick(event, e)}*/
           onDoubleClick={this.handleEditing}
         >

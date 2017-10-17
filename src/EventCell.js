@@ -4,6 +4,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
+import ResizableMonthEvent from './addons/dragAndDrop/ResizableMonthEvent';
 
 let propTypes = {
   event: PropTypes.object.isRequired,
@@ -19,7 +20,8 @@ let propTypes = {
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func
 }
 
 class EventCell extends React.Component {
@@ -33,6 +35,7 @@ class EventCell extends React.Component {
       , slotStart
       , slotEnd
       , onSelect
+      , onDoubleClick
       , eventComponent: Event
       , eventWrapperComponent: EventWrapper
       , ...props } = this.props;
@@ -42,10 +45,14 @@ class EventCell extends React.Component {
       , start = get(event, startAccessor)
       , isAllDay = get(event, props.allDayAccessor)
       , continuesPrior = dates.lt(start, slotStart, 'day')
-      , continuesAfter = dates.gt(end, slotEnd, 'day')
+      , continuesAfter = dates.gte(end, slotEnd, 'day')
 
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
+
+    if (this.props.resizable) {
+      Event = ResizableMonthEvent
+    }
 
     return (
       <EventWrapper event={event}>
@@ -58,6 +65,7 @@ class EventCell extends React.Component {
             'rbc-event-continues-after': continuesAfter
           })}
           onClick={(e) => onSelect(event, e)}
+          onDoubleClick={(e) => onDoubleClick(event, e)}
         >
           <div className='rbc-event-content' title={title}>
             { Event

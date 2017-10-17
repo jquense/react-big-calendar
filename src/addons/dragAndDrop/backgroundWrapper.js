@@ -73,14 +73,16 @@ class DraggableBackgroundWrapper extends React.Component {
   // };
 
   componentWillReceiveProps(nextProps) {
-    const { isOver:wasOver} = this.props;
+    const { isOver: wasOver} = this.props;
     const { isOver } = nextProps;
     if (isOver && !wasOver) {
       const { onEventResize, dragDropManager } = this.context;
       const { value } = this.props;
       const monitor = dragDropManager.getMonitor()
-      if (monitor.getItemType() === 'resize')
-        onEventResize('drag', {event: monitor.getItem(), end: value});
+      if (monitor.getItemType() === 'resize') {
+        // This was causing me performance issues so I commented it out. Thoughts? - Adam Recvlohe
+        // onEventResize('drag', {event: monitor.getItem(), end: value});
+      }
     }
   }
 
@@ -123,7 +125,7 @@ function createWrapper(type) {
 
   const dropTarget = {
     drop(_, monitor, { props, context }) {
-      const event = monitor.getItem();
+      const event  = monitor.getItem();
       const { value } = props
       const { onEventDrop, onEventResize, startAccessor, endAccessor } = context
       const start = get(event, startAccessor);
@@ -137,12 +139,32 @@ function createWrapper(type) {
       }
 
       if (monitor.getItemType() === 'resize') {
+
+        switch(event.type) {
+          case 'resizeT': {
+            return onEventResize('drop', { event, start: value, end: event.end });
+          }
+          case 'resizeB': {
+            return onEventResize('drop', { event, start: event.start, end: value })
+          }
+          case 'resizeL': {
+            return onEventResize('drop', { event, start: value, end: event.end });
+          }
+          case 'resizeR': {
+            const nextEnd = dates.add(value, 1, 'day')
+            return onEventResize('drop', { event, start: event.start, end: nextEnd })
+          }
+        }
+
+        // Catch all
         onEventResize('drop', {
           event,
+          start: event.start,
           end: value
         })
       }
-    }
+    },
+
   };
 
   return DropTarget(['event', 'resize'], dropTarget, collectTarget)(DraggableBackgroundWrapper);

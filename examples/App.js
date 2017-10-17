@@ -13,6 +13,15 @@ import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
 
+import Basic from './demos/basic';
+import Selectable from './demos/selectable';
+import Cultures from './demos/cultures';
+import Popup from './demos/popup';
+import Rendering from './demos/rendering';
+import CustomView from './demos/customView';
+import Timeslots from './demos/timeslots';
+import Dnd from './demos/dnd';
+
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
 const Example = React.createClass({
@@ -25,14 +34,14 @@ const Example = React.createClass({
   render() {
     let selected = this.state.selected;
     let Current = {
-      basic: require('./demos/basic').default,
-      selectable: require('./demos/selectable').default,
-      cultures: require('./demos/cultures').default,
-      popup: require('./demos/popup').default,
-      rendering: require('./demos/rendering').default,
-      customView: require('./demos/customView').default,
-      timeslots: require('./demos/timeslots').default,
-      dnd: require('./demos/dnd').default,
+      basic: Basic,
+      selectable: Selectable,
+      cultures: Cultures,
+      popup: Popup,
+      rendering: Rendering,
+      customView: CustomView,
+      timeslots: Timeslots,
+      dnd: Dnd,
     }[selected];
 
     return (
@@ -93,7 +102,7 @@ const Example = React.createClass({
                 <strong><i className='fa fa-code'/>{' View example source code'}</strong>
               </a>
             </div>
-            <Current className='demo' />
+           <Current className='demo' />
           </div>
         </div>
         <div className='docs'>

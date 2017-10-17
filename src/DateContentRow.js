@@ -15,6 +15,7 @@ import EventEndingRow from './EventEndingRow';
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 const propTypes = {
+  date: PropTypes.instanceOf(Date),
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
 
@@ -25,13 +26,14 @@ const propTypes = {
   container: PropTypes.func,
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
 
   onShowMore: PropTypes.func,
   onSelectSlot: PropTypes.func,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
 
-  now: PropTypes.instanceOf(Date),
+  now: PropTypes.instanceOf(Date).isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
@@ -135,6 +137,7 @@ class DateContentRow extends React.Component {
 
   render() {
     const {
+      date,
       rtl,
       events,
       range,
@@ -150,6 +153,7 @@ class DateContentRow extends React.Component {
       eventWrapperComponent,
       onSelectStart,
       onSelectEnd,
+      longPressThreshold,
       ...props
     } = this.props;
 
@@ -161,7 +165,7 @@ class DateContentRow extends React.Component {
     let segments = this.segments = events.map(evt => eventSegments(evt, first, last, {
       startAccessor,
       endAccessor
-    }))
+    }, range))
 
     let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1));
     while (levels.length < minRows ) levels.push([])
@@ -169,6 +173,7 @@ class DateContentRow extends React.Component {
     return (
       <div className={className}>
         <BackgroundCells
+          date={date}
           rtl={rtl}
           range={range}
           selectable={selectable}
@@ -177,6 +182,7 @@ class DateContentRow extends React.Component {
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}
           cellWrapperComponent={dateCellWrapper}
+          longPressThreshold={longPressThreshold}
         />
 
         <div className='rbc-row-content'>
@@ -197,6 +203,7 @@ class DateContentRow extends React.Component {
               eventWrapperComponent={eventWrapperComponent}
               startAccessor={startAccessor}
               endAccessor={endAccessor}
+              resizable={this.props.resizable}
             />
           )}
           {!!extra.length && (

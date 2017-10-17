@@ -67,12 +67,13 @@ storiesOf('module.Calendar.week', module)
     )
   })
 
-  .add('day view', () => {
+  .add('event layout', () => {
     return (
       <div style={{height: 600}}>
         <Calendar
           defaultView={Calendar.Views.DAY}
           defaultDate={new Date()}
+          timeslots={4}
           events={createEvents(1)}
         />
       </div>
@@ -261,6 +262,21 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('add custom date header', () => {
+    return (
+        <div style={{height: 600}}>
+          <Calendar
+            defaultView={Calendar.Views.MONTH}
+            events={events}
+            components={{
+              month: {
+                dateHeader: ({ label }) => <span>{label} - Custom date header</span>
+              }
+            }}
+          />
+        </div>
+    )
+  })
   .add('no duration', () => {
     return (
       <div style={{height: 600}}>
@@ -272,6 +288,34 @@ storiesOf('module.Calendar.week', module)
               title: 'start of the week',
               start: new Date(2016, 11, 4),
               end: new Date(2016, 11, 4)
+            },
+            {
+                title: 'end of the week',
+                start: new Date(2016, 11, 3),
+                end: new Date(2016, 11, 3)
+            },
+            {
+                title: 'middle',
+                start: new Date(2016, 11, 6),
+                end: new Date(2016, 11, 6)
+            }
+          ]}
+        />
+      </div>
+    )
+  })
+  .add('multi-day', () => {
+    return (
+      <div style={{height: 600}}>
+        {/* should display all three events */}
+        <Calendar
+          showMultiDayTimes
+          defaultDate={new Date(2016, 11, 4)}
+          events={[
+            {
+              title: 'start of the week',
+              start: new Date(2016, 11, 4, 15),
+              end: new Date(2016, 11, 5, 3)
             },
             {
                 title: 'end of the week',

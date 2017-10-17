@@ -35,18 +35,17 @@ class Dnd extends React.Component {
     alert(`${event.title} was dropped onto ${event.start}`);
   }
 
-  resizeEvent = (resizeType, { event, end }) => {
+  resizeEvent = (resizeType, { event, start, end }) => {
     const { events } = this.state;
 
     // if we want to update the event while dragging we need to find the event
     // by an identifier. here we use the title and the start time, but depending
     // on use case you may want have a truly unique id attribute in the event
-    const nextEvents = events
-      .map(existingEvent =>
-        (existingEvent.start == event.start &&
-         existingEvent.title == event.title) ?
-         { ...existingEvent, end } : existingEvent);
-
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.start == event.start && existingEvent.title == event.title
+        ? { ...existingEvent, start, end }
+        : existingEvent;
+    })
    // if we only care about updating the event onDrop, we could rely on finding
    // the event through Array.prototype.indexOf like in the moveEvent callback ie:
    // if (resizeType !== 'drop') return;
@@ -69,7 +68,7 @@ class Dnd extends React.Component {
         onEventDrop={this.moveEvent}
         resizable
         onEventResize={this.resizeEvent}
-        defaultView='week'
+        defaultView='month'
         defaultDate={new Date(2015, 3, 12)}
       />
     )

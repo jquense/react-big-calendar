@@ -12,6 +12,7 @@ localizer(globalize);
 import 'react-big-calendar/lib/less/styles.less';
 import './styles.less';
 import './prism.less';
+
 import Basic from './demos/basic';
 import Selectable from './demos/selectable';
 import Cultures from './demos/cultures';
@@ -101,7 +102,7 @@ const Example = React.createClass({
                 <strong><i className='fa fa-code'/>{' View example source code'}</strong>
               </a>
             </div>
-            <Current className='demo' />
+           <Current className='demo' />
           </div>
         </div>
         <div className='docs'>

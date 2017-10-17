@@ -24,13 +24,15 @@ export default {
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
     onSelect: PropTypes.func,
+    resizable: PropTypes.bool,
     onDoubleClick: PropTypes.func
   },
 
   defaultProps: {
     segments: [],
     selected: {},
-    slots: 7
+    slots: 7,
+    resizable: false
   },
 
   renderEvent(props, event) {
@@ -40,6 +42,7 @@ export default {
       , allDayAccessor, eventComponent
       , eventWrapperComponent
       , onSelect
+      , resizable
       , onDoubleClick } = props;
 
     return (
@@ -57,6 +60,7 @@ export default {
         slotStart={start}
         slotEnd={end}
         eventComponent={eventComponent}
+        resizable={resizable}
       />
     )
   },

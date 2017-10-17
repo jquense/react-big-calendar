@@ -142,10 +142,8 @@ class DayColumn extends React.Component {
       , showMultiDayTimes
       , culture
       , eventPropGetter
-      , selected
+      , selected, eventTimeRangeFormat, components: { eventComponent }
       , messages
-      , eventComponent
-      , eventTimeRangeFormat
       , eventTimeRangeStartFormat
       , eventTimeRangeEndFormat
       , eventWrapperComponent: EventWrapper

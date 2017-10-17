@@ -33,4 +33,52 @@
   //   pointer-events: none;
   //   opacity: .35;
   // }
+
+  .rbc-addons-dnd-resize-anchor {
+    width: 100%;
+    height: 10px;
+    text-align: center;
+    margin-left: -5px;
+    &:first-child {
+      position: absolute;
+      top: 0;
+    }
+    &:last-child {
+      position: absolute;
+      bottom: 0;
+    }
+
+    .rbc-addons-dnd-resize-icon {
+      display: none;
+      border-top: 3px double;
+      margin: 0 auto;
+      width: 10px;
+    }
+    &:hover {
+      .rbc-addons-dnd-resize-icon {display: block;}
+      cursor: ns-resize;
+    }
+
+  }
+
+  .rbc-addons-dnd-resizable-month-event {
+    position: relative;
+    user-drag: none;
+    .rbc-addons-dnd-resize-month-event-anchor {
+      width: 20px;
+      height: 20px;
+      top: 0;
+      &:hover {
+        cursor: ew-resize;
+      }
+      &:first-child {
+        position: absolute;
+        left: -5px;
+      }
+      &:last-child {
+        position: absolute;
+        right: -5px;
+      }
+    }
+  }
 }

@@ -167,12 +167,16 @@ class MonthView extends React.Component {
       now,
       date,
       longPressThreshold,
+      eventsSorter,
     } = this.props;
 
     const { needLimitMeasure, rowLimit } = this.state;
 
     events = eventsForWeek(events, week[0], week[week.length - 1], this.props);
-    events.sort((a, b) => sortEvents(a, b, this.props));
+    events.sort((a, b) => {
+      let fn = eventsSorter || sortEvents;
+      return fn(a, b, this.props);
+    });
 
     return (
       <DateContentRow

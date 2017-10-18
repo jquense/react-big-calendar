@@ -107,6 +107,10 @@ class Dnd extends React.Component {
     console.log(`clicked menu item ${item} w/ event title: ${event.title}`);
   }
 
+  eventsSorter = (a, b) => {
+    return 0; // disable sort
+  };
+
   render() {
     return (
       <div>
@@ -116,6 +120,7 @@ class Dnd extends React.Component {
           defaultDate={new Date(2015, 3, 12)}
           defaultView="month"
           events={this.state.events}
+          eventsSorter={this.eventsSorter}
           onEventDrop={this.moveEvent}
           onEventResize={this.handleEventResize}
           onInlineEditEventTitle={this.handleInlineEditEventTitle}

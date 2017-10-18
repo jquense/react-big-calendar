@@ -561,6 +561,8 @@ class Calendar extends React.Component {
      * Object should contain: label [string], onClick [func], data [obj] props
      */
     contextMenuItems: PropTypes.func,
+
+    eventsSorter: PropTypes.func,
   };
 
   static defaultProps = {

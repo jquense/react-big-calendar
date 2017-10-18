@@ -3,6 +3,7 @@ import React from 'react';
 import cn from 'classnames';
 import styled from 'styled-components';
 import prop from 'ramda/src/prop';
+import { ContextMenuTrigger } from 'react-contextmenu';
 
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
@@ -124,42 +125,51 @@ class EventCell extends React.Component {
 
     return (
       <EventWrapper event={event}>
-        <div
-          style={{ ...props.style, ...style }}
-          className={cn('rbc-event', className, xClassName, {
-            'rbc-selected': selected,
-            'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
-            'rbc-event-continues-prior': continuesPrior,
-            'rbc-event-continues-after': continuesAfter,
-          })}
-          onClick={e => onSelect(event, e)}
-          onMouseDown={e => {
-            e.preventDefault();
-            onRightClickEvent(event, e);
-          }}
-          /*onDoubleClick={e => onDoubleClick(event, e)}*/
-          onDoubleClick={this.handleEditing}
-        >
-          <StyledEvent {...event.styles}>
-            <div className="rbc-event-content" title={title}>
-              {Event && !this.state.isEditingEventTitle ? (
-                <Event event={event} title={title} />
-              ) : this.state.isEditingEventTitle ? (
-                <input
-                  autoFocus={this.state.isEditingEventTitle}
-                  onBlur={this.handleBlur}
-                  onChange={this.handleChange}
-                  onFocus={this.handleMoveCaretToEnd}
-                  onKeyPress={this.handleKeyPress}
-                  style={{ color: '#000' }}
-                  type="text"
-                  value={this.state.title}
-                />
-              ) : (
-                title
-              )}
+        {/* ContextMenuTrigger needs to be wrapped in a div for dnd purposes - AR Wed Oct 18 09:43:40 EDT 2017 */}
+        <div>
+          <ContextMenuTrigger
+            collect={props => ({ ...props, event })}
+            id="rightClickEventContextMenu"
+          >
+            <div
+              style={{ ...props.style, ...style }}
+              className={cn('rbc-event', className, xClassName, {
+                'rbc-selected': selected,
+                'rbc-event-allday':
+                  isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
+                'rbc-event-continues-prior': continuesPrior,
+                'rbc-event-continues-after': continuesAfter,
+              })}
+              onClick={e => onSelect(event, e)}
+              onMouseDown={e => {
+                e.preventDefault();
+                onRightClickEvent(event, e);
+              }}
+              /*onDoubleClick={e => onDoubleClick(event, e)}*/
+              onDoubleClick={this.handleEditing}
+            >
+              <StyledEvent {...event.styles}>
+                <div className="rbc-event-content" title={title}>
+                  {Event && !this.state.isEditingEventTitle ? (
+                    <Event event={event} title={title} />
+                  ) : this.state.isEditingEventTitle ? (
+                    <input
+                      autoFocus={this.state.isEditingEventTitle}
+                      onBlur={this.handleBlur}
+                      onChange={this.handleChange}
+                      onFocus={this.handleMoveCaretToEnd}
+                      onKeyPress={this.handleKeyPress}
+                      style={{ color: '#000' }}
+                      type="text"
+                      value={this.state.title}
+                    />
+                  ) : (
+                    title
+                  )}
+                </div>
+              </StyledEvent>
             </div>
-          </StyledEvent>
+          </ContextMenuTrigger>
         </div>
       </EventWrapper>
     );

@@ -61,7 +61,7 @@ export default {
         eventWrapperComponent={eventWrapperComponent}
         onDoubleClick={onDoubleClick}
         onInlineEditEventTitle={onInlineEditEventTitle}
-        onRightClickEvent={this.props.onRightClickEvent}
+        onRightClickEvent={onRightClickEvent}
         onSelect={onSelect}
         resizable={props.resizable}
         selected={isSelected(event, selected)}

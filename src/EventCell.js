@@ -135,9 +135,7 @@ class EventCell extends React.Component {
           onClick={e => onSelect(event, e)}
           onMouseDown={e => {
             e.preventDefault();
-            // this.props.onRightClickEvent
             onRightClickEvent(event, e);
-            console.log('right click over event');
           }}
           /*onDoubleClick={e => onDoubleClick(event, e)}*/
           onDoubleClick={this.handleEditing}

@@ -90,21 +90,26 @@ class Dnd extends React.Component {
     },
   ];
 
+  handleRightClickEvent = (event, e) => {
+    console.log('right click event');
+  };
+
   render() {
     return (
       <div>
         <DragAndDropCalendar
-          selectable
+          contextMenuItems={this.contextMenuItems}
+          defaultDate={new Date(2015, 3, 12)}
+          defaultView="month"
           events={this.state.events}
           onEventDrop={this.moveEvent}
-          defaultView="month"
-          resizable
           onEventResize={this.handleEventResize}
-          defaultDate={new Date(2015, 3, 12)}
           onInlineEditEventTitle={this.handleInlineEditEventTitle}
+          onRightClickEvent={this.handleRightClickEvent}
           onRightClickSlot={this.handleRightClickSlot}
+          resizable
+          selectable
           showAllEvents
-          contextMenuItems={this.contextMenuItems}
         />
       </div>
     );

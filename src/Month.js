@@ -193,7 +193,6 @@ class MonthView extends React.Component {
         now={now}
         onDoubleClick={this.handleDoubleClickEvent}
         onInlineEditEventTitle={this.props.onInlineEditEventTitle}
-        onRightClickEvent={this.props.onRightClickEvent}
         onRightClickSlot={this.handleRightClickSlot}
         onSelect={this.handleSelectEvent}
         onSelectSlot={this.handleSelectSlot}

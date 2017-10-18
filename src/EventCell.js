@@ -98,7 +98,6 @@ class EventCell extends React.Component {
       eventWrapperComponent: EventWrapper,
       onDoubleClick,
       onInlineEditEventTitle,
-      onRightClickEvent,
       onSelect,
       resizable,
       selected,
@@ -141,10 +140,6 @@ class EventCell extends React.Component {
                 'rbc-event-continues-after': continuesAfter,
               })}
               onClick={e => onSelect(event, e)}
-              onMouseDown={e => {
-                e.preventDefault();
-                onRightClickEvent(event, e);
-              }}
               /*onDoubleClick={e => onDoubleClick(event, e)}*/
               onDoubleClick={this.handleEditing}
             >
@@ -180,7 +175,6 @@ EventCell.propTypes = propTypes;
 
 EventCell.defaultProps = {
   onInlineEditEventTitle: () => {},
-  onRightClickEvent: () => {},
 };
 
 export default EventCell;

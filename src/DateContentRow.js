@@ -210,7 +210,6 @@ class DateContentRow extends React.Component {
               eventWrapperComponent={eventWrapperComponent}
               key={idx}
               onInlineEditEventTitle={this.props.onInlineEditEventTitle}
-              onRightClickEvent={this.props.onRightClickEvent}
               resizable={this.props.resizable}
               segments={segs}
               slots={range.length}

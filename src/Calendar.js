@@ -718,7 +718,6 @@ class Calendar extends React.Component {
           onDrillDown={this.handleDrillDown}
           onInlineEditEventTitle={this.props.onInlineEditEventTitle}
           onNavigate={this.handleNavigate}
-          onRightClickEvent={this.props.onRightClickEvent}
           onRightClickSlot={this.handleRightClickSlot}
           onSelectEvent={this.handleSelectEvent}
           onSelectSlot={this.handleSelectSlot}

@@ -634,6 +634,24 @@ class Calendar extends React.Component {
     );
   };
 
+  renderContextMenuForRightClickEvent() {
+    const { contextMenuItemsForRightClickEvent: menuItems } = this.props;
+
+    if (!menuItems) return null;
+
+    return (
+      <ContextMenu id="rightClickEventContextMenu">
+        {menuItems.map(({ onClick, data, label }, i) => {
+          return (
+            <MenuItem key={`rightClickEventContextMenu${i}`} onClick={onClick} data={data}>
+              {label}
+            </MenuItem>
+          );
+        })}
+      </ContextMenu>
+    );
+  }
+
   render() {
     let {
       view,
@@ -710,6 +728,7 @@ class Calendar extends React.Component {
           showAllEvents={this.props.showAllEvents}
         />
         {this.renderContextMenu()}
+        {this.renderContextMenuForRightClickEvent()}
       </div>
     );
   }

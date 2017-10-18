@@ -34,7 +34,7 @@ function getEventCoordinates(e) {
 }
 
 const clickTolerance = 5;
-const clickInterval = 200;
+const clickInterval = 250;
 
 class Selection {
 
@@ -256,13 +256,13 @@ class Selection {
   _handleClickEvent(e) {
     const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
     const now = new Date().getTime();
+
     if (this._lastClickData && now - this._lastClickData.timestamp < clickInterval) {
       // Double click event
       this._lastClickData = {
         timestamp: now,
         isDblClick: true,
       };
-      clearTimeout(this._clickTimer); // Don't emit first click of doubleClick event
       return this.emit('doubleClick', {
         x: pageX,
         y: pageY,
@@ -270,20 +270,16 @@ class Selection {
         clientY: clientY,
       })
     }
+
     this._lastClickData = {
       timestamp: now,
     };
-    this._clickTimer = setTimeout(() => {
-      this._lastClickData = {
-        timestamp: now,
-      }
-      return this.emit('click', {
-        x: pageX,
-        y: pageY,
-        clientX: clientX,
-        clientY: clientY,
-      })
-    }, clickInterval);
+    return this.emit('click', {
+      x: pageX,
+      y: pageY,
+      clientX: clientX,
+      clientY: clientY,
+    });
   }
 
   _handleMoveEvent(e) {

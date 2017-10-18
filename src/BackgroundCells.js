@@ -67,15 +67,12 @@ class BackgroundCells extends React.Component {
                 <ContextMenuTrigger id="contextMenu" collect={props => ({ ...props, date })}>
                   <div
                     style={{ height: '100%' }}
-                    className={cn(
-                      'rbc-day-bg',
-                      selected && 'rbc-selected-cell',
-                      selected && click && 'rbc-selected-cell-click',
-                      dates.isToday(date) && 'rbc-today',
-                      currentDate &&
-                        dates.month(currentDate) !== dates.month(date) &&
-                        'rbc-off-range-bg',
-                    )}
+                    className={cn('rbc-day-bg', {
+                      'rbc-today': dates.isToday(date),
+                      'rbc-selected-cell': selected,
+                      'rbc-selected-cell-click': selected && click,
+                      'rbc-off-range-bg': dates.month(currentDate) !== dates.month(date),
+                    })}
                   />
                 </ContextMenuTrigger>
               </div>

@@ -176,38 +176,36 @@ class MonthView extends React.Component {
 
     return (
       <DateContentRow
-        key={weekIdx}
-        ref={weekIdx === 0 ? 'slotRow' : undefined}
-        container={this.getContainer}
-        className={cn('rbc-month-row', {
-          'rbc-show-all-events': this.props.showAllEvents,
-        })}
-        now={now}
-        date={date}
-        range={week}
-        events={events}
-        maxRows={rowLimit}
-        selected={selected}
-        selectable={selectable}
-        messages={messages}
-        titleAccessor={titleAccessor}
-        startAccessor={startAccessor}
-        endAccessor={endAccessor}
         allDayAccessor={allDayAccessor}
-        eventPropGetter={eventPropGetter}
-        renderHeader={this.readerDateHeading}
-        renderForMeasure={needLimitMeasure}
-        onShowMore={this.handleShowMore}
-        onSelect={this.handleSelectEvent}
-        onDoubleClick={this.handleDoubleClickEvent}
-        onSelectSlot={this.handleSelectSlot}
-        onRightClickSlot={this.handleRightClickSlot}
-        eventComponent={components.event}
-        eventWrapperComponent={components.eventWrapper}
+        className={cn('rbc-month-row', { 'rbc-show-all-events': this.props.showAllEvents })}
+        container={this.getContainer}
+        date={date}
         dateCellWrapper={components.dateCellWrapper}
+        endAccessor={endAccessor}
+        eventComponent={components.event}
+        eventPropGetter={eventPropGetter}
+        events={events}
+        eventWrapperComponent={components.eventWrapper}
+        key={weekIdx}
         longPressThreshold={longPressThreshold}
-        resizable={this.props.resizable}
+        maxRows={rowLimit}
+        messages={messages}
+        now={now}
+        onDoubleClick={this.handleDoubleClickEvent}
         onInlineEditEventTitle={this.props.onInlineEditEventTitle}
+        onRightClickSlot={this.handleRightClickSlot}
+        onSelect={this.handleSelectEvent}
+        onSelectSlot={this.handleSelectSlot}
+        onShowMore={this.handleShowMore}
+        range={week}
+        ref={weekIdx === 0 ? 'slotRow' : undefined}
+        renderForMeasure={needLimitMeasure}
+        renderHeader={this.readerDateHeading}
+        resizable={this.props.resizable}
+        selectable={selectable}
+        selected={selected}
+        startAccessor={startAccessor}
+        titleAccessor={titleAccessor}
       />
     );
   };

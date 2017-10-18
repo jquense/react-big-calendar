@@ -200,6 +200,10 @@ class Selection {
 
     if (e.which === 3 || e.button === 2) {
       const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
+      if (isEvent(node, { clientX, clientY })) {
+        // Prevent selection from taking over when right click happens over an event - AR Tue Oct 17 16:41:14 EDT 2017
+        return;
+      }
       return this.emit('rightclick', {
         x: pageX,
         y: pageY,

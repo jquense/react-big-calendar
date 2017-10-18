@@ -27,7 +27,7 @@ let demoRoot =
 const Example = React.createClass({
   getInitialState() {
     return {
-      selected: 'basic',
+      selected: 'dnd',
     };
   },
 

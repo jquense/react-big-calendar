@@ -35,38 +35,38 @@ export default {
 
   renderEvent(props, event) {
     let {
-      eventPropGetter,
-      selected,
-      start,
-      end,
-      startAccessor,
-      endAccessor,
-      titleAccessor,
       allDayAccessor,
+      end,
+      endAccessor,
       eventComponent,
+      eventPropGetter,
       eventWrapperComponent,
-      onSelect,
       onDoubleClick,
       onInlineEditEventTitle,
+      onSelect,
+      selected,
+      start,
+      startAccessor,
+      titleAccessor,
     } = props;
 
     return (
       <EventCell
-        event={event}
-        eventWrapperComponent={eventWrapperComponent}
-        eventPropGetter={eventPropGetter}
-        onSelect={onSelect}
-        onDoubleClick={onDoubleClick}
-        selected={isSelected(event, selected)}
-        startAccessor={startAccessor}
-        endAccessor={endAccessor}
-        titleAccessor={titleAccessor}
         allDayAccessor={allDayAccessor}
-        slotStart={start}
-        slotEnd={end}
+        endAccessor={endAccessor}
+        event={event}
         eventComponent={eventComponent}
-        resizable={props.resizable}
+        eventPropGetter={eventPropGetter}
+        eventWrapperComponent={eventWrapperComponent}
+        onDoubleClick={onDoubleClick}
         onInlineEditEventTitle={onInlineEditEventTitle}
+        onSelect={onSelect}
+        resizable={props.resizable}
+        selected={isSelected(event, selected)}
+        slotEnd={end}
+        slotStart={start}
+        startAccessor={startAccessor}
+        titleAccessor={titleAccessor}
       />
     );
   },

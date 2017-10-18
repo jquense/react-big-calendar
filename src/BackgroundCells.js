@@ -62,22 +62,25 @@ class BackgroundCells extends React.Component {
     return (
       <div className='rbc-row-bg'>
         {range.map((date, index) => {
-          let selected =  selecting && index >= startIdx && index <= endIdx;
+          let selected =  selecting && index >= startIdx && index <= endIdx,
+              classNames = cn(
+                  'rbc-day-bg',
+                  selected && 'rbc-selected-cell',
+                  dates.isToday(date) && 'rbc-today',
+                  currentDate && dates.month(currentDate) !== dates.month(date) && 'rbc-off-range-bg',
+              );
+
           return (
             <Wrapper
               key={index}
               value={date}
               range={range}
+              baseClasses={classNames}
             >
               <div
                 style={segStyle(1, range.length)}
-                className={cn(
-                  'rbc-day-bg',
-                  selected && 'rbc-selected-cell',
-                  dates.isToday(date) && 'rbc-today',
-                  currentDate && dates.month(currentDate) !== dates.month(date) && 'rbc-off-range-bg',
-                )}
-              />
+                className={classNames}
+              ></div>
             </Wrapper>
           )
         })}

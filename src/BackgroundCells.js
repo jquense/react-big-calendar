@@ -18,6 +18,7 @@ class BackgroundCells extends React.Component {
     container: PropTypes.func,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
     longPressThreshold: PropTypes.number,
+    specialDays: PropTypes.array,
 
     onSelectSlot: PropTypes.func.isRequired,
     onSelectEnd: PropTypes.func,

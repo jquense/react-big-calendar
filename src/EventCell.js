@@ -30,15 +30,16 @@ let propTypes = {
 };
 
 const StyledEvent = styled.div`
-  background-color: ${prop('backgroundColor') || 'transparent'};
-  border-color: ${prop('borderColor') || 'currentColor'};
-  border-style: ${prop('borderStyle') || 'none'};
-  border-width: ${prop('borderWidth') || 'medium'};
-  color: ${prop('color') || 'currentColor'};
-  font-family: ${prop('fontFamily') || 'inherit'};
-  font-size: ${prop('fontSize') || 'medium'};
-  font-style: ${prop('fontStyle') || 'normal'};
-  font-weight: ${prop('fontWeight') || 'normal'};
+  background-color: ${({ backgroundColor: v }) => v || 'transparent'};
+  border-color: ${({ borderColor: v }) => v || 'currentColor'};
+  border-style: ${({ borderStyle: v }) => v || 'none'};
+  border-width: ${({ borderWidth: v }) => v || 'medium'};
+  color: ${({ color: v }) => v || 'currentColor'};
+  font-family: ${({ fontFamily: v }) => v || 'inherit'};
+  font-size: ${({ fontSize: v }) => v || 'medium'};
+  font-style: ${({ fontStyle: v }) => v || 'normal'};
+  font-weight: ${({ fontWeight: v }) => v || 'normal'};
+  text-align: ${({ textAlign: v }) => v || 'center'};
 `;
 
 class EventCell extends React.Component {

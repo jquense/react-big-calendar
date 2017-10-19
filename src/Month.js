@@ -27,6 +27,7 @@ let eventsForWeek = (evts, start, end, props) =>
 
 let propTypes = {
   events: PropTypes.array.isRequired,
+  specialDays: PropTypes.array,
   date: PropTypes.instanceOf(Date),
 
   min: PropTypes.instanceOf(Date),
@@ -166,6 +167,7 @@ class MonthView extends React.Component {
       now,
       date,
       longPressThreshold,
+      specialDays
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -202,6 +204,7 @@ class MonthView extends React.Component {
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
         longPressThreshold={longPressThreshold}
+        specialDays={specialDays}
       />
     )
   }

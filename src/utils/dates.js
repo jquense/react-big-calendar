@@ -82,6 +82,12 @@ let dates = {
     return dates.eq(dateA, dateB, 'month')
   },
 
+  sameDay(dateA, dateB){
+    return dateA.getFullYear() === dateB.getFullYear() &&
+      dateA.getMonth() === dateB.getMonth() &&
+      dateA.getDate() === dateB.getDate();
+  },
+
   isToday(date) {
     return dates.eq(date, dates.today(), 'day')
   },

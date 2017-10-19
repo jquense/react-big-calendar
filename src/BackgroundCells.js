@@ -56,18 +56,28 @@ class BackgroundCells extends React.Component {
   }
 
   render(){
-    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate, specialDays } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     return (
       <div className='rbc-row-bg'>
         {range.map((date, index) => {
-          let selected =  selecting && index >= startIdx && index <= endIdx;
+          let selected =  selecting && index >= startIdx && index <= endIdx,
+              day = specialDays.reduce((acc, day) => {
+                if( dates.sameDay(date, day.day) )
+                  acc = day;
+
+                return acc;
+              }, null);
+
+          console.log(this.props);
+
           return (
             <Wrapper
               key={index}
               value={date}
               range={range}
+              day={day}
             >
               <div
                 style={segStyle(1, range.length)}

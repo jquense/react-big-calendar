@@ -18,6 +18,7 @@ const propTypes = {
   date: PropTypes.instanceOf(Date),
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
+  specialDays: PropTypes.array,
 
   rtl: PropTypes.bool,
   renderForMeasure: PropTypes.bool,
@@ -154,6 +155,7 @@ class DateContentRow extends React.Component {
       onSelectStart,
       onSelectEnd,
       longPressThreshold,
+      specialDays,
       ...props
     } = this.props;
 
@@ -183,6 +185,7 @@ class DateContentRow extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           cellWrapperComponent={dateCellWrapper}
           longPressThreshold={longPressThreshold}
+          specialDays={specialDays}
         />
 
         <div className='rbc-row-content'>

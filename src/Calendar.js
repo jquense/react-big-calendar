@@ -82,6 +82,11 @@ class Calendar extends React.Component {
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * An array of day objects for customizing cells
+     */
+    specialDays: PropTypes.arrayOf(PropTypes.object),
+
+    /**
      * Callback fired when the `date` value changes.
      *
      * @controllable date
@@ -544,6 +549,7 @@ class Calendar extends React.Component {
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
     date: now,
     step: 30,
+    specialDays: [],
 
     drilldownView: views.DAY,
 
@@ -597,6 +603,7 @@ class Calendar extends React.Component {
       , formats = {}
       , messages = {}
       , style
+      , specialDays
       , className
       , elementProps
       , date: current
@@ -648,6 +655,7 @@ class Calendar extends React.Component {
           culture={culture}
           formats={undefined}
           events={events}
+          specialDays={specialDays}
           date={current}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}

@@ -128,6 +128,7 @@ class EventCell extends React.Component {
         <div>
           <ContextMenuTrigger
             collect={props => ({ ...props, event })}
+            holdToDisplay={-1}
             id="rightClickEventContextMenu"
           >
             <div

@@ -58,13 +58,12 @@ export let dateRangeFormat = PropTypes.func
  *   workweek: WorkWeekViewComponent,
  * }}
  * ```
- * @type {[type]}
  */
 export let views = PropTypes.oneOfType([
   PropTypes.arrayOf(
     PropTypes.oneOf(viewNames)
   ),
-  all([
+  all(
     PropTypes.object,
     (props, name, ...args)=>{
       let prop = props[name]
@@ -80,5 +79,5 @@ export let views = PropTypes.oneOfType([
 
       return err || null
     }
-  ])
+  )
 ])

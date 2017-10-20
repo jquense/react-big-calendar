@@ -214,6 +214,8 @@ class DateContentRow extends React.Component {
               onShowMore={this.handleShowMore}
               eventComponent={eventComponent}
               eventWrapperComponent={eventWrapperComponent}
+              startAccessor={startAccessor}
+              endAccessor={endAccessor}
             />
           )}
         </div>

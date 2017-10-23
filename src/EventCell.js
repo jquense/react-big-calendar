@@ -132,6 +132,7 @@ class EventCell extends React.Component {
             id="rightClickEventContextMenu"
           >
             <div
+              tabIndex="-1"
               style={{ ...props.style, ...style }}
               className={cn('rbc-event', className, xClassName, {
                 'rbc-selected': selected,
@@ -140,6 +141,15 @@ class EventCell extends React.Component {
                 'rbc-event-continues-prior': continuesPrior,
                 'rbc-event-continues-after': continuesAfter,
               })}
+              onBlur={e => {
+                // https://gist.github.com/pstoica/4323d3e6e37e8a23dd59 - AR Mon Oct 23 10:35:26 EDT 2017
+                const currentTarget = e.currentTarget;
+                setTimeout(() => {
+                  if (!currentTarget.contains(document.activeElement)) {
+                    onSelect({}, e);
+                  }
+                }, 0);
+              }}
               onClick={e => onSelect(event, e)}
               /*onDoubleClick={e => onDoubleClick(event, e)}*/
               onDoubleClick={this.handleEditing}

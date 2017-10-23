@@ -64,7 +64,11 @@ class BackgroundCells extends React.Component {
                 className="rbc-day-bg-wrapper"
                 style={{ ...segStyle(1, range.length), height: '100%' }}
               >
-                <ContextMenuTrigger id="contextMenu" collect={props => ({ ...props, date })}>
+                <ContextMenuTrigger
+                  collect={props => ({ ...props, date })}
+                  holdToDisplay={-1}
+                  id="contextMenu"
+                >
                   <div
                     style={{ height: '100%' }}
                     className={cn('rbc-day-bg', {

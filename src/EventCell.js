@@ -148,7 +148,7 @@ class EventCell extends React.Component {
                   if (!currentTarget.contains(document.activeElement)) {
                     onSelect({}, e);
                   }
-                }, 0);
+                });
               }}
               onClick={e => onSelect(event, e)}
               /*onDoubleClick={e => onDoubleClick(event, e)}*/

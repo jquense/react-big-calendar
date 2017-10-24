@@ -6,6 +6,8 @@ import BigCalendar from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
 
+import ResizableMonthEvent from '../../src/addons/dragAndDrop/ResizableMonthEvent';
+
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
@@ -123,6 +125,7 @@ class Dnd extends React.Component {
       <div>
         <DragAndDropCalendar
           componentRightClickEventMenu={this.componentRightClickEventMenu}
+          components={{ month: { event: ResizableMonthEvent } }}
           contextMenuItems={this.contextMenuItems}
           defaultDate={new Date(2015, 3, 12)}
           defaultView="month"
@@ -132,7 +135,6 @@ class Dnd extends React.Component {
           onEventResize={this.handleEventResize}
           onInlineEditEventTitle={this.handleInlineEditEventTitle}
           onRightClickSlot={this.handleRightClickSlot}
-          resizable
           selectable
           showAllEvents
         />

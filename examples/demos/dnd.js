@@ -4,6 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import BigCalendar from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import { ContextMenu, MenuItem } from 'react-contextmenu';
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 
@@ -90,19 +91,6 @@ class Dnd extends React.Component {
     },
   ];
 
-  contextMenuItemsForRightClickEvent = [
-    {
-      label: 'Edit',
-      data: { item: 1 },
-      onClick: (e, props) => this.logMenuItemClickForEvent(props),
-    },
-    {
-      label: 'Lock',
-      data: { item: 2 },
-      onClick: (e, props) => this.logMenuItemClickForEvent(props),
-    },
-  ];
-
   logMenuItemClickForEvent({ item, event }) {
     console.log(`clicked menu item ${item} w/ event title: ${event.title}`);
   }
@@ -111,12 +99,31 @@ class Dnd extends React.Component {
     return 0; // disable sort
   };
 
+  componentRightClickEventMenu = props => {
+    const { id, trigger, handleClick } = props;
+    const handleItemClick = trigger ? trigger.onItemClick : null;
+    return (
+      <ContextMenu id={id}>
+        {trigger && (
+          <MenuItem onClick={(_, props) => console.log(props)} data={{ action: 'EDIT' }}>
+            Edit
+          </MenuItem>
+        )}
+        {trigger && (
+          <MenuItem onClick={(_, props) => console.log(props)} data={{ action: 'LOCK' }}>
+            {trigger.event.locked ? 'Unlock' : 'Lock'}
+          </MenuItem>
+        )}
+      </ContextMenu>
+    );
+  };
+
   render() {
     return (
       <div>
         <DragAndDropCalendar
+          componentRightClickEventMenu={this.componentRightClickEventMenu}
           contextMenuItems={this.contextMenuItems}
-          contextMenuItemsForRightClickEvent={this.contextMenuItemsForRightClickEvent}
           defaultDate={new Date(2015, 3, 12)}
           defaultView="month"
           events={this.state.events}

@@ -9,6 +9,7 @@ import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 import ResizableMonthEvent from './addons/dragAndDrop/ResizableMonthEvent';
+import { RIGHT_CLICK_EVENT } from './ContextMenuTypes';
 
 let propTypes = {
   event: PropTypes.object.isRequired,
@@ -130,7 +131,7 @@ class EventCell extends React.Component {
           <ContextMenuTrigger
             collect={props => ({ ...props, event })}
             holdToDisplay={-1}
-            id="rightClickEventContextMenu"
+            id={RIGHT_CLICK_EVENT}
           >
             <div
               tabIndex="-1"
@@ -149,7 +150,8 @@ class EventCell extends React.Component {
                   if (!currentTarget.contains(document.activeElement)) {
                     onSelect({}, e);
                   }
-                });
+                  // 100ms is given to setTimeout so that it fires after a right-click event - AR Tue Oct 24 14:10:25 EDT 2017
+                }, 100);
               }}
               onClick={e => onSelect(event, e)}
               /*onDoubleClick={e => onDoubleClick(event, e)}*/

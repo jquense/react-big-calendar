@@ -35,11 +35,11 @@ class ResizableMonthEvent extends React.Component {
 }
 
 const eventSourceLeft = {
-  beginDrag: ({ event }) => ({ ...event, type: 'resizeL' }),
+  beginDrag: ({ event: data }) => ({ data, type: 'resizeL' }),
 };
 
 const eventSourceRight = {
-  beginDrag: ({ event }) => ({ ...event, type: 'resizeR' }),
+  beginDrag: ({ event: data }) => ({ data, type: 'resizeR' }),
 };
 
 export default compose(

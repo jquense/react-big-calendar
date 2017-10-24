@@ -7,7 +7,7 @@ import { findDOMNode } from 'react-dom';
 
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
-import { segStyle, eventSegments, endOfRange, eventLevels } from './utils/eventLevels';
+import { segStyle, eventSegments, endOfRange, eventLevels, withLevels } from './utils/eventLevels';
 import BackgroundCells from './BackgroundCells';
 import EventRow from './EventRow';
 import EventEndingRow from './EventEndingRow';
@@ -161,23 +161,7 @@ class DateContentRow extends React.Component {
 
     if (renderForMeasure) return this.renderDummy();
 
-    let { first, last } = endOfRange(range);
-
-    let segments = (this.segments = events.map(evt =>
-      eventSegments(
-        evt,
-        first,
-        last,
-        {
-          startAccessor,
-          endAccessor,
-        },
-        range,
-      ),
-    ));
-
-    let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1));
-    while (levels.length < minRows) levels.push([]);
+    const { levels, first, last, extra } = this.props;
 
     return (
       <div className={className}>

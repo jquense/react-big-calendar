@@ -17,15 +17,21 @@ class EventRow extends React.Component {
 
     return (
       <div className="rbc-row">
-        {segments.reduce((row, { event, left, right, span }, li) => {
-          let key = '_lvl_' + li;
-          let gap = left - lastEnd;
+        {segments.reduce((row, segment, li) => {
+          const { event: data, left, right, span, level } = segment;
+          const key = '_lvl_' + li;
+          const gap = left - lastEnd;
 
-          let content = EventRowMixin.renderEvent(this.props, event);
+          const event = {
+            data,
+            position: { left, right, span, level },
+          };
+
+          const content = EventRowMixin.renderEvent(this.props, event);
 
           if (gap) row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'));
 
-          row.push(EventRowMixin.renderSpan(this.props, span, key, content));
+          row.push(EventRowMixin.renderSpan(this.props, span, key, content, segment.isHidden));
 
           lastEnd = right + 1;
 

@@ -19,6 +19,7 @@ import VIEWS from './Views';
 import Toolbar from './Toolbar';
 import EventWrapper from './EventWrapper';
 import BackgroundWrapper from './BackgroundWrapper';
+import DateContentRowWrapper from './DateContentRowWrapper';
 
 import omit from 'lodash/omit';
 import defaults from 'lodash/defaults';
@@ -674,6 +675,7 @@ class Calendar extends React.Component {
       eventWrapper: EventWrapper,
       dayWrapper: BackgroundWrapper,
       dateCellWrapper: BackgroundWrapper,
+      dateContentRowWrapper: DateContentRowWrapper,
     });
 
     let CalToolbar = components.toolbar || Toolbar;

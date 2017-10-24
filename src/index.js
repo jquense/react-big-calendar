@@ -1,6 +1,7 @@
 import Calendar from './Calendar';
 import EventWrapper from './EventWrapper';
 import BackgroundWrapper from './BackgroundWrapper';
+import DateContentRowWrapper from './DateContentRowWrapper';
 import { set as setLocalizer } from './localizer';
 import momentLocalizer from './localizers/moment';
 import globalizeLocalizer from './localizers/globalize';
@@ -18,6 +19,7 @@ Object.assign(Calendar, {
     eventWrapper: EventWrapper,
     dayWrapper: BackgroundWrapper,
     dateCellWrapper: BackgroundWrapper,
+    dateContentRowWrapper: DateContentRowWrapper,
   },
 });
 

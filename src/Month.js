@@ -205,7 +205,6 @@ class MonthView extends React.Component {
         ref={weekIdx === 0 ? 'slotRow' : undefined}
         renderForMeasure={needLimitMeasure}
         renderHeader={this.readerDateHeading}
-        resizable={this.props.resizable}
         selectable={selectable}
         selected={selected}
         startAccessor={startAccessor}

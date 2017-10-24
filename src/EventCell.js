@@ -8,26 +8,23 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
-import ResizableMonthEvent from './addons/dragAndDrop/ResizableMonthEvent';
 import { RIGHT_CLICK_EVENT } from './ContextMenuTypes';
 
 let propTypes = {
-  event: PropTypes.object.isRequired,
-  slotStart: PropTypes.instanceOf(Date),
-  slotEnd: PropTypes.instanceOf(Date),
-
-  selected: PropTypes.bool,
-  eventPropGetter: PropTypes.func,
-  titleAccessor: accessor,
   allDayAccessor: accessor,
-  startAccessor: accessor,
   endAccessor: accessor,
-
+  event: PropTypes.object.isRequired,
   eventComponent: elementType,
+  eventPropGetter: PropTypes.func,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onInlineEditEventTitle: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
+  selected: PropTypes.bool,
+  slotEnd: PropTypes.instanceOf(Date),
+  slotStart: PropTypes.instanceOf(Date),
+  startAccessor: accessor,
+  titleAccessor: accessor,
 };
 
 const StyledEvent = styled.div`
@@ -101,7 +98,6 @@ class EventCell extends React.Component {
       onDoubleClick,
       onInlineEditEventTitle,
       onSelect,
-      resizable,
       selected,
       slotEnd,
       slotStart,
@@ -119,10 +115,6 @@ class EventCell extends React.Component {
 
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
-
-    if (resizable) {
-      Event = ResizableMonthEvent;
-    }
 
     return (
       <EventWrapper event={event}>

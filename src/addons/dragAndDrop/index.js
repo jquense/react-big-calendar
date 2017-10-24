@@ -84,7 +84,6 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     onEventDrop: PropTypes.func.isRequired,
     onEventResize: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
-    resizable: PropTypes.bool,
     startAccessor: accessor,
   };
 

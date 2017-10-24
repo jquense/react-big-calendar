@@ -718,7 +718,6 @@ class Calendar extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
           ref="view"
-          resizable={this.props.resizable}
           showAllEvents={this.props.showAllEvents}
         />
         {this.renderContextMenu()}

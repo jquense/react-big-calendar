@@ -25,7 +25,8 @@ import defaults from 'lodash/defaults';
 import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
-import { ContextMenu, MenuItem } from 'react-contextmenu';
+import { ContextMenu, MenuItem, connectMenu } from 'react-contextmenu';
+import { RIGHT_CLICK_EVENT } from './ContextMenuTypes';
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views;
@@ -636,22 +637,14 @@ class Calendar extends React.Component {
     );
   };
 
-  renderContextMenuForRightClickEvent() {
-    const { contextMenuItemsForRightClickEvent: menuItems } = this.props;
+  renderRightClickEventMenu() {
+    const { contextMenuComponents: { event: ContextMenu } } = this.props;
 
-    if (!menuItems) return null;
+    if (!ContextMenu) return null;
 
-    return (
-      <ContextMenu id="rightClickEventContextMenu">
-        {menuItems.map(({ onClick, data, label }, i) => {
-          return (
-            <MenuItem key={`rightClickEventContextMenu${i}`} onClick={onClick} data={data}>
-              {label}
-            </MenuItem>
-          );
-        })}
-      </ContextMenu>
-    );
+    const ConnectedMenu = connectMenu(RIGHT_CLICK_EVENT)(ContextMenu);
+
+    return <ConnectedMenu />;
   }
 
   render() {
@@ -725,11 +718,10 @@ class Calendar extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
           ref="view"
-          resizable={this.props.resizable}
           showAllEvents={this.props.showAllEvents}
         />
         {this.renderContextMenu()}
-        {this.renderContextMenuForRightClickEvent()}
+        {this.renderRightClickEventMenu()}
       </div>
     );
   }

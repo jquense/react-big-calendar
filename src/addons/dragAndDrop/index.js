@@ -18,16 +18,16 @@ try {
 export default function withDragAndDrop(Calendar, { backend = html5Backend } = {}) {
   class DragAndDropCalendar extends React.Component {
     static propTypes = {
-      selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
       components: PropTypes.object,
+      selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
     };
     getChildContext() {
       return {
+        endAccessor: this.props.endAccessor,
         onEventDrop: this.props.onEventDrop,
         onEventResize: this.props.onEventResize,
         onOutsideEventDrop: this.props.onOutsideEventDrop,
         startAccessor: this.props.startAccessor,
-        endAccessor: this.props.endAccessor,
       };
     }
 
@@ -64,17 +64,15 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
       props.selectable = selectable ? 'ignoreEvents' : false;
 
-      props.className = cn(
-        props.className,
-        'rbc-addons-dnd',
-        this.state.isDragging && 'rbc-addons-dnd-is-dragging',
-      );
+      props.className = cn(props.className, 'rbc-addons-dnd', {
+        'rbc-addons-dnd-is-dragging': this.state.isDragging,
+      });
 
       props.components = {
         ...components,
-        eventWrapper: DraggableEventWrapper,
         dateCellWrapper: DateCellWrapper,
         dayWrapper: DayWrapper,
+        eventWrapper: DraggableEventWrapper,
       };
 
       return <Calendar {...props} />;
@@ -86,13 +84,12 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     onEventDrop: PropTypes.func.isRequired,
     onEventResize: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
-    resizable: PropTypes.bool,
     startAccessor: accessor,
   };
 
   DragAndDropCalendar.defaultProps = {
-    startAccessor: 'start',
     endAccessor: 'end',
+    startAccessor: 'start',
   };
 
   DragAndDropCalendar.contextTypes = {

@@ -61,7 +61,6 @@ export default {
         onDoubleClick={onDoubleClick}
         onInlineEditEventTitle={onInlineEditEventTitle}
         onSelect={onSelect}
-        resizable={props.resizable}
         selected={isSelected(event, selected)}
         slotEnd={end}
         slotStart={start}

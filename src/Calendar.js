@@ -638,7 +638,7 @@ class Calendar extends React.Component {
   };
 
   renderRightClickEventMenu() {
-    const { componentRightClickEventMenu: ContextMenu } = this.props;
+    const { contextMenuComponents: { event: ContextMenu } } = this.props;
 
     if (!ContextMenu) return null;
 

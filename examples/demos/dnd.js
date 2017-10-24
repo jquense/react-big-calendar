@@ -101,7 +101,7 @@ class Dnd extends React.Component {
     return 0; // disable sort
   };
 
-  componentRightClickEventMenu = props => {
+  rightClickEventMenu = props => {
     const { id, trigger, handleClick } = props;
     const handleItemClick = trigger ? trigger.onItemClick : null;
     return (
@@ -124,7 +124,9 @@ class Dnd extends React.Component {
     return (
       <div>
         <DragAndDropCalendar
-          componentRightClickEventMenu={this.componentRightClickEventMenu}
+          contextMenuComponents={{
+            event: this.rightClickEventMenu,
+          }}
           components={{ month: { event: ResizableMonthEvent } }}
           contextMenuItems={this.contextMenuItems}
           defaultDate={new Date(2015, 3, 12)}

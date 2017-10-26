@@ -127,8 +127,9 @@ function createWrapper(type) {
   }
 
   const dropTarget = {
-    drop(_, monitor, { props, context }) {
-      const { data: event } = monitor.getItem();
+    drop(p, monitor, { props, context }) {
+      const itemType = monitor.getItemType();
+      const { data: event, type: eventType } = monitor.getItem();
       const { value } = props;
       const {
         onEventDrop,
@@ -141,7 +142,7 @@ function createWrapper(type) {
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
-      if (monitor.getItemType() === 'event') {
+      if (itemType === 'event') {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on
         * info inside user setable `data` prop.
@@ -159,8 +160,8 @@ function createWrapper(type) {
         }
       }
 
-      if (monitor.getItemType() === 'resize') {
-        switch (event.type) {
+      if (itemType === 'resize') {
+        switch (eventType) {
           case 'resizeL': {
             return onEventResize('drop', { event, start: value, end });
           }

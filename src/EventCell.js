@@ -106,22 +106,23 @@ class EventCell extends React.Component {
       ...props
     } = this.props;
 
-    let title = get(event.data, titleAccessor),
-      end = get(event.data, endAccessor),
-      start = get(event.data, startAccessor),
-      isAllDay = get(event.data, props.allDayAccessor),
+    let data = event.data,
+      title = get(data, titleAccessor),
+      end = get(data, endAccessor),
+      start = get(data, startAccessor),
+      isAllDay = get(data, props.allDayAccessor),
       continuesPrior = dates.lt(start, slotStart, 'day'),
       continuesAfter = dates.gte(end, slotEnd, 'day');
 
     if (eventPropGetter)
-      var { style, className: xClassName } = eventPropGetter(event.data, start, end, selected);
+      var { style, className: xClassName } = eventPropGetter(data, start, end, selected);
 
     return (
       <EventWrapper event={event}>
         {/* ContextMenuTrigger needs to be wrapped in a div for dnd purposes - AR Wed Oct 18 09:43:40 EDT 2017 */}
         <div>
           <ContextMenuTrigger
-            collect={props => ({ ...props, event: event.data })}
+            collect={props => ({ ...props, event: data })}
             holdToDisplay={-1}
             id={RIGHT_CLICK_EVENT}
           >
@@ -145,14 +146,14 @@ class EventCell extends React.Component {
                   // 100ms is given to setTimeout so that it fires after a right-click event - AR Tue Oct 24 14:10:25 EDT 2017
                 }, 100);
               }}
-              onClick={e => onSelect(event.data, e)}
+              onClick={e => onSelect(data, e)}
               /*onDoubleClick={e => onDoubleClick(event, e)}*/
               onDoubleClick={this.handleEditing}
             >
-              <StyledEvent {...event.data.styles}>
+              <StyledEvent {...data.styles}>
                 <div className="rbc-event-content" title={title}>
                   {Event && !this.state.isEditingEventTitle ? (
-                    <Event event={event.data} title={title} />
+                    <Event event={data} title={title} />
                   ) : this.state.isEditingEventTitle ? (
                     <input
                       autoFocus={this.state.isEditingEventTitle}

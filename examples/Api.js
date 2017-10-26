@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import transform from 'lodash/transform';
 
 import metadata from 'component-metadata-loader!react-big-calendar/lib/Calendar';
@@ -14,7 +14,7 @@ let cleanDocletValue = str =>
     .replace(/^\{/, '')
     .replace(/\}$/, '');
 
-let Api = React.createClass({
+let Api = class extends Component {
   render() {
     let calData = metadata.Calendar;
 
@@ -33,9 +33,9 @@ let Api = React.createClass({
         })}
       </div>
     );
-  },
+  }
 
-  renderProp(data, name, Heading) {
+  renderProp = (data, name, Heading) => {
     let typeInfo = this.renderType(data);
 
     return (
@@ -70,9 +70,9 @@ let Api = React.createClass({
         )}
       </section>
     );
-  },
+  };
 
-  renderType(prop) {
+  renderType = prop => {
     let type = prop.type || {};
     let name = getDisplayTypeName(type.name);
     let doclets = prop.doclets || {};
@@ -124,14 +124,14 @@ let Api = React.createClass({
       default:
         return name;
     }
-  },
+  };
 
-  renderEnum(enumType) {
+  renderEnum = enumType => {
     const enumValues = enumType.value || [];
     return <code>{enumValues.join(' | ')}</code>;
-  },
+  };
 
-  renderControllableNote(prop, propName) {
+  renderControllableNote = (prop, propName) => {
     let controllable = prop.doclets && prop.doclets.controllable;
     let isHandler = prop.type && getDisplayTypeName(prop.type.name) === 'function';
 
@@ -157,8 +157,8 @@ let Api = React.createClass({
         </em>
       </div>
     );
-  },
-});
+  };
+};
 
 function getDisplayTypeName(typeName) {
   if (typeName === 'func') {

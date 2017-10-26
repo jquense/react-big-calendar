@@ -4,6 +4,7 @@ import { DragDropContext } from 'react-dnd';
 import cn from 'classnames';
 
 import { accessor } from '../../utils/propTypes';
+import DateContentRowWrapper from './DateContentRowWrapper';
 import DraggableEventWrapper from './DraggableEventWrapper';
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper';
 
@@ -21,11 +22,13 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       components: PropTypes.object,
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
     };
+
     getChildContext() {
       return {
         endAccessor: this.props.endAccessor,
         onEventDrop: this.props.onEventDrop,
         onEventResize: this.props.onEventResize,
+        onEventReorder: this.props.onEventReorder,
         onOutsideEventDrop: this.props.onOutsideEventDrop,
         startAccessor: this.props.startAccessor,
       };
@@ -60,6 +63,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
       delete props.onEventDrop;
       delete props.onEventResize;
+      delete props.onEventReorder;
       delete props.onOutsideEventDrop;
 
       props.selectable = selectable ? 'ignoreEvents' : false;
@@ -73,6 +77,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         dateCellWrapper: DateCellWrapper,
         dayWrapper: DayWrapper,
         eventWrapper: DraggableEventWrapper,
+        dateContentRowWrapper: DateContentRowWrapper,
       };
 
       return <Calendar {...props} />;
@@ -83,6 +88,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     endAccessor: accessor,
     onEventDrop: PropTypes.func.isRequired,
     onEventResize: PropTypes.func,
+    onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
   };
@@ -100,6 +106,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     endAccessor: accessor,
     onEventDrop: PropTypes.func,
     onEventResize: PropTypes.func,
+    onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
   };

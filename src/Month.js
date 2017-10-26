@@ -14,7 +14,6 @@ import raf from 'dom-helpers/util/requestAnimationFrame';
 
 import Popup from './Popup';
 import Overlay from 'react-overlays/lib/Overlay';
-import DateContentRow from './DateContentRow';
 import Header from './Header';
 import DateHeader from './DateHeader';
 
@@ -178,19 +177,22 @@ class MonthView extends React.Component {
       return fn(a, b, this.props);
     });
 
+    const DateContentRowWrapper = components.dateContentRowWrapper;
+
     return (
-      <DateContentRow
+      <DateContentRowWrapper
         allDayAccessor={allDayAccessor}
         className={cn('rbc-month-row', { 'rbc-show-all-events': this.props.showAllEvents })}
         container={this.getContainer}
         date={date}
         dateCellWrapper={components.dateCellWrapper}
+        dateContentRowWrapper={components.dateContentRowWrapper}
         endAccessor={endAccessor}
         eventComponent={components.event}
         eventPropGetter={eventPropGetter}
         events={events}
-        eventWrapperComponent={components.eventWrapper}
         key={weekIdx}
+        eventWrapperComponent={components.eventWrapper}
         longPressThreshold={longPressThreshold}
         maxRows={rowLimit}
         messages={messages}

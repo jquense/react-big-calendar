@@ -70,11 +70,16 @@ export default {
     );
   },
 
-  renderSpan(props, len, key, content = ' ') {
+  renderSpan(props, len, key, content = ' ', isHidden = false) {
     let { slots } = props;
 
+    const style = {
+      ...segStyle(Math.abs(len), slots),
+      opacity: isHidden ? 0 : 1,
+    };
+
     return (
-      <div key={key} className="rbc-row-segment" style={segStyle(Math.abs(len), slots)}>
+      <div key={key} className="rbc-row-segment" style={style}>
         {content}
       </div>
     );

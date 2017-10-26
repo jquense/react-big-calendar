@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Api from './Api';
 import Intro from './Intro.md';
 import cn from 'classnames';
@@ -24,12 +24,10 @@ import Dnd from './demos/dnd';
 let demoRoot =
   'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos';
 
-const Example = React.createClass({
-  getInitialState() {
-    return {
-      selected: 'dnd',
-    };
-  },
+const Example = class extends Component {
+  state = {
+    selected: 'dnd',
+  };
 
   render() {
     let selected = this.state.selected;
@@ -130,12 +128,12 @@ const Example = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  select(selected, e) {
+  select = (selected, e) => {
     e.preventDefault();
     this.setState({ selected });
-  },
-});
+  };
+};
 
 render(<Example />, document.getElementById('root'));

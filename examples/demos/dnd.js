@@ -97,8 +97,22 @@ class Dnd extends React.Component {
     console.log(`clicked menu item ${item} w/ event title: ${event.title}`);
   }
 
-  eventsSorter = (a, b) => {
-    return 0; // disable sort
+  eventsSorter = ({ weight: a }, { weight: b }) => (a < b ? -1 : 1);
+
+  handleEventReorder = (a, b) => {
+    let { events } = this.state;
+
+    const idxa = events.indexOf(a);
+    const idxb = events.indexOf(b);
+
+    (a = events[idxa]), (b = events[idxb]);
+
+    const skew = a.weight > b.weight ? -1 : 1;
+
+    a.weight = b.weight + skew;
+
+    events[idxa] = a;
+    this.setState({ events });
   };
 
   rightClickEventMenu = props => {
@@ -135,6 +149,7 @@ class Dnd extends React.Component {
           eventsSorter={this.eventsSorter}
           onEventDrop={this.moveEvent}
           onEventResize={this.handleEventResize}
+          onEventReorder={this.handleEventReorder}
           onInlineEditEventTitle={this.handleInlineEditEventTitle}
           onRightClickSlot={this.handleRightClickSlot}
           selectable

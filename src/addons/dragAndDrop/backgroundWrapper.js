@@ -32,12 +32,6 @@ export function getEventTimes(start, end, dropDate, type) {
   };
 }
 
-const propTypes = {
-  connectDropTarget: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  isOver: PropTypes.bool,
-};
-
 class DraggableBackgroundWrapper extends React.Component {
   // constructor(...args) {
   //   super(...args);
@@ -79,6 +73,22 @@ class DraggableBackgroundWrapper extends React.Component {
   //   }
   // };
 
+  static propTypes = {
+    connectDropTarget: PropTypes.func.isRequired,
+    type: PropTypes.string,
+    isOver: PropTypes.bool,
+  };
+
+  static contextTypes = {
+    onEventDrop: PropTypes.func,
+    onEventResize: PropTypes.func,
+    onEventReorder: PropTypes.func,
+    onOutsideEventDrop: PropTypes.func,
+    dragDropManager: PropTypes.object,
+    startAccessor: accessor,
+    endAccessor: accessor,
+  };
+
   componentWillReceiveProps(nextProps) {
     const { isOver: wasOver } = this.props;
     const { isOver } = nextProps;
@@ -106,16 +116,6 @@ class DraggableBackgroundWrapper extends React.Component {
     return <BackgroundWrapper>{connectDropTarget(resultingChildren)}</BackgroundWrapper>;
   }
 }
-DraggableBackgroundWrapper.propTypes = propTypes;
-
-DraggableBackgroundWrapper.contextTypes = {
-  onEventDrop: PropTypes.func,
-  onEventResize: PropTypes.func,
-  onOutsideEventDrop: PropTypes.func,
-  dragDropManager: PropTypes.object,
-  startAccessor: accessor,
-  endAccessor: accessor,
-};
 
 function createWrapper(type) {
   function collectTarget(connect, monitor) {
@@ -128,11 +128,12 @@ function createWrapper(type) {
 
   const dropTarget = {
     drop(_, monitor, { props, context }) {
-      const event = monitor.getItem();
+      const { data: event } = monitor.getItem();
       const { value } = props;
       const {
         onEventDrop,
         onEventResize,
+        onEventReorder,
         onOutsideEventDrop,
         startAccessor,
         endAccessor,
@@ -141,6 +142,10 @@ function createWrapper(type) {
       const end = get(event, endAccessor);
 
       if (monitor.getItemType() === 'event') {
+        /**
+        * `outsideEvent` needs to be re-thought. We shouldn't rely on
+        * info inside user setable `data` prop.
+        */
         if (event.type === 'outsideEvent') {
           return onOutsideEventDrop({
             event,

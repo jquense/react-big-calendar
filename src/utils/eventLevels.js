@@ -48,7 +48,7 @@ export function eventLevels(rowSegments, limit = Infinity) {
     if (j >= limit) {
       extra.push(seg);
     } else {
-      (levels[j] || (levels[j] = [])).push(seg);
+      (levels[j] || (levels[j] = [])).push({ ...seg, level: j });
     }
   }
 
@@ -88,4 +88,27 @@ export function sortEvents(evtA, evtB, { startAccessor, endAccessor, allDayAcces
     !!get(evtB, allDayAccessor) - !!get(evtA, allDayAccessor) || // then allDay single day events
     +get(evtA, startAccessor) - +get(evtB, startAccessor)
   ); // then sort by start time
+}
+
+export function withLevels(props) {
+  const { events, range, startAccessor, endAccessor, maxRows, minRows } = props;
+  let { first, last } = endOfRange(range);
+
+  let segments = events.map(evt =>
+    eventSegments(
+      evt,
+      first,
+      last,
+      {
+        startAccessor,
+        endAccessor,
+      },
+      range,
+    ),
+  );
+
+  let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1));
+  while (levels.length < minRows) levels.push([]);
+
+  return { first, last, levels, extra, segments };
 }

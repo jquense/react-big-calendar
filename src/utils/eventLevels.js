@@ -48,8 +48,7 @@ export function eventLevels(rowSegments, limit = Infinity) {
     if (j >= limit) {
       extra.push(seg);
     } else {
-      let level = levels[j] || (levels[j] = []);
-      level.push({ ...seg, level: j });
+      (levels[j] || (levels[j] = [])).push({ ...seg, level: j });
     }
   }
 

@@ -17,12 +17,12 @@ let eventSource = {
 };
 
 const eventTarget = {
-  hover(p, monitor, { props, decoratedComponentInstance: component }) {
+  hover(_, monitor, { props, decoratedComponentInstance: component }) {
     const { onSegmentHover } = component.context;
     const { event: { position, data } } = props;
     onSegmentHover(position, data);
   },
-  drop(p, monitor, { props, decoratedComponentInstance: component }) {
+  drop(_, monitor, { props, decoratedComponentInstance: component }) {
     const { onSegmentDrop } = component.context;
     const { position } = monitor.getItem();
     onSegmentDrop(position);

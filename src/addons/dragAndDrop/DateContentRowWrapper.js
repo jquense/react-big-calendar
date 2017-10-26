@@ -77,7 +77,7 @@ class DateContentRowWrapper extends Component {
   };
 
   handleSegmentDrop = ({ level, left }) => {
-    const { drag, levels, hover, hoverData } = this.state;
+    const { drag, levels, hoverData } = this.state;
     const { onEventReorder } = this.context;
     onEventReorder && onEventReorder(levels[drag.level][drag.left - 1].event, hoverData);
     this.setState({ drag: null, hover: null, hoverData: null });

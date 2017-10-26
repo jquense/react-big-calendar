@@ -41,9 +41,11 @@ export function eventLevels(rowSegments, limit = Infinity) {
   for (i = 0; i < rowSegments.length; i++) {
     seg = rowSegments[i];
 
-    for (j = 0; j < levels.length; j++)
-      {if (!segsOverlap(seg, levels[j]))
-        break;}
+    for (j = 0; j < levels.length; j++) {
+      if (!segsOverlap(seg, levels[j])) {
+        break;
+      }
+    }
 
     if (j >= limit) {
       extra.push(seg);
@@ -69,31 +71,25 @@ export function eventLevels(rowSegments, limit = Infinity) {
  * @param endAccessor
  * @returns {*}
  */
-export function inRange(e, start, end, { startAccessor, endAccessor }) {
-  let eStart = dates.startOf(get(e, startAccessor), 'day');
-  let eEnd = get(e, endAccessor);
 
-  let startsBeforeEnd = dates.lte(eStart, end, 'day');
-  let endsAfterStart = dates.gte(eEnd, start, 'day');
+export function formatAwareInRange(e, start, end, { startAccessor, endAccessor }) {
+  let eStart, eEnd, startsBeforeEnd, endsAfterStart;
 
-  return startsBeforeEnd && endsAfterStart;
-}
+  if (e.startType === 'date') {
+    eStart = get(e, startAccessor);
+    startsBeforeEnd = eStart <= end;
+  } else {
+    eStart = dates.startOf(get(e, startAccessor), 'day');
+    startsBeforeEnd = dates.lte(eStart, end, 'day');
+  }
 
-/**
- * check if an event is in the given date range
- * @param e the event to check
- * @param start start of range
- * @param end end of range
- * @param startAccessor
- * @param endAccessor
- * @returns {*}
- */
-export function within(e, start, end, { startAccessor, endAccessor }) {
-  let eStart = get(e, startAccessor);
-  let eEnd = get(e, endAccessor);
-
-  let startsBeforeEnd = eStart <= end;
-  let endsAfterStart = eEnd > start;
+  if (e.endType === 'date') {
+    eEnd = get(e, endAccessor);
+    endsAfterStart = eEnd > start;
+  } else {
+    eEnd = get(e, endAccessor);
+    endsAfterStart = dates.gte(eEnd, start, 'day');
+  }
 
   return startsBeforeEnd && endsAfterStart;
 }

@@ -19,15 +19,11 @@ import Header from './Header';
 import DateHeader from './DateHeader';
 
 import { accessor, dateFormat } from './utils/propTypes';
-import { segStyle, within, inRange, sortEvents } from './utils/eventLevels';
+import { segStyle, formatAwareInRange, sortEvents } from './utils/eventLevels';
 
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => {
-    if (e.allDay) { // Date
-      return within(e, start, end, props);
-    } else { // DateTime
-      return inRange(e, start, end, props);
-    }
+    return formatAwareInRange(e, start, end, props);
   });
 
 let propTypes = {

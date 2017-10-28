@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import propEq from 'ramda/src/propEq';
+import findIndex from 'ramda/src/findIndex';
+
 import BigCalendar from '../../index';
 import { withLevels } from '../../utils/eventLevels';
 
@@ -9,7 +12,6 @@ class DateContentRowWrapper extends Component {
     drag: null,
     hover: null,
     hoverData: null,
-    origLevels: null,
   };
 
   static contextTypes = {
@@ -32,12 +34,12 @@ class DateContentRowWrapper extends Component {
 
   componentWillMount() {
     const props = withLevels(this.props);
-    this.setState({ ...props, origLevels: props.levels });
+    this.setState({ ...props });
   }
 
   componentWillReceiveProps(props, _) {
     const next = withLevels(props);
-    this.setState({ ...next, origLevels: next.levels });
+    this.setState({ ...next });
   }
 
   _posEq = (a, b) =>
@@ -49,25 +51,29 @@ class DateContentRowWrapper extends Component {
 
   handleSegmentHover = (hover, hoverData) => {
     const { drag } = this.state;
-    if (this._posEq(drag, hover)) return;
+    if (this._posEq(drag, hover) || hover.left !== drag.left) return;
 
     const { level: dlevel, left: dleft } = drag;
     const { level: hlevel, left: hleft } = hover;
-
     const { levels } = this.state;
 
-    const cellSegs = levels.reduce((acc, segs) => {
-      return segs.reduce((acc, seg, idx) => {
-        seg.left == dleft && acc.push({ ...seg, idx, isHidden: false });
-        return acc;
-      }, acc);
-    }, []);
+    let cellSegs = levels.map(segs => {
+      const idx = findIndex(propEq('left', dleft))(segs);
+      if (idx === -1) {
+        return { idx };
+      }
+
+      const seg = segs[idx];
+      return { ...seg, idx, isHidden: false };
+    });
 
     const [dseg] = cellSegs.splice(dlevel, 1);
     cellSegs.splice(hlevel, 0, { ...dseg, isHidden: true });
 
     // update cell segments
     cellSegs.forEach(({ idx, ...seg }, i) => {
+      if (idx === -1) return;
+
       let lvl = levels[i];
       seg.level = i;
       lvl[idx] = seg;
@@ -79,7 +85,24 @@ class DateContentRowWrapper extends Component {
   handleSegmentDrop = ({ level, left }) => {
     const { drag, levels, hoverData } = this.state;
     const { onEventReorder } = this.context;
-    onEventReorder && onEventReorder(levels[drag.level][drag.left - 1].event, hoverData);
+
+    if (!hoverData) return;
+
+    const dragSeg = levels[drag.level].find(({ left }) => drag.left === left);
+    if (!dragSeg) {
+      this.setState({ drag: null, hover: null, hoverData: null });
+      return;
+    }
+
+    const dragData = dragSeg.event;
+    const events = levels.reduce((acc, row) => {
+      const seg = row.find(({ left }) => drag.left === left);
+      if (seg) acc.push(seg.event);
+      return acc;
+    }, []);
+
+    // return draggedData, hoverData, idxa, idxb, segments
+    onEventReorder && onEventReorder(dragData, hoverData, drag.level, level, events);
     this.setState({ drag: null, hover: null, hoverData: null });
   };
 

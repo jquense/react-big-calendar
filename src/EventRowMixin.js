@@ -61,7 +61,7 @@ export default {
         onDoubleClick={onDoubleClick}
         onInlineEditEventTitle={onInlineEditEventTitle}
         onSelect={onSelect}
-        selected={isSelected(event, selected)}
+        selected={isSelected(event.data, selected)}
         slotEnd={end}
         slotStart={start}
         startAccessor={startAccessor}

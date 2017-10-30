@@ -99,7 +99,7 @@ class Dnd extends React.Component {
 
   eventsSorter = ({ weight: a }, { weight: b }) => (a < b ? -1 : 1);
 
-  handleEventReorder = (a, b) => {
+  handleEventReorder = (a, b, _idxa, _idxb, list) => {
     let { events } = this.state;
 
     const idxa = events.indexOf(a);
@@ -108,8 +108,9 @@ class Dnd extends React.Component {
     (a = events[idxa]), (b = events[idxb]);
 
     const skew = a.weight > b.weight ? -1 : 1;
-
-    a.weight = b.weight + skew;
+    let remainder = Math.ceil(b.weight / 100) * 100 - b.weight;
+    remainder = remainder <= 0 ? 100 : remainder;
+    a.weight = b.weight + remainder / 2 * skew;
 
     events[idxa] = a;
     this.setState({ events });

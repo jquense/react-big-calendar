@@ -59,32 +59,28 @@ class BackgroundCells extends React.Component {
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx;
           return (
-            <div
-              key={index}
-              className="rbc-day-bg-wrapper"
-              style={{ ...segStyle(1, range.length), height: '100%' }}
-            >
-              <Wrapper value={date} range={range}>
-                {/* ContextMenuTrigger needs to be wrapped in a <div /> per react-dnd - AR 2017-10-31 */}
-                <div>
-                  <ContextMenuTrigger
-                    collect={props => ({ ...props, date })}
-                    holdToDisplay={-1}
-                    id="contextMenu"
-                  >
-                    <div
-                      style={{ height: '100%' }}
-                      className={cn('rbc-day-bg', {
-                        'rbc-today': dates.isToday(date),
-                        'rbc-selected-cell': selected,
-                        'rbc-selected-cell-click': selected && click,
-                        'rbc-off-range-bg': dates.month(currentDate) !== dates.month(date),
-                      })}
-                    />
-                  </ContextMenuTrigger>
-                </div>
-              </Wrapper>
-            </div>
+            <Wrapper key={index} value={date} range={range}>
+              <div
+                className="rbc-day-bg-wrapper"
+                style={{ ...segStyle(1, range.length), height: '100%' }}
+              >
+                <ContextMenuTrigger
+                  collect={props => ({ ...props, date })}
+                  holdToDisplay={-1}
+                  id="contextMenu"
+                >
+                  <div
+                    style={{ height: '100%' }}
+                    className={cn('rbc-day-bg', {
+                      'rbc-today': dates.isToday(date),
+                      'rbc-selected-cell': selected,
+                      'rbc-selected-cell-click': selected && click,
+                      'rbc-off-range-bg': dates.month(currentDate) !== dates.month(date),
+                    })}
+                  />
+                </ContextMenuTrigger>
+              </div>
+            </Wrapper>
           );
         })}
       </div>

@@ -36,7 +36,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
     constructor(...args) {
       super(...args);
-      this.state = { isDragging: false };
+      this.state = { isDragging: false, isResizing: false };
     }
 
     componentWillMount() {
@@ -52,6 +52,12 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
     handleStateChange = () => {
       const isDragging = !!this.monitor.getItem();
+
+      const isResizing = this.monitor.getItemType() === 'resize';
+
+      if (isResizing !== this.state.isResizing) {
+        setTimeout(() => this.setState({ isResizing }));
+      }
 
       if (isDragging !== this.state.isDragging) {
         setTimeout(() => this.setState({ isDragging }));
@@ -70,6 +76,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
       props.className = cn(props.className, 'rbc-addons-dnd', {
         'rbc-addons-dnd-is-dragging': this.state.isDragging,
+        'rbc-addons-dnd-is-resizing': this.state.isResizing,
       });
 
       props.components = {

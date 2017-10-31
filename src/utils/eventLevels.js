@@ -71,6 +71,44 @@ export function eventLevels(rowSegments, limit = Infinity) {
  * @param endAccessor
  * @returns {*}
  */
+export function inRange(e, start, end, { startAccessor, endAccessor }) {
+  let eStart = dates.startOf(get(e, startAccessor), 'day');
+  let eEnd = get(e, endAccessor);
+
+  let startsBeforeEnd = dates.lte(eStart, end, 'day');
+  let endsAfterStart = dates.gte(eEnd, start, 'day');
+
+  return startsBeforeEnd && endsAfterStart;
+}
+
+/**
+ * check if an event is in the given date range
+ * @param e the event to check
+ * @param start start of range
+ * @param end end of range
+ * @param startAccessor
+ * @param endAccessor
+ * @returns {*}
+ */
+export function within(e, start, end, { startAccessor, endAccessor }) {
+  let eStart = get(e, startAccessor);
+  let eEnd = get(e, endAccessor);
+
+  let startsBeforeEnd = eStart <= end;
+  let endsAfterStart = eEnd > start;
+
+  return startsBeforeEnd && endsAfterStart;
+}
+
+/**
+ * check if an event is in the given day range
+ * @param e the event to check
+ * @param start start of range
+ * @param end end of range
+ * @param startAccessor
+ * @param endAccessor
+ * @returns {*}
+ */
 
 export function formatAwareInRange(e, start, end, { startAccessor, endAccessor }) {
   let eStart, eEnd, startsBeforeEnd, endsAfterStart;

@@ -45,7 +45,7 @@ class EventCell extends React.Component {
     super(props);
     this.state = {
       isEditingEventTitle: false,
-      title: get(props.event, props.titleAccessor),
+      title: get(props.event.data, props.titleAccessor),
     };
   }
 
@@ -67,22 +67,22 @@ class EventCell extends React.Component {
   };
 
   handleKeyPress = e => {
-    const { onInlineEditEventTitle, event } = this.props;
+    const { onInlineEditEventTitle, event: { data: event } } = this.props;
     if (e.key == 'Enter') {
       onInlineEditEventTitle({ event, title: this.state.title });
       this.setState({ isEditingEventTitle: false });
     }
   };
 
-  handleMoveCaretToEnd = e => {
+  handleMoveCaretToEnd = ({ target }) => {
     const { title } = this.state;
-    if (e.target.setSelectionRange) {
-      e.target.setSelectionRange(title.length, title.length);
+    if (title && target.setSelectionRange) {
+      target.setSelectionRange(title.length, title.length);
     }
   };
 
   handleBlur = () => {
-    const { onInlineEditEventTitle, event } = this.props;
+    const { onInlineEditEventTitle, event: { data: event } } = this.props;
     onInlineEditEventTitle({ event, title: this.state.title });
     this.setState({ isEditingEventTitle: false });
   };

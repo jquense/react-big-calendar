@@ -45,7 +45,7 @@ class EventCell extends React.Component {
     super(props);
     this.state = {
       isEditingEventTitle: false,
-      title: get(props.event, props.titleAccessor) || '',
+      title: get(props.event.data, props.titleAccessor),
     };
   }
 

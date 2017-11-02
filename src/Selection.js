@@ -257,7 +257,11 @@ class Selection {
     const { pageX, pageY, clientX, clientY } = getEventCoordinates(e);
     const now = new Date().getTime();
 
-    if (this._lastClickData && now - this._lastClickData.timestamp < clickInterval) {
+    if (
+        this._lastClickData &&
+        !this._lastClickData.isDblClick &&
+        now - this._lastClickData.timestamp < clickInterval
+    ) {
       // Double click event
       this._lastClickData = {
         timestamp: now,

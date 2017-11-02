@@ -444,7 +444,7 @@ class Calendar extends React.Component {
       /**
        * Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"
        */
-      agendaHeaderFormat: dateFormat,
+      agendaHeaderFormat: dateRangeFormat,
 
       /**
        * A time range format for selecting time slots, e.g "8:00am — 2:00pm"

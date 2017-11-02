@@ -201,11 +201,13 @@ class DayColumn extends React.Component {
         <EventWrapper event={event} key={'evt_' + idx}>
           <div
             style={{
+              width: `${width}%`,
+              [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
+              // We allow override all styles, apart from top and height,
+              // which are essential to element postioning
               ...xStyle,
               top: `${top}%`,
               height: `${height}%`,
-              [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-              width: `${width}%`
             }}
             title={(typeof label === 'string' ? label + ': ' : '') + title }
             onClick={(e) => this._select(event, e)}

@@ -114,6 +114,10 @@ export default class TimeGrid extends Component {
 
     this.applyScroll();
     this.positionTimeIndicator();
+    var rbc = document.getElementsByClassName('rbc-event');
+    if(rbc.length > 0){
+      rbc[0].scrollIntoView();
+    }
     //this.checkOverflow()
   }
 

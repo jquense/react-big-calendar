@@ -49,14 +49,24 @@ class DateContentRowWrapper extends Component {
     this.setState({ drag });
   };
 
-  handleSegmentHover = (hover, hoverData) => {
-    const { drag } = this.state;
+  handleSegmentHover = (hover, hoverData, { data, position: { span } }) => {
+    let { drag, events } = this.state;
+    if (!drag && hoverData.type === 'outsideEvent') {
+      const dragPos = { ...hover, span, level: hover.level + 1 };
+
+      this.setState(prev => ({
+        drag: dragPos,
+        events: [...prev.events, { data, position: dragPos }],
+      }));
+      return;
+    }
     if (this._posEq(drag, hover) || hover.left !== drag.left) return;
 
     const { level: dlevel, left: dleft } = drag;
     const { level: hlevel, left: hleft } = hover;
     const { levels } = this.state;
 
+    // Flatten out segments in a single day cell
     let cellSegs = levels.map(segs => {
       const idx = findIndex(propEq('left', dleft))(segs);
       if (idx === -1) {

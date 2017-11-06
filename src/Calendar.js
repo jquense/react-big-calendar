@@ -702,13 +702,12 @@ class Calendar extends React.Component {
     const { onDrillDown } = this.props;
     if (onDrillDown) {
       onDrillDown(date, view, this.drilldownView)
+      return;
     }
-    else {
-      if (view)
-        this.handleViewChange(view)
+    if (view)
+      this.handleViewChange(view)
 
-      this.handleNavigate(navigate.DATE, date)
-    }
+    this.handleNavigate(navigate.DATE, date)
   };
 }
 

@@ -96,6 +96,12 @@ class Calendar extends React.Component {
     onView: PropTypes.func,
 
     /**
+     * Callback fired when date header, or the truncated events links are clicked
+     *
+     */
+    onDrillDown: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
@@ -693,6 +699,11 @@ class Calendar extends React.Component {
   };
 
   handleDrillDown = (date, view) => {
+    const { onDrillDown } = this.props;
+    if (onDrillDown) {
+      onDrillDown(date, view, this.drilldownView)
+      return;
+    }
     if (view)
       this.handleViewChange(view)
 

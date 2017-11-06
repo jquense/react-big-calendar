@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 import propEq from 'ramda/src/propEq';
 import findIndex from 'ramda/src/findIndex';
+import addDays from 'date-fns/add_days';
 
 import BigCalendar from '../../index';
 import { withLevels } from '../../utils/eventLevels';
@@ -38,6 +39,7 @@ class DateContentRowWrapper extends Component {
   }
 
   componentWillReceiveProps(props, _) {
+    console.log(props);
     const next = withLevels(props);
     this.setState({ ...next });
   }
@@ -49,16 +51,35 @@ class DateContentRowWrapper extends Component {
     this.setState({ drag });
   };
 
-  handleSegmentHover = (hover, hoverData, { data, position: { span } }) => {
-    let { drag, events } = this.state;
-    if (!drag && hoverData.type === 'outsideEvent') {
+  handleSegmentHover = ({ position: hover, data: hoverData }, dragEvent) => {
+    const { type: dragEventType, data: dragData, ...dragRest } = dragEvent;
+    let { drag } = this.state;
+    let { events } = this.props;
+    if (!drag && dragEventType === 'outsideEvent') {
+      // update position based on hover
+      const { position: { span } } = dragRest;
       const dragPos = { ...hover, span, level: hover.level + 1 };
 
-      this.setState(prev => ({
+      console.log('dd', dragEvent);
+
+      // calculate start and end
+      const data = {
+        ...dragData,
+        key: dragData.id,
+        locked: false,
+        start: hoverData.start,
+        end: addDays(hoverData.start, span),
+        weight: hoverData.weight - 0.5,
+      };
+      console.log('d with w', data);
+      // update levels
+      events = [...events, data];
+      const levels = withLevels({ ...this.props, events });
+      console.log('el', events, levels);
+      return this.setState(prev => ({
+        ...levels,
         drag: dragPos,
-        events: [...prev.events, { data, position: dragPos }],
       }));
-      return;
     }
     if (this._posEq(drag, hover) || hover.left !== drag.left) return;
 

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import cuid from 'cuid';
 import propEq from 'ramda/src/propEq';
 import findIndex from 'ramda/src/findIndex';
 import addDays from 'date-fns/add_days';
@@ -23,6 +23,7 @@ class DateContentRowWrapper extends Component {
     onSegmentDrag: PropTypes.func,
     onSegmentHover: PropTypes.func,
     onSegmentDrop: PropTypes.func,
+    onBackgroundCellHoverExit: PropTypes.func,
   };
 
   getChildContext() {
@@ -30,6 +31,7 @@ class DateContentRowWrapper extends Component {
       onSegmentDrag: this.handleSegmentDrag,
       onSegmentHover: this.handleSegmentHover,
       onSegmentDrop: this.handleSegmentDrop,
+      onBackgroundCellHoverExit: this.handleBackgroundCellHoverExit,
     };
   }
 
@@ -39,16 +41,19 @@ class DateContentRowWrapper extends Component {
   }
 
   componentWillReceiveProps(props, _) {
-    console.log(props);
     const next = withLevels(props);
     this.setState({ ...next });
   }
 
-  _posEq = (a, b) =>
-    a.span === b.span && a.left === b.left && a.right === b.right && a.level === b.level;
+  _posEq = (a, b) => a.left === b.left && a.level === b.level;
 
   handleSegmentDrag = drag => {
     this.setState({ drag });
+  };
+
+  handleBackgroundCellHoverExit = () => {
+    const props = withLevels(this.props);
+    this.setState({ ...props, drag: null });
   };
 
   handleSegmentHover = ({ position: hover, data: hoverData }, dragEvent) => {
@@ -59,23 +64,38 @@ class DateContentRowWrapper extends Component {
       // update position based on hover
       const { position: { span } } = dragRest;
       const dragPos = { ...hover, span, level: hover.level + 1 };
-
-      console.log('dd', dragEvent);
+      const { id: eventTemplateId, eventTemplateId: id, ...dragDataRest } = dragData;
 
       // calculate start and end
       const data = {
-        ...dragData,
-        key: dragData.id,
+        ...dragDataRest,
+        id: cuid(),
+        eventTemplateId,
         locked: false,
         start: hoverData.start,
         end: addDays(hoverData.start, span),
         weight: hoverData.weight - 0.5,
       };
-      console.log('d with w', data);
-      // update levels
+
+      // update events
       events = [...events, data];
+
+      // sort events
+      events.sort(({ weight: a }, { weight: b }) => (a < b ? -1 : 1));
+
+      // recalculate levels
       const levels = withLevels({ ...this.props, events });
-      console.log('el', events, levels);
+
+      // update drag level
+      let nextDragData = null;
+      const lvls = levels.levels;
+      for (let i = 0, len = lvls.length; i < len; i++) {
+        const lvl = lvls[i];
+        nextDragData = lvl.find(({ event, ...pos }) => event === data);
+        if (nextDragData) break;
+      }
+
+      dragPos.level = nextDragData.level;
       return this.setState(prev => ({
         ...levels,
         drag: dragPos,
@@ -87,7 +107,7 @@ class DateContentRowWrapper extends Component {
     const { level: hlevel, left: hleft } = hover;
     const { levels } = this.state;
 
-    // Flatten out segments in a single day cell
+    // flatten out segments in a single day cell
     let cellSegs = levels.map(segs => {
       const idx = findIndex(propEq('left', dleft))(segs);
       if (idx === -1) {

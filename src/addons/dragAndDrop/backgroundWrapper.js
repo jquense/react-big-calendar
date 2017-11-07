@@ -200,10 +200,10 @@ function createWrapper(type) {
         if (itemType === ItemTypes.RESIZE) {
           switch (eventType) {
             case 'resizeL': {
-              return onEventResize('drop', { event, start: value, end });
+              return onEventResize('hover', { event, start: value, end });
             }
             case 'resizeR': {
-              return onEventResize('drop', { event, start, end: value });
+              return onEventResize('hover', { event, start, end: value });
             }
             default: {
               return;

@@ -19,7 +19,8 @@ let propTypes = {
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func
 }
 
 class EventCell extends React.Component {
@@ -33,6 +34,7 @@ class EventCell extends React.Component {
       , slotStart
       , slotEnd
       , onSelect
+      , onDoubleClick
       , eventComponent: Event
       , eventWrapperComponent: EventWrapper
       , ...props } = this.props;
@@ -58,6 +60,7 @@ class EventCell extends React.Component {
             'rbc-event-continues-after': continuesAfter
           })}
           onClick={(e) => onSelect(event, e)}
+          onDoubleClick={(e) => onDoubleClick(event, e)}
         >
           <div className='rbc-event-content' title={title}>
             { Event

@@ -96,6 +96,12 @@ class Calendar extends React.Component {
     onView: PropTypes.func,
 
     /**
+     * Callback fired when date header, or the truncated events links are clicked
+     *
+     */
+    onDrillDown: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
@@ -104,7 +110,7 @@ class Calendar extends React.Component {
      *     start: Date,
      *     end: Date,
      *     slots: Array<Date>,
-     *     action: "select" | "click"
+     *     action: "select" | "click" | "doubleClick"
      *   }
      * ) => any
      * ```
@@ -121,6 +127,15 @@ class Calendar extends React.Component {
      * @controllable selected
      */
     onSelectEvent: PropTypes.func,
+
+    /**
+     * Callback fired when a calendar event is clicked twice.
+     *
+     * ```js
+     * (event: Object, e: SyntheticEvent) => void
+     * ```
+     */
+    onDoubleClickEvent: PropTypes.func,
 
     /**
      * Callback fired when dragging a selection in the Time views.
@@ -435,7 +450,7 @@ class Calendar extends React.Component {
       /**
        * Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"
        */
-      agendaHeaderFormat: dateFormat,
+      agendaHeaderFormat: dateRangeFormat,
 
       /**
        * A time range format for selecting time slots, e.g "8:00am — 2:00pm"
@@ -645,6 +660,7 @@ class Calendar extends React.Component {
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
+          onDoubleClickEvent={this.handleDoubleClickEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
         />
@@ -674,11 +690,20 @@ class Calendar extends React.Component {
     notify(this.props.onSelectEvent, args)
   };
 
+  handleDoubleClickEvent = (...args) => {
+    notify(this.props.onDoubleClickEvent, args)
+  }
+
   handleSelectSlot = (slotInfo) => {
     notify(this.props.onSelectSlot, slotInfo)
   };
 
   handleDrillDown = (date, view) => {
+    const { onDrillDown } = this.props;
+    if (onDrillDown) {
+      onDrillDown(date, view, this.drilldownView)
+      return;
+    }
     if (view)
       this.handleViewChange(view)
 

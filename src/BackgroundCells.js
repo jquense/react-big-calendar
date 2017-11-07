@@ -91,6 +91,27 @@ class BackgroundCells extends React.Component {
       longPressThreshold: this.props.longPressThreshold,
     })
 
+    let selectorClicksHandler = (point, actionType) => {
+      if (!isEvent(findDOMNode(this), point)) {
+        let rowBox = getBoundsForNode(node)
+        let { range, rtl } = this.props;
+
+        if (pointInBox(rowBox, point)) {
+          let width = slotWidth(getBoundsForNode(node),  range.length);
+          let currentCell = getCellAtX(rowBox, point.x, width, rtl, range.length);
+
+          this._selectSlot({
+            startIdx: currentCell,
+            endIdx: currentCell,
+            action: actionType,
+          })
+        }
+      }
+
+      this._initial = {}
+      this.setState({ selecting: false })
+    };
+
     selector.on('selecting', box => {
       let { range, rtl } = this.props;
 
@@ -125,26 +146,10 @@ class BackgroundCells extends React.Component {
     })
 
     selector
-      .on('click', point => {
-        if (!isEvent(findDOMNode(this), point)) {
-          let rowBox = getBoundsForNode(node)
-          let { range, rtl } = this.props;
+      .on('click', point => selectorClicksHandler(point, 'click'))
 
-          if (pointInBox(rowBox, point)) {
-            let width = slotWidth(getBoundsForNode(node),  range.length);
-            let currentCell = getCellAtX(rowBox, point.x, width, rtl, range.length);
-
-            this._selectSlot({
-              startIdx: currentCell,
-              endIdx: currentCell,
-              action: 'click',
-            })
-          }
-        }
-
-        this._initial = {}
-        this.setState({ selecting: false })
-      })
+    selector
+      .on('doubleClick', point => selectorClicksHandler(point, 'doubleClick'))
 
     selector
       .on('select', () => {

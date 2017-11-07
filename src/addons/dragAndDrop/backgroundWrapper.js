@@ -8,12 +8,13 @@ import addMinutes from 'date-fns/add_minutes';
 import getMinutes from 'date-fns/get_minutes';
 import addMilliseconds from 'date-fns/add_milliseconds';
 
-import compose from './compose';
-import dates from '../../utils/dates';
-import BigCalendar from '../../index';
 import { accessor } from '../../utils/propTypes';
 import { accessor as get } from '../../utils/accessors';
 import * as helpers from './helpers';
+import BigCalendar from '../../index';
+import compose from './compose';
+import dates from '../../utils/dates';
+import ItemTypes from './itemTypes';
 
 export function getEventTimes(start, end, dropDate, type) {
   // Calculate duration between original start and end dates
@@ -142,7 +143,7 @@ function createWrapper(type) {
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
-      if (itemType === 'event') {
+      if (itemType === ItemTypes.EVENT) {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on
         * info inside user setable `data` prop.
@@ -168,6 +169,9 @@ function createWrapper(type) {
           case 'resizeR': {
             return onEventResize('drop', { event, start, end: value });
           }
+          default: {
+            return;
+          }
         }
 
         // Catch All
@@ -176,6 +180,34 @@ function createWrapper(type) {
           start,
           end: value,
         });
+      }
+    },
+    hover(_, monitor, { props, context }) {
+      const itemType = monitor.getItemType();
+      const { data: event, type: eventType } = monitor.getItem();
+      const { value } = props;
+      const { onEventResize, startAccessor, endAccessor } = context;
+      const start = get(event, startAccessor);
+      const end = get(event, endAccessor);
+
+      // This is to prevent calling hover too many times when the hover value does not change - AR 2017-11-07
+      // Got this idea from AgamlaRage per https://git.io/vFBwc
+      if (!window.RBC_RESIZE_VALUE || window.RBC_RESIZE_VALUE.toString() !== value.toString()) {
+        window.RBC_RESIZE_VALUE = value;
+
+        if (itemType === ItemTypes.RESIZE) {
+          switch (eventType) {
+            case 'resizeL': {
+              return onEventResize('drop', { event, start: value, end });
+            }
+            case 'resizeR': {
+              return onEventResize('drop', { event, start, end: value });
+            }
+            default: {
+              return;
+            }
+          }
+        }
       }
     },
   };

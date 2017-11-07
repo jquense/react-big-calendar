@@ -110,7 +110,7 @@ class Calendar extends React.Component {
      *     start: Date,
      *     end: Date,
      *     slots: Array<Date>,
-     *     action: "select" | "click"
+     *     action: "select" | "click" | "doubleClick"
      *   }
      * ) => any
      * ```

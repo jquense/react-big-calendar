@@ -42,7 +42,7 @@ class Dnd extends React.Component {
     // by an identifier. here we use the title and the start time, but depending
     // on use case you may want have a truly unique id attribute in the event
     const nextEvents = events.map(existingEvent => {
-      return existingEvent.start == event.start && existingEvent.title == event.title
+      return existingEvent.id == event.id
         ? { ...existingEvent, start, end }
         : existingEvent;
     })

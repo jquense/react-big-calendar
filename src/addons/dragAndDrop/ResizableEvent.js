@@ -36,11 +36,11 @@ class ResizableEvent extends React.Component {
 }
 
 const eventSourceTop = {
-  beginDrag: ({ event }) => ({ ...event, type: 'resizeT' })
+  beginDrag: ({ event }) => ({ ...event, type: 'resizeTop' })
 }
 
 const eventSourceBottom = {
-  beginDrag: ({ event }) => ({ ...event, type: 'resizeB' })
+  beginDrag: ({ event }) => ({ ...event, type: 'resizeBottom' })
 }
 
 export default compose(

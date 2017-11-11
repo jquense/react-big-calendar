@@ -141,16 +141,16 @@ function createWrapper(type) {
       if (monitor.getItemType() === 'resize') {
 
         switch(event.type) {
-          case 'resizeT': {
+          case 'resizeTop': {
             return onEventResize('drop', { event, start: value, end: event.end });
           }
-          case 'resizeB': {
+          case 'resizeBottom': {
             return onEventResize('drop', { event, start: event.start, end: value })
           }
-          case 'resizeL': {
+          case 'resizeLeft': {
             return onEventResize('drop', { event, start: value, end: event.end });
           }
-          case 'resizeR': {
+          case 'resizeRight': {
             const nextEnd = dates.add(value, 1, 'day')
             return onEventResize('drop', { event, start: event.start, end: nextEnd })
           }

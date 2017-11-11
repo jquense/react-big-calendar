@@ -142,7 +142,7 @@ class DayColumn extends React.Component {
       , showMultiDayTimes
       , culture
       , eventPropGetter
-      , selected, eventTimeRangeFormat, components: { eventComponent }
+      , selected, eventTimeRangeFormat, components: { event: EventComponent }
       , messages
       , eventTimeRangeStartFormat
       , eventTimeRangeEndFormat
@@ -152,7 +152,6 @@ class DayColumn extends React.Component {
       , timeslots
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
-    let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
       events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin: this._totalMin, step, timeslots

@@ -6,6 +6,7 @@ import cn from 'classnames';
 import { accessor } from '../../utils/propTypes';
 import DraggableEventWrapper from './DraggableEventWrapper'
 import ResizableEvent from './ResizableEvent'
+import ResizableMonthEvent from './ResizableMonthEvent';
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
 
 let html5Backend;
@@ -59,7 +60,7 @@ export default function withDragAndDrop(Calendar, {
     }
 
     render() {
-      const { selectable, components, ...props } = this.props;
+      const { selectable, components, resizable, ...props } = this.props;
 
       delete props.onEventDrop;
       delete props.onEventResize;
@@ -75,10 +76,12 @@ export default function withDragAndDrop(Calendar, {
 
       props.components = {
         ...components,
-        eventWrapper: DraggableEventWrapper,
-        eventComponent: this.props.resizable && ResizableEvent,
         dateCellWrapper: DateCellWrapper,
-        dayWrapper: DayWrapper
+        day: { event: resizable && ResizableEvent },
+        dayWrapper: DayWrapper,
+        eventWrapper: DraggableEventWrapper,
+        month: { event: resizable && ResizableMonthEvent },
+        week: { event: resizable && ResizableEvent },
       }
 
       return <Calendar {...props} />

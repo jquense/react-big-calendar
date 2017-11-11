@@ -50,10 +50,6 @@ class EventCell extends React.Component {
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
 
-    if (this.props.resizable) {
-      Event = ResizableMonthEvent
-    }
-
     return (
       <EventWrapper event={event}>
         <div

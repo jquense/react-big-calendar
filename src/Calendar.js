@@ -609,7 +609,7 @@ class Calendar extends React.Component {
     let names = viewNames(this.props.views)
 
     let viewComponents = defaults(
-      components[view] || {},
+      components[view],
       omit(components, names),
       {
         eventWrapper: EventWrapper,

@@ -186,7 +186,7 @@ function createWrapper(type) {
       const itemType = monitor.getItemType();
       const { data: event, type: eventType } = monitor.getItem();
       const { value } = props;
-      const { onEventResize, startAccessor, endAccessor } = context;
+      const { onEventDrop, onEventResize, startAccessor, endAccessor } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
@@ -207,6 +207,11 @@ function createWrapper(type) {
               return;
             }
           }
+        } else if (itemType === ItemTypes.EVENT && eventType !== 'outsideEvent') {
+          return onEventDrop({
+            event,
+            ...getEventTimes(start, end, value, type),
+          });
         }
       }
     },

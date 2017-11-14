@@ -29,17 +29,14 @@ class Dnd extends React.Component {
   moveEvent({ event, start, end }) {
     const { events } = this.state;
 
-    const idx = events.indexOf(event);
-    const updatedEvent = { ...event, start, end };
-
-    const nextEvents = [...events];
-    nextEvents.splice(idx, 1, updatedEvent);
+    const nextEvents = events.map(prevEvent => {
+      if (event.id !== prevEvent.id) return prevEvent;
+      return { ...prevEvent, start, end };
+    });
 
     this.setState({
       events: nextEvents,
     });
-
-    alert(`${event.title} was dropped onto ${event.start}`);
   }
 
   handleEventResize = (resizeType, { event, start, end }) => {

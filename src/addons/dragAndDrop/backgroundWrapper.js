@@ -85,7 +85,6 @@ class DraggableBackgroundWrapper extends React.Component {
     onEventResize: PropTypes.func,
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
-    onBackgroundCellHoverExit: PropTypes.func,
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor,
@@ -102,11 +101,6 @@ class DraggableBackgroundWrapper extends React.Component {
         // This was causing me performance issues so I commented it out. Thoughts? - Adam Recvlohe Oct. 6 2017
         // onEventResize('drag', {event: monitor.getItem(), end: value});
       }
-    }
-
-    if (!isOver && wasOver) {
-      const { onBackgroundCellHoverExit } = this.context;
-      onBackgroundCellHoverExit();
     }
   }
 
@@ -150,7 +144,11 @@ function createWrapper(type) {
       const end = get(event, endAccessor);
 
       if (itemType === ItemTypes.EVENT) {
-        if (eventType === 'outsideEvent') {
+        /**
+        * `outsideEvent` needs to be re-thought. We shouldn't rely on
+        * info inside user setable `data` prop.
+        */
+        if (event.type === 'outsideEvent') {
           return onOutsideEventDrop({
             event,
             start: value,

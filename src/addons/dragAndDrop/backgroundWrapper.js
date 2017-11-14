@@ -154,7 +154,7 @@ function createWrapper(type) {
             start: value,
           });
         } else {
-          return onEventDrop({
+          return onEventDrop('drop', {
             event,
             ...getEventTimes(start, end, value, type),
           });
@@ -208,7 +208,7 @@ function createWrapper(type) {
             }
           }
         } else if (itemType === ItemTypes.EVENT && eventType !== 'outsideEvent') {
-          return onEventDrop({
+          return onEventDrop('hover', {
             event,
             ...getEventTimes(start, end, value, type),
           });

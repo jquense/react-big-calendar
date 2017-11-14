@@ -42,8 +42,10 @@ class DateContentRowWrapper extends Component {
     this.setState({ ...next });
   }
 
-  _posEq = (a, b) =>
-    a.span === b.span && a.left === b.left && a.right === b.right && a.level === b.level;
+  _posEq = (a, b) => {
+    if (!a || !b) return;
+    return a.span === b.span && a.left === b.left && a.right === b.right && a.level === b.level;
+  };
 
   handleSegmentDrag = drag => {
     this.setState({ drag });
@@ -51,6 +53,7 @@ class DateContentRowWrapper extends Component {
 
   handleSegmentHover = (hover, hoverData) => {
     const { drag } = this.state;
+    if (!hover || !hover.left || !drag || !drag.left) return;
     if (this._posEq(drag, hover) || hover.left !== drag.left) return;
 
     const { level: dlevel, left: dleft } = drag;

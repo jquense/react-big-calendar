@@ -146,8 +146,8 @@ class EventCell extends React.Component {
                   if (!currentTarget.contains(document.activeElement)) {
                     onSelect({}, e);
                   }
-                  // 100ms is given to setTimeout so that it fires after a right-click event - AR Tue Oct 24 14:10:25 EDT 2017
-                }, 100);
+                  // 200ms is given to setTimeout so that it fires after a right-click event - AR Tue Oct 24 14:10:25 EDT 2017
+                }, 200);
               }}
               onClick={e => onSelect(data, e)}
               /*onDoubleClick={e => onDoubleClick(event, e)}*/

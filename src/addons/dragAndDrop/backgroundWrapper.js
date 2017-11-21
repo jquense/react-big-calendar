@@ -183,11 +183,6 @@ function createWrapper(type) {
             return;
           }
         }
-      } else if (itemType === ItemTypes.EVENT && eventType !== 'outsideEvent') {
-        return onEventDrop('hover', {
-          event,
-          ...getEventTimes(start, end, value, type),
-        });
       }
     },
   };

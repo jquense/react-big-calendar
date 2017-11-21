@@ -97,15 +97,16 @@ class DateContentRowWrapper extends Component {
     if (type === 'resizeL' || type === 'resizeR') return;
 
     if (!drag && type === 'outsideEvent') {
-      const { id: eventTemplateId, eventTemplateId: id, ...dragDataRest } = data;
+      const { id: eventTemplateId, eventTemplateId: id, styles, name } = data;
 
       // calculate start and end
       const newId = cuid();
       const event = {
-        ...dragDataRest,
         id: newId,
         key: newId,
         eventTemplateId,
+        styles,
+        name,
         locked: false,
         start: date,
         end: addDays(date, position.span - 1),
@@ -117,28 +118,29 @@ class DateContentRowWrapper extends Component {
     }
 
     const { level: dlevel, left: dleft, span: dspan } = drag;
-    const { id: did } = data;
 
     if (drag) {
+      const dragId = path(['event', 'id'], drag);
       const nextLeft = findDayIndex(range, date) + 1;
       window.RBC_CURR_DAY = nextLeft;
       const segsInDay = ((right, left) =>
         levels.reduce((acc, lvl) => {
           return acc.concat(filter(overlaps(nextLeft, nextLeft))(lvl));
         }, []))(nextLeft, nextLeft);
-      if (segsInDay.length && segsInDay.some(({ event: { id } }) => did === id)) {
+
+      if (segsInDay.length && dragId && segsInDay.some(({ event: { id } }) => id === dragId)) {
         this.ignoreHoverUpdates = false;
         return;
       }
 
-      const nextLevel = segsInDay.filter(({ left }) => left === dleft).length;
-      if (type === 'outsideEvent') {
+      const nextLevel = segsInDay.filter(({ left }) => left === nextLeft).length;
+      if (type === 'outsideEvent' && drag.level === 0) {
         drag.level = nextLevel;
       }
 
       let hover = calcPosFromDate(date, range, dspan);
-      hover.level = segsInDay.length;
-      const nextLevels = reorderLevels(levels, drag, { ...hover, event: drag.data });
+      hover.level = nextLevel; //segsInDay.length;
+      const nextLevels = reorderLevels(levels, drag, { ...hover, event: drag.event });
       const { level: hlevel, right: hright } = hover;
       let _dleft = hlevel !== dlevel ? nextLeft : hright - (dspan - 1);
       window.RBC_DRAG_POS = {
@@ -146,6 +148,7 @@ class DateContentRowWrapper extends Component {
         right: _dleft + (dspan - 1),
         span: dspan,
         level: hlevel,
+        event: drag.event,
       };
       return this.setState({ levels: nextLevels });
     }
@@ -173,7 +176,6 @@ class DateContentRowWrapper extends Component {
     const { levels } = this.state;
     const [nextDrag, nextLevels] = reorderLevels(levels, drag, hoverItem.position);
     setDragItem({ ...nextDrag, row });
-
     this.setState({ levels: nextLevels });
   };
 

@@ -15,6 +15,7 @@ class EventRow extends React.Component {
 
     let lastEnd = 1;
 
+    console.log('row', this.props.level);
     return (
       <div className="rbc-row">
         {segments.reduce((row, segment, li) => {

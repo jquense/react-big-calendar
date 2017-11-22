@@ -23,6 +23,21 @@ const calcPosFromDate = (date, range, span) => {
   return { left: idx + 1, right: idx + span, span, level: 0 };
 };
 
+const overlaps = (left, right) => ({ left: l, right: r }) => r >= left && right >= l;
+
+const _segRemover = (self, { level, left }) => {
+  const findSeg = findIndex(propEq('left', left));
+  return () => {
+    const { levels } = self.state;
+    const lvl = levels[level];
+    const idx = findSeg(lvl);
+    lvl.splice(idx, 1);
+    self.setState({ levels });
+  };
+};
+
+const cloneLevels = lvls => lvls.map(lvl => [].concat(lvl));
+
 class DateContentRowWrapper extends Component {
   constructor(props) {
     super(props);
@@ -89,12 +104,19 @@ class DateContentRowWrapper extends Component {
 
   handleBackgroundCellEnter = (date, dragItem) => {
     this.ignoreHoverUpdates = true;
+    console.log('background cell enter', date);
 
-    const { range } = this.props;
+    const { range, level: row } = this.props;
     const { levels } = this.state;
     const { type, data, position } = dragItem;
     let drag = window.RBC_DRAG_POS;
     if (type === 'resizeL' || type === 'resizeR') return;
+
+    if (window.RBC_LAST_WEEK_ROW !== row && window.RBC_REMOVE_ORPHANED_SEG) {
+      window.RBC_REMOVE_ORPHANED_SEG();
+      window.RBC_REMOVE_ORPHANED_SEG = null;
+      window.RBC_LAST_WEEK_ROW = row;
+    }
 
     if (!drag && type === 'outsideEvent') {
       const { id: eventTemplateId, eventTemplateId: id, styles, name } = data;
@@ -108,21 +130,22 @@ class DateContentRowWrapper extends Component {
         styles,
         name,
         locked: false,
-        start: date,
-        end: addDays(date, position.span - 1),
+        //start: date,
+        //end: addDays(date, position.span - 1),
       };
       drag = {
         ...calcPosFromDate(date, range, position.span),
         event,
+        row,
       };
     }
 
-    const { level: dlevel, left: dleft, span: dspan } = drag;
+    const { level: dlevel, left: dleft, span: dspan, row: drow } = drag;
 
+    console.log('d', drag);
     if (drag) {
       const dragId = path(['event', 'id'], drag);
       const nextLeft = findDayIndex(range, date) + 1;
-      window.RBC_CURR_DAY = nextLeft;
       const segsInDay = ((right, left) =>
         levels.reduce((acc, lvl) => {
           return acc.concat(filter(overlaps(nextLeft, nextLeft))(lvl));
@@ -133,23 +156,43 @@ class DateContentRowWrapper extends Component {
         return;
       }
 
-      const nextLevel = segsInDay.filter(({ left }) => left === nextLeft).length;
-      if (type === 'outsideEvent' && drag.level === 0) {
+      const nextLevel = segsInDay.length; //.filter(({ left }) => left === nextLeft).length;
+      console.log('next lvl', nextLevel);
+      /*if ((type === 'outsideEvent' && drag.level === 0) || row !== drow) {
+        drag.level = nextLevel;
+      }*/
+      if (row !== drow) {
         drag.level = nextLevel;
       }
 
       let hover = calcPosFromDate(date, range, dspan);
-      hover.level = nextLevel; //segsInDay.length;
-      const nextLevels = reorderLevels(levels, drag, { ...hover, event: drag.event });
+      hover.level = nextLevel;
+
+      // update start/end date
+      drag.event.start = date;
+      drag.event.end = addDays(date, dspan - 1);
+
+      console.log('before', { ...drag }, { ...hover });
+      const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
+        ...hover,
+        row,
+        event: drag.event,
+      });
       const { level: hlevel, right: hright } = hover;
       let _dleft = hlevel !== dlevel ? nextLeft : hright - (dspan - 1);
-      window.RBC_DRAG_POS = {
+      window.RBC_DRAG_POS = nextDrag; /*{
         left: _dleft,
         right: _dleft + (dspan - 1),
         span: dspan,
         level: hlevel,
         event: drag.event,
-      };
+        row,
+      };*/
+
+      console.log('next drag', window.RBC_DRAG_POS);
+      console.log('nnnn', cloneLevels(nextLevels));
+      // setup cleanup routine
+      window.RBC_REMOVE_ORPHANED_SEG = _segRemover(this, window.RBC_DRAG_POS);
       return this.setState({ levels: nextLevels });
     }
   };

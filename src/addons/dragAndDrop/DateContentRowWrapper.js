@@ -157,16 +157,17 @@ class DateContentRowWrapper extends Component {
       }
 
       const nextLevel = segsInDay.length; //.filter(({ left }) => left === nextLeft).length;
-      console.log('next lvl', nextLevel);
+      console.log('next lvl', row, drow, nextLevel);
       /*if ((type === 'outsideEvent' && drag.level === 0) || row !== drow) {
         drag.level = nextLevel;
       }*/
-      if (row !== drow) {
-        drag.level = nextLevel;
-      }
 
       let hover = calcPosFromDate(date, range, dspan);
-      hover.level = nextLevel;
+      //hover.level = nextLevel;
+      if (row !== drow || (type === 'outsideEvent' && drag.level === 0 && nextLevel)) {
+        drag.level = nextLevel;
+        hover.level = nextLevel;
+      }
 
       // update start/end date
       drag.event.start = date;
@@ -180,7 +181,10 @@ class DateContentRowWrapper extends Component {
       });
       const { level: hlevel, right: hright } = hover;
       let _dleft = hlevel !== dlevel ? nextLeft : hright - (dspan - 1);
-      window.RBC_DRAG_POS = nextDrag; /*{
+      window.RBC_DRAG_POS = {
+        ...nextDrag,
+        row,
+      }; /*{
         left: _dleft,
         right: _dleft + (dspan - 1),
         span: dspan,

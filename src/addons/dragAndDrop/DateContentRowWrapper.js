@@ -112,11 +112,14 @@ class DateContentRowWrapper extends Component {
     let drag = window.RBC_DRAG_POS;
     if (type === 'resizeL' || type === 'resizeR') return;
 
-    if (window.RBC_LAST_WEEK_ROW !== row && window.RBC_REMOVE_ORPHANED_SEG) {
+    const lastKnownWeekRow = window.RBC_LAST_WEEK_ROW;
+    if (lastKnownWeekRow && lastKnownWeekRow !== row && window.RBC_REMOVE_ORPHANED_SEG) {
       window.RBC_REMOVE_ORPHANED_SEG();
       window.RBC_REMOVE_ORPHANED_SEG = null;
-      window.RBC_LAST_WEEK_ROW = row;
     }
+
+    // update last known week row
+    window.RBC_LAST_WEEK_ROW = row;
 
     if (!drag && type === 'outsideEvent') {
       const { id: eventTemplateId, eventTemplateId: id, styles, name } = data;
@@ -137,6 +140,7 @@ class DateContentRowWrapper extends Component {
         ...calcPosFromDate(date, range, position.span),
         event,
         row,
+        level: -1,
       };
     }
 
@@ -148,9 +152,11 @@ class DateContentRowWrapper extends Component {
       const nextLeft = findDayIndex(range, date) + 1;
       const segsInDay = ((right, left) =>
         levels.reduce((acc, lvl) => {
-          return acc.concat(filter(overlaps(nextLeft, nextLeft))(lvl));
+          return acc.concat(filter(overlaps(right, left))(lvl));
         }, []))(nextLeft, nextLeft);
 
+      console.log(segsInDay.length, dragId, [].concat(segsInDay));
+      console.log('curr lvls', cloneLevels(levels));
       if (segsInDay.length && dragId && segsInDay.some(({ event: { id } }) => id === dragId)) {
         this.ignoreHoverUpdates = false;
         return;
@@ -164,7 +170,7 @@ class DateContentRowWrapper extends Component {
 
       let hover = calcPosFromDate(date, range, dspan);
       //hover.level = nextLevel;
-      if (row !== drow || (type === 'outsideEvent' && drag.level === 0 && nextLevel)) {
+      if (row !== drow || (type === 'outsideEvent' && dlevel === -1)) {
         drag.level = nextLevel;
         hover.level = nextLevel;
       }

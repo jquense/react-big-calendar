@@ -20,7 +20,7 @@ import { notify } from './utils/helpers';
 
 import { accessor as get } from './utils/accessors';
 
-import { inRange, sortEvents, segStyle } from './utils/eventLevels';
+import { formatAwareInRange, sortEvents, segStyle } from './utils/eventLevels';
 
 export default class TimeGrid extends Component {
 
@@ -154,7 +154,7 @@ export default class TimeGrid extends Component {
       , rangeEvents = [];
 
     events.forEach(event => {
-      if (inRange(event, start, end, this.props)) {
+      if (formatAwareInRange(event, start, end, this.props)) {
         let eStart = get(event, startAccessor)
           , eEnd = get(event, endAccessor);
 
@@ -202,7 +202,7 @@ export default class TimeGrid extends Component {
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(
-        event => dates.inRange(date,
+        event => dates.formatAwareInRange(date,
           get(event, startAccessor),
           get(event, endAccessor), 'day')
       );

@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
 import moment from 'moment';
 import React from 'react';
 

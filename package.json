@@ -44,7 +44,7 @@
     "react-dom": "^15.3.0 || ^16.0.0"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.28.1",
+    "@storybook/react": "3.2.16",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
@@ -58,7 +58,7 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.8.0",
     "globalize": "^0.1.1",
-    "less": "^2.7.2",
+    "less": "^2.7.3",
     "less-plugin-autoprefix": "^1.5.1",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",

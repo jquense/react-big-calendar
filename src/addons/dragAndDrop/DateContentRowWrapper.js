@@ -8,6 +8,7 @@ import path from 'ramda/src/path';
 import filter from 'ramda/src/filter';
 import addDays from 'date-fns/add_days';
 import isSameDay from 'date-fns/is_same_day';
+import format from 'date-fns/format';
 import cuid from 'cuid';
 
 import BigCalendar from '../../index';
@@ -133,6 +134,7 @@ class DateContentRowWrapper extends Component {
         styles,
         name,
         locked: false,
+        visible: true,
         //start: date,
         //end: addDays(date, position.span - 1),
       };
@@ -146,7 +148,7 @@ class DateContentRowWrapper extends Component {
 
     const { level: dlevel, left: dleft, span: dspan, row: drow } = drag;
 
-    console.log('d', drag);
+    //console.log('d', drag);
     if (drag) {
       const dragId = path(['event', 'id'], drag);
       const nextLeft = findDayIndex(range, date) + 1;
@@ -155,15 +157,15 @@ class DateContentRowWrapper extends Component {
           return acc.concat(filter(overlaps(right, left))(lvl));
         }, []))(nextLeft, nextLeft);
 
-      console.log(segsInDay.length, dragId, [].concat(segsInDay));
-      console.log('curr lvls', cloneLevels(levels));
+      //console.log(segsInDay.length, dragId, [].concat(segsInDay));
+      //console.log('curr lvls', cloneLevels(levels));
       if (segsInDay.length && dragId && segsInDay.some(({ event: { id } }) => id === dragId)) {
         this.ignoreHoverUpdates = false;
         return;
       }
 
       const nextLevel = segsInDay.length; //.filter(({ left }) => left === nextLeft).length;
-      console.log('next lvl', row, drow, nextLevel);
+      //console.log('next lvl', row, drow, nextLevel);
       /*if ((type === 'outsideEvent' && drag.level === 0) || row !== drow) {
         drag.level = nextLevel;
       }*/
@@ -176,8 +178,8 @@ class DateContentRowWrapper extends Component {
       }
 
       // update start/end date
-      drag.event.start = date;
-      drag.event.end = addDays(date, dspan - 1);
+      drag.event.start = format(date);
+      drag.event.end = format(addDays(date, dspan - 1));
 
       console.log('before', { ...drag }, { ...hover });
       const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
@@ -199,8 +201,8 @@ class DateContentRowWrapper extends Component {
         row,
       };*/
 
-      console.log('next drag', window.RBC_DRAG_POS);
-      console.log('nnnn', cloneLevels(nextLevels));
+      //console.log('next drag', window.RBC_DRAG_POS);
+      //console.log('nnnn', cloneLevels(nextLevels));
       // setup cleanup routine
       window.RBC_REMOVE_ORPHANED_SEG = _segRemover(this, window.RBC_DRAG_POS);
       return this.setState({ levels: nextLevels });
@@ -209,6 +211,7 @@ class DateContentRowWrapper extends Component {
 
   handleBackgroundCellHoverExit = () => {
     // TODO: figure out if needed
+    //console.log('hover exit');
   };
 
   handleSegmentHover = (hoverItem, dragItem) => {

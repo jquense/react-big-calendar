@@ -7,9 +7,10 @@ import findIndex from 'ramda/src/findIndex';
 import BigCalendar from '../../index';
 import { withLevels } from '../../utils/eventLevels';
 
+const overlaps = (left, right) => ({ left: l, right: r }) => r >= left && right >= l;
+
 class DateContentRowWrapper extends Component {
   state = {
-    drag: null,
     hover: null,
     hoverData: null,
   };
@@ -20,6 +21,7 @@ class DateContentRowWrapper extends Component {
 
   static childContextTypes = {
     onSegmentDrag: PropTypes.func,
+    onSegmentDragEnd: PropTypes.func,
     onSegmentHover: PropTypes.func,
     onSegmentDrop: PropTypes.func,
   };
@@ -27,6 +29,7 @@ class DateContentRowWrapper extends Component {
   getChildContext() {
     return {
       onSegmentDrag: this.handleSegmentDrag,
+      onSegmentDragEnd: this.handleSegmentDragEnd,
       onSegmentHover: this.handleSegmentHover,
       onSegmentDrop: this.handleSegmentDrop,
     };
@@ -42,19 +45,17 @@ class DateContentRowWrapper extends Component {
     this.setState({ ...next });
   }
 
-  _posEq = (a, b) => {
-    if (!a || !b) return;
-    return a.span === b.span && a.left === b.left && a.right === b.right && a.level === b.level;
+  handleSegmentDrag = drag => {
+    window.RBC_DRAG_ITEM = drag;
   };
 
-  handleSegmentDrag = drag => {
-    this.setState({ drag });
+  handleSegmentDragEnd = () => {
+    window.RBC_DRAG_ITEM = null;
   };
 
   handleSegmentHover = (hover, hoverData) => {
-    const { drag } = this.state;
-    if (!hover || !hover.left || !drag || !drag.left) return;
-    if (this._posEq(drag, hover) || hover.left !== drag.left) return;
+    const drag = window.RBC_DRAG_ITEM;
+    if (!drag || !overlaps(drag)(hover)) return;
 
     const { level: dlevel, left: dleft } = drag;
     const { level: hlevel, left: hleft } = hover;

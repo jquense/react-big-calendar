@@ -26,7 +26,7 @@ class Dnd extends React.Component {
     alert(title);
   };
 
-  moveEvent({ event, start, end }) {
+  moveEvent(eventType, { event, start, end }) {
     const { events } = this.state;
 
     const nextEvents = events.map(prevEvent => {

@@ -2,6 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
+import format from 'date-fns/format';
 import addHours from 'date-fns/add_hours';
 import getHours from 'date-fns/get_hours';
 import addMinutes from 'date-fns/add_minutes';
@@ -18,7 +19,7 @@ import ItemTypes from './itemTypes';
 
 export function getEventTimes(start, end, dropDate, type) {
   // Calculate duration between original start and end dates
-  const duration = dates.diff(start, end);
+  const duration = dates.diff(format(start), format(end));
 
   // If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
   // the original start date and add it to newDate.value

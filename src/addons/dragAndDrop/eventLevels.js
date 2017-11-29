@@ -117,10 +117,20 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
         level = [...notOver, { ...hoverSeg, event: hoverData }];
         remainder = over.length ? over : null;
       } else if (dspan > 1) {
-        level.push(...overlapping, { ...hoverSeg, event: hoverData });
+        const [left, right] = calcRange(overlapping);
+        const [over, notOver] = groupOverlapping(level, { right, left });
+
+        if (!over.length) {
+          level.push(...overlapping, { ...hoverSeg, event: hoverData });
+        } else {
+          const nxtLvl = [...overlapping, ...notOver, { ...hoverSeg, event: hoverData }];
+          nxtLvl.sort(segSorter);
+          level = nxtLvl;
+          remainder = over;
+        }
       } else if (dleft !== hleft) {
         // noop
-      } else if (/*dlevel < hlevel &&*/ Math.abs(lvlDiff) === 1) {
+      } else if (Math.abs(lvlDiff) === 1) {
         // insert hover into current level
         level.push({ ...hoverSeg, event: hoverData });
       }
@@ -130,7 +140,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
       if (dspan > 1) {
         nextLevelIdx = i;
         level = [...notOverlapping, { ...dragSeg, event: dragData }];
-      } else if (/*dleft !== hleft*/ !overlaps(dleft, dright)(hoverSeg)) {
+      } else if (!overlaps(dleft, dright)(hoverSeg)) {
         let leftOffset = hspan !== dspan ? (dleft > hleft ? hright : hleft) - (dspan - 1) : hleft;
         const nextSeg = newSeg(dragSeg, { left: leftOffset }, dragData);
         nextLevelIdx = i;
@@ -139,17 +149,11 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
       } else if (Math.abs(lvlDiff) === 1) {
         // insert drag into currect level
         nextLevelIdx = i;
-        /*hlevel > dlevel &&*/ level.push({ ...dragSeg, event: dragData });
+        level.push({ ...dragSeg, event: dragData });
       } else {
-        if (dlevel < hlevel) {
-          nextLevelIdx = i + 1;
-          nextLevels.push([{ ...hoverSeg, event: hoverData }]);
-          level.push(newSeg(dragSeg, hoverSeg, dragData));
-        } else {
-          nextLevelIdx = i;
-          nextLevels.push([{ ...dragSeg, event: dragData }]);
-          level.push(newSeg(hoverSeg, dragSeg, hoverData));
-        }
+        nextLevelIdx = i;
+        nextLevels.push([{ ...dragSeg, event: dragData }]);
+        level.push(newSeg(hoverSeg, dragSeg, hoverData));
       }
     }
 
@@ -160,7 +164,6 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
         const [left, right] = calcRange(remainder);
         const [over, notOver] = groupOverlapping(level, { left, right });
         level = [...notOver, ...remainder];
-        //processRemainder = false;
         remainder = over.length ? over : ((processRemainder = false), null);
       } else {
         processRemainder = true;

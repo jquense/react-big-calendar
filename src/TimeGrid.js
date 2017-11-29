@@ -202,7 +202,7 @@ export default class TimeGrid extends Component {
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(
-        event => dates.formatAwareInRange(date,
+        event => dates.inRange(date,
           get(event, startAccessor),
           get(event, endAccessor), 'day')
       );

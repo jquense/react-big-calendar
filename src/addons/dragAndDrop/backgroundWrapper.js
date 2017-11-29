@@ -2,6 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
+import format from 'date-fns/format';
 import addHours from 'date-fns/add_hours';
 import getHours from 'date-fns/get_hours';
 import addMinutes from 'date-fns/add_minutes';
@@ -28,8 +29,8 @@ export function getEventTimes(start, end, dropDate, type) {
   const nextEnd = addMilliseconds(nextStart, duration);
 
   return {
-    start: nextStart,
-    end: nextEnd,
+    start: format(nextStart),
+    end: format(nextEnd),
   };
 }
 

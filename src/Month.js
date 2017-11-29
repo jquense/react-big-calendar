@@ -192,6 +192,7 @@ class MonthView extends React.Component {
         eventPropGetter={eventPropGetter}
         events={events}
         key={weekIdx}
+        level={weekIdx}
         eventWrapperComponent={components.eventWrapper}
         longPressThreshold={longPressThreshold}
         maxRows={rowLimit}

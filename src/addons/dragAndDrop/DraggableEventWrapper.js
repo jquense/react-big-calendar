@@ -16,8 +16,8 @@ let eventSource = {
     return event;
   },
   endDrag(props, monitor, component) {
+    console.log(props, component);
     if (!component) {
-      window.RBC_DRAG_ITEM = null;
       return;
     }
     const { onSegmentDragEnd } = component.context;

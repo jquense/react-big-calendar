@@ -6,17 +6,15 @@ import findIndex from 'ramda/src/findIndex';
 
 import BigCalendar from '../../index';
 import { withLevels } from '../../utils/eventLevels';
+import reorderLevels from './eventLevels';
 
 const overlaps = (left, right) => ({ left: l, right: r }) => r >= left && right >= l;
 
 class DateContentRowWrapper extends Component {
-  state = {
-    hover: null,
-    hoverData: null,
-  };
-
   static contextTypes = {
     onEventReorder: PropTypes.func,
+    getDragItem: PropTypes.func,
+    setDragItem: PropTypes.func,
   };
 
   static childContextTypes = {
@@ -46,68 +44,55 @@ class DateContentRowWrapper extends Component {
   }
 
   handleSegmentDrag = drag => {
-    window.RBC_DRAG_ITEM = drag;
+    const { setDragItem } = this.context;
+    setDragItem(drag);
   };
 
   handleSegmentDragEnd = () => {
-    window.RBC_DRAG_ITEM = null;
+    const { setDragItem } = this.context;
+    setDragItem(null);
   };
 
-  handleSegmentHover = (hover, hoverData) => {
-    const drag = window.RBC_DRAG_ITEM;
-    if (!drag || !overlaps(drag)(hover)) return;
+  handleSegmentHover = (hoverItem, dragItem) => {
+    const { getDragItem, setDragItem } = this.context;
+    const drag = getDragItem();
+    const { level: row } = this.props;
 
-    const { level: dlevel, left: dleft } = drag;
+    if (!drag) return;
+
+    const { position: hover, data: hoverData } = hoverItem;
+    const { level: dlevel, left: dleft, right: dright, row: drow } = drag;
     const { level: hlevel, left: hleft } = hover;
+
+    if (
+      row !== drow || // restrict to same week
+      (dleft === hleft && dlevel === hlevel) || // ignore equal segments
+      !overlaps(dleft, dright)(hover)
+    )
+      return; // ignore non overlapping segs
+
+    console.log('h', hoverItem, dragItem, drag);
     const { levels } = this.state;
+    const [nextDrag, nextLevels] = reorderLevels(levels, drag, hoverItem.position);
+    setDragItem({ ...nextDrag, row });
 
-    let cellSegs = levels.map(segs => {
-      const idx = findIndex(propEq('left', dleft))(segs);
-      if (idx === -1) {
-        return { idx };
-      }
-
-      const seg = segs[idx];
-      return { ...seg, idx, isHidden: false };
-    });
-
-    const [dseg] = cellSegs.splice(dlevel, 1);
-    cellSegs.splice(hlevel, 0, { ...dseg, isHidden: true });
-
-    // update cell segments
-    cellSegs.forEach(({ idx, ...seg }, i) => {
-      if (idx === -1) return;
-
-      let lvl = levels[i];
-      seg.level = i;
-      lvl[idx] = seg;
-    });
-
-    this.setState({ levels, drag: { ...drag, level: hlevel }, hover, hoverData });
+    this.setState({ levels: nextLevels });
   };
 
   handleSegmentDrop = ({ level, left }) => {
-    const { drag, levels, hoverData } = this.state;
-    const { onEventReorder } = this.context;
-
-    if (!hoverData) return;
+    const { levels } = this.state;
+    const { onEventReorder, getDragItem } = this.context;
+    const drag = getDragItem();
 
     const dragSeg = levels[drag.level].find(({ left }) => drag.left === left);
-    if (!dragSeg) {
-      this.setState({ drag: null, hover: null, hoverData: null });
-      return;
-    }
+    console.log('found', dragSeg);
+    if (!dragSeg) return;
 
-    const dragData = dragSeg.event;
-    const events = levels.reduce((acc, row) => {
-      const seg = row.find(({ left }) => drag.left === left);
-      if (seg) acc.push(seg.event);
-      return acc;
-    }, []);
-
-    // return draggedData, hoverData, idxa, idxb, segments
-    onEventReorder && onEventReorder(dragData, hoverData, drag.level, level, events);
-    this.setState({ drag: null, hover: null, hoverData: null });
+    const events = levels.reduce(
+      (acc, row) => row.reduce((acc, { event }) => (acc.push(event), acc), acc),
+      [],
+    );
+    onEventReorder(events);
   };
 
   render() {

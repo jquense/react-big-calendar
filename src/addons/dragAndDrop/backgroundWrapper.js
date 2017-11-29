@@ -19,7 +19,7 @@ import ItemTypes from './itemTypes';
 
 export function getEventTimes(start, end, dropDate, type) {
   // Calculate duration between original start and end dates
-  const duration = dates.diff(format(start), format(end));
+  const duration = dates.diff(start, end);
 
   // If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
   // the original start date and add it to newDate.value
@@ -29,8 +29,8 @@ export function getEventTimes(start, end, dropDate, type) {
   const nextEnd = addMilliseconds(nextStart, duration);
 
   return {
-    start: nextStart,
-    end: nextEnd,
+    start: format(nextStart),
+    end: format(nextEnd),
   };
 }
 

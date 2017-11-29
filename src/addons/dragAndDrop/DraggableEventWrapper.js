@@ -16,7 +16,6 @@ let eventSource = {
     return event;
   },
   endDrag(props, monitor, component) {
-    console.log(props, component);
     if (!component) {
       return;
     }

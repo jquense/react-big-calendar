@@ -71,7 +71,6 @@ class DateContentRowWrapper extends Component {
     )
       return; // ignore non overlapping segs
 
-    console.log('h', hoverItem, dragItem, drag);
     const { levels } = this.state;
     const [nextDrag, nextLevels] = reorderLevels(levels, drag, hoverItem.position);
     setDragItem({ ...nextDrag, row });
@@ -85,7 +84,6 @@ class DateContentRowWrapper extends Component {
     const drag = getDragItem();
 
     const dragSeg = levels[drag.level].find(({ left }) => drag.left === left);
-    console.log('found', dragSeg);
     if (!dragSeg) return;
 
     const events = levels.reduce(

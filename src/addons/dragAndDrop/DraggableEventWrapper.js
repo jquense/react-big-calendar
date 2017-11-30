@@ -22,6 +22,10 @@ let eventSource = {
     const { onSegmentDragEnd } = component.context;
     onSegmentDragEnd();
   },
+  canDrag(props, monitor) {
+    const { children: { _owner: { _instance: { state: { isEditingEventTitle } } } } } = props;
+    return !isEditingEventTitle;
+  },
 };
 
 const eventTarget = {

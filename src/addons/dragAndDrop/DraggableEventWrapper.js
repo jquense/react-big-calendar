@@ -9,7 +9,7 @@ import BigCalendar from '../../index';
 /* drag sources */
 
 let eventSource = {
-  beginDrag({ event }, monitor, { context }) {
+  beginDrag({ event, ...props }, monitor, { context }) {
     const { onSegmentDrag } = context;
     const { data, position } = event;
     onSegmentDrag({ ...position, event: data });
@@ -21,6 +21,10 @@ let eventSource = {
     }
     const { onSegmentDragEnd } = component.context;
     onSegmentDragEnd();
+  },
+  canDrag(props, monitor) {
+    const { children: { _owner: { _instance: { state: { isEditingEventTitle } } } } } = props;
+    return !isEditingEventTitle;
   },
 };
 

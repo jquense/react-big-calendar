@@ -8,6 +8,9 @@ import getHours from 'date-fns/get_hours';
 import addMinutes from 'date-fns/add_minutes';
 import getMinutes from 'date-fns/get_minutes';
 import addMilliseconds from 'date-fns/add_milliseconds';
+import isSameDay from 'date-fns/is_same_day';
+import parse from 'date-fns/parse';
+import findIndex from 'ramda/src/findIndex';
 
 import { accessor } from '../../utils/propTypes';
 import { accessor as get } from '../../utils/accessors';
@@ -17,9 +20,16 @@ import compose from './compose';
 import dates from '../../utils/dates';
 import ItemTypes from './itemTypes';
 
+const findDayIndex = (range, date) => findIndex(val => isSameDay(date, val))(range);
+
+const calcPosFromDate = (date, range, span) => {
+  const idx = findDayIndex(range, date);
+  return { left: idx + 1, right: idx + span, span, level: 0 };
+};
+
 export function getEventTimes(start, end, dropDate, type) {
   // Calculate duration between original start and end dates
-  const duration = dates.diff(start, end);
+  const duration = dates.diff(parse(start), parse(end));
 
   // If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
   // the original start date and add it to newDate.value
@@ -89,6 +99,8 @@ class DraggableBackgroundWrapper extends React.Component {
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor,
+    getDragItem: PropTypes.func,
+    setDragItem: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -186,7 +198,7 @@ function createWrapper(type) {
     hover(_, monitor, { props, context }) {
       const itemType = monitor.getItemType();
       const { data: event, type: eventType } = monitor.getItem();
-      const { value } = props;
+      const { value, range, row } = props;
       const { onEventDrop, onEventResize, startAccessor, endAccessor } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
@@ -209,10 +221,17 @@ function createWrapper(type) {
             }
           }
         } else if (itemType === ItemTypes.EVENT && eventType !== 'outsideEvent') {
-          return onEventDrop('hover', {
-            event,
-            ...getEventTimes(start, end, value, type),
-          });
+          const left = findDayIndex(range, value) + 1;
+          const dleft = findDayIndex(range, start) + 1;
+          // if event instance that is being dragged starts on the cell we are hovering
+          // then do nothing
+          if (dleft === left) return;
+
+          const pos = calcPosFromDate(value, range, dates.diff(end, start, 'day') + 1);
+          const eventItem = { event, ...getEventTimes(start, end, value, type) };
+          const { setDragItem } = context;
+          onEventDrop('hover', eventItem);
+          setDragItem(null);
         }
       }
     },

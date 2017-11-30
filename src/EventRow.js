@@ -24,7 +24,7 @@ class EventRow extends React.Component {
 
           const event = {
             data,
-            position: { left, right, span, level },
+            position: { left, right, span, level, row: this.props.level },
           };
 
           const content = EventRowMixin.renderEvent(this.props, event);

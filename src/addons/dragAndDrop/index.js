@@ -31,6 +31,10 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         onEventReorder: this.props.onEventReorder,
         onOutsideEventDrop: this.props.onOutsideEventDrop,
         startAccessor: this.props.startAccessor,
+
+        // accessors for global drag item state
+        setDragItem: drag => this.setState({ drag }),
+        getDragItem: () => this.state.drag,
       };
     }
 
@@ -116,6 +120,8 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
+    getDragItem: PropTypes.func,
+    setDragItem: PropTypes.func,
   };
 
   if (backend === false) {

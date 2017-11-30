@@ -9,7 +9,7 @@ import BigCalendar from '../../index';
 /* drag sources */
 
 let eventSource = {
-  beginDrag({ event, ...props }, monitor, { context }) {
+  beginDrag({ event }, monitor, { context }) {
     const { onSegmentDrag } = context;
     const { data, position } = event;
     onSegmentDrag({ ...position, event: data });

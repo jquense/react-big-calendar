@@ -3,6 +3,7 @@ import React from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import cn from 'classnames';
 import { compose } from 'recompose';
+import { path } from 'ramda';
 
 import BigCalendar from '../../index';
 
@@ -23,8 +24,15 @@ let eventSource = {
     onSegmentDragEnd();
   },
   canDrag(props, monitor) {
-    const { children: { _owner: { _instance: { state: { isEditingEventTitle } } } } } = props;
-    return !isEditingEventTitle;
+    /*
+    itv-calendar uses React 16, meaning that the path to the isEditingEventTitle value in state is different than in React 15.
+    So although isEditing path does not work with the dnd example locally it will work when integrated with itv-calendar. AR - 2017-11-30
+    */
+    const isEditing = path(
+      ['children', '_owner', 'stateNode', 'state', 'isEditingEventTitle'],
+      props,
+    );
+    return !isEditing;
   },
 };
 

@@ -34,17 +34,18 @@ export function segStyle(span, slots) {
 }
 
 export function eventLevels(rowSegments, limit = Infinity) {
-  let i,
-    j,
-    seg,
+  let i = 0,
+    j = 0,
+    seg = null,
     levels = [],
     extra = [];
 
   for (i = 0; i < rowSegments.length; i++) {
     seg = rowSegments[i];
 
-    for (j = 0; j < levels.length; j++) if (!segsOverlap(seg, levels[j])) break;
+    for (j = levels.length - 1; j >= 0; j--) if (segsOverlap(seg, levels[j])) break;
 
+    j += 1;
     if (j >= limit) {
       extra.push(seg);
     } else {

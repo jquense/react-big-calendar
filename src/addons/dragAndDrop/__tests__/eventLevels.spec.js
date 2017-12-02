@@ -655,7 +655,7 @@ describe('Vertical reorder', () => {
       const drag = levels[1][2];
       const hover = levels[0][1];
       const [_, nextLevels] = reorderLevels(levels, drag, hover);
-      console.log('out', nextLevels);
+
       // level 0
       expect(nextLevels[0].length).toEqual(1);
       expect(nextLevels[0][0].event).toEqual(7);
@@ -678,6 +678,45 @@ describe('Vertical reorder', () => {
       expect(nextLevels[4].length).toEqual(2);
       expect(nextLevels[5].length).toEqual(2);
       expect(nextLevels[6].length).toEqual(1);
+    });
+    test('when dragging single to multi span (0,1) to (2,0)', () => {
+      const levels = [
+        [seg(3, 3, 1, 0, 1), seg(5, 5, 1, 0, 2)],
+        [seg(3, 3, 1, 1, 3)],
+        [seg(2, 6, 5, 2, 4)],
+        [seg(5, 5, 1, 3, 5)],
+      ];
+      const drag = levels[0][1];
+      const hover = levels[2][0];
+      const [_, nextLevels] = reorderLevels(levels, drag, hover);
+      expect(nextLevels.length).toEqual(5);
+      console.log('out', nextLevels);
+
+      // level 0
+      expect(nextLevels[0].length).toEqual(1);
+      expect(nextLevels[0][0].event).toEqual(1);
+
+      // level 1
+      expect(nextLevels[1].length).toEqual(1);
+      expect(nextLevels[1][0].event).toEqual(3);
+
+      // level 2
+      expect(nextLevels[2].length).toEqual(1);
+      expect(nextLevels[2][0].event).toEqual(2);
+      expect(nextLevels[2][0].left).toEqual(5);
+      expect(nextLevels[2][0].right).toEqual(5);
+      expect(nextLevels[2][0].span).toEqual(1);
+
+      // level 3
+      expect(nextLevels[3].length).toEqual(1);
+      expect(nextLevels[3][0].event).toEqual(4);
+      expect(nextLevels[3][0].left).toEqual(2);
+      expect(nextLevels[3][0].right).toEqual(6);
+      expect(nextLevels[3][0].span).toEqual(5);
+
+      // level 4
+      expect(nextLevels[4].length).toEqual(1);
+      expect(nextLevels[4][0].event).toEqual(5);
     });
     /*test('bubble down', () => {
       const levels = [

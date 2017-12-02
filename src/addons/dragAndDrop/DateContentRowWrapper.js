@@ -24,8 +24,6 @@ const calcPosFromDate = (date, range, span) => {
   return { left: idx + 1, right: idx + span, span, level: 0 };
 };
 
-const overlaps = (left, right) => ({ left: l, right: r }) => r >= left && right >= l;
-
 const _segRemover = (self, { level, left }) => {
   const findSeg = findIndex(propEq('left', left));
   return () => {
@@ -108,9 +106,10 @@ class DateContentRowWrapper extends Component {
     console.log('background cell enter', date);
 
     const { range, level: row } = this.props;
+    const { getDragItem, setDragItem } = this.context;
     const { levels } = this.state;
     const { type, data, position } = dragItem;
-    let drag = window.RBC_DRAG_POS;
+    let drag = getDragItem();
     if (type === 'resizeL' || type === 'resizeR') return;
 
     const lastKnownWeekRow = window.RBC_LAST_WEEK_ROW;
@@ -189,7 +188,7 @@ class DateContentRowWrapper extends Component {
       });
       const { level: hlevel, right: hright } = hover;
       let _dleft = hlevel !== dlevel ? nextLeft : hright - (dspan - 1);
-      window.RBC_DRAG_POS = {
+      drag = {
         ...nextDrag,
         row,
       }; /*{
@@ -204,7 +203,8 @@ class DateContentRowWrapper extends Component {
       //console.log('next drag', window.RBC_DRAG_POS);
       //console.log('nnnn', cloneLevels(nextLevels));
       // setup cleanup routine
-      window.RBC_REMOVE_ORPHANED_SEG = _segRemover(this, window.RBC_DRAG_POS);
+      setDragItem(drag);
+      window.RBC_REMOVE_ORPHANED_SEG = _segRemover(this, drag);
       return this.setState({ levels: nextLevels });
     }
   };

@@ -315,6 +315,7 @@ describe('Vertical reorder', () => {
       const drag = levels[2][1];
       const hover = levels[3][1];
       const [_, nextLevels] = reorderLevels(levels, drag, hover);
+      console.log('gg', nextLevels);
       // level 0
       expect(nextLevels[0].length).toEqual(2);
       expect(nextLevels[0][0].event).toEqual(1);

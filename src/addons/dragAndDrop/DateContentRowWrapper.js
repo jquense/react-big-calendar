@@ -181,11 +181,16 @@ class DateContentRowWrapper extends Component {
       drag.event.end = format(addDays(date, dspan - 1));
 
       console.log('before', { ...drag }, { ...hover });
-      const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
-        ...hover,
-        row,
-        event: drag.event,
-      });
+      const [nextDrag, nextLevels] = reorderLevels(
+        levels,
+        drag,
+        {
+          ...hover,
+          row,
+          event: drag.event,
+        },
+        nextLeft,
+      );
       const { level: hlevel, right: hright } = hover;
       let _dleft = hlevel !== dlevel ? nextLeft : hright - (dspan - 1);
       drag = {
@@ -219,7 +224,7 @@ class DateContentRowWrapper extends Component {
 
     const { getDragItem, setDragItem } = this.context;
     const drag = getDragItem();
-    const { level: row } = this.props;
+    const { level: row, range } = this.props;
 
     if (!drag) return;
 
@@ -229,6 +234,7 @@ class DateContentRowWrapper extends Component {
 
     if (dleft === hleft && dlevel === hlevel) return;
 
+    const day = findDayIndex(range, date) + 1;
     const { levels } = this.state;
     const [nextDrag, nextLevels] = reorderLevels(levels, drag, hoverItem.position);
     setDragItem({ ...nextDrag, row });

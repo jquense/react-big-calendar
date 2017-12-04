@@ -156,6 +156,9 @@ class BackgroundCells extends React.Component {
             endIdx: currentCell,
             action: 'click',
           });
+
+          // Deselect event if a background cell is selected
+          this.props.onSelectEvent({});
         }
       }
 

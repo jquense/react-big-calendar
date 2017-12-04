@@ -755,6 +755,7 @@ class Calendar extends React.Component {
 
   handleSelectSlot = slotInfo => {
     notify(this.props.onSelectSlot, slotInfo);
+    notify(this.props.onSelectEvent, {});
   };
 
   handleRightClickSlot = slotInfo => {

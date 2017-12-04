@@ -32,6 +32,21 @@ const groupOverlapping = (level, { left, right }) =>
     [[], []],
   );
 
+const intersectOverlapping = (level, other) =>
+  other.reduce(
+    (acc, segB) => {
+      const { left, right } = segB;
+      const [a, b] = acc;
+      if (!level.some(overlaps(left, right))) {
+        a.push(segB);
+      } else {
+        b.push(segB);
+      }
+      return acc;
+    },
+    [[], []],
+  );
+
 const segSorter = ({ left: a }, { left: b }) => a - b;
 
 const newPos = ({ left }, span) => ({ left, right: left + span - 1, span });
@@ -153,7 +168,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
       } else {
         nextLevelIdx = i;
         nextLevels.push([{ ...dragSeg, event: dragData }]);
-        level.push(newSeg(hoverSeg, dragSeg, hoverData));
+        level.push({ ...hoverSeg, event: hoverData });
       }
     }
 
@@ -161,9 +176,8 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
 
     if (remainder) {
       if (processRemainder) {
-        const [left, right] = calcRange(remainder);
-        const [over, notOver] = groupOverlapping(level, { left, right });
-        level = [...notOver, ...remainder];
+        const [notOver, over] = intersectOverlapping(remainder, level);
+        level = [...remainder, ...notOver];
         remainder = over.length ? over : ((processRemainder = false), null);
       } else {
         processRemainder = true;

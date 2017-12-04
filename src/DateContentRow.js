@@ -159,8 +159,6 @@ class DateContentRow extends React.Component {
       ...props
     } = this.props;
 
-    const onSelectEvent = this.props.onSelect;
-
     if (renderForMeasure) return this.renderDummy();
 
     const { levels, first, last, extra } = this.props;
@@ -173,7 +171,6 @@ class DateContentRow extends React.Component {
           range={range}
           selectable={selectable}
           container={this.getContainer}
-          onSelectEvent={onSelectEvent}
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}

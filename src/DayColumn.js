@@ -61,6 +61,7 @@ class DayColumn extends React.Component {
     className: PropTypes.string,
     dragThroughEvents: PropTypes.bool,
     eventPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
@@ -97,25 +98,30 @@ class DayColumn extends React.Component {
       now,
       selectRangeFormat,
       culture,
+      dayPropGetter,
       ...props
     } = this.props
 
     this._totalMin = dates.diff(min, max, 'minutes')
     let { selecting, startSlot, endSlot } = this.state
-    let style = this._slotStyle(startSlot, endSlot)
+    let slotStyles = this._slotStyle(startSlot, endSlot)
 
     let selectDates = {
       start: this.state.startDate,
       end: this.state.endDate
     };
 
+    const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(max)) || {};
+
     return (
       <TimeColumn
         {...props}
         className={cn(
           'rbc-day-slot',
+          className,
           dates.isToday(max) && 'rbc-today'
         )}
+        style={Object.assign({}, dayStyles, slotStyles)}
         now={now}
         min={min}
         max={max}

@@ -202,7 +202,7 @@ export default class TimeGrid extends Component {
   }
 
   renderEvents(range, events, today){
-    let { min, max, endAccessor, startAccessor, components, dayPropGetter } = this.props;
+    let { min, max, endAccessor, startAccessor, components } = this.props;
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(
@@ -217,7 +217,6 @@ export default class TimeGrid extends Component {
           min={dates.merge(date, min)}
           max={dates.merge(date, max)}
           eventComponent={components.event}
-          dayPropGetter={dayPropGetter}
           eventWrapperComponent={components.eventWrapper}
           dayWrapperComponent={components.dayWrapper}
           className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
@@ -298,7 +297,7 @@ export default class TimeGrid extends Component {
       let drilldownView = getDrilldownView(date);
       let label = localizer.format(date, dayFormat, culture);
 
-      const { className, style } = (dayPropGetter && dayPropGetter(date)) || {};
+      const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(date)) || {};
 
       let header = (
         <HeaderComponent
@@ -318,7 +317,7 @@ export default class TimeGrid extends Component {
             className,
             dates.isToday(date) && 'rbc-today',
           )}
-          style={Object.assign({}, segStyle(1, this.slots), style)}
+          style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
         >
           {drilldownView ? (
             <a

@@ -66,7 +66,7 @@ class BackgroundCells extends React.Component {
           let selected =  selecting && index >= startIdx && index <= endIdx;
           const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(date)) || {};
           const segmStyles = segStyle(1, range.length)
-          const styles = Object.assign({}, segmStyles, dayStyles)
+          const styles = Object.assign({}, dayStyles, segmStyles)
 
           return (
             <Wrapper

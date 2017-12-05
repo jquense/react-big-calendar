@@ -104,14 +104,14 @@ class DayColumn extends React.Component {
 
     this._totalMin = dates.diff(min, max, 'minutes')
     let { selecting, startSlot, endSlot } = this.state
-    let slotStyle = this._slotStyle(startSlot, endSlot)
+    let slotStyles = this._slotStyle(startSlot, endSlot)
 
     let selectDates = {
       start: this.state.startDate,
       end: this.state.endDate
     };
 
-    const { className, style } = (dayPropGetter && dayPropGetter(max)) || {};
+    const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(max)) || {};
 
     return (
       <TimeColumn
@@ -121,7 +121,7 @@ class DayColumn extends React.Component {
           className,
           dates.isToday(max) && 'rbc-today'
         )}
-        style={Object.assign({}, slotStyle, style)}
+        style={Object.assign({}, dayStyles, slotStyles)}
         now={now}
         min={min}
         max={max}

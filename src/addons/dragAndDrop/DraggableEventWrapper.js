@@ -82,7 +82,6 @@ DraggableEventWrapper.contextTypes = contextTypes;
 const dragAndDrop = compose(
   DropTarget('event', eventTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
-    currentOffset: monitor.getSourceClientOffset(),
   })),
   DragSource('event', eventSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),

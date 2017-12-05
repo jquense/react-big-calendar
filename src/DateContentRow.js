@@ -15,6 +15,7 @@ import EventEndingRow from './EventEndingRow';
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 
 const propTypes = {
+  date: PropTypes.instanceOf(Date),
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
 
@@ -25,13 +26,15 @@ const propTypes = {
   container: PropTypes.func,
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
 
   onShowMore: PropTypes.func,
   onSelectSlot: PropTypes.func,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
+  dayPropGetter: PropTypes.func,
 
-  now: PropTypes.instanceOf(Date),
+  now: PropTypes.instanceOf(Date).isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
@@ -135,11 +138,13 @@ class DateContentRow extends React.Component {
 
   render() {
     const {
+      date,
       rtl,
       events,
       range,
       className,
       selectable,
+      dayPropGetter,
       renderForMeasure,
       startAccessor,
       endAccessor,
@@ -150,6 +155,7 @@ class DateContentRow extends React.Component {
       eventWrapperComponent,
       onSelectStart,
       onSelectEnd,
+      longPressThreshold,
       ...props
     } = this.props;
 
@@ -169,14 +175,17 @@ class DateContentRow extends React.Component {
     return (
       <div className={className}>
         <BackgroundCells
+          date={date}
           rtl={rtl}
           range={range}
           selectable={selectable}
           container={this.getContainer}
+          dayPropGetter={dayPropGetter}
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}
           cellWrapperComponent={dateCellWrapper}
+          longPressThreshold={longPressThreshold}
         />
 
         <div className='rbc-row-content'>
@@ -208,6 +217,8 @@ class DateContentRow extends React.Component {
               onShowMore={this.handleShowMore}
               eventComponent={eventComponent}
               eventWrapperComponent={eventWrapperComponent}
+              startAccessor={startAccessor}
+              endAccessor={endAccessor}
             />
           )}
         </div>

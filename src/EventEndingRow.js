@@ -74,7 +74,6 @@ class EventEndingRow extends React.Component {
       </div>
     )
   }
-  S
 
   canRenderSlotEvent(slot, span) {
     let { segments } = this.props

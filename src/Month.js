@@ -21,6 +21,7 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
+
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props))
 
@@ -36,6 +37,7 @@ let propTypes = {
 
   scrollToTime: PropTypes.instanceOf(Date),
   eventPropGetter: PropTypes.func,
+  dayPropGetter: PropTypes.func,
 
   culture: PropTypes.string,
   dayFormat: dateFormat,
@@ -50,10 +52,12 @@ let propTypes = {
 
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
 
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
@@ -77,6 +81,10 @@ let propTypes = {
 class MonthView extends React.Component {
   static displayName = 'MonthView'
   static propTypes = propTypes
+
+  static defaultProps = {
+    now: new Date()
+  }
 
   constructor(...args) {
     super(...args)
@@ -154,9 +162,12 @@ class MonthView extends React.Component {
       endAccessor,
       allDayAccessor,
       eventPropGetter,
+      dayPropGetter,
       messages,
       selected,
       now,
+      date,
+      longPressThreshold,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -171,6 +182,7 @@ class MonthView extends React.Component {
         container={this.getContainer}
         className="rbc-month-row"
         now={now}
+        date={date}
         range={week}
         events={events}
         maxRows={rowLimit}
@@ -182,14 +194,17 @@ class MonthView extends React.Component {
         endAccessor={endAccessor}
         allDayAccessor={allDayAccessor}
         eventPropGetter={eventPropGetter}
+        dayPropGetter={dayPropGetter}
         renderHeader={this.readerDateHeading}
         renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
+        onDoubleClick={this.handleDoubleClickEvent}
         onSelectSlot={this.handleSelectSlot}
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
+        longPressThreshold={longPressThreshold}
       />
     )
   }
@@ -296,6 +311,11 @@ class MonthView extends React.Component {
     notify(this.props.onSelectEvent, args)
   }
 
+  handleDoubleClickEvent = (...args) => {
+    this.clearSelection()
+    notify(this.props.onDoubleClickEvent, args)
+  }
+
   handleShowMore = (events, date, cell, slot) => {
     const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
     //cancel any pending selections so only the event click goes through.
@@ -348,10 +368,9 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-MonthView.range = (date, { culture }) => {
-  let start = dates.firstVisibleDay(date, culture)
-  let end = dates.lastVisibleDay(date, culture)
-  return { start, end }
-}
+
+MonthView.title = (date, { formats, culture }) =>
+  localizer.format(date, formats.monthHeaderFormat, culture);
+
 
 export default MonthView

@@ -37,7 +37,9 @@ export default class TimeGrid extends Component {
 
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
     dayFormat: dateFormat,
+    showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
 
     rtl: PropTypes.bool,
@@ -50,12 +52,14 @@ export default class TimeGrid extends Component {
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+    longPressThreshold: PropTypes.number,
 
     onNavigate: PropTypes.func,
     onSelectSlot: PropTypes.func,
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
     onSelectEvent: PropTypes.func,
+    onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
 
@@ -79,6 +83,7 @@ export default class TimeGrid extends Component {
     super(props)
     this.state = { gutterWidth: undefined, isOverflowing: null };
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
+    this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
   }
 
@@ -141,7 +146,8 @@ export default class TimeGrid extends Component {
       , width
       , startAccessor
       , endAccessor
-      , allDayAccessor } = this.props;
+      , allDayAccessor
+      , showMultiDayTimes} = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -158,15 +164,13 @@ export default class TimeGrid extends Component {
         let eStart = get(event, startAccessor)
           , eEnd = get(event, endAccessor);
 
-        if (
-          get(event, allDayAccessor)
-          || !dates.eq(eStart, eEnd, 'day')
-          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd)))
-        {
+        if (get(event, allDayAccessor)
+          || (dates.isJustDate(eStart) && dates.isJustDate(eEnd))
+          || (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))) {
           allDayEvents.push(event)
-        }
-        else
+        } else {
           rangeEvents.push(event)
+        }
       }
     })
 
@@ -267,6 +271,7 @@ export default class TimeGrid extends Component {
             selectable={selectable}
             onSelectSlot={this.handleSelectAllDaySlot}
             dateCellWrapper={components.dateCellWrapper}
+            dayPropGetter={this.props.dayPropGetter}
             eventComponent={this.props.components.event}
             eventWrapperComponent={this.props.components.eventWrapper}
             titleAccessor={this.props.titleAccessor}
@@ -276,6 +281,8 @@ export default class TimeGrid extends Component {
             eventPropGetter={this.props.eventPropGetter}
             selected={this.props.selected}
             onSelect={this.handleSelectEvent}
+            onDoubleClick={this.handleDoubleClickEvent}
+            longPressThreshold={this.props.longPressThreshold}
           />
         </div>
       </div>
@@ -283,12 +290,14 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderCells(range){
-    let { dayFormat, culture, components, getDrilldownView } = this.props;
+    let { dayFormat, culture, components, dayPropGetter, getDrilldownView } = this.props;
     let HeaderComponent = components.header || Header
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date);
       let label = localizer.format(date, dayFormat, culture);
+
+      const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(date)) || {};
 
       let header = (
         <HeaderComponent
@@ -305,9 +314,10 @@ export default class TimeGrid extends Component {
           key={i}
           className={cn(
             'rbc-header',
+            className,
             dates.isToday(date) && 'rbc-today',
           )}
-          style={segStyle(1, this.slots)}
+          style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
         >
           {drilldownView ? (
             <a
@@ -333,6 +343,10 @@ export default class TimeGrid extends Component {
 
   handleSelectEvent(...args) {
     notify(this.props.onSelectEvent, args)
+  }
+
+  handleDoubleClickEvent(...args) {
+    notify(this.props.onDoubleClickEvent, args)
   }
 
   handleSelectAlldayEvent(...args) {

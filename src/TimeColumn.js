@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import cn from 'classnames';
 
 import dates from './utils/dates';
-import { elementType } from './utils/propTypes';
+import { elementType, dateFormat } from './utils/propTypes';
 import BackgroundWrapper from './BackgroundWrapper';
 import TimeSlotGroup from './TimeSlotGroup'
 
@@ -16,10 +16,12 @@ export default class TimeColumn extends Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
-    timeGutterFormat: PropTypes.string,
+    timeGutterFormat: dateFormat,
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
 
+    slotPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
   }
   static defaultProps = {
@@ -32,7 +34,7 @@ export default class TimeColumn extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat, culture } = this.props;
+    const { dayWrapperComponent, timeslots, showLabels, step, slotPropGetter, dayPropGetter, timeGutterFormat, culture } = this.props;
 
     return (
       <TimeSlotGroup
@@ -40,6 +42,8 @@ export default class TimeColumn extends Component {
         isNow={isNow}
         value={date}
         step={step}
+        slotPropGetter={slotPropGetter}
+        dayPropGetter={dayPropGetter}
         culture={culture}
         timeslots={timeslots}
         showLabels={showLabels}

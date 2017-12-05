@@ -35,7 +35,7 @@
     "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
     "lint": "eslint src --ext .jsx --ext .js",
     "storybook": "start-storybook -p 9002",
-    "test": "npm run lint",
+    "test": "npm run lint && jest",
     "tdd": "karma start",
     "release": "release"
   },
@@ -59,6 +59,7 @@
     "eslint-plugin-react": "^6.8.0",
     "globalize": "^0.1.1",
     "less": "^2.7.3",
+    "jest": "^21.1.0",
     "less-plugin-autoprefix": "^1.5.1",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",

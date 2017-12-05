@@ -21,6 +21,7 @@ export default class TimeColumn extends Component {
     className: PropTypes.string,
 
     slotPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
   }
   static defaultProps = {
@@ -33,7 +34,7 @@ export default class TimeColumn extends Component {
   }
 
   renderTimeSliceGroup(key, isNow, date) {
-    const { dayWrapperComponent, timeslots, showLabels, step, slotPropGetter, timeGutterFormat, culture } = this.props;
+    const { dayWrapperComponent, timeslots, showLabels, step, slotPropGetter, dayPropGetter, timeGutterFormat, culture } = this.props;
 
     return (
       <TimeSlotGroup
@@ -42,6 +43,7 @@ export default class TimeColumn extends Component {
         value={date}
         step={step}
         slotPropGetter={slotPropGetter}
+        dayPropGetter={dayPropGetter}
         culture={culture}
         timeslots={timeslots}
         showLabels={showLabels}

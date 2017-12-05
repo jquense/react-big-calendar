@@ -13,6 +13,7 @@ export default class TimeSlot extends Component {
     content: PropTypes.string,
     culture: PropTypes.string,
     slotPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
   }
 
   static defaultProps = {
@@ -22,7 +23,7 @@ export default class TimeSlot extends Component {
   }
 
   render() {
-    const { value, slotPropGetter } = this.props;
+    const { value, slotPropGetter, dayPropGetter } = this.props;
     const Wrapper = this.props.dayWrapperComponent;
     const { className, style } = (slotPropGetter && slotPropGetter(value)) || {};
 

@@ -32,6 +32,7 @@ const propTypes = {
   onSelectSlot: PropTypes.func,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
+  dayPropGetter: PropTypes.func,
 
   now: PropTypes.instanceOf(Date).isRequired,
   startAccessor: accessor.isRequired,
@@ -143,6 +144,7 @@ class DateContentRow extends React.Component {
       range,
       className,
       selectable,
+      dayPropGetter,
       renderForMeasure,
       startAccessor,
       endAccessor,
@@ -178,6 +180,7 @@ class DateContentRow extends React.Component {
           range={range}
           selectable={selectable}
           container={this.getContainer}
+          dayPropGetter={dayPropGetter}
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}

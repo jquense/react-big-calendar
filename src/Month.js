@@ -37,6 +37,7 @@ let propTypes = {
 
   scrollToTime: PropTypes.instanceOf(Date),
   eventPropGetter: PropTypes.func,
+  dayPropGetter: PropTypes.func,
 
   culture: PropTypes.string,
   dayFormat: dateFormat,
@@ -161,6 +162,7 @@ class MonthView extends React.Component {
       endAccessor,
       allDayAccessor,
       eventPropGetter,
+      dayPropGetter,
       messages,
       selected,
       now,
@@ -192,6 +194,7 @@ class MonthView extends React.Component {
         endAccessor={endAccessor}
         allDayAccessor={allDayAccessor}
         eventPropGetter={eventPropGetter}
+        dayPropGetter={dayPropGetter}
         renderHeader={this.readerDateHeading}
         renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}

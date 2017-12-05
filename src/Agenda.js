@@ -12,6 +12,7 @@ import { accessor as get } from './utils/accessors';
 import { accessor, dateFormat, dateRangeFormat } from './utils/propTypes';
 import { inRange } from './utils/eventLevels';
 import { isSelected } from './utils/selection';
+import { notify } from './utils/helpers';
 
 
 class Agenda extends React.Component {
@@ -25,6 +26,8 @@ class Agenda extends React.Component {
     endAccessor: accessor.isRequired,
     eventPropGetter: PropTypes.func,
     selected: PropTypes.object,
+
+    onSelectEvent: PropTypes.func,
 
     agendaDateFormat: dateFormat,
     agendaTimeFormat: dateFormat,
@@ -48,6 +51,10 @@ class Agenda extends React.Component {
 
   componentDidUpdate() {
     this._adjustHeader();
+  }
+
+  handleSelectEvent = (day, events, idx,range) => {
+    notify(this.props.onSelectEvent, events);
   }
 
   render() {
@@ -124,7 +131,7 @@ class Agenda extends React.Component {
       let title = get(event, titleAccessor);
 
       return (
-        <tr key={dayKey + '_' + idx} className={className} style={style}>
+        <tr key={dayKey + '_' + idx} className={className} style={style} onClick={()=>this.handleSelectEvent(day, events, dayKey)}>
           {first}
           <td className='rbc-agenda-time-cell'>
             { this.timeRangeLabel(day, event) }

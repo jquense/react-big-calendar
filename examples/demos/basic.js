@@ -13,30 +13,9 @@ let Basic = React.createClass({
         views={allViews}
         step={60}
         defaultDate={new Date(2015, 3, 1)}
-        dayPropGetter={customDayPropGetter}
-        slotPropGetter={customSlotPropGetter}
       />
     )
   }
 })
-
-const customDayPropGetter = (date) => {
-  if (date.getDate() === 7 || date.getDate() === 15)
-    return {
-      className: 'special-day',
-      style: {
-        border: 'solid 3px '+((date.getDate() === 7) ? '#faa' : '#afa'),
-      }
-    }
-  else return {}
-}
-
-const customSlotPropGetter = (date) => {
-  if (date.getDate() === 7 || date.getDate() === 15)
-    return {
-      className: 'special-day'
-    }
-  else return {}
-}
 
 export default Basic;

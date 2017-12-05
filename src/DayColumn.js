@@ -115,8 +115,6 @@ class DayColumn extends React.Component {
     const { className, style } =
       (dayPropGetter && dayPropGetter(max)) || {}
 
-    const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(max)) || {};
-
     return (
       <TimeColumn
         {...props}

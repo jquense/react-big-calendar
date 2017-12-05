@@ -26,6 +26,7 @@ export default class TimeGrid extends Component {
 
   static propTypes = {
     events: PropTypes.array.isRequired,
+    specialDays: PropTypes.array,
 
     step: PropTypes.number,
     range: PropTypes.arrayOf(
@@ -146,7 +147,7 @@ export default class TimeGrid extends Component {
       , startAccessor
       , endAccessor
       , allDayAccessor
-      , showMultiDayTimes} = this.props;
+      , showMultiDayTimes } = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -229,7 +230,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components, now } = this.props;
+    let { messages, rtl, selectable, components, now, specialDays } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
@@ -281,6 +282,7 @@ export default class TimeGrid extends Component {
             onSelect={this.handleSelectEvent}
             onDoubleClick={this.handleDoubleClickEvent}
             longPressThreshold={this.props.longPressThreshold}
+            specialDays={specialDays}
           />
         </div>
       </div>

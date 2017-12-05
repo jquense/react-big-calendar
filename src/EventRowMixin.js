@@ -73,7 +73,7 @@ export default {
   renderSpan(props, len, key, content = ' ', isHidden = false) {
     let { slots } = props;
 
-    const per = Math.abs(len) / slots * 100 - 0.2 + '%';
+    const per = Math.abs(len) / slots * 100 /*- 0.2*/ + '%';
     const style = {
       WebkitFlexBasis: per,
       flexBasis: per,

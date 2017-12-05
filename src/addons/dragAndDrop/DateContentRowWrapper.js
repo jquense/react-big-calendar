@@ -108,7 +108,7 @@ class DateContentRowWrapper extends Component {
     const { range, level: row } = this.props;
     const { getDragItem, setDragItem } = this.context;
     const { levels } = this.state;
-    const { type, data, position } = dragItem;
+    const { type, data: { type: eventType, ...data }, position } = dragItem;
     let drag = getDragItem();
     if (type === 'resizeL' || type === 'resizeR') return;
 
@@ -121,7 +121,7 @@ class DateContentRowWrapper extends Component {
     // update last known week row
     window.RBC_LAST_WEEK_ROW = row;
 
-    if (!drag && type === 'outsideEvent') {
+    if (!drag && eventType === 'outsideEvent') {
       const { id: eventTemplateId, eventTemplateId: id, styles, name } = data;
 
       // calculate start and end

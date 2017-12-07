@@ -1,5 +1,7 @@
 parser: babel-eslint
-extends: jason/react
+extends:
+  - jason/react
+  - prettier
 
 rules:
   global-require: off

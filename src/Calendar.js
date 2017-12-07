@@ -58,6 +58,10 @@ let now = new Date();
  * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
  */
 class Calendar extends React.Component {
+  state = {
+    selected: {},
+  };
+
   static propTypes = {
     /**
      * Props passed to main calendar `<div>`.
@@ -720,6 +724,7 @@ class Calendar extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
           ref="view"
+          selected={this.state.selected}
           showAllEvents={this.props.showAllEvents}
         />
         {this.renderContextMenu()}
@@ -745,8 +750,8 @@ class Calendar extends React.Component {
     if (view !== this.props.view && isValidView(view, this.props)) this.props.onView(view);
   };
 
-  handleSelectEvent = (...args) => {
-    notify(this.props.onSelectEvent, args);
+  handleSelectEvent = eventInfo => {
+    this.setState({ selected: eventInfo });
   };
 
   handleDoubleClickEvent = (...args) => {
@@ -754,8 +759,9 @@ class Calendar extends React.Component {
   };
 
   handleSelectSlot = slotInfo => {
-    notify(this.props.onSelectSlot, slotInfo);
-    notify(this.props.onSelectEvent, {});
+    this.setState({ selected: slotInfo }, () => {
+      notify(this.props.onSelectSlot, slotInfo);
+    });
   };
 
   handleRightClickSlot = slotInfo => {
@@ -772,5 +778,4 @@ class Calendar extends React.Component {
 export default uncontrollable(Calendar, {
   view: 'onView',
   date: 'onNavigate',
-  selected: 'onSelectEvent',
 });

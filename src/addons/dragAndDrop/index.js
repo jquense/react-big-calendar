@@ -23,6 +23,14 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
     };
 
+    constructor(...args) {
+      super(...args);
+      this.state = { isDragging: false, isResizing: false };
+
+      // stateful props that don't require a render
+      this.store = {};
+    }
+
     getChildContext() {
       return {
         endAccessor: this.props.endAccessor,
@@ -33,14 +41,11 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         startAccessor: this.props.startAccessor,
 
         // accessors for global drag item state
-        setDragItem: drag => this.setState({ drag }),
-        getDragItem: () => this.state.drag,
+        setLocalProp: (name, value) => {
+          this.store[name] = value;
+        },
+        getLocalProp: name => this.store[name],
       };
-    }
-
-    constructor(...args) {
-      super(...args);
-      this.state = { isDragging: false, isResizing: false };
     }
 
     componentWillMount() {
@@ -111,6 +116,8 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
   DragAndDropCalendar.contextTypes = {
     dragDropManager: PropTypes.object,
+    getLocalProp: PropTypes.func,
+    setLocalProp: PropTypes.func,
   };
 
   DragAndDropCalendar.childContextTypes = {
@@ -120,8 +127,8 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
-    getDragItem: PropTypes.func,
-    setDragItem: PropTypes.func,
+    getLocalProp: PropTypes.func,
+    setLocalProp: PropTypes.func,
   };
 
   if (backend === false) {

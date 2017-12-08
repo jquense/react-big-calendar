@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import cn from 'classnames';
 import { compose } from 'recompose';
@@ -10,13 +11,18 @@ import BigCalendar from '../../index';
 /* drag sources */
 
 let eventSource = {
-  beginDrag({ event }, monitor, { context }) {
-    const { onSegmentDrag } = context;
+  beginDrag({ event }, monitor, component) {
+    const { context } = component;
+    const { onSegmentDrag, setLocalProp } = context;
     const { data, position } = event;
+    const node = ReactDOM.findDOMNode(component);
+    setLocalProp('dragBounds', node.getBoundingClientRect());
+    setLocalProp('dragMonitor', monitor);
     onSegmentDrag({ ...position, event: data });
     return event;
   },
   endDrag(props, monitor, component) {
+    console.log('end drag', this.context);
     if (!component) {
       return;
     }
@@ -38,9 +44,11 @@ let eventSource = {
 
 const eventTarget = {
   hover(props, monitor, { decoratedComponentInstance: component }) {
-    const { onSegmentHover } = component.context;
+    const { onSegmentHover, setLocalProp } = component.context;
     const { event: hoverEvent } = props;
     const dragEvent = monitor.getItem();
+    const node = ReactDOM.findDOMNode(component);
+    setLocalProp('hoverBounds', node.getBoundingClientRect());
     onSegmentHover(hoverEvent, dragEvent);
   },
   drop(_, monitor, { props, decoratedComponentInstance: component }) {
@@ -56,6 +64,9 @@ const contextTypes = {
   onSegmentDragEnd: PropTypes.func,
   onSegmentDrop: PropTypes.func,
   onSegmentHover: PropTypes.func,
+
+  reportBounds: PropTypes.func,
+  setLocalProp: PropTypes.func,
 };
 
 const propTypes = {
@@ -66,6 +77,14 @@ const propTypes = {
 };
 
 class DraggableEventWrapper extends React.Component {
+  componentDidMount() {
+    const node = ReactDOM.findDOMNode(this);
+    const { reportBounds } = this.context;
+    const { event } = this.props;
+    console.log(event, node.getBoundingClientRect());
+    reportBounds && reportBounds(event, node.getBoundingClientRect());
+  }
+
   render() {
     let { connectDragSource, connectDropTarget, children, event } = this.props;
     let EventWrapper = BigCalendar.components.eventWrapper;

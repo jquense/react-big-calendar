@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
@@ -61,8 +62,8 @@ class DraggableBackgroundWrapper extends React.Component {
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor,
-    getDragItem: PropTypes.func,
-    setDragItem: PropTypes.func,
+    reportDayBounds: PropTypes.func,
+    setLocalProp: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -83,6 +84,13 @@ class DraggableBackgroundWrapper extends React.Component {
       const { onBackgroundCellHoverExit } = this.context;
       onBackgroundCellHoverExit(value, monitor.getItem());
     }
+  }
+
+  componentDidUpdate() {
+    const node = ReactDOM.findDOMNode(this);
+    const { reportDayBounds } = this.context;
+    const { value: date } = this.props;
+    reportDayBounds && reportDayBounds(date, node.getBoundingClientRect());
   }
 
   render() {
@@ -120,9 +128,18 @@ function createWrapper(type) {
         onOutsideEventDrop,
         startAccessor,
         endAccessor,
+        setLocalProp,
       } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
+
+      // clean up internal state
+      setLocalProp('drag', null);
+      setLocalProp('dragBounds', null);
+      setLocalProp('dragMonitor', null);
+      setLocalProp('hover', null);
+      setLocalProp('hoverBounds', null);
+      setLocalProp('hoverMonitor', null);
 
       if (itemType === ItemTypes.EVENT) {
         /**

@@ -3,6 +3,7 @@ import propEq from 'ramda/src/propEq';
 import pathEq from 'ramda/src/pathEq';
 import reduce from 'ramda/src/reduce';
 import reduced from 'ramda/src/reduced';
+import { eventLevels } from '../../utils/eventLevels';
 //import slice from 'ramda/src/slice';
 //import add from 'ramda/src/add';
 //import cond from 'ramda/src/cond';
@@ -220,9 +221,20 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   }
 
   // update level prop
+  /*const [_, finalLevels] = nextLevels.reduce((acc, lvl) => {
+    if (!lvl.length) return acc;
+    const [i, v] = acc;
+    v.push(lvl.map(seg => ({ ...seg, level: i })));
+    return [i+1, v];
+  }, [0, []]);*/
+
   for (let i = 0, len = nextLevels.length; i < len; i++) {
     nextLevels[i] = nextLevels[i].map(seg => ({ ...seg, level: i }));
   }
+  // flatten and run through eventLevels
+  /*const segs = nextLevels
+    .reduce((acc, lvl) => lvl.reduce((acc, seg) => (acc.push(seg), acc), acc), []);
+  const { levels: finalLevels } = eventLevels(segs);*/
 
   // find drag seg
   return reduce(

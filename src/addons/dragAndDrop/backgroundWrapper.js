@@ -140,12 +140,15 @@ function createWrapper(type) {
       setLocalProp('hover', null);
       setLocalProp('hoverBounds', null);
       setLocalProp('hoverMonitor', null);
+      setLocalProp('removeOrphanedSegment', null);
+      setLocalProp('lastKnownWeekRow', null);
 
       if (itemType === ItemTypes.EVENT) {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on
         * info inside user setable `data` prop.
         */
+        console.log('THIS WAS CALLED');
         if (event.type === 'outsideEvent') {
           return onOutsideEventDrop({
             event,

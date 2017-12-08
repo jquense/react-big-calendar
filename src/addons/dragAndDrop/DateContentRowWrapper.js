@@ -168,7 +168,7 @@ class DateContentRowWrapper extends Component {
       const newId = cuid();
       const event = {
         id: newId,
-        key: newId,
+        //key: newId,
         eventTemplateId,
         styles,
         name,
@@ -184,6 +184,7 @@ class DateContentRowWrapper extends Component {
         row,
         level: -1,
       };
+      console.log('generating', event);
     }
 
     const { level: dlevel, left: dleft, span: dspan, row: drow } = drag;
@@ -218,27 +219,22 @@ class DateContentRowWrapper extends Component {
 
       let hover = calcPosFromDate(date, range, dspan);
       //hover.level = nextLevel;
-      if (row !== drow || (type === 'outsideEvent' && dlevel === -1)) {
-        if (nextLevel > 0) {
-          drag.level = nextLevel;
-          drag.left = hover.left;
-          drag.right = hover.right;
-          const lvl = levels[nextLevel] || [];
-          lvl.push(drag);
-          lvl.sort((a, b) => a.left - b.left);
-          levels[nextLevel] = lvl;
-          setLocalProp('removeOrphanedSegment', _segRemover(this, drag));
-          setLocalProp('drag', drag);
-          this.setState({ levels });
-          console.log('enter 0', nextLevel, drag, levels);
-          return;
-        }
-        //hover.level = nextLevel;
-        console.log('enter', nextLevel, drag);
-      } else {
-        //hover.level = nextLevel;
-      }
+      console.log('before if', row, drow);
+      if (row !== drow || (type === 'outsideEvent' && dlevel === -1 && lastKnownWeekRow !== row)) {
+        drag.level = nextLevel;
+        drag.row = row;
 
+        const lvl = levels[nextLevel] || [];
+        lvl.push(drag);
+        lvl.sort((a, b) => a.left - b.left);
+        levels[nextLevel] = lvl;
+        setLocalProp('removeOrphanedSegment', _segRemover(this, drag));
+        setLocalProp('drag', drag);
+        this.setState({ levels });
+        return;
+      } else {
+        hover.level = nextLevel;
+      }
       console.log('before', { ...drag }, { ...hover });
       const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
         ...hover,
@@ -254,8 +250,8 @@ class DateContentRowWrapper extends Component {
   };
 
   handleBackgroundCellHoverExit = () => {
-    // TODO: figure out if needed
-    //console.log('hover exit');
+    const { setLocalProp } = this.context;
+    //setLocalProp('lastKnownWeekRow', null);
   };
 
   handleSegmentHover = (hoverItem, dragItem) => {
@@ -267,18 +263,12 @@ class DateContentRowWrapper extends Component {
 
     if (!drag) return;
 
-    const { position: hover, data: hevent } = hoverItem;
-    const { level: dlevel, left: dleft, span: dspan, event: devent } = drag;
+    const { position: hover } = hoverItem;
+    const { level: dlevel, left: dleft, span: dspan } = drag;
     const { level: hlevel, left: hleft } = hover;
 
     if (dleft === hleft && dlevel === hlevel) return;
 
-    // check if start and end dates need updating
-    if (dleft !== hleft) {
-      const nextStart = hevent.start;
-      drag.event.start = nextStart;
-      drag.event.end = format(addDays(nextStart, dspan - 1));
-    }
     /*const dragBounds = rect(getLocalProp('dragBounds'));
     const dragMonitor = getLocalProp('dragMonitor');
     const nextBounds = { ...dragBounds, ...dragMonitor.getSourceClientOffset() };
@@ -297,6 +287,17 @@ class DateContentRowWrapper extends Component {
     const [nextDrag, nextLevels] = reorderLevels(levels, drag, hover);
     console.timeEnd('reorder-lavels in hover');
     console.log('hover', nextDrag);
+
+    // check if start and end dates need updating
+    const nextStart = path(['event', 'start'], nextDrag);
+    const nextLeft = findDayIndex(range, nextStart) + 1;
+    if (nextLeft !== nextDrag.left) {
+      const nextStart = range[nextDrag.left - 1];
+      nextDrag.event.start = nextStart;
+      nextDrag.event.end = format(addDays(nextStart, dspan - 1));
+    }
+
+    console.log('hover', { ...hover }, { ...nextDrag });
     setLocalProp('removeOrphanedSegment', _segRemover(this, nextDrag));
     setLocalProp('drag', { ...nextDrag, row });
     this.setState({ levels: nextLevels });
@@ -304,8 +305,18 @@ class DateContentRowWrapper extends Component {
 
   handleSegmentDrop = ({ level, left }) => {
     const { levels } = this.state;
-    const { onEventReorder, getLocalProp } = this.context;
+    const { onEventReorder, setLocalProp, getLocalProp } = this.context;
     const drag = getLocalProp('drag');
+
+    // clean up internal state
+    setLocalProp('drag', null);
+    setLocalProp('dragBounds', null);
+    setLocalProp('dragMonitor', null);
+    setLocalProp('hover', null);
+    setLocalProp('hoverBounds', null);
+    setLocalProp('hoverMonitor', null);
+    setLocalProp('removeOrphanedSegment', null);
+    setLocalProp('lastKnownWeekRow', null);
 
     const dragSeg = levels[drag.level].find(({ left }) => drag.left === left);
     if (!dragSeg) return;

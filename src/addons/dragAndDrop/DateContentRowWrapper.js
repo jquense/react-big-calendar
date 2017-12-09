@@ -74,8 +74,8 @@ class DateContentRowWrapper extends Component {
 
   static contextTypes = {
     onEventReorder: PropTypes.func,
-    getLocalProp: PropTypes.func,
-    setLocalProp: PropTypes.func,
+    getInternalState: PropTypes.func,
+    setInternalState: PropTypes.func,
   };
 
   static childContextTypes = {
@@ -130,13 +130,13 @@ class DateContentRowWrapper extends Component {
   };
 
   handleSegmentDrag = drag => {
-    const { setLocalProp } = this.context;
-    setLocalProp('drag', drag);
+    const { setInternalState } = this.context;
+    setInternalState({ drag });
   };
 
   handleSegmentDragEnd = () => {
-    const { setLocalProp } = this.context;
-    setLocalProp('drag', null);
+    const { setInternalState } = this.context;
+    setInternalState({ drag: null });
   };
 
   handleBackgroundCellEnter = (date, dragItem) => {
@@ -144,23 +144,23 @@ class DateContentRowWrapper extends Component {
     console.log('background cell enter', date);
 
     const { range, level: row } = this.props;
-    const { getLocalProp, setLocalProp } = this.context;
+    const { getInternalState, setInternalState } = this.context;
     const { levels } = this.state;
     const { type, data, position } = dragItem;
-    let drag = getLocalProp('drag');
+    const internalState = getInternalState();
+    const { lastKnownWeekRow, removeOrphanedSegment } = internalState;
     if (type === 'resizeL' || type === 'resizeR') return;
 
-    const lastKnownWeekRow = getLocalProp('lastKnownWeekRow');
-    const orphanedSegmentRemover = getLocalProp('removeOrphanedSegment');
     console.log('row', row, lastKnownWeekRow);
-    if (!isNaN(lastKnownWeekRow) && lastKnownWeekRow !== row && orphanedSegmentRemover) {
-      orphanedSegmentRemover();
-      setLocalProp('removeOrphanedSegment', null);
+    if (!isNaN(lastKnownWeekRow) && lastKnownWeekRow !== row && removeOrphanedSegment) {
+      removeOrphanedSegment();
+      setInternalState({ removeOrphanedSegment: null });
     }
 
     // update last known week row
-    setLocalProp('lastKnownWeekRow', row);
+    setInternalState({ lastKnownWeekRow: row });
 
+    let { drag } = internalState;
     if (!drag && type === 'outsideEvent') {
       const { id: eventTemplateId, eventTemplateId: id, styles, name } = data;
 
@@ -202,7 +202,7 @@ class DateContentRowWrapper extends Component {
       //console.log('curr lvls', cloneLevels(levels));
       if (segsInDay.length && dragId && segsInDay.some(({ event: { id } }) => id === dragId)) {
         this.ignoreHoverUpdates = false;
-        setLocalProp('removeOrphanedSegment', _segRemover(this, drag));
+        setInternalState({ removeOrphanedSegment: _segRemover(this, drag) });
         return;
       }
 
@@ -228,8 +228,7 @@ class DateContentRowWrapper extends Component {
         lvl.push(drag);
         lvl.sort((a, b) => a.left - b.left);
         levels[nextLevel] = lvl;
-        setLocalProp('removeOrphanedSegment', _segRemover(this, drag));
-        setLocalProp('drag', drag);
+        setInternalState({ removeOrphanedSegment: _segRemover(this, drag), drag });
         this.setState({ levels });
         return;
       } else {
@@ -243,22 +242,24 @@ class DateContentRowWrapper extends Component {
       });
 
       // setup cleanup routine
-      setLocalProp('removeOrphanedSegment', _segRemover(this, nextDrag));
-      setLocalProp('drag', { ...nextDrag, row });
+      setInternalState({
+        removeOrphanedSegment: _segRemover(this, nextDrag),
+        drag: { ...nextDrag, row },
+      });
       this.setState({ levels: nextLevels });
     }
   };
 
   handleBackgroundCellHoverExit = () => {
-    const { setLocalProp } = this.context;
-    //setLocalProp('lastKnownWeekRow', null);
+    const { setInternalState } = this.context;
+    //setInternalState('lastKnownWeekRow', null);
   };
 
   handleSegmentHover = (hoverItem, dragItem) => {
     if (this.ignoreHoverUpdates) return;
 
-    const { getLocalProp, setLocalProp } = this.context;
-    const drag = getLocalProp('drag');
+    const { getInternalState, setInternalState } = this.context;
+    const { drag } = getInternalState();
     const { level: row, range } = this.props;
 
     if (!drag) return;
@@ -269,8 +270,8 @@ class DateContentRowWrapper extends Component {
 
     if (dleft === hleft && dlevel === hlevel) return;
 
-    /*const dragBounds = rect(getLocalProp('dragBounds'));
-    const dragMonitor = getLocalProp('dragMonitor');
+    /*const dragBounds = rect(getInternalState('dragBounds'));
+    const dragMonitor = getInternalState('dragMonitor');
     const nextBounds = { ...dragBounds, ...dragMonitor.getSourceClientOffset() };
     const dayIdx = findDayBoundsIndex(this.rangeBounds, nextBounds);
     if (dayIdx < 0) {
@@ -298,25 +299,20 @@ class DateContentRowWrapper extends Component {
     }
 
     console.log('hover', { ...hover }, { ...nextDrag });
-    setLocalProp('removeOrphanedSegment', _segRemover(this, nextDrag));
-    setLocalProp('drag', { ...nextDrag, row });
+    setInternalState({
+      removeOrphanedSegment: _segRemover(this, nextDrag),
+      drag: { ...nextDrag, row },
+    });
     this.setState({ levels: nextLevels });
   };
 
   handleSegmentDrop = ({ level, left }) => {
     const { levels } = this.state;
-    const { onEventReorder, setLocalProp, getLocalProp } = this.context;
-    const drag = getLocalProp('drag');
+    const { onEventReorder, setInternalState, getInternalState } = this.context;
+    const { drag } = getInternalState();
 
     // clean up internal state
-    setLocalProp('drag', null);
-    setLocalProp('dragBounds', null);
-    setLocalProp('dragMonitor', null);
-    setLocalProp('hover', null);
-    setLocalProp('hoverBounds', null);
-    setLocalProp('hoverMonitor', null);
-    setLocalProp('removeOrphanedSegment', null);
-    setLocalProp('lastKnownWeekRow', null);
+    setInternalState(null);
 
     const dragSeg = levels[drag.level].find(({ left }) => drag.left === left);
     if (!dragSeg) return;

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DragDropContext } from 'react-dnd';
 import cn from 'classnames';
+import merge from 'ramda/src/merge';
 
 import { accessor } from '../../utils/propTypes';
 import DateContentRowWrapper from './DateContentRowWrapper';
@@ -41,10 +42,10 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         startAccessor: this.props.startAccessor,
 
         // accessors for global drag item state
-        setLocalProp: (name, value) => {
-          this.store[name] = value;
+        setInternalState: (obj = null) => {
+          this.store = obj === null ? {} : merge(this.store, obj);
         },
-        getLocalProp: name => this.store[name],
+        getInternalState: () => this.store,
       };
     }
 
@@ -116,8 +117,8 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
   DragAndDropCalendar.contextTypes = {
     dragDropManager: PropTypes.object,
-    getLocalProp: PropTypes.func,
-    setLocalProp: PropTypes.func,
+    getInternalState: PropTypes.func,
+    setInternalState: PropTypes.func,
   };
 
   DragAndDropCalendar.childContextTypes = {
@@ -127,8 +128,8 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
-    getLocalProp: PropTypes.func,
-    setLocalProp: PropTypes.func,
+    getInternalState: PropTypes.func,
+    setInternalState: PropTypes.func,
   };
 
   if (backend === false) {

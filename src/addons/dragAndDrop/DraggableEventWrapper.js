@@ -13,11 +13,10 @@ import BigCalendar from '../../index';
 let eventSource = {
   beginDrag({ event }, monitor, component) {
     const { context } = component;
-    const { onSegmentDrag, setLocalProp } = context;
+    const { onSegmentDrag, setInternalState } = context;
     const { data, position } = event;
     const node = ReactDOM.findDOMNode(component);
-    setLocalProp('dragBounds', node.getBoundingClientRect());
-    setLocalProp('dragMonitor', monitor);
+    setInternalState({ dragBounds: node.getBoundingClientRect(), dragMonitor: monitor });
     onSegmentDrag({ ...position, event: data });
     return event;
   },
@@ -44,11 +43,11 @@ let eventSource = {
 
 const eventTarget = {
   hover(props, monitor, { decoratedComponentInstance: component }) {
-    const { onSegmentHover, setLocalProp } = component.context;
+    const { onSegmentHover, setInternalState } = component.context;
     const { event: hoverEvent } = props;
     const dragEvent = monitor.getItem();
     const node = ReactDOM.findDOMNode(component);
-    setLocalProp('hoverBounds', node.getBoundingClientRect());
+    setInternalState({ hoverBounds: node.getBoundingClientRect() });
     onSegmentHover(hoverEvent, dragEvent);
   },
   drop(_, monitor, { props, decoratedComponentInstance: component }) {
@@ -66,7 +65,7 @@ const contextTypes = {
   onSegmentHover: PropTypes.func,
 
   reportBounds: PropTypes.func,
-  setLocalProp: PropTypes.func,
+  setInternalState: PropTypes.func,
 };
 
 const propTypes = {

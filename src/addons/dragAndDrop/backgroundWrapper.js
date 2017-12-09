@@ -63,7 +63,7 @@ class DraggableBackgroundWrapper extends React.Component {
     startAccessor: accessor,
     endAccessor: accessor,
     reportDayBounds: PropTypes.func,
-    setLocalProp: PropTypes.func,
+    setInternalState: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -128,20 +128,13 @@ function createWrapper(type) {
         onOutsideEventDrop,
         startAccessor,
         endAccessor,
-        setLocalProp,
+        setInternalState,
       } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
       // clean up internal state
-      setLocalProp('drag', null);
-      setLocalProp('dragBounds', null);
-      setLocalProp('dragMonitor', null);
-      setLocalProp('hover', null);
-      setLocalProp('hoverBounds', null);
-      setLocalProp('hoverMonitor', null);
-      setLocalProp('removeOrphanedSegment', null);
-      setLocalProp('lastKnownWeekRow', null);
+      setInternalState(null);
 
       if (itemType === ItemTypes.EVENT) {
         /**

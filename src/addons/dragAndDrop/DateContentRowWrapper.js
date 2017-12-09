@@ -7,7 +7,14 @@ import splitAt from 'ramda/src/splitAt';
 import path from 'ramda/src/path';
 import filter from 'ramda/src/filter';
 import last from 'ramda/src/last';
+import curry from 'ramda/src/curry';
+import flip from 'ramda/src/flip';
+import compose from 'ramda/src/compose';
 import addDays from 'date-fns/add_days';
+import addHours from 'date-fns/add_hours';
+import addMinutes from 'date-fns/add_minutes';
+import getHours from 'date-fns/get_hours';
+import getMinutes from 'date-fns/get_minutes';
 import isSameDay from 'date-fns/is_same_day';
 import format from 'date-fns/format';
 import cuid from 'cuid';
@@ -15,6 +22,9 @@ import cuid from 'cuid';
 import BigCalendar from '../../index';
 import { withLevels } from '../../utils/eventLevels';
 import reorderLevels from './eventLevels';
+
+const fAddHours = compose(flip, curry)(addHours);
+const fAddMinutes = compose(flip, curry)(addMinutes);
 
 const rect = ({ x, y, left, right, top, bottom, height, width }) => ({
   x,
@@ -168,15 +178,12 @@ class DateContentRowWrapper extends Component {
       const newId = cuid();
       const event = {
         id: newId,
-        //key: newId,
         eventTemplateId,
         styles,
         name,
         locked: false,
         visible: true,
         weight: 0,
-        //start: date,
-        //end: addDays(date, position.span - 1),
       };
       drag = {
         ...calcPosFromDate(date, range, position.span),
@@ -189,7 +196,6 @@ class DateContentRowWrapper extends Component {
 
     const { level: dlevel, left: dleft, span: dspan, row: drow } = drag;
 
-    //console.log('d', drag);
     if (drag) {
       const dragId = path(['event', 'id'], drag);
       const nextLeft = findDayIndex(range, date) + 1;
@@ -199,7 +205,6 @@ class DateContentRowWrapper extends Component {
         }, []))(nextLeft, nextLeft);
 
       console.log(nextLeft, segsInDay.length, dragId, [].concat(segsInDay));
-      //console.log('curr lvls', cloneLevels(levels));
       if (segsInDay.length && dragId && segsInDay.some(({ event: { id } }) => id === dragId)) {
         this.ignoreHoverUpdates = false;
         setInternalState({ removeOrphanedSegment: _segRemover(this, drag) });
@@ -207,15 +212,15 @@ class DateContentRowWrapper extends Component {
       }
 
       const lastSeg = last(segsInDay) || { level: -1 };
-      const nextLevel = lastSeg.level + 1; //.filter(({ left }) => left === nextLeft).length;
-      //console.log('next lvl', row, drow, nextLevel);
-      /*if ((type === 'outsideEvent' && drag.level === 0) || row !== drow) {
-        drag.level = nextLevel;
-      }*/
+      const nextLevel = lastSeg.level + 1;
 
       // update start/end date
-      drag.event.start = format(date);
-      drag.event.end = format(addDays(date, dspan - 1));
+      const [dstart, dend] = [path(['event', 'start'], drag), path(['event', 'end'], drag)];
+      const [start, end] = [date, addDays(date, dspan - 1)];
+      const [sHours, sMins] = [getHours(dstart) || 8, getMinutes(dstart)];
+      const [eHours, eMins] = [getHours(dend) || 16, getMinutes(dend)];
+      drag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(start);
+      drag.event.end = compose(format, fAddHours(eHours), fAddMinutes(eMins))(end);
 
       let hover = calcPosFromDate(date, range, dspan);
       //hover.level = nextLevel;
@@ -238,7 +243,6 @@ class DateContentRowWrapper extends Component {
       const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
         ...hover,
         row,
-        //event: drag.event,
       });
 
       // setup cleanup routine
@@ -290,12 +294,17 @@ class DateContentRowWrapper extends Component {
     console.log('hover', nextDrag);
 
     // check if start and end dates need updating
-    const nextStart = path(['event', 'start'], nextDrag);
-    const nextLeft = findDayIndex(range, nextStart) + 1;
+    const nextDragStart = path(['event', 'start'], nextDrag);
+    const nextDragEnd = path(['event', 'end'], nextDrag);
+    const nextLeft = findDayIndex(range, nextDragStart) + 1;
     if (nextLeft !== nextDrag.left) {
+      const [sHours, sMins] = [getHours(nextDragStart) || 8, getMinutes(nextDragStart)];
+      const [eHours, eMins] = [getHours(nextDragEnd) || 16, getMinutes(nextDragEnd)];
       const nextStart = range[nextDrag.left - 1];
-      nextDrag.event.start = nextStart;
-      nextDrag.event.end = format(addDays(nextStart, dspan - 1));
+      nextDrag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(nextStart);
+      nextDrag.event.end = compose(format, fAddHousr(eHours), fAddMinutes(eMins))(
+        addDays(nextStart, dspan - 1),
+      );
     }
 
     console.log('hover', { ...hover }, { ...nextDrag });

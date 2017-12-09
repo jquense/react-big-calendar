@@ -136,6 +136,7 @@ function createWrapper(type) {
       // clean up internal state
       setInternalState(null);
 
+      console.log('trigered background drop', value, start, end, itemType, eventType, event);
       if (itemType === ItemTypes.EVENT) {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on
@@ -155,7 +156,7 @@ function createWrapper(type) {
         }
       }
 
-      if (itemType === 'resize') {
+      if (itemType === ItemTypes.RESIZE) {
         switch (eventType) {
           case 'resizeL': {
             return onEventResize('drop', { event, start: value, end });
@@ -183,6 +184,7 @@ function createWrapper(type) {
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
+      console.log('background hover', itemType, eventType, value, event);
       window.RBC_RESIZE_VALUE = value;
       if (itemType === ItemTypes.RESIZE) {
         switch (eventType) {

@@ -96,6 +96,12 @@ class Calendar extends React.Component {
     onView: PropTypes.func,
 
     /**
+     * Callback fired when date header, or the truncated events links are clicked
+     *
+     */
+    onDrillDown: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
@@ -104,7 +110,7 @@ class Calendar extends React.Component {
      *     start: Date,
      *     end: Date,
      *     slots: Array<Date>,
-     *     action: "select" | "click"
+     *     action: "select" | "click" | "doubleClick"
      *   }
      * ) => any
      * ```
@@ -299,6 +305,17 @@ class Calendar extends React.Component {
     slotPropGetter: PropTypes.func,
 
     /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the the day background. Caution! Styles that change layout or
+     * position may break the calendar in unexpected ways.
+     *
+     * ```js
+     * (date: Date) => { className?: string, style?: Object }
+     * ```
+     */
+    dayPropGetter: PropTypes.func,
+
+    /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
      *
@@ -444,7 +461,7 @@ class Calendar extends React.Component {
       /**
        * Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"
        */
-      agendaHeaderFormat: dateFormat,
+      agendaHeaderFormat: dateRangeFormat,
 
       /**
        * A time range format for selecting time slots, e.g "8:00am — 2:00pm"
@@ -693,6 +710,11 @@ class Calendar extends React.Component {
   };
 
   handleDrillDown = (date, view) => {
+    const { onDrillDown } = this.props;
+    if (onDrillDown) {
+      onDrillDown(date, view, this.drilldownView)
+      return;
+    }
     if (view)
       this.handleViewChange(view)
 

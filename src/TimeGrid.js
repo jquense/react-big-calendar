@@ -37,6 +37,7 @@ export default class TimeGrid extends Component {
 
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
     dayFormat: dateFormat,
     showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
@@ -270,6 +271,7 @@ export default class TimeGrid extends Component {
             selectable={selectable}
             onSelectSlot={this.handleSelectAllDaySlot}
             dateCellWrapper={components.dateCellWrapper}
+            dayPropGetter={this.props.dayPropGetter}
             eventComponent={this.props.components.event}
             eventWrapperComponent={this.props.components.eventWrapper}
             titleAccessor={this.props.titleAccessor}
@@ -288,12 +290,14 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderCells(range){
-    let { dayFormat, culture, components, getDrilldownView } = this.props;
+    let { dayFormat, culture, components, dayPropGetter, getDrilldownView } = this.props;
     let HeaderComponent = components.header || Header
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date);
       let label = localizer.format(date, dayFormat, culture);
+
+      const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(date)) || {};
 
       let header = (
         <HeaderComponent
@@ -310,9 +314,10 @@ export default class TimeGrid extends Component {
           key={i}
           className={cn(
             'rbc-header',
+            className,
             dates.isToday(date) && 'rbc-today',
           )}
-          style={segStyle(1, this.slots)}
+          style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
         >
           {drilldownView ? (
             <a

@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.16.1",
+  "version": "0.17.0",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
@@ -35,16 +35,16 @@
     "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
     "lint": "eslint src --ext .jsx --ext .js",
     "storybook": "start-storybook -p 9002",
-    "test": "npm run lint",
+    "test": "npm run lint && jest",
     "tdd": "karma start",
     "release": "release"
   },
   "peerDependencies": {
-    "react": "^0.14.9 || >=15.3.0",
-    "react-dom": "^0.14.9 || >=15.3.0"
+    "react": "^15.3.0 || ^16.0.0",
+    "react-dom": "^15.3.0 || ^16.0.0"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.28.1",
+    "@storybook/react": "3.2.16",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
@@ -58,7 +58,8 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.8.0",
     "globalize": "^0.1.1",
-    "less": "^2.7.2",
+    "less": "^2.7.3",
+    "jest": "^21.1.0",
     "less-plugin-autoprefix": "^1.5.1",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",

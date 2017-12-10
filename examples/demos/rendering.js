@@ -21,6 +21,25 @@ function EventAgenda({ event }) {
 }
 
 
+const customDayPropGetter = (date) => {
+  if (date.getDate() === 7 || date.getDate() === 15)
+    return {
+      className: 'special-day',
+      style: {
+        border: 'solid 3px '+((date.getDate() === 7) ? '#faa' : '#afa'),
+      }
+    }
+  else return {}
+}
+
+const customSlotPropGetter = (date) => {
+  if (date.getDate() === 7 || date.getDate() === 15)
+    return {
+      className: 'special-day'
+    }
+  else return {}
+}
+
 let Rendering = React.createClass({
   render(){
     return (
@@ -29,6 +48,8 @@ let Rendering = React.createClass({
           events={events}
           defaultDate={new Date(2015, 3, 1)}
           defaultView='agenda'
+          dayPropGetter={customDayPropGetter}
+          slotPropGetter={customSlotPropGetter}
           components={{
             event: Event,
             agenda: {

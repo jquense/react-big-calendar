@@ -148,7 +148,6 @@ class DayColumn extends React.Component {
       components: { event: EventComponent },
       culture,
       endAccessor,
-      eventComponent,
       eventPropGetter,
       eventTimeRangeEndFormat,
       eventTimeRangeFormat,

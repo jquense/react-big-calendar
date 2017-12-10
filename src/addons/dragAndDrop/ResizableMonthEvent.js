@@ -20,11 +20,11 @@ class ResizableMonthEvent extends React.Component {
     const [Left, Right] = [connectLeftDragSource, connectRightDragSource]
       .map(connectDragSource => {
         return connectDragSource(
-          <div className="rbc-addons-dnd-resize-month-event-anchor">{" "}</div>
+          <div className='rbc-addons-dnd-resize-month-event-anchor'>{' '}</div>
         )
       })
     return (
-      <div className="rbc-addons-dnd-resizable-month-event">
+      <div className='rbc-addons-dnd-resizable-month-event'>
         {Left}
         {title}
         {Right}

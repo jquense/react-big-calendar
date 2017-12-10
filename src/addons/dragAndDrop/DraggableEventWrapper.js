@@ -21,7 +21,6 @@ let eventSource = {
     return event;
   },
   endDrag(props, monitor, component) {
-    console.log('end drag', this.context);
     if (!component) {
       return;
     }
@@ -63,8 +62,6 @@ const contextTypes = {
   onSegmentDragEnd: PropTypes.func,
   onSegmentDrop: PropTypes.func,
   onSegmentHover: PropTypes.func,
-
-  reportBounds: PropTypes.func,
   setInternalState: PropTypes.func,
 };
 
@@ -76,14 +73,6 @@ const propTypes = {
 };
 
 class DraggableEventWrapper extends React.Component {
-  componentDidMount() {
-    const node = ReactDOM.findDOMNode(this);
-    const { reportBounds } = this.context;
-    const { event } = this.props;
-    console.log(event, node.getBoundingClientRect());
-    reportBounds && reportBounds(event, node.getBoundingClientRect());
-  }
-
   render() {
     let { connectDragSource, connectDropTarget, children, event } = this.props;
     let EventWrapper = BigCalendar.components.eventWrapper;

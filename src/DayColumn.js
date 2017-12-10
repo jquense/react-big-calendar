@@ -166,8 +166,6 @@ class DayColumn extends React.Component {
       titleAccessor,
     } = this.props
 
-    let EventComponent = eventComponent
-
     let styledEvents = getStyledEvents({
       events,
       startAccessor,

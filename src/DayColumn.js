@@ -31,6 +31,7 @@ function startsAfter(date, max) {
 class DayColumn extends React.Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
+    components: PropTypes.object,
     step: PropTypes.number.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,

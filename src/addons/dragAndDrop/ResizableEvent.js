@@ -35,6 +35,14 @@ class ResizableEvent extends React.Component {
   }
 }
 
+ResizableEvent.propTypes = {
+  connectBottomDragPreview: PropTypes.func,
+  connectBottomDragSource: PropTypes.func,
+  connectTopDragPreview: PropTypes.func,
+  connectTopDragSource: PropTypes.func,
+  title: PropTypes.string,
+}
+
 const eventSourceTop = {
   beginDrag: ({ event }) => ({ ...event, type: 'resizeTop' })
 }
@@ -44,11 +52,11 @@ const eventSourceBottom = {
 }
 
 export default compose(
-  DragSource('resize', eventSourceTop, (connect, monitor) => ({
+  DragSource('resize', eventSourceTop, (connect) => ({
     connectTopDragSource: connect.dragSource(),
     connectTopDragPreview: connect.dragPreview(),
   })),
-  DragSource('resize', eventSourceBottom, (connect, monitor) => ({
+  DragSource('resize', eventSourceBottom, (connect) => ({
     connectBottomDragSource: connect.dragSource(),
     connectBottomDragPreview: connect.dragPreview(),
   }))

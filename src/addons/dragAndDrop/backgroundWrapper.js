@@ -125,7 +125,6 @@ function createWrapper(type) {
       }
 
       if (monitor.getItemType() === 'resize') {
-        console.log(value)
         switch(event.type) {
           case 'resizeTop': {
             return onEventResize('drop', { event, start: value, end: event.end });

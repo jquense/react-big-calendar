@@ -41,12 +41,20 @@ const eventSourceRight = {
   beginDrag: ({ event }) => ({ ...event, type: 'resizeRight' })
 }
 
+ResizableMonthEvent.propTypes = {
+  connectLeftDragPreview: PropTypes.func,
+  connectLeftDragSource: PropTypes.func,
+  connectRightDragPreview: PropTypes.func,
+  connectRightDragSource: PropTypes.func,
+  title: PropTypes.string,
+}
+
 export default compose(
-  DragSource('resize', eventSourceLeft, (connect, monitor) => ({
+  DragSource('resize', eventSourceLeft, (connect) => ({
     connectLeftDragSource: connect.dragSource(),
     connectLeftDragPreview: connect.dragPreview(),
   })),
-  DragSource('resize', eventSourceRight, (connect, monitor) => ({
+  DragSource('resize', eventSourceRight, (connect) => ({
     connectRightDragSource: connect.dragSource(),
     connectRightDragPreview: connect.dragPreview(),
   }))

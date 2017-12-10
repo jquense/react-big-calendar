@@ -54,6 +54,7 @@ class DraggableBackgroundWrapper extends React.Component {
 
   static contextTypes = {
     onEventDrop: PropTypes.func,
+    onSegmentDrop: PropTypes.func,
     onEventResize: PropTypes.func,
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
@@ -64,6 +65,7 @@ class DraggableBackgroundWrapper extends React.Component {
     endAccessor: accessor,
     reportDayBounds: PropTypes.func,
     setInternalState: PropTypes.func,
+    getInternalState: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -123,15 +125,23 @@ function createWrapper(type) {
       const { value } = props;
       const {
         onEventDrop,
+        onSegmentDrop,
         onEventResize,
         onEventReorder,
         onOutsideEventDrop,
         startAccessor,
         endAccessor,
         setInternalState,
+        getInternalState,
       } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
+      const { didReorder } = getInternalState();
+
+      console.log('drop background', eventType, event, 'foo');
+      if (didReorder && itemType === ItemTypes.EVENT) {
+        return onSegmentDrop();
+      }
 
       // clean up internal state
       setInternalState(null);
@@ -143,7 +153,7 @@ function createWrapper(type) {
         * info inside user setable `data` prop.
         */
         console.log('THIS WAS CALLED');
-        if (event.type === 'outsideEvent') {
+        if (eventType === 'outsideEvent') {
           return onOutsideEventDrop({
             event,
             start: value,

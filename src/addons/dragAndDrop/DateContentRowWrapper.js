@@ -249,6 +249,7 @@ class DateContentRowWrapper extends Component {
       setInternalState({
         removeOrphanedSegment: _segRemover(this, nextDrag),
         drag: { ...nextDrag, row },
+        didReorder: true,
       });
       this.setState({ levels: nextLevels });
     }
@@ -297,12 +298,14 @@ class DateContentRowWrapper extends Component {
     const nextDragStart = path(['event', 'start'], nextDrag);
     const nextDragEnd = path(['event', 'end'], nextDrag);
     const nextLeft = findDayIndex(range, nextDragStart) + 1;
+    console.log('nnn', nextDragStart, nextDragEnd, nextLeft);
     if (nextLeft !== nextDrag.left) {
       const [sHours, sMins] = [getHours(nextDragStart) || 8, getMinutes(nextDragStart)];
       const [eHours, eMins] = [getHours(nextDragEnd) || 16, getMinutes(nextDragEnd)];
       const nextStart = range[nextDrag.left - 1];
+      console.log('nnn1', sHours, sMins, eHours, eMins);
       nextDrag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(nextStart);
-      nextDrag.event.end = compose(format, fAddHousr(eHours), fAddMinutes(eMins))(
+      nextDrag.event.end = compose(format, fAddHours(eHours), fAddMinutes(eMins))(
         addDays(nextStart, dspan - 1),
       );
     }
@@ -311,11 +314,12 @@ class DateContentRowWrapper extends Component {
     setInternalState({
       removeOrphanedSegment: _segRemover(this, nextDrag),
       drag: { ...nextDrag, row },
+      didReorder: true,
     });
     this.setState({ levels: nextLevels });
   };
 
-  handleSegmentDrop = ({ level, left }) => {
+  handleSegmentDrop = () => {
     const { levels } = this.state;
     const { onEventReorder, setInternalState, getInternalState } = this.context;
     const { drag } = getInternalState();

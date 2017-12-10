@@ -136,22 +136,27 @@ class DayColumn extends React.Component {
 
   renderEvents = () => {
     let {
-        events
-      , min
-      , max
-      , showMultiDayTimes
-      , culture
-      , eventPropGetter
-      , selected, eventTimeRangeFormat, components: { event: EventComponent }
-      , messages
-      , eventTimeRangeStartFormat
-      , eventTimeRangeEndFormat
-      , eventWrapperComponent: EventWrapper
-      , rtl: isRtl
-      , step
-      , timeslots
-      , startAccessor, endAccessor, titleAccessor } = this.props;
-
+      components: { event: EventComponent },
+      culture,
+      endAccessor,
+      eventComponent,
+      eventPropGetter,
+      eventTimeRangeEndFormat,
+      eventTimeRangeFormat,
+      eventTimeRangeStartFormat,
+      eventWrapperComponent: EventWrapper,
+      events,
+      max,
+      messages,
+      min,
+      rtl: isRtl,
+      selected,
+      showMultiDayTimes,
+      startAccessor,
+      step,
+      timeslots,
+      titleAccessor,
+    } = this.props
 
     let styledEvents = getStyledEvents({
       events, startAccessor, endAccessor, min, showMultiDayTimes, totalMin: this._totalMin, step, timeslots

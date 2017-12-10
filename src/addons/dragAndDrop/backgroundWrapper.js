@@ -72,20 +72,6 @@ class DraggableBackgroundWrapper extends React.Component {
   //   }
   // };
 
-  componentWillReceiveProps(nextProps) {
-    const { isOver: wasOver} = this.props;
-    const { isOver } = nextProps;
-    if (isOver && !wasOver) {
-      const { onEventResize, dragDropManager } = this.context;
-      const { value } = this.props;
-      const monitor = dragDropManager.getMonitor()
-      if (monitor.getItemType() === 'resize') {
-        // This was causing me performance issues so I commented it out. Thoughts? - Adam Recvlohe
-        // onEventResize('drag', {event: monitor.getItem(), end: value});
-      }
-    }
-  }
-
   render() {
     const { connectDropTarget, children, type, isOver } = this.props;
     const BackgroundWrapper = BigCalendar.components[type];
@@ -139,13 +125,14 @@ function createWrapper(type) {
       }
 
       if (monitor.getItemType() === 'resize') {
-
+        console.log(value)
         switch(event.type) {
           case 'resizeTop': {
             return onEventResize('drop', { event, start: value, end: event.end });
           }
           case 'resizeBottom': {
-            return onEventResize('drop', { event, start: event.start, end: value })
+            const nextEnd = dates.add(value, 30, 'minutes')
+            return onEventResize('drop', { event, start: event.start, end: nextEnd })
           }
           case 'resizeLeft': {
             return onEventResize('drop', { event, start: value, end: event.end });

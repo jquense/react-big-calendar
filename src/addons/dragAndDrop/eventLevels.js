@@ -62,6 +62,33 @@ const newSeg = (seg, nextSeg, event) => ({ ...newPos(nextSeg, seg.span), event }
 
 const copyLevels = lvls => lvls.map(lvl => [].concat(lvl));
 
+const removeGaps = (levels, dlevel, dleft) => {
+  const nextLevels = copyLevels(levels);
+  for (let i = dlevel + 1, len = nextLevels.length; i < len; i++) {
+    const prevLvl = nextLevels[i - 1];
+    let currLvl = nextLevels[i];
+    const overSegIdx = currLvl.findIndex(overlaps(dleft, dleft));
+    console.log('gaps [0]', i, prevLvl, currLvl, overSegIdx, dleft);
+
+    // level after drag doesn't contain seg
+    // assuming subsequent levels don't either
+    if (overSegIdx === -1) break;
+
+    // group overlapping; continue only is over.length === 0
+    const overSeg = currLvl[overSegIdx];
+    const [over, notOver] = groupOverlapping(prevLvl, overSeg);
+    console.log('gaps [1]', overSeg, over, notOver);
+    if (over.length) break;
+
+    // we can safely shift overSeg up a level
+    prevLvl.push(overSeg);
+    prevLvl.sort(segSorter);
+    currLvl.splice(overSegIdx, 1);
+    console.log('gaps end', [].concat(prevLvl), [].concat(currLvl));
+  }
+  return nextLevels;
+};
+
 const reorderLevels = (levels, dragItem, hoverItem) => {
   let nextLevels = [];
   const lvls = copyLevels(levels);
@@ -84,7 +111,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     _drag.push(dragItem);
     _drag.sort(segSorter);
     lvls[dlevel] = _drag;
-    return [dragItem, lvls.map(lvl => [].concat(lvl))];
+    return [dragItem, lvls];
   }
 
   // drag
@@ -100,7 +127,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     _hover.push(nextDragSeg);
     _hover.sort(segSorter);
     (lvls[dlevel] = _drag), (lvls[hlevel] = _hover);
-    return [nextDragSeg, lvls.map(lvl => [].concat(lvl))];
+    return [nextDragSeg, removeGaps(lvls, dlevel, dleft)];
   }
 
   const { event: hoverData, ...hoverSeg } = lvls[hlevel][hoverIdx];
@@ -227,6 +254,32 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     v.push(lvl.map(seg => ({ ...seg, level: i })));
     return [i+1, v];
   }, [0, []]);*/
+  // in the case where drag segment moves left or right it is important to
+  // backtrack on the day we drag to ensure gaps were not left behind
+  if (dleft != hleft) {
+    for (let i = dlevel + 1, len = nextLevels.length; i < len; i++) {
+      const prevLvl = nextLevels[i - 1];
+      let currLvl = nextLevels[i];
+      const overSegIdx = currLvl.findIndex(overlaps(dleft, dleft));
+      console.log('gaps [0]', i, prevLvl, currLvl, overSegIdx, dleft);
+
+      // level after drag doesn't contain seg
+      // assuming subsequent levels don't either
+      if (overSegIdx === -1) break;
+
+      // group overlapping; continue only is over.length === 0
+      const overSeg = currLvl[overSegIdx];
+      const [over, notOver] = groupOverlapping(prevLvl, overSeg);
+      console.log('gaps [1]', overSeg, over, notOver);
+      if (over.length) break;
+
+      // we can safely shift overSeg up a level
+      prevLvl.push(overSeg);
+      prevLvl.sort(segSorter);
+      currLvl.splice(overSegIdx, 1);
+      console.log('gaps end', [].concat(prevLvl), [].concat(currLvl));
+    }
+  }
 
   for (let i = 0, len = nextLevels.length; i < len; i++) {
     nextLevels[i] = nextLevels[i].map(seg => ({ ...seg, level: i }));

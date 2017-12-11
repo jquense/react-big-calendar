@@ -8,28 +8,18 @@
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
   "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
-  "keywords": [
-    "scheduler",
-    "react-component",
-    "react",
-    "calendar",
-    "events",
-    "full calendar"
-  ],
+  "keywords": ["scheduler", "react-component", "react", "calendar", "events", "full calendar"],
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
     "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
-    "less":
-      "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
-    "less-dnd":
-      "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
+    "less": "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
+    "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
     "build":
       "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
-    "build:examples":
-      "npm run clean:examples && webpack --config webpack/examples.config.js",
+    "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
     "examples":
       "npm run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
     "lint": "eslint src test",
@@ -44,10 +34,18 @@
     "test/**/*.js": "eslint",
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true
+  },
   "peerDependencies": {
     "react": "^15.3.0 || ^16.0.0",
     "react-dom": "^15.3.0 || ^16.0.0"
   },
+
   "devDependencies": {
     "@storybook/react": "3.2.16",
     "babel-cli": "^6.7.5",

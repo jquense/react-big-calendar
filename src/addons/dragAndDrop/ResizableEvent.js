@@ -13,10 +13,16 @@ class ResizableEvent extends React.Component {
     this.props.connectBottomDragPreview(getEmptyImage(), {
       captureDraggingState: true,
     });
+    this.props.connectLeftDragPreview(getEmptyImage(), {
+      captureDraggingState: true,
+    });
+    this.props.connectRightDragPreview(getEmptyImage(), {
+      captureDraggingState: true,
+    });
   }
 
   render () {
-    const { title, connectTopDragSource, connectBottomDragSource } = this.props;
+    const { title, event, connectTopDragSource, connectBottomDragSource, connectLeftDragSource, connectRightDragSource } = this.props;
     const [Top, Bottom] = [connectTopDragSource, connectBottomDragSource]
       .map(connectDragSource => {
         return connectDragSource(
@@ -25,7 +31,19 @@ class ResizableEvent extends React.Component {
           </div>
         )
       })
-    return (
+    const [Left, Right] = [connectLeftDragSource, connectRightDragSource]
+      .map(connectDragSource => {
+        return connectDragSource(
+          <div className='rbc-addons-dnd-resize-month-event-anchor'>{' '}</div>
+        )
+      })
+
+    return event.allDay ? (
+      <div className='rbc-addons-dnd-resizable-month-event'>
+        {Left}
+        {title}
+        {Right}
+      </div> ) : (
       <div className="rbc-addons-dnd-resizable-event">
         {Top}
         {title}
@@ -38,6 +56,10 @@ class ResizableEvent extends React.Component {
 ResizableEvent.propTypes = {
   connectBottomDragPreview: PropTypes.func,
   connectBottomDragSource: PropTypes.func,
+  connectLeftDragPreview: PropTypes.func,
+  connectLeftDragSource: PropTypes.func,
+  connectRightDragPreview: PropTypes.func,
+  connectRightDragSource: PropTypes.func,
   connectTopDragPreview: PropTypes.func,
   connectTopDragSource: PropTypes.func,
   title: PropTypes.string,
@@ -51,14 +73,30 @@ const eventSourceBottom = {
   beginDrag: ({ event }) => ({ ...event, type: 'resizeBottom' })
 }
 
+const eventSourceLeft = {
+  beginDrag: ({ event }) => ({ ...event, type: 'resizeLeft' })
+}
+
+const eventSourceRight = {
+  beginDrag: ({ event }) => ({ ...event, type: 'resizeRight' })
+}
+
 export default compose(
   DragSource('resize', eventSourceTop, (connect) => ({
-    connectTopDragSource: connect.dragSource(),
     connectTopDragPreview: connect.dragPreview(),
+    connectTopDragSource: connect.dragSource(),
   })),
   DragSource('resize', eventSourceBottom, (connect) => ({
     connectBottomDragSource: connect.dragSource(),
     connectBottomDragPreview: connect.dragPreview(),
+  })),
+  DragSource('resize', eventSourceLeft, (connect) => ({
+    connectLeftDragSource: connect.dragSource(),
+    connectLeftDragPreview: connect.dragPreview(),
+  })),
+  DragSource('resize', eventSourceRight, (connect) => ({
+    connectRightDragSource: connect.dragSource(),
+    connectRightDragPreview: connect.dragPreview(),
   }))
 )(ResizableEvent)
 

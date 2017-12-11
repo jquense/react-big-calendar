@@ -102,6 +102,12 @@ class Calendar extends React.Component {
     onDrillDown: PropTypes.func,
 
     /**
+     * Callback fired when the visible date range changes.
+     *
+     */
+    onRangeChange: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
@@ -679,6 +685,13 @@ class Calendar extends React.Component {
     );
   }
 
+  handleRangeChange = (date, view) => {
+    let { onRangeChange } = this.props
+    if(onRangeChange) {
+      onRangeChange(VIEWS[view].range(date, {}))
+    }
+  }
+
   handleNavigate = (action, newDate) => {
     let { view, date, onNavigate, ...props } = this.props;
     let ViewComponent = this.getView();
@@ -690,11 +703,13 @@ class Calendar extends React.Component {
     })
 
     onNavigate(date, view, action)
+    this.handleRangeChange(date, view)
   };
 
   handleViewChange = (view) => {
     if (view !== this.props.view && isValidView(view, this.props))
       this.props.onView(view)
+      this.handleRangeChange(this.props.date, view)
   };
 
   handleSelectEvent = (...args) => {

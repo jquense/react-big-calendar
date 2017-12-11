@@ -62,6 +62,7 @@ ResizableEvent.propTypes = {
   connectRightDragSource: PropTypes.func,
   connectTopDragPreview: PropTypes.func,
   connectTopDragSource: PropTypes.func,
+  event: PropTypes.object,
   title: PropTypes.string,
 }
 

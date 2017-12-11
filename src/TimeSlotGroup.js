@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import TimeSlot from './TimeSlot'
 import date from './utils/dates.js'
 import localizer from './localizer'
@@ -16,17 +16,17 @@ export default class TimeSlotGroup extends Component {
     slotPropGetter: PropTypes.func,
     timeGutterFormat: dateFormat,
     culture: PropTypes.string,
-    resource: PropTypes.string
+    resource: PropTypes.string,
   }
   static defaultProps = {
     timeslots: 2,
     step: 30,
     isNow: false,
-    showLabels: false
+    showLabels: false,
   }
 
   renderSlice(slotNumber, content, value) {
-    const { dayWrapperComponent, showLabels, isNow, culture, resource, slotPropGetter } = this.props;
+    const { dayWrapperComponent, showLabels, isNow, culture, resource, slotPropGetter } = this.props
     return (
       <TimeSlot
         key={slotNumber}
@@ -54,10 +54,6 @@ export default class TimeSlotGroup extends Component {
     return ret
   }
   render() {
-    return (
-      <div className="rbc-timeslot-group">
-        {this.renderSlices()}
-      </div>
-    )
+    return <div className="rbc-timeslot-group">{this.renderSlices()}</div>
   }
 }

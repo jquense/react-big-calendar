@@ -1,29 +1,29 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import uncontrollable from 'uncontrollable';
-import cn from 'classnames';
+import PropTypes from 'prop-types'
+import React from 'react'
+import uncontrollable from 'uncontrollable'
+import cn from 'classnames'
 import {
-  accessor
-  , elementType
-  , dateFormat
-  , dateRangeFormat
-  , views as componentViews
-} from './utils/propTypes';
+  accessor,
+  elementType,
+  dateFormat,
+  dateRangeFormat,
+  views as componentViews,
+} from './utils/propTypes'
 
-import { notify } from './utils/helpers';
-import { navigate, views } from './utils/constants';
-import defaultFormats from './formats';
+import { notify } from './utils/helpers'
+import { navigate, views } from './utils/constants'
+import defaultFormats from './formats'
 import message from './utils/messages'
-import moveDate from './utils/move';
-import VIEWS from './Views';
-import Toolbar from './Toolbar';
-import EventWrapper from './EventWrapper';
-import BackgroundWrapper from './BackgroundWrapper';
+import moveDate from './utils/move'
+import VIEWS from './Views'
+import Toolbar from './Toolbar'
+import EventWrapper from './EventWrapper'
+import BackgroundWrapper from './BackgroundWrapper'
 
-import omit from 'lodash/omit';
-import defaults from 'lodash/defaults';
-import transform from 'lodash/transform';
-import mapValues from 'lodash/mapValues';
+import omit from 'lodash/omit'
+import defaults from 'lodash/defaults'
+import transform from 'lodash/transform'
+import mapValues from 'lodash/mapValues'
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -34,7 +34,7 @@ function isValidView(view, { views: _views }) {
   return names.indexOf(view) !== -1
 }
 
-let now = new Date();
+let now = new Date()
 
 /**
  * react-big-calendar is full featured Calendar component for managing events and dates. It uses
@@ -55,9 +55,9 @@ let now = new Date();
  */
 class Calendar extends React.Component {
   static propTypes = {
-
     /**
      * Props passed to main calendar `<div>`.
+     *
      */
     elementProps: PropTypes.object,
 
@@ -251,7 +251,7 @@ class Calendar extends React.Component {
      */
     popupOffset: PropTypes.oneOfType([
       PropTypes.number,
-      PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
+      PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
     ]),
 
     /**
@@ -497,7 +497,6 @@ class Calendar extends React.Component {
        * An optional event time range for events that continue from another day
        */
       eventTimeRangeEndFormat: dateFormat,
-
     }),
 
     /**
@@ -527,22 +526,22 @@ class Calendar extends React.Component {
       agenda: PropTypes.shape({
         date: elementType,
         time: elementType,
-        event: elementType
+        event: elementType,
       }),
 
       day: PropTypes.shape({
         header: elementType,
-        event: elementType
+        event: elementType,
       }),
       week: PropTypes.shape({
         header: elementType,
-        event: elementType
+        event: elementType,
       }),
       month: PropTypes.shape({
         header: elementType,
         dateHeader: elementType,
-        event: elementType
-      })
+        event: elementType,
+      }),
     }),
 
     /**
@@ -560,9 +559,9 @@ class Calendar extends React.Component {
       date: PropTypes.node,
       time: PropTypes.node,
       event: PropTypes.node,
-      showMore: PropTypes.func
-    })
-  };
+      showMore: PropTypes.func,
+    }),
+  }
 
   static defaultProps = {
     elementProps: {},
@@ -583,71 +582,70 @@ class Calendar extends React.Component {
     resourceIdAccessor: 'resourceId',
 
     longPressThreshold: 250,
-  };
+  }
 
   getViews = () => {
-    const views = this.props.views;
+    const views = this.props.views
 
     if (Array.isArray(views)) {
-      return transform(views, (obj, name) => obj[name] = VIEWS[name], {});
+      return transform(views, (obj, name) => (obj[name] = VIEWS[name]), {})
     }
 
     if (typeof views === 'object') {
       return mapValues(views, (value, key) => {
         if (value === true) {
-          return VIEWS[key];
+          return VIEWS[key]
         }
 
-        return value;
-      });
+        return value
+      })
     }
 
-    return VIEWS;
-  };
+    return VIEWS
+  }
 
   getView = () => {
-    const views = this.getViews();
+    const views = this.getViews()
 
-    return views[this.props.view];
-  };
+    return views[this.props.view]
+  }
 
-  getDrilldownView = (date) => {
+  getDrilldownView = date => {
     const { view, drilldownView, getDrilldownView } = this.props
 
     if (!getDrilldownView) return drilldownView
 
-    return getDrilldownView(date, view, Object.keys(this.getViews()));
-  };
+    return getDrilldownView(date, view, Object.keys(this.getViews()))
+  }
 
   render() {
     let {
-       view, toolbar, events
-      , culture
-      , components = {}
-      , formats = {}
-      , messages = {}
-      , style
-      , className
-      , elementProps
-      , date: current
-      , length
-      , ...props } = this.props;
+      view,
+      toolbar,
+      events,
+      culture,
+      components = {},
+      formats = {},
+      messages = {},
+      style,
+      className,
+      elementProps,
+      date: current,
+      length,
+      ...props
+    } = this.props
 
     formats = defaultFormats(formats)
     messages = message(messages)
 
-    let View = this.getView();
+    let View = this.getView()
     let names = viewNames(this.props.views)
 
-    let viewComponents = defaults(
-      components[view] || {},
-      omit(components, names),
-      {
-        eventWrapper: EventWrapper,
-        dayWrapper: BackgroundWrapper,
-        dateCellWrapper: BackgroundWrapper
-      }
-    )
+    let viewComponents = defaults(components[view] || {}, omit(components, names), {
+      eventWrapper: EventWrapper,
+      dayWrapper: BackgroundWrapper,
+      dateCellWrapper: BackgroundWrapper,
+    })
 
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { formats, culture, length })
@@ -656,11 +654,11 @@ class Calendar extends React.Component {
       <div
         {...elementProps}
         className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl
+          'rbc-rtl': props.rtl,
         })}
         style={style}
       >
-        {toolbar &&
+        {toolbar && (
           <CalToolbar
             date={current}
             view={view}
@@ -670,9 +668,9 @@ class Calendar extends React.Component {
             onNavigate={this.handleNavigate}
             messages={messages}
           />
-        }
+        )}
         <View
-          ref='view'
+          ref="view"
           {...props}
           {...formats}
           messages={messages}
@@ -691,54 +689,52 @@ class Calendar extends React.Component {
           onShowMore={this._showMore}
         />
       </div>
-    );
+    )
   }
 
   handleNavigate = (action, newDate) => {
-    let { view, date, onNavigate, ...props } = this.props;
-    let ViewComponent = this.getView();
+    let { view, date, onNavigate, ...props } = this.props
+    let ViewComponent = this.getView()
 
     date = moveDate(ViewComponent, {
       ...props,
       action,
-      date: newDate || date
+      date: newDate || date,
     })
 
     onNavigate(date, view, action)
-  };
+  }
 
-  handleViewChange = (view) => {
-    if (view !== this.props.view && isValidView(view, this.props))
-      this.props.onView(view)
-  };
+  handleViewChange = view => {
+    if (view !== this.props.view && isValidView(view, this.props)) this.props.onView(view)
+  }
 
   handleSelectEvent = (...args) => {
     notify(this.props.onSelectEvent, args)
-  };
+  }
 
   handleDoubleClickEvent = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
   }
 
-  handleSelectSlot = (slotInfo) => {
+  handleSelectSlot = slotInfo => {
     notify(this.props.onSelectSlot, slotInfo)
-  };
+  }
 
   handleDrillDown = (date, view) => {
-    const { onDrillDown } = this.props;
+    const { onDrillDown } = this.props
     if (onDrillDown) {
       onDrillDown(date, view, this.drilldownView)
-      return;
+      return
     }
-    if (view)
-      this.handleViewChange(view)
+    if (view) this.handleViewChange(view)
 
     this.handleNavigate(navigate.DATE, date)
-  };
+  }
 }
 
 export default uncontrollable(Calendar, {
   view: 'onView',
   date: 'onNavigate',
-  selected: 'onSelectEvent'
+  selected: 'onSelectEvent',
 })

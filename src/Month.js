@@ -21,9 +21,7 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
-
-let eventsForWeek = (evts, start, end, props) =>
-  evts.filter(e => inRange(e, start, end, props))
+let eventsForWeek = (evts, start, end, props) => evts.filter(e => inRange(e, start, end, props))
 
 let propTypes = {
   events: PropTypes.array.isRequired,
@@ -83,7 +81,7 @@ class MonthView extends React.Component {
   static propTypes = propTypes
 
   static defaultProps = {
-    now: new Date()
+    now: new Date(),
   }
 
   constructor(...args) {
@@ -210,12 +208,7 @@ class MonthView extends React.Component {
   }
 
   readerDateHeading = ({ date, className, ...props }) => {
-    let {
-      date: currentDate,
-      getDrilldownView,
-      dateFormat,
-      culture,
-    } = this.props
+    let { date: currentDate, getDrilldownView, dateFormat, culture } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
     let isCurrent = dates.eq(date, currentDate, 'day')
@@ -226,18 +219,15 @@ class MonthView extends React.Component {
     return (
       <div
         {...props}
-        className={cn(
-          className,
-          isOffRange && 'rbc-off-range',
-          isCurrent && 'rbc-current'
-        )}
+        className={cn(className, isOffRange && 'rbc-off-range', isCurrent && 'rbc-current')}
       >
         <DateHeaderComponent
           label={label}
           date={date}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
-          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)} />
+          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+        />
       </div>
     )
   }
@@ -260,7 +250,7 @@ class MonthView extends React.Component {
     ))
   }
 
-  renderOverlay () {
+  renderOverlay() {
     let overlay = (this.state && this.state.overlay) || {}
     let { components } = this.props
 
@@ -368,9 +358,7 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-
 MonthView.title = (date, { formats, culture }) =>
-  localizer.format(date, formats.monthHeaderFormat, culture);
-
+  localizer.format(date, formats.monthHeaderFormat, culture)
 
 export default MonthView

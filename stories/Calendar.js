@@ -1,17 +1,25 @@
 import { storiesOf, action } from '@storybook/react'
 import moment from 'moment'
 import React from 'react'
+<<<<<<< HEAD
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
+=======
+>>>>>>> format
 
 import Calendar from '../src'
 import momentLocalizer from '../src/localizers/moment.js'
 import '../src/less/styles.less'
+<<<<<<< HEAD
 import '../src/addons/dragAndDrop/styles.less'
 import demoEvents from '../examples/events'
 import createEvents from './createEvents'
 import resources from './resourceEvents'
 import withDragAndDrop from '../src/addons/dragAndDrop'
+=======
+import demoEvents from '../examples/events'
+import createEvents from './createEvents'
+>>>>>>> format
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -62,6 +70,7 @@ const events = [
     allDay: true,
   },
 ]
+<<<<<<< HEAD
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
@@ -83,6 +92,8 @@ const DragCalendar = () => {
 }
 
 const DragableCalendar = DragDropContext(HTML5Backend)(DragCalendar)
+=======
+>>>>>>> format
 
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
@@ -97,6 +108,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('default view', () => {
     return (
       <div style={{ height: 600 }}>
@@ -111,6 +126,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('event layout', () => {
     return (
       <div style={{ height: 600 }}>
@@ -123,6 +142,7 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
   .add('resource', () => {
     return (
       <div style={{ height: 500 }}>
@@ -130,6 +150,9 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+=======
+
+>>>>>>> format
   .add('selectable', () => {
     return (
       <div style={{ height: 600 }}>
@@ -146,6 +169,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('selectable, step 15, 4 timeslots', () => {
     return (
       <div style={{ height: 600 }}>
@@ -164,6 +191,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('selectable, step 10, 6 timeslots', () => {
     return (
       <div style={{ height: 600 }}>
@@ -182,6 +213,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('selectable, step 5, 6 timeslots', () => {
     return (
       <div style={{ height: 600 }}>
@@ -200,6 +235,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('selectable, 3 timeslots', () => {
     return (
       <div style={{ height: 600 }}>
@@ -217,6 +256,10 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+<<<<<<< HEAD
+=======
+
+>>>>>>> format
   .add('selectable, 9 timeslots, force now to 9:30am', () => {
     return (
       <div style={{ height: 600 }}>
@@ -392,10 +435,56 @@ storiesOf('module.Calendar.week', module)
               start: new Date(2016, 11, 6),
               end: new Date(2016, 11, 6),
             },
+<<<<<<< HEAD
+=======
           ]}
         />
       </div>
     )
+  })
+  .add('event should end after week start to be eligible to be displayed in that week', () => {
+    return (
+      <div style={{ height: 600 }}>
+        {/* should display all three events */}
+        <Calendar
+          defaultDate={new Date(2015, 3, 1)}
+          events={[
+            // {
+            //   'title': 'SingleDay 1',
+            //   'start':new Date(2015, 3, 10),
+            //   'end': new Date(2015, 3, 11)
+            // },
+            {
+              title: 'SingleDay 2',
+              start: new Date(2015, 3, 11),
+              end: new Date(2015, 3, 12),
+            },
+            // {
+            //   'title': 'SingleDay 3',
+            //   'start':new Date(2015, 3, 12),
+            //   'end': new Date(2015, 3, 13)
+            // },
+            // {
+            //   'title': 'SingleDay 4',
+            //   'start':new Date(2015, 3, 13),
+            //   'end': new Date(2015, 3, 14)
+            // },
+            // {
+            //   'title': 'MultiDay 1',
+            //   'start':new Date(2015, 3, 24),
+            //   'end': new Date(2015, 3, 25, 1, 0, 0, 0)
+            // },
+            // {
+            //   'title': 'MultiDay 2',
+            //   'start':new Date(2015, 3, 25),
+            //   'end': new Date(2015, 3, 26, 1, 0, 0, 0)
+            // }
+>>>>>>> format
+          ]}
+        />
+      </div>
+    )
+<<<<<<< HEAD
   })
   .add('agenda view - with length prop', () => {
     return (
@@ -454,3 +543,6 @@ storiesOf('module.Calendar.week', module)
       )
     }
   )
+=======
+  })
+>>>>>>> format

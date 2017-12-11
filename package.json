@@ -27,6 +27,7 @@
     "test": "npm run lint && jest",
     "tdd": "jest --watch",
     "release": "release",
+    "prettier": "prettier **/*js !examples/bundle.js --write ",
     "precommit": "lint-staged"
   },
   "lint-staged": {

@@ -220,7 +220,7 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   }
 };
 
-Agenda.title = (start, { length = length = Agenda.defaultProps.length, formats, culture }) => {
+Agenda.title = (start, { length = Agenda.defaultProps.length, formats, culture }) => {
   let end = dates.add(start, length, 'day');
   return localizer.format(
     { start, end },

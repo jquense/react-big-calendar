@@ -221,6 +221,12 @@ class Calendar extends React.Component {
     getDrilldownView: PropTypes.func,
 
     /**
+     * Determines the end date from date prop in the agenda view
+     * date prop + length (in number of days) = end date
+     */
+    length: PropTypes.number,
+
+    /**
      * Determines whether the toolbar is displayed
      */
     toolbar: PropTypes.bool,
@@ -561,6 +567,7 @@ class Calendar extends React.Component {
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
     date: now,
     step: 30,
+    length: 30,
 
     drilldownView: views.DAY,
 
@@ -617,6 +624,7 @@ class Calendar extends React.Component {
       , className
       , elementProps
       , date: current
+      , length
       , ...props } = this.props;
 
     formats = defaultFormats(formats)
@@ -636,7 +644,7 @@ class Calendar extends React.Component {
     )
 
     let CalToolbar = components.toolbar || Toolbar
-    const label = View.title(current, { formats, culture })
+    const label = View.title(current, { formats, culture, length })
 
     return (
       <div
@@ -666,6 +674,7 @@ class Calendar extends React.Component {
           formats={undefined}
           events={events}
           date={current}
+          length={length}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}

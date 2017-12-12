@@ -51,7 +51,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('default view', () => {
     return (
       <div style={{height: 600}}>
@@ -66,7 +65,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('event layout', () => {
     return (
       <div style={{height: 600}}>
@@ -79,7 +77,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('selectable', () => {
     return (
       <div style={{height: 600}}>
@@ -96,7 +93,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('selectable, step 15, 4 timeslots', () => {
     return (
       <div style={{height: 600}}>
@@ -115,7 +111,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('selectable, step 10, 6 timeslots', () => {
     return (
       <div style={{height: 600}}>
@@ -134,7 +129,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('selectable, step 5, 6 timeslots', () => {
     return (
       <div style={{height: 600}}>
@@ -153,7 +147,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('selectable, 3 timeslots', () => {
     return (
       <div style={{height: 600}}>
@@ -171,7 +164,6 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
-
   .add('selectable, 9 timeslots, force now to 9:30am', () => {
     return (
       <div style={{height: 600}}>
@@ -328,6 +320,18 @@ storiesOf('module.Calendar.week', module)
                 end: new Date(2016, 11, 6)
             }
           ]}
+        />
+      </div>
+    )
+  })
+  .add('agenda view - with length prop', () => {
+    return (
+      <div style={{height: 600}}>
+        {/* should display as title toolbar (from now to now + 14 days) */}
+        <Calendar
+          defaultView={Calendar.Views.AGENDA}
+          events={events}
+          length={14}
         />
       </div>
     )

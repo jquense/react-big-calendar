@@ -9,6 +9,11 @@ import DateContentRowWrapper from './DateContentRowWrapper';
 import DraggableEventWrapper from './DraggableEventWrapper';
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper';
 
+import findIndex from 'ramda/src/findIndex';
+import propEq from 'ramda/src/propEq';
+import update from 'ramda/src/update';
+import append from 'ramda/src/append';
+
 let html5Backend;
 
 try {
@@ -26,7 +31,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
     constructor(...args) {
       super(...args);
-      this.state = { isDragging: false, isResizing: false };
+      this.state = { isDragging: false, isResizing: false, events: [] };
 
       // stateful props that don't require a render
       this.store = {};
@@ -46,6 +51,9 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
           this.store = obj === null ? {} : merge(this.store, obj);
         },
         getInternalState: () => this.store,
+
+        // update an event
+        onEventUpdate: this.handleEventUpdate,
       };
     }
 
@@ -74,8 +82,22 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       }
     };
 
+    componentWillReceiveProps({ events }) {
+      this.setState({ events });
+    }
+
+    handleEventUpdate = event => {
+      const { id, start, end } = event;
+      const { events } = this.props;
+      const idx = findIndex(propEq('id', id))(events);
+      const nextEvents =
+        idx === -1 ? append(event, events) : update(idx, { ...events[idx], start, end }, events);
+      this.setState({ events: nextEvents });
+    };
+
     render() {
       const { selectable, components, ...props } = this.props;
+      const { events } = this.state;
 
       delete props.onEventDrop;
       delete props.onEventResize;
@@ -97,7 +119,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         dateContentRowWrapper: DateContentRowWrapper,
       };
 
-      return <Calendar {...props} />;
+      return <Calendar {...props} events={events} />;
     }
   }
 
@@ -123,6 +145,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
   DragAndDropCalendar.childContextTypes = {
     endAccessor: accessor,
+    onEventUpdate: PropTypes.func,
     onEventDrop: PropTypes.func,
     onEventResize: PropTypes.func,
     onEventReorder: PropTypes.func,

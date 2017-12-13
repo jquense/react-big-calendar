@@ -80,6 +80,22 @@ class Dnd extends React.Component {
     console.log(`clicked menu item ${item} w/ event title: ${event.title}`);
   }
 
+  rightClickDayCellMenu = props => {
+    const { id, trigger } = props;
+    return (
+      <ContextMenu id={id}>
+        {this.contextMenuItems().map(
+          (m, i) =>
+            trigger && (
+              <MenuItem key={i} onClick={m.onClick} data={m.data}>
+                {m.label}
+              </MenuItem>
+            ),
+        )}
+      </ContextMenu>
+    );
+  };
+
   eventsSorter = ({ weight: a }, { weight: b }) => (a < b ? -1 : 1);
 
   handleEventReorder = (a, b, _idxa, _idxb, list) => {
@@ -124,9 +140,9 @@ class Dnd extends React.Component {
         <DragAndDropCalendar
           contextMenuComponents={{
             event: this.rightClickEventMenu,
+            dayCell: this.rightClickDayCellMenu,
           }}
           components={{ month: { event: ResizableMonthEvent } }}
-          contextMenuItems={this.contextMenuItems}
           defaultDate={new Date(2015, 3, 12)}
           defaultView="month"
           events={this.state.events}

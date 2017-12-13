@@ -27,7 +27,7 @@ import transform from 'lodash/transform';
 import mapValues from 'lodash/mapValues';
 
 import { ContextMenu, MenuItem, connectMenu } from 'react-contextmenu';
-import { RIGHT_CLICK_EVENT } from './ContextMenuTypes';
+import { RIGHT_CLICK_EVENT, RIGHT_CLICK_DAY_CELL } from './ContextMenuTypes';
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views;
@@ -642,12 +642,22 @@ class Calendar extends React.Component {
     );
   };
 
-  renderRightClickEventMenu() {
+  renderEventMenu() {
     const { contextMenuComponents: { event: ContextMenu } } = this.props;
 
     if (!ContextMenu) return null;
 
     const ConnectedMenu = connectMenu(RIGHT_CLICK_EVENT)(ContextMenu);
+
+    return <ConnectedMenu />;
+  }
+
+  renderDayCellMenu() {
+    const { contextMenuComponents: { dayCell: ContextMenu } } = this.props;
+
+    if (!ContextMenu) return null;
+
+    const ConnectedMenu = connectMenu(RIGHT_CLICK_DAY_CELL)(ContextMenu);
 
     return <ConnectedMenu />;
   }
@@ -727,8 +737,8 @@ class Calendar extends React.Component {
           selected={this.state.selected}
           showAllEvents={this.props.showAllEvents}
         />
-        {this.renderContextMenu()}
-        {this.renderRightClickEventMenu()}
+        {this.renderDayCellMenu()}
+        {this.renderEventMenu()}
       </div>
     );
   }
@@ -759,7 +769,7 @@ class Calendar extends React.Component {
   };
 
   handleSelectSlot = slotInfo => {
-    this.setState({ selected: slotInfo }, () => {
+    this.setState({ selected: {} }, () => {
       notify(this.props.onSelectSlot, slotInfo);
     });
   };

@@ -10,6 +10,7 @@ import { notify } from './utils/helpers';
 import { elementType } from './utils/propTypes';
 import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode, isEvent } from './Selection';
+import { RIGHT_CLICK_DAY_CELL } from './ContextMenuTypes';
 
 class BackgroundCells extends React.Component {
   static propTypes = {
@@ -67,7 +68,7 @@ class BackgroundCells extends React.Component {
                 <ContextMenuTrigger
                   collect={props => ({ ...props, date })}
                   holdToDisplay={-1}
-                  id="contextMenu"
+                  id={RIGHT_CLICK_DAY_CELL}
                 >
                   <div
                     style={{ height: '100%' }}

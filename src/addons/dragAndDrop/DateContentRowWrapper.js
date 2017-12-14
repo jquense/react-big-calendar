@@ -11,6 +11,8 @@ import curry from 'ramda/src/curry';
 import flip from 'ramda/src/flip';
 import compose from 'ramda/src/compose';
 import pick from 'ramda/src/pick';
+import reduce from 'ramda/src/reduce';
+import reduced from 'ramda/src/reduced';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import addMinutes from 'date-fns/add_minutes';
@@ -74,6 +76,34 @@ const _segRemover = (self, { level, left }) => {
     const nextLevels = removeGaps(levels, level, left);
     self.setState({ levels: nextLevels });
   };
+};
+
+const findFirstOverlappingSegs = (levels, { left, right, event: { id } }) => {
+  let over = [];
+  for (let i = levels.length - 1; i >= 0; i--) {
+    const lvl = levels[i];
+    for (let j = 0, len = lvl.length; j < len; j++) {
+      const seg = lvl[j];
+      const segId = path(['event', 'id'], seg);
+      if (segId === id) continue;
+      if (overlaps(left, right)(seg)) over.push(seg);
+    }
+    if (over.length) return over;
+  }
+  return over;
+};
+
+const calcNextLevel = (levels, { left, right, event: { id } }) => {
+  for (let i = 0, len = levels.length; i < len; i++) {
+    const idx = findIndex(overlaps(left, right))(levels[i]);
+    if (idx === -1) continue;
+    const seg = levels[i][idx];
+    const segId = path(['event', 'id'], seg);
+    if (segId === id) continue;
+    console.log('found next lvl', i + 1, { ...levels[i][idx] });
+    return i + 1;
+  }
+  return -1;
 };
 
 const cloneLevels = lvls => lvls.map(lvl => [].concat(lvl));
@@ -203,10 +233,10 @@ class DateContentRowWrapper extends Component {
       console.log('generating', { ...event });
     }
 
-    if (didFinishUpdateEvent) {
+    /*if (didFinishUpdateEvent) {
       drag.level = position.level;
       setInternalState({ didFinishUpdateEvent: false });
-    }
+    }*/
     const { level: dlevel, left: dleft, span: dspan, row: drow } = drag;
 
     console.log('background hover [1]', drag);
@@ -243,8 +273,6 @@ class DateContentRowWrapper extends Component {
       }
 
       //const segsInDayFiltered = segsInDay.filter(({ event: { id }}) => (id !== drag.event.id));
-      const lastSeg = last(segsInDay) || { level: -1 };
-      const nextLevel = lastSeg.level + 1;
 
       console.log('before re-calc', start, end, span, nextLeft);
       const [sHours, sMins] = [getHours(start) || 8, 0];
@@ -254,18 +282,52 @@ class DateContentRowWrapper extends Component {
       drag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(nextStart);
       drag.event.end = compose(format, fAddHours(eHours), fAddMinutes(eMins))(nextEnd);
       console.log('re-calc date', drag.event.start, drag.event.end);
+      /*const segsInDayFiltered = segsInDay
+          .filter(({ event: { id }}) => (id !== drag.event.id));
+        drag.level = segsInDayFiltered.length;
+        const right2 = nextLeft + dspan - 1;
+      // drag.level = nextLevel;
+        drag.row = row;
+        drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+        setInternalState({ didUpdateEvent: true, drag: { ...drag, left: nextLeft, right: right2 } });
+        return onEventUpdate(drag.event);*/
 
       let hover = calcPosFromDate(date, range, span);
+      const overSegs = findFirstOverlappingSegs(levels, { ...hover, event: drag.event });
+      const nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
+      const lastSeg = last(overSegs) || { level: -1 };
+      const nextLevel = lastSeg.level + 1;
+      console.log('xxx', { ...drag }, { ...hover }, overSegs, nextDragLevel, lastSeg, nextLevel);
       //hover.level = nextLevel;
-      console.log('before if', row, drow, type, dlevel, lastKnownWeekRow, nextLeft, span);
+      console.log(
+        'before if',
+        row,
+        drow,
+        type,
+        dlevel,
+        nextLevel,
+        nextDragLevel,
+        lastKnownWeekRow,
+        nextLeft,
+        span,
+      );
       if (row !== drow || (type === 'outsideEvent' && dlevel === -1 && lastKnownWeekRow !== row)) {
         drag.level = nextLevel;
         drag.row = row;
         drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
         console.log({ ...drag });
+
         if (nextLeft + span - 1 > 7) {
           console.log('inside if > 7', nextLeft + span - 1);
-          setInternalState({ didUpdateEvent: true, drag });
+          const nextDragEvent = drag.event;
+          nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+          const nextDrag = {
+            ...hover,
+            level: nextDragLevel,
+            event: nextDragEvent,
+            row,
+          };
+          setInternalState({ didUpdateEvent: true, drag: nextDrag });
           return onEventUpdate(drag.event);
         }
 
@@ -298,19 +360,37 @@ class DateContentRowWrapper extends Component {
       const { didUpdateEvent } = internalState;
       //if (isAfter(path(['event', 'end'], drag), last(range))) {
       if (span + nextLeft - 1 > 7) {
+        console.log('ll 0');
         /*const idx = findDayIndex(range, date);
         const right = idx + dspan > 7 ? 7 : idx + dspan;
         const nextPos = { left: idx + 1, right };*/
-        const right = nextLeft + dspan - 1;
-        setInternalState({ didUpdateEvent: true, drag: { ...drag, left: nextLeft, right } });
+        //const right = nextLeft + dspan - 1;
+        const nextDragEvent = drag.event;
+        nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+        const nextDrag = {
+          ...hover,
+          level: nextDragLevel,
+          event: nextDragEvent,
+          row,
+        };
+        /*  drag.level = nextDragLevel;
+          drag.left = hover.left;
+          drag.right = hover.right;
+          drag.span = hover.span;
+        drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;*/
+        setInternalState({ didUpdateEvent: true, drag: nextDrag });
         return onEventUpdate(drag.event);
       } else if (didUpdateEvent) {
-        const right = nextLeft + dspan - 1;
-        setInternalState({
-          didUpdateEvent: false,
-          didFinishUpdateEvent: true,
-          drag: { ...drag, left: nextLeft, right },
-        });
+        console.log('ll 1');
+        const nextDragEvent = drag.event;
+        nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+        const nextDrag = {
+          ...hover,
+          level: nextDragLevel,
+          event: nextDragEvent,
+          row,
+        };
+        setInternalState({ didUpdateEvent: false, didFinishUpdateEvent: true, drag: nextDrag });
         return onEventUpdate(drag.event);
       }
       console.log('before', { ...drag }, { ...hover });

@@ -166,7 +166,8 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   }
 
   // drag
-  const { event: dragData, ...dragSeg } = lvls[dlevel][dragIdx];
+  const { event: dragData } = dragItem;
+  const { event: _, ...dragSeg } = lvls[dlevel][dragIdx];
   console.log('reorder levels', hoverIdx, dragIdx);
 
   // dragging to an empty cell

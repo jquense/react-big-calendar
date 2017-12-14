@@ -761,7 +761,9 @@ class Calendar extends React.Component {
   };
 
   handleSelectEvent = eventInfo => {
-    this.setState({ selected: eventInfo });
+    this.setState({ selected: eventInfo }, () => {
+      notify(this.props.onSelectEvent, eventInfo);
+    });
   };
 
   handleDoubleClickEvent = (...args) => {

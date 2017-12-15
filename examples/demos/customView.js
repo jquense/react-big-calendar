@@ -50,6 +50,28 @@ MyWeek.title = (date, { formats, culture }) => {
   return `My awesome week: ${Date.toLocaleString()}`
 }
 
+let styles = {
+  testStyle: {
+    border: 'solid 1px teal',
+    color: 'teal',
+    margin: 2,
+    borderRadius: 5,
+    padding: 4,
+    fontSize: 10
+  }
+};
+
+class MyComponent extends React.Component{
+
+  render () {
+    let { date } = this.props;
+
+    return (
+      <div style={styles.testStyle}> {`My component: ${date.getDate() || 'N\\a'}/${date.getMonth()+1} `} </div>
+    )
+  }
+}
+
 
 let CustomView = React.createClass({
   render(){
@@ -59,6 +81,7 @@ let CustomView = React.createClass({
           events={events}
           defaultDate={new Date(2015, 3, 1)}
           views={{ month: true, week: MyWeek }}
+          monthDayCustomHeader={<MyComponent />}
           test="io"
         />
       </div>

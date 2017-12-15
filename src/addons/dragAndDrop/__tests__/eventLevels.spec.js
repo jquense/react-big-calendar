@@ -82,32 +82,30 @@ describe('Vertical reorder', () => {
       const drag = levels[0][0];
       const hover = levels[3][2];
       const [_, nextLevels] = reorderLevels(levels, drag, hover);
+      expect(nextLevels.length).toEqual(4);
 
       // level 0
-      expect(nextLevels[0].length).toEqual(1);
-      expect(nextLevels[0][0].event).toEqual(1);
+      expect(nextLevels[0].length).toEqual(4);
+      expect(nextLevels[0][0].event).toEqual(2);
+      expect(nextLevels[0][1].event).toEqual(1);
+      expect(nextLevels[0][2].event).toEqual(4);
+      expect(nextLevels[0][3].event).toEqual(10);
 
       // level 1
       expect(nextLevels[1].length).toEqual(3);
-      expect(nextLevels[1][0].event).toEqual(2);
+      expect(nextLevels[1][0].event).toEqual(5);
       expect(nextLevels[1][1].event).toEqual(3);
-      expect(nextLevels[1][2].event).toEqual(4);
+      expect(nextLevels[1][2].event).toEqual(0);
 
       // level 2
-      expect(nextLevels[2].length).toEqual(2);
-      expect(nextLevels[2][0].event).toEqual(5);
+      expect(nextLevels[2].length).toEqual(3);
+      expect(nextLevels[2][0].event).toEqual(7);
       expect(nextLevels[2][1].event).toEqual(6);
+      expect(nextLevels[2][2].event).toEqual(9);
 
       // level 3
-      expect(nextLevels[3].length).toEqual(4);
-      expect(nextLevels[3][0].event).toEqual(7);
-      expect(nextLevels[3][1].event).toEqual(8);
-      expect(nextLevels[3][2].event).toEqual(0);
-      expect(nextLevels[3][3].event).toEqual(10);
-
-      // level 4
-      expect(nextLevels[4].length).toEqual(1);
-      expect(nextLevels[4][0].event).toEqual(9);
+      expect(nextLevels[3].length).toEqual(1);
+      expect(nextLevels[3][0].event).toEqual(8);
     });
     test('when dragging multi pan seg 0,1 to 1,1', () => {
       const levels = multiSpanSegs;
@@ -116,11 +114,12 @@ describe('Vertical reorder', () => {
       const [_, nextLevels] = reorderLevels(levels, drag, hover);
 
       // level 0
-      expect(nextLevels[0].length).toEqual(4);
-      expect(nextLevels[0][0].event).toEqual(2);
-      expect(nextLevels[0][1].event).toEqual(3);
-      expect(nextLevels[0][2].event).toEqual(4);
-      expect(nextLevels[0][3].event).toEqual(1);
+      expect(nextLevels[0].length).toEqual(5);
+      expect(nextLevels[0][0].event).toEqual(5);
+      expect(nextLevels[0][1].event).toEqual(2);
+      expect(nextLevels[0][2].event).toEqual(3);
+      expect(nextLevels[0][3].event).toEqual(4);
+      expect(nextLevels[0][4].event).toEqual(1);
 
       // level 1
       expect(nextLevels[1].length).toEqual(2);
@@ -129,13 +128,12 @@ describe('Vertical reorder', () => {
 
       // level 2
       expect(nextLevels[2].length).toEqual(2);
-      expect(nextLevels[2][0].event).toEqual(5);
-      expect(nextLevels[2][1].event).toEqual(6);
+      expect(nextLevels[2][0].event).toEqual(6);
+      expect(nextLevels[2][1].event).toEqual(8);
 
       // level 3
-      expect(nextLevels[3].length).toEqual(2);
+      expect(nextLevels[3].length).toEqual(1);
       expect(nextLevels[3][0].event).toEqual(7);
-      expect(nextLevels[3][1].event).toEqual(8);
     });
     test('when dragging multi pan seg 0,1 to 0,2', () => {
       const levels = [

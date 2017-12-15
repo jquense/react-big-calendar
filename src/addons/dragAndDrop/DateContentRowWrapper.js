@@ -255,7 +255,7 @@ class DateContentRowWrapper extends Component {
         let { event: { start: s, end: e } } = drag;
         const start = dates.startOf(s || rawStart, 'day');
         const end = dates.ceil(e || rawEnd, 'day');
-        let span = dates.diff(start, end, 'day');
+        let span = dlevel === -1 ? dspan : dates.diff(start, end, 'day');
         return [s || rawStart, e || rawEnd, span];
       })();
 
@@ -294,7 +294,7 @@ class DateContentRowWrapper extends Component {
 
       let hover = calcPosFromDate(date, range, span);
       const overSegs = findFirstOverlappingSegs(levels, { ...hover, event: drag.event });
-      const nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
+      let nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
       const lastSeg = last(overSegs) || { level: -1 };
       const nextLevel = lastSeg.level + 1;
       console.log('xxx', { ...drag }, { ...hover }, overSegs, nextDragLevel, lastSeg, nextLevel);
@@ -353,7 +353,7 @@ class DateContentRowWrapper extends Component {
         return;
       } else {
         const segsInDayFiltered = segsInDay.filter(({ event: { id } }) => id !== drag.event.id);
-        hover.level = segsInDayFiltered.length;
+        hover.level = nextDragLevel; //segsInDayFiltered.length;
       }
 
       // check hover right exceeds bounds
@@ -365,6 +365,7 @@ class DateContentRowWrapper extends Component {
         const right = idx + dspan > 7 ? 7 : idx + dspan;
         const nextPos = { left: idx + 1, right };*/
         //const right = nextLeft + dspan - 1;
+        if (dlevel < nextDragLevel) nextDragLevel -= 1;
         const nextDragEvent = drag.event;
         nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
         const nextDrag = {
@@ -418,14 +419,21 @@ class DateContentRowWrapper extends Component {
     if (this.ignoreHoverUpdates) return;
 
     const { getInternalState, setInternalState } = this.context;
-    const { drag } = getInternalState();
+    const internalState = getInternalState();
     const { level: row, range } = this.props;
-
-    if (!drag) return;
-
+    let { drag } = internalState;
     const { position: hover } = hoverItem;
-    const { level: dlevel, left: dleft, right: dright, span: dspan, row: drow } = drag;
     const { level: hlevel, left: hleft } = hover;
+
+    if (!drag) {
+      const { type } = dragItem;
+      if (type !== 'outsideEvent') return;
+
+      // use handleBackgroundCellEnter
+      return this.handleBackgroundCellEnter(range[hleft - 1], dragItem);
+    }
+
+    const { level: dlevel, left: dleft, right: dright, span: dspan, row: drow } = drag;
 
     if (dleft === hleft && dlevel === hlevel) return;
 
@@ -453,21 +461,22 @@ class DateContentRowWrapper extends Component {
         }
         return undefined;
       })();
+      const overSegs = findFirstOverlappingSegs(levels, { ...hover, event: drag.event });
+      const nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
 
-      const nextDragLevel = lastOverlappingSeg.level + 1;
       drag.level = nextDragLevel;
 
-      const lvl = levels[nextLevel] || [];
+      const lvl = levels[nextDragLevel] || [];
       if (dspan === 1) {
         lvl.push(drag);
         lvl.sort((a, b) => a.left - b.left);
-        levels[nextLevel] = lvl;
+        levels[nextDragLevel] = lvl;
       } else {
         const [over, notOver] = groupOverlapping(lvl, drag);
         if (!over.length) {
           lvl.push(drag);
           lvl.sort((a, b) => a.left - b.left);
-          levels[nextLevel] = lvl;
+          levels[nextDragLevel] = lvl;
         } else {
           const nextLvl = [drag, ...notOver];
           nextLvl.sort((a, b) => a.keft - b.left);
@@ -500,6 +509,12 @@ class DateContentRowWrapper extends Component {
         addDays(nextStart, span - 1),
       );
     }
+
+    // TODO: analyze if nextDrag === drag
+    // perhaps handle this case inside reorder algo?
+    //
+    // we should also return early in this func; if already reordered for the
+    // same drag and hover items don't reorder again
 
     console.log('hover', { ...hover }, { ...nextDrag });
     setInternalState({

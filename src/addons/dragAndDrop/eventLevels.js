@@ -314,10 +314,16 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   }
 
   // ensure no unnecessary gaps are present
-  for (let i = 1, len = nextLevels.length; i < len; i++) {
+  for (let i = nextLevels.length - 1; i >= 1; i--) {
     const [currIdx, prevIdx] = [i, i - 1];
     const prevLvl = nextLevels[prevIdx];
     let currLvl = nextLevels[currIdx];
+
+    if (!currLvl.length) {
+      nextLevels.splice(currIdx, 1);
+      i = nextLevels.length;
+      continue;
+    }
 
     // interate through currLvl in search of segs whom do not overlap
     for (let j = 0; j < currLvl.length; j++) {
@@ -329,7 +335,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
       const overSeg = currLvl[j];
       prevLvl.push(overSeg);
       currLvl.splice(j, 1);
-      j -= 1;
+      (j -= 1), (i = nextLevels.length);
     }
 
     // sort

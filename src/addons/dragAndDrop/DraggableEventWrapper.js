@@ -42,11 +42,23 @@ let eventSource = {
 
 const eventTarget = {
   hover(props, monitor, { decoratedComponentInstance: component }) {
-    const { onSegmentHover, setInternalState } = component.context;
+    const { onSegmentHover, getInternalState, setInternalState } = component.context;
     const { event: hoverEvent } = props;
+    const { lastHover, lastDrag } = getInternalState();
     const dragEvent = monitor.getItem();
+    if (
+      lastHover &&
+      lastDrag &&
+      hoverEvent.data.id === lastHover.data.id &&
+      dragEvent.data.id === lastDrag.data.id
+    )
+      return;
     const node = ReactDOM.findDOMNode(component);
-    setInternalState({ hoverBounds: node.getBoundingClientRect() });
+    setInternalState({
+      hoverBounds: node.getBoundingClientRect(),
+      lastHover: hoverEvent,
+      lastDrag: dragEvent,
+    });
     onSegmentHover(hoverEvent, dragEvent);
   },
   drop(_, monitor, { props, decoratedComponentInstance: component }) {
@@ -63,6 +75,7 @@ const contextTypes = {
   onSegmentDrop: PropTypes.func,
   onSegmentHover: PropTypes.func,
   setInternalState: PropTypes.func,
+  getInternalState: PropTypes.func,
 };
 
 const propTypes = {
@@ -74,9 +87,8 @@ const propTypes = {
 
 class DraggableEventWrapper extends React.Component {
   render() {
-    let { connectDragSource, connectDropTarget, children, event } = this.props;
-    let EventWrapper = BigCalendar.components.eventWrapper;
-
+    const { connectDragSource, connectDropTarget, children, event } = this.props;
+    const EventWrapper = BigCalendar.components.eventWrapper;
     const enhancer = compose(connectDragSource, connectDropTarget);
 
     return <EventWrapper event={event}>{enhancer(children)}</EventWrapper>;

@@ -1,0 +1,135 @@
+@import './variables.less';
+@import './time-column.less';
+
+.rbc-slot-selection {
+  z-index: 10;
+  position: absolute;
+  cursor: default;
+  background-color: @time-selection-bg-color;
+  color: @time-selection-color;
+  font-size: 75%;
+  padding: 3px;
+}
+
+.rbc-time-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  border: 1px solid @calendar-border;
+  min-height: 0;
+
+  .rbc-time-gutter {
+    white-space: nowrap;
+  }
+
+  .rbc-allday-cell {
+    width: 100%;
+    position: relative;
+  }
+
+  .rbc-allday-events {
+    position: relative;
+    z-index: 4;
+  }
+
+  .rbc-row {
+    min-height: 20px;
+  }
+}
+
+
+.rbc-time-header {
+  display: flex;
+  flex: 0 0 auto; // should not shrink below height
+  flex-direction: column;
+
+  &.rbc-overflowing {
+    border-right: 1px solid @cell-border;
+  }
+
+  .rbc-rtl &.rbc-overflowing {
+    border-right-width: 0;
+    border-left: 1px solid @cell-border;
+  }
+
+  > .rbc-row > * + * {
+    border-left: 1px solid @cell-border;
+  }
+
+  .rbc-rtl & > .rbc-row > * + * {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
+  }
+
+  > .rbc-row:first-child {
+    border-bottom: 1px solid  @cell-border;
+  }
+
+  .rbc-gutter-cell {
+    flex: none;
+  }
+
+  > .rbc-gutter-cell + * {
+    width: 100%;
+  }
+}
+
+.rbc-time-content {
+  display: flex;
+  flex: 1 0 0%;
+  align-items: flex-start;
+  width: 100%;
+  border-top: 2px solid @calendar-border;
+  overflow-y: auto;
+  position: relative;
+
+  > .rbc-time-gutter {
+    flex: none;
+  }
+
+  > * + * > * {
+    border-left: 1px solid @cell-border;
+  }
+
+  .rbc-rtl & > * + * > * {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
+  }
+
+  > .rbc-day-slot {
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+.rbc-current-time-indicator {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  height: 1px;
+
+  background-color: @current-time-color;
+  pointer-events: none;
+
+  &::before {
+    display: block;
+
+    position: absolute;
+    left: -3px;
+    top: -3px;
+
+    content: ' ';
+    background-color: @current-time-color;
+
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+  }
+
+  .rbc-rtl &::before {
+    left: 0;
+    right: -3px;
+  }
+}

@@ -1,0 +1,36 @@
+@import '../../less/variables.less';
+
+.rbc-addons-dnd {
+  .rbc-row-content {
+    pointer-events: none;
+
+    & .rbc-show-more,
+    & .rbc-event:not(.rbc-addons-dnd-dragging) {
+      pointer-events: all;
+    }
+  }
+
+  .rbc-addons-dnd-over {
+    background-color: rgba(
+      red(@date-selection-bg-color),
+      green(@date-selection-bg-color),
+      blue(@date-selection-bg-color),
+      .3
+    );
+  }
+
+  .rbc-event {
+    transition: opacity 150ms;
+    pointer-events: all;
+  }
+
+  &.rbc-addons-dnd-is-dragging .rbc-event {
+    pointer-events: none;
+    opacity: .50;
+  }
+
+  // .rbc-addons-dnd-dragging {
+  //   pointer-events: none;
+  //   opacity: .35;
+  // }
+}

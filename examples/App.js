@@ -18,6 +18,7 @@ import Cultures from './demos/cultures';
 import Popup from './demos/popup';
 import Rendering from './demos/rendering';
 import CustomView from './demos/customView';
+import CustomHeader from './demos/customHeader';
 import Timeslots from './demos/timeslots';
 import Dnd from './demos/dnd';
 
@@ -39,6 +40,7 @@ const Example = React.createClass({
       popup: Popup,
       rendering: Rendering,
       customView: CustomView,
+      customHeader: CustomHeader,
       timeslots: Timeslots,
       dnd: Dnd,
     }[selected];
@@ -85,11 +87,9 @@ const Example = React.createClass({
               <li className={cn({active: selected === 'rendering' })}>
                 <a href='#' onClick={this.select.bind(null, 'rendering')}>Custom rendering</a>
               </li>
-              {/* temporary hide link to documentation
               <li className={cn({active: selected === 'customView' })}>
                 <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
               </li>
-              */}
               <li className={cn({active: selected === 'dnd' })}>
                 <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
               </li>

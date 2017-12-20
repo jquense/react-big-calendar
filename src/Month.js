@@ -39,6 +39,8 @@ let propTypes = {
   eventPropGetter: PropTypes.func,
   dayPropGetter: PropTypes.func,
 
+  monthDayCustomHeader: PropTypes.element,
+
   culture: PropTypes.string,
   dayFormat: dateFormat,
 
@@ -215,6 +217,7 @@ class MonthView extends React.Component {
       getDrilldownView,
       dateFormat,
       culture,
+      monthDayCustomHeader
     } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
@@ -229,9 +232,11 @@ class MonthView extends React.Component {
         className={cn(
           className,
           isOffRange && 'rbc-off-range',
-          isCurrent && 'rbc-current'
+          isCurrent && 'rbc-current',
+          'custom-day-header'
         )}
       >
+        {monthDayCustomHeader && React.cloneElement(monthDayCustomHeader, { date })}
         <DateHeaderComponent
           label={label}
           date={date}

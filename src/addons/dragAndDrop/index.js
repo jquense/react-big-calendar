@@ -80,6 +80,10 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       if (isDragging !== this.state.isDragging) {
         setTimeout(() => this.setState({ isDragging }));
       }
+
+      if (!isDragging) {
+        this.store = {}; // reset store
+      }
     };
 
     componentWillReceiveProps({ events }) {

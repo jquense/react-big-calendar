@@ -199,7 +199,7 @@ class DateContentRowWrapper extends Component {
     const { lastKnownWeekRow, removeOrphanedSegment, didFinishUpdateEvent } = internalState;
     if (type === 'resizeL' || type === 'resizeR') return;
 
-    console.log('row', row, lastKnownWeekRow);
+    console.log('row', row, lastKnownWeekRow, !!removeOrphanedSegment);
     if (!isNaN(lastKnownWeekRow) && lastKnownWeekRow !== row && removeOrphanedSegment) {
       removeOrphanedSegment();
       setInternalState({ removeOrphanedSegment: null });
@@ -454,6 +454,15 @@ class DateContentRowWrapper extends Component {
 
     // update drag level
     if (drow !== row) {
+      // remove orphaned segment
+      const { removeOrphanedSegment } = internalState;
+      if (removeOrphanedSegment) {
+        removeOrphanedSegment();
+        setInternalState({ removeOrphanedSegment: null, lastKnownWeekRow: row });
+      } else {
+        setInternalState({ lastKnownWeekRow: row });
+      }
+
       const lastOverlappingSeg = (() => {
         for (let i = levels.length - 1; i >= 0; i--) {
           const idx = findIndex(overlaps(dleft, dright))(levels[i]);

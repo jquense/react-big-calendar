@@ -85,11 +85,9 @@ const Example = React.createClass({
               <li className={cn({active: selected === 'rendering' })}>
                 <a href='#' onClick={this.select.bind(null, 'rendering')}>Custom rendering</a>
               </li>
-              {/* temporary hide link to documentation
               <li className={cn({active: selected === 'customView' })}>
                 <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
               </li>
-              */}
               <li className={cn({active: selected === 'dnd' })}>
                 <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
               </li>

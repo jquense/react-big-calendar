@@ -131,7 +131,6 @@ class DateContentRowWrapper extends Component {
     onSegmentHover: PropTypes.func,
     onSegmentDrop: PropTypes.func,
     onBackgroundCellEnter: PropTypes.func,
-    onBackgroundCellHoverExit: PropTypes.func,
     reportDayBounds: PropTypes.func,
   };
 
@@ -142,7 +141,6 @@ class DateContentRowWrapper extends Component {
       onSegmentHover: this.handleSegmentHover,
       onSegmentDrop: this.handleSegmentDrop,
       onBackgroundCellEnter: this.handleBackgroundCellEnter,
-      onBackgroundCellHoverExit: this.handleBackgroundCellHoverExit,
       reportDayBounds: this.handleReportDayBounds,
     };
   }
@@ -350,8 +348,6 @@ class DateContentRowWrapper extends Component {
     });
     this.setState({ levels: nextLevels });
   };
-
-  handleBackgroundCellHoverExit = () => {};
 
   handleSegmentHover = (hoverItem, dragItem) => {
     if (this.ignoreHoverUpdates) return;

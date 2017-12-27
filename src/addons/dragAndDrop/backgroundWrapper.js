@@ -58,7 +58,6 @@ class DraggableBackgroundWrapper extends React.Component {
     onEventResize: PropTypes.func,
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
-    onBackgroundCellHoverExit: PropTypes.func,
     onBackgroundCellEnter: PropTypes.func,
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
@@ -80,11 +79,6 @@ class DraggableBackgroundWrapper extends React.Component {
         // onEventResize('drag', {event: monitor.getItem(), end: value});
       }
       onBackgroundCellEnter(value, monitor.getItem());
-    }
-
-    if (!isOver && wasOver) {
-      const { onBackgroundCellHoverExit } = this.context;
-      onBackgroundCellHoverExit(value, monitor.getItem());
     }
   }
 

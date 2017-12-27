@@ -155,6 +155,10 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     return [dragItem, lvls];
   }
 
+  if (dragIdx === -1) {
+    console.error('drag segment not found, invalid inputs', dragItem, hoverItem, levels);
+  }
+
   // drag
   const { event: dragData } = dragItem;
   const { event: _, ...dragSeg } = lvls[dlevel][dragIdx];

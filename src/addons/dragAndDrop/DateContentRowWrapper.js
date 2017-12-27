@@ -3,16 +3,12 @@ import React, { Component } from 'react';
 
 import propEq from 'ramda/src/propEq';
 import findIndex from 'ramda/src/findIndex';
-import splitAt from 'ramda/src/splitAt';
 import path from 'ramda/src/path';
 import filter from 'ramda/src/filter';
 import last from 'ramda/src/last';
 import curry from 'ramda/src/curry';
 import flip from 'ramda/src/flip';
 import compose from 'ramda/src/compose';
-import pick from 'ramda/src/pick';
-import reduce from 'ramda/src/reduce';
-import reduced from 'ramda/src/reduced';
 import addDays from 'date-fns/add_days';
 import addHours from 'date-fns/add_hours';
 import addMinutes from 'date-fns/add_minutes';
@@ -20,8 +16,6 @@ import getHours from 'date-fns/get_hours';
 import getMinutes from 'date-fns/get_minutes';
 import isSameDay from 'date-fns/is_same_day';
 import format from 'date-fns/format';
-import isAfter from 'date-fns/is_after';
-import diffInDays from 'date-fns/difference_in_days';
 import cuid from 'cuid';
 
 import BigCalendar from '../../index';

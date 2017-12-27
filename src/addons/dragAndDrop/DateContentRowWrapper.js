@@ -100,7 +100,6 @@ const calcNextLevel = (levels, { left, right, event: { id } }) => {
     const seg = levels[i][idx];
     const segId = path(['event', 'id'], seg);
     if (segId === id) continue;
-    console.log('found next lvl', i + 1, { ...levels[i][idx] });
     return i + 1;
   }
   return -1;
@@ -153,10 +152,6 @@ class DateContentRowWrapper extends Component {
     this.setState({ ...props });
   }
 
-  componentDidMount() {
-    //console.log('mm', this.div.getBoundingClientHeight());
-  }
-
   componentWillReceiveProps(props, _) {
     const next = withLevels(props);
     this.setState({ ...next });
@@ -189,17 +184,15 @@ class DateContentRowWrapper extends Component {
 
   handleBackgroundCellEnter = (date, dragItem) => {
     this.ignoreHoverUpdates = true;
-    console.log('background cell enter', date);
 
     const { range, level: row } = this.props;
     const { getInternalState, setInternalState, onEventUpdate } = this.context;
     const { levels } = this.state;
     const { type, data, position } = dragItem;
     const internalState = getInternalState();
-    const { lastKnownWeekRow, removeOrphanedSegment, didFinishUpdateEvent } = internalState;
+    const { lastKnownWeekRow, removeOrphanedSegment } = internalState;
     if (type === 'resizeL' || type === 'resizeR') return;
 
-    console.log('row', row, lastKnownWeekRow, !!removeOrphanedSegment);
     if (!isNaN(lastKnownWeekRow) && lastKnownWeekRow !== row && removeOrphanedSegment) {
       removeOrphanedSegment();
       setInternalState({ removeOrphanedSegment: null });
@@ -207,7 +200,6 @@ class DateContentRowWrapper extends Component {
 
     // update last known week row
     setInternalState({ lastKnownWeekRow: row });
-    console.log('background hover [0]', type);
 
     let { drag } = internalState;
     if (!drag && type === 'outsideEvent') {
@@ -230,190 +222,136 @@ class DateContentRowWrapper extends Component {
         row,
         level: -1,
       };
-      console.log('generating', { ...event });
     }
 
-    /*if (didFinishUpdateEvent) {
-      drag.level = position.level;
-      setInternalState({ didFinishUpdateEvent: false });
-    }*/
+    if (!drag) return;
+
     const { level: dlevel, left: dleft, span: dspan, row: drow } = drag;
 
-    console.log('background hover [1]', drag);
-    if (drag) {
-      const dragId = path(['event', 'id'], drag);
-      const nextLeft = findDayIndex(range, date) + 1;
-      const segsInDay = ((right, left) =>
-        levels.reduce((acc, lvl) => {
-          return acc.concat(filter(overlaps(right, left))(lvl));
-        }, []))(nextLeft, nextLeft);
+    const dragId = path(['event', 'id'], drag);
+    const nextLeft = findDayIndex(range, date) + 1;
+    const segsInDay = ((right, left) =>
+      levels.reduce((acc, lvl) => {
+        return acc.concat(filter(overlaps(right, left))(lvl));
+      }, []))(nextLeft, nextLeft);
 
-      // update start/end date
-      const [start, end, span] = (() => {
-        const rawStart = range[nextLeft - 1];
-        const rawEnd = range[dspan - 1];
-        let { event: { start: s, end: e } } = drag;
-        const start = dates.startOf(s || rawStart, 'day');
-        const end = dates.ceil(e || rawEnd, 'day');
-        let span = dlevel === -1 ? dspan : dates.diff(start, end, 'day');
-        return [s || rawStart, e || rawEnd, span];
-      })();
+    // recalculate  start/end date
+    const [start, end, span] = (() => {
+      const rawStart = range[nextLeft - 1];
+      const rawEnd = range[dspan - 1];
+      let { event: { start: s, end: e } } = drag;
+      const start = dates.startOf(s || rawStart, 'day');
+      const end = dates.ceil(e || rawEnd, 'day');
+      let span = dlevel === -1 ? dspan : dates.diff(start, end, 'day');
+      return [s || rawStart, e || rawEnd, span];
+    })();
 
-      console.log(nextLeft, segsInDay.length, dragId, [].concat(segsInDay));
-      if (
-        segsInDay.length &&
-        dragId &&
-        segsInDay.some(({ event: { id } }) => id === dragId) &&
-        (span === 1 || (span > 1 && nextLeft === dleft))
-      ) {
-        this.ignoreHoverUpdates = false;
-        console.log('early return [0]');
-        setInternalState({ removeOrphanedSegment: _segRemover(this, drag) });
-        return;
+    if (
+      segsInDay.length &&
+      dragId &&
+      segsInDay.some(({ event: { id } }) => id === dragId) &&
+      (span === 1 || (span > 1 && nextLeft === dleft))
+    ) {
+      this.ignoreHoverUpdates = false;
+      setInternalState({ removeOrphanedSegment: _segRemover(this, drag) });
+      return;
+    }
+
+    const [sHours, sMins] = [getHours(start) || 8, 0];
+    const [eHours, eMins] = [getHours(end) || 16, 0];
+    const nextStart = range[nextLeft - 1];
+    const nextEnd = addDays(nextStart, span - 1);
+    drag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(nextStart);
+    drag.event.end = compose(format, fAddHours(eHours), fAddMinutes(eMins))(nextEnd);
+
+    let hover = calcPosFromDate(date, range, span);
+    const overSegs = findFirstOverlappingSegs(levels, { ...hover, event: drag.event });
+    let nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
+    const lastSeg = last(overSegs) || { level: -1 };
+    const nextLevel = lastSeg.level + 1;
+    if (row !== drow || (type === 'outsideEvent' && dlevel === -1 && lastKnownWeekRow !== row)) {
+      drag.level = nextLevel;
+      drag.row = row;
+      drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+
+      if (nextLeft + span - 1 > 7) {
+        const nextDragEvent = drag.event;
+        nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+        const nextDrag = {
+          ...hover,
+          level: nextDragLevel,
+          event: nextDragEvent,
+          row,
+        };
+        setInternalState({ didUpdateEvent: true, drag: nextDrag });
+        return onEventUpdate(drag.event);
       }
 
-      //const segsInDayFiltered = segsInDay.filter(({ event: { id }}) => (id !== drag.event.id));
-
-      console.log('before re-calc', start, end, span, nextLeft);
-      const [sHours, sMins] = [getHours(start) || 8, 0];
-      const [eHours, eMins] = [getHours(end) || 16, 0];
-      const nextStart = range[nextLeft - 1];
-      const nextEnd = addDays(nextStart, span - 1);
-      drag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(nextStart);
-      drag.event.end = compose(format, fAddHours(eHours), fAddMinutes(eMins))(nextEnd);
-      console.log('re-calc date', drag.event.start, drag.event.end);
-      /*const segsInDayFiltered = segsInDay
-          .filter(({ event: { id }}) => (id !== drag.event.id));
-        drag.level = segsInDayFiltered.length;
-        const right2 = nextLeft + dspan - 1;
-      // drag.level = nextLevel;
-        drag.row = row;
-        drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
-        setInternalState({ didUpdateEvent: true, drag: { ...drag, left: nextLeft, right: right2 } });
-        return onEventUpdate(drag.event);*/
-
-      let hover = calcPosFromDate(date, range, span);
-      const overSegs = findFirstOverlappingSegs(levels, { ...hover, event: drag.event });
-      let nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
-      const lastSeg = last(overSegs) || { level: -1 };
-      const nextLevel = lastSeg.level + 1;
-      console.log('xxx', { ...drag }, { ...hover }, overSegs, nextDragLevel, lastSeg, nextLevel);
-      //hover.level = nextLevel;
-      console.log(
-        'before if',
-        row,
-        drow,
-        type,
-        dlevel,
-        nextLevel,
-        nextDragLevel,
-        lastKnownWeekRow,
-        nextLeft,
-        span,
-      );
-      if (row !== drow || (type === 'outsideEvent' && dlevel === -1 && lastKnownWeekRow !== row)) {
-        drag.level = nextLevel;
-        drag.row = row;
-        drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
-        console.log({ ...drag });
-
-        if (nextLeft + span - 1 > 7) {
-          console.log('inside if > 7', nextLeft + span - 1);
-          const nextDragEvent = drag.event;
-          nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
-          const nextDrag = {
-            ...hover,
-            level: nextDragLevel,
-            event: nextDragEvent,
-            row,
-          };
-          setInternalState({ didUpdateEvent: true, drag: nextDrag });
-          return onEventUpdate(drag.event);
-        }
-
-        const lvl = levels[nextLevel] || [];
-        if (dspan === 1) {
+      const lvl = levels[nextLevel] || [];
+      if (dspan === 1) {
+        lvl.push(drag);
+        lvl.sort((a, b) => a.left - b.left);
+        levels[nextLevel] = lvl;
+      } else {
+        const [over, notOver] = groupOverlapping(lvl, drag);
+        if (!over.length) {
           lvl.push(drag);
           lvl.sort((a, b) => a.left - b.left);
           levels[nextLevel] = lvl;
         } else {
-          const [over, notOver] = groupOverlapping(lvl, drag);
-          if (!over.length) {
-            lvl.push(drag);
-            lvl.sort((a, b) => a.left - b.left);
-            levels[nextLevel] = lvl;
-          } else {
-            const nextLvl = [drag, ...notOver];
-            nextLvl.sort((a, b) => a.keft - b.left);
-            levels.splice(nextLevel, 1, nextLvl, over);
-          }
+          const nextLvl = [drag, ...notOver];
+          nextLvl.sort((a, b) => a.keft - b.left);
+          levels.splice(nextLevel, 1, nextLvl, over);
         }
-        setInternalState({ removeOrphanedSegment: _segRemover(this, drag), drag });
-        this.setState({ levels });
-        return;
-      } else {
-        const segsInDayFiltered = segsInDay.filter(({ event: { id } }) => id !== drag.event.id);
-        hover.level = nextDragLevel; //segsInDayFiltered.length;
       }
-
-      // check hover right exceeds bounds
-      const { didUpdateEvent } = internalState;
-      //if (isAfter(path(['event', 'end'], drag), last(range))) {
-      if (span + nextLeft - 1 > 7) {
-        console.log('ll 0');
-        /*const idx = findDayIndex(range, date);
-        const right = idx + dspan > 7 ? 7 : idx + dspan;
-        const nextPos = { left: idx + 1, right };*/
-        //const right = nextLeft + dspan - 1;
-        if (dlevel < nextDragLevel) nextDragLevel -= 1;
-        const nextDragEvent = drag.event;
-        nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
-        const nextDrag = {
-          ...hover,
-          level: nextDragLevel,
-          event: nextDragEvent,
-          row,
-        };
-        /*  drag.level = nextDragLevel;
-          drag.left = hover.left;
-          drag.right = hover.right;
-          drag.span = hover.span;
-        drag.event.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;*/
-        setInternalState({ didUpdateEvent: true, drag: nextDrag });
-        return onEventUpdate(drag.event);
-      } else if (didUpdateEvent) {
-        console.log('ll 1');
-        const nextDragEvent = drag.event;
-        nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
-        const nextDrag = {
-          ...hover,
-          level: nextDragLevel,
-          event: nextDragEvent,
-          row,
-        };
-        setInternalState({ didUpdateEvent: false, didFinishUpdateEvent: true, drag: nextDrag });
-        return onEventUpdate(drag.event);
-      }
-      console.log('before', { ...drag }, { ...hover });
-      const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
-        ...hover,
-        row,
-      });
-
-      // setup cleanup routine
-      setInternalState({
-        removeOrphanedSegment: _segRemover(this, nextDrag),
-        drag: { ...nextDrag, row },
-        didReorder: true,
-      });
-      this.setState({ levels: nextLevels });
+      setInternalState({ removeOrphanedSegment: _segRemover(this, drag), drag });
+      return this.setState({ levels });
+    } else {
+      hover.level = nextDragLevel;
     }
+
+    // check hover right exceeds bounds
+    const { didUpdateEvent } = internalState;
+    if (span + nextLeft - 1 > 7) {
+      if (dlevel < nextDragLevel) nextDragLevel -= 1;
+      const nextDragEvent = drag.event;
+      nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+      const nextDrag = {
+        ...hover,
+        level: nextDragLevel,
+        event: nextDragEvent,
+        row,
+      };
+      setInternalState({ didUpdateEvent: true, drag: nextDrag });
+      return onEventUpdate(drag.event);
+    } else if (didUpdateEvent) {
+      const nextDragEvent = drag.event;
+      nextDragEvent.weight = (path(['event', 'weight'], lastSeg) || 0) + 0.5;
+      const nextDrag = {
+        ...hover,
+        level: nextDragLevel,
+        event: nextDragEvent,
+        row,
+      };
+      setInternalState({ didUpdateEvent: false, drag: nextDrag });
+      return onEventUpdate(drag.event);
+    }
+
+    const [nextDrag, nextLevels] = reorderLevels(levels, drag, {
+      ...hover,
+      row,
+    });
+
+    // setup cleanup routine
+    setInternalState({
+      removeOrphanedSegment: _segRemover(this, nextDrag),
+      drag: { ...nextDrag, row },
+      didReorder: true,
+    });
+    this.setState({ levels: nextLevels });
   };
 
-  handleBackgroundCellHoverExit = () => {
-    const { setInternalState } = this.context;
-    //setInternalState('lastKnownWeekRow', null);
-  };
+  handleBackgroundCellHoverExit = () => {};
 
   handleSegmentHover = (hoverItem, dragItem) => {
     if (this.ignoreHoverUpdates) return;
@@ -437,19 +375,6 @@ class DateContentRowWrapper extends Component {
 
     if (dleft === hleft && dlevel === hlevel) return;
 
-    /*const dragBounds = rect(getInternalState('dragBounds'));
-    const dragMonitor = getInternalState('dragMonitor');
-    const nextBounds = { ...dragBounds, ...dragMonitor.getSourceClientOffset() };
-    const dayIdx = findDayBoundsIndex(this.rangeBounds, nextBounds);
-    if (dayIdx < 0) {
-      console.error('unable to find day index from bounds', dragBounds, nextBounds, this.rangeBounds);
-    }
-    const dayInRow = range[dayIdx];
-    if (!isSameDay(dayInRow, event.start)) {
-      drag.event.start = format(dayInRow);
-      drag.event.end = format(addDays(dayInRow, dspan - 1));
-    }*/
-
     const { levels } = this.state;
 
     // update drag level
@@ -463,19 +388,14 @@ class DateContentRowWrapper extends Component {
         setInternalState({ lastKnownWeekRow: row });
       }
 
-      const lastOverlappingSeg = (() => {
-        for (let i = levels.length - 1; i >= 0; i--) {
-          const idx = findIndex(overlaps(dleft, dright))(levels[i]);
-          return levels[i][idx];
-        }
-        return undefined;
-      })();
       const overSegs = findFirstOverlappingSegs(levels, { ...hover, event: drag.event });
       const nextDragLevel = path(['level'], last(overSegs) || { level: -1 }) + 1;
 
       drag.level = nextDragLevel;
 
       const lvl = levels[nextDragLevel] || [];
+
+      // insert drag segment at the bottom of current day
       if (dspan === 1) {
         lvl.push(drag);
         lvl.sort((a, b) => a.left - b.left);
@@ -494,17 +414,13 @@ class DateContentRowWrapper extends Component {
       }
     }
 
-    console.log('before hover', { ...drag }, { ...hover });
-    console.time('reorder-lavels in hover');
+    // reorder based on drag and hover
     const [nextDrag, nextLevels] = reorderLevels(levels, drag, hover);
-    console.timeEnd('reorder-lavels in hover');
-    console.log('hover', nextDrag, cloneLevels(nextLevels));
 
     // check if start and end dates need updating
     const nextDragStart = path(['event', 'start'], nextDrag);
     const nextDragEnd = path(['event', 'end'], nextDrag);
     const nextLeft = findDayIndex(range, nextDragStart) + 1;
-    console.log('nnn', nextDragStart, nextDragEnd, nextLeft);
     if (nextLeft !== nextDrag.left) {
       const [sHours, sMins] = [getHours(nextDragStart) || 8, getMinutes(nextDragStart)];
       const [eHours, eMins] = [getHours(nextDragEnd) || 16, getMinutes(nextDragEnd)];
@@ -512,20 +428,12 @@ class DateContentRowWrapper extends Component {
       const s = dates.startOf(nextDragStart, 'day');
       const e = dates.ceil(nextDragEnd, 'day');
       const span = dates.diff(s, e, 'day');
-      console.log('nnn1', sHours, sMins, eHours, eMins, s, e, span);
       nextDrag.event.start = compose(format, fAddHours(sHours), fAddMinutes(sMins))(nextStart);
       nextDrag.event.end = compose(format, fAddHours(eHours), fAddMinutes(eMins))(
         addDays(nextStart, span - 1),
       );
     }
 
-    // TODO: analyze if nextDrag === drag
-    // perhaps handle this case inside reorder algo?
-    //
-    // we should also return early in this func; if already reordered for the
-    // same drag and hover items don't reorder again
-
-    console.log('hover', { ...hover }, { ...nextDrag });
     setInternalState({
       removeOrphanedSegment: _segRemover(this, nextDrag),
       drag: { ...nextDrag, row },

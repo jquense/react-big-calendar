@@ -138,7 +138,6 @@ function createWrapper(type) {
       const end = get(event, endAccessor);
       const { didReorder } = getInternalState();
 
-      console.log('drop background', eventType, event, 'foo');
       if (didReorder && itemType === ItemTypes.EVENT) {
         return onSegmentDrop();
       }
@@ -146,13 +145,11 @@ function createWrapper(type) {
       // clean up internal state
       setInternalState(null);
 
-      console.log('trigered background drop', value, start, end, itemType, eventType, event);
       if (itemType === ItemTypes.EVENT) {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on
         * info inside user setable `data` prop.
         */
-        console.log('THIS WAS CALLED');
         if (eventType === 'outsideEvent') {
           return onOutsideEventDrop({
             event,
@@ -194,7 +191,6 @@ function createWrapper(type) {
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
 
-      console.log('background hover', itemType, eventType, value, event);
       window.RBC_RESIZE_VALUE = value;
       if (itemType === ItemTypes.RESIZE) {
         switch (eventType) {

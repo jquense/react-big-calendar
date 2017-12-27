@@ -91,7 +91,6 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
     }
 
     handleEventUpdate = event => {
-      console.log('update event', { ...this.store.drag });
       const { id, start, end } = event;
       const { events } = this.props;
       const idx = findIndex(propEq('id', id))(events);

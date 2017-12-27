@@ -68,7 +68,6 @@ const removeGaps = (levels, dlevel, dleft) => {
     const prevLvl = nextLevels[i - 1];
     let currLvl = nextLevels[i];
     const overSegIdx = currLvl.findIndex(overlaps(dleft, dleft));
-    console.log('gaps [0]', i, prevLvl, currLvl, overSegIdx, dleft);
 
     // level after drag doesn't contain seg
     // assuming subsequent levels don't either
@@ -77,14 +76,12 @@ const removeGaps = (levels, dlevel, dleft) => {
     // group overlapping; continue only is over.length === 0
     const overSeg = currLvl[overSegIdx];
     const [over, notOver] = groupOverlapping(prevLvl, overSeg);
-    console.log('gaps [1]', overSeg, over, notOver);
     if (over.length) break;
 
     // we can safely shift overSeg up a level
     prevLvl.push(overSeg);
     prevLvl.sort(segSorter);
     currLvl.splice(overSegIdx, 1);
-    console.log('gaps end', [].concat(prevLvl), [].concat(currLvl));
   }
   for (let i = 0, len = nextLevels.length; i < len; i++) {
     nextLevels[i] = nextLevels[i].map(seg => ({ ...seg, level: i }));
@@ -118,7 +115,6 @@ const removeGaps2 = (levels, dragItem) => {
     // sort
     prevLvl.sort(segSorter);
   }
-  console.log('removeGaps2', copyLevels(nextLevels));
   const finalLevels = nextLevels.reduce(
     (acc, lvl) => (lvl.length ? (acc.push(lvl), acc) : acc),
     [],
@@ -168,7 +164,6 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   // drag
   const { event: dragData } = dragItem;
   const { event: _, ...dragSeg } = lvls[dlevel][dragIdx];
-  console.log('reorder levels', hoverIdx, dragIdx);
 
   // dragging to an empty cell
   if (hoverIdx === -1 /*&& dragData === hoverItem.event*/) {

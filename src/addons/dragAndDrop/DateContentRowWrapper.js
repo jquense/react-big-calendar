@@ -436,10 +436,6 @@ class DateContentRowWrapper extends Component {
     const { levels } = this.state;
     const { onEventReorder, setInternalState, getInternalState } = this.context;
     const { drag } = getInternalState();
-
-    // clean up internal state
-    setInternalState(null);
-
     const dragSeg = levels[drag.level].find(({ left }) => drag.left === left);
     if (!dragSeg) return;
 

@@ -136,9 +136,6 @@ function createWrapper(type) {
         return onSegmentDrop();
       }
 
-      // clean up internal state
-      setInternalState(null);
-
       if (itemType === ItemTypes.EVENT) {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on

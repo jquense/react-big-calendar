@@ -83,7 +83,7 @@ const removeGaps = (levels, dlevel, dleft) => {
   return nextLevels;
 };
 
-const removeGaps2 = (levels, dragItem) => {
+const removeAllGaps = (levels, dragItem) => {
   const nextLevels = copyLevels(levels).reduce(
     (acc, lvl) => (lvl.length ? (acc.push(lvl), acc) : acc),
     [],
@@ -164,7 +164,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   const { event: _, ...dragSeg } = lvls[dlevel][dragIdx];
 
   // dragging to an empty cell
-  if (hoverIdx === -1 /*&& dragData === hoverItem.event*/) {
+  if (hoverIdx === -1) {
     _drag.splice(dragIdx, 1);
     if (dlevel === hlevel) {
       _hover = _drag;
@@ -181,12 +181,12 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
         nextLvl.sort(segSorter);
         lvls[dlevel] = _drag;
         lvls.splice(hlevel, 1, over, nextLvl);
-        return removeGaps2(lvls, nextDragSeg);
+        return removeAllGaps(lvls, nextDragSeg);
       }
     }
     _hover.sort(segSorter);
     (lvls[dlevel] = _drag), (lvls[hlevel] = _hover);
-    return removeGaps2(lvls, dragItem);
+    return removeAllGaps(lvls, dragItem);
   }
 
   const { event: hoverData, ...hoverSeg } = lvls[hlevel][hoverIdx];
@@ -264,10 +264,6 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
         nextLevels.push([...level, { ...hoverSeg, event: hoverData }]);
         level = [{ ...dragSeg, event: dragData }];
       } else if (Math.abs(lvlDiff) === 1) {
-        /*else if (hspan > 1 && lvlDiff === 1) {
-        nextLevels.push([...level, { ...dragSeg, event: dragData }]);
-        level = [{ ...hoverSeg, event: hoverData }];
-      }*/ // insert drag into currect level
         level.push({ ...dragSeg, event: dragData });
       } else {
         nextLevels.push([{ ...dragSeg, event: dragData }]);
@@ -316,7 +312,7 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
       continue;
     }
 
-    // interate through currLvl in search of segs whom do not overlap
+    // iterate through currLvl in search of segs whom do not overlap
     for (let j = 0; j < currLvl.length; j++) {
       const { left, right } = currLvl[j];
       const overIdx = prevLvl.findIndex(overlaps(left, right));

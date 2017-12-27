@@ -4,12 +4,6 @@ import pathEq from 'ramda/src/pathEq';
 import reduce from 'ramda/src/reduce';
 import reduced from 'ramda/src/reduced';
 import { eventLevels } from '../../utils/eventLevels';
-//import slice from 'ramda/src/slice';
-//import add from 'ramda/src/add';
-//import cond from 'ramda/src/cond';
-//import equals from 'ramda/src/equals';
-//import always from 'ramda/src/always';
-//import T from 'ramda/src/T';
 
 const findSeg = (level, left) => findIndex(propEq('left', left))(level);
 
@@ -207,17 +201,6 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   if (dragIdx < 0 || hoverIdx < 0) {
     throw `unable to find ${dragIdx < 0 ? 'drag' : 'hover'} segment`;
   }
-
-  // calculate lvl difference between drag and hover under the context of the
-  // day we are in
-  /*const lvlDiffInDay = (levels, dlevel, hlevel, day) => {
-    const [start, end] = dlevel > hlevel ? [dlevel, hlevel] : [hlevel, dlevel];
-    const sub = slice(start, end, levels);
-    return reduce(
-      compose(add, cond([[equals(-1), always(0)], [T, val => val]]), findIndex(overlaps(day, day))),
-      0,
-    )(levels);
-  };*/
 
   // calculated overlapping
   const [overlapping, notOverlapping] = groupOverlapping(lvls[hlevel], dragSeg);

@@ -73,11 +73,8 @@ export default {
   renderSpan(props, len, key, content = ' ', isHidden = false) {
     let { slots } = props;
 
-    const per = Math.abs(len) / slots * 100 /*- 0.2*/ + '%';
     const style = {
-      WebkitFlexBasis: per,
-      flexBasis: per,
-      maxWidth: per,
+      ...segStyle(Math.abs(len), slots),
       opacity: isHidden ? 0 : 1,
     };
 

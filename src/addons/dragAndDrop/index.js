@@ -2,11 +2,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DragDropContext } from 'react-dnd';
 import cn from 'classnames';
+import merge from 'ramda/src/merge';
 
 import { accessor } from '../../utils/propTypes';
 import DateContentRowWrapper from './DateContentRowWrapper';
 import DraggableEventWrapper from './DraggableEventWrapper';
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper';
+
+import findIndex from 'ramda/src/findIndex';
+import propEq from 'ramda/src/propEq';
+import update from 'ramda/src/update';
+import append from 'ramda/src/append';
 
 let html5Backend;
 
@@ -23,6 +29,14 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
     };
 
+    constructor(...args) {
+      super(...args);
+      this.state = { isDragging: false, isResizing: false, events: [] };
+
+      // stateful props that don't require a render
+      this.store = {};
+    }
+
     getChildContext() {
       return {
         endAccessor: this.props.endAccessor,
@@ -33,14 +47,14 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         startAccessor: this.props.startAccessor,
 
         // accessors for global drag item state
-        setDragItem: drag => this.setState({ drag }),
-        getDragItem: () => this.state.drag,
-      };
-    }
+        setInternalState: (obj = null) => {
+          this.store = obj === null ? {} : merge(this.store, obj);
+        },
+        getInternalState: () => this.store,
 
-    constructor(...args) {
-      super(...args);
-      this.state = { isDragging: false, isResizing: false };
+        // update an event
+        onEventUpdate: this.handleEventUpdate,
+      };
     }
 
     componentWillMount() {
@@ -66,10 +80,28 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       if (isDragging !== this.state.isDragging) {
         setTimeout(() => this.setState({ isDragging }));
       }
+
+      if (!isDragging) {
+        this.store = {}; // reset store
+      }
+    };
+
+    componentWillReceiveProps({ events }) {
+      this.setState({ events });
+    }
+
+    handleEventUpdate = event => {
+      const { id, start, end } = event;
+      const { events } = this.props;
+      const idx = findIndex(propEq('id', id))(events);
+      const nextEvents =
+        idx === -1 ? append(event, events) : update(idx, { ...events[idx], start, end }, events);
+      this.setState({ events: nextEvents });
     };
 
     render() {
       const { selectable, components, ...props } = this.props;
+      const { events } = this.state;
 
       delete props.onEventDrop;
       delete props.onEventResize;
@@ -91,7 +123,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
         dateContentRowWrapper: DateContentRowWrapper,
       };
 
-      return <Calendar {...props} />;
+      return <Calendar {...props} events={events} />;
     }
   }
 
@@ -111,17 +143,20 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
   DragAndDropCalendar.contextTypes = {
     dragDropManager: PropTypes.object,
+    getInternalState: PropTypes.func,
+    setInternalState: PropTypes.func,
   };
 
   DragAndDropCalendar.childContextTypes = {
     endAccessor: accessor,
+    onEventUpdate: PropTypes.func,
     onEventDrop: PropTypes.func,
     onEventResize: PropTypes.func,
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
     startAccessor: accessor,
-    getDragItem: PropTypes.func,
-    setDragItem: PropTypes.func,
+    getInternalState: PropTypes.func,
+    setInternalState: PropTypes.func,
   };
 
   if (backend === false) {

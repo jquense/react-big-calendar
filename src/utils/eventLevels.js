@@ -9,7 +9,7 @@ export function endOfRange(dateRange, unit = 'day') {
   };
 }
 
-export function eventSegments(event, first, last, { startAccessor, endAccessor }, range) {
+export function eventSegments(event, first, last, { startAccessor, endAccessor }, range, level) {
   let slots = dates.diff(first, last, 'day');
   let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first);
   let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), last);
@@ -25,6 +25,7 @@ export function eventSegments(event, first, last, { startAccessor, endAccessor }
     span,
     left: padding + 1,
     right: Math.max(padding + span, 1),
+    row: level,
   };
 }
 
@@ -92,7 +93,7 @@ export function sortEvents(evtA, evtB, { startAccessor, endAccessor, allDayAcces
 }
 
 export function withLevels(props) {
-  const { events, range, startAccessor, endAccessor, maxRows, minRows } = props;
+  const { events, range, startAccessor, endAccessor, maxRows, minRows, level } = props;
   let { first, last } = endOfRange(range);
 
   let segments = events.map(evt =>
@@ -105,6 +106,7 @@ export function withLevels(props) {
         endAccessor,
       },
       range,
+      level,
     ),
   );
 

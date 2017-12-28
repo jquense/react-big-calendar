@@ -3,6 +3,7 @@ import propEq from 'ramda/src/propEq';
 import pathEq from 'ramda/src/pathEq';
 import reduce from 'ramda/src/reduce';
 import reduced from 'ramda/src/reduced';
+import { eventLevels } from '../../utils/eventLevels';
 
 const findSeg = (level, left) => findIndex(propEq('left', left))(level);
 
@@ -55,6 +56,80 @@ const newSeg = (seg, nextSeg, event) => ({ ...newPos(nextSeg, seg.span), event }
 
 const copyLevels = lvls => lvls.map(lvl => [].concat(lvl));
 
+const removeGaps = (levels, dlevel, dleft) => {
+  const nextLevels = copyLevels(levels);
+  for (let i = dlevel + 1, len = nextLevels.length; i < len; i++) {
+    const prevLvl = nextLevels[i - 1];
+    let currLvl = nextLevels[i];
+    const overSegIdx = currLvl.findIndex(overlaps(dleft, dleft));
+
+    // level after drag doesn't contain seg
+    // assuming subsequent levels don't either
+    if (overSegIdx === -1) break;
+
+    // group overlapping; continue only is over.length === 0
+    const overSeg = currLvl[overSegIdx];
+    const [over, notOver] = groupOverlapping(prevLvl, overSeg);
+    if (over.length) break;
+
+    // we can safely shift overSeg up a level
+    prevLvl.push(overSeg);
+    prevLvl.sort(segSorter);
+    currLvl.splice(overSegIdx, 1);
+  }
+  for (let i = 0, len = nextLevels.length; i < len; i++) {
+    nextLevels[i] = nextLevels[i].map(seg => ({ ...seg, level: i }));
+  }
+  return nextLevels;
+};
+
+const removeAllGaps = (levels, dragItem) => {
+  const nextLevels = copyLevels(levels).reduce(
+    (acc, lvl) => (lvl.length ? (acc.push(lvl), acc) : acc),
+    [],
+  );
+  for (let i = 1, len = nextLevels.length; i < len; i++) {
+    const [currIdx, prevIdx] = [i, i - 1];
+    const prevLvl = nextLevels[prevIdx];
+    let currLvl = nextLevels[currIdx];
+
+    // interate through currLvl in search of segs whom do not overlap
+    for (let j = 0; j < currLvl.length; j++) {
+      const { left, right } = currLvl[j];
+      const overIdx = prevLvl.findIndex(overlaps(left, right));
+      if (overIdx !== -1) continue;
+
+      // shift seg up
+      const overSeg = currLvl[j];
+      prevLvl.push(overSeg);
+      currLvl.splice(j, 1);
+      j -= 1;
+    }
+
+    // sort
+    prevLvl.sort(segSorter);
+  }
+  const finalLevels = nextLevels.reduce(
+    (acc, lvl) => (lvl.length ? (acc.push(lvl), acc) : acc),
+    [],
+  );
+
+  for (let i = 0, len = finalLevels.length; i < len; i++) {
+    finalLevels[i] = finalLevels[i].map(seg => ({ ...seg, level: i }));
+  }
+
+  // find drag seg
+  const { event: { id } } = dragItem;
+  return reduce(
+    (acc, level) => {
+      const idx = findIndex(pathEq(['event', 'id'], id))(level);
+      return idx < 0 ? acc : reduced([level[idx], finalLevels]);
+    },
+    [dragItem, levels],
+    finalLevels,
+  );
+};
+
 const reorderLevels = (levels, dragItem, hoverItem) => {
   let nextLevels = [];
   const lvls = copyLevels(levels);
@@ -77,23 +152,41 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     _drag.push(dragItem);
     _drag.sort(segSorter);
     lvls[dlevel] = _drag;
-    return [dragItem, lvls.map(lvl => [].concat(lvl))];
+    return [dragItem, lvls];
+  }
+
+  if (dragIdx === -1) {
+    console.error('drag segment not found, invalid inputs', dragItem, hoverItem, levels);
   }
 
   // drag
-  const { event: dragData, ...dragSeg } = lvls[dlevel][dragIdx];
+  const { event: dragData } = dragItem;
+  const { event: _, ...dragSeg } = lvls[dlevel][dragIdx];
 
   // dragging to an empty cell
-  if (hoverIdx === -1 /*&& dragData === hoverItem.event*/) {
+  if (hoverIdx === -1) {
     _drag.splice(dragIdx, 1);
     if (dlevel === hlevel) {
       _hover = _drag;
     }
     const nextDragSeg = { ...hoverItem, event: dragData };
-    _hover.push(nextDragSeg);
+    if (dspan === 1) {
+      _hover.push(nextDragSeg);
+    } else {
+      const [over, notOver] = groupOverlapping(_hover, nextDragSeg);
+      if (!over.length) {
+        _hover.push(nextDragSeg);
+      } else {
+        const nextLvl = [nextDragSeg, ...notOver];
+        nextLvl.sort(segSorter);
+        lvls[dlevel] = _drag;
+        lvls.splice(hlevel, 1, over, nextLvl);
+        return removeAllGaps(lvls, nextDragSeg);
+      }
+    }
     _hover.sort(segSorter);
     (lvls[dlevel] = _drag), (lvls[hlevel] = _hover);
-    return [nextDragSeg, lvls.map(lvl => [].concat(lvl))];
+    return removeAllGaps(lvls, dragItem);
   }
 
   const { event: hoverData, ...hoverSeg } = lvls[hlevel][hoverIdx];
@@ -112,11 +205,11 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   if (dragIdx < 0 || hoverIdx < 0) {
     throw `unable to find ${dragIdx < 0 ? 'drag' : 'hover'} segment`;
   }
+
   // calculated overlapping
   const [overlapping, notOverlapping] = groupOverlapping(lvls[hlevel], dragSeg);
   let remainder = null;
   let processRemainder = false;
-  let nextLevelIdx = 0;
   for (let i = 0, len = lvls.length; i < len; i++) {
     let level = [].concat(lvls[i]);
     let lvlDiff = dlevel - hlevel;
@@ -127,16 +220,19 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
         // noop
       } else if (Math.abs(lvlDiff) > 1) {
         // noop
-      } else if (hspan > 1) {
+      } else if (hspan > 1 && lvlDiff > 0) {
         const [over, notOver] = groupOverlapping(level, hoverSeg);
-        level = [...notOver, { ...hoverSeg, event: hoverData }];
+        level = [...overlapping, ...notOver, { ...hoverSeg, event: hoverData }];
         remainder = over.length ? over : null;
+      } else if (hspan > 1 && lvlDiff < 0 && dspan === 1) {
+        // noop
       } else if (dspan > 1) {
         const [left, right] = calcRange(overlapping);
         const [over, notOver] = groupOverlapping(level, { right, left });
 
         if (!over.length) {
-          level.push(...overlapping, { ...hoverSeg, event: hoverData });
+          nextLevels.push(level);
+          level = [...overlapping, { ...hoverSeg, event: hoverData }];
         } else {
           const nxtLvl = [...overlapping, ...notOver, { ...hoverSeg, event: hoverData }];
           nxtLvl.sort(segSorter);
@@ -152,21 +248,24 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     }
 
     if (hlevel === i) {
-      if (dspan > 1) {
-        nextLevelIdx = i;
-        level = [...notOverlapping, { ...dragSeg, event: dragData }];
-      } else if (!overlaps(dleft, dright)(hoverSeg)) {
-        let leftOffset = hspan !== dspan ? (dleft > hleft ? hright : hleft) - (dspan - 1) : hleft;
+      if (!overlaps(dleft, dright)(hoverSeg)) {
+        let leftOffset = hspan !== dspan ? (dleft > hleft ? hright : hleft) : hleft;
         const nextSeg = newSeg(dragSeg, { left: leftOffset }, dragData);
-        nextLevelIdx = i;
         level.push(nextSeg);
         remainder = [{ ...hoverSeg, event: hoverData }];
+      } else if (dspan > 1) {
+        if (Math.abs(lvlDiff) > 1) {
+          nextLevels.push([...notOverlapping, { ...dragSeg, event: dragData }]);
+          level = [...overlapping, { ...hoverSeg, event: hoverData }];
+        } else {
+          level = [...notOverlapping, { ...dragSeg, event: dragData }];
+        }
+      } else if (hspan > 1 && lvlDiff === -1) {
+        nextLevels.push([...level, { ...hoverSeg, event: hoverData }]);
+        level = [{ ...dragSeg, event: dragData }];
       } else if (Math.abs(lvlDiff) === 1) {
-        // insert drag into currect level
-        nextLevelIdx = i;
         level.push({ ...dragSeg, event: dragData });
       } else {
-        nextLevelIdx = i;
         nextLevels.push([{ ...dragSeg, event: dragData }]);
         level.push({ ...hoverSeg, event: hoverData });
       }
@@ -201,7 +300,35 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
     }
   }
 
-  // update level prop
+  // ensure no unnecessary gaps are present
+  for (let i = nextLevels.length - 1; i >= 1; i--) {
+    const [currIdx, prevIdx] = [i, i - 1];
+    const prevLvl = nextLevels[prevIdx];
+    let currLvl = nextLevels[currIdx];
+
+    if (!currLvl.length) {
+      nextLevels.splice(currIdx, 1);
+      i = nextLevels.length;
+      continue;
+    }
+
+    // iterate through currLvl in search of segs whom do not overlap
+    for (let j = 0; j < currLvl.length; j++) {
+      const { left, right } = currLvl[j];
+      const overIdx = prevLvl.findIndex(overlaps(left, right));
+      if (overIdx !== -1) continue;
+
+      // shift seg up
+      const overSeg = currLvl[j];
+      prevLvl.push(overSeg);
+      currLvl.splice(j, 1);
+      (j -= 1), (i = nextLevels.length);
+    }
+
+    // sort
+    prevLvl.sort(segSorter);
+  }
+
   for (let i = 0, len = nextLevels.length; i < len; i++) {
     nextLevels[i] = nextLevels[i].map(seg => ({ ...seg, level: i }));
   }
@@ -217,4 +344,4 @@ const reorderLevels = (levels, dragItem, hoverItem) => {
   );
 };
 
-export { reorderLevels as default };
+export { reorderLevels as default, removeGaps, groupOverlapping };

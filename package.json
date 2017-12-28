@@ -40,7 +40,7 @@
     "release": "release",
     "storybook": "bnr storybook",
     "tdd": "karma start",
-    "test": "jest"
+    "test": "jest src/"
   },
   "lint-staged": {
     "*.{js,jsx,json,css,less}": ["prettier --write", "git add"]

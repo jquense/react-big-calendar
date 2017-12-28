@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
@@ -45,46 +46,6 @@ export function getEventTimes(start, end, dropDate, type) {
 }
 
 class DraggableBackgroundWrapper extends React.Component {
-  // constructor(...args) {
-  //   super(...args);
-  //   this.state = { isOver: false };
-  // }
-  //
-  // componentWillMount() {
-  //   let monitor = this.context.dragDropManager.getMonitor()
-  //
-  //   this.monitor = monitor
-  //
-  //   this.unsubscribeToStateChange = monitor
-  //     .subscribeToStateChange(this.handleStateChange)
-  //
-  //   this.unsubscribeToOffsetChange = monitor
-  //     .subscribeToOffsetChange(this.handleOffsetChange)
-  // }
-  //
-  // componentWillUnmount() {
-  //   this.monitor = null
-  //   this.unsubscribeToStateChange()
-  //   this.unsubscribeToOffsetChange()
-  // }
-  //
-  // handleStateChange = () => {
-  //   const event = this.monitor.getItem();
-  //   if (!event && this.state.isOver) {
-  //     this.setState({ isOver: false });
-  //   }
-  // }
-  //
-  // handleOffsetChange = () => {
-  //   const { value } = this.props;
-  //   const { start, end } = this.monitor.getItem();
-  //
-  //   const isOver = dates.inRange(value, start, end, 'minute');
-  //   if (this.state.isOver !== isOver) {
-  //     this.setState({ isOver });
-  //   }
-  // };
-
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     type: PropTypes.string,
@@ -93,28 +54,39 @@ class DraggableBackgroundWrapper extends React.Component {
 
   static contextTypes = {
     onEventDrop: PropTypes.func,
+    onSegmentDrop: PropTypes.func,
     onEventResize: PropTypes.func,
     onEventReorder: PropTypes.func,
     onOutsideEventDrop: PropTypes.func,
+    onBackgroundCellEnter: PropTypes.func,
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor,
-    getDragItem: PropTypes.func,
-    setDragItem: PropTypes.func,
+    reportDayBounds: PropTypes.func,
+    setInternalState: PropTypes.func,
+    getInternalState: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
     const { isOver: wasOver } = this.props;
+    const { onEventResize, dragDropManager, onBackgroundCellEnter } = this.context;
     const { isOver } = nextProps;
+    const monitor = dragDropManager.getMonitor();
+    const { value } = this.props;
     if (isOver && !wasOver) {
-      const { onEventResize, dragDropManager } = this.context;
-      const { value } = this.props;
-      const monitor = dragDropManager.getMonitor();
       if (monitor.getItemType() === 'resize') {
         // This was causing me performance issues so I commented it out. Thoughts? - Adam Recvlohe Oct. 6 2017
         // onEventResize('drag', {event: monitor.getItem(), end: value});
       }
+      onBackgroundCellEnter(value, monitor.getItem());
     }
+  }
+
+  componentDidUpdate() {
+    const node = ReactDOM.findDOMNode(this);
+    const { reportDayBounds } = this.context;
+    const { value: date } = this.props;
+    reportDayBounds && reportDayBounds(date, node.getBoundingClientRect());
   }
 
   render() {
@@ -136,7 +108,7 @@ function createWrapper(type) {
     return {
       type,
       connectDropTarget: connect.dropTarget(),
-      isOver: monitor.isOver(),
+      isOver: monitor.isOver({ shallow: true }),
     };
   }
 
@@ -147,21 +119,29 @@ function createWrapper(type) {
       const { value } = props;
       const {
         onEventDrop,
+        onSegmentDrop,
         onEventResize,
         onEventReorder,
         onOutsideEventDrop,
         startAccessor,
         endAccessor,
+        setInternalState,
+        getInternalState,
       } = context;
       const start = get(event, startAccessor);
       const end = get(event, endAccessor);
+      const { didReorder } = getInternalState();
+
+      if (didReorder && itemType === ItemTypes.EVENT) {
+        return onSegmentDrop();
+      }
 
       if (itemType === ItemTypes.EVENT) {
         /**
         * `outsideEvent` needs to be re-thought. We shouldn't rely on
         * info inside user setable `data` prop.
         */
-        if (event.type === 'outsideEvent') {
+        if (eventType === 'outsideEvent') {
           return onOutsideEventDrop({
             event,
             start: value,
@@ -174,7 +154,7 @@ function createWrapper(type) {
         }
       }
 
-      if (itemType === 'resize') {
+      if (itemType === ItemTypes.RESIZE) {
         switch (eventType) {
           case 'resizeL': {
             return onEventResize('drop', { event, start: value, end });
@@ -186,52 +166,34 @@ function createWrapper(type) {
             return;
           }
         }
-
-        // Catch All
-        onEventResize('drop', {
-          event,
-          start,
-          end: value,
-        });
       }
     },
     hover(_, monitor, { props, context }) {
-      const itemType = monitor.getItemType();
-      const { data: event, type: eventType } = monitor.getItem();
-      const { value, range, row } = props;
-      const { onEventDrop, onEventResize, startAccessor, endAccessor } = context;
-      const start = get(event, startAccessor);
-      const end = get(event, endAccessor);
+      const { value } = props;
 
       // This is to prevent calling hover too many times when the hover value does not change - AR 2017-11-07
       // Got this idea from AgamlaRage per https://git.io/vFBwc
-      if (!window.RBC_RESIZE_VALUE || window.RBC_RESIZE_VALUE.toString() !== value.toString()) {
-        window.RBC_RESIZE_VALUE = value;
+      if (window.RBC_RESIZE_VALUE && window.RBC_RESIZE_VALUE.toString() === value.toString()) {
+        return;
+      }
+      const itemType = monitor.getItemType();
+      const { data: event, type: eventType } = monitor.getItem();
+      const { onEventResize, startAccessor, endAccessor } = context;
+      const start = get(event, startAccessor);
+      const end = get(event, endAccessor);
 
-        if (itemType === ItemTypes.RESIZE) {
-          switch (eventType) {
-            case 'resizeL': {
-              return onEventResize('hover', { event, start: value, end });
-            }
-            case 'resizeR': {
-              return onEventResize('hover', { event, start, end: value });
-            }
-            default: {
-              return;
-            }
+      window.RBC_RESIZE_VALUE = value;
+      if (itemType === ItemTypes.RESIZE) {
+        switch (eventType) {
+          case 'resizeL': {
+            return onEventResize('hover', { event, start: value, end });
           }
-        } else if (itemType === ItemTypes.EVENT && eventType !== 'outsideEvent') {
-          const left = findDayIndex(range, value) + 1;
-          const dleft = findDayIndex(range, start) + 1;
-          // if event instance that is being dragged starts on the cell we are hovering
-          // then do nothing
-          if (dleft === left) return;
-
-          const pos = calcPosFromDate(value, range, dates.diff(end, start, 'day') + 1);
-          const eventItem = { event, ...getEventTimes(start, end, value, type) };
-          const { setDragItem } = context;
-          onEventDrop('hover', eventItem);
-          setDragItem(null);
+          case 'resizeR': {
+            return onEventResize('hover', { event, start, end: value });
+          }
+          default: {
+            return;
+          }
         }
       }
     },

@@ -201,12 +201,12 @@ class DateContentRowWrapper extends Component {
     // to arrive to the best solution. I believe once we integrate redux and remove
     // the use context, a solution will become clearer.
     if (!drag && type === 'outsideEvent') {
-      const { id: eventTemplateId, eventTemplateId: id, styles, name } = data;
+      const { id: eventTemplateId, styles, name, ancestors } = data;
 
       // calculate start and end
-      const newId = cuid();
       const event = {
-        id: newId,
+        id: cuid(),
+        ancestors,
         eventTemplateId,
         styles,
         name,

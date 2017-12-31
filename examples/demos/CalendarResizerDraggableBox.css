@@ -1,0 +1,17 @@
+.rbc-resizer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  overflow: hidden;
+  line-height: 8px;
+  font-size: 11px;
+  font-family: monospace;
+  text-align: center;
+  cursor: s-resize;
+  /*user-drag: none;*/
+}
+.rbc-resizer::after {
+  content: '=';
+}

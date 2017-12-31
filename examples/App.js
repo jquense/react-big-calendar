@@ -20,6 +20,7 @@ import Rendering from './demos/rendering';
 import CustomView from './demos/customView';
 import Timeslots from './demos/timeslots';
 import Dnd from './demos/dnd';
+import DndEventResize from './demos/dnd-event-resize';
 
 let demoRoot = 'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
@@ -41,6 +42,7 @@ const Example = React.createClass({
       customView: CustomView,
       timeslots: Timeslots,
       dnd: Dnd,
+      'dnd-event-resize': DndEventResize,
     }[selected];
 
     return (
@@ -92,6 +94,9 @@ const Example = React.createClass({
               */}
               <li className={cn({active: selected === 'dnd' })}>
                 <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
+              </li>
+              <li className={cn({active: selected === 'dnd-event-resize' })}>
+                <a href='#' onClick={this.select.bind(null, 'dnd-event-resize')}>Drag and Drop with Event Resizing</a>
               </li>
             </ul>
           </header>

@@ -26,6 +26,7 @@ export default function withDragAndDrop(Calendar, {
     getChildContext () {
       return {
         onEventDrop: this.props.onEventDrop,
+        onEventResize: this.props.onEventResize,
         startAccessor: this.props.startAccessor,
         endAccessor: this.props.endAccessor
       }
@@ -60,6 +61,7 @@ export default function withDragAndDrop(Calendar, {
       const { selectable, components, ...props } = this.props;
 
       delete props.onEventDrop;
+      delete props.onEventResize;
 
       props.selectable = selectable
         ? 'ignoreEvents' : false;
@@ -83,6 +85,7 @@ export default function withDragAndDrop(Calendar, {
 
   DragAndDropCalendar.propTypes = {
     onEventDrop: PropTypes.func.isRequired,
+    onEventResize: PropTypes.func.isRequired, // really required ?
     startAccessor: accessor,
     endAccessor: accessor
   }
@@ -98,6 +101,7 @@ export default function withDragAndDrop(Calendar, {
 
   DragAndDropCalendar.childContextTypes = {
     onEventDrop: PropTypes.func,
+    onEventResize: PropTypes.func,
     startAccessor: accessor,
     endAccessor: accessor
   }

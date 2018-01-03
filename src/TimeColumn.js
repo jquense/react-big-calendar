@@ -19,6 +19,7 @@ export default class TimeColumn extends Component {
     timeGutterFormat: dateFormat,
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
+    resource: PropTypes.string,
 
     slotPropGetter: PropTypes.func,
     dayPropGetter: PropTypes.func,
@@ -33,7 +34,7 @@ export default class TimeColumn extends Component {
     dayWrapperComponent: BackgroundWrapper,
   }
 
-  renderTimeSliceGroup(key, isNow, date) {
+  renderTimeSliceGroup(key, isNow, date, resource) {
     const { dayWrapperComponent, timeslots, showLabels, step, slotPropGetter, dayPropGetter, timeGutterFormat, culture } = this.props;
 
     return (
@@ -46,6 +47,7 @@ export default class TimeColumn extends Component {
         dayPropGetter={dayPropGetter}
         culture={culture}
         timeslots={timeslots}
+        resource={resource}
         showLabels={showLabels}
         timeGutterFormat={timeGutterFormat}
         dayWrapperComponent={dayWrapperComponent}
@@ -54,7 +56,7 @@ export default class TimeColumn extends Component {
   }
 
   render() {
-    const { className, children, style, now, min, max, step, timeslots } = this.props;
+    const { className, children, style, now, min, max, step, timeslots, resource } = this.props;
     const totalMin = dates.diff(min, max, 'minutes')
     const numGroups = Math.ceil(totalMin / (step * timeslots))
     const renderedSlots = []
@@ -73,7 +75,7 @@ export default class TimeColumn extends Component {
       )
 
       next = dates.add(date, groupLengthInMinutes, 'minutes');
-      renderedSlots.push(this.renderTimeSliceGroup(i, isNow, date))
+      renderedSlots.push(this.renderTimeSliceGroup(i, isNow, date, resource))
 
       date = next
     }

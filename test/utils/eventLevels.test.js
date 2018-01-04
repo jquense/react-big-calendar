@@ -79,7 +79,11 @@ describe('eventSegments', () => {
   describe('when the event starts before the range and ends at the end of the range', () => {
     const first = new Date(2017, 0, 9)
     const last = new Date(2017, 0, 12)
-    const range = [new Date(2017, 0, 9), new Date(2017, 0, 10), new Date(2017, 0, 11)]
+    const range = [
+      new Date(2017, 0, 9),
+      new Date(2017, 0, 10),
+      new Date(2017, 0, 11),
+    ]
 
     test('it sets span equal to the number of days the range spans', () => {
       const result = eventSegments(event, first, last, accessors, range)
@@ -103,7 +107,11 @@ describe('eventSegments', () => {
   describe('when the event starts at the start of the range and ends after it', () => {
     const first = new Date(2017, 0, 8)
     const last = new Date(2017, 0, 11)
-    const range = [new Date(2017, 0, 8), new Date(2017, 0, 9), new Date(2017, 0, 10)]
+    const range = [
+      new Date(2017, 0, 8),
+      new Date(2017, 0, 9),
+      new Date(2017, 0, 10),
+    ]
 
     test('it sets span equal to the number of days the range spans', () => {
       const result = eventSegments(event, first, last, accessors, range)
@@ -184,13 +192,20 @@ describe('eventLevels', () => {
 
     const result = eventLevels(segments)
 
-    const expectedLevels = [[segments[2], segments[0], segments[1]], [segments[4], segments[3]]]
+    const expectedLevels = [
+      [segments[2], segments[0], segments[1]],
+      [segments[4], segments[3]],
+    ]
     expect(result.levels).toEqual(expectedLevels)
     expect(result.extra).toEqual([])
   })
 
   test('it returns a single level if no events overlap', () => {
-    const segments = [{ left: 1, right: 1 }, { left: 2, right: 2 }, { left: 3, right: 3 }]
+    const segments = [
+      { left: 1, right: 1 },
+      { left: 2, right: 2 },
+      { left: 3, right: 3 },
+    ]
 
     const result = eventLevels(segments)
 
@@ -229,7 +244,11 @@ describe('eventLevels', () => {
     const limit = 2
 
     test('it splits segments into multiple levels when they overlap', () => {
-      const segments = [{ left: 1, right: 2 }, { left: 2, right: 2 }, { left: 3, right: 3 }]
+      const segments = [
+        { left: 1, right: 2 },
+        { left: 2, right: 2 },
+        { left: 3, right: 3 },
+      ]
 
       const result = eventLevels(segments, limit)
 
@@ -272,13 +291,43 @@ describe('inRange', () => {
     const weekOfThe5th = [d(5), d(11)]
     const weekOfThe12th = [d(12), d(18)]
     ;[
-      ['single day event, end of the week', { start: d(11), end: d(12) }, weekOfThe5th, true],
-      ['single day event, middle of the week', { start: d(10), end: d(11) }, weekOfThe5th, true],
-      ['single day event, end of the week', { start: d(11), end: d(12) }, weekOfThe12th, false],
+      [
+        'single day event, end of the week',
+        { start: d(11), end: d(12) },
+        weekOfThe5th,
+        true,
+      ],
+      [
+        'single day event, middle of the week',
+        { start: d(10), end: d(11) },
+        weekOfThe5th,
+        true,
+      ],
+      [
+        'single day event, end of the week',
+        { start: d(11), end: d(12) },
+        weekOfThe12th,
+        false,
+      ],
 
-      ['no duration, first of the week', { start: d(12), end: d(12) }, weekOfThe12th, true],
-      ['no duration, first of the week', { start: d(12), end: d(12) }, weekOfThe5th, false],
-      ['no duration, middle of the week', { start: d(14), end: d(14) }, weekOfThe12th, true],
+      [
+        'no duration, first of the week',
+        { start: d(12), end: d(12) },
+        weekOfThe12th,
+        true,
+      ],
+      [
+        'no duration, first of the week',
+        { start: d(12), end: d(12) },
+        weekOfThe5th,
+        false,
+      ],
+      [
+        'no duration, middle of the week',
+        { start: d(14), end: d(14) },
+        weekOfThe12th,
+        true,
+      ],
 
       [
         'single day w/ time event, end of the week',
@@ -300,8 +349,18 @@ describe('inRange', () => {
         true,
       ],
 
-      ['multi day event, first of the week', { start: d(11), end: d(13) }, weekOfThe5th, true],
-      ['multi day event, first of the week', { start: d(11), end: d(13) }, weekOfThe12th, true],
+      [
+        'multi day event, first of the week',
+        { start: d(11), end: d(13) },
+        weekOfThe5th,
+        true,
+      ],
+      [
+        'multi day event, first of the week',
+        { start: d(11), end: d(13) },
+        weekOfThe12th,
+        true,
+      ],
     ].forEach(g => compare(...g))
   })
 

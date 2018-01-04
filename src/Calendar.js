@@ -703,11 +703,15 @@ class Calendar extends React.Component {
     let View = this.getView()
     let names = viewNames(this.props.views)
 
-    let viewComponents = defaults(components[view] || {}, omit(components, names), {
-      eventWrapper: EventWrapper,
-      dayWrapper: BackgroundWrapper,
-      dateCellWrapper: BackgroundWrapper,
-    })
+    let viewComponents = defaults(
+      components[view] || {},
+      omit(components, names),
+      {
+        eventWrapper: EventWrapper,
+        dayWrapper: BackgroundWrapper,
+        dateCellWrapper: BackgroundWrapper,
+      }
+    )
 
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { formats, culture, length })

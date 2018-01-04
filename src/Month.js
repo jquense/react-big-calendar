@@ -21,7 +21,8 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
-let eventsForWeek = (evts, start, end, props) => evts.filter(e => inRange(e, start, end, props))
+let eventsForWeek = (evts, start, end, props) =>
+  evts.filter(e => inRange(e, start, end, props))
 
 let propTypes = {
   events: PropTypes.array.isRequired,
@@ -208,7 +209,12 @@ class MonthView extends React.Component {
   }
 
   readerDateHeading = ({ date, className, ...props }) => {
-    let { date: currentDate, getDrilldownView, dateFormat, culture } = this.props
+    let {
+      date: currentDate,
+      getDrilldownView,
+      dateFormat,
+      culture,
+    } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
     let isCurrent = dates.eq(date, currentDate, 'day')
@@ -219,7 +225,11 @@ class MonthView extends React.Component {
     return (
       <div
         {...props}
-        className={cn(className, isOffRange && 'rbc-off-range', isCurrent && 'rbc-current')}
+        className={cn(
+          className,
+          isOffRange && 'rbc-off-range',
+          isCurrent && 'rbc-current'
+        )}
       >
         <DateHeaderComponent
           label={label}

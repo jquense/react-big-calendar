@@ -14,7 +14,13 @@ class Day extends React.Component {
   render() {
     let { date, ...props } = this.props
 
-    return <TimeGrid {...props} range={[dates.startOf(date, 'day')]} eventOffset={10} />
+    return (
+      <TimeGrid
+        {...props}
+        range={[dates.startOf(date, 'day')]}
+        eventOffset={10}
+      />
+    )
   }
 }
 
@@ -31,6 +37,7 @@ Day.navigate = (date, action) => {
   }
 }
 
-Day.title = (date, { formats, culture }) => localizer.format(date, formats.dayHeaderFormat, culture)
+Day.title = (date, { formats, culture }) =>
+  localizer.format(date, formats.dayHeaderFormat, culture)
 
 export default Day

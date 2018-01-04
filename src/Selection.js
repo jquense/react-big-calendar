@@ -53,7 +53,11 @@ class Selection {
 
     // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
     // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
-    this._onTouchMoveWindowListener = addEventListener('touchmove', () => {}, window)
+    this._onTouchMoveWindowListener = addEventListener(
+      'touchmove',
+      () => {},
+      window
+    )
     this._onKeyDownListener = addEventListener('keydown', this._keyListener)
     this._onKeyUpListener = addEventListener('keyup', this._keyListener)
     this._addInitialEventListener()
@@ -157,11 +161,17 @@ class Selection {
     const mouseDownListener = addEventListener('mousedown', e => {
       this._onInitialEventListener.remove()
       this._handleInitialEvent(e)
-      this._onInitialEventListener = addEventListener('mousedown', this._handleInitialEvent)
+      this._onInitialEventListener = addEventListener(
+        'mousedown',
+        this._handleInitialEvent
+      )
     })
     const touchStartListener = addEventListener('touchstart', e => {
       this._onInitialEventListener.remove()
-      this._onInitialEventListener = this._addLongPressListener(this._handleInitialEvent, e)
+      this._onInitialEventListener = this._addLongPressListener(
+        this._handleInitialEvent,
+        e
+      )
     })
 
     this._onInitialEventListener = {
@@ -179,7 +189,12 @@ class Selection {
       offsetData
 
     // Right clicks
-    if (e.which === 3 || e.button === 2 || !isOverContainer(node, clientX, clientY)) return
+    if (
+      e.which === 3 ||
+      e.button === 2 ||
+      !isOverContainer(node, clientX, clientY)
+    )
+      return
 
     if (!this.globalMouse && node && !contains(node, e.target)) {
       let { top, left, bottom, right } = normalizeDistance(0)
@@ -214,13 +229,25 @@ class Selection {
 
     switch (e.type) {
       case 'mousedown':
-        this._onEndListener = addEventListener('mouseup', this._handleTerminatingEvent)
-        this._onMoveListener = addEventListener('mousemove', this._handleMoveEvent)
+        this._onEndListener = addEventListener(
+          'mouseup',
+          this._handleTerminatingEvent
+        )
+        this._onMoveListener = addEventListener(
+          'mousemove',
+          this._handleMoveEvent
+        )
         break
       case 'touchstart':
         this._handleMoveEvent(e)
-        this._onEndListener = addEventListener('touchend', this._handleTerminatingEvent)
-        this._onMoveListener = addEventListener('touchmove', this._handleMoveEvent)
+        this._onEndListener = addEventListener(
+          'touchend',
+          this._handleTerminatingEvent
+        )
+        this._onMoveListener = addEventListener(
+          'touchmove',
+          this._handleMoveEvent
+        )
         break
       default:
         break
@@ -259,7 +286,10 @@ class Selection {
     const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
     const now = new Date().getTime()
 
-    if (this._lastClickData && now - this._lastClickData.timestamp < clickInterval) {
+    if (
+      this._lastClickData &&
+      now - this._lastClickData.timestamp < clickInterval
+    ) {
       // Double click event
       this._lastClickData = null
       return this.emit('doubleClick', {
@@ -318,7 +348,9 @@ class Selection {
   isClick(pageX, pageY) {
     let { x, y, isTouch } = this._initialEventData
     return (
-      !isTouch && (Math.abs(pageX - x) <= clickTolerance && Math.abs(pageY - y) <= clickTolerance)
+      !isTouch &&
+      (Math.abs(pageX - x) <= clickTolerance &&
+        Math.abs(pageY - y) <= clickTolerance)
     )
   }
 }
@@ -329,7 +361,12 @@ class Selection {
  */
 function normalizeDistance(distance = 0) {
   if (typeof distance !== 'object')
-    distance = { top: distance, left: distance, right: distance, bottom: distance }
+    distance = {
+      top: distance,
+      left: distance,
+      right: distance,
+      bottom: distance,
+    }
 
   return distance
 }
@@ -342,12 +379,18 @@ function normalizeDistance(distance = 0) {
  * @return {bool}
  */
 export function objectsCollide(nodeA, nodeB, tolerance = 0) {
-  let { top: aTop, left: aLeft, right: aRight = aLeft, bottom: aBottom = aTop } = getBoundsForNode(
-    nodeA
-  )
-  let { top: bTop, left: bLeft, right: bRight = bLeft, bottom: bBottom = bTop } = getBoundsForNode(
-    nodeB
-  )
+  let {
+    top: aTop,
+    left: aLeft,
+    right: aRight = aLeft,
+    bottom: aBottom = aTop,
+  } = getBoundsForNode(nodeA)
+  let {
+    top: bTop,
+    left: bLeft,
+    right: bRight = bLeft,
+    bottom: bBottom = bTop,
+  } = getBoundsForNode(nodeB)
 
   return !// 'a' bottom doesn't touch 'b' top
   (

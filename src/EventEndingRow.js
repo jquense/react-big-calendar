@@ -6,7 +6,8 @@ import message from './utils/messages'
 import range from 'lodash/range'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
-let eventsInSlot = (segments, slot) => segments.filter(seg => isSegmentInSlot(seg, slot)).length
+let eventsInSlot = (segments, slot) =>
+  segments.filter(seg => isSegmentInSlot(seg, slot)).length
 
 class EventEndingRow extends React.Component {
   static propTypes = {
@@ -57,7 +58,12 @@ class EventEndingRow extends React.Component {
         }
 
         row.push(
-          EventRowMixin.renderSpan(this.props, 1, key, this.renderShowMore(segments, current))
+          EventRowMixin.renderSpan(
+            this.props,
+            1,
+            key,
+            this.renderShowMore(segments, current)
+          )
         )
         lastEnd = current = current + 1
       }

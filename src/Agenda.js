@@ -77,7 +77,9 @@ class Agenda extends React.Component {
         </table>
         <div className="rbc-agenda-content" ref="content">
           <table>
-            <tbody ref="tbody">{range.map((day, idx) => this.renderDay(day, events, idx))}</tbody>
+            <tbody ref="tbody">
+              {range.map((day, idx) => this.renderDay(day, events, idx))}
+            </tbody>
           </table>
         </div>
       </div>
@@ -110,11 +112,16 @@ class Agenda extends React.Component {
             isSelected(event, selected)
           )
         : {}
-      let dateLabel = idx === 0 && localizer.format(day, agendaDateFormat, culture)
+      let dateLabel =
+        idx === 0 && localizer.format(day, agendaDateFormat, culture)
       let first =
         idx === 0 ? (
           <td rowSpan={events.length} className="rbc-agenda-date-cell">
-            {DateComponent ? <DateComponent day={day} label={dateLabel} /> : dateLabel}
+            {DateComponent ? (
+              <DateComponent day={day} label={dateLabel} />
+            ) : (
+              dateLabel
+            )}
           </td>
         ) : (
           false
@@ -125,9 +132,15 @@ class Agenda extends React.Component {
       return (
         <tr key={dayKey + '_' + idx} className={className} style={style}>
           {first}
-          <td className="rbc-agenda-time-cell">{this.timeRangeLabel(day, event)}</td>
+          <td className="rbc-agenda-time-cell">
+            {this.timeRangeLabel(day, event)}
+          </td>
           <td className="rbc-agenda-event-cell">
-            {EventComponent ? <EventComponent event={event} title={title} /> : title}
+            {EventComponent ? (
+              <EventComponent event={event} title={title} />
+            ) : (
+              title
+            )}
           </td>
         </tr>
       )
@@ -135,7 +148,14 @@ class Agenda extends React.Component {
   }
 
   timeRangeLabel = (day, event) => {
-    let { endAccessor, startAccessor, allDayAccessor, culture, messages, components } = this.props
+    let {
+      endAccessor,
+      startAccessor,
+      allDayAccessor,
+      culture,
+      messages,
+      components,
+    } = this.props
 
     let labelClass = '',
       TimeComponent = components.time,
@@ -146,7 +166,11 @@ class Agenda extends React.Component {
 
     if (!get(event, allDayAccessor)) {
       if (dates.eq(start, end, 'day')) {
-        label = localizer.format({ start, end }, this.props.agendaTimeRangeFormat, culture)
+        label = localizer.format(
+          { start, end },
+          this.props.agendaTimeRangeFormat,
+          culture
+        )
       } else if (dates.eq(day, start, 'day')) {
         label = localizer.format(start, this.props.agendaTimeFormat, culture)
       } else if (dates.eq(day, end, 'day')) {
@@ -159,7 +183,11 @@ class Agenda extends React.Component {
 
     return (
       <span className={labelClass.trim()}>
-        {TimeComponent ? <TimeComponent event={event} day={day} label={label} /> : label}
+        {TimeComponent ? (
+          <TimeComponent event={event} day={day} label={label} />
+        ) : (
+          label
+        )}
       </span>
     )
   }
@@ -170,10 +198,14 @@ class Agenda extends React.Component {
 
     if (!firstRow) return
 
-    let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight
+    let isOverflowing =
+      this.refs.content.scrollHeight > this.refs.content.clientHeight
     let widths = this._widths || []
 
-    this._widths = [getWidth(firstRow.children[0]), getWidth(firstRow.children[1])]
+    this._widths = [
+      getWidth(firstRow.children[0]),
+      getWidth(firstRow.children[1]),
+    ]
 
     if (widths[0] !== this._widths[0] || widths[1] !== this._widths[1]) {
       this.refs.dateCol.style.width = this._widths[0] + 'px'
@@ -202,12 +234,18 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   }
 }
 
-Agenda.title = (start, { length = Agenda.defaultProps.length, formats, culture }) => {
+Agenda.title = (
+  start,
+  { length = Agenda.defaultProps.length, formats, culture }
+) => {
   let end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)
 }
 
-Agenda.title = (start, { length = (length = Agenda.defaultProps.length), formats, culture }) => {
+Agenda.title = (
+  start,
+  { length = (length = Agenda.defaultProps.length), formats, culture }
+) => {
   let end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)
 }

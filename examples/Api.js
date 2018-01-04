@@ -53,7 +53,11 @@ let Api = React.createClass({
           <div style={{ paddingLeft: 0 }}>
             <div>
               {'type: '}
-              {typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code>}
+              {typeInfo && typeInfo.type === 'pre' ? (
+                typeInfo
+              ) : (
+                <code>{typeInfo}</code>
+              )}
             </div>
             {data.defaultValue && (
               <div>
@@ -64,7 +68,11 @@ let Api = React.createClass({
         ) : (
           <div>
             {Object.keys(data.type.value).map(propName =>
-              this.renderProp(data.type.value[propName], name + '.' + propName, 'h4')
+              this.renderProp(
+                data.type.value[propName],
+                name + '.' + propName,
+                'h4'
+              )
             )}
           </div>
         )}
@@ -91,7 +99,11 @@ let Api = React.createClass({
       case 'object':
       case 'Object':
         if (type.value)
-          return <pre className="shape-prop">{displayObj(renderObject(type.value))}</pre>
+          return (
+            <pre className="shape-prop">
+              {displayObj(renderObject(type.value))}
+            </pre>
+          )
 
         return name
       case 'union':
@@ -133,7 +145,8 @@ let Api = React.createClass({
 
   renderControllableNote(prop, propName) {
     let controllable = prop.doclets && prop.doclets.controllable
-    let isHandler = prop.type && getDisplayTypeName(prop.type.name) === 'function'
+    let isHandler =
+      prop.type && getDisplayTypeName(prop.type.name) === 'function'
 
     if (!controllable) {
       return false

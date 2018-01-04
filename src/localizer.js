@@ -19,8 +19,14 @@ function _format(localizer, formatter, value, format, culture) {
 
 class DateLocalizer {
   constructor(spec) {
-    invariant(typeof spec.format === 'function', 'date localizer `format(..)` must be a function')
-    invariant(typeof spec.parse === 'function', 'date localizer `parse(..)` must be a function')
+    invariant(
+      typeof spec.format === 'function',
+      'date localizer `format(..)` must be a function'
+    )
+    invariant(
+      typeof spec.parse === 'function',
+      'date localizer `parse(..)` must be a function'
+    )
     invariant(
       typeof spec.firstOfWeek === 'function',
       'date localizer `firstOfWeek(..)` must be a function'

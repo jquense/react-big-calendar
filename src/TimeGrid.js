@@ -47,7 +47,10 @@ export default class TimeGrid extends Component {
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
+    resourceAccessor: accessor.isRequired,
+
     resourceIdAccessor: accessor.isRequired,
+    resourceTextAccessor: accessor.isRequired,
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
@@ -181,7 +184,7 @@ export default class TimeGrid extends Component {
 
     let gutterRef = ref => (this._gutters[1] = ref && findDOMNode(ref))
 
-    let eventsRendered = this.renderEvents(range, rangeEvents, this.props.now, resources || [{}])
+    let eventsRendered = this.renderEvents(range, rangeEvents, this.props.now, resources || [null])
 
     return (
       <div className="rbc-time-view">
@@ -203,7 +206,15 @@ export default class TimeGrid extends Component {
     )
   }
   renderEvents(range, events, today, resources) {
-    let { min, max, endAccessor, startAccessor, resourceIdAccessor, components } = this.props
+    let {
+      min,
+      max,
+      endAccessor,
+      startAccessor,
+      resourceAccessor,
+      resourceIdAccessor,
+      components,
+    } = this.props
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(event =>
@@ -211,16 +222,18 @@ export default class TimeGrid extends Component {
       )
 
       return resources.map((resource, id) => {
-        let eventsToDisplay = daysEvents.filter(
-          event => get(event, resourceIdAccessor) === resource.id
-        )
+        let eventsToDisplay = !resource
+          ? daysEvents
+          : daysEvents.filter(
+              event => get(event, resourceAccessor) === get(resource, resourceIdAccessor)
+            )
 
         return (
           <DayColumn
             {...this.props}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            resource={resource.id}
+            resource={resource && resource.id}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
             dayWrapperComponent={components.dayWrapper}
@@ -299,6 +312,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderResources(range, resources) {
+    const { resourceTitleAccessor } = this.props
     return range.map((date, i) => {
       return resources.map((resource, j) => {
         return (
@@ -307,7 +321,7 @@ export default class TimeGrid extends Component {
             className={cn('rbc-header', dates.isToday(date) && 'rbc-today')}
             style={segStyle(1, this.slots)}
           >
-            <span>{resource.title}</span>
+            <span>{get(resource, resourceTitleAccessor)}</span>
           </div>
         )
       })

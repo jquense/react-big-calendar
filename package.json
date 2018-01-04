@@ -36,7 +36,7 @@
     "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 80,
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5",
@@ -74,12 +74,12 @@
     "moment": "^2.17.1",
     "mt-changelog": "^0.6.1",
     "prettier": "^1.9.1",
-    "react": "^15.3.0",
+    "react": "^16.2.0",
     "react-bootstrap": "^0.28.0",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
     "react-docgen": "^2.14.1",
-    "react-dom": "^15.3.0",
+    "react-dom": "^16.2.0",
     "release-script": "^1.0.0",
     "rimraf": "^2.4.2",
     "webpack": "^3.10.0",

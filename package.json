@@ -7,20 +7,8 @@
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": [
-    "lib/",
-    "LICENSE",
-    "README.md",
-    "CHANGELOG.md"
-  ],
-  "keywords": [
-    "scheduler",
-    "react-component",
-    "react",
-    "calendar",
-    "events",
-    "full calendar"
-  ],
+  "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
+  "keywords": ["scheduler", "react-component", "react", "calendar", "events", "full calendar"],
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
@@ -29,20 +17,36 @@
     "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
+    "build":
+      "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
     "build:examples": "npm run clean:examples && webpack --config webpack/examples.config.js",
-    "build:visual-test": "webpack --config webpack/visual-test.js",
-    "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config webpack/examples.config.js",
-    "lint": "eslint src --ext .jsx --ext .js",
+    "examples":
+      "npm run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
+    "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint && jest",
-    "tdd": "karma start",
-    "release": "release"
+    "tdd": "jest --watch",
+    "release": "release",
+    "prettier": "prettier **/*js !examples/bundle.js --write ",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.js": "eslint",
+    "test/**/*.js": "eslint",
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true
   },
   "peerDependencies": {
     "react": "^15.3.0 || ^16.0.0",
     "react-dom": "^15.3.0 || ^16.0.0"
   },
+
   "devDependencies": {
     "@storybook/react": "3.2.16",
     "babel-cli": "^6.7.5",
@@ -54,18 +58,22 @@
     "cpy": "^3.4.1",
     "eslint": "^3.0.0",
     "eslint-config-jason": "^4.0.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-webpack": "^0.8.0",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.8.0",
     "globalize": "^0.1.1",
+    "husky": "^0.14.3",
     "jest": "^21.1.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "less-plugin-autoprefix": "^1.5.1",
+    "lint-staged": "^6.0.0",
     "markdown-jsx-loader": "^2.0.1",
     "marked": "^0.3.5",
     "moment": "^2.17.1",
     "mt-changelog": "^0.6.1",
+    "prettier": "^1.9.1",
     "react": "^15.3.0",
     "react-bootstrap": "^0.28.0",
     "react-dnd": "^2.1.4",
@@ -74,9 +82,9 @@
     "react-dom": "^15.3.0",
     "release-script": "^1.0.0",
     "rimraf": "^2.4.2",
-    "webpack": "^2.4.1",
-    "webpack-atoms": "^1.0.2",
-    "webpack-dev-server": "^2.4.5"
+    "webpack": "^3.10.0",
+    "webpack-atoms": "^4.1.2",
+    "webpack-dev-server": "^2.9.5"
   },
   "dependencies": {
     "classnames": "^2.1.3",

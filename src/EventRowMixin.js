@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { findDOMNode } from 'react-dom';
-import EventCell from './EventCell';
-import getHeight from 'dom-helpers/query/height';
-import { accessor, elementType } from './utils/propTypes';
-import { segStyle } from './utils/eventLevels';
-import { isSelected } from './utils/selection';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { findDOMNode } from 'react-dom'
+import EventCell from './EventCell'
+import getHeight from 'dom-helpers/query/height'
+import { accessor, elementType } from './utils/propTypes'
+import { segStyle } from './utils/eventLevels'
+import { isSelected } from './utils/selection'
 
 /* eslint-disable react/prop-types */
 export default {
@@ -24,23 +24,30 @@ export default {
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
     onSelect: PropTypes.func,
-    onDoubleClick: PropTypes.func
+    onDoubleClick: PropTypes.func,
   },
 
   defaultProps: {
     segments: [],
     selected: {},
-    slots: 7
+    slots: 7,
   },
 
   renderEvent(props, event) {
     let {
-        eventPropGetter, selected, start, end
-      , startAccessor, endAccessor, titleAccessor
-      , allDayAccessor, eventComponent
-      , eventWrapperComponent
-      , onSelect
-      , onDoubleClick } = props;
+      eventPropGetter,
+      selected,
+      start,
+      end,
+      startAccessor,
+      endAccessor,
+      titleAccessor,
+      allDayAccessor,
+      eventComponent,
+      eventWrapperComponent,
+      onSelect,
+      onDoubleClick,
+    } = props
 
     return (
       <EventCell
@@ -61,17 +68,17 @@ export default {
     )
   },
 
-  renderSpan(props, len, key, content = ' '){
-    let { slots } = props;
+  renderSpan(props, len, key, content = ' ') {
+    let { slots } = props
 
     return (
-      <div key={key} className='rbc-row-segment' style={segStyle(Math.abs(len), slots)}>
+      <div key={key} className="rbc-row-segment" style={segStyle(Math.abs(len), slots)}>
         {content}
       </div>
     )
   },
 
-  getRowHeight(){
+  getRowHeight() {
     getHeight(findDOMNode(this))
-  }
+  },
 }

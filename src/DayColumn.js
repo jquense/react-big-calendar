@@ -65,7 +65,7 @@ class DayColumn extends React.Component {
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
-    resource: PropTypes.string
+    resource: PropTypes.string,
   }
 
   static defaultProps = {

@@ -15,6 +15,7 @@ export default {
     start: PropTypes.instanceOf(Date),
 
     selected: PropTypes.object,
+    isAllDay: PropTypes.bool,
     eventPropGetter: PropTypes.func,
     titleAccessor: accessor,
     allDayAccessor: accessor,
@@ -35,7 +36,7 @@ export default {
 
   renderEvent(props, event) {
     let {
-        eventPropGetter, selected, start, end
+        eventPropGetter, selected, isAllDay, start, end
       , startAccessor, endAccessor, titleAccessor
       , allDayAccessor, eventComponent
       , eventWrapperComponent
@@ -50,6 +51,7 @@ export default {
         onSelect={onSelect}
         onDoubleClick={onDoubleClick}
         selected={isSelected(event, selected)}
+        isAllDay={isAllDay}
         startAccessor={startAccessor}
         endAccessor={endAccessor}
         titleAccessor={titleAccessor}

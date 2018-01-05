@@ -47,7 +47,10 @@ export default class TimeGrid extends Component {
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
+    resourceAccessor: accessor.isRequired,
+
     resourceIdAccessor: accessor.isRequired,
+    resourceTitleAccessor: accessor.isRequired,
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
@@ -181,7 +184,12 @@ export default class TimeGrid extends Component {
 
     let gutterRef = ref => (this._gutters[1] = ref && findDOMNode(ref))
 
-    let eventsRendered = this.renderEvents(range, rangeEvents, this.props.now, resources || [{}])
+    let eventsRendered = this.renderEvents(
+      range,
+      rangeEvents,
+      this.props.now,
+      resources || [null]
+    )
 
     return (
       <div className="rbc-time-view">
@@ -203,24 +211,41 @@ export default class TimeGrid extends Component {
     )
   }
   renderEvents(range, events, today, resources) {
-    let { min, max, endAccessor, startAccessor, resourceIdAccessor, components } = this.props
+    let {
+      min,
+      max,
+      endAccessor,
+      startAccessor,
+      resourceAccessor,
+      resourceIdAccessor,
+      components,
+    } = this.props
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(event =>
-        dates.inRange(date, get(event, startAccessor), get(event, endAccessor), 'day')
+        dates.inRange(
+          date,
+          get(event, startAccessor),
+          get(event, endAccessor),
+          'day'
+        )
       )
 
       return resources.map((resource, id) => {
-        let eventsToDisplay = daysEvents.filter(
-          event => get(event, resourceIdAccessor) === resource.id
-        )
+        let eventsToDisplay = !resource
+          ? daysEvents
+          : daysEvents.filter(
+              event =>
+                get(event, resourceAccessor) ===
+                get(resource, resourceIdAccessor)
+            )
 
         return (
           <DayColumn
             {...this.props}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            resource={resource.id}
+            resource={resource && resource.id}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
             dayWrapperComponent={components.dayWrapper}
@@ -240,7 +265,8 @@ export default class TimeGrid extends Component {
     let { isOverflowing } = this.state || {}
 
     let style = {}
-    if (isOverflowing) style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px'
+    if (isOverflowing)
+      style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px'
 
     let headerRendered = resources
       ? this.renderHeaderResources(range, resources)
@@ -299,6 +325,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderResources(range, resources) {
+    const { resourceTitleAccessor } = this.props
     return range.map((date, i) => {
       return resources.map((resource, j) => {
         return (
@@ -307,7 +334,7 @@ export default class TimeGrid extends Component {
             className={cn('rbc-header', dates.isToday(date) && 'rbc-today')}
             style={segStyle(1, this.slots)}
           >
-            <span>{resource.title}</span>
+            <span>{get(resource, resourceTitleAccessor)}</span>
           </div>
         )
       })
@@ -315,14 +342,21 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderCells(range) {
-    let { dayFormat, culture, components, dayPropGetter, getDrilldownView } = this.props
+    let {
+      dayFormat,
+      culture,
+      components,
+      dayPropGetter,
+      getDrilldownView,
+    } = this.props
     let HeaderComponent = components.header || Header
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date)
       let label = localizer.format(date, dayFormat, culture)
 
-      const { className, style: dayStyles } = (dayPropGetter && dayPropGetter(date)) || {}
+      const { className, style: dayStyles } =
+        (dayPropGetter && dayPropGetter(date)) || {}
 
       let header = (
         <HeaderComponent
@@ -337,11 +371,18 @@ export default class TimeGrid extends Component {
       return (
         <div
           key={i}
-          className={cn('rbc-header', className, dates.isToday(date) && 'rbc-today')}
+          className={cn(
+            'rbc-header',
+            className,
+            dates.isToday(date) && 'rbc-today'
+          )}
           style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
         >
           {drilldownView ? (
-            <a href="#" onClick={e => this.handleHeaderClick(date, drilldownView, e)}>
+            <a
+              href="#"
+              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
+            >
               {header}
             </a>
           ) : (
@@ -410,7 +451,8 @@ export default class TimeGrid extends Component {
   checkOverflow() {
     if (this._updatingOverflow) return
 
-    let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight
+    let isOverflowing =
+      this.refs.content.scrollHeight > this.refs.content.clientHeight
 
     if (this.state.isOverflowing !== isOverflowing) {
       this._updatingOverflow = true
@@ -437,7 +479,8 @@ export default class TimeGrid extends Component {
 
       timeIndicator.style.display = 'block'
       timeIndicator.style[rtl ? 'left' : 'right'] = 0
-      timeIndicator.style[rtl ? 'right' : 'left'] = timeGutter.offsetWidth + 'px'
+      timeIndicator.style[rtl ? 'right' : 'left'] =
+        timeGutter.offsetWidth + 'px'
       timeIndicator.style.top = offset + 'px'
     } else {
       timeIndicator.style.display = 'none'

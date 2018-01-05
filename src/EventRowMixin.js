@@ -72,7 +72,11 @@ export default {
     let { slots } = props
 
     return (
-      <div key={key} className="rbc-row-segment" style={segStyle(Math.abs(len), slots)}>
+      <div
+        key={key}
+        className="rbc-row-segment"
+        style={segStyle(Math.abs(len), slots)}
+      >
         {content}
       </div>
     )

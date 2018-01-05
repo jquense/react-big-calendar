@@ -43,7 +43,11 @@ Week.range = (date, { culture }) => {
 
 Week.title = (date, { formats, culture }) => {
   let [start, ...rest] = Week.range(date, { culture })
-  return localizer.format({ start, end: rest.pop() }, formats.dayRangeHeaderFormat, culture)
+  return localizer.format(
+    { start, end: rest.pop() },
+    formats.dayRangeHeaderFormat,
+    culture
+  )
 }
 
 export default Week

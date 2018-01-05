@@ -7,7 +7,12 @@ import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
 import { accessor, elementType } from './utils/propTypes'
-import { segStyle, eventSegments, endOfRange, eventLevels } from './utils/eventLevels'
+import {
+  segStyle,
+  eventSegments,
+  endOfRange,
+  eventLevels,
+} from './utils/eventLevels'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
@@ -68,7 +73,9 @@ class DateContentRow extends React.Component {
     let cell
     if (row) cell = row.children[slot - 1]
 
-    let events = this.segments.filter(seg => isSegmentInSlot(seg, slot)).map(seg => seg.event)
+    let events = this.segments
+      .filter(seg => isSegmentInSlot(seg, slot))
+      .map(seg => seg.event)
 
     onShowMore(events, range[slot - 1], cell, slot)
   }

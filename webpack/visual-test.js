@@ -30,10 +30,18 @@ module.exports = {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader?name=[name].[ext]',
       },
-      { test: /\.less/, loader: 'style-loader!css-loader!less-loader', exclude: /node_modules/ },
+      {
+        test: /\.less/,
+        loader: 'style-loader!css-loader!less-loader',
+        exclude: /node_modules/,
+      },
       { test: /\.md/, loader: 'babel!markdown-jsx-loader' },
       { test: /\.js/, loaders: ['babel'], exclude: /node_modules/ },
-      { test: /\.js/, loaders: ['babel'], include: path.join(__dirname, '..', 'src') },
+      {
+        test: /\.js/,
+        loaders: ['babel'],
+        include: path.join(__dirname, '..', 'src'),
+      },
     ],
   },
 }

@@ -26,7 +26,14 @@ export default class TimeSlotGroup extends Component {
   }
 
   renderSlice(slotNumber, content, value) {
-    const { dayWrapperComponent, showLabels, isNow, culture, resource, slotPropGetter } = this.props
+    const {
+      dayWrapperComponent,
+      showLabels,
+      isNow,
+      culture,
+      resource,
+      slotPropGetter,
+    } = this.props
     return (
       <TimeSlot
         key={slotNumber}
@@ -47,7 +54,11 @@ export default class TimeSlotGroup extends Component {
     const sliceLength = this.props.step
     let sliceValue = this.props.value
     for (let i = 0; i < this.props.timeslots; i++) {
-      const content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
+      const content = localizer.format(
+        sliceValue,
+        this.props.timeGutterFormat,
+        this.props.culture
+      )
       ret.push(this.renderSlice(i, content, sliceValue))
       sliceValue = date.add(sliceValue, sliceLength, 'minutes')
     }

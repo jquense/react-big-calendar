@@ -1,46 +1,48 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import React from 'react'
 import { DragDropContext } from 'react-dnd'
-import cn from 'classnames';
+import cn from 'classnames'
 
-import { accessor } from '../../utils/propTypes';
+import { accessor } from '../../utils/propTypes'
 import DraggableEventWrapper from './DraggableEventWrapper'
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
 
-let html5Backend;
+let html5Backend
 
 try {
   html5Backend = require('react-dnd-html5-backend')
-} catch (err) { /* optional dep missing */}
+} catch (err) {
+  /* optional dep missing */
+}
 
-
-export default function withDragAndDrop(Calendar, {
-  backend = html5Backend
-} = {}) {
-
+export default function withDragAndDrop(
+  Calendar,
+  { backend = html5Backend } = {}
+) {
   class DragAndDropCalendar extends React.Component {
     static propTypes = {
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
       components: PropTypes.object,
     }
-    getChildContext () {
+    getChildContext() {
       return {
         onEventDrop: this.props.onEventDrop,
         startAccessor: this.props.startAccessor,
-        endAccessor: this.props.endAccessor
+        endAccessor: this.props.endAccessor,
       }
     }
 
     constructor(...args) {
-      super(...args);
-      this.state = { isDragging: false };
+      super(...args)
+      this.state = { isDragging: false }
     }
 
     componentWillMount() {
       let monitor = this.context.dragDropManager.getMonitor()
       this.monitor = monitor
-      this.unsubscribeToStateChange = monitor
-        .subscribeToStateChange(this.handleStateChange)
+      this.unsubscribeToStateChange = monitor.subscribeToStateChange(
+        this.handleStateChange
+      )
     }
 
     componentWillUnmount() {
@@ -49,20 +51,19 @@ export default function withDragAndDrop(Calendar, {
     }
 
     handleStateChange = () => {
-      const isDragging = !!this.monitor.getItem();
+      const isDragging = !!this.monitor.getItem()
 
       if (isDragging !== this.state.isDragging) {
-        setTimeout(() => this.setState({ isDragging }));
+        setTimeout(() => this.setState({ isDragging }))
       }
     }
 
     render() {
-      const { selectable, components, ...props } = this.props;
+      const { selectable, components, ...props } = this.props
 
-      delete props.onEventDrop;
+      delete props.onEventDrop
 
-      props.selectable = selectable
-        ? 'ignoreEvents' : false;
+      props.selectable = selectable ? 'ignoreEvents' : false
 
       props.className = cn(
         props.className,
@@ -74,7 +75,7 @@ export default function withDragAndDrop(Calendar, {
         ...components,
         eventWrapper: DraggableEventWrapper,
         dateCellWrapper: DateCellWrapper,
-        dayWrapper: DayWrapper
+        dayWrapper: DayWrapper,
       }
 
       return <Calendar {...props} />
@@ -84,27 +85,27 @@ export default function withDragAndDrop(Calendar, {
   DragAndDropCalendar.propTypes = {
     onEventDrop: PropTypes.func.isRequired,
     startAccessor: accessor,
-    endAccessor: accessor
+    endAccessor: accessor,
   }
 
   DragAndDropCalendar.defaultProps = {
     startAccessor: 'start',
-    endAccessor: 'end'
-  };
+    endAccessor: 'end',
+  }
 
   DragAndDropCalendar.contextTypes = {
-    dragDropManager: PropTypes.object
+    dragDropManager: PropTypes.object,
   }
 
   DragAndDropCalendar.childContextTypes = {
     onEventDrop: PropTypes.func,
     startAccessor: accessor,
-    endAccessor: accessor
+    endAccessor: accessor,
   }
 
   if (backend === false) {
-    return DragAndDropCalendar;
+    return DragAndDropCalendar
   } else {
-    return DragDropContext(backend)(DragAndDropCalendar);
+    return DragDropContext(backend)(DragAndDropCalendar)
   }
 }

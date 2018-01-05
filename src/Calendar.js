@@ -77,14 +77,119 @@ class Calendar extends React.Component {
     view: PropTypes.string,
 
     /**
-     * An array of event objects to display on the calendar
+     * An array of event objects to display on the calendar. Events objects
+     * can be any shape, as long as the Calendar knows how to retrieve the
+     * following details of the event:
+     *
+     *  - start time
+     *  - end time
+     *  - title
+     *  - whether its an "all day" event or not
+     *  - any resource the event may be a related too
+     *
+     * Each of these properties can be customized or generated dynamically by
+     * setting the various "accessor" props. Without any configuration the default
+     * event should look like:
+     *
+     * ```js
+     * Event {
+     *   title: string,
+     *   start: Date,
+     *   end: Date,
+     *   allDay?: boolean
+     *   resource?: any,
+     * }
+     * ```
      */
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
-     * An array of resource objects that map events to a specific resource
+     * Accessor for the event title, used to display event information. Should
+     * resolve to a `renderable` value.
+     *
+     * ```js
+     * string | (event: Object) => string
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    titleAccessor: accessor,
+
+    /**
+     * Determines whether the event should be considered an "all day" event and ignore time.
+     * Must resolve to a `boolean` value.
+     *
+     * ```js
+     * string | (event: Object) => boolean
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    allDayAccessor: accessor,
+
+    /**
+     * The start date/time of the event. Must resolve to a JavaScript `Date` object.
+     *
+     * ```js
+     * string | (event: Object) => Date
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    startAccessor: accessor,
+
+    /**
+     * The end date/time of the event. Must resolve to a JavaScript `Date` object.
+     *
+     * ```js
+     * string | (event: Object) => Date
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    endAccessor: accessor,
+
+    /**
+     * Returns the id of the `resource` that the event is a member of. This
+     * id should match at least one resource in the `resources` array.
+     *
+     * ```js
+     * string | (event: Object) => Date
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    resourceAccessor: accessor,
+
+    /**
+     * An array of resource objects that map events to a specific resource.
+     * Resource objects, like events, can be any shape or have any properties,
+     * but should be uniquly identifiable via the `resourceIdAccessor`, as
+     * well as a "title" or name as provided by the `resourceTitleAccessor` prop.
      */
     resources: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * Provides a unique identifier for each resource in the `resources` array
+     *
+     * ```js
+     * string | (resource: Object) => any
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    resourceIdAccessor: accessor,
+
+    /**
+     * Provides a human readable name for the resource object, used in headers.
+     *
+     * ```js
+     * string | (resource: Object) => any
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    resourceTitleAccessor: accessor,
 
     /**
      * Callback fired when the `date` value changes.
@@ -327,52 +432,6 @@ class Calendar extends React.Component {
     dayPropGetter: PropTypes.func,
 
     /**
-     * Accessor for the event title, used to display event information. Should
-     * resolve to a `renderable` value.
-     *
-     * ```js
-     * string | (event: Object) => any
-     * ```
-     *
-     * @type {(func|string)}
-     */
-    titleAccessor: accessor,
-
-    /**
-     * Determines whether the event should be considered an "all day" event and ignore time.
-     * Must resolve to a `boolean` value.
-     *
-     * ```js
-     * string | (event: Object) => boolean
-     * ```
-     *
-     * @type {(func|string)}
-     */
-    allDayAccessor: accessor,
-
-    /**
-     * The start date/time of the event. Must resolve to a JavaScript `Date` object.
-     *
-     * ```js
-     * string | (event: Object) => Date
-     * ```
-     *
-     * @type {(func|string)}
-     */
-    startAccessor: accessor,
-
-    /**
-     * The end date/time of the event. Must resolve to a JavaScript `Date` object.
-     *
-     * ```js
-     * string | (event: Object) => Date
-     * ```
-     *
-     * @type {(func|string)}
-     */
-    endAccessor: accessor,
-
-    /**
      * Support to show multi-day events with specific start and end times in the
      * main time grid (rather than in the all day header).
      *
@@ -579,7 +638,10 @@ class Calendar extends React.Component {
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',
-    resourceIdAccessor: 'resourceId',
+    resourceAccessor: 'resourceId',
+
+    resourceIdAccessor: 'id',
+    resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
   }
@@ -641,11 +703,15 @@ class Calendar extends React.Component {
     let View = this.getView()
     let names = viewNames(this.props.views)
 
-    let viewComponents = defaults(components[view] || {}, omit(components, names), {
-      eventWrapper: EventWrapper,
-      dayWrapper: BackgroundWrapper,
-      dateCellWrapper: BackgroundWrapper,
-    })
+    let viewComponents = defaults(
+      components[view] || {},
+      omit(components, names),
+      {
+        eventWrapper: EventWrapper,
+        dayWrapper: BackgroundWrapper,
+        dateCellWrapper: BackgroundWrapper,
+      }
+    )
 
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { formats, culture, length })
@@ -706,7 +772,9 @@ class Calendar extends React.Component {
   }
 
   handleViewChange = view => {
-    if (view !== this.props.view && isValidView(view, this.props)) this.props.onView(view)
+    if (view !== this.props.view && isValidView(view, this.props)) {
+      this.props.onView(view)
+    }
   }
 
   handleSelectEvent = (...args) => {

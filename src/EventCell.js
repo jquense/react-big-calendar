@@ -50,7 +50,12 @@ class EventCell extends React.Component {
       continuesAfter = dates.gte(end, slotEnd, 'day')
 
     if (eventPropGetter)
-      var { style, className: xClassName } = eventPropGetter(event, start, end, selected)
+      var { style, className: xClassName } = eventPropGetter(
+        event,
+        start,
+        end,
+        selected
+      )
 
     return (
       <EventWrapper event={event}>
@@ -58,7 +63,8 @@ class EventCell extends React.Component {
           style={{ ...props.style, ...style }}
           className={cn('rbc-event', className, xClassName, {
             'rbc-selected': selected,
-            'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
+            'rbc-event-allday':
+              isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}

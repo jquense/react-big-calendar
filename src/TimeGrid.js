@@ -90,6 +90,7 @@ export default class TimeGrid extends Component {
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
+    this.updateNow = this.updateNow.bind(this)
   }
 
   componentWillMount() {
@@ -117,13 +118,7 @@ export default class TimeGrid extends Component {
     if (this.props.width == null && !this.state.gutterWidth) {
       this.measureGutter()
     }
-    if (
-      !this.props.now &&
-      dates.diff(new Date(), this.state.date, 'seconds') > 60
-    ) {
-      // Update now() at most every 60 seconds if changes occur
-      this.setState({ now: new Date() })
-    }
+
     this.applyScroll()
     this.positionTimeIndicator()
     //this.checkOverflow()
@@ -138,8 +133,12 @@ export default class TimeGrid extends Component {
     ) {
       this.calculateScroll()
     }
-    if (nextProps.now !== this.state.now) {
-      this.setState({ now: nextProps.now || new Date() })
+    // If now changed, then use nextProps.now unless null|undefined
+    if (nextProps.now !== this.props.now) {
+      this.updateNow(nextProps.now || new Date())
+    } else {
+      // update now if prop does not exist
+      this.updateNow(this.props.now || new Date())
     }
   }
 
@@ -151,6 +150,10 @@ export default class TimeGrid extends Component {
       end: slots[slots.length - 1],
       action: slotInfo.action,
     })
+  }
+
+  updateNow(now) {
+    this.setState({ now })
   }
 
   render() {
@@ -506,6 +509,7 @@ export default class TimeGrid extends Component {
     // Update the position of the time indicator every minute
     this._timeIndicatorTimeout = window.setTimeout(() => {
       this.positionTimeIndicator()
+      this.updateNow(this.props.now || new Date())
 
       this.triggerTimeIndicatorUpdate()
     }, 60000)

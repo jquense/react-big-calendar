@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import TimeSlot from './TimeSlot'
 import date from './utils/dates.js'
 import localizer from './localizer'
@@ -15,17 +15,25 @@ export default class TimeSlotGroup extends Component {
     isNow: PropTypes.bool,
     slotPropGetter: PropTypes.func,
     timeGutterFormat: dateFormat,
-    culture: PropTypes.string
+    culture: PropTypes.string,
+    resource: PropTypes.string,
   }
   static defaultProps = {
     timeslots: 2,
     step: 30,
     isNow: false,
-    showLabels: false
+    showLabels: false,
   }
 
   renderSlice(slotNumber, content, value) {
-    const { dayWrapperComponent, showLabels, isNow, culture, slotPropGetter } = this.props;
+    const {
+      dayWrapperComponent,
+      showLabels,
+      isNow,
+      culture,
+      resource,
+      slotPropGetter,
+    } = this.props
     return (
       <TimeSlot
         key={slotNumber}
@@ -35,6 +43,7 @@ export default class TimeSlotGroup extends Component {
         content={content}
         culture={culture}
         isNow={isNow}
+        resource={resource}
         value={value}
       />
     )
@@ -45,17 +54,17 @@ export default class TimeSlotGroup extends Component {
     const sliceLength = this.props.step
     let sliceValue = this.props.value
     for (let i = 0; i < this.props.timeslots; i++) {
-      const content = localizer.format(sliceValue, this.props.timeGutterFormat, this.props.culture)
+      const content = localizer.format(
+        sliceValue,
+        this.props.timeGutterFormat,
+        this.props.culture
+      )
       ret.push(this.renderSlice(i, content, sliceValue))
       sliceValue = date.add(sliceValue, sliceLength, 'minutes')
     }
     return ret
   }
   render() {
-    return (
-      <div className="rbc-timeslot-group">
-        {this.renderSlices()}
-      </div>
-    )
+    return <div className="rbc-timeslot-group">{this.renderSlices()}</div>
   }
 }

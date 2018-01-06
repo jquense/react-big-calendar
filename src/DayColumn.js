@@ -69,6 +69,7 @@ class DayColumn extends React.Component {
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
+    resource: PropTypes.string,
   }
 
   static defaultProps = {
@@ -113,8 +114,7 @@ class DayColumn extends React.Component {
       end: this.state.endDate,
     }
 
-    const { className, style } =
-      (dayPropGetter && dayPropGetter(max)) || {}
+    const { className, style } = (dayPropGetter && dayPropGetter(max)) || {}
 
     return (
       <TimeColumn
@@ -366,6 +366,7 @@ class DayColumn extends React.Component {
       slots,
       start: startDate,
       end: endDate,
+      resourceId: this.props.resource,
       action,
     })
   }

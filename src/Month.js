@@ -21,7 +21,6 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
-
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props))
 
@@ -83,7 +82,7 @@ class MonthView extends React.Component {
   static propTypes = propTypes
 
   static defaultProps = {
-    now: new Date()
+    now: new Date(),
   }
 
   constructor(...args) {
@@ -146,7 +145,7 @@ class MonthView extends React.Component {
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0], weekdayFormat, culture)}
         </div>
-        {weeks.map((week, idx) => this.renderWeek(week, idx))}
+        {weeks.map(this.renderWeek)}
         {this.props.popup && this.renderOverlay()}
       </div>
     )
@@ -237,7 +236,8 @@ class MonthView extends React.Component {
           date={date}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
-          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)} />
+          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+        />
       </div>
     )
   }
@@ -260,7 +260,7 @@ class MonthView extends React.Component {
     ))
   }
 
-  renderOverlay () {
+  renderOverlay() {
     let overlay = (this.state && this.state.overlay) || {}
     let { components } = this.props
 
@@ -368,9 +368,7 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-
 MonthView.title = (date, { formats, culture }) =>
-  localizer.format(date, formats.monthHeaderFormat, culture);
-
+  localizer.format(date, formats.monthHeaderFormat, culture)
 
 export default MonthView

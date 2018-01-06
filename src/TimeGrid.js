@@ -53,6 +53,9 @@ export default class TimeGrid extends Component {
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
     longPressThreshold: PropTypes.number,
 
+    hideGutter: PropTypes.bool,
+    hideTimeIndicator: PropTypes.bool,
+
     onNavigate: PropTypes.func,
     onSelectSlot: PropTypes.func,
     onSelectEnd: PropTypes.func,
@@ -148,6 +151,8 @@ export default class TimeGrid extends Component {
       resources,
       allDayAccessor,
       showMultiDayTimes,
+      hideGutter,
+      hideTimeIndicator,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -188,15 +193,17 @@ export default class TimeGrid extends Component {
         {this.renderHeader(range, allDayEvents, width, resources)}
 
         <div ref="content" className="rbc-time-content">
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
+          {!hideTimeIndicator && <div ref="timeIndicator" className="rbc-current-time-indicator" />}
 
-          <TimeColumn
-            {...this.props}
-            showLabels
-            style={{ width }}
-            ref={gutterRef}
-            className="rbc-time-gutter"
-          />
+          {!hideGutter && (
+            <TimeColumn
+              {...this.props}
+              showLabels
+              style={{ width }}
+              ref={gutterRef}
+              className="rbc-time-gutter"
+            />
+          )}
           {eventsRendered}
         </div>
       </div>
@@ -236,7 +243,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width, resources) {
-    let { messages, rtl, selectable, components, now } = this.props
+    let { messages, rtl, selectable, components, now, hideGutter } = this.props
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -253,23 +260,26 @@ export default class TimeGrid extends Component {
         style={style}
       >
         <div className="rbc-row">
-          <div className="rbc-label rbc-header-gutter" style={{ width }} />
+          {!hideGutter && <div className="rbc-label rbc-header-gutter" style={{ width }} />}
           {this.renderHeaderCells(range)}
         </div>
         {resources && (
           <div className="rbc-row rbc-row-resource">
-            <div className="rbc-label rbc-header-gutter" style={{ width }} />
+            {!hideGutter && <div className="rbc-label rbc-header-gutter" style={{ width }} />}
             {headerRendered}
           </div>
         )}
         <div className="rbc-row">
-          <div
-            ref={ref => (this._gutters[0] = ref)}
-            className="rbc-label rbc-header-gutter"
-            style={{ width }}
-          >
-            {message(messages).allDay}
-          </div>
+          {message &&
+            !hideGutter && (
+              <div
+                ref={ref => (this._gutters[0] = ref)}
+                className="rbc-label rbc-header-gutter"
+                style={{ width }}
+              >
+                {message(messages).allDay}
+              </div>
+            )}
           <DateContentRow
             now={now}
             minRows={2}
@@ -421,6 +431,7 @@ export default class TimeGrid extends Component {
   }
 
   positionTimeIndicator() {
+    if (this.props.hideTimeIndicator) return
     const { rtl, min, max } = this.props
     const now = new Date()
 

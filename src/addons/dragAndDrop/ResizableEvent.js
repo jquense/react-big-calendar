@@ -38,7 +38,7 @@ class ResizableEvent extends React.Component {
         )
       })
 
-    return event.allDay ? (
+    return event.allDay || this.props.isAllDay ? (
       <div className='rbc-addons-dnd-resizable-month-event'>
         {Left}
         {title}
@@ -64,6 +64,7 @@ ResizableEvent.propTypes = {
   connectTopDragSource: PropTypes.func,
   event: PropTypes.object,
   title: PropTypes.string,
+  isAllDay: PropTypes.bool,
 }
 
 const eventSourceTop = {

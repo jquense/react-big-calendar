@@ -129,7 +129,7 @@ const Example = createReactClass({
           </div>
         </div>
         <div className="docs">
-          {/* <Intro className="contain section" /> */}
+          <Intro className="contain section" />
           <Api className="contain section" />
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
 import dates from 'date-arithmetic'
 import events from '../events'
@@ -47,7 +48,7 @@ MyWeek.title = (date, { formats, culture }) => {
   return `My awesome week: ${Date.toLocaleString()}`
 }
 
-let CustomView = React.createClass({
+let CustomView = createReactClass({
   render() {
     return (
       <div>

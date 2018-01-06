@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
 
@@ -39,7 +40,7 @@ const customSlotPropGetter = date => {
   else return {}
 }
 
-let Rendering = React.createClass({
+let Rendering = createReactClass({
   render() {
     return (
       <div {...this.props}>

@@ -68,7 +68,7 @@
   /******/
   /******/ /******/ __webpack_require__.p = '/examples' // Load entry module and return exports
   /******/
-  /******/ /******/ return __webpack_require__((__webpack_require__.s = 186))
+  /******/ /******/ return __webpack_require__((__webpack_require__.s = 187))
   /******/
 })(
   /************************************************************************/
@@ -78,9 +78,9 @@
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
         if (process.env.NODE_ENV === 'production') {
-          module.exports = __webpack_require__(187)
-        } else {
           module.exports = __webpack_require__(188)
+        } else {
+          module.exports = __webpack_require__(189)
         }
 
         /* WEBPACK VAR INJECTION */
@@ -92,12 +92,10 @@
     /***/ function(module, exports, __webpack_require__) {
       /* WEBPACK VAR INJECTION */ ;(function(process) {
         /**
-         * Copyright 2013-present, Facebook, Inc.
-         * All rights reserved.
+         * Copyright (c) 2013-present, Facebook, Inc.
          *
-         * This source code is licensed under the BSD-style license found in the
-         * LICENSE file in the root directory of this source tree. An additional grant
-         * of patent rights can be found in the PATENTS file in the same directory.
+         * This source code is licensed under the MIT license found in the
+         * LICENSE file in the root directory of this source tree.
          */
 
         if (process.env.NODE_ENV !== 'production') {
@@ -118,14 +116,14 @@
           // By explicitly using `prop-types` you are opting into new development behavior.
           // http://fb.me/prop-types-in-prod
           var throwOnDirectAccess = true
-          module.exports = __webpack_require__(265)(
+          module.exports = __webpack_require__(263)(
             isValidElement,
             throwOnDirectAccess
           )
         } else {
           // By explicitly using `prop-types` you are opting into new production behavior.
           // http://fb.me/prop-types-in-prod
-          module.exports = __webpack_require__(267)()
+          module.exports = __webpack_require__(264)()
         }
 
         /* WEBPACK VAR INJECTION */
@@ -349,7 +347,7 @@
           return target
         } /* eslint no-fallthrough: off */
 
-      var _dateArithmetic = __webpack_require__(135)
+      var _dateArithmetic = __webpack_require__(131)
 
       var _dateArithmetic2 = _interopRequireDefault(_dateArithmetic)
 
@@ -856,17 +854,17 @@
 
       var _localizer2 = _interopRequireDefault(_localizer)
 
-      var _elementType = __webpack_require__(137)
+      var _elementType = __webpack_require__(132)
 
       var _elementType2 = _interopRequireDefault(_elementType)
 
-      var _all = __webpack_require__(282)
+      var _all = __webpack_require__(279)
 
       var _all2 = _interopRequireDefault(_all)
 
       var _constants = __webpack_require__(13)
 
-      var _createChainableTypeChecker = __webpack_require__(53)
+      var _createChainableTypeChecker = __webpack_require__(56)
 
       var _createChainableTypeChecker2 = _interopRequireDefault(
         _createChainableTypeChecker
@@ -1056,7 +1054,7 @@
     },
     /* 11 */
     /***/ function(module, exports, __webpack_require__) {
-      var freeGlobal = __webpack_require__(109)
+      var freeGlobal = __webpack_require__(108)
 
       /** Detect free variable `self`. */
       var freeSelf =
@@ -1089,29 +1087,29 @@
           return target
         }
 
-      var _Calendar = __webpack_require__(278)
+      var _Calendar = __webpack_require__(275)
 
       var _Calendar2 = _interopRequireDefault(_Calendar)
 
-      var _EventWrapper = __webpack_require__(161)
+      var _EventWrapper = __webpack_require__(162)
 
       var _EventWrapper2 = _interopRequireDefault(_EventWrapper)
 
-      var _BackgroundWrapper = __webpack_require__(90)
+      var _BackgroundWrapper = __webpack_require__(92)
 
       var _BackgroundWrapper2 = _interopRequireDefault(_BackgroundWrapper)
 
       var _localizer = __webpack_require__(6)
 
-      var _moment = __webpack_require__(361)
+      var _moment = __webpack_require__(370)
 
       var _moment2 = _interopRequireDefault(_moment)
 
-      var _globalize = __webpack_require__(134)
+      var _globalize = __webpack_require__(130)
 
       var _globalize2 = _interopRequireDefault(_globalize)
 
-      var _move = __webpack_require__(138)
+      var _move = __webpack_require__(133)
 
       var _move2 = _interopRequireDefault(_move)
 
@@ -1165,24 +1163,81 @@
     /* 14 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
+      /**
+       * Copyright (c) 2013-present, Facebook, Inc.
+       *
+       * This source code is licensed under the MIT license found in the
+       * LICENSE file in the root directory of this source tree.
+       *
+       */
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = !!(
-        typeof window !== 'undefined' &&
-        window.document &&
-        window.document.createElement
+      var React = __webpack_require__(0)
+      var factory = __webpack_require__(190)
+
+      if (typeof React === 'undefined') {
+        throw Error(
+          'create-react-class could not find the React object. If you are using script tags, ' +
+            'make sure that React is being loaded before create-react-class.'
+        )
+      }
+
+      // Hack to grab NoopUpdateQueue from isomorphic React
+      var ReactNoopUpdateQueue = new React.Component().updater
+
+      module.exports = factory(
+        React.Component,
+        React.isValidElement,
+        ReactNoopUpdateQueue
       )
-      module.exports = exports['default']
 
       /***/
     },
     /* 15 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetTag = __webpack_require__(21),
-        getPrototype = __webpack_require__(48),
-        isObjectLike = __webpack_require__(17)
+      'use strict'
+
+      /**
+       * Copyright (c) 2013-present, Facebook, Inc.
+       *
+       * This source code is licensed under the MIT license found in the
+       * LICENSE file in the root directory of this source tree.
+       *
+       *
+       */
+
+      function makeEmptyFunction(arg) {
+        return function() {
+          return arg
+        }
+      }
+
+      /**
+       * This function accepts and discards inputs; it has no side effects. This is
+       * primarily useful idiomatically for overridable function endpoints which
+       * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+       */
+      var emptyFunction = function emptyFunction() {}
+
+      emptyFunction.thatReturns = makeEmptyFunction
+      emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
+      emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
+      emptyFunction.thatReturnsNull = makeEmptyFunction(null)
+      emptyFunction.thatReturnsThis = function() {
+        return this
+      }
+      emptyFunction.thatReturnsArgument = function(arg) {
+        return arg
+      }
+
+      module.exports = emptyFunction
+
+      /***/
+    },
+    /* 16 */
+    /***/ function(module, exports, __webpack_require__) {
+      var baseGetTag = __webpack_require__(24),
+        getPrototype = __webpack_require__(52),
+        isObjectLike = __webpack_require__(18)
 
       /** `Object#toString` result references. */
       var objectTag = '[object Object]'
@@ -1249,7 +1304,7 @@
 
       /***/
     },
-    /* 16 */
+    /* 17 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -1349,7 +1404,7 @@
 
       /***/
     },
-    /* 17 */
+    /* 18 */
     /***/ function(module, exports) {
       /**
        * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -1383,7 +1438,7 @@
 
       /***/
     },
-    /* 18 */
+    /* 19 */
     /***/ function(module, exports, __webpack_require__) {
       var baseIsNative = __webpack_require__(215),
         getValue = __webpack_require__(218)
@@ -1405,7 +1460,7 @@
 
       /***/
     },
-    /* 19 */
+    /* 20 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -1444,7 +1499,7 @@
 
       /***/
     },
-    /* 20 */
+    /* 21 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -1457,7 +1512,7 @@
       exports.segsOverlap = segsOverlap
       exports.sortEvents = sortEvents
 
-      var _findIndex = __webpack_require__(302)
+      var _findIndex = __webpack_require__(310)
 
       var _findIndex2 = _interopRequireDefault(_findIndex)
 
@@ -1465,7 +1520,7 @@
 
       var _dates2 = _interopRequireDefault(_dates)
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -1632,9 +1687,175 @@
 
       /***/
     },
-    /* 21 */
+    /* 22 */
     /***/ function(module, exports, __webpack_require__) {
-      var Symbol = __webpack_require__(22),
+      'use strict'
+      /*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+      /* eslint-disable no-unused-vars */
+      var getOwnPropertySymbols = Object.getOwnPropertySymbols
+      var hasOwnProperty = Object.prototype.hasOwnProperty
+      var propIsEnumerable = Object.prototype.propertyIsEnumerable
+
+      function toObject(val) {
+        if (val === null || val === undefined) {
+          throw new TypeError(
+            'Object.assign cannot be called with null or undefined'
+          )
+        }
+
+        return Object(val)
+      }
+
+      function shouldUseNative() {
+        try {
+          if (!Object.assign) {
+            return false
+          }
+
+          // Detect buggy property enumeration order in older V8 versions.
+
+          // https://bugs.chromium.org/p/v8/issues/detail?id=4118
+          var test1 = new String('abc') // eslint-disable-line no-new-wrappers
+          test1[5] = 'de'
+          if (Object.getOwnPropertyNames(test1)[0] === '5') {
+            return false
+          }
+
+          // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+          var test2 = {}
+          for (var i = 0; i < 10; i++) {
+            test2['_' + String.fromCharCode(i)] = i
+          }
+          var order2 = Object.getOwnPropertyNames(test2).map(function(n) {
+            return test2[n]
+          })
+          if (order2.join('') !== '0123456789') {
+            return false
+          }
+
+          // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+          var test3 = {}
+          'abcdefghijklmnopqrst'.split('').forEach(function(letter) {
+            test3[letter] = letter
+          })
+          if (
+            Object.keys(Object.assign({}, test3)).join('') !==
+            'abcdefghijklmnopqrst'
+          ) {
+            return false
+          }
+
+          return true
+        } catch (err) {
+          // We don't expect any of the above to throw, but better to be safe.
+          return false
+        }
+      }
+
+      module.exports = shouldUseNative()
+        ? Object.assign
+        : function(target, source) {
+            var from
+            var to = toObject(target)
+            var symbols
+
+            for (var s = 1; s < arguments.length; s++) {
+              from = Object(arguments[s])
+
+              for (var key in from) {
+                if (hasOwnProperty.call(from, key)) {
+                  to[key] = from[key]
+                }
+              }
+
+              if (getOwnPropertySymbols) {
+                symbols = getOwnPropertySymbols(from)
+                for (var i = 0; i < symbols.length; i++) {
+                  if (propIsEnumerable.call(from, symbols[i])) {
+                    to[symbols[i]] = from[symbols[i]]
+                  }
+                }
+              }
+            }
+
+            return to
+          }
+
+      /***/
+    },
+    /* 23 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+      /* WEBPACK VAR INJECTION */ ;(function(process) {
+        /**
+         * Copyright (c) 2013-present, Facebook, Inc.
+         *
+         * This source code is licensed under the MIT license found in the
+         * LICENSE file in the root directory of this source tree.
+         *
+         */
+
+        /**
+         * Use invariant() to assert state which your program assumes to be true.
+         *
+         * Provide sprintf-style format (only %s is supported) and arguments
+         * to provide information about what broke and what you were
+         * expecting.
+         *
+         * The invariant message will be stripped in production, but the invariant
+         * will remain to ensure logic does not differ in production.
+         */
+
+        var validateFormat = function validateFormat(format) {}
+
+        if (process.env.NODE_ENV !== 'production') {
+          validateFormat = function validateFormat(format) {
+            if (format === undefined) {
+              throw new Error('invariant requires an error message argument')
+            }
+          }
+        }
+
+        function invariant(condition, format, a, b, c, d, e, f) {
+          validateFormat(format)
+
+          if (!condition) {
+            var error
+            if (format === undefined) {
+              error = new Error(
+                'Minified exception occurred; use the non-minified dev environment ' +
+                  'for the full error message and additional helpful warnings.'
+              )
+            } else {
+              var args = [a, b, c, d, e, f]
+              var argIndex = 0
+              error = new Error(
+                format.replace(/%s/g, function() {
+                  return args[argIndex++]
+                })
+              )
+              error.name = 'Invariant Violation'
+            }
+
+            error.framesToPop = 1 // we don't care about invariant's own frame
+            throw error
+          }
+        }
+
+        module.exports = invariant
+        /* WEBPACK VAR INJECTION */
+      }.call(exports, __webpack_require__(2)))
+
+      /***/
+    },
+    /* 24 */
+    /***/ function(module, exports, __webpack_require__) {
+      var Symbol = __webpack_require__(25),
         getRawTag = __webpack_require__(196),
         objectToString = __webpack_require__(197)
 
@@ -1665,7 +1886,7 @@
 
       /***/
     },
-    /* 22 */
+    /* 25 */
     /***/ function(module, exports, __webpack_require__) {
       var root = __webpack_require__(11)
 
@@ -1676,10 +1897,22 @@
 
       /***/
     },
-    /* 23 */
+    /* 26 */
     /***/ function(module, exports, __webpack_require__) {
-      var assignValue = __webpack_require__(162),
-        baseAssignValue = __webpack_require__(91)
+      'use strict'
+
+      module.exports = !!(
+        typeof window !== 'undefined' &&
+        window.document &&
+        window.document.createElement
+      )
+
+      /***/
+    },
+    /* 27 */
+    /***/ function(module, exports, __webpack_require__) {
+      var assignValue = __webpack_require__(163),
+        baseAssignValue = __webpack_require__(93)
 
       /**
        * Copies properties of `source` to `object`.
@@ -1721,11 +1954,11 @@
 
       /***/
     },
-    /* 24 */
+    /* 28 */
     /***/ function(module, exports, __webpack_require__) {
-      var identity = __webpack_require__(80),
-        overRest = __webpack_require__(167),
-        setToString = __webpack_require__(169)
+      var identity = __webpack_require__(86),
+        overRest = __webpack_require__(168),
+        setToString = __webpack_require__(170)
 
       /**
        * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -1743,7 +1976,7 @@
 
       /***/
     },
-    /* 25 */
+    /* 29 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -1751,7 +1984,7 @@
         value: true,
       })
 
-      var _DragDropContext = __webpack_require__(176)
+      var _DragDropContext = __webpack_require__(177)
 
       Object.defineProperty(exports, 'DragDropContext', {
         enumerable: true,
@@ -1760,7 +1993,7 @@
         },
       })
 
-      var _DragDropContextProvider = __webpack_require__(408)
+      var _DragDropContextProvider = __webpack_require__(417)
 
       Object.defineProperty(exports, 'DragDropContextProvider', {
         enumerable: true,
@@ -1769,7 +2002,7 @@
         },
       })
 
-      var _DragLayer = __webpack_require__(409)
+      var _DragLayer = __webpack_require__(418)
 
       Object.defineProperty(exports, 'DragLayer', {
         enumerable: true,
@@ -1778,7 +2011,7 @@
         },
       })
 
-      var _DragSource = __webpack_require__(410)
+      var _DragSource = __webpack_require__(419)
 
       Object.defineProperty(exports, 'DragSource', {
         enumerable: true,
@@ -1787,7 +2020,7 @@
         },
       })
 
-      var _DropTarget = __webpack_require__(420)
+      var _DropTarget = __webpack_require__(429)
 
       Object.defineProperty(exports, 'DropTarget', {
         enumerable: true,
@@ -1802,11 +2035,121 @@
 
       /***/
     },
-    /* 26 */
+    /* 30 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayLikeKeys = __webpack_require__(108),
+      'use strict'
+      /* WEBPACK VAR INJECTION */ ;(function(process) {
+        /**
+         * Copyright (c) 2013-present, Facebook, Inc.
+         *
+         * This source code is licensed under the MIT license found in the
+         * LICENSE file in the root directory of this source tree.
+         *
+         */
+
+        var emptyObject = {}
+
+        if (process.env.NODE_ENV !== 'production') {
+          Object.freeze(emptyObject)
+        }
+
+        module.exports = emptyObject
+        /* WEBPACK VAR INJECTION */
+      }.call(exports, __webpack_require__(2)))
+
+      /***/
+    },
+    /* 31 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+      /* WEBPACK VAR INJECTION */ ;(function(process) {
+        /**
+         * Copyright (c) 2014-present, Facebook, Inc.
+         *
+         * This source code is licensed under the MIT license found in the
+         * LICENSE file in the root directory of this source tree.
+         *
+         */
+
+        var emptyFunction = __webpack_require__(15)
+
+        /**
+         * Similar to invariant but only logs a warning if the condition is not met.
+         * This can be used to log issues in development environments in critical
+         * paths. Removing the logging code for production environments will keep the
+         * same logic and follow the same code paths.
+         */
+
+        var warning = emptyFunction
+
+        if (process.env.NODE_ENV !== 'production') {
+          var printWarning = function printWarning(format) {
+            for (
+              var _len = arguments.length,
+                args = Array(_len > 1 ? _len - 1 : 0),
+                _key = 1;
+              _key < _len;
+              _key++
+            ) {
+              args[_key - 1] = arguments[_key]
+            }
+
+            var argIndex = 0
+            var message =
+              'Warning: ' +
+              format.replace(/%s/g, function() {
+                return args[argIndex++]
+              })
+            if (typeof console !== 'undefined') {
+              console.error(message)
+            }
+            try {
+              // --- Welcome to debugging React ---
+              // This error was thrown as a convenience so that you can use this stack
+              // to find the callsite that caused this warning to fire.
+              throw new Error(message)
+            } catch (x) {}
+          }
+
+          warning = function warning(condition, format) {
+            if (format === undefined) {
+              throw new Error(
+                '`warning(condition, format, ...args)` requires a warning ' +
+                  'message argument'
+              )
+            }
+
+            if (format.indexOf('Failed Composite propType: ') === 0) {
+              return // Ignore CompositeComponent proptype check.
+            }
+
+            if (!condition) {
+              for (
+                var _len2 = arguments.length,
+                  args = Array(_len2 > 2 ? _len2 - 2 : 0),
+                  _key2 = 2;
+                _key2 < _len2;
+                _key2++
+              ) {
+                args[_key2 - 2] = arguments[_key2]
+              }
+
+              printWarning.apply(undefined, [format].concat(args))
+            }
+          }
+        }
+
+        module.exports = warning
+        /* WEBPACK VAR INJECTION */
+      }.call(exports, __webpack_require__(2)))
+
+      /***/
+    },
+    /* 32 */
+    /***/ function(module, exports, __webpack_require__) {
+      var arrayLikeKeys = __webpack_require__(107),
         baseKeys = __webpack_require__(201),
-        isArrayLike = __webpack_require__(38)
+        isArrayLike = __webpack_require__(42)
 
       /**
        * Creates an array of the own enumerable property names of `object`.
@@ -1844,7 +2187,7 @@
 
       /***/
     },
-    /* 27 */
+    /* 33 */
     /***/ function(module, exports) {
       /**
        * Performs a
@@ -1886,7 +2229,7 @@
 
       /***/
     },
-    /* 28 */
+    /* 34 */
     /***/ function(module, exports) {
       /**
        * A specialized version of `_.map` for arrays without support for iteratee
@@ -1912,9 +2255,9 @@
 
       /***/
     },
-    /* 29 */
+    /* 35 */
     /***/ function(module, exports, __webpack_require__) {
-      var isSymbol = __webpack_require__(47)
+      var isSymbol = __webpack_require__(51)
 
       /** Used as references for various `Number` constants. */
       var INFINITY = 1 / 0
@@ -1938,7 +2281,7 @@
 
       /***/
     },
-    /* 30 */
+    /* 36 */
     /***/ function(module, exports, __webpack_require__) {
       /*!
  * Globalize
@@ -3642,7 +3985,7 @@
 
       /***/
     },
-    /* 31 */
+    /* 37 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -3677,83 +4020,19 @@
 
       /***/
     },
-    /* 32 */
+    /* 38 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = offset
-
-      var _contains = __webpack_require__(55)
-
-      var _contains2 = _interopRequireDefault(_contains)
-
-      var _isWindow = __webpack_require__(33)
-
-      var _isWindow2 = _interopRequireDefault(_isWindow)
-
-      var _ownerDocument = __webpack_require__(85)
-
-      var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function offset(node) {
-        var doc = (0, _ownerDocument2.default)(node),
-          win = (0, _isWindow2.default)(doc),
-          docElem = doc && doc.documentElement,
-          box = { top: 0, left: 0, height: 0, width: 0 }
-
-        if (!doc) return
-
-        // Make sure it's not a disconnected DOM node
-        if (!(0, _contains2.default)(docElem, node)) return box
-
-        if (node.getBoundingClientRect !== undefined)
-          box = node.getBoundingClientRect()
-
-        // IE8 getBoundingClientRect doesn't support width & height
-        box = {
-          top:
-            box.top +
-            (win.pageYOffset || docElem.scrollTop) -
-            (docElem.clientTop || 0),
-          left:
-            box.left +
-            (win.pageXOffset || docElem.scrollLeft) -
-            (docElem.clientLeft || 0),
-          width: (box.width == null ? node.offsetWidth : box.width) || 0,
-          height: (box.height == null ? node.offsetHeight : box.height) || 0,
-        }
-
-        return box
-      }
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 33 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = getWindow
-      function getWindow(node) {
+      module.exports = function getWindow(node) {
         return node === node.window
           ? node
           : node.nodeType === 9 ? node.defaultView || node.parentWindow : false
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 34 */
+    /* 39 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -3850,108 +4129,7 @@
 
       /***/
     },
-    /* 35 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-      /* eslint-disable no-unused-vars */
-      var getOwnPropertySymbols = Object.getOwnPropertySymbols
-      var hasOwnProperty = Object.prototype.hasOwnProperty
-      var propIsEnumerable = Object.prototype.propertyIsEnumerable
-
-      function toObject(val) {
-        if (val === null || val === undefined) {
-          throw new TypeError(
-            'Object.assign cannot be called with null or undefined'
-          )
-        }
-
-        return Object(val)
-      }
-
-      function shouldUseNative() {
-        try {
-          if (!Object.assign) {
-            return false
-          }
-
-          // Detect buggy property enumeration order in older V8 versions.
-
-          // https://bugs.chromium.org/p/v8/issues/detail?id=4118
-          var test1 = new String('abc') // eslint-disable-line no-new-wrappers
-          test1[5] = 'de'
-          if (Object.getOwnPropertyNames(test1)[0] === '5') {
-            return false
-          }
-
-          // https://bugs.chromium.org/p/v8/issues/detail?id=3056
-          var test2 = {}
-          for (var i = 0; i < 10; i++) {
-            test2['_' + String.fromCharCode(i)] = i
-          }
-          var order2 = Object.getOwnPropertyNames(test2).map(function(n) {
-            return test2[n]
-          })
-          if (order2.join('') !== '0123456789') {
-            return false
-          }
-
-          // https://bugs.chromium.org/p/v8/issues/detail?id=3056
-          var test3 = {}
-          'abcdefghijklmnopqrst'.split('').forEach(function(letter) {
-            test3[letter] = letter
-          })
-          if (
-            Object.keys(Object.assign({}, test3)).join('') !==
-            'abcdefghijklmnopqrst'
-          ) {
-            return false
-          }
-
-          return true
-        } catch (err) {
-          // We don't expect any of the above to throw, but better to be safe.
-          return false
-        }
-      }
-
-      module.exports = shouldUseNative()
-        ? Object.assign
-        : function(target, source) {
-            var from
-            var to = toObject(target)
-            var symbols
-
-            for (var s = 1; s < arguments.length; s++) {
-              from = Object(arguments[s])
-
-              for (var key in from) {
-                if (hasOwnProperty.call(from, key)) {
-                  to[key] = from[key]
-                }
-              }
-
-              if (getOwnPropertySymbols) {
-                symbols = getOwnPropertySymbols(from)
-                for (var i = 0; i < symbols.length; i++) {
-                  if (propIsEnumerable.call(from, symbols[i])) {
-                    to[symbols[i]] = from[symbols[i]]
-                  }
-                }
-              }
-            }
-
-            return to
-          }
-
-      /***/
-    },
-    /* 36 */
+    /* 40 */
     /***/ function(module, exports, __webpack_require__) {
       /* WEBPACK VAR INJECTION */ ;(function(module) {
         var root = __webpack_require__(11),
@@ -4000,11 +4178,11 @@ object-assign
         module.exports = isBuffer
 
         /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(37)(module)))
+      }.call(exports, __webpack_require__(41)(module)))
 
       /***/
     },
-    /* 37 */
+    /* 41 */
     /***/ function(module, exports) {
       module.exports = function(module) {
         if (!module.webpackPolyfill) {
@@ -4031,10 +4209,10 @@ object-assign
 
       /***/
     },
-    /* 38 */
+    /* 42 */
     /***/ function(module, exports, __webpack_require__) {
-      var isFunction = __webpack_require__(71),
-        isLength = __webpack_require__(68)
+      var isFunction = __webpack_require__(77),
+        isLength = __webpack_require__(74)
 
       /**
        * Checks if `value` is array-like. A value is considered array-like if it's
@@ -4069,7 +4247,7 @@ object-assign
 
       /***/
     },
-    /* 39 */
+    /* 43 */
     /***/ function(module, exports, __webpack_require__) {
       var listCacheClear = __webpack_require__(205),
         listCacheDelete = __webpack_require__(206),
@@ -4106,9 +4284,9 @@ object-assign
 
       /***/
     },
-    /* 40 */
+    /* 44 */
     /***/ function(module, exports, __webpack_require__) {
-      var eq = __webpack_require__(27)
+      var eq = __webpack_require__(33)
 
       /**
        * Gets the index at which the `key` is found in `array` of key-value pairs.
@@ -4132,9 +4310,9 @@ object-assign
 
       /***/
     },
-    /* 41 */
+    /* 45 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18)
+      var getNative = __webpack_require__(19)
 
       /* Built-in method references that are verified to be native. */
       var nativeCreate = getNative(Object, 'create')
@@ -4143,7 +4321,7 @@ object-assign
 
       /***/
     },
-    /* 42 */
+    /* 46 */
     /***/ function(module, exports, __webpack_require__) {
       var isKeyable = __webpack_require__(227)
 
@@ -4166,9 +4344,9 @@ object-assign
 
       /***/
     },
-    /* 43 */
+    /* 47 */
     /***/ function(module, exports, __webpack_require__) {
-      var MapCache = __webpack_require__(75),
+      var MapCache = __webpack_require__(81),
         setCacheAdd = __webpack_require__(232),
         setCacheHas = __webpack_require__(233)
 
@@ -4198,7 +4376,7 @@ object-assign
 
       /***/
     },
-    /* 44 */
+    /* 48 */
     /***/ function(module, exports) {
       /**
        * Checks if a `cache` value for `key` exists.
@@ -4216,7 +4394,7 @@ object-assign
 
       /***/
     },
-    /* 45 */
+    /* 49 */
     /***/ function(module, exports) {
       /**
        * Converts `set` to an array of its values.
@@ -4239,10 +4417,10 @@ object-assign
 
       /***/
     },
-    /* 46 */
+    /* 50 */
     /***/ function(module, exports, __webpack_require__) {
       var isArray = __webpack_require__(5),
-        isKey = __webpack_require__(79),
+        isKey = __webpack_require__(85),
         stringToPath = __webpack_require__(243),
         toString = __webpack_require__(245)
 
@@ -4265,10 +4443,10 @@ object-assign
 
       /***/
     },
-    /* 47 */
+    /* 51 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetTag = __webpack_require__(21),
-        isObjectLike = __webpack_require__(17)
+      var baseGetTag = __webpack_require__(24),
+        isObjectLike = __webpack_require__(18)
 
       /** `Object#toString` result references. */
       var symbolTag = '[object Symbol]'
@@ -4301,9 +4479,9 @@ object-assign
 
       /***/
     },
-    /* 48 */
+    /* 52 */
     /***/ function(module, exports, __webpack_require__) {
-      var overArg = __webpack_require__(110)
+      var overArg = __webpack_require__(109)
 
       /** Built-in value references. */
       var getPrototype = overArg(Object.getPrototypeOf, Object)
@@ -4312,48 +4490,7 @@ object-assign
 
       /***/
     },
-    /* 49 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      /**
-       * Copyright (c) 2013-present, Facebook, Inc.
-       *
-       * This source code is licensed under the MIT license found in the
-       * LICENSE file in the root directory of this source tree.
-       *
-       *
-       */
-
-      function makeEmptyFunction(arg) {
-        return function() {
-          return arg
-        }
-      }
-
-      /**
-       * This function accepts and discards inputs; it has no side effects. This is
-       * primarily useful idiomatically for overridable function endpoints which
-       * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-       */
-      var emptyFunction = function emptyFunction() {}
-
-      emptyFunction.thatReturns = makeEmptyFunction
-      emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
-      emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
-      emptyFunction.thatReturnsNull = makeEmptyFunction(null)
-      emptyFunction.thatReturnsThis = function() {
-        return this
-      }
-      emptyFunction.thatReturnsArgument = function(arg) {
-        return arg
-      }
-
-      module.exports = emptyFunction
-
-      /***/
-    },
-    /* 50 */
+    /* 53 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -4483,7 +4620,7 @@ object-assign
 
       /***/
     },
-    /* 51 */
+    /* 54 */
     /***/ function(module, exports) {
       /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -4572,7 +4709,7 @@ object-assign
 
       /***/
     },
-    /* 52 */
+    /* 55 */
     /***/ function(module, exports, __webpack_require__) {
       /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -4627,7 +4764,7 @@ object-assign
       var singletonCounter = 0
       var stylesInsertedAtTop = []
 
-      var fixUrls = __webpack_require__(272)
+      var fixUrls = __webpack_require__(269)
 
       module.exports = function(list, options) {
         if (typeof DEBUG !== 'undefined' && DEBUG) {
@@ -4643,8 +4780,7 @@ object-assign
 
         // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
         // tags it will allow on a page
-        if (!options.singleton && typeof options.singleton !== 'boolean')
-          options.singleton = isOldIE()
+        if (!options.singleton) options.singleton = isOldIE()
 
         // By default, add <style> tags to the <head> element
         if (!options.insertInto) options.insertInto = 'head'
@@ -4965,7 +5101,7 @@ object-assign
 
       /***/
     },
-    /* 53 */
+    /* 56 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -5039,7 +5175,7 @@ object-assign
 
       /***/
     },
-    /* 54 */
+    /* 57 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -5130,54 +5266,102 @@ object-assign
 
       /***/
     },
-    /* 55 */
+    /* 58 */
     /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      exports.default = (function() {
-        // HTML DOM and SVG DOM may have different support levels,
-        // so we need to check on context instead of a document root element.
-        return _inDOM2.default
-          ? function(context, node) {
-              if (context.contains) {
-                return context.contains(node)
-              } else if (context.compareDocumentPosition) {
-                return (
-                  context === node ||
-                  !!(context.compareDocumentPosition(node) & 16)
+      var __WEBPACK_AMD_DEFINE_FACTORY__,
+        __WEBPACK_AMD_DEFINE_ARRAY__,
+        __WEBPACK_AMD_DEFINE_RESULT__
+      ;(function(root, factory) {
+        if (true) {
+          !((__WEBPACK_AMD_DEFINE_ARRAY__ = [exports]),
+          (__WEBPACK_AMD_DEFINE_FACTORY__ = factory),
+          (__WEBPACK_AMD_DEFINE_RESULT__ =
+            typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function'
+              ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(
+                  exports,
+                  __WEBPACK_AMD_DEFINE_ARRAY__
                 )
-              } else {
-                return fallback(context, node)
+              : __WEBPACK_AMD_DEFINE_FACTORY__),
+          __WEBPACK_AMD_DEFINE_RESULT__ !== undefined &&
+            (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
+        } else if (typeof exports === 'object') {
+          factory(exports)
+        } else {
+          factory((root.babelHelpers = {}))
+        }
+      })(this, function(global) {
+        var babelHelpers = global
+
+        babelHelpers.interopRequireDefault = function(obj) {
+          return obj && obj.__esModule
+            ? obj
+            : {
+                default: obj,
+              }
+        }
+
+        babelHelpers._extends =
+          Object.assign ||
+          function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+              var source = arguments[i]
+
+              for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                  target[key] = source[key]
+                }
               }
             }
-          : fallback
-      })()
 
-      function fallback(context, node) {
-        if (node)
-          do {
-            if (node === context) return true
-          } while ((node = node.parentNode))
-
-        return false
-      }
-      module.exports = exports['default']
+            return target
+          }
+      })
 
       /***/
     },
-    /* 56 */
+    /* 59 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var contains = __webpack_require__(88),
+        getWindow = __webpack_require__(38),
+        ownerDocument = __webpack_require__(138)
+
+      module.exports = function offset(node) {
+        var doc = ownerDocument(node),
+          win = getWindow(doc),
+          docElem = doc && doc.documentElement,
+          box = { top: 0, left: 0, height: 0, width: 0 }
+
+        if (!doc) return
+
+        // Make sure it's not a disconnected DOM node
+        if (!contains(docElem, node)) return box
+
+        if (node.getBoundingClientRect !== undefined)
+          box = node.getBoundingClientRect()
+
+        if (box.width || box.height) {
+          box = {
+            top:
+              box.top +
+              (win.pageYOffset || docElem.scrollTop) -
+              (docElem.clientTop || 0),
+            left:
+              box.left +
+              (win.pageXOffset || docElem.scrollLeft) -
+              (docElem.clientLeft || 0),
+            width: (box.width == null ? node.offsetWidth : box.width) || 0,
+            height: (box.height == null ? node.offsetHeight : box.height) || 0,
+          }
+        }
+
+        return box
+      }
+
+      /***/
+    },
+    /* 60 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -5195,7 +5379,7 @@ object-assign
 
       var _reactDom2 = _interopRequireDefault(_reactDom)
 
-      var _ownerDocument = __webpack_require__(85)
+      var _ownerDocument = __webpack_require__(89)
 
       var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
 
@@ -5207,7 +5391,23 @@ object-assign
 
       /***/
     },
-    /* 57 */
+    /* 61 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = !!(
+        typeof window !== 'undefined' &&
+        window.document &&
+        window.document.createElement
+      )
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 62 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -5249,41 +5449,41 @@ object-assign
 
       var _localizer2 = _interopRequireDefault(_localizer)
 
-      var _DayColumn = __webpack_require__(316)
+      var _DayColumn = __webpack_require__(325)
 
       var _DayColumn2 = _interopRequireDefault(_DayColumn)
 
-      var _TimeColumn = __webpack_require__(156)
+      var _TimeColumn = __webpack_require__(157)
 
       var _TimeColumn2 = _interopRequireDefault(_TimeColumn)
 
-      var _DateContentRow = __webpack_require__(150)
+      var _DateContentRow = __webpack_require__(151)
 
       var _DateContentRow2 = _interopRequireDefault(_DateContentRow)
 
-      var _Header = __webpack_require__(155)
+      var _Header = __webpack_require__(156)
 
       var _Header2 = _interopRequireDefault(_Header)
 
-      var _width = __webpack_require__(157)
+      var _width = __webpack_require__(158)
 
       var _width2 = _interopRequireDefault(_width)
 
-      var _scrollbarSize = __webpack_require__(158)
+      var _scrollbarSize = __webpack_require__(159)
 
       var _scrollbarSize2 = _interopRequireDefault(_scrollbarSize)
 
-      var _messages = __webpack_require__(54)
+      var _messages = __webpack_require__(57)
 
       var _messages2 = _interopRequireDefault(_messages)
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _helpers = __webpack_require__(31)
+      var _helpers = __webpack_require__(37)
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
-      var _eventLevels = __webpack_require__(20)
+      var _eventLevels = __webpack_require__(21)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -5945,7 +6145,7 @@ object-assign
 
       /***/
     },
-    /* 58 */
+    /* 63 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -5955,15 +6155,15 @@ object-assign
       exports.getEmptyImage = exports.NativeTypes = undefined
       exports.default = createHTML5Backend
 
-      var _HTML5Backend = __webpack_require__(373)
+      var _HTML5Backend = __webpack_require__(382)
 
       var _HTML5Backend2 = _interopRequireDefault(_HTML5Backend)
 
-      var _getEmptyImage = __webpack_require__(384)
+      var _getEmptyImage = __webpack_require__(393)
 
       var _getEmptyImage2 = _interopRequireDefault(_getEmptyImage)
 
-      var _NativeTypes = __webpack_require__(97)
+      var _NativeTypes = __webpack_require__(99)
 
       var NativeTypes = _interopRequireWildcard(_NativeTypes)
 
@@ -5995,10 +6195,10 @@ object-assign
 
       /***/
     },
-    /* 59 */
+    /* 64 */
     /***/ function(module, exports, __webpack_require__) {
-      var isArrayLike = __webpack_require__(38),
-        isObjectLike = __webpack_require__(17)
+      var isArrayLike = __webpack_require__(42),
+        isObjectLike = __webpack_require__(18)
 
       /**
        * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -6033,7 +6233,7 @@ object-assign
 
       /***/
     },
-    /* 60 */
+    /* 65 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -6074,7 +6274,7 @@ object-assign
 
       var _isObject2 = _interopRequireDefault(_isObject)
 
-      var _matchesType = __webpack_require__(178)
+      var _matchesType = __webpack_require__(179)
 
       var _matchesType2 = _interopRequireDefault(_matchesType)
 
@@ -6293,7 +6493,7 @@ object-assign
 
       /***/
     },
-    /* 61 */
+    /* 66 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -6339,7 +6539,7 @@ object-assign
 
       /***/
     },
-    /* 62 */
+    /* 67 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -6356,8 +6556,8 @@ object-assign
             ) {
               var arg = arguments.length <= i + 2 ? undefined : arguments[i + 2]
               if (arg && arg.prototype && arg.prototype.render) {
+                // eslint-disable-next-line no-console
                 console.error(
-                  // eslint-disable-line no-console
                   'You seem to be applying the arguments in the wrong order. ' +
                     ('It should be ' +
                       functionName +
@@ -6376,51 +6576,134 @@ object-assign
 
       /***/
     },
-    /* 63 */
+    /* 68 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
+      /* WEBPACK VAR INJECTION */ ;(function(process) {
+        /**
+         * Copyright (c) 2013-present, Facebook, Inc.
+         *
+         * This source code is licensed under the MIT license found in the
+         * LICENSE file in the root directory of this source tree.
+         */
 
+        if (process.env.NODE_ENV !== 'production') {
+          var invariant = __webpack_require__(23)
+          var warning = __webpack_require__(31)
+          var ReactPropTypesSecret = __webpack_require__(69)
+          var loggedTypeFailures = {}
+        }
+
+        /**
+         * Assert that the values match with the type specs.
+         * Error messages are memorized and will only be shown once.
+         *
+         * @param {object} typeSpecs Map of name to a ReactPropType
+         * @param {object} values Runtime values that need to be type-checked
+         * @param {string} location e.g. "prop", "context", "child context"
+         * @param {string} componentName Name of the component for error messages.
+         * @param {?Function} getStack Returns the component stack.
+         * @private
+         */
+        function checkPropTypes(
+          typeSpecs,
+          values,
+          location,
+          componentName,
+          getStack
+        ) {
+          if (process.env.NODE_ENV !== 'production') {
+            for (var typeSpecName in typeSpecs) {
+              if (typeSpecs.hasOwnProperty(typeSpecName)) {
+                var error
+                // Prop type validation may throw. In case they do, we don't want to
+                // fail the render phase where it didn't fail before. So we log it.
+                // After these have been cleaned up, we'll let them throw.
+                try {
+                  // This is intentionally an invariant that gets caught. It's the same
+                  // behavior as without this statement except with a better message.
+                  invariant(
+                    typeof typeSpecs[typeSpecName] === 'function',
+                    '%s: %s type `%s` is invalid; it must be a function, usually from ' +
+                      'the `prop-types` package, but received `%s`.',
+                    componentName || 'React class',
+                    location,
+                    typeSpecName,
+                    typeof typeSpecs[typeSpecName]
+                  )
+                  error = typeSpecs[typeSpecName](
+                    values,
+                    typeSpecName,
+                    componentName,
+                    location,
+                    null,
+                    ReactPropTypesSecret
+                  )
+                } catch (ex) {
+                  error = ex
+                }
+                warning(
+                  !error || error instanceof Error,
+                  '%s: type specification of %s `%s` is invalid; the type checker ' +
+                    'function must return `null` or an `Error` but returned a %s. ' +
+                    'You may have forgotten to pass an argument to the type checker ' +
+                    'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+                    'shape all require an argument).',
+                  componentName || 'React class',
+                  location,
+                  typeSpecName,
+                  typeof error
+                )
+                if (
+                  error instanceof Error &&
+                  !(error.message in loggedTypeFailures)
+                ) {
+                  // Only monitor this failure once because there tends to be a lot of the
+                  // same error.
+                  loggedTypeFailures[error.message] = true
+
+                  var stack = getStack ? getStack() : ''
+
+                  warning(
+                    false,
+                    'Failed %s type: %s%s',
+                    location,
+                    error.message,
+                    stack != null ? stack : ''
+                  )
+                }
+              }
+            }
+          }
+        }
+
+        module.exports = checkPropTypes
+
+        /* WEBPACK VAR INJECTION */
+      }.call(exports, __webpack_require__(2)))
+
+      /***/
+    },
+    /* 69 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
       /**
        * Copyright (c) 2013-present, Facebook, Inc.
        *
        * This source code is licensed under the MIT license found in the
        * LICENSE file in the root directory of this source tree.
-       *
-       *
        */
 
-      function makeEmptyFunction(arg) {
-        return function() {
-          return arg
-        }
-      }
+      var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
 
-      /**
-       * This function accepts and discards inputs; it has no side effects. This is
-       * primarily useful idiomatically for overridable function endpoints which
-       * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-       */
-      var emptyFunction = function emptyFunction() {}
-
-      emptyFunction.thatReturns = makeEmptyFunction
-      emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
-      emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
-      emptyFunction.thatReturnsNull = makeEmptyFunction(null)
-      emptyFunction.thatReturnsThis = function() {
-        return this
-      }
-      emptyFunction.thatReturnsArgument = function(arg) {
-        return arg
-      }
-
-      module.exports = emptyFunction
+      module.exports = ReactPropTypesSecret
 
       /***/
     },
-    /* 64 */
+    /* 70 */
     /***/ function(module, exports, __webpack_require__) {
       var baseIsArguments = __webpack_require__(195),
-        isObjectLike = __webpack_require__(17)
+        isObjectLike = __webpack_require__(18)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -6467,7 +6750,7 @@ object-assign
 
       /***/
     },
-    /* 65 */
+    /* 71 */
     /***/ function(module, exports) {
       var g
 
@@ -6492,7 +6775,7 @@ object-assign
 
       /***/
     },
-    /* 66 */
+    /* 72 */
     /***/ function(module, exports) {
       /** Used as references for various `Number` constants. */
       var MAX_SAFE_INTEGER = 9007199254740991
@@ -6521,10 +6804,10 @@ object-assign
 
       /***/
     },
-    /* 67 */
+    /* 73 */
     /***/ function(module, exports, __webpack_require__) {
       var baseIsTypedArray = __webpack_require__(199),
-        baseUnary = __webpack_require__(69),
+        baseUnary = __webpack_require__(75),
         nodeUtil = __webpack_require__(200)
 
       /* Node.js helper references. */
@@ -6555,7 +6838,7 @@ object-assign
 
       /***/
     },
-    /* 68 */
+    /* 74 */
     /***/ function(module, exports) {
       /** Used as references for various `Number` constants. */
       var MAX_SAFE_INTEGER = 9007199254740991
@@ -6599,7 +6882,7 @@ object-assign
 
       /***/
     },
-    /* 69 */
+    /* 75 */
     /***/ function(module, exports) {
       /**
        * The base implementation of `_.unary` without support for storing metadata.
@@ -6618,7 +6901,7 @@ object-assign
 
       /***/
     },
-    /* 70 */
+    /* 76 */
     /***/ function(module, exports) {
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -6641,9 +6924,9 @@ object-assign
 
       /***/
     },
-    /* 71 */
+    /* 77 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetTag = __webpack_require__(21),
+      var baseGetTag = __webpack_require__(24),
         isObject = __webpack_require__(10)
 
       /** `Object#toString` result references. */
@@ -6685,11 +6968,11 @@ object-assign
 
       /***/
     },
-    /* 72 */
+    /* 78 */
     /***/ function(module, exports, __webpack_require__) {
       var baseMatches = __webpack_require__(203),
         baseMatchesProperty = __webpack_require__(241),
-        identity = __webpack_require__(80),
+        identity = __webpack_require__(86),
         isArray = __webpack_require__(5),
         property = __webpack_require__(250)
 
@@ -6721,9 +7004,9 @@ object-assign
 
       /***/
     },
-    /* 73 */
+    /* 79 */
     /***/ function(module, exports, __webpack_require__) {
-      var ListCache = __webpack_require__(39),
+      var ListCache = __webpack_require__(43),
         stackClear = __webpack_require__(210),
         stackDelete = __webpack_require__(211),
         stackGet = __webpack_require__(212),
@@ -6753,9 +7036,9 @@ object-assign
 
       /***/
     },
-    /* 74 */
+    /* 80 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18),
+      var getNative = __webpack_require__(19),
         root = __webpack_require__(11)
 
       /* Built-in method references that are verified to be native. */
@@ -6765,7 +7048,7 @@ object-assign
 
       /***/
     },
-    /* 75 */
+    /* 81 */
     /***/ function(module, exports, __webpack_require__) {
       var mapCacheClear = __webpack_require__(219),
         mapCacheDelete = __webpack_require__(226),
@@ -6802,7 +7085,7 @@ object-assign
 
       /***/
     },
-    /* 76 */
+    /* 82 */
     /***/ function(module, exports) {
       /**
        * Appends the elements of `values` to `array`.
@@ -6827,10 +7110,10 @@ object-assign
 
       /***/
     },
-    /* 77 */
+    /* 83 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayFilter = __webpack_require__(118),
-        stubArray = __webpack_require__(119)
+      var arrayFilter = __webpack_require__(117),
+        stubArray = __webpack_require__(118)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -6864,10 +7147,10 @@ object-assign
 
       /***/
     },
-    /* 78 */
+    /* 84 */
     /***/ function(module, exports, __webpack_require__) {
-      var castPath = __webpack_require__(46),
-        toKey = __webpack_require__(29)
+      var castPath = __webpack_require__(50),
+        toKey = __webpack_require__(35)
 
       /**
        * The base implementation of `_.get` without support for default values.
@@ -6893,10 +7176,10 @@ object-assign
 
       /***/
     },
-    /* 79 */
+    /* 85 */
     /***/ function(module, exports, __webpack_require__) {
       var isArray = __webpack_require__(5),
-        isSymbol = __webpack_require__(47)
+        isSymbol = __webpack_require__(51)
 
       /** Used to match property names within property paths. */
       var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
@@ -6935,7 +7218,7 @@ object-assign
 
       /***/
     },
-    /* 80 */
+    /* 86 */
     /***/ function(module, exports) {
       /**
        * This method returns the first argument it receives.
@@ -6961,139 +7244,11 @@ object-assign
 
       /***/
     },
-    /* 81 */
+    /* 87 */
     /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      /**
-       * Copyright (c) 2013-present, Facebook, Inc.
-       * All rights reserved.
-       *
-       * This source code is licensed under the BSD-style license found in the
-       * LICENSE file in the root directory of this source tree. An additional grant
-       * of patent rights can be found in the PATENTS file in the same directory.
-       *
-       *
-       */
-
-      function makeEmptyFunction(arg) {
-        return function() {
-          return arg
-        }
-      }
-
-      /**
-       * This function accepts and discards inputs; it has no side effects. This is
-       * primarily useful idiomatically for overridable function endpoints which
-       * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-       */
-      var emptyFunction = function emptyFunction() {}
-
-      emptyFunction.thatReturns = makeEmptyFunction
-      emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
-      emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
-      emptyFunction.thatReturnsNull = makeEmptyFunction(null)
-      emptyFunction.thatReturnsThis = function() {
-        return this
-      }
-      emptyFunction.thatReturnsArgument = function(arg) {
-        return arg
-      }
-
-      module.exports = emptyFunction
-
-      /***/
-    },
-    /* 82 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2013-present, Facebook, Inc.
-         * All rights reserved.
-         *
-         * This source code is licensed under the BSD-style license found in the
-         * LICENSE file in the root directory of this source tree. An additional grant
-         * of patent rights can be found in the PATENTS file in the same directory.
-         *
-         */
-
-        /**
-         * Use invariant() to assert state which your program assumes to be true.
-         *
-         * Provide sprintf-style format (only %s is supported) and arguments
-         * to provide information about what broke and what you were
-         * expecting.
-         *
-         * The invariant message will be stripped in production, but the invariant
-         * will remain to ensure logic does not differ in production.
-         */
-
-        var validateFormat = function validateFormat(format) {}
-
-        if (process.env.NODE_ENV !== 'production') {
-          validateFormat = function validateFormat(format) {
-            if (format === undefined) {
-              throw new Error('invariant requires an error message argument')
-            }
-          }
-        }
-
-        function invariant(condition, format, a, b, c, d, e, f) {
-          validateFormat(format)
-
-          if (!condition) {
-            var error
-            if (format === undefined) {
-              error = new Error(
-                'Minified exception occurred; use the non-minified dev environment ' +
-                  'for the full error message and additional helpful warnings.'
-              )
-            } else {
-              var args = [a, b, c, d, e, f]
-              var argIndex = 0
-              error = new Error(
-                format.replace(/%s/g, function() {
-                  return args[argIndex++]
-                })
-              )
-              error.name = 'Invariant Violation'
-            }
-
-            error.framesToPop = 1 // we don't care about invariant's own frame
-            throw error
-          }
-        }
-
-        module.exports = invariant
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 83 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /**
-       * Copyright 2013-present, Facebook, Inc.
-       * All rights reserved.
-       *
-       * This source code is licensed under the BSD-style license found in the
-       * LICENSE file in the root directory of this source tree. An additional grant
-       * of patent rights can be found in the PATENTS file in the same directory.
-       */
-
-      var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
-
-      module.exports = ReactPropTypesSecret
-
-      /***/
-    },
-    /* 84 */
-    /***/ function(module, exports, __webpack_require__) {
-      var eq = __webpack_require__(27),
-        isArrayLike = __webpack_require__(38),
-        isIndex = __webpack_require__(66),
+      var eq = __webpack_require__(33),
+        isArrayLike = __webpack_require__(42),
+        isIndex = __webpack_require__(72),
         isObject = __webpack_require__(10)
 
       /**
@@ -7125,7 +7280,41 @@ object-assign
 
       /***/
     },
-    /* 85 */
+    /* 88 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var canUseDOM = __webpack_require__(26)
+
+      var contains = (function() {
+        var root = canUseDOM && document.documentElement
+
+        return root && root.contains
+          ? function(context, node) {
+              return context.contains(node)
+            }
+          : root && root.compareDocumentPosition
+            ? function(context, node) {
+                return (
+                  context === node ||
+                  !!(context.compareDocumentPosition(node) & 16)
+                )
+              }
+            : function(context, node) {
+                if (node)
+                  do {
+                    if (node === context) return true
+                  } while ((node = node.parentNode))
+
+                return false
+              }
+      })()
+
+      module.exports = contains
+
+      /***/
+    },
+    /* 89 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -7140,143 +7329,37 @@ object-assign
 
       /***/
     },
-    /* 86 */
+    /* 90 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
       Object.defineProperty(exports, '__esModule', {
         value: true,
       })
-      exports.default = scrollTop
-
-      var _isWindow = __webpack_require__(33)
-
-      var _isWindow2 = _interopRequireDefault(_isWindow)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function scrollTop(node, val) {
-        var win = (0, _isWindow2.default)(node)
-
-        if (val === undefined)
-          return win
-            ? 'pageYOffset' in win
-              ? win.pageYOffset
-              : win.document.documentElement.scrollTop
-            : node.scrollTop
-
-        if (win)
-          win.scrollTo(
-            'pageXOffset' in win
-              ? win.pageXOffset
-              : win.document.documentElement.scrollLeft,
-            val
-          )
-        else node.scrollTop = val
+      exports.default = getWindow
+      function getWindow(node) {
+        return node === node.window
+          ? node
+          : node.nodeType === 9 ? node.defaultView || node.parentWindow : false
       }
       module.exports = exports['default']
 
       /***/
     },
-    /* 87 */
+    /* 91 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
+      //     Zepto.js
+      //     (c) 2010-2015 Thomas Fuchs
+      //     Zepto.js may be freely distributed under the MIT license.
+      var simpleSelectorRE = /^[\w-]*$/,
+        toArray = Function.prototype.bind.call(
+          Function.prototype.call,
+          [].slice
+        )
 
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var on = function on() {}
-      if (_inDOM2.default) {
-        on = (function() {
-          if (document.addEventListener)
-            return function(node, eventName, handler, capture) {
-              return node.addEventListener(eventName, handler, capture || false)
-            }
-          else if (document.attachEvent)
-            return function(node, eventName, handler) {
-              return node.attachEvent('on' + eventName, function(e) {
-                e = e || window.event
-                e.target = e.target || e.srcElement
-                e.currentTarget = node
-                handler.call(node, e)
-              })
-            }
-        })()
-      }
-
-      exports.default = on
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 88 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var off = function off() {}
-      if (_inDOM2.default) {
-        off = (function() {
-          if (document.addEventListener)
-            return function(node, eventName, handler, capture) {
-              return node.removeEventListener(
-                eventName,
-                handler,
-                capture || false
-              )
-            }
-          else if (document.attachEvent)
-            return function(node, eventName, handler) {
-              return node.detachEvent('on' + eventName, handler)
-            }
-        })()
-      }
-
-      exports.default = off
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 89 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = qsa
-      // Zepto.js
-      // (c) 2010-2015 Thomas Fuchs
-      // Zepto.js may be freely distributed under the MIT license.
-      var simpleSelectorRE = /^[\w-]*$/
-      var toArray = Function.prototype.bind.call(
-        Function.prototype.call,
-        [].slice
-      )
-
-      function qsa(element, selector) {
+      module.exports = function qsa(element, selector) {
         var maybeID = selector[0] === '#',
           maybeClass = selector[0] === '.',
           nameOnly = maybeID || maybeClass ? selector.slice(1) : selector,
@@ -7297,11 +7380,10 @@ object-assign
 
         return toArray(element.querySelectorAll(selector))
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 90 */
+    /* 92 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -7389,9 +7471,9 @@ object-assign
 
       /***/
     },
-    /* 91 */
+    /* 93 */
     /***/ function(module, exports, __webpack_require__) {
-      var defineProperty = __webpack_require__(163)
+      var defineProperty = __webpack_require__(164)
 
       /**
        * The base implementation of `assignValue` and `assignMergeValue` without
@@ -7419,11 +7501,11 @@ object-assign
 
       /***/
     },
-    /* 92 */
+    /* 94 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayLikeKeys = __webpack_require__(108),
-        baseKeysIn = __webpack_require__(330),
-        isArrayLike = __webpack_require__(38)
+      var arrayLikeKeys = __webpack_require__(107),
+        baseKeysIn = __webpack_require__(339),
+        isArrayLike = __webpack_require__(42)
 
       /**
        * Creates an array of the own and inherited enumerable property names of `object`.
@@ -7458,9 +7540,9 @@ object-assign
 
       /***/
     },
-    /* 93 */
+    /* 95 */
     /***/ function(module, exports, __webpack_require__) {
-      var Uint8Array = __webpack_require__(114)
+      var Uint8Array = __webpack_require__(113)
 
       /**
        * Creates a clone of `arrayBuffer`.
@@ -7479,10 +7561,10 @@ object-assign
 
       /***/
     },
-    /* 94 */
+    /* 96 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayPush = __webpack_require__(76),
-        isFlattenable = __webpack_require__(353)
+      var arrayPush = __webpack_require__(82),
+        isFlattenable = __webpack_require__(362)
 
       /**
        * The base implementation of `_.flatten` with support for restricting flattening.
@@ -7522,9 +7604,9 @@ object-assign
 
       /***/
     },
-    /* 95 */
+    /* 97 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseIndexOf = __webpack_require__(377)
+      var baseIndexOf = __webpack_require__(386)
 
       /**
        * A specialized version of `_.includes` for arrays without support for
@@ -7544,7 +7626,7 @@ object-assign
 
       /***/
     },
-    /* 96 */
+    /* 98 */
     /***/ function(module, exports) {
       /**
        * This function is like `arrayIncludes` except that it accepts a comparator.
@@ -7571,7 +7653,7 @@ object-assign
 
       /***/
     },
-    /* 97 */
+    /* 99 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -7584,7 +7666,7 @@ object-assign
 
       /***/
     },
-    /* 98 */
+    /* 100 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /**
@@ -7608,38 +7690,59 @@ object-assign
         length: true,
         prototype: true,
         caller: true,
+        callee: true,
         arguments: true,
         arity: true,
       }
 
-      var isGetOwnPropertySymbolsAvailable =
-        typeof Object.getOwnPropertySymbols === 'function'
+      var defineProperty = Object.defineProperty
+      var getOwnPropertyNames = Object.getOwnPropertyNames
+      var getOwnPropertySymbols = Object.getOwnPropertySymbols
+      var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+      var getPrototypeOf = Object.getPrototypeOf
+      var objectPrototype = getPrototypeOf && getPrototypeOf(Object)
 
       module.exports = function hoistNonReactStatics(
         targetComponent,
         sourceComponent,
-        customStatics
+        blacklist
       ) {
         if (typeof sourceComponent !== 'string') {
           // don't hoist over string (html) components
-          var keys = Object.getOwnPropertyNames(sourceComponent)
 
-          /* istanbul ignore else */
-          if (isGetOwnPropertySymbolsAvailable) {
-            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent))
+          if (objectPrototype) {
+            var inheritedComponent = getPrototypeOf(sourceComponent)
+            if (inheritedComponent && inheritedComponent !== objectPrototype) {
+              hoistNonReactStatics(
+                targetComponent,
+                inheritedComponent,
+                blacklist
+              )
+            }
+          }
+
+          var keys = getOwnPropertyNames(sourceComponent)
+
+          if (getOwnPropertySymbols) {
+            keys = keys.concat(getOwnPropertySymbols(sourceComponent))
           }
 
           for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i]
             if (
-              !REACT_STATICS[keys[i]] &&
-              !KNOWN_STATICS[keys[i]] &&
-              (!customStatics || !customStatics[keys[i]])
+              !REACT_STATICS[key] &&
+              !KNOWN_STATICS[key] &&
+              (!blacklist || !blacklist[key])
             ) {
+              var descriptor = getOwnPropertyDescriptor(sourceComponent, key)
               try {
-                targetComponent[keys[i]] = sourceComponent[keys[i]]
-              } catch (error) {}
+                // Avoid failures from read-only properties
+                defineProperty(targetComponent, key, descriptor)
+              } catch (e) {}
             }
           }
+
+          return targetComponent
         }
 
         return targetComponent
@@ -7647,7 +7750,7 @@ object-assign
 
       /***/
     },
-    /* 99 */
+    /* 101 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -7690,7 +7793,7 @@ object-assign
 
       /***/
     },
-    /* 100 */
+    /* 102 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -7705,193 +7808,18 @@ object-assign
 
       /***/
     },
-    /* 101 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2013-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         *
-         */
-
-        var emptyObject = {}
-
-        if (process.env.NODE_ENV !== 'production') {
-          Object.freeze(emptyObject)
-        }
-
-        module.exports = emptyObject
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 102 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2013-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         *
-         */
-
-        /**
-         * Use invariant() to assert state which your program assumes to be true.
-         *
-         * Provide sprintf-style format (only %s is supported) and arguments
-         * to provide information about what broke and what you were
-         * expecting.
-         *
-         * The invariant message will be stripped in production, but the invariant
-         * will remain to ensure logic does not differ in production.
-         */
-
-        var validateFormat = function validateFormat(format) {}
-
-        if (process.env.NODE_ENV !== 'production') {
-          validateFormat = function validateFormat(format) {
-            if (format === undefined) {
-              throw new Error('invariant requires an error message argument')
-            }
-          }
-        }
-
-        function invariant(condition, format, a, b, c, d, e, f) {
-          validateFormat(format)
-
-          if (!condition) {
-            var error
-            if (format === undefined) {
-              error = new Error(
-                'Minified exception occurred; use the non-minified dev environment ' +
-                  'for the full error message and additional helpful warnings.'
-              )
-            } else {
-              var args = [a, b, c, d, e, f]
-              var argIndex = 0
-              error = new Error(
-                format.replace(/%s/g, function() {
-                  return args[argIndex++]
-                })
-              )
-              error.name = 'Invariant Violation'
-            }
-
-            error.framesToPop = 1 // we don't care about invariant's own frame
-            throw error
-          }
-        }
-
-        module.exports = invariant
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
     /* 103 */
     /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2014-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         *
-         */
-
-        var emptyFunction = __webpack_require__(63)
-
-        /**
-         * Similar to invariant but only logs a warning if the condition is not met.
-         * This can be used to log issues in development environments in critical
-         * paths. Removing the logging code for production environments will keep the
-         * same logic and follow the same code paths.
-         */
-
-        var warning = emptyFunction
-
-        if (process.env.NODE_ENV !== 'production') {
-          var printWarning = function printWarning(format) {
-            for (
-              var _len = arguments.length,
-                args = Array(_len > 1 ? _len - 1 : 0),
-                _key = 1;
-              _key < _len;
-              _key++
-            ) {
-              args[_key - 1] = arguments[_key]
-            }
-
-            var argIndex = 0
-            var message =
-              'Warning: ' +
-              format.replace(/%s/g, function() {
-                return args[argIndex++]
-              })
-            if (typeof console !== 'undefined') {
-              console.error(message)
-            }
-            try {
-              // --- Welcome to debugging React ---
-              // This error was thrown as a convenience so that you can use this stack
-              // to find the callsite that caused this warning to fire.
-              throw new Error(message)
-            } catch (x) {}
-          }
-
-          warning = function warning(condition, format) {
-            if (format === undefined) {
-              throw new Error(
-                '`warning(condition, format, ...args)` requires a warning ' +
-                  'message argument'
-              )
-            }
-
-            if (format.indexOf('Failed Composite propType: ') === 0) {
-              return // Ignore CompositeComponent proptype check.
-            }
-
-            if (!condition) {
-              for (
-                var _len2 = arguments.length,
-                  args = Array(_len2 > 2 ? _len2 - 2 : 0),
-                  _key2 = 2;
-                _key2 < _len2;
-                _key2++
-              ) {
-                args[_key2 - 2] = arguments[_key2]
-              }
-
-              printWarning.apply(undefined, [format].concat(args))
-            }
-          }
-        }
-
-        module.exports = warning
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 104 */
-    /***/ function(module, exports, __webpack_require__) {
-      var arrayEach = __webpack_require__(105),
-        baseCreate = __webpack_require__(106),
-        baseForOwn = __webpack_require__(107),
-        baseIteratee = __webpack_require__(72),
-        getPrototype = __webpack_require__(48),
+      var arrayEach = __webpack_require__(104),
+        baseCreate = __webpack_require__(105),
+        baseForOwn = __webpack_require__(106),
+        baseIteratee = __webpack_require__(78),
+        getPrototype = __webpack_require__(52),
         isArray = __webpack_require__(5),
-        isBuffer = __webpack_require__(36),
-        isFunction = __webpack_require__(71),
+        isBuffer = __webpack_require__(40),
+        isFunction = __webpack_require__(77),
         isObject = __webpack_require__(10),
-        isTypedArray = __webpack_require__(67)
+        isTypedArray = __webpack_require__(73)
 
       /**
        * An alternative to `_.reduce`; this method transforms `object` to a new
@@ -7954,7 +7882,7 @@ object-assign
 
       /***/
     },
-    /* 105 */
+    /* 104 */
     /***/ function(module, exports) {
       /**
        * A specialized version of `_.forEach` for arrays without support for
@@ -7981,7 +7909,7 @@ object-assign
 
       /***/
     },
-    /* 106 */
+    /* 105 */
     /***/ function(module, exports, __webpack_require__) {
       var isObject = __webpack_require__(10)
 
@@ -8016,10 +7944,10 @@ object-assign
 
       /***/
     },
-    /* 107 */
+    /* 106 */
     /***/ function(module, exports, __webpack_require__) {
       var baseFor = __webpack_require__(192),
-        keys = __webpack_require__(26)
+        keys = __webpack_require__(32)
 
       /**
        * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -8037,14 +7965,14 @@ object-assign
 
       /***/
     },
-    /* 108 */
+    /* 107 */
     /***/ function(module, exports, __webpack_require__) {
       var baseTimes = __webpack_require__(194),
-        isArguments = __webpack_require__(64),
+        isArguments = __webpack_require__(70),
         isArray = __webpack_require__(5),
-        isBuffer = __webpack_require__(36),
-        isIndex = __webpack_require__(66),
-        isTypedArray = __webpack_require__(67)
+        isBuffer = __webpack_require__(40),
+        isIndex = __webpack_require__(72),
+        isTypedArray = __webpack_require__(73)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -8097,7 +8025,7 @@ object-assign
 
       /***/
     },
-    /* 109 */
+    /* 108 */
     /***/ function(module, exports, __webpack_require__) {
       /* WEBPACK VAR INJECTION */ ;(function(global) {
         /** Detect free variable `global` from Node.js. */
@@ -8110,11 +8038,11 @@ object-assign
         module.exports = freeGlobal
 
         /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(65)))
+      }.call(exports, __webpack_require__(71)))
 
       /***/
     },
-    /* 110 */
+    /* 109 */
     /***/ function(module, exports) {
       /**
        * Creates a unary function that invokes `func` with its argument transformed.
@@ -8134,7 +8062,7 @@ object-assign
 
       /***/
     },
-    /* 111 */
+    /* 110 */
     /***/ function(module, exports) {
       /** Used for built-in method references. */
       var funcProto = Function.prototype
@@ -8165,10 +8093,10 @@ object-assign
 
       /***/
     },
-    /* 112 */
+    /* 111 */
     /***/ function(module, exports, __webpack_require__) {
       var baseIsEqualDeep = __webpack_require__(231),
-        isObjectLike = __webpack_require__(17)
+        isObjectLike = __webpack_require__(18)
 
       /**
        * The base implementation of `_.isEqual` which supports partial comparisons
@@ -8209,11 +8137,11 @@ object-assign
 
       /***/
     },
-    /* 113 */
+    /* 112 */
     /***/ function(module, exports, __webpack_require__) {
-      var SetCache = __webpack_require__(43),
+      var SetCache = __webpack_require__(47),
         arraySome = __webpack_require__(234),
-        cacheHas = __webpack_require__(44)
+        cacheHas = __webpack_require__(48)
 
       /** Used to compose bitmasks for value comparisons. */
       var COMPARE_PARTIAL_FLAG = 1,
@@ -8311,7 +8239,7 @@ object-assign
 
       /***/
     },
-    /* 114 */
+    /* 113 */
     /***/ function(module, exports, __webpack_require__) {
       var root = __webpack_require__(11)
 
@@ -8322,7 +8250,7 @@ object-assign
 
       /***/
     },
-    /* 115 */
+    /* 114 */
     /***/ function(module, exports) {
       /**
        * Converts `map` to its key-value pairs.
@@ -8345,11 +8273,11 @@ object-assign
 
       /***/
     },
-    /* 116 */
+    /* 115 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetAllKeys = __webpack_require__(117),
-        getSymbols = __webpack_require__(77),
-        keys = __webpack_require__(26)
+      var baseGetAllKeys = __webpack_require__(116),
+        getSymbols = __webpack_require__(83),
+        keys = __webpack_require__(32)
 
       /**
        * Creates an array of own enumerable property names and symbols of `object`.
@@ -8366,9 +8294,9 @@ object-assign
 
       /***/
     },
-    /* 117 */
+    /* 116 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayPush = __webpack_require__(76),
+      var arrayPush = __webpack_require__(82),
         isArray = __webpack_require__(5)
 
       /**
@@ -8391,7 +8319,7 @@ object-assign
 
       /***/
     },
-    /* 118 */
+    /* 117 */
     /***/ function(module, exports) {
       /**
        * A specialized version of `_.filter` for arrays without support for
@@ -8421,7 +8349,7 @@ object-assign
 
       /***/
     },
-    /* 119 */
+    /* 118 */
     /***/ function(module, exports) {
       /**
        * This method returns a new empty array.
@@ -8449,15 +8377,15 @@ object-assign
 
       /***/
     },
-    /* 120 */
+    /* 119 */
     /***/ function(module, exports, __webpack_require__) {
       var DataView = __webpack_require__(237),
-        Map = __webpack_require__(74),
+        Map = __webpack_require__(80),
         Promise = __webpack_require__(238),
-        Set = __webpack_require__(121),
+        Set = __webpack_require__(120),
         WeakMap = __webpack_require__(239),
-        baseGetTag = __webpack_require__(21),
-        toSource = __webpack_require__(111)
+        baseGetTag = __webpack_require__(24),
+        toSource = __webpack_require__(110)
 
       /** `Object#toString` result references. */
       var mapTag = '[object Map]',
@@ -8519,9 +8447,9 @@ object-assign
 
       /***/
     },
-    /* 121 */
+    /* 120 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18),
+      var getNative = __webpack_require__(19),
         root = __webpack_require__(11)
 
       /* Built-in method references that are verified to be native. */
@@ -8531,7 +8459,7 @@ object-assign
 
       /***/
     },
-    /* 122 */
+    /* 121 */
     /***/ function(module, exports, __webpack_require__) {
       var isObject = __webpack_require__(10)
 
@@ -8551,7 +8479,7 @@ object-assign
 
       /***/
     },
-    /* 123 */
+    /* 122 */
     /***/ function(module, exports) {
       /**
        * A specialized version of `matchesProperty` for source values suitable
@@ -8578,9 +8506,9 @@ object-assign
 
       /***/
     },
-    /* 124 */
+    /* 123 */
     /***/ function(module, exports, __webpack_require__) {
-      var MapCache = __webpack_require__(75)
+      var MapCache = __webpack_require__(81)
 
       /** Error message constants. */
       var FUNC_ERROR_TEXT = 'Expected a function'
@@ -8659,7 +8587,7 @@ object-assign
 
       /***/
     },
-    /* 125 */
+    /* 124 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /**
@@ -8699,7 +8627,7 @@ object-assign
 
       /***/
     },
-    /* 126 */
+    /* 125 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -8712,7 +8640,7 @@ object-assign
          * @typechecks
          */
 
-        var emptyFunction = __webpack_require__(49)
+        var emptyFunction = __webpack_require__(15)
 
         /**
          * Upstream version of event listener. Does not take into account specific
@@ -8784,7 +8712,7 @@ object-assign
 
       /***/
     },
-    /* 127 */
+    /* 126 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -8825,7 +8753,7 @@ object-assign
 
       /***/
     },
-    /* 128 */
+    /* 127 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /**
@@ -8902,7 +8830,7 @@ object-assign
 
       /***/
     },
-    /* 129 */
+    /* 128 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -8944,7 +8872,7 @@ object-assign
 
       /***/
     },
-    /* 130 */
+    /* 129 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /**
@@ -8972,182 +8900,7 @@ object-assign
 
       /***/
     },
-    /* 131 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2013-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         *
-         */
-
-        var emptyObject = {}
-
-        if (process.env.NODE_ENV !== 'production') {
-          Object.freeze(emptyObject)
-        }
-
-        module.exports = emptyObject
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 132 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2013-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         *
-         */
-
-        /**
-         * Use invariant() to assert state which your program assumes to be true.
-         *
-         * Provide sprintf-style format (only %s is supported) and arguments
-         * to provide information about what broke and what you were
-         * expecting.
-         *
-         * The invariant message will be stripped in production, but the invariant
-         * will remain to ensure logic does not differ in production.
-         */
-
-        var validateFormat = function validateFormat(format) {}
-
-        if (process.env.NODE_ENV !== 'production') {
-          validateFormat = function validateFormat(format) {
-            if (format === undefined) {
-              throw new Error('invariant requires an error message argument')
-            }
-          }
-        }
-
-        function invariant(condition, format, a, b, c, d, e, f) {
-          validateFormat(format)
-
-          if (!condition) {
-            var error
-            if (format === undefined) {
-              error = new Error(
-                'Minified exception occurred; use the non-minified dev environment ' +
-                  'for the full error message and additional helpful warnings.'
-              )
-            } else {
-              var args = [a, b, c, d, e, f]
-              var argIndex = 0
-              error = new Error(
-                format.replace(/%s/g, function() {
-                  return args[argIndex++]
-                })
-              )
-              error.name = 'Invariant Violation'
-            }
-
-            error.framesToPop = 1 // we don't care about invariant's own frame
-            throw error
-          }
-        }
-
-        module.exports = invariant
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 133 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2014-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         *
-         */
-
-        var emptyFunction = __webpack_require__(49)
-
-        /**
-         * Similar to invariant but only logs a warning if the condition is not met.
-         * This can be used to log issues in development environments in critical
-         * paths. Removing the logging code for production environments will keep the
-         * same logic and follow the same code paths.
-         */
-
-        var warning = emptyFunction
-
-        if (process.env.NODE_ENV !== 'production') {
-          var printWarning = function printWarning(format) {
-            for (
-              var _len = arguments.length,
-                args = Array(_len > 1 ? _len - 1 : 0),
-                _key = 1;
-              _key < _len;
-              _key++
-            ) {
-              args[_key - 1] = arguments[_key]
-            }
-
-            var argIndex = 0
-            var message =
-              'Warning: ' +
-              format.replace(/%s/g, function() {
-                return args[argIndex++]
-              })
-            if (typeof console !== 'undefined') {
-              console.error(message)
-            }
-            try {
-              // --- Welcome to debugging React ---
-              // This error was thrown as a convenience so that you can use this stack
-              // to find the callsite that caused this warning to fire.
-              throw new Error(message)
-            } catch (x) {}
-          }
-
-          warning = function warning(condition, format) {
-            if (format === undefined) {
-              throw new Error(
-                '`warning(condition, format, ...args)` requires a warning ' +
-                  'message argument'
-              )
-            }
-
-            if (format.indexOf('Failed Composite propType: ') === 0) {
-              return // Ignore CompositeComponent proptype check.
-            }
-
-            if (!condition) {
-              for (
-                var _len2 = arguments.length,
-                  args = Array(_len2 > 2 ? _len2 - 2 : 0),
-                  _key2 = 2;
-                _key2 < _len2;
-                _key2++
-              ) {
-                args[_key2 - 2] = arguments[_key2]
-              }
-
-              printWarning.apply(undefined, [format].concat(args))
-            }
-          }
-        }
-
-        module.exports = warning
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 134 */
+    /* 130 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -9213,15 +8966,15 @@ object-assign
 
         var _dates2 = _interopRequireDefault(_dates)
 
-        var _oldGlobalize = __webpack_require__(268)
+        var _oldGlobalize = __webpack_require__(265)
 
         var _oldGlobalize2 = _interopRequireDefault(_oldGlobalize)
 
-        var _warning = __webpack_require__(269)
+        var _warning = __webpack_require__(266)
 
         var _warning2 = _interopRequireDefault(_warning)
 
-        var _formats = __webpack_require__(50)
+        var _formats = __webpack_require__(53)
 
         var _localizer = __webpack_require__(6)
 
@@ -9307,7 +9060,7 @@ object-assign
 
       /***/
     },
-    /* 135 */
+    /* 131 */
     /***/ function(module, exports) {
       var MILI = 'milliseconds',
         SECONDS = 'seconds',
@@ -9557,95 +9310,7 @@ object-assign
 
       /***/
     },
-    /* 136 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright 2014-2015, Facebook, Inc.
-         * All rights reserved.
-         *
-         * This source code is licensed under the BSD-style license found in the
-         * LICENSE file in the root directory of this source tree. An additional grant
-         * of patent rights can be found in the PATENTS file in the same directory.
-         *
-         */
-
-        var emptyFunction = __webpack_require__(81)
-
-        /**
-         * Similar to invariant but only logs a warning if the condition is not met.
-         * This can be used to log issues in development environments in critical
-         * paths. Removing the logging code for production environments will keep the
-         * same logic and follow the same code paths.
-         */
-
-        var warning = emptyFunction
-
-        if (process.env.NODE_ENV !== 'production') {
-          var printWarning = function printWarning(format) {
-            for (
-              var _len = arguments.length,
-                args = Array(_len > 1 ? _len - 1 : 0),
-                _key = 1;
-              _key < _len;
-              _key++
-            ) {
-              args[_key - 1] = arguments[_key]
-            }
-
-            var argIndex = 0
-            var message =
-              'Warning: ' +
-              format.replace(/%s/g, function() {
-                return args[argIndex++]
-              })
-            if (typeof console !== 'undefined') {
-              console.error(message)
-            }
-            try {
-              // --- Welcome to debugging React ---
-              // This error was thrown as a convenience so that you can use this stack
-              // to find the callsite that caused this warning to fire.
-              throw new Error(message)
-            } catch (x) {}
-          }
-
-          warning = function warning(condition, format) {
-            if (format === undefined) {
-              throw new Error(
-                '`warning(condition, format, ...args)` requires a warning ' +
-                  'message argument'
-              )
-            }
-
-            if (format.indexOf('Failed Composite propType: ') === 0) {
-              return // Ignore CompositeComponent proptype check.
-            }
-
-            if (!condition) {
-              for (
-                var _len2 = arguments.length,
-                  args = Array(_len2 > 2 ? _len2 - 2 : 0),
-                  _key2 = 2;
-                _key2 < _len2;
-                _key2++
-              ) {
-                args[_key2 - 2] = arguments[_key2]
-              }
-
-              printWarning.apply(undefined, [format].concat(args))
-            }
-          }
-        }
-
-        module.exports = warning
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 137 */
+    /* 132 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -9668,7 +9333,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _createChainableTypeChecker = __webpack_require__(53)
+      var _createChainableTypeChecker = __webpack_require__(56)
 
       var _createChainableTypeChecker2 = _interopRequireDefault(
         _createChainableTypeChecker
@@ -9726,7 +9391,7 @@ object-assign
 
       /***/
     },
-    /* 138 */
+    /* 133 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -9739,7 +9404,7 @@ object-assign
 
         var _constants = __webpack_require__(13)
 
-        var _Views = __webpack_require__(139)
+        var _Views = __webpack_require__(134)
 
         var _Views2 = _interopRequireDefault(_Views)
 
@@ -9789,7 +9454,7 @@ object-assign
 
       /***/
     },
-    /* 139 */
+    /* 134 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -9799,23 +9464,23 @@ object-assign
 
       var _constants = __webpack_require__(13)
 
-      var _Month = __webpack_require__(283)
+      var _Month = __webpack_require__(280)
 
       var _Month2 = _interopRequireDefault(_Month)
 
-      var _Day = __webpack_require__(315)
+      var _Day = __webpack_require__(324)
 
       var _Day2 = _interopRequireDefault(_Day)
 
-      var _Week = __webpack_require__(159)
+      var _Week = __webpack_require__(160)
 
       var _Week2 = _interopRequireDefault(_Week)
 
-      var _WorkWeek = __webpack_require__(320)
+      var _WorkWeek = __webpack_require__(329)
 
       var _WorkWeek2 = _interopRequireDefault(_WorkWeek)
 
-      var _Agenda = __webpack_require__(321)
+      var _Agenda = __webpack_require__(330)
 
       var _Agenda2 = _interopRequireDefault(_Agenda)
 
@@ -9836,7 +9501,7 @@ object-assign
 
       /***/
     },
-    /* 140 */
+    /* 135 */
     /***/ function(module, exports) {
       /**
        * The base implementation of `_.slice` without an iteratee call guard.
@@ -9872,9 +9537,9 @@ object-assign
 
       /***/
     },
-    /* 141 */
+    /* 136 */
     /***/ function(module, exports, __webpack_require__) {
-      var toFinite = __webpack_require__(142)
+      var toFinite = __webpack_require__(137)
 
       /**
        * Converts `value` to an integer.
@@ -9913,9 +9578,9 @@ object-assign
 
       /***/
     },
-    /* 142 */
+    /* 137 */
     /***/ function(module, exports, __webpack_require__) {
-      var toNumber = __webpack_require__(285)
+      var toNumber = __webpack_require__(282)
 
       /** Used as references for various `Number` constants. */
       var INFINITY = 1 / 0,
@@ -9960,224 +9625,111 @@ object-assign
 
       /***/
     },
-    /* 143 */
+    /* 138 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
+      exports.__esModule = true
+      exports['default'] = ownerDocument
 
-      var _extends =
-        Object.assign ||
-        function(target) {
-          for (var i = 1; i < arguments.length; i++) {
-            var source = arguments[i]
-            for (var key in source) {
-              if (Object.prototype.hasOwnProperty.call(source, key)) {
-                target[key] = source[key]
-              }
-            }
-          }
-          return target
-        }
-
-      exports.default = position
-
-      var _offset = __webpack_require__(32)
-
-      var _offset2 = _interopRequireDefault(_offset)
-
-      var _offsetParent = __webpack_require__(286)
-
-      var _offsetParent2 = _interopRequireDefault(_offsetParent)
-
-      var _scrollTop = __webpack_require__(86)
-
-      var _scrollTop2 = _interopRequireDefault(_scrollTop)
-
-      var _scrollLeft = __webpack_require__(146)
-
-      var _scrollLeft2 = _interopRequireDefault(_scrollLeft)
-
-      var _style = __webpack_require__(144)
-
-      var _style2 = _interopRequireDefault(_style)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
+      function ownerDocument(node) {
+        return (node && node.ownerDocument) || document
       }
 
-      function nodeName(node) {
-        return node.nodeName && node.nodeName.toLowerCase()
-      }
-
-      function position(node, offsetParent) {
-        var parentOffset = { top: 0, left: 0 },
-          offset
-
-        // Fixed elements are offset from window (parentOffset = {top:0, left: 0},
-        // because it is its only offset parent
-        if ((0, _style2.default)(node, 'position') === 'fixed') {
-          offset = node.getBoundingClientRect()
-        } else {
-          offsetParent = offsetParent || (0, _offsetParent2.default)(node)
-          offset = (0, _offset2.default)(node)
-
-          if (nodeName(offsetParent) !== 'html')
-            parentOffset = (0, _offset2.default)(offsetParent)
-
-          parentOffset.top +=
-            parseInt((0, _style2.default)(offsetParent, 'borderTopWidth'), 10) -
-              (0, _scrollTop2.default)(offsetParent) || 0
-          parentOffset.left +=
-            parseInt(
-              (0, _style2.default)(offsetParent, 'borderLeftWidth'),
-              10
-            ) - (0, _scrollLeft2.default)(offsetParent) || 0
-        }
-
-        // Subtract parent offsets and node margins
-        return _extends({}, offset, {
-          top:
-            offset.top -
-            parentOffset.top -
-            (parseInt((0, _style2.default)(node, 'marginTop'), 10) || 0),
-          left:
-            offset.left -
-            parentOffset.left -
-            (parseInt((0, _style2.default)(node, 'marginLeft'), 10) || 0),
-        })
-      }
       module.exports = exports['default']
 
       /***/
     },
-    /* 144 */
+    /* 139 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = style
+      var camelize = __webpack_require__(140),
+        hyphenate = __webpack_require__(286),
+        _getComputedStyle = __webpack_require__(288),
+        removeStyle = __webpack_require__(289)
 
-      var _camelizeStyle = __webpack_require__(145)
+      var has = Object.prototype.hasOwnProperty
 
-      var _camelizeStyle2 = _interopRequireDefault(_camelizeStyle)
-
-      var _hyphenateStyle = __webpack_require__(288)
-
-      var _hyphenateStyle2 = _interopRequireDefault(_hyphenateStyle)
-
-      var _getComputedStyle2 = __webpack_require__(290)
-
-      var _getComputedStyle3 = _interopRequireDefault(_getComputedStyle2)
-
-      var _removeStyle = __webpack_require__(291)
-
-      var _removeStyle2 = _interopRequireDefault(_removeStyle)
-
-      var _properties = __webpack_require__(292)
-
-      var _isTransform = __webpack_require__(293)
-
-      var _isTransform2 = _interopRequireDefault(_isTransform)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function style(node, property, value) {
-        var css = ''
-        var transforms = ''
-        var props = property
+      module.exports = function style(node, property, value) {
+        var css = '',
+          props = property
 
         if (typeof property === 'string') {
-          if (value === undefined) {
+          if (value === undefined)
             return (
-              node.style[(0, _camelizeStyle2.default)(property)] ||
-              (0, _getComputedStyle3.default)(node).getPropertyValue(
-                (0, _hyphenateStyle2.default)(property)
-              )
+              node.style[camelize(property)] ||
+              _getComputedStyle(node).getPropertyValue(hyphenate(property))
             )
-          } else {
-            ;(props = {})[property] = value
-          }
+          else (props = {})[property] = value
         }
 
-        Object.keys(props).forEach(function(key) {
-          var value = props[key]
-          if (!value && value !== 0) {
-            ;(0, _removeStyle2.default)(
-              node,
-              (0, _hyphenateStyle2.default)(key)
-            )
-          } else if ((0, _isTransform2.default)(key)) {
-            transforms += key + '(' + value + ') '
-          } else {
-            css += (0, _hyphenateStyle2.default)(key) + ': ' + value + ';'
+        for (var key in props)
+          if (has.call(props, key)) {
+            !props[key] && props[key] !== 0
+              ? removeStyle(node, hyphenate(key))
+              : (css += hyphenate(key) + ':' + props[key] + ';')
           }
-        })
-
-        if (transforms) {
-          css += _properties.transform + ': ' + transforms + ';'
-        }
 
         node.style.cssText += ';' + css
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 145 */
+    /* 140 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = camelizeStyleName
-
-      var _camelize = __webpack_require__(287)
-
-      var _camelize2 = _interopRequireDefault(_camelize)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var msPattern = /^-ms-/ /**
+      /**
        * Copyright 2014-2015, Facebook, Inc.
        * All rights reserved.
        * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/camelizeStyleName.js
        */
-      function camelizeStyleName(string) {
-        return (0, _camelize2.default)(string.replace(msPattern, 'ms-'))
+
+      var camelize = __webpack_require__(285)
+      var msPattern = /^-ms-/
+
+      module.exports = function camelizeStyleName(string) {
+        return camelize(string.replace(msPattern, 'ms-'))
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 146 */
+    /* 141 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = scrollTop
+      var getWindow = __webpack_require__(38)
 
-      var _isWindow = __webpack_require__(33)
+      module.exports = function scrollTop(node, val) {
+        var win = getWindow(node)
 
-      var _isWindow2 = _interopRequireDefault(_isWindow)
+        if (val === undefined)
+          return win
+            ? 'pageYOffset' in win
+              ? win.pageYOffset
+              : win.document.documentElement.scrollTop
+            : node.scrollTop
 
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
+        if (win)
+          win.scrollTo(
+            'pageXOffset' in win
+              ? win.pageXOffset
+              : win.document.documentElement.scrollLeft,
+            val
+          )
+        else node.scrollTop = val
       }
 
-      function scrollTop(node, val) {
-        var win = (0, _isWindow2.default)(node)
+      /***/
+    },
+    /* 142 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var getWindow = __webpack_require__(38)
+
+      module.exports = function scrollTop(node, val) {
+        var win = getWindow(node)
 
         if (val === undefined)
           return win
@@ -10195,11 +9747,10 @@ object-assign
           )
         else node.scrollLeft = val
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 147 */
+    /* 143 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -10237,7 +9788,7 @@ object-assign
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -10424,7 +9975,7 @@ object-assign
 
       /***/
     },
-    /* 148 */
+    /* 144 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -10447,7 +9998,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _createChainableTypeChecker = __webpack_require__(53)
+      var _createChainableTypeChecker = __webpack_require__(56)
 
       var _createChainableTypeChecker2 = _interopRequireDefault(
         _createChainableTypeChecker
@@ -10509,7 +10060,7 @@ object-assign
 
       /***/
     },
-    /* 149 */
+    /* 145 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -10534,7 +10085,259 @@ object-assign
 
       /***/
     },
+    /* 146 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = offset
+
+      var _contains = __webpack_require__(147)
+
+      var _contains2 = _interopRequireDefault(_contains)
+
+      var _isWindow = __webpack_require__(90)
+
+      var _isWindow2 = _interopRequireDefault(_isWindow)
+
+      var _ownerDocument = __webpack_require__(89)
+
+      var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      function offset(node) {
+        var doc = (0, _ownerDocument2.default)(node),
+          win = (0, _isWindow2.default)(doc),
+          docElem = doc && doc.documentElement,
+          box = { top: 0, left: 0, height: 0, width: 0 }
+
+        if (!doc) return
+
+        // Make sure it's not a disconnected DOM node
+        if (!(0, _contains2.default)(docElem, node)) return box
+
+        if (node.getBoundingClientRect !== undefined)
+          box = node.getBoundingClientRect()
+
+        // IE8 getBoundingClientRect doesn't support width & height
+        box = {
+          top:
+            box.top +
+            (win.pageYOffset || docElem.scrollTop) -
+            (docElem.clientTop || 0),
+          left:
+            box.left +
+            (win.pageXOffset || docElem.scrollLeft) -
+            (docElem.clientLeft || 0),
+          width: (box.width == null ? node.offsetWidth : box.width) || 0,
+          height: (box.height == null ? node.offsetHeight : box.height) || 0,
+        }
+
+        return box
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 147 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+
+      var _inDOM = __webpack_require__(61)
+
+      var _inDOM2 = _interopRequireDefault(_inDOM)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      exports.default = (function() {
+        // HTML DOM and SVG DOM may have different support levels,
+        // so we need to check on context instead of a document root element.
+        return _inDOM2.default
+          ? function(context, node) {
+              if (context.contains) {
+                return context.contains(node)
+              } else if (context.compareDocumentPosition) {
+                return (
+                  context === node ||
+                  !!(context.compareDocumentPosition(node) & 16)
+                )
+              } else {
+                return fallback(context, node)
+              }
+            }
+          : fallback
+      })()
+
+      function fallback(context, node) {
+        if (node)
+          do {
+            if (node === context) return true
+          } while ((node = node.parentNode))
+
+        return false
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 148 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = style
+
+      var _camelizeStyle = __webpack_require__(149)
+
+      var _camelizeStyle2 = _interopRequireDefault(_camelizeStyle)
+
+      var _hyphenateStyle = __webpack_require__(299)
+
+      var _hyphenateStyle2 = _interopRequireDefault(_hyphenateStyle)
+
+      var _getComputedStyle2 = __webpack_require__(301)
+
+      var _getComputedStyle3 = _interopRequireDefault(_getComputedStyle2)
+
+      var _removeStyle = __webpack_require__(302)
+
+      var _removeStyle2 = _interopRequireDefault(_removeStyle)
+
+      var _properties = __webpack_require__(303)
+
+      var _isTransform = __webpack_require__(304)
+
+      var _isTransform2 = _interopRequireDefault(_isTransform)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      function style(node, property, value) {
+        var css = ''
+        var transforms = ''
+        var props = property
+
+        if (typeof property === 'string') {
+          if (value === undefined) {
+            return (
+              node.style[(0, _camelizeStyle2.default)(property)] ||
+              (0, _getComputedStyle3.default)(node).getPropertyValue(
+                (0, _hyphenateStyle2.default)(property)
+              )
+            )
+          } else {
+            ;(props = {})[property] = value
+          }
+        }
+
+        Object.keys(props).forEach(function(key) {
+          var value = props[key]
+          if (!value && value !== 0) {
+            ;(0, _removeStyle2.default)(
+              node,
+              (0, _hyphenateStyle2.default)(key)
+            )
+          } else if ((0, _isTransform2.default)(key)) {
+            transforms += key + '(' + value + ') '
+          } else {
+            css += (0, _hyphenateStyle2.default)(key) + ': ' + value + ';'
+          }
+        })
+
+        if (transforms) {
+          css += _properties.transform + ': ' + transforms + ';'
+        }
+
+        node.style.cssText += ';' + css
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 149 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = camelizeStyleName
+
+      var _camelize = __webpack_require__(298)
+
+      var _camelize2 = _interopRequireDefault(_camelize)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      var msPattern = /^-ms-/ /**
+       * Copyright 2014-2015, Facebook, Inc.
+       * All rights reserved.
+       * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/camelizeStyleName.js
+       */
+      function camelizeStyleName(string) {
+        return (0, _camelize2.default)(string.replace(msPattern, 'ms-'))
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
     /* 150 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = scrollTop
+
+      var _isWindow = __webpack_require__(90)
+
+      var _isWindow2 = _interopRequireDefault(_isWindow)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      function scrollTop(node, val) {
+        var win = (0, _isWindow2.default)(node)
+
+        if (val === undefined)
+          return win
+            ? 'pageYOffset' in win
+              ? win.pageYOffset
+              : win.document.documentElement.scrollTop
+            : node.scrollTop
+
+        if (win)
+          win.scrollTo(
+            'pageXOffset' in win
+              ? win.pageXOffset
+              : win.document.documentElement.scrollLeft,
+            val
+          )
+        else node.scrollTop = val
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 151 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -10558,11 +10361,11 @@ object-assign
 
       var _classnames2 = _interopRequireDefault(_classnames)
 
-      var _height = __webpack_require__(151)
+      var _height = __webpack_require__(152)
 
       var _height2 = _interopRequireDefault(_height)
 
-      var _querySelectorAll = __webpack_require__(89)
+      var _querySelectorAll = __webpack_require__(91)
 
       var _querySelectorAll2 = _interopRequireDefault(_querySelectorAll)
 
@@ -10582,17 +10385,17 @@ object-assign
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _eventLevels2 = __webpack_require__(20)
+      var _eventLevels2 = __webpack_require__(21)
 
-      var _BackgroundCells = __webpack_require__(303)
+      var _BackgroundCells = __webpack_require__(311)
 
       var _BackgroundCells2 = _interopRequireDefault(_BackgroundCells)
 
-      var _EventRow = __webpack_require__(309)
+      var _EventRow = __webpack_require__(318)
 
       var _EventRow2 = _interopRequireDefault(_EventRow)
 
-      var _EventEndingRow = __webpack_require__(310)
+      var _EventEndingRow = __webpack_require__(319)
 
       var _EventEndingRow2 = _interopRequireDefault(_EventEndingRow)
 
@@ -10968,38 +10771,23 @@ object-assign
 
       /***/
     },
-    /* 151 */
+    /* 152 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = height
+      var offset = __webpack_require__(59),
+        getWindow = __webpack_require__(38)
 
-      var _offset = __webpack_require__(32)
-
-      var _offset2 = _interopRequireDefault(_offset)
-
-      var _isWindow = __webpack_require__(33)
-
-      var _isWindow2 = _interopRequireDefault(_isWindow)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function height(node, client) {
-        var win = (0, _isWindow2.default)(node)
+      module.exports = function height(node, client) {
+        var win = getWindow(node)
         return win
           ? win.innerHeight
-          : client ? node.clientHeight : (0, _offset2.default)(node).height
+          : client ? node.clientHeight : offset(node).height
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 152 */
+    /* 153 */
     /***/ function(module, exports) {
       /**
        * The base implementation of `_.findIndex` and `_.findLastIndex` without
@@ -11028,7 +10816,7 @@ object-assign
 
       /***/
     },
-    /* 153 */
+    /* 154 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -11052,15 +10840,15 @@ object-assign
       exports.objectsCollide = objectsCollide
       exports.getBoundsForNode = getBoundsForNode
 
-      var _contains = __webpack_require__(55)
+      var _contains = __webpack_require__(88)
 
       var _contains2 = _interopRequireDefault(_contains)
 
-      var _closest = __webpack_require__(304)
+      var _closest = __webpack_require__(312)
 
       var _closest2 = _interopRequireDefault(_closest)
 
-      var _events = __webpack_require__(306)
+      var _events = __webpack_require__(314)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -11616,7 +11404,7 @@ object-assign
 
       /***/
     },
-    /* 154 */
+    /* 155 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -11632,19 +11420,19 @@ object-assign
 
       var _reactDom = __webpack_require__(9)
 
-      var _EventCell = __webpack_require__(147)
+      var _EventCell = __webpack_require__(143)
 
       var _EventCell2 = _interopRequireDefault(_EventCell)
 
-      var _height = __webpack_require__(151)
+      var _height = __webpack_require__(152)
 
       var _height2 = _interopRequireDefault(_height)
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _eventLevels = __webpack_require__(20)
+      var _eventLevels = __webpack_require__(21)
 
-      var _selection = __webpack_require__(34)
+      var _selection = __webpack_require__(39)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -11734,7 +11522,7 @@ object-assign
 
       /***/
     },
-    /* 155 */
+    /* 156 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -11767,7 +11555,7 @@ object-assign
 
       /***/
     },
-    /* 156 */
+    /* 157 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -11791,11 +11579,11 @@ object-assign
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _BackgroundWrapper = __webpack_require__(90)
+      var _BackgroundWrapper = __webpack_require__(92)
 
       var _BackgroundWrapper2 = _interopRequireDefault(_BackgroundWrapper)
 
-      var _TimeSlotGroup = __webpack_require__(318)
+      var _TimeSlotGroup = __webpack_require__(327)
 
       var _TimeSlotGroup2 = _interopRequireDefault(_TimeSlotGroup)
 
@@ -11969,48 +11757,33 @@ object-assign
 
       /***/
     },
-    /* 157 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = width
-
-      var _offset = __webpack_require__(32)
-
-      var _offset2 = _interopRequireDefault(_offset)
-
-      var _isWindow = __webpack_require__(33)
-
-      var _isWindow2 = _interopRequireDefault(_isWindow)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function width(node, client) {
-        var win = (0, _isWindow2.default)(node)
-        return win
-          ? win.innerWidth
-          : client ? node.clientWidth : (0, _offset2.default)(node).width
-      }
-      module.exports = exports['default']
-
-      /***/
-    },
     /* 158 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
+      var offset = __webpack_require__(59),
+        getWindow = __webpack_require__(38)
 
-      exports.default = function(recalc) {
+      module.exports = function width(node, client) {
+        var win = getWindow(node)
+        return win
+          ? win.innerWidth
+          : client ? node.clientWidth : offset(node).width
+      }
+
+      /***/
+    },
+    /* 159 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var canUseDOM = __webpack_require__(26)
+
+      var size
+
+      module.exports = function(recalc) {
         if (!size || recalc) {
-          if (_inDOM2.default) {
+          if (canUseDOM) {
             var scrollDiv = document.createElement('div')
 
             scrollDiv.style.position = 'absolute'
@@ -12028,21 +11801,9 @@ object-assign
         return size
       }
 
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var size = void 0
-
-      module.exports = exports['default']
-
       /***/
     },
-    /* 159 */
+    /* 160 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -12080,7 +11841,7 @@ object-assign
 
       var _constants = __webpack_require__(13)
 
-      var _TimeGrid = __webpack_require__(57)
+      var _TimeGrid = __webpack_require__(62)
 
       var _TimeGrid2 = _interopRequireDefault(_TimeGrid)
 
@@ -12212,15 +11973,11 @@ object-assign
 
       /***/
     },
-    /* 160 */
+    /* 161 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = hasClass
-      function hasClass(element, className) {
+      module.exports = function hasClass(element, className) {
         if (element.classList)
           return !!className && element.classList.contains(className)
         else
@@ -12229,11 +11986,10 @@ object-assign
             -1
           )
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 161 */
+    /* 162 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -12309,10 +12065,10 @@ object-assign
 
       /***/
     },
-    /* 162 */
+    /* 163 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseAssignValue = __webpack_require__(91),
-        eq = __webpack_require__(27)
+      var baseAssignValue = __webpack_require__(93),
+        eq = __webpack_require__(33)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -12344,9 +12100,9 @@ object-assign
 
       /***/
     },
-    /* 163 */
+    /* 164 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18)
+      var getNative = __webpack_require__(19)
 
       var defineProperty = (function() {
         try {
@@ -12360,12 +12116,12 @@ object-assign
 
       /***/
     },
-    /* 164 */
+    /* 165 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayPush = __webpack_require__(76),
-        getPrototype = __webpack_require__(48),
-        getSymbols = __webpack_require__(77),
-        stubArray = __webpack_require__(119)
+      var arrayPush = __webpack_require__(82),
+        getPrototype = __webpack_require__(52),
+        getSymbols = __webpack_require__(83),
+        stubArray = __webpack_require__(118)
 
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeGetSymbols = Object.getOwnPropertySymbols
@@ -12392,11 +12148,11 @@ object-assign
 
       /***/
     },
-    /* 165 */
+    /* 166 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetAllKeys = __webpack_require__(117),
-        getSymbolsIn = __webpack_require__(164),
-        keysIn = __webpack_require__(92)
+      var baseGetAllKeys = __webpack_require__(116),
+        getSymbolsIn = __webpack_require__(165),
+        keysIn = __webpack_require__(94)
 
       /**
        * Creates an array of own and inherited enumerable property names and
@@ -12414,7 +12170,7 @@ object-assign
 
       /***/
     },
-    /* 166 */
+    /* 167 */
     /***/ function(module, exports) {
       /**
        * A specialized version of `_.reduce` for arrays without support for
@@ -12445,9 +12201,9 @@ object-assign
 
       /***/
     },
-    /* 167 */
+    /* 168 */
     /***/ function(module, exports, __webpack_require__) {
-      var apply = __webpack_require__(168)
+      var apply = __webpack_require__(169)
 
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeMax = Math.max
@@ -12486,7 +12242,7 @@ object-assign
 
       /***/
     },
-    /* 168 */
+    /* 169 */
     /***/ function(module, exports) {
       /**
        * A faster alternative to `Function#apply`, this function invokes `func`
@@ -12516,10 +12272,10 @@ object-assign
 
       /***/
     },
-    /* 169 */
+    /* 170 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseSetToString = __webpack_require__(354),
-        shortOut = __webpack_require__(356)
+      var baseSetToString = __webpack_require__(363),
+        shortOut = __webpack_require__(365)
 
       /**
        * Sets the `toString` method of `func` to return `string`.
@@ -12535,12 +12291,12 @@ object-assign
 
       /***/
     },
-    /* 170 */
+    /* 171 */
     /***/ function(module, exports, __webpack_require__) {
-      var apply = __webpack_require__(168),
-        assignInWith = __webpack_require__(357),
-        baseRest = __webpack_require__(24),
-        customDefaultsAssignIn = __webpack_require__(359)
+      var apply = __webpack_require__(169),
+        assignInWith = __webpack_require__(366),
+        baseRest = __webpack_require__(28),
+        customDefaultsAssignIn = __webpack_require__(368)
 
       /**
        * Assigns own and inherited enumerable string keyed properties of source
@@ -12572,14 +12328,14 @@ object-assign
 
       /***/
     },
-    /* 171 */
+    /* 172 */
     /***/ function(module, exports, __webpack_require__) {
-      var SetCache = __webpack_require__(43),
-        arrayIncludes = __webpack_require__(95),
-        arrayIncludesWith = __webpack_require__(96),
-        cacheHas = __webpack_require__(44),
-        createSet = __webpack_require__(380),
-        setToArray = __webpack_require__(45)
+      var SetCache = __webpack_require__(47),
+        arrayIncludes = __webpack_require__(97),
+        arrayIncludesWith = __webpack_require__(98),
+        cacheHas = __webpack_require__(48),
+        createSet = __webpack_require__(389),
+        setToArray = __webpack_require__(49)
 
       /** Used as the size to enable large array optimizations. */
       var LARGE_ARRAY_SIZE = 200
@@ -12645,7 +12401,7 @@ object-assign
 
       /***/
     },
-    /* 172 */
+    /* 173 */
     /***/ function(module, exports) {
       /**
        * This method returns `undefined`.
@@ -12667,11 +12423,11 @@ object-assign
 
       /***/
     },
-    /* 173 */
+    /* 174 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseDifference = __webpack_require__(174),
-        baseRest = __webpack_require__(24),
-        isArrayLikeObject = __webpack_require__(59)
+      var baseDifference = __webpack_require__(175),
+        baseRest = __webpack_require__(28),
+        isArrayLikeObject = __webpack_require__(64)
 
       /**
        * Creates an array excluding all given values using
@@ -12701,14 +12457,14 @@ object-assign
 
       /***/
     },
-    /* 174 */
+    /* 175 */
     /***/ function(module, exports, __webpack_require__) {
-      var SetCache = __webpack_require__(43),
-        arrayIncludes = __webpack_require__(95),
-        arrayIncludesWith = __webpack_require__(96),
-        arrayMap = __webpack_require__(28),
-        baseUnary = __webpack_require__(69),
-        cacheHas = __webpack_require__(44)
+      var SetCache = __webpack_require__(47),
+        arrayIncludes = __webpack_require__(97),
+        arrayIncludesWith = __webpack_require__(98),
+        arrayMap = __webpack_require__(34),
+        baseUnary = __webpack_require__(75),
+        cacheHas = __webpack_require__(48)
 
       /** Used as the size to enable large array optimizations. */
       var LARGE_ARRAY_SIZE = 200
@@ -12770,7 +12526,7 @@ object-assign
 
       /***/
     },
-    /* 175 */
+    /* 176 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -12779,7 +12535,7 @@ object-assign
       })
       exports.isSafari = exports.isFirefox = undefined
 
-      var _memoize = __webpack_require__(124)
+      var _memoize = __webpack_require__(123)
 
       var _memoize2 = _interopRequireDefault(_memoize)
 
@@ -12796,7 +12552,7 @@ object-assign
 
       /***/
     },
-    /* 176 */
+    /* 177 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -12860,17 +12616,17 @@ object-assign
 
       var _propTypes2 = _interopRequireDefault(_propTypes)
 
-      var _dndCore = __webpack_require__(385)
+      var _dndCore = __webpack_require__(394)
 
       var _invariant = __webpack_require__(4)
 
       var _invariant2 = _interopRequireDefault(_invariant)
 
-      var _hoistNonReactStatics = __webpack_require__(98)
+      var _hoistNonReactStatics = __webpack_require__(100)
 
       var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics)
 
-      var _checkDecoratorArguments = __webpack_require__(62)
+      var _checkDecoratorArguments = __webpack_require__(67)
 
       var _checkDecoratorArguments2 = _interopRequireDefault(
         _checkDecoratorArguments
@@ -12993,8 +12749,7 @@ object-assign
                 value: function getDecoratedComponentInstance() {
                   ;(0, _invariant2.default)(
                     this.child,
-                    'In order to access an instance of the decorated component it can ' +
-                      'not be a stateless component.'
+                    'In order to access an instance of the decorated component it can not be a stateless component.'
                   )
                   return this.child
                 },
@@ -13020,7 +12775,7 @@ object-assign
                     DecoratedComponent,
                     _extends({}, this.props, {
                       ref: function ref(child) {
-                        return (_this2.child = child)
+                        _this2.child = child
                       },
                     })
                   )
@@ -13044,7 +12799,7 @@ object-assign
 
       /***/
     },
-    /* 177 */
+    /* 178 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13070,7 +12825,7 @@ object-assign
       exports.getSourceClientOffset = getSourceClientOffset
       exports.getDifferenceFromInitialOffset = getDifferenceFromInitialOffset
 
-      var _dragDrop = __webpack_require__(60)
+      var _dragDrop = __webpack_require__(65)
 
       var initialState = {
         initialSourceClientOffset: null,
@@ -13158,7 +12913,7 @@ object-assign
 
       /***/
     },
-    /* 178 */
+    /* 179 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13187,7 +12942,7 @@ object-assign
 
       /***/
     },
-    /* 179 */
+    /* 180 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13197,17 +12952,17 @@ object-assign
       exports.default = dirtyHandlerIds
       exports.areDirty = areDirty
 
-      var _xor = __webpack_require__(394)
+      var _xor = __webpack_require__(403)
 
       var _xor2 = _interopRequireDefault(_xor)
 
-      var _intersection = __webpack_require__(396)
+      var _intersection = __webpack_require__(405)
 
       var _intersection2 = _interopRequireDefault(_intersection)
 
-      var _dragDrop = __webpack_require__(60)
+      var _dragDrop = __webpack_require__(65)
 
-      var _registry = __webpack_require__(61)
+      var _registry = __webpack_require__(66)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -13290,7 +13045,7 @@ object-assign
 
       /***/
     },
-    /* 180 */
+    /* 181 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13362,7 +13117,7 @@ object-assign
 
       /***/
     },
-    /* 181 */
+    /* 182 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -13425,9 +13180,9 @@ object-assign
 
         var _propTypes2 = _interopRequireDefault(_propTypes)
 
-        var _disposables = __webpack_require__(411)
+        var _disposables = __webpack_require__(420)
 
-        var _isPlainObject = __webpack_require__(15)
+        var _isPlainObject = __webpack_require__(16)
 
         var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
@@ -13435,17 +13190,17 @@ object-assign
 
         var _invariant2 = _interopRequireDefault(_invariant)
 
-        var _hoistNonReactStatics = __webpack_require__(98)
+        var _hoistNonReactStatics = __webpack_require__(100)
 
         var _hoistNonReactStatics2 = _interopRequireDefault(
           _hoistNonReactStatics
         )
 
-        var _shallowEqual = __webpack_require__(99)
+        var _shallowEqual = __webpack_require__(101)
 
         var _shallowEqual2 = _interopRequireDefault(_shallowEqual)
 
-        var _shallowEqualScalar = __webpack_require__(180)
+        var _shallowEqualScalar = __webpack_require__(181)
 
         var _shallowEqualScalar2 = _interopRequireDefault(_shallowEqualScalar)
 
@@ -13493,6 +13248,14 @@ object-assign
             Object.setPrototypeOf
               ? Object.setPrototypeOf(subClass, superClass)
               : (subClass.__proto__ = superClass)
+        }
+
+        var isClassComponent = function isClassComponent(Comp) {
+          return Boolean(
+            Comp &&
+              Comp.prototype &&
+              typeof Comp.prototype.render === 'function'
+          )
         }
 
         function decorateHandler(_ref) {
@@ -13707,7 +13470,9 @@ object-assign
                   return _react2.default.createElement(
                     DecoratedComponent,
                     _extends({}, this.props, this.state, {
-                      ref: this.handleChildRef,
+                      ref: isClassComponent(DecoratedComponent)
+                        ? this.handleChildRef
+                        : null,
                     })
                   )
                 },
@@ -13733,7 +13498,7 @@ object-assign
 
       /***/
     },
-    /* 182 */
+    /* 183 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13744,7 +13509,7 @@ object-assign
 
       var _react = __webpack_require__(0)
 
-      var _cloneWithRef = __webpack_require__(419)
+      var _cloneWithRef = __webpack_require__(428)
 
       var _cloneWithRef2 = _interopRequireDefault(_cloneWithRef)
 
@@ -13822,7 +13587,7 @@ object-assign
 
       /***/
     },
-    /* 183 */
+    /* 184 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13831,7 +13596,7 @@ object-assign
       })
       exports.default = areOptionsEqual
 
-      var _shallowEqual = __webpack_require__(99)
+      var _shallowEqual = __webpack_require__(101)
 
       var _shallowEqual2 = _interopRequireDefault(_shallowEqual)
 
@@ -13853,7 +13618,7 @@ object-assign
 
       /***/
     },
-    /* 184 */
+    /* 185 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13900,7 +13665,7 @@ object-assign
 
       /***/
     },
-    /* 185 */
+    /* 186 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -13935,13 +13700,17 @@ object-assign
 
       /***/
     },
-    /* 186 */
+    /* 187 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
       var _react = __webpack_require__(0)
 
       var _react2 = _interopRequireDefault(_react)
+
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
 
       var _Api = __webpack_require__(191)
 
@@ -13957,49 +13726,49 @@ object-assign
 
       var _reactDom = __webpack_require__(9)
 
-      var _globalize = __webpack_require__(134)
+      var _globalize = __webpack_require__(130)
 
       var _globalize2 = _interopRequireDefault(_globalize)
 
-      var _globalize3 = __webpack_require__(30)
+      var _globalize3 = __webpack_require__(36)
 
       var _globalize4 = _interopRequireDefault(_globalize3)
 
+      __webpack_require__(267)
+
       __webpack_require__(270)
 
-      __webpack_require__(273)
+      __webpack_require__(272)
 
-      __webpack_require__(275)
-
-      var _basic = __webpack_require__(277)
+      var _basic = __webpack_require__(274)
 
       var _basic2 = _interopRequireDefault(_basic)
 
-      var _selectable = __webpack_require__(362)
+      var _selectable = __webpack_require__(371)
 
       var _selectable2 = _interopRequireDefault(_selectable)
 
-      var _cultures = __webpack_require__(363)
+      var _cultures = __webpack_require__(372)
 
       var _cultures2 = _interopRequireDefault(_cultures)
 
-      var _popup = __webpack_require__(368)
+      var _popup = __webpack_require__(377)
 
       var _popup2 = _interopRequireDefault(_popup)
 
-      var _rendering = __webpack_require__(369)
+      var _rendering = __webpack_require__(378)
 
       var _rendering2 = _interopRequireDefault(_rendering)
 
-      var _customView = __webpack_require__(370)
+      var _customView = __webpack_require__(379)
 
       var _customView2 = _interopRequireDefault(_customView)
 
-      var _timeslots = __webpack_require__(371)
+      var _timeslots = __webpack_require__(380)
 
       var _timeslots2 = _interopRequireDefault(_timeslots)
 
-      var _dnd = __webpack_require__(372)
+      var _dnd = __webpack_require__(381)
 
       var _dnd2 = _interopRequireDefault(_dnd)
 
@@ -14012,7 +13781,7 @@ object-assign
       var demoRoot =
         'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
-      var Example = _react2.default.createClass({
+      var Example = (0, _createReactClass2.default)({
         displayName: 'Example',
         getInitialState: function getInitialState() {
           return {
@@ -14254,7 +14023,7 @@ object-assign
 
       /***/
     },
-    /* 187 */
+    /* 188 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /** @license React v16.2.0
@@ -14266,9 +14035,9 @@ object-assign
        * LICENSE file in the root directory of this source tree.
        */
 
-      var m = __webpack_require__(35),
-        n = __webpack_require__(101),
-        p = __webpack_require__(63),
+      var m = __webpack_require__(22),
+        n = __webpack_require__(30),
+        p = __webpack_require__(15),
         q = 'function' === typeof Symbol && Symbol['for'],
         r = q ? Symbol['for']('react.element') : 60103,
         t = q ? Symbol['for']('react.call') : 60104,
@@ -14579,7 +14348,7 @@ object-assign
 
       /***/
     },
-    /* 188 */
+    /* 189 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -14596,12 +14365,12 @@ object-assign
           ;(function() {
             'use strict'
 
-            var _assign = __webpack_require__(35)
-            var emptyObject = __webpack_require__(101)
-            var invariant = __webpack_require__(102)
-            var warning = __webpack_require__(103)
-            var emptyFunction = __webpack_require__(63)
-            var checkPropTypes = __webpack_require__(189)
+            var _assign = __webpack_require__(22)
+            var emptyObject = __webpack_require__(30)
+            var invariant = __webpack_require__(23)
+            var warning = __webpack_require__(31)
+            var emptyFunction = __webpack_require__(15)
+            var checkPropTypes = __webpack_require__(68)
 
             // TODO: this is special because it gets imported during build.
 
@@ -16315,7 +16084,7 @@ object-assign
 
       /***/
     },
-    /* 189 */
+    /* 190 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -16324,118 +16093,885 @@ object-assign
          *
          * This source code is licensed under the MIT license found in the
          * LICENSE file in the root directory of this source tree.
+         *
          */
+
+        var _assign = __webpack_require__(22)
+
+        var emptyObject = __webpack_require__(30)
+        var _invariant = __webpack_require__(23)
 
         if (process.env.NODE_ENV !== 'production') {
-          var invariant = __webpack_require__(102)
-          var warning = __webpack_require__(103)
-          var ReactPropTypesSecret = __webpack_require__(190)
-          var loggedTypeFailures = {}
+          var warning = __webpack_require__(31)
         }
 
-        /**
-         * Assert that the values match with the type specs.
-         * Error messages are memorized and will only be shown once.
-         *
-         * @param {object} typeSpecs Map of name to a ReactPropType
-         * @param {object} values Runtime values that need to be type-checked
-         * @param {string} location e.g. "prop", "context", "child context"
-         * @param {string} componentName Name of the component for error messages.
-         * @param {?Function} getStack Returns the component stack.
-         * @private
-         */
-        function checkPropTypes(
-          typeSpecs,
-          values,
-          location,
-          componentName,
-          getStack
-        ) {
-          if (process.env.NODE_ENV !== 'production') {
-            for (var typeSpecName in typeSpecs) {
-              if (typeSpecs.hasOwnProperty(typeSpecName)) {
-                var error
-                // Prop type validation may throw. In case they do, we don't want to
-                // fail the render phase where it didn't fail before. So we log it.
-                // After these have been cleaned up, we'll let them throw.
-                try {
-                  // This is intentionally an invariant that gets caught. It's the same
-                  // behavior as without this statement except with a better message.
-                  invariant(
-                    typeof typeSpecs[typeSpecName] === 'function',
-                    '%s: %s type `%s` is invalid; it must be a function, usually from ' +
-                      'the `prop-types` package, but received `%s`.',
-                    componentName || 'React class',
-                    location,
-                    typeSpecName,
-                    typeof typeSpecs[typeSpecName]
-                  )
-                  error = typeSpecs[typeSpecName](
-                    values,
-                    typeSpecName,
-                    componentName,
-                    location,
-                    null,
-                    ReactPropTypesSecret
-                  )
-                } catch (ex) {
-                  error = ex
+        var MIXINS_KEY = 'mixins'
+
+        // Helper function to allow the creation of anonymous functions which do not
+        // have .name set to the name of the variable being assigned to.
+        function identity(fn) {
+          return fn
+        }
+
+        var ReactPropTypeLocationNames
+        if (process.env.NODE_ENV !== 'production') {
+          ReactPropTypeLocationNames = {
+            prop: 'prop',
+            context: 'context',
+            childContext: 'child context',
+          }
+        } else {
+          ReactPropTypeLocationNames = {}
+        }
+
+        function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
+          /**
+           * Policies that describe methods in `ReactClassInterface`.
+           */
+
+          var injectedMixins = []
+
+          /**
+           * Composite components are higher-level components that compose other composite
+           * or host components.
+           *
+           * To create a new type of `ReactClass`, pass a specification of
+           * your new class to `React.createClass`. The only requirement of your class
+           * specification is that you implement a `render` method.
+           *
+           *   var MyComponent = React.createClass({
+           *     render: function() {
+           *       return <div>Hello World</div>;
+           *     }
+           *   });
+           *
+           * The class specification supports a specific protocol of methods that have
+           * special meaning (e.g. `render`). See `ReactClassInterface` for
+           * more the comprehensive protocol. Any other properties and methods in the
+           * class specification will be available on the prototype.
+           *
+           * @interface ReactClassInterface
+           * @internal
+           */
+          var ReactClassInterface = {
+            /**
+             * An array of Mixin objects to include when defining your component.
+             *
+             * @type {array}
+             * @optional
+             */
+            mixins: 'DEFINE_MANY',
+
+            /**
+             * An object containing properties and methods that should be defined on
+             * the component's constructor instead of its prototype (static methods).
+             *
+             * @type {object}
+             * @optional
+             */
+            statics: 'DEFINE_MANY',
+
+            /**
+             * Definition of prop types for this component.
+             *
+             * @type {object}
+             * @optional
+             */
+            propTypes: 'DEFINE_MANY',
+
+            /**
+             * Definition of context types for this component.
+             *
+             * @type {object}
+             * @optional
+             */
+            contextTypes: 'DEFINE_MANY',
+
+            /**
+             * Definition of context types this component sets for its children.
+             *
+             * @type {object}
+             * @optional
+             */
+            childContextTypes: 'DEFINE_MANY',
+
+            // ==== Definition methods ====
+
+            /**
+             * Invoked when the component is mounted. Values in the mapping will be set on
+             * `this.props` if that prop is not specified (i.e. using an `in` check).
+             *
+             * This method is invoked before `getInitialState` and therefore cannot rely
+             * on `this.state` or use `this.setState`.
+             *
+             * @return {object}
+             * @optional
+             */
+            getDefaultProps: 'DEFINE_MANY_MERGED',
+
+            /**
+             * Invoked once before the component is mounted. The return value will be used
+             * as the initial value of `this.state`.
+             *
+             *   getInitialState: function() {
+             *     return {
+             *       isOn: false,
+             *       fooBaz: new BazFoo()
+             *     }
+             *   }
+             *
+             * @return {object}
+             * @optional
+             */
+            getInitialState: 'DEFINE_MANY_MERGED',
+
+            /**
+             * @return {object}
+             * @optional
+             */
+            getChildContext: 'DEFINE_MANY_MERGED',
+
+            /**
+             * Uses props from `this.props` and state from `this.state` to render the
+             * structure of the component.
+             *
+             * No guarantees are made about when or how often this method is invoked, so
+             * it must not have side effects.
+             *
+             *   render: function() {
+             *     var name = this.props.name;
+             *     return <div>Hello, {name}!</div>;
+             *   }
+             *
+             * @return {ReactComponent}
+             * @required
+             */
+            render: 'DEFINE_ONCE',
+
+            // ==== Delegate methods ====
+
+            /**
+             * Invoked when the component is initially created and about to be mounted.
+             * This may have side effects, but any external subscriptions or data created
+             * by this method must be cleaned up in `componentWillUnmount`.
+             *
+             * @optional
+             */
+            componentWillMount: 'DEFINE_MANY',
+
+            /**
+             * Invoked when the component has been mounted and has a DOM representation.
+             * However, there is no guarantee that the DOM node is in the document.
+             *
+             * Use this as an opportunity to operate on the DOM when the component has
+             * been mounted (initialized and rendered) for the first time.
+             *
+             * @param {DOMElement} rootNode DOM element representing the component.
+             * @optional
+             */
+            componentDidMount: 'DEFINE_MANY',
+
+            /**
+             * Invoked before the component receives new props.
+             *
+             * Use this as an opportunity to react to a prop transition by updating the
+             * state using `this.setState`. Current props are accessed via `this.props`.
+             *
+             *   componentWillReceiveProps: function(nextProps, nextContext) {
+             *     this.setState({
+             *       likesIncreasing: nextProps.likeCount > this.props.likeCount
+             *     });
+             *   }
+             *
+             * NOTE: There is no equivalent `componentWillReceiveState`. An incoming prop
+             * transition may cause a state change, but the opposite is not true. If you
+             * need it, you are probably looking for `componentWillUpdate`.
+             *
+             * @param {object} nextProps
+             * @optional
+             */
+            componentWillReceiveProps: 'DEFINE_MANY',
+
+            /**
+             * Invoked while deciding if the component should be updated as a result of
+             * receiving new props, state and/or context.
+             *
+             * Use this as an opportunity to `return false` when you're certain that the
+             * transition to the new props/state/context will not require a component
+             * update.
+             *
+             *   shouldComponentUpdate: function(nextProps, nextState, nextContext) {
+             *     return !equal(nextProps, this.props) ||
+             *       !equal(nextState, this.state) ||
+             *       !equal(nextContext, this.context);
+             *   }
+             *
+             * @param {object} nextProps
+             * @param {?object} nextState
+             * @param {?object} nextContext
+             * @return {boolean} True if the component should update.
+             * @optional
+             */
+            shouldComponentUpdate: 'DEFINE_ONCE',
+
+            /**
+             * Invoked when the component is about to update due to a transition from
+             * `this.props`, `this.state` and `this.context` to `nextProps`, `nextState`
+             * and `nextContext`.
+             *
+             * Use this as an opportunity to perform preparation before an update occurs.
+             *
+             * NOTE: You **cannot** use `this.setState()` in this method.
+             *
+             * @param {object} nextProps
+             * @param {?object} nextState
+             * @param {?object} nextContext
+             * @param {ReactReconcileTransaction} transaction
+             * @optional
+             */
+            componentWillUpdate: 'DEFINE_MANY',
+
+            /**
+             * Invoked when the component's DOM representation has been updated.
+             *
+             * Use this as an opportunity to operate on the DOM when the component has
+             * been updated.
+             *
+             * @param {object} prevProps
+             * @param {?object} prevState
+             * @param {?object} prevContext
+             * @param {DOMElement} rootNode DOM element representing the component.
+             * @optional
+             */
+            componentDidUpdate: 'DEFINE_MANY',
+
+            /**
+             * Invoked when the component is about to be removed from its parent and have
+             * its DOM representation destroyed.
+             *
+             * Use this as an opportunity to deallocate any external resources.
+             *
+             * NOTE: There is no `componentDidUnmount` since your component will have been
+             * destroyed by that point.
+             *
+             * @optional
+             */
+            componentWillUnmount: 'DEFINE_MANY',
+
+            // ==== Advanced methods ====
+
+            /**
+             * Updates the component's currently mounted DOM representation.
+             *
+             * By default, this implements React's rendering and reconciliation algorithm.
+             * Sophisticated clients may wish to override this.
+             *
+             * @param {ReactReconcileTransaction} transaction
+             * @internal
+             * @overridable
+             */
+            updateComponent: 'OVERRIDE_BASE',
+          }
+
+          /**
+           * Mapping from class specification keys to special processing functions.
+           *
+           * Although these are declared like instance properties in the specification
+           * when defining classes using `React.createClass`, they are actually static
+           * and are accessible on the constructor instead of the prototype. Despite
+           * being static, they must be defined outside of the "statics" key under
+           * which all other static methods are defined.
+           */
+          var RESERVED_SPEC_KEYS = {
+            displayName: function(Constructor, displayName) {
+              Constructor.displayName = displayName
+            },
+            mixins: function(Constructor, mixins) {
+              if (mixins) {
+                for (var i = 0; i < mixins.length; i++) {
+                  mixSpecIntoComponent(Constructor, mixins[i])
                 }
-                warning(
-                  !error || error instanceof Error,
-                  '%s: type specification of %s `%s` is invalid; the type checker ' +
-                    'function must return `null` or an `Error` but returned a %s. ' +
-                    'You may have forgotten to pass an argument to the type checker ' +
-                    'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-                    'shape all require an argument).',
-                  componentName || 'React class',
-                  location,
-                  typeSpecName,
-                  typeof error
+              }
+            },
+            childContextTypes: function(Constructor, childContextTypes) {
+              if (process.env.NODE_ENV !== 'production') {
+                validateTypeDef(Constructor, childContextTypes, 'childContext')
+              }
+              Constructor.childContextTypes = _assign(
+                {},
+                Constructor.childContextTypes,
+                childContextTypes
+              )
+            },
+            contextTypes: function(Constructor, contextTypes) {
+              if (process.env.NODE_ENV !== 'production') {
+                validateTypeDef(Constructor, contextTypes, 'context')
+              }
+              Constructor.contextTypes = _assign(
+                {},
+                Constructor.contextTypes,
+                contextTypes
+              )
+            },
+            /**
+             * Special case getDefaultProps which should move into statics but requires
+             * automatic merging.
+             */
+            getDefaultProps: function(Constructor, getDefaultProps) {
+              if (Constructor.getDefaultProps) {
+                Constructor.getDefaultProps = createMergedResultFunction(
+                  Constructor.getDefaultProps,
+                  getDefaultProps
                 )
-                if (
-                  error instanceof Error &&
-                  !(error.message in loggedTypeFailures)
-                ) {
-                  // Only monitor this failure once because there tends to be a lot of the
-                  // same error.
-                  loggedTypeFailures[error.message] = true
+              } else {
+                Constructor.getDefaultProps = getDefaultProps
+              }
+            },
+            propTypes: function(Constructor, propTypes) {
+              if (process.env.NODE_ENV !== 'production') {
+                validateTypeDef(Constructor, propTypes, 'prop')
+              }
+              Constructor.propTypes = _assign(
+                {},
+                Constructor.propTypes,
+                propTypes
+              )
+            },
+            statics: function(Constructor, statics) {
+              mixStaticSpecIntoComponent(Constructor, statics)
+            },
+            autobind: function() {},
+          }
 
-                  var stack = getStack ? getStack() : ''
-
+          function validateTypeDef(Constructor, typeDef, location) {
+            for (var propName in typeDef) {
+              if (typeDef.hasOwnProperty(propName)) {
+                // use a warning instead of an _invariant so components
+                // don't show up in prod but only in __DEV__
+                if (process.env.NODE_ENV !== 'production') {
                   warning(
-                    false,
-                    'Failed %s type: %s%s',
-                    location,
-                    error.message,
-                    stack != null ? stack : ''
+                    typeof typeDef[propName] === 'function',
+                    '%s: %s type `%s` is invalid; it must be a function, usually from ' +
+                      'React.PropTypes.',
+                    Constructor.displayName || 'ReactClass',
+                    ReactPropTypeLocationNames[location],
+                    propName
                   )
                 }
               }
             }
           }
+
+          function validateMethodOverride(isAlreadyDefined, name) {
+            var specPolicy = ReactClassInterface.hasOwnProperty(name)
+              ? ReactClassInterface[name]
+              : null
+
+            // Disallow overriding of base class methods unless explicitly allowed.
+            if (ReactClassMixin.hasOwnProperty(name)) {
+              _invariant(
+                specPolicy === 'OVERRIDE_BASE',
+                'ReactClassInterface: You are attempting to override ' +
+                  '`%s` from your class specification. Ensure that your method names ' +
+                  'do not overlap with React methods.',
+                name
+              )
+            }
+
+            // Disallow defining methods more than once unless explicitly allowed.
+            if (isAlreadyDefined) {
+              _invariant(
+                specPolicy === 'DEFINE_MANY' ||
+                  specPolicy === 'DEFINE_MANY_MERGED',
+                'ReactClassInterface: You are attempting to define ' +
+                  '`%s` on your component more than once. This conflict may be due ' +
+                  'to a mixin.',
+                name
+              )
+            }
+          }
+
+          /**
+           * Mixin helper which handles policy validation and reserved
+           * specification keys when building React classes.
+           */
+          function mixSpecIntoComponent(Constructor, spec) {
+            if (!spec) {
+              if (process.env.NODE_ENV !== 'production') {
+                var typeofSpec = typeof spec
+                var isMixinValid = typeofSpec === 'object' && spec !== null
+
+                if (process.env.NODE_ENV !== 'production') {
+                  warning(
+                    isMixinValid,
+                    "%s: You're attempting to include a mixin that is either null " +
+                      'or not an object. Check the mixins included by the component, ' +
+                      'as well as any mixins they include themselves. ' +
+                      'Expected object but got %s.',
+                    Constructor.displayName || 'ReactClass',
+                    spec === null ? null : typeofSpec
+                  )
+                }
+              }
+
+              return
+            }
+
+            _invariant(
+              typeof spec !== 'function',
+              "ReactClass: You're attempting to " +
+                'use a component class or function as a mixin. Instead, just use a ' +
+                'regular object.'
+            )
+            _invariant(
+              !isValidElement(spec),
+              "ReactClass: You're attempting to " +
+                'use a component as a mixin. Instead, just use a regular object.'
+            )
+
+            var proto = Constructor.prototype
+            var autoBindPairs = proto.__reactAutoBindPairs
+
+            // By handling mixins before any other properties, we ensure the same
+            // chaining order is applied to methods with DEFINE_MANY policy, whether
+            // mixins are listed before or after these methods in the spec.
+            if (spec.hasOwnProperty(MIXINS_KEY)) {
+              RESERVED_SPEC_KEYS.mixins(Constructor, spec.mixins)
+            }
+
+            for (var name in spec) {
+              if (!spec.hasOwnProperty(name)) {
+                continue
+              }
+
+              if (name === MIXINS_KEY) {
+                // We have already handled mixins in a special case above.
+                continue
+              }
+
+              var property = spec[name]
+              var isAlreadyDefined = proto.hasOwnProperty(name)
+              validateMethodOverride(isAlreadyDefined, name)
+
+              if (RESERVED_SPEC_KEYS.hasOwnProperty(name)) {
+                RESERVED_SPEC_KEYS[name](Constructor, property)
+              } else {
+                // Setup methods on prototype:
+                // The following member methods should not be automatically bound:
+                // 1. Expected ReactClass methods (in the "interface").
+                // 2. Overridden methods (that were mixed in).
+                var isReactClassMethod = ReactClassInterface.hasOwnProperty(
+                  name
+                )
+                var isFunction = typeof property === 'function'
+                var shouldAutoBind =
+                  isFunction &&
+                  !isReactClassMethod &&
+                  !isAlreadyDefined &&
+                  spec.autobind !== false
+
+                if (shouldAutoBind) {
+                  autoBindPairs.push(name, property)
+                  proto[name] = property
+                } else {
+                  if (isAlreadyDefined) {
+                    var specPolicy = ReactClassInterface[name]
+
+                    // These cases should already be caught by validateMethodOverride.
+                    _invariant(
+                      isReactClassMethod &&
+                        (specPolicy === 'DEFINE_MANY_MERGED' ||
+                          specPolicy === 'DEFINE_MANY'),
+                      'ReactClass: Unexpected spec policy %s for key %s ' +
+                        'when mixing in component specs.',
+                      specPolicy,
+                      name
+                    )
+
+                    // For methods which are defined more than once, call the existing
+                    // methods before calling the new property, merging if appropriate.
+                    if (specPolicy === 'DEFINE_MANY_MERGED') {
+                      proto[name] = createMergedResultFunction(
+                        proto[name],
+                        property
+                      )
+                    } else if (specPolicy === 'DEFINE_MANY') {
+                      proto[name] = createChainedFunction(proto[name], property)
+                    }
+                  } else {
+                    proto[name] = property
+                    if (process.env.NODE_ENV !== 'production') {
+                      // Add verbose displayName to the function, which helps when looking
+                      // at profiling tools.
+                      if (typeof property === 'function' && spec.displayName) {
+                        proto[name].displayName = spec.displayName + '_' + name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          function mixStaticSpecIntoComponent(Constructor, statics) {
+            if (!statics) {
+              return
+            }
+            for (var name in statics) {
+              var property = statics[name]
+              if (!statics.hasOwnProperty(name)) {
+                continue
+              }
+
+              var isReserved = name in RESERVED_SPEC_KEYS
+              _invariant(
+                !isReserved,
+                'ReactClass: You are attempting to define a reserved ' +
+                  'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' +
+                  'as an instance property instead; it will still be accessible on the ' +
+                  'constructor.',
+                name
+              )
+
+              var isInherited = name in Constructor
+              _invariant(
+                !isInherited,
+                'ReactClass: You are attempting to define ' +
+                  '`%s` on your component more than once. This conflict may be ' +
+                  'due to a mixin.',
+                name
+              )
+              Constructor[name] = property
+            }
+          }
+
+          /**
+           * Merge two objects, but throw if both contain the same key.
+           *
+           * @param {object} one The first object, which is mutated.
+           * @param {object} two The second object
+           * @return {object} one after it has been mutated to contain everything in two.
+           */
+          function mergeIntoWithNoDuplicateKeys(one, two) {
+            _invariant(
+              one && two && typeof one === 'object' && typeof two === 'object',
+              'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.'
+            )
+
+            for (var key in two) {
+              if (two.hasOwnProperty(key)) {
+                _invariant(
+                  one[key] === undefined,
+                  'mergeIntoWithNoDuplicateKeys(): ' +
+                    'Tried to merge two objects with the same key: `%s`. This conflict ' +
+                    'may be due to a mixin; in particular, this may be caused by two ' +
+                    'getInitialState() or getDefaultProps() methods returning objects ' +
+                    'with clashing keys.',
+                  key
+                )
+                one[key] = two[key]
+              }
+            }
+            return one
+          }
+
+          /**
+           * Creates a function that invokes two functions and merges their return values.
+           *
+           * @param {function} one Function to invoke first.
+           * @param {function} two Function to invoke second.
+           * @return {function} Function that invokes the two argument functions.
+           * @private
+           */
+          function createMergedResultFunction(one, two) {
+            return function mergedResult() {
+              var a = one.apply(this, arguments)
+              var b = two.apply(this, arguments)
+              if (a == null) {
+                return b
+              } else if (b == null) {
+                return a
+              }
+              var c = {}
+              mergeIntoWithNoDuplicateKeys(c, a)
+              mergeIntoWithNoDuplicateKeys(c, b)
+              return c
+            }
+          }
+
+          /**
+           * Creates a function that invokes two functions and ignores their return vales.
+           *
+           * @param {function} one Function to invoke first.
+           * @param {function} two Function to invoke second.
+           * @return {function} Function that invokes the two argument functions.
+           * @private
+           */
+          function createChainedFunction(one, two) {
+            return function chainedFunction() {
+              one.apply(this, arguments)
+              two.apply(this, arguments)
+            }
+          }
+
+          /**
+           * Binds a method to the component.
+           *
+           * @param {object} component Component whose method is going to be bound.
+           * @param {function} method Method to be bound.
+           * @return {function} The bound method.
+           */
+          function bindAutoBindMethod(component, method) {
+            var boundMethod = method.bind(component)
+            if (process.env.NODE_ENV !== 'production') {
+              boundMethod.__reactBoundContext = component
+              boundMethod.__reactBoundMethod = method
+              boundMethod.__reactBoundArguments = null
+              var componentName = component.constructor.displayName
+              var _bind = boundMethod.bind
+              boundMethod.bind = function(newThis) {
+                for (
+                  var _len = arguments.length,
+                    args = Array(_len > 1 ? _len - 1 : 0),
+                    _key = 1;
+                  _key < _len;
+                  _key++
+                ) {
+                  args[_key - 1] = arguments[_key]
+                }
+
+                // User is trying to bind() an autobound method; we effectively will
+                // ignore the value of "this" that the user is trying to use, so
+                // let's warn.
+                if (newThis !== component && newThis !== null) {
+                  if (process.env.NODE_ENV !== 'production') {
+                    warning(
+                      false,
+                      'bind(): React component methods may only be bound to the ' +
+                        'component instance. See %s',
+                      componentName
+                    )
+                  }
+                } else if (!args.length) {
+                  if (process.env.NODE_ENV !== 'production') {
+                    warning(
+                      false,
+                      'bind(): You are binding a component method to the component. ' +
+                        'React does this for you automatically in a high-performance ' +
+                        'way, so you can safely remove this call. See %s',
+                      componentName
+                    )
+                  }
+                  return boundMethod
+                }
+                var reboundMethod = _bind.apply(boundMethod, arguments)
+                reboundMethod.__reactBoundContext = component
+                reboundMethod.__reactBoundMethod = method
+                reboundMethod.__reactBoundArguments = args
+                return reboundMethod
+              }
+            }
+            return boundMethod
+          }
+
+          /**
+           * Binds all auto-bound methods in a component.
+           *
+           * @param {object} component Component whose method is going to be bound.
+           */
+          function bindAutoBindMethods(component) {
+            var pairs = component.__reactAutoBindPairs
+            for (var i = 0; i < pairs.length; i += 2) {
+              var autoBindKey = pairs[i]
+              var method = pairs[i + 1]
+              component[autoBindKey] = bindAutoBindMethod(component, method)
+            }
+          }
+
+          var IsMountedPreMixin = {
+            componentDidMount: function() {
+              this.__isMounted = true
+            },
+          }
+
+          var IsMountedPostMixin = {
+            componentWillUnmount: function() {
+              this.__isMounted = false
+            },
+          }
+
+          /**
+           * Add more to the ReactClass base class. These are all legacy features and
+           * therefore not already part of the modern ReactComponent.
+           */
+          var ReactClassMixin = {
+            /**
+             * TODO: This will be deprecated because state should always keep a consistent
+             * type signature and the only use case for this, is to avoid that.
+             */
+            replaceState: function(newState, callback) {
+              this.updater.enqueueReplaceState(this, newState, callback)
+            },
+
+            /**
+             * Checks whether or not this composite component is mounted.
+             * @return {boolean} True if mounted, false otherwise.
+             * @protected
+             * @final
+             */
+            isMounted: function() {
+              if (process.env.NODE_ENV !== 'production') {
+                warning(
+                  this.__didWarnIsMounted,
+                  '%s: isMounted is deprecated. Instead, make sure to clean up ' +
+                    'subscriptions and pending requests in componentWillUnmount to ' +
+                    'prevent memory leaks.',
+                  (this.constructor && this.constructor.displayName) ||
+                    this.name ||
+                    'Component'
+                )
+                this.__didWarnIsMounted = true
+              }
+              return !!this.__isMounted
+            },
+          }
+
+          var ReactClassComponent = function() {}
+          _assign(
+            ReactClassComponent.prototype,
+            ReactComponent.prototype,
+            ReactClassMixin
+          )
+
+          /**
+           * Creates a composite component class given a class specification.
+           * See https://facebook.github.io/react/docs/top-level-api.html#react.createclass
+           *
+           * @param {object} spec Class specification (which must define `render`).
+           * @return {function} Component constructor function.
+           * @public
+           */
+          function createClass(spec) {
+            // To keep our warnings more understandable, we'll use a little hack here to
+            // ensure that Constructor.name !== 'Constructor'. This makes sure we don't
+            // unnecessarily identify a class without displayName as 'Constructor'.
+            var Constructor = identity(function(props, context, updater) {
+              // This constructor gets overridden by mocks. The argument is used
+              // by mocks to assert on what gets mounted.
+
+              if (process.env.NODE_ENV !== 'production') {
+                warning(
+                  this instanceof Constructor,
+                  'Something is calling a React component directly. Use a factory or ' +
+                    'JSX instead. See: https://fb.me/react-legacyfactory'
+                )
+              }
+
+              // Wire up auto-binding
+              if (this.__reactAutoBindPairs.length) {
+                bindAutoBindMethods(this)
+              }
+
+              this.props = props
+              this.context = context
+              this.refs = emptyObject
+              this.updater = updater || ReactNoopUpdateQueue
+
+              this.state = null
+
+              // ReactClasses doesn't have constructors. Instead, they use the
+              // getInitialState and componentWillMount methods for initialization.
+
+              var initialState = this.getInitialState
+                ? this.getInitialState()
+                : null
+              if (process.env.NODE_ENV !== 'production') {
+                // We allow auto-mocks to proceed as if they're returning null.
+                if (
+                  initialState === undefined &&
+                  this.getInitialState._isMockFunction
+                ) {
+                  // This is probably bad practice. Consider warning here and
+                  // deprecating this convenience.
+                  initialState = null
+                }
+              }
+              _invariant(
+                typeof initialState === 'object' &&
+                  !Array.isArray(initialState),
+                '%s.getInitialState(): must return an object or null',
+                Constructor.displayName || 'ReactCompositeComponent'
+              )
+
+              this.state = initialState
+            })
+            Constructor.prototype = new ReactClassComponent()
+            Constructor.prototype.constructor = Constructor
+            Constructor.prototype.__reactAutoBindPairs = []
+
+            injectedMixins.forEach(mixSpecIntoComponent.bind(null, Constructor))
+
+            mixSpecIntoComponent(Constructor, IsMountedPreMixin)
+            mixSpecIntoComponent(Constructor, spec)
+            mixSpecIntoComponent(Constructor, IsMountedPostMixin)
+
+            // Initialize the defaultProps property after all mixins have been merged.
+            if (Constructor.getDefaultProps) {
+              Constructor.defaultProps = Constructor.getDefaultProps()
+            }
+
+            if (process.env.NODE_ENV !== 'production') {
+              // This is a tag to indicate that the use of these method names is ok,
+              // since it's used with createClass. If it's not, then it's likely a
+              // mistake so we'll warn you to use the static property, property
+              // initializer or constructor respectively.
+              if (Constructor.getDefaultProps) {
+                Constructor.getDefaultProps.isReactClassApproved = {}
+              }
+              if (Constructor.prototype.getInitialState) {
+                Constructor.prototype.getInitialState.isReactClassApproved = {}
+              }
+            }
+
+            _invariant(
+              Constructor.prototype.render,
+              'createClass(...): Class specification must implement a `render` method.'
+            )
+
+            if (process.env.NODE_ENV !== 'production') {
+              warning(
+                !Constructor.prototype.componentShouldUpdate,
+                '%s has a method called ' +
+                  'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' +
+                  'The name is phrased as a question because the function is ' +
+                  'expected to return a value.',
+                spec.displayName || 'A component'
+              )
+              warning(
+                !Constructor.prototype.componentWillRecieveProps,
+                '%s has a method called ' +
+                  'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?',
+                spec.displayName || 'A component'
+              )
+            }
+
+            // Reduce time spent doing lookups by setting these on the prototype.
+            for (var methodName in ReactClassInterface) {
+              if (!Constructor.prototype[methodName]) {
+                Constructor.prototype[methodName] = null
+              }
+            }
+
+            return Constructor
+          }
+
+          return createClass
         }
 
-        module.exports = checkPropTypes
+        module.exports = factory
 
         /* WEBPACK VAR INJECTION */
       }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 190 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /**
-       * Copyright (c) 2013-present, Facebook, Inc.
-       *
-       * This source code is licensed under the MIT license found in the
-       * LICENSE file in the root directory of this source tree.
-       */
-
-      var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
-
-      module.exports = ReactPropTypesSecret
 
       /***/
     },
@@ -16449,7 +16985,11 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _transform = __webpack_require__(104)
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
+      var _transform = __webpack_require__(103)
 
       var _transform2 = _interopRequireDefault(_transform)
 
@@ -16475,7 +17015,7 @@ object-assign
           .replace(/\}$/, '')
       }
 
-      var Api = _react2.default.createClass({
+      var Api = (0, _createReactClass2.default)({
         displayName: 'Api',
         render: function render() {
           var _this = this
@@ -16805,8 +17345,8 @@ object-assign
     },
     /* 195 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetTag = __webpack_require__(21),
-        isObjectLike = __webpack_require__(17)
+      var baseGetTag = __webpack_require__(24),
+        isObjectLike = __webpack_require__(18)
 
       /** `Object#toString` result references. */
       var argsTag = '[object Arguments]'
@@ -16828,7 +17368,7 @@ object-assign
     },
     /* 196 */
     /***/ function(module, exports, __webpack_require__) {
-      var Symbol = __webpack_require__(22)
+      var Symbol = __webpack_require__(25)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -16929,9 +17469,9 @@ object-assign
     },
     /* 199 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGetTag = __webpack_require__(21),
-        isLength = __webpack_require__(68),
-        isObjectLike = __webpack_require__(17)
+      var baseGetTag = __webpack_require__(24),
+        isLength = __webpack_require__(74),
+        isObjectLike = __webpack_require__(18)
 
       /** `Object#toString` result references. */
       var argsTag = '[object Arguments]',
@@ -17003,7 +17543,7 @@ object-assign
     /* 200 */
     /***/ function(module, exports, __webpack_require__) {
       /* WEBPACK VAR INJECTION */ ;(function(module) {
-        var freeGlobal = __webpack_require__(109)
+        var freeGlobal = __webpack_require__(108)
 
         /** Detect free variable `exports`. */
         var freeExports =
@@ -17035,13 +17575,13 @@ object-assign
         module.exports = nodeUtil
 
         /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(37)(module)))
+      }.call(exports, __webpack_require__(41)(module)))
 
       /***/
     },
     /* 201 */
     /***/ function(module, exports, __webpack_require__) {
-      var isPrototype = __webpack_require__(70),
+      var isPrototype = __webpack_require__(76),
         nativeKeys = __webpack_require__(202)
 
       /** Used for built-in method references. */
@@ -17076,7 +17616,7 @@ object-assign
     },
     /* 202 */
     /***/ function(module, exports, __webpack_require__) {
-      var overArg = __webpack_require__(110)
+      var overArg = __webpack_require__(109)
 
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeKeys = overArg(Object.keys, Object)
@@ -17089,7 +17629,7 @@ object-assign
     /***/ function(module, exports, __webpack_require__) {
       var baseIsMatch = __webpack_require__(204),
         getMatchData = __webpack_require__(240),
-        matchesStrictComparable = __webpack_require__(123)
+        matchesStrictComparable = __webpack_require__(122)
 
       /**
        * The base implementation of `_.matches` which doesn't clone `source`.
@@ -17114,8 +17654,8 @@ object-assign
     },
     /* 204 */
     /***/ function(module, exports, __webpack_require__) {
-      var Stack = __webpack_require__(73),
-        baseIsEqual = __webpack_require__(112)
+      var Stack = __webpack_require__(79),
+        baseIsEqual = __webpack_require__(111)
 
       /** Used to compose bitmasks for value comparisons. */
       var COMPARE_PARTIAL_FLAG = 1,
@@ -17214,7 +17754,7 @@ object-assign
     },
     /* 206 */
     /***/ function(module, exports, __webpack_require__) {
-      var assocIndexOf = __webpack_require__(40)
+      var assocIndexOf = __webpack_require__(44)
 
       /** Used for built-in method references. */
       var arrayProto = Array.prototype
@@ -17254,7 +17794,7 @@ object-assign
     },
     /* 207 */
     /***/ function(module, exports, __webpack_require__) {
-      var assocIndexOf = __webpack_require__(40)
+      var assocIndexOf = __webpack_require__(44)
 
       /**
        * Gets the list cache value for `key`.
@@ -17278,7 +17818,7 @@ object-assign
     },
     /* 208 */
     /***/ function(module, exports, __webpack_require__) {
-      var assocIndexOf = __webpack_require__(40)
+      var assocIndexOf = __webpack_require__(44)
 
       /**
        * Checks if a list cache value for `key` exists.
@@ -17299,7 +17839,7 @@ object-assign
     },
     /* 209 */
     /***/ function(module, exports, __webpack_require__) {
-      var assocIndexOf = __webpack_require__(40)
+      var assocIndexOf = __webpack_require__(44)
 
       /**
        * Sets the list cache `key` to `value`.
@@ -17330,7 +17870,7 @@ object-assign
     },
     /* 210 */
     /***/ function(module, exports, __webpack_require__) {
-      var ListCache = __webpack_require__(39)
+      var ListCache = __webpack_require__(43)
 
       /**
        * Removes all key-value entries from the stack.
@@ -17411,9 +17951,9 @@ object-assign
     },
     /* 214 */
     /***/ function(module, exports, __webpack_require__) {
-      var ListCache = __webpack_require__(39),
-        Map = __webpack_require__(74),
-        MapCache = __webpack_require__(75)
+      var ListCache = __webpack_require__(43),
+        Map = __webpack_require__(80),
+        MapCache = __webpack_require__(81)
 
       /** Used as the size to enable large array optimizations. */
       var LARGE_ARRAY_SIZE = 200
@@ -17450,10 +17990,10 @@ object-assign
     },
     /* 215 */
     /***/ function(module, exports, __webpack_require__) {
-      var isFunction = __webpack_require__(71),
+      var isFunction = __webpack_require__(77),
         isMasked = __webpack_require__(216),
         isObject = __webpack_require__(10),
-        toSource = __webpack_require__(111)
+        toSource = __webpack_require__(110)
 
       /**
        * Used to match `RegExp`
@@ -17566,8 +18106,8 @@ object-assign
     /* 219 */
     /***/ function(module, exports, __webpack_require__) {
       var Hash = __webpack_require__(220),
-        ListCache = __webpack_require__(39),
-        Map = __webpack_require__(74)
+        ListCache = __webpack_require__(43),
+        Map = __webpack_require__(80)
 
       /**
        * Removes all key-value entries from the map.
@@ -17628,7 +18168,7 @@ object-assign
     },
     /* 221 */
     /***/ function(module, exports, __webpack_require__) {
-      var nativeCreate = __webpack_require__(41)
+      var nativeCreate = __webpack_require__(45)
 
       /**
        * Removes all key-value entries from the hash.
@@ -17670,7 +18210,7 @@ object-assign
     },
     /* 223 */
     /***/ function(module, exports, __webpack_require__) {
-      var nativeCreate = __webpack_require__(41)
+      var nativeCreate = __webpack_require__(45)
 
       /** Used to stand-in for `undefined` hash values. */
       var HASH_UNDEFINED = '__lodash_hash_undefined__'
@@ -17705,7 +18245,7 @@ object-assign
     },
     /* 224 */
     /***/ function(module, exports, __webpack_require__) {
-      var nativeCreate = __webpack_require__(41)
+      var nativeCreate = __webpack_require__(45)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -17735,7 +18275,7 @@ object-assign
     },
     /* 225 */
     /***/ function(module, exports, __webpack_require__) {
-      var nativeCreate = __webpack_require__(41)
+      var nativeCreate = __webpack_require__(45)
 
       /** Used to stand-in for `undefined` hash values. */
       var HASH_UNDEFINED = '__lodash_hash_undefined__'
@@ -17763,7 +18303,7 @@ object-assign
     },
     /* 226 */
     /***/ function(module, exports, __webpack_require__) {
-      var getMapData = __webpack_require__(42)
+      var getMapData = __webpack_require__(46)
 
       /**
        * Removes `key` and its value from the map.
@@ -17809,7 +18349,7 @@ object-assign
     },
     /* 228 */
     /***/ function(module, exports, __webpack_require__) {
-      var getMapData = __webpack_require__(42)
+      var getMapData = __webpack_require__(46)
 
       /**
        * Gets the map value for `key`.
@@ -17830,7 +18370,7 @@ object-assign
     },
     /* 229 */
     /***/ function(module, exports, __webpack_require__) {
-      var getMapData = __webpack_require__(42)
+      var getMapData = __webpack_require__(46)
 
       /**
        * Checks if a map value for `key` exists.
@@ -17851,7 +18391,7 @@ object-assign
     },
     /* 230 */
     /***/ function(module, exports, __webpack_require__) {
-      var getMapData = __webpack_require__(42)
+      var getMapData = __webpack_require__(46)
 
       /**
        * Sets the map `key` to `value`.
@@ -17878,14 +18418,14 @@ object-assign
     },
     /* 231 */
     /***/ function(module, exports, __webpack_require__) {
-      var Stack = __webpack_require__(73),
-        equalArrays = __webpack_require__(113),
+      var Stack = __webpack_require__(79),
+        equalArrays = __webpack_require__(112),
         equalByTag = __webpack_require__(235),
         equalObjects = __webpack_require__(236),
-        getTag = __webpack_require__(120),
+        getTag = __webpack_require__(119),
         isArray = __webpack_require__(5),
-        isBuffer = __webpack_require__(36),
-        isTypedArray = __webpack_require__(67)
+        isBuffer = __webpack_require__(40),
+        isTypedArray = __webpack_require__(73)
 
       /** Used to compose bitmasks for value comparisons. */
       var COMPARE_PARTIAL_FLAG = 1
@@ -18066,12 +18606,12 @@ object-assign
     },
     /* 235 */
     /***/ function(module, exports, __webpack_require__) {
-      var Symbol = __webpack_require__(22),
-        Uint8Array = __webpack_require__(114),
-        eq = __webpack_require__(27),
-        equalArrays = __webpack_require__(113),
-        mapToArray = __webpack_require__(115),
-        setToArray = __webpack_require__(45)
+      var Symbol = __webpack_require__(25),
+        Uint8Array = __webpack_require__(113),
+        eq = __webpack_require__(33),
+        equalArrays = __webpack_require__(112),
+        mapToArray = __webpack_require__(114),
+        setToArray = __webpack_require__(49)
 
       /** Used to compose bitmasks for value comparisons. */
       var COMPARE_PARTIAL_FLAG = 1,
@@ -18202,7 +18742,7 @@ object-assign
     },
     /* 236 */
     /***/ function(module, exports, __webpack_require__) {
-      var getAllKeys = __webpack_require__(116)
+      var getAllKeys = __webpack_require__(115)
 
       /** Used to compose bitmasks for value comparisons. */
       var COMPARE_PARTIAL_FLAG = 1
@@ -18311,7 +18851,7 @@ object-assign
     },
     /* 237 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18),
+      var getNative = __webpack_require__(19),
         root = __webpack_require__(11)
 
       /* Built-in method references that are verified to be native. */
@@ -18323,7 +18863,7 @@ object-assign
     },
     /* 238 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18),
+      var getNative = __webpack_require__(19),
         root = __webpack_require__(11)
 
       /* Built-in method references that are verified to be native. */
@@ -18335,7 +18875,7 @@ object-assign
     },
     /* 239 */
     /***/ function(module, exports, __webpack_require__) {
-      var getNative = __webpack_require__(18),
+      var getNative = __webpack_require__(19),
         root = __webpack_require__(11)
 
       /* Built-in method references that are verified to be native. */
@@ -18347,8 +18887,8 @@ object-assign
     },
     /* 240 */
     /***/ function(module, exports, __webpack_require__) {
-      var isStrictComparable = __webpack_require__(122),
-        keys = __webpack_require__(26)
+      var isStrictComparable = __webpack_require__(121),
+        keys = __webpack_require__(32)
 
       /**
        * Gets the property names, values, and compare flags of `object`.
@@ -18376,13 +18916,13 @@ object-assign
     },
     /* 241 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseIsEqual = __webpack_require__(112),
+      var baseIsEqual = __webpack_require__(111),
         get = __webpack_require__(242),
         hasIn = __webpack_require__(247),
-        isKey = __webpack_require__(79),
-        isStrictComparable = __webpack_require__(122),
-        matchesStrictComparable = __webpack_require__(123),
-        toKey = __webpack_require__(29)
+        isKey = __webpack_require__(85),
+        isStrictComparable = __webpack_require__(121),
+        matchesStrictComparable = __webpack_require__(122),
+        toKey = __webpack_require__(35)
 
       /** Used to compose bitmasks for value comparisons. */
       var COMPARE_PARTIAL_FLAG = 1,
@@ -18418,7 +18958,7 @@ object-assign
     },
     /* 242 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGet = __webpack_require__(78)
+      var baseGet = __webpack_require__(84)
 
       /**
        * Gets the value at `path` of `object`. If the resolved value is
@@ -18491,7 +19031,7 @@ object-assign
     },
     /* 244 */
     /***/ function(module, exports, __webpack_require__) {
-      var memoize = __webpack_require__(124)
+      var memoize = __webpack_require__(123)
 
       /** Used as the maximum memoize cache size. */
       var MAX_MEMOIZE_SIZE = 500
@@ -18555,10 +19095,10 @@ object-assign
     },
     /* 246 */
     /***/ function(module, exports, __webpack_require__) {
-      var Symbol = __webpack_require__(22),
-        arrayMap = __webpack_require__(28),
+      var Symbol = __webpack_require__(25),
+        arrayMap = __webpack_require__(34),
         isArray = __webpack_require__(5),
-        isSymbol = __webpack_require__(47)
+        isSymbol = __webpack_require__(51)
 
       /** Used as references for various `Number` constants. */
       var INFINITY = 1 / 0
@@ -18654,12 +19194,12 @@ object-assign
     },
     /* 249 */
     /***/ function(module, exports, __webpack_require__) {
-      var castPath = __webpack_require__(46),
-        isArguments = __webpack_require__(64),
+      var castPath = __webpack_require__(50),
+        isArguments = __webpack_require__(70),
         isArray = __webpack_require__(5),
-        isIndex = __webpack_require__(66),
-        isLength = __webpack_require__(68),
-        toKey = __webpack_require__(29)
+        isIndex = __webpack_require__(72),
+        isLength = __webpack_require__(74),
+        toKey = __webpack_require__(35)
 
       /**
        * Checks if `path` exists on `object`.
@@ -18704,8 +19244,8 @@ object-assign
     /***/ function(module, exports, __webpack_require__) {
       var baseProperty = __webpack_require__(251),
         basePropertyDeep = __webpack_require__(252),
-        isKey = __webpack_require__(79),
-        toKey = __webpack_require__(29)
+        isKey = __webpack_require__(85),
+        toKey = __webpack_require__(35)
 
       /**
        * Creates a function that returns the value at `path` of a given object.
@@ -18758,7 +19298,7 @@ object-assign
     },
     /* 252 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGet = __webpack_require__(78)
+      var baseGet = __webpack_require__(84)
 
       /**
        * A specialized version of `baseProperty` which supports deep paths.
@@ -18830,7 +19370,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>Accessor for the event title, used to display event information. Should\nresolve to a <code>renderable</code> value.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> string\n</code></pre>\n',
+                '<p>Accessor for the event title, used to display event information. Should\nresolve to a <code>renderable</code> value.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> string\n</code></pre>\n',
             },
             allDayAccessor: {
               type: { name: 'union', value: ['func', 'string'] },
@@ -18841,7 +19381,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>Determines whether the event should be considered an &quot;all day&quot; event and ignore time.\nMust resolve to a <code>boolean</code> value.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> boolean\n</code></pre>\n',
+                '<p>Determines whether the event should be considered an &quot;all day&quot; event and ignore time.\nMust resolve to a <code>boolean</code> value.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> boolean\n</code></pre>\n',
             },
             startAccessor: {
               type: { name: 'union', value: ['func', 'string'] },
@@ -18852,7 +19392,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>The start date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Date\n</code></pre>\n',
+                '<p>The start date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> Date\n</code></pre>\n',
             },
             endAccessor: {
               type: { name: 'union', value: ['func', 'string'] },
@@ -18863,7 +19403,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>The end date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Date\n</code></pre>\n',
+                '<p>The end date/time of the event. Must resolve to a JavaScript <code>Date</code> object.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> Date\n</code></pre>\n',
             },
             resourceAccessor: {
               type: { name: 'union', value: ['func', 'string'] },
@@ -18874,7 +19414,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>Returns the id of the <code>resource</code> that the event is a member of. This\nid should match at least one resource in the <code>resources</code> array.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Date\n</code></pre>\n',
+                '<p>Returns the id of the <code>resource</code> that the event is a member of. This\nid should match at least one resource in the <code>resources</code> array.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> Date\n</code></pre>\n',
             },
             resources: {
               type: { name: 'array', value: { name: 'object' } },
@@ -18894,7 +19434,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>Provides a unique identifier for each resource in the <code>resources</code> array</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>resource<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> any\n</code></pre>\n',
+                '<p>Provides a unique identifier for each resource in the <code>resources</code> array</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>resource<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> any\n</code></pre>\n',
             },
             resourceTitleAccessor: {
               type: { name: 'union', value: ['func', 'string'] },
@@ -18905,7 +19445,7 @@ object-assign
               computed: false,
               doclets: { type: '{(func|string)}' },
               descHtml:
-                '<p>Provides a human readable name for the resource object, used in headers.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>resource<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> any\n</code></pre>\n',
+                '<p>Provides a human readable name for the resource object, used in headers.</p>\n<pre><code class="lang-js">string <span class="token operator">|</span> <span class="token punctuation">(</span>resource<span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token operator">=></span> any\n</code></pre>\n',
             },
             onNavigate: {
               type: { name: 'func' },
@@ -18939,7 +19479,7 @@ object-assign
                 'A callback fired when a date selection is made. Only fires when `selectable` is `true`.\n\n```js\n(\n  slotInfo: {\n    start: Date,\n    end: Date,\n    slots: Array<Date>,\n    action: "select" | "click" | "doubleClick"\n  }\n) => any\n```',
               doclets: {},
               descHtml:
-                '<p>A callback fired when a date selection is made. Only fires when <code>selectable</code> is <code>true</code>.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>\n  slotInfo<span class="token punctuation">:</span> <span class="token punctuation">{</span>\n    start<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    end<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    slots<span class="token punctuation">:</span> Array<span class="token operator">&lt;</span>Date<span class="token operator">></span><span class="token punctuation">,</span>\n    action<span class="token punctuation">:</span> <span class="token string">"select"</span> <span class="token operator">|</span> <span class="token string">"click"</span> <span class="token operator">|</span> <span class="token string">"doubleClick"</span>\n  <span class="token punctuation">}</span>\n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> any\n</code></pre>\n',
+                '<p>A callback fired when a date selection is made. Only fires when <code>selectable</code> is <code>true</code>.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>\n  slotInfo<span class="token punctuation">:</span> <span class="token punctuation">{</span>\n    start<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    end<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    slots<span class="token punctuation">:</span> Array<span class="token operator">&lt;</span>Date<span class="token operator">></span><span class="token punctuation">,</span>\n    action<span class="token punctuation">:</span> <span class="token string">"select"</span> <span class="token operator">|</span> <span class="token string">"click"</span> <span class="token operator">|</span> <span class="token string">"doubleClick"</span>\n  <span class="token punctuation">}</span>\n<span class="token punctuation">)</span> <span class="token operator">=></span> any\n</code></pre>\n',
             },
             onSelectEvent: {
               type: { name: 'func' },
@@ -18948,7 +19488,7 @@ object-assign
                 'Callback fired when a calendar event is selected.\n\n```js\n(event: Object, e: SyntheticEvent) => any\n```',
               doclets: { controllable: 'selected' },
               descHtml:
-                '<p>Callback fired when a calendar event is selected.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">,</span> e<span class="token punctuation">:</span> SyntheticEvent<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> any\n</code></pre>\n',
+                '<p>Callback fired when a calendar event is selected.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">,</span> e<span class="token punctuation">:</span> SyntheticEvent<span class="token punctuation">)</span> <span class="token operator">=></span> any\n</code></pre>\n',
             },
             onDoubleClickEvent: {
               type: { name: 'func' },
@@ -18957,7 +19497,7 @@ object-assign
                 'Callback fired when a calendar event is clicked twice.\n\n```js\n(event: Object, e: SyntheticEvent) => void\n```',
               doclets: {},
               descHtml:
-                '<p>Callback fired when a calendar event is clicked twice.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">,</span> e<span class="token punctuation">:</span> SyntheticEvent<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">void</span>\n</code></pre>\n',
+                '<p>Callback fired when a calendar event is clicked twice.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>event<span class="token punctuation">:</span> Object<span class="token punctuation">,</span> e<span class="token punctuation">:</span> SyntheticEvent<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">void</span>\n</code></pre>\n',
             },
             onSelecting: {
               type: { name: 'func' },
@@ -18966,7 +19506,7 @@ object-assign
                 'Callback fired when dragging a selection in the Time views.\n\nReturning `false` from the handler will prevent a selection.\n\n```js\n(range: { start: Date, end: Date }) => ?boolean\n```',
               doclets: {},
               descHtml:
-                '<p>Callback fired when dragging a selection in the Time views.</p>\n<p>Returning <code>false</code> from the handler will prevent a selection.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>range<span class="token punctuation">:</span> <span class="token punctuation">{</span> start<span class="token punctuation">:</span> Date<span class="token punctuation">,</span> end<span class="token punctuation">:</span> Date <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">?</span>boolean\n</code></pre>\n',
+                '<p>Callback fired when dragging a selection in the Time views.</p>\n<p>Returning <code>false</code> from the handler will prevent a selection.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>range<span class="token punctuation">:</span> <span class="token punctuation">{</span> start<span class="token punctuation">:</span> Date<span class="token punctuation">,</span> end<span class="token punctuation">:</span> Date <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token operator">?</span>boolean\n</code></pre>\n',
             },
             selected: {
               type: { name: 'object' },
@@ -19011,7 +19551,7 @@ object-assign
                 "Functionally equivalent to `drilldownView`, but accepts a function\nthat can return a view name. It's useful for customizing the drill-down\nactions depending on the target date and triggering view.\n\nReturn `null` to disable drill-down actions.\n\n```js\n<BigCalendar\n  getDrilldownView={(targetDate, currentViewName, configuredViewNames) =>\n    if (currentViewName === 'month' && configuredViewNames.includes('week'))\n      return 'week'\n\n    return null;\n  }}\n/>\n```",
               doclets: {},
               descHtml:
-                '<p>Functionally equivalent to <code>drilldownView</code>, but accepts a function\nthat can return a view name. It&#39;s useful for customizing the drill-down\nactions depending on the target date and triggering view.</p>\n<p>Return <code>null</code> to disable drill-down actions.</p>\n<pre><code class="lang-js"><span class="token operator">&lt;</span>BigCalendar\n  getDrilldownView<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span>targetDate<span class="token punctuation">,</span> currentViewName<span class="token punctuation">,</span> configuredViewNames<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>\n    <span class="token keyword">if</span> <span class="token punctuation">(</span>currentViewName <span class="token operator">===</span> <span class="token string">\'month\'</span> <span class="token operator">&amp;&amp;</span> configuredViewNames<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token string">\'week\'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>\n      <span class="token keyword">return</span> <span class="token string">\'week\'</span>\n\n    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>\n  <span class="token punctuation">}</span><span class="token punctuation">}</span>\n<span class="token operator">/</span><span class="token operator">></span>\n</code></pre>\n',
+                '<p>Functionally equivalent to <code>drilldownView</code>, but accepts a function\nthat can return a view name. It&#39;s useful for customizing the drill-down\nactions depending on the target date and triggering view.</p>\n<p>Return <code>null</code> to disable drill-down actions.</p>\n<pre><code class="lang-js"><span class="token operator">&lt;</span>BigCalendar\n  getDrilldownView<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span>targetDate<span class="token punctuation">,</span> currentViewName<span class="token punctuation">,</span> configuredViewNames<span class="token punctuation">)</span> <span class="token operator">=></span>\n    <span class="token keyword">if</span> <span class="token punctuation">(</span>currentViewName <span class="token operator">===</span> <span class="token string">\'month\'</span> <span class="token operator">&amp;&amp;</span> configuredViewNames<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token string">\'week\'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>\n      <span class="token keyword">return</span> <span class="token string">\'week\'</span>\n\n    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>\n  <span class="token punctuation">}</span><span class="token punctuation">}</span>\n<span class="token operator">/</span><span class="token operator">></span>\n</code></pre>\n',
             },
             length: {
               type: { name: 'number' },
@@ -19131,7 +19671,7 @@ object-assign
                 'Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.\n\n```js\n(\n\tevent: Object,\n\tstart: Date,\n\tend: Date,\n\tisSelected: boolean\n) => { className?: string, style?: Object }\n```',
               doclets: {},
               descHtml:
-                '<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>\n    event<span class="token punctuation">:</span> Object<span class="token punctuation">,</span>\n    start<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    end<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    isSelected<span class="token punctuation">:</span> boolean\n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> className<span class="token operator">?</span><span class="token punctuation">:</span> string<span class="token punctuation">,</span> style<span class="token operator">?</span><span class="token punctuation">:</span> Object <span class="token punctuation">}</span>\n</code></pre>\n',
+                '<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the event node.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>\n    event<span class="token punctuation">:</span> Object<span class="token punctuation">,</span>\n    start<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    end<span class="token punctuation">:</span> Date<span class="token punctuation">,</span>\n    isSelected<span class="token punctuation">:</span> boolean\n<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> className<span class="token operator">?</span><span class="token punctuation">:</span> string<span class="token punctuation">,</span> style<span class="token operator">?</span><span class="token punctuation">:</span> Object <span class="token punctuation">}</span>\n</code></pre>\n',
             },
             slotPropGetter: {
               type: { name: 'func' },
@@ -19140,7 +19680,7 @@ object-assign
                 'Optionally provide a function that returns an object of className or style props\nto be applied to the the time-slot node. Caution! Styles that change layout or\nposition may break the calendar in unexpected ways.\n\n```js\n(date: Date) => { className?: string, style?: Object }\n```',
               doclets: {},
               descHtml:
-                '<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the time-slot node. Caution! Styles that change layout or\nposition may break the calendar in unexpected ways.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>date<span class="token punctuation">:</span> Date<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> className<span class="token operator">?</span><span class="token punctuation">:</span> string<span class="token punctuation">,</span> style<span class="token operator">?</span><span class="token punctuation">:</span> Object <span class="token punctuation">}</span>\n</code></pre>\n',
+                '<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the time-slot node. Caution! Styles that change layout or\nposition may break the calendar in unexpected ways.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>date<span class="token punctuation">:</span> Date<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> className<span class="token operator">?</span><span class="token punctuation">:</span> string<span class="token punctuation">,</span> style<span class="token operator">?</span><span class="token punctuation">:</span> Object <span class="token punctuation">}</span>\n</code></pre>\n',
             },
             dayPropGetter: {
               type: { name: 'func' },
@@ -19149,7 +19689,7 @@ object-assign
                 'Optionally provide a function that returns an object of className or style props\nto be applied to the the day background. Caution! Styles that change layout or\nposition may break the calendar in unexpected ways.\n\n```js\n(date: Date) => { className?: string, style?: Object }\n```',
               doclets: {},
               descHtml:
-                '<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the day background. Caution! Styles that change layout or\nposition may break the calendar in unexpected ways.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>date<span class="token punctuation">:</span> Date<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> className<span class="token operator">?</span><span class="token punctuation">:</span> string<span class="token punctuation">,</span> style<span class="token operator">?</span><span class="token punctuation">:</span> Object <span class="token punctuation">}</span>\n</code></pre>\n',
+                '<p>Optionally provide a function that returns an object of className or style props\nto be applied to the the day background. Caution! Styles that change layout or\nposition may break the calendar in unexpected ways.</p>\n<pre><code class="lang-js"><span class="token punctuation">(</span>date<span class="token punctuation">:</span> Date<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> className<span class="token operator">?</span><span class="token punctuation">:</span> string<span class="token punctuation">,</span> style<span class="token operator">?</span><span class="token punctuation">:</span> Object <span class="token punctuation">}</span>\n</code></pre>\n',
             },
             showMultiDayTimes: {
               type: { name: 'bool' },
@@ -19332,7 +19872,7 @@ object-assign
                 "Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, culture, localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, local) =>\n    local.format(start, { date: 'short' }, culture) + ' — ' +\n    local.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`",
               doclets: {},
               descHtml:
-                '<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n<p><code>format</code> types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: <code>&#39;DD mm yyyy&#39;</code>.</p>\n<pre><code class="lang-jsx"><span class="token keyword">let</span> formats <span class="token operator">=</span> <span class="token punctuation">{</span>\n  dateFormat<span class="token punctuation">:</span> <span class="token string">\'dd\'</span><span class="token punctuation">,</span>\n\n  dayFormat<span class="token punctuation">:</span> <span class="token punctuation">(</span>date<span class="token punctuation">,</span> culture<span class="token punctuation">,</span> localizer<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> <span class="token string">\'DDD\'</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span><span class="token punctuation">,</span>\n\n  dayRangeHeaderFormat<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> start<span class="token punctuation">,</span> end <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">,</span> local<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>\n    local<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">\' — \'</span> <span class="token operator">+</span>\n    local<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>end<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span>\n<span class="token punctuation">}</span>\n\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Calendar</span> <span class="token attr-name">formats</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>formats<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>\n</code></pre>\n<p>All localizers accept a function of\nthe form <code>(date: Date, culture: ?string, localizer: Localizer) -&gt; string</code></p>\n',
+                '<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n<p><code>format</code> types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: <code>&#39;DD mm yyyy&#39;</code>.</p>\n<pre><code class="lang-jsx"><span class="token keyword">let</span> formats <span class="token operator">=</span> <span class="token punctuation">{</span>\n  dateFormat<span class="token punctuation">:</span> <span class="token string">\'dd\'</span><span class="token punctuation">,</span>\n\n  dayFormat<span class="token punctuation">:</span> <span class="token punctuation">(</span>date<span class="token punctuation">,</span> culture<span class="token punctuation">,</span> localizer<span class="token punctuation">)</span> <span class="token operator">=></span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> <span class="token string">\'DDD\'</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span><span class="token punctuation">,</span>\n\n  dayRangeHeaderFormat<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> start<span class="token punctuation">,</span> end <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">,</span> local<span class="token punctuation">)</span> <span class="token operator">=></span>\n    local<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">\' — \'</span> <span class="token operator">+</span>\n    local<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>end<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span>\n<span class="token punctuation">}</span>\n\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Calendar</span> <span class="token attr-name">formats</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>formats<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>\n</code></pre>\n<p>All localizers accept a function of\nthe form <code>(date: Date, culture: ?string, localizer: Localizer) -&gt; string</code></p>\n',
             },
             components: {
               type: {
@@ -19494,7 +20034,7 @@ object-assign
                 'Customize how different sections of the calendar render by providing custom Components.\nIn particular the `Event` component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.\n\n```jsx\nlet components = {\n  event: MyEvent, // used by each view (Month, Day, Week)\n  toolbar: MyToolbar,\n  agenda: {\n  \t event: MyAgendaEvent // with the agenda view use a different component to render events\n  }\n}\n<Calendar components={components} />\n```',
               doclets: {},
               descHtml:
-                '<p>Customize how different sections of the calendar render by providing custom Components.\nIn particular the <code>Event</code> component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.</p>\n<pre><code class="lang-jsx"><span class="token keyword">let</span> components <span class="token operator">=</span> <span class="token punctuation">{</span>\n  event<span class="token punctuation">:</span> MyEvent<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// used by each view (Month, Day, Week)</span>\n  toolbar<span class="token punctuation">:</span> MyToolbar<span class="token punctuation">,</span>\n  agenda<span class="token punctuation">:</span> <span class="token punctuation">{</span>\n       event<span class="token punctuation">:</span> MyAgendaEvent <span class="token comment" spellcheck="true">// with the agenda view use a different component to render events</span>\n  <span class="token punctuation">}</span>\n<span class="token punctuation">}</span>\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Calendar</span> <span class="token attr-name">components</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>components<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>\n</code></pre>\n',
+                '<p>Customize how different sections of the calendar render by providing custom Components.\nIn particular the <code>Event</code> component can be specified for the entire calendar, or you can\nprovide an individual component for each view type.</p>\n<pre><code class="lang-jsx"><span class="token keyword">let</span> components <span class="token operator">=</span> <span class="token punctuation">{</span>\n  event<span class="token punctuation">:</span> MyEvent<span class="token punctuation">,</span> <span class="token comment">// used by each view (Month, Day, Week)</span>\n  toolbar<span class="token punctuation">:</span> MyToolbar<span class="token punctuation">,</span>\n  agenda<span class="token punctuation">:</span> <span class="token punctuation">{</span>\n       event<span class="token punctuation">:</span> MyAgendaEvent <span class="token comment">// with the agenda view use a different component to render events</span>\n  <span class="token punctuation">}</span>\n<span class="token punctuation">}</span>\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Calendar</span> <span class="token attr-name">components</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>components<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>\n</code></pre>\n',
             },
             messages: {
               type: {
@@ -19693,7 +20233,7 @@ object-assign
                 className: 'jsx',
                 dangerouslySetInnerHTML: {
                   __html:
-                    '<span class="token keyword">import</span> BigCalendar <span class="token keyword">from</span> <span class="token string">\'react-big-calendar\'</span><span class="token punctuation">;</span>\n<span class="token keyword">import</span> moment <span class="token keyword">from</span> <span class="token string">\'moment\'</span><span class="token punctuation">;</span>\n\n<span class="token comment" spellcheck="true">// Setup the localizer by providing the moment (or globalize) Object</span>\n<span class="token comment" spellcheck="true">// to the correct localizer.</span>\nBigCalendar<span class="token punctuation">.</span><span class="token function">momentLocalizer</span><span class="token punctuation">(</span>moment<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// or globalizeLocalizer</span>\n\n<span class="token keyword">const</span> MyCalendar <span class="token operator">=</span> props <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>\n    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>BigCalendar</span>\n      <span class="token attr-name">events</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>myEventsList<span class="token punctuation">}</span></span>\n      <span class="token attr-name">startAccessor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">\'</span>startDate<span class="token punctuation">\'</span></span>\n      <span class="token attr-name">endAccessor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">\'</span>endDate<span class="token punctuation">\'</span></span>\n    <span class="token punctuation">/></span></span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>\n<span class="token punctuation">)</span><span class="token punctuation">;</span>',
+                    '<span class="token keyword">import</span> BigCalendar <span class="token keyword">from</span> <span class="token string">\'react-big-calendar\'</span><span class="token punctuation">;</span>\n<span class="token keyword">import</span> moment <span class="token keyword">from</span> <span class="token string">\'moment\'</span><span class="token punctuation">;</span>\n\n<span class="token comment">// Setup the localizer by providing the moment (or globalize) Object</span>\n<span class="token comment">// to the correct localizer.</span>\nBigCalendar<span class="token punctuation">.</span><span class="token function">momentLocalizer</span><span class="token punctuation">(</span>moment<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// or globalizeLocalizer</span>\n\n<span class="token keyword">const</span> <span class="token function-variable function">MyCalendar</span> <span class="token operator">=</span> props <span class="token operator">=></span> <span class="token punctuation">(</span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>\n    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>BigCalendar</span>\n      <span class="token attr-name">events</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>myEventsList<span class="token punctuation">}</span></span>\n      <span class="token attr-name">startAccessor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">\'</span>startDate<span class="token punctuation">\'</span></span>\n      <span class="token attr-name">endAccessor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">\'</span>endDate<span class="token punctuation">\'</span></span>\n    <span class="token punctuation">/></span></span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>\n<span class="token punctuation">)</span><span class="token punctuation">;</span>',
                 },
               })
             ),
@@ -19732,15 +20272,15 @@ object-assign
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
       var aa = __webpack_require__(0),
-        l = __webpack_require__(125),
-        B = __webpack_require__(35),
-        C = __webpack_require__(49),
-        ba = __webpack_require__(126),
-        da = __webpack_require__(127),
-        ea = __webpack_require__(128),
-        fa = __webpack_require__(129),
-        ia = __webpack_require__(130),
-        D = __webpack_require__(131)
+        l = __webpack_require__(124),
+        B = __webpack_require__(22),
+        C = __webpack_require__(15),
+        ba = __webpack_require__(125),
+        da = __webpack_require__(126),
+        ea = __webpack_require__(127),
+        fa = __webpack_require__(128),
+        ia = __webpack_require__(129),
+        D = __webpack_require__(30)
       function E(a) {
         for (
           var b = arguments.length - 1,
@@ -25346,20 +25886,20 @@ object-assign
             'use strict'
 
             var React = __webpack_require__(0)
-            var invariant = __webpack_require__(132)
-            var warning = __webpack_require__(133)
-            var ExecutionEnvironment = __webpack_require__(125)
-            var _assign = __webpack_require__(35)
-            var emptyFunction = __webpack_require__(49)
-            var EventListener = __webpack_require__(126)
-            var getActiveElement = __webpack_require__(127)
-            var shallowEqual = __webpack_require__(128)
-            var containsNode = __webpack_require__(129)
-            var focusNode = __webpack_require__(130)
-            var emptyObject = __webpack_require__(131)
-            var checkPropTypes = __webpack_require__(259)
-            var hyphenateStyleName = __webpack_require__(261)
-            var camelizeStyleName = __webpack_require__(263)
+            var invariant = __webpack_require__(23)
+            var warning = __webpack_require__(31)
+            var ExecutionEnvironment = __webpack_require__(124)
+            var _assign = __webpack_require__(22)
+            var emptyFunction = __webpack_require__(15)
+            var EventListener = __webpack_require__(125)
+            var getActiveElement = __webpack_require__(126)
+            var shallowEqual = __webpack_require__(127)
+            var containsNode = __webpack_require__(128)
+            var focusNode = __webpack_require__(129)
+            var emptyObject = __webpack_require__(30)
+            var checkPropTypes = __webpack_require__(68)
+            var hyphenateStyleName = __webpack_require__(259)
+            var camelizeStyleName = __webpack_require__(261)
 
             /**
              * WARNING: DO NOT manually require this module.
@@ -45058,130 +45598,6 @@ object-assign
     /* 259 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright (c) 2013-present, Facebook, Inc.
-         *
-         * This source code is licensed under the MIT license found in the
-         * LICENSE file in the root directory of this source tree.
-         */
-
-        if (process.env.NODE_ENV !== 'production') {
-          var invariant = __webpack_require__(132)
-          var warning = __webpack_require__(133)
-          var ReactPropTypesSecret = __webpack_require__(260)
-          var loggedTypeFailures = {}
-        }
-
-        /**
-         * Assert that the values match with the type specs.
-         * Error messages are memorized and will only be shown once.
-         *
-         * @param {object} typeSpecs Map of name to a ReactPropType
-         * @param {object} values Runtime values that need to be type-checked
-         * @param {string} location e.g. "prop", "context", "child context"
-         * @param {string} componentName Name of the component for error messages.
-         * @param {?Function} getStack Returns the component stack.
-         * @private
-         */
-        function checkPropTypes(
-          typeSpecs,
-          values,
-          location,
-          componentName,
-          getStack
-        ) {
-          if (process.env.NODE_ENV !== 'production') {
-            for (var typeSpecName in typeSpecs) {
-              if (typeSpecs.hasOwnProperty(typeSpecName)) {
-                var error
-                // Prop type validation may throw. In case they do, we don't want to
-                // fail the render phase where it didn't fail before. So we log it.
-                // After these have been cleaned up, we'll let them throw.
-                try {
-                  // This is intentionally an invariant that gets caught. It's the same
-                  // behavior as without this statement except with a better message.
-                  invariant(
-                    typeof typeSpecs[typeSpecName] === 'function',
-                    '%s: %s type `%s` is invalid; it must be a function, usually from ' +
-                      'the `prop-types` package, but received `%s`.',
-                    componentName || 'React class',
-                    location,
-                    typeSpecName,
-                    typeof typeSpecs[typeSpecName]
-                  )
-                  error = typeSpecs[typeSpecName](
-                    values,
-                    typeSpecName,
-                    componentName,
-                    location,
-                    null,
-                    ReactPropTypesSecret
-                  )
-                } catch (ex) {
-                  error = ex
-                }
-                warning(
-                  !error || error instanceof Error,
-                  '%s: type specification of %s `%s` is invalid; the type checker ' +
-                    'function must return `null` or an `Error` but returned a %s. ' +
-                    'You may have forgotten to pass an argument to the type checker ' +
-                    'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-                    'shape all require an argument).',
-                  componentName || 'React class',
-                  location,
-                  typeSpecName,
-                  typeof error
-                )
-                if (
-                  error instanceof Error &&
-                  !(error.message in loggedTypeFailures)
-                ) {
-                  // Only monitor this failure once because there tends to be a lot of the
-                  // same error.
-                  loggedTypeFailures[error.message] = true
-
-                  var stack = getStack ? getStack() : ''
-
-                  warning(
-                    false,
-                    'Failed %s type: %s%s',
-                    location,
-                    error.message,
-                    stack != null ? stack : ''
-                  )
-                }
-              }
-            }
-          }
-        }
-
-        module.exports = checkPropTypes
-
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 260 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /**
-       * Copyright (c) 2013-present, Facebook, Inc.
-       *
-       * This source code is licensed under the MIT license found in the
-       * LICENSE file in the root directory of this source tree.
-       */
-
-      var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
-
-      module.exports = ReactPropTypesSecret
-
-      /***/
-    },
-    /* 261 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
       /**
        * Copyright (c) 2013-present, Facebook, Inc.
        *
@@ -45191,7 +45607,7 @@ object-assign
        * @typechecks
        */
 
-      var hyphenate = __webpack_require__(262)
+      var hyphenate = __webpack_require__(260)
 
       var msPattern = /^ms-/
 
@@ -45219,7 +45635,7 @@ object-assign
 
       /***/
     },
-    /* 262 */
+    /* 260 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -45254,7 +45670,7 @@ object-assign
 
       /***/
     },
-    /* 263 */
+    /* 261 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /**
@@ -45266,7 +45682,7 @@ object-assign
        * @typechecks
        */
 
-      var camelize = __webpack_require__(264)
+      var camelize = __webpack_require__(262)
 
       var msPattern = /^-ms-/
 
@@ -45295,7 +45711,7 @@ object-assign
 
       /***/
     },
-    /* 264 */
+    /* 262 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -45329,25 +45745,24 @@ object-assign
 
       /***/
     },
-    /* 265 */
+    /* 263 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
         /**
-         * Copyright 2013-present, Facebook, Inc.
-         * All rights reserved.
+         * Copyright (c) 2013-present, Facebook, Inc.
          *
-         * This source code is licensed under the BSD-style license found in the
-         * LICENSE file in the root directory of this source tree. An additional grant
-         * of patent rights can be found in the PATENTS file in the same directory.
+         * This source code is licensed under the MIT license found in the
+         * LICENSE file in the root directory of this source tree.
          */
 
-        var emptyFunction = __webpack_require__(81)
-        var invariant = __webpack_require__(82)
-        var warning = __webpack_require__(136)
+        var emptyFunction = __webpack_require__(15)
+        var invariant = __webpack_require__(23)
+        var warning = __webpack_require__(31)
+        var assign = __webpack_require__(22)
 
-        var ReactPropTypesSecret = __webpack_require__(83)
-        var checkPropTypes = __webpack_require__(266)
+        var ReactPropTypesSecret = __webpack_require__(69)
+        var checkPropTypes = __webpack_require__(68)
 
         module.exports = function(isValidElement, throwOnDirectAccess) {
           /* global Symbol */
@@ -45447,6 +45862,7 @@ object-assign
             oneOf: createEnumTypeChecker,
             oneOfType: createUnionTypeChecker,
             shape: createShapeTypeChecker,
+            exact: createStrictShapeTypeChecker,
           }
 
           /**
@@ -45836,7 +46252,7 @@ object-assign
               if (typeof checker !== 'function') {
                 warning(
                   false,
-                  'Invalid argument supplid to oneOfType. Expected an array of check functions, but ' +
+                  'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
                     'received %s at index %s.',
                   getPostfixForTypeWarning(checker),
                   i
@@ -45944,6 +46360,68 @@ object-assign
               }
               return null
             }
+            return createChainableTypeChecker(validate)
+          }
+
+          function createStrictShapeTypeChecker(shapeTypes) {
+            function validate(
+              props,
+              propName,
+              componentName,
+              location,
+              propFullName
+            ) {
+              var propValue = props[propName]
+              var propType = getPropType(propValue)
+              if (propType !== 'object') {
+                return new PropTypeError(
+                  'Invalid ' +
+                    location +
+                    ' `' +
+                    propFullName +
+                    '` of type `' +
+                    propType +
+                    '` ' +
+                    ('supplied to `' + componentName + '`, expected `object`.')
+                )
+              }
+              // We need to check all keys in case some are required but missing from
+              // props.
+              var allKeys = assign({}, props[propName], shapeTypes)
+              for (var key in allKeys) {
+                var checker = shapeTypes[key]
+                if (!checker) {
+                  return new PropTypeError(
+                    'Invalid ' +
+                      location +
+                      ' `' +
+                      propFullName +
+                      '` key `' +
+                      key +
+                      '` supplied to `' +
+                      componentName +
+                      '`.' +
+                      '\nBad object: ' +
+                      JSON.stringify(props[propName], null, '  ') +
+                      '\nValid keys: ' +
+                      JSON.stringify(Object.keys(shapeTypes), null, '  ')
+                  )
+                }
+                var error = checker(
+                  propValue,
+                  key,
+                  componentName,
+                  location,
+                  propFullName + '.' + key,
+                  ReactPropTypesSecret
+                )
+                if (error) {
+                  return error
+                }
+              }
+              return null
+            }
+
             return createChainableTypeChecker(validate)
           }
 
@@ -46084,130 +46562,19 @@ object-assign
 
       /***/
     },
-    /* 266 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
-        /**
-         * Copyright 2013-present, Facebook, Inc.
-         * All rights reserved.
-         *
-         * This source code is licensed under the BSD-style license found in the
-         * LICENSE file in the root directory of this source tree. An additional grant
-         * of patent rights can be found in the PATENTS file in the same directory.
-         */
-
-        if (process.env.NODE_ENV !== 'production') {
-          var invariant = __webpack_require__(82)
-          var warning = __webpack_require__(136)
-          var ReactPropTypesSecret = __webpack_require__(83)
-          var loggedTypeFailures = {}
-        }
-
-        /**
-         * Assert that the values match with the type specs.
-         * Error messages are memorized and will only be shown once.
-         *
-         * @param {object} typeSpecs Map of name to a ReactPropType
-         * @param {object} values Runtime values that need to be type-checked
-         * @param {string} location e.g. "prop", "context", "child context"
-         * @param {string} componentName Name of the component for error messages.
-         * @param {?Function} getStack Returns the component stack.
-         * @private
-         */
-        function checkPropTypes(
-          typeSpecs,
-          values,
-          location,
-          componentName,
-          getStack
-        ) {
-          if (process.env.NODE_ENV !== 'production') {
-            for (var typeSpecName in typeSpecs) {
-              if (typeSpecs.hasOwnProperty(typeSpecName)) {
-                var error
-                // Prop type validation may throw. In case they do, we don't want to
-                // fail the render phase where it didn't fail before. So we log it.
-                // After these have been cleaned up, we'll let them throw.
-                try {
-                  // This is intentionally an invariant that gets caught. It's the same
-                  // behavior as without this statement except with a better message.
-                  invariant(
-                    typeof typeSpecs[typeSpecName] === 'function',
-                    '%s: %s type `%s` is invalid; it must be a function, usually from ' +
-                      'React.PropTypes.',
-                    componentName || 'React class',
-                    location,
-                    typeSpecName
-                  )
-                  error = typeSpecs[typeSpecName](
-                    values,
-                    typeSpecName,
-                    componentName,
-                    location,
-                    null,
-                    ReactPropTypesSecret
-                  )
-                } catch (ex) {
-                  error = ex
-                }
-                warning(
-                  !error || error instanceof Error,
-                  '%s: type specification of %s `%s` is invalid; the type checker ' +
-                    'function must return `null` or an `Error` but returned a %s. ' +
-                    'You may have forgotten to pass an argument to the type checker ' +
-                    'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-                    'shape all require an argument).',
-                  componentName || 'React class',
-                  location,
-                  typeSpecName,
-                  typeof error
-                )
-                if (
-                  error instanceof Error &&
-                  !(error.message in loggedTypeFailures)
-                ) {
-                  // Only monitor this failure once because there tends to be a lot of the
-                  // same error.
-                  loggedTypeFailures[error.message] = true
-
-                  var stack = getStack ? getStack() : ''
-
-                  warning(
-                    false,
-                    'Failed %s type: %s%s',
-                    location,
-                    error.message,
-                    stack != null ? stack : ''
-                  )
-                }
-              }
-            }
-          }
-        }
-
-        module.exports = checkPropTypes
-
-        /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(2)))
-
-      /***/
-    },
-    /* 267 */
+    /* 264 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /**
-       * Copyright 2013-present, Facebook, Inc.
-       * All rights reserved.
+       * Copyright (c) 2013-present, Facebook, Inc.
        *
-       * This source code is licensed under the BSD-style license found in the
-       * LICENSE file in the root directory of this source tree. An additional grant
-       * of patent rights can be found in the PATENTS file in the same directory.
+       * This source code is licensed under the MIT license found in the
+       * LICENSE file in the root directory of this source tree.
        */
 
-      var emptyFunction = __webpack_require__(81)
-      var invariant = __webpack_require__(82)
-      var ReactPropTypesSecret = __webpack_require__(83)
+      var emptyFunction = __webpack_require__(15)
+      var invariant = __webpack_require__(23)
+      var ReactPropTypesSecret = __webpack_require__(69)
 
       module.exports = function() {
         function shim(
@@ -46253,6 +46620,7 @@ object-assign
           oneOf: getShim,
           oneOfType: getShim,
           shape: getShim,
+          exact: getShim,
         }
 
         ReactPropTypes.checkPropTypes = emptyFunction
@@ -46263,7 +46631,7 @@ object-assign
 
       /***/
     },
-    /* 268 */
+    /* 265 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -46300,7 +46668,7 @@ object-assign
 
       var _dates2 = _interopRequireDefault(_dates)
 
-      var _formats = __webpack_require__(50)
+      var _formats = __webpack_require__(53)
 
       var _localizer = __webpack_require__(6)
 
@@ -46386,7 +46754,7 @@ object-assign
 
       /***/
     },
-    /* 269 */
+    /* 266 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -46456,12 +46824,12 @@ object-assign
 
       /***/
     },
-    /* 270 */
+    /* 267 */
     /***/ function(module, exports, __webpack_require__) {
       // style-loader: Adds some css to the DOM by adding a <style> tag
 
       // load the styles
-      var content = __webpack_require__(271)
+      var content = __webpack_require__(268)
       if (typeof content === 'string') content = [[module.i, content, '']]
       // Prepare cssTransformation
       var transform
@@ -46469,7 +46837,7 @@ object-assign
       var options = { hmr: true }
       options.transform = transform
       // add the styles to the DOM
-      var update = __webpack_require__(52)(content, options)
+      var update = __webpack_require__(55)(content, options)
       if (content.locals) module.exports = content.locals
       // Hot Module Replacement
       if (false) {
@@ -46493,9 +46861,9 @@ object-assign
 
       /***/
     },
-    /* 271 */
+    /* 268 */
     /***/ function(module, exports, __webpack_require__) {
-      exports = module.exports = __webpack_require__(51)(true)
+      exports = module.exports = __webpack_require__(54)(true)
       // imports
 
       // module
@@ -46523,7 +46891,7 @@ object-assign
 
       /***/
     },
-    /* 272 */
+    /* 269 */
     /***/ function(module, exports) {
       /**
        * When source maps are enabled, `style-loader` uses a link element with a data-uri to
@@ -46627,12 +46995,12 @@ object-assign
 
       /***/
     },
-    /* 273 */
+    /* 270 */
     /***/ function(module, exports, __webpack_require__) {
       // style-loader: Adds some css to the DOM by adding a <style> tag
 
       // load the styles
-      var content = __webpack_require__(274)
+      var content = __webpack_require__(271)
       if (typeof content === 'string') content = [[module.i, content, '']]
       // Prepare cssTransformation
       var transform
@@ -46640,7 +47008,7 @@ object-assign
       var options = { hmr: true }
       options.transform = transform
       // add the styles to the DOM
-      var update = __webpack_require__(52)(content, options)
+      var update = __webpack_require__(55)(content, options)
       if (content.locals) module.exports = content.locals
       // Hot Module Replacement
       if (false) {
@@ -46664,9 +47032,9 @@ object-assign
 
       /***/
     },
-    /* 274 */
+    /* 271 */
     /***/ function(module, exports, __webpack_require__) {
-      exports = module.exports = __webpack_require__(51)(true)
+      exports = module.exports = __webpack_require__(54)(true)
       // imports
 
       // module
@@ -46694,12 +47062,12 @@ object-assign
 
       /***/
     },
-    /* 275 */
+    /* 272 */
     /***/ function(module, exports, __webpack_require__) {
       // style-loader: Adds some css to the DOM by adding a <style> tag
 
       // load the styles
-      var content = __webpack_require__(276)
+      var content = __webpack_require__(273)
       if (typeof content === 'string') content = [[module.i, content, '']]
       // Prepare cssTransformation
       var transform
@@ -46707,7 +47075,7 @@ object-assign
       var options = { hmr: true }
       options.transform = transform
       // add the styles to the DOM
-      var update = __webpack_require__(52)(content, options)
+      var update = __webpack_require__(55)(content, options)
       if (content.locals) module.exports = content.locals
       // Hot Module Replacement
       if (false) {
@@ -46731,9 +47099,9 @@ object-assign
 
       /***/
     },
-    /* 276 */
+    /* 273 */
     /***/ function(module, exports, __webpack_require__) {
-      exports = module.exports = __webpack_require__(51)(true)
+      exports = module.exports = __webpack_require__(54)(true)
       // imports
 
       // module
@@ -46761,7 +47129,7 @@ object-assign
 
       /***/
     },
-    /* 277 */
+    /* 274 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -46785,11 +47153,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -46803,7 +47175,7 @@ object-assign
         return _reactBigCalendar2.default.Views[k]
       })
 
-      var Basic = _react2.default.createClass({
+      var Basic = (0, _createReactClass2.default)({
         displayName: 'Basic',
         render: function render() {
           return _react2.default.createElement(
@@ -46823,7 +47195,7 @@ object-assign
 
       /***/
     },
-    /* 278 */
+    /* 275 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -46865,7 +47237,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _uncontrollable = __webpack_require__(279)
+      var _uncontrollable = __webpack_require__(276)
 
       var _uncontrollable2 = _interopRequireDefault(_uncontrollable)
 
@@ -46875,51 +47247,51 @@ object-assign
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _helpers = __webpack_require__(31)
+      var _helpers = __webpack_require__(37)
 
       var _constants = __webpack_require__(13)
 
-      var _formats = __webpack_require__(50)
+      var _formats = __webpack_require__(53)
 
       var _formats2 = _interopRequireDefault(_formats)
 
-      var _messages = __webpack_require__(54)
+      var _messages = __webpack_require__(57)
 
       var _messages2 = _interopRequireDefault(_messages)
 
-      var _move = __webpack_require__(138)
+      var _move = __webpack_require__(133)
 
       var _move2 = _interopRequireDefault(_move)
 
-      var _Views = __webpack_require__(139)
+      var _Views = __webpack_require__(134)
 
       var _Views2 = _interopRequireDefault(_Views)
 
-      var _Toolbar = __webpack_require__(325)
+      var _Toolbar = __webpack_require__(334)
 
       var _Toolbar2 = _interopRequireDefault(_Toolbar)
 
-      var _EventWrapper = __webpack_require__(161)
+      var _EventWrapper = __webpack_require__(162)
 
       var _EventWrapper2 = _interopRequireDefault(_EventWrapper)
 
-      var _BackgroundWrapper = __webpack_require__(90)
+      var _BackgroundWrapper = __webpack_require__(92)
 
       var _BackgroundWrapper2 = _interopRequireDefault(_BackgroundWrapper)
 
-      var _omit = __webpack_require__(326)
+      var _omit = __webpack_require__(335)
 
       var _omit2 = _interopRequireDefault(_omit)
 
-      var _defaults = __webpack_require__(170)
+      var _defaults = __webpack_require__(171)
 
       var _defaults2 = _interopRequireDefault(_defaults)
 
-      var _transform = __webpack_require__(104)
+      var _transform = __webpack_require__(103)
 
       var _transform2 = _interopRequireDefault(_transform)
 
-      var _mapValues = __webpack_require__(360)
+      var _mapValues = __webpack_require__(369)
 
       var _mapValues2 = _interopRequireDefault(_mapValues)
 
@@ -47868,13 +48240,13 @@ object-assign
 
       /***/
     },
-    /* 279 */
+    /* 276 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
       exports.__esModule = true
 
-      var _createUncontrollable = __webpack_require__(280)
+      var _createUncontrollable = __webpack_require__(277)
 
       var _createUncontrollable2 = _interopRequireDefault(_createUncontrollable)
 
@@ -47898,15 +48270,15 @@ object-assign
 
         component._values[propName] = value
 
-        if (!component.unmounted) component.forceUpdate()
+        if (component.isMounted()) component.forceUpdate()
       }
 
-      exports.default = (0, _createUncontrollable2.default)(mixin, set)
+      exports.default = (0, _createUncontrollable2.default)([mixin], set)
       module.exports = exports['default']
 
       /***/
     },
-    /* 280 */
+    /* 277 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -47936,7 +48308,7 @@ object-assign
 
       var _invariant2 = _interopRequireDefault(_invariant)
 
-      var _utils = __webpack_require__(281)
+      var _utils = __webpack_require__(278)
 
       var utils = _interopRequireWildcard(_utils)
 
@@ -47960,65 +48332,30 @@ object-assign
         return obj && obj.__esModule ? obj : { default: obj }
       }
 
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError('Cannot call a class as a function')
+      function _objectWithoutProperties(obj, keys) {
+        var target = {}
+        for (var i in obj) {
+          if (keys.indexOf(i) >= 0) continue
+          if (!Object.prototype.hasOwnProperty.call(obj, i)) continue
+          target[i] = obj[i]
         }
+        return target
       }
 
-      function _possibleConstructorReturn(self, call) {
-        if (!self) {
-          throw new ReferenceError(
-            "this hasn't been initialised - super() hasn't been called"
-          )
-        }
-        return call && (typeof call === 'object' || typeof call === 'function')
-          ? call
-          : self
-      }
-
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== 'function' && superClass !== null) {
-          throw new TypeError(
-            'Super expression must either be null or a function, not ' +
-              typeof superClass
-          )
-        }
-        subClass.prototype = Object.create(superClass && superClass.prototype, {
-          constructor: {
-            value: subClass,
-            enumerable: false,
-            writable: true,
-            configurable: true,
-          },
-        })
-        if (superClass)
-          Object.setPrototypeOf
-            ? Object.setPrototypeOf(subClass, superClass)
-            : (subClass.__proto__ = superClass)
-      }
-
-      function createUncontrollable(mixin, set) {
+      function createUncontrollable(mixins, set) {
         return uncontrollable
 
         function uncontrollable(Component, controlledValues) {
-          var _class, _temp
-
           var methods =
-            arguments.length > 2 && arguments[2] !== undefined
-              ? arguments[2]
-              : []
+            arguments.length <= 2 || arguments[2] === undefined
+              ? []
+              : arguments[2]
 
           var displayName =
               Component.displayName || Component.name || 'Component',
             basePropTypes = utils.getType(Component).propTypes,
             isCompositeComponent = utils.isReactComponent(Component),
-            controlledProps = Object.keys(controlledValues),
             propTypes
-
-          var OMIT_PROPS = ['valueLink', 'checkedLink'].concat(
-            controlledProps.map(utils.defaultKey)
-          )
 
           propTypes = utils.uncontrolledPropTypes(
             controlledValues,
@@ -48029,13 +48366,12 @@ object-assign
           ;(0, _invariant2.default)(
             isCompositeComponent || !methods.length,
             '[uncontrollable] stateless function components cannot pass through methods ' +
-              'because they have no associated instances. Check component: ' +
+              'becasue they have no associated instances. Check component: ' +
               displayName +
               ', ' +
               'attempting to pass through methods: ' +
               methods.join(', ')
           )
-
           methods = utils.transform(
             methods,
             function(obj, method) {
@@ -48051,117 +48387,91 @@ object-assign
             {}
           )
 
-          var component = ((_temp = _class = (function(_React$Component) {
-            _inherits(component, _React$Component)
+          var component = _react2.default.createClass(
+            _extends(
+              {
+                displayName: 'Uncontrolled(' + displayName + ')',
 
-            function component() {
-              _classCallCheck(this, component)
+                mixins: mixins,
 
-              return _possibleConstructorReturn(
-                this,
-                _React$Component.apply(this, arguments)
-              )
-            }
+                propTypes: propTypes,
+              },
+              methods,
+              {
+                componentWillMount: function componentWillMount() {
+                  var props = this.props,
+                    keys = Object.keys(controlledValues)
 
-            component.prototype.shouldComponentUpdate = function shouldComponentUpdate() {
-              for (
-                var _len = arguments.length, args = Array(_len), _key = 0;
-                _key < _len;
-                _key++
-              ) {
-                args[_key] = arguments[_key]
-              }
+                  this._values = utils.transform(
+                    keys,
+                    function(values, key) {
+                      values[key] = props[utils.defaultKey(key)]
+                    },
+                    {}
+                  )
+                },
 
-              return (
-                !mixin.shouldComponentUpdate ||
-                mixin.shouldComponentUpdate.apply(this, args)
-              )
-            }
-
-            component.prototype.componentWillMount = function componentWillMount() {
-              var _this2 = this
-
-              var props = this.props
-
-              this._values = {}
-
-              controlledProps.forEach(function(key) {
-                _this2._values[key] = props[utils.defaultKey(key)]
-              })
-            }
-
-            /**
-             * If a prop switches from controlled to Uncontrolled
-             * reset its value to the defaultValue
-             */
-
-            component.prototype.componentWillReceiveProps = function componentWillReceiveProps(
-              nextProps
-            ) {
-              var _this3 = this
-
-              var props = this.props
-
-              if (mixin.componentWillReceiveProps) {
-                mixin.componentWillReceiveProps.call(this, nextProps)
-              }
-
-              controlledProps.forEach(function(key) {
-                if (
-                  utils.getValue(nextProps, key) === undefined &&
-                  utils.getValue(props, key) !== undefined
+                /**
+                 * If a prop switches from controlled to Uncontrolled
+                 * reset its value to the defaultValue
+                 */
+                componentWillReceiveProps: function componentWillReceiveProps(
+                  nextProps
                 ) {
-                  _this3._values[key] = nextProps[utils.defaultKey(key)]
-                }
-              })
-            }
+                  var _this = this
 
-            component.prototype.componentWillUnmount = function componentWillUnmount() {
-              this.unmounted = true
-            }
+                  var props = this.props,
+                    keys = Object.keys(controlledValues)
 
-            component.prototype.getControlledInstance = function getControlledInstance() {
-              return this.refs.inner
-            }
+                  keys.forEach(function(key) {
+                    if (
+                      utils.getValue(nextProps, key) === undefined &&
+                      utils.getValue(props, key) !== undefined
+                    ) {
+                      _this._values[key] = nextProps[utils.defaultKey(key)]
+                    }
+                  })
+                },
+                render: function render() {
+                  var _this2 = this
 
-            component.prototype.render = function render() {
-              var _this4 = this
+                  var newProps = {}
+                  var _props = this.props
+                  var valueLink = _props.valueLink
+                  var checkedLink = _props.checkedLink
 
-              var newProps = {},
-                props = omitProps(this.props)
+                  var props = _objectWithoutProperties(_props, [
+                    'valueLink',
+                    'checkedLink',
+                  ])
 
-              utils.each(controlledValues, function(handle, propName) {
-                var linkPropName = utils.getLinkName(propName),
-                  prop = _this4.props[propName]
+                  utils.each(controlledValues, function(handle, propName) {
+                    var linkPropName = utils.getLinkName(propName),
+                      prop = _this2.props[propName]
 
-                if (
-                  linkPropName &&
-                  !isProp(_this4.props, propName) &&
-                  isProp(_this4.props, linkPropName)
-                ) {
-                  prop = _this4.props[linkPropName].value
-                }
+                    if (
+                      linkPropName &&
+                      !isProp(_this2.props, propName) &&
+                      isProp(_this2.props, linkPropName)
+                    ) {
+                      prop = _this2.props[linkPropName].value
+                    }
 
-                newProps[propName] =
-                  prop !== undefined ? prop : _this4._values[propName]
+                    newProps[propName] =
+                      prop !== undefined ? prop : _this2._values[propName]
 
-                newProps[handle] = setAndNotify.bind(_this4, propName)
-              })
+                    newProps[handle] = setAndNotify.bind(_this2, propName)
+                  })
 
-              newProps = _extends({}, props, newProps, {
-                ref: isCompositeComponent ? 'inner' : null,
-              })
+                  newProps = _extends({}, props, newProps, {
+                    ref: isCompositeComponent ? 'inner' : null,
+                  })
 
-              return _react2.default.createElement(Component, newProps)
-            }
-
-            return component
-          })(_react2.default.Component)),
-          (_class.displayName = 'Uncontrolled(' + displayName + ')'),
-          (_class.propTypes = propTypes),
-          _temp)
-
-          _extends(component.prototype, methods)
+                  return _react2.default.createElement(Component, newProps)
+                },
+              }
+            )
+          )
 
           component.ControlledComponent = Component
 
@@ -48171,9 +48481,9 @@ object-assign
            */
           component.deferControlTo = function(newComponent) {
             var additions =
-              arguments.length > 1 && arguments[1] !== undefined
-                ? arguments[1]
-                : {}
+              arguments.length <= 1 || arguments[1] === undefined
+                ? {}
+                : arguments[1]
             var nextMethods = arguments[2]
 
             return uncontrollable(
@@ -48194,13 +48504,13 @@ object-assign
             }
 
             for (
-              var _len2 = arguments.length,
-                args = Array(_len2 > 2 ? _len2 - 2 : 0),
-                _key2 = 2;
-              _key2 < _len2;
-              _key2++
+              var _len = arguments.length,
+                args = Array(_len > 2 ? _len - 2 : 0),
+                _key = 2;
+              _key < _len;
+              _key++
             ) {
-              args[_key2 - 2] = arguments[_key2]
+              args[_key - 2] = arguments[_key]
             }
 
             set(this, propName, handler, value, args)
@@ -48209,28 +48519,19 @@ object-assign
           function isProp(props, prop) {
             return props[prop] !== undefined
           }
-
-          function omitProps(props) {
-            var result = {}
-
-            utils.each(props, function(value, key) {
-              if (OMIT_PROPS.indexOf(key) === -1) result[key] = value
-            })
-
-            return result
-          }
         }
       }
       module.exports = exports['default']
 
       /***/
     },
-    /* 281 */
+    /* 278 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
         exports.__esModule = true
         exports.version = undefined
+        exports.customPropType = customPropType
         exports.uncontrolledPropTypes = uncontrolledPropTypes
         exports.getType = getType
         exports.getValue = getValue
@@ -48239,8 +48540,8 @@ object-assign
         exports.chain = chain
         exports.transform = transform
         exports.each = each
-        exports.has = has
         exports.isReactComponent = isReactComponent
+        exports.has = has
 
         var _react = __webpack_require__(0)
 
@@ -48254,7 +48555,7 @@ object-assign
           return obj && obj.__esModule ? obj : { default: obj }
         }
 
-        function readOnlyPropType(handler, name) {
+        function customPropType(handler, propType, name) {
           return function(props, propName) {
             if (props[propName] !== undefined) {
               if (!props[handler]) {
@@ -48274,6 +48575,8 @@ object-assign
                     '`'
                 )
               }
+
+              return propType && propType(props, propName, name)
             }
           }
         }
@@ -48289,6 +48592,8 @@ object-assign
             transform(
               controlledValues,
               function(obj, handler, prop) {
+                var type = basePropTypes[prop]
+
                 ;(0, _invariant2.default)(
                   typeof handler === 'string' && handler.trim().length,
                   'Uncontrollable - [%s]: the prop `%s` needs a valid handler key name in order to make it uncontrollable',
@@ -48296,7 +48601,9 @@ object-assign
                   prop
                 )
 
-                obj[prop] = readOnlyPropType(handler, displayName)
+                obj[prop] = customPropType(handler, type, displayName)
+
+                if (type !== undefined) obj[defaultKey(prop)] = type
               },
               propTypes
             )
@@ -48374,10 +48681,6 @@ object-assign
           }
         }
 
-        function has(o, k) {
-          return o ? Object.prototype.hasOwnProperty.call(o, k) : false
-        }
-
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          * All rights reserved.
@@ -48393,19 +48696,23 @@ object-assign
             component.prototype.isReactComponent
           )
         }
+
+        function has(o, k) {
+          return o ? Object.prototype.hasOwnProperty.call(o, k) : false
+        }
         /* WEBPACK VAR INJECTION */
       }.call(exports, __webpack_require__(2)))
 
       /***/
     },
-    /* 282 */
+    /* 279 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
       exports.__esModule = true
       exports.default = all
 
-      var _createChainableTypeChecker = __webpack_require__(53)
+      var _createChainableTypeChecker = __webpack_require__(56)
 
       var _createChainableTypeChecker2 = _interopRequireDefault(
         _createChainableTypeChecker
@@ -48454,7 +48761,7 @@ object-assign
 
       /***/
     },
-    /* 283 */
+    /* 280 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -48496,47 +48803,47 @@ object-assign
 
       var _localizer2 = _interopRequireDefault(_localizer)
 
-      var _chunk = __webpack_require__(284)
+      var _chunk = __webpack_require__(281)
 
       var _chunk2 = _interopRequireDefault(_chunk)
 
       var _constants = __webpack_require__(13)
 
-      var _helpers = __webpack_require__(31)
+      var _helpers = __webpack_require__(37)
 
-      var _position = __webpack_require__(143)
+      var _position = __webpack_require__(283)
 
       var _position2 = _interopRequireDefault(_position)
 
-      var _requestAnimationFrame = __webpack_require__(294)
+      var _requestAnimationFrame = __webpack_require__(290)
 
       var _requestAnimationFrame2 = _interopRequireDefault(
         _requestAnimationFrame
       )
 
-      var _Popup = __webpack_require__(295)
+      var _Popup = __webpack_require__(291)
 
       var _Popup2 = _interopRequireDefault(_Popup)
 
-      var _Overlay = __webpack_require__(296)
+      var _Overlay = __webpack_require__(292)
 
       var _Overlay2 = _interopRequireDefault(_Overlay)
 
-      var _DateContentRow = __webpack_require__(150)
+      var _DateContentRow = __webpack_require__(151)
 
       var _DateContentRow2 = _interopRequireDefault(_DateContentRow)
 
-      var _Header = __webpack_require__(155)
+      var _Header = __webpack_require__(156)
 
       var _Header2 = _interopRequireDefault(_Header)
 
-      var _DateHeader = __webpack_require__(314)
+      var _DateHeader = __webpack_require__(323)
 
       var _DateHeader2 = _interopRequireDefault(_DateHeader)
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _eventLevels = __webpack_require__(20)
+      var _eventLevels = __webpack_require__(21)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -49052,11 +49359,11 @@ object-assign
 
       /***/
     },
-    /* 284 */
+    /* 281 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseSlice = __webpack_require__(140),
-        isIterateeCall = __webpack_require__(84),
-        toInteger = __webpack_require__(141)
+      var baseSlice = __webpack_require__(135),
+        isIterateeCall = __webpack_require__(87),
+        toInteger = __webpack_require__(136)
 
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeCeil = Math.ceil,
@@ -49107,10 +49414,10 @@ object-assign
 
       /***/
     },
-    /* 285 */
+    /* 282 */
     /***/ function(module, exports, __webpack_require__) {
       var isObject = __webpack_require__(10),
-        isSymbol = __webpack_require__(47)
+        isSymbol = __webpack_require__(51)
 
       /** Used as references for various `Number` constants. */
       var NAN = 0 / 0
@@ -49179,46 +49486,152 @@ object-assign
 
       /***/
     },
-    /* 286 */
+    /* 283 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = offsetParent
+      var babelHelpers = __webpack_require__(58)
 
-      var _ownerDocument = __webpack_require__(85)
+      exports.__esModule = true
+      exports['default'] = position
 
-      var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
+      var _offset = __webpack_require__(59)
 
-      var _style = __webpack_require__(144)
+      var _offset2 = babelHelpers.interopRequireDefault(_offset)
 
-      var _style2 = _interopRequireDefault(_style)
+      var _offsetParent = __webpack_require__(284)
 
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
+      var _offsetParent2 = babelHelpers.interopRequireDefault(_offsetParent)
+
+      var _scrollTop = __webpack_require__(141)
+
+      var _scrollTop2 = babelHelpers.interopRequireDefault(_scrollTop)
+
+      var _scrollLeft = __webpack_require__(142)
+
+      var _scrollLeft2 = babelHelpers.interopRequireDefault(_scrollLeft)
+
+      var _style = __webpack_require__(139)
+
+      var _style2 = babelHelpers.interopRequireDefault(_style)
+
+      function nodeName(node) {
+        return node.nodeName && node.nodeName.toLowerCase()
       }
+
+      function position(node, offsetParent) {
+        var parentOffset = { top: 0, left: 0 },
+          offset
+
+        // Fixed elements are offset from window (parentOffset = {top:0, left: 0},
+        // because it is its only offset parent
+        if ((0, _style2['default'])(node, 'position') === 'fixed') {
+          offset = node.getBoundingClientRect()
+        } else {
+          offsetParent = offsetParent || (0, _offsetParent2['default'])(node)
+          offset = (0, _offset2['default'])(node)
+
+          if (nodeName(offsetParent) !== 'html')
+            parentOffset = (0, _offset2['default'])(offsetParent)
+
+          parentOffset.top +=
+            parseInt(
+              (0, _style2['default'])(offsetParent, 'borderTopWidth'),
+              10
+            ) - (0, _scrollTop2['default'])(offsetParent) || 0
+          parentOffset.left +=
+            parseInt(
+              (0, _style2['default'])(offsetParent, 'borderLeftWidth'),
+              10
+            ) - (0, _scrollLeft2['default'])(offsetParent) || 0
+        }
+
+        // Subtract parent offsets and node margins
+        return babelHelpers._extends({}, offset, {
+          top:
+            offset.top -
+            parentOffset.top -
+            (parseInt((0, _style2['default'])(node, 'marginTop'), 10) || 0),
+          left:
+            offset.left -
+            parentOffset.left -
+            (parseInt((0, _style2['default'])(node, 'marginLeft'), 10) || 0),
+        })
+      }
+
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 284 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var babelHelpers = __webpack_require__(58)
+
+      exports.__esModule = true
+      exports['default'] = offsetParent
+
+      var _ownerDocument = __webpack_require__(138)
+
+      var _ownerDocument2 = babelHelpers.interopRequireDefault(_ownerDocument)
+
+      var _style = __webpack_require__(139)
+
+      var _style2 = babelHelpers.interopRequireDefault(_style)
 
       function nodeName(node) {
         return node.nodeName && node.nodeName.toLowerCase()
       }
 
       function offsetParent(node) {
-        var doc = (0, _ownerDocument2.default)(node),
+        var doc = (0, _ownerDocument2['default'])(node),
           offsetParent = node && node.offsetParent
 
         while (
           offsetParent &&
           nodeName(node) !== 'html' &&
-          (0, _style2.default)(offsetParent, 'position') === 'static'
+          (0, _style2['default'])(offsetParent, 'position') === 'static'
         ) {
           offsetParent = offsetParent.offsetParent
         }
 
         return offsetParent || doc.documentElement
       }
+
       module.exports = exports['default']
+
+      /***/
+    },
+    /* 285 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var rHyphen = /-(.)/g
+
+      module.exports = function camelize(string) {
+        return string.replace(rHyphen, function(_, chr) {
+          return chr.toUpperCase()
+        })
+      }
+
+      /***/
+    },
+    /* 286 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+      /**
+       * Copyright 2013-2014, Facebook, Inc.
+       * All rights reserved.
+       * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/hyphenateStyleName.js
+       */
+
+      var hyphenate = __webpack_require__(287)
+      var msPattern = /^ms-/
+
+      module.exports = function hyphenateStyleName(string) {
+        return hyphenate(string).replace(msPattern, '-ms-')
+      }
 
       /***/
     },
@@ -49226,18 +49639,11 @@ object-assign
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = camelize
-      var rHyphen = /-(.)/g
+      var rUpper = /([A-Z])/g
 
-      function camelize(string) {
-        return string.replace(rHyphen, function(_, chr) {
-          return chr.toUpperCase()
-        })
+      module.exports = function hyphenate(string) {
+        return string.replace(rUpper, '-$1').toLowerCase()
       }
-      module.exports = exports['default']
 
       /***/
     },
@@ -49245,71 +49651,18 @@ object-assign
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = hyphenateStyleName
+      var babelHelpers = __webpack_require__(58)
 
-      var _hyphenate = __webpack_require__(289)
+      var _utilCamelizeStyle = __webpack_require__(140)
 
-      var _hyphenate2 = _interopRequireDefault(_hyphenate)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var msPattern = /^ms-/ /**
-       * Copyright 2013-2014, Facebook, Inc.
-       * All rights reserved.
-       * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/hyphenateStyleName.js
-       */
-
-      function hyphenateStyleName(string) {
-        return (0, _hyphenate2.default)(string).replace(msPattern, '-ms-')
-      }
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 289 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = hyphenate
-
-      var rUpper = /([A-Z])/g
-
-      function hyphenate(string) {
-        return string.replace(rUpper, '-$1').toLowerCase()
-      }
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 290 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = _getComputedStyle
-
-      var _camelizeStyle = __webpack_require__(145)
-
-      var _camelizeStyle2 = _interopRequireDefault(_camelizeStyle)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
+      var _utilCamelizeStyle2 = babelHelpers.interopRequireDefault(
+        _utilCamelizeStyle
+      )
 
       var rposition = /^(top|right|bottom|left)$/
       var rnumnonpx = /^([+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|))(?!px)[a-z%]+$/i
 
-      function _getComputedStyle(node) {
+      module.exports = function _getComputedStyle(node) {
         if (!node)
           throw new TypeError('No Element passed to `getComputedStyle()`')
         var doc = node.ownerDocument
@@ -49323,7 +49676,7 @@ object-assign
               getPropertyValue: function getPropertyValue(prop) {
                 var style = node.style
 
-                prop = (0, _camelizeStyle2.default)(prop)
+                prop = (0, _utilCamelizeStyle2['default'])(prop)
 
                 if (prop == 'float') prop = 'styleFloat'
 
@@ -49353,191 +49706,31 @@ object-assign
               },
             }
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 291 */
+    /* 289 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = removeStyle
-      function removeStyle(node, key) {
+      module.exports = function removeStyle(node, key) {
         return 'removeProperty' in node.style
           ? node.style.removeProperty(key)
           : node.style.removeAttribute(key)
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 292 */
+    /* 290 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.animationEnd = exports.animationDelay = exports.animationTiming = exports.animationDuration = exports.animationName = exports.transitionEnd = exports.transitionDuration = exports.transitionDelay = exports.transitionTiming = exports.transitionProperty = exports.transform = undefined
+      var canUseDOM = __webpack_require__(26)
 
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var transform = 'transform'
-      var prefix = void 0,
-        transitionEnd = void 0,
-        animationEnd = void 0
-      var transitionProperty = void 0,
-        transitionDuration = void 0,
-        transitionTiming = void 0,
-        transitionDelay = void 0
-      var animationName = void 0,
-        animationDuration = void 0,
-        animationTiming = void 0,
-        animationDelay = void 0
-
-      if (_inDOM2.default) {
-        var _getTransitionPropert = getTransitionProperties()
-
-        prefix = _getTransitionPropert.prefix
-        exports.transitionEnd = transitionEnd =
-          _getTransitionPropert.transitionEnd
-        exports.animationEnd = animationEnd = _getTransitionPropert.animationEnd
-
-        exports.transform = transform = prefix + '-' + transform
-        exports.transitionProperty = transitionProperty =
-          prefix + '-transition-property'
-        exports.transitionDuration = transitionDuration =
-          prefix + '-transition-duration'
-        exports.transitionDelay = transitionDelay = prefix + '-transition-delay'
-        exports.transitionTiming = transitionTiming =
-          prefix + '-transition-timing-function'
-
-        exports.animationName = animationName = prefix + '-animation-name'
-        exports.animationDuration = animationDuration =
-          prefix + '-animation-duration'
-        exports.animationTiming = animationTiming = prefix + '-animation-delay'
-        exports.animationDelay = animationDelay =
-          prefix + '-animation-timing-function'
-      }
-
-      exports.transform = transform
-      exports.transitionProperty = transitionProperty
-      exports.transitionTiming = transitionTiming
-      exports.transitionDelay = transitionDelay
-      exports.transitionDuration = transitionDuration
-      exports.transitionEnd = transitionEnd
-      exports.animationName = animationName
-      exports.animationDuration = animationDuration
-      exports.animationTiming = animationTiming
-      exports.animationDelay = animationDelay
-      exports.animationEnd = animationEnd
-      exports.default = {
-        transform: transform,
-        end: transitionEnd,
-        property: transitionProperty,
-        timing: transitionTiming,
-        delay: transitionDelay,
-        duration: transitionDuration,
-      }
-
-      function getTransitionProperties() {
-        var style = document.createElement('div').style
-
-        var vendorMap = {
-          O: function O(e) {
-            return 'o' + e.toLowerCase()
-          },
-          Moz: function Moz(e) {
-            return e.toLowerCase()
-          },
-          Webkit: function Webkit(e) {
-            return 'webkit' + e
-          },
-          ms: function ms(e) {
-            return 'MS' + e
-          },
-        }
-
-        var vendors = Object.keys(vendorMap)
-
-        var transitionEnd = void 0,
-          animationEnd = void 0
-        var prefix = ''
-
-        for (var i = 0; i < vendors.length; i++) {
-          var vendor = vendors[i]
-
-          if (vendor + 'TransitionProperty' in style) {
-            prefix = '-' + vendor.toLowerCase()
-            transitionEnd = vendorMap[vendor]('TransitionEnd')
-            animationEnd = vendorMap[vendor]('AnimationEnd')
-            break
-          }
-        }
-
-        if (!transitionEnd && 'transitionProperty' in style)
-          transitionEnd = 'transitionend'
-
-        if (!animationEnd && 'animationName' in style)
-          animationEnd = 'animationend'
-
-        style = null
-
-        return {
-          animationEnd: animationEnd,
-          transitionEnd: transitionEnd,
-          prefix: prefix,
-        }
-      }
-
-      /***/
-    },
-    /* 293 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = isTransform
-      var supportedTransforms = /^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i
-
-      function isTransform(property) {
-        return !!(property && supportedTransforms.test(property))
-      }
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 294 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var vendors = ['', 'webkit', 'moz', 'o', 'ms']
-      var cancel = 'clearTimeout'
-      var raf = fallback
-      var compatRaf = void 0
+      var vendors = ['', 'webkit', 'moz', 'o', 'ms'],
+        cancel = 'clearTimeout',
+        raf = fallback,
+        compatRaf
 
       var getKey = function getKey(vendor, k) {
         return (
@@ -49547,13 +49740,13 @@ object-assign
         )
       }
 
-      if (_inDOM2.default) {
+      if (canUseDOM) {
         vendors.some(function(vendor) {
           var rafKey = getKey(vendor, 'request')
 
           if (rafKey in window) {
             cancel = getKey(vendor, 'cancel')
-            return (raf = function raf(cb) {
+            return (raf = function(cb) {
               return window[rafKey](cb)
             })
           }
@@ -49562,6 +49755,7 @@ object-assign
 
       /* https://github.com/component/raf */
       var prev = new Date().getTime()
+
       function fallback(fn) {
         var curr = new Date().getTime(),
           ms = Math.max(0, 16 - (curr - prev)),
@@ -49571,20 +49765,18 @@ object-assign
         return req
       }
 
-      compatRaf = function compatRaf(cb) {
+      compatRaf = function(cb) {
         return raf(cb)
       }
       compatRaf.cancel = function(id) {
-        window[cancel] &&
-          typeof window[cancel] === 'function' &&
-          window[cancel](id)
+        return window[cancel](id)
       }
-      exports.default = compatRaf
-      module.exports = exports['default']
+
+      module.exports = compatRaf
 
       /***/
     },
-    /* 295 */
+    /* 291 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -49612,23 +49804,23 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _offset = __webpack_require__(32)
+      var _offset = __webpack_require__(59)
 
       var _offset2 = _interopRequireDefault(_offset)
 
-      var _scrollTop = __webpack_require__(86)
+      var _scrollTop = __webpack_require__(141)
 
       var _scrollTop2 = _interopRequireDefault(_scrollTop)
 
-      var _scrollLeft = __webpack_require__(146)
+      var _scrollLeft = __webpack_require__(142)
 
       var _scrollLeft2 = _interopRequireDefault(_scrollLeft)
 
-      var _EventCell = __webpack_require__(147)
+      var _EventCell = __webpack_require__(143)
 
       var _EventCell2 = _interopRequireDefault(_EventCell)
 
-      var _selection = __webpack_require__(34)
+      var _selection = __webpack_require__(39)
 
       var _localizer = __webpack_require__(6)
 
@@ -49807,7 +49999,7 @@ object-assign
 
       /***/
     },
-    /* 296 */
+    /* 292 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -49854,19 +50046,19 @@ object-assign
 
       var _propTypes2 = _interopRequireDefault(_propTypes)
 
-      var _Portal = __webpack_require__(297)
+      var _Portal = __webpack_require__(293)
 
       var _Portal2 = _interopRequireDefault(_Portal)
 
-      var _Position = __webpack_require__(298)
+      var _Position = __webpack_require__(294)
 
       var _Position2 = _interopRequireDefault(_Position)
 
-      var _RootCloseWrapper = __webpack_require__(300)
+      var _RootCloseWrapper = __webpack_require__(306)
 
       var _RootCloseWrapper2 = _interopRequireDefault(_RootCloseWrapper)
 
-      var _elementType = __webpack_require__(137)
+      var _elementType = __webpack_require__(132)
 
       var _elementType2 = _interopRequireDefault(_elementType)
 
@@ -50149,7 +50341,7 @@ object-assign
 
       /***/
     },
-    /* 297 */
+    /* 293 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -50186,15 +50378,15 @@ object-assign
 
       var _reactDom2 = _interopRequireDefault(_reactDom)
 
-      var _componentOrElement = __webpack_require__(148)
+      var _componentOrElement = __webpack_require__(144)
 
       var _componentOrElement2 = _interopRequireDefault(_componentOrElement)
 
-      var _ownerDocument = __webpack_require__(56)
+      var _ownerDocument = __webpack_require__(60)
 
       var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
 
-      var _getContainer = __webpack_require__(149)
+      var _getContainer = __webpack_require__(145)
 
       var _getContainer2 = _interopRequireDefault(_getContainer)
 
@@ -50401,7 +50593,7 @@ object-assign
 
       /***/
     },
-    /* 298 */
+    /* 294 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -50456,19 +50648,19 @@ object-assign
 
       var _reactDom2 = _interopRequireDefault(_reactDom)
 
-      var _componentOrElement = __webpack_require__(148)
+      var _componentOrElement = __webpack_require__(144)
 
       var _componentOrElement2 = _interopRequireDefault(_componentOrElement)
 
-      var _calculatePosition = __webpack_require__(299)
+      var _calculatePosition = __webpack_require__(295)
 
       var _calculatePosition2 = _interopRequireDefault(_calculatePosition)
 
-      var _getContainer = __webpack_require__(149)
+      var _getContainer = __webpack_require__(145)
 
       var _getContainer2 = _interopRequireDefault(_getContainer)
 
-      var _ownerDocument = __webpack_require__(56)
+      var _ownerDocument = __webpack_require__(60)
 
       var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
 
@@ -50744,7 +50936,7 @@ object-assign
 
       /***/
     },
-    /* 299 */
+    /* 295 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -50753,19 +50945,19 @@ object-assign
       })
       exports.default = calculatePosition
 
-      var _offset = __webpack_require__(32)
+      var _offset = __webpack_require__(146)
 
       var _offset2 = _interopRequireDefault(_offset)
 
-      var _position = __webpack_require__(143)
+      var _position = __webpack_require__(296)
 
       var _position2 = _interopRequireDefault(_position)
 
-      var _scrollTop = __webpack_require__(86)
+      var _scrollTop = __webpack_require__(150)
 
       var _scrollTop2 = _interopRequireDefault(_scrollTop)
 
-      var _ownerDocument = __webpack_require__(56)
+      var _ownerDocument = __webpack_require__(60)
 
       var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
 
@@ -50912,7 +51104,479 @@ object-assign
 
       /***/
     },
+    /* 296 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+
+      var _extends =
+        Object.assign ||
+        function(target) {
+          for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i]
+            for (var key in source) {
+              if (Object.prototype.hasOwnProperty.call(source, key)) {
+                target[key] = source[key]
+              }
+            }
+          }
+          return target
+        }
+
+      exports.default = position
+
+      var _offset = __webpack_require__(146)
+
+      var _offset2 = _interopRequireDefault(_offset)
+
+      var _offsetParent = __webpack_require__(297)
+
+      var _offsetParent2 = _interopRequireDefault(_offsetParent)
+
+      var _scrollTop = __webpack_require__(150)
+
+      var _scrollTop2 = _interopRequireDefault(_scrollTop)
+
+      var _scrollLeft = __webpack_require__(305)
+
+      var _scrollLeft2 = _interopRequireDefault(_scrollLeft)
+
+      var _style = __webpack_require__(148)
+
+      var _style2 = _interopRequireDefault(_style)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      function nodeName(node) {
+        return node.nodeName && node.nodeName.toLowerCase()
+      }
+
+      function position(node, offsetParent) {
+        var parentOffset = { top: 0, left: 0 },
+          offset
+
+        // Fixed elements are offset from window (parentOffset = {top:0, left: 0},
+        // because it is its only offset parent
+        if ((0, _style2.default)(node, 'position') === 'fixed') {
+          offset = node.getBoundingClientRect()
+        } else {
+          offsetParent = offsetParent || (0, _offsetParent2.default)(node)
+          offset = (0, _offset2.default)(node)
+
+          if (nodeName(offsetParent) !== 'html')
+            parentOffset = (0, _offset2.default)(offsetParent)
+
+          parentOffset.top +=
+            parseInt((0, _style2.default)(offsetParent, 'borderTopWidth'), 10) -
+              (0, _scrollTop2.default)(offsetParent) || 0
+          parentOffset.left +=
+            parseInt(
+              (0, _style2.default)(offsetParent, 'borderLeftWidth'),
+              10
+            ) - (0, _scrollLeft2.default)(offsetParent) || 0
+        }
+
+        // Subtract parent offsets and node margins
+        return _extends({}, offset, {
+          top:
+            offset.top -
+            parentOffset.top -
+            (parseInt((0, _style2.default)(node, 'marginTop'), 10) || 0),
+          left:
+            offset.left -
+            parentOffset.left -
+            (parseInt((0, _style2.default)(node, 'marginLeft'), 10) || 0),
+        })
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 297 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = offsetParent
+
+      var _ownerDocument = __webpack_require__(89)
+
+      var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
+
+      var _style = __webpack_require__(148)
+
+      var _style2 = _interopRequireDefault(_style)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      function nodeName(node) {
+        return node.nodeName && node.nodeName.toLowerCase()
+      }
+
+      function offsetParent(node) {
+        var doc = (0, _ownerDocument2.default)(node),
+          offsetParent = node && node.offsetParent
+
+        while (
+          offsetParent &&
+          nodeName(node) !== 'html' &&
+          (0, _style2.default)(offsetParent, 'position') === 'static'
+        ) {
+          offsetParent = offsetParent.offsetParent
+        }
+
+        return offsetParent || doc.documentElement
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 298 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = camelize
+      var rHyphen = /-(.)/g
+
+      function camelize(string) {
+        return string.replace(rHyphen, function(_, chr) {
+          return chr.toUpperCase()
+        })
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 299 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = hyphenateStyleName
+
+      var _hyphenate = __webpack_require__(300)
+
+      var _hyphenate2 = _interopRequireDefault(_hyphenate)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      var msPattern = /^ms-/ /**
+       * Copyright 2013-2014, Facebook, Inc.
+       * All rights reserved.
+       * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/hyphenateStyleName.js
+       */
+
+      function hyphenateStyleName(string) {
+        return (0, _hyphenate2.default)(string).replace(msPattern, '-ms-')
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
     /* 300 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = hyphenate
+
+      var rUpper = /([A-Z])/g
+
+      function hyphenate(string) {
+        return string.replace(rUpper, '-$1').toLowerCase()
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 301 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = _getComputedStyle
+
+      var _camelizeStyle = __webpack_require__(149)
+
+      var _camelizeStyle2 = _interopRequireDefault(_camelizeStyle)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      var rposition = /^(top|right|bottom|left)$/
+      var rnumnonpx = /^([+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|))(?!px)[a-z%]+$/i
+
+      function _getComputedStyle(node) {
+        if (!node)
+          throw new TypeError('No Element passed to `getComputedStyle()`')
+        var doc = node.ownerDocument
+
+        return 'defaultView' in doc
+          ? doc.defaultView.opener
+            ? node.ownerDocument.defaultView.getComputedStyle(node, null)
+            : window.getComputedStyle(node, null)
+          : {
+              //ie 8 "magic" from: https://github.com/jquery/jquery/blob/1.11-stable/src/css/curCSS.js#L72
+              getPropertyValue: function getPropertyValue(prop) {
+                var style = node.style
+
+                prop = (0, _camelizeStyle2.default)(prop)
+
+                if (prop == 'float') prop = 'styleFloat'
+
+                var current = node.currentStyle[prop] || null
+
+                if (current == null && style && style[prop])
+                  current = style[prop]
+
+                if (rnumnonpx.test(current) && !rposition.test(prop)) {
+                  // Remember the original values
+                  var left = style.left
+                  var runStyle = node.runtimeStyle
+                  var rsLeft = runStyle && runStyle.left
+
+                  // Put in the new values to get a computed value out
+                  if (rsLeft) runStyle.left = node.currentStyle.left
+
+                  style.left = prop === 'fontSize' ? '1em' : current
+                  current = style.pixelLeft + 'px'
+
+                  // Revert the changed values
+                  style.left = left
+                  if (rsLeft) runStyle.left = rsLeft
+                }
+
+                return current
+              },
+            }
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 302 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = removeStyle
+      function removeStyle(node, key) {
+        return 'removeProperty' in node.style
+          ? node.style.removeProperty(key)
+          : node.style.removeAttribute(key)
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 303 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.animationEnd = exports.animationDelay = exports.animationTiming = exports.animationDuration = exports.animationName = exports.transitionEnd = exports.transitionDuration = exports.transitionDelay = exports.transitionTiming = exports.transitionProperty = exports.transform = undefined
+
+      var _inDOM = __webpack_require__(61)
+
+      var _inDOM2 = _interopRequireDefault(_inDOM)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      var transform = 'transform'
+      var prefix = void 0,
+        transitionEnd = void 0,
+        animationEnd = void 0
+      var transitionProperty = void 0,
+        transitionDuration = void 0,
+        transitionTiming = void 0,
+        transitionDelay = void 0
+      var animationName = void 0,
+        animationDuration = void 0,
+        animationTiming = void 0,
+        animationDelay = void 0
+
+      if (_inDOM2.default) {
+        var _getTransitionPropert = getTransitionProperties()
+
+        prefix = _getTransitionPropert.prefix
+        exports.transitionEnd = transitionEnd =
+          _getTransitionPropert.transitionEnd
+        exports.animationEnd = animationEnd = _getTransitionPropert.animationEnd
+
+        exports.transform = transform = prefix + '-' + transform
+        exports.transitionProperty = transitionProperty =
+          prefix + '-transition-property'
+        exports.transitionDuration = transitionDuration =
+          prefix + '-transition-duration'
+        exports.transitionDelay = transitionDelay = prefix + '-transition-delay'
+        exports.transitionTiming = transitionTiming =
+          prefix + '-transition-timing-function'
+
+        exports.animationName = animationName = prefix + '-animation-name'
+        exports.animationDuration = animationDuration =
+          prefix + '-animation-duration'
+        exports.animationTiming = animationTiming = prefix + '-animation-delay'
+        exports.animationDelay = animationDelay =
+          prefix + '-animation-timing-function'
+      }
+
+      exports.transform = transform
+      exports.transitionProperty = transitionProperty
+      exports.transitionTiming = transitionTiming
+      exports.transitionDelay = transitionDelay
+      exports.transitionDuration = transitionDuration
+      exports.transitionEnd = transitionEnd
+      exports.animationName = animationName
+      exports.animationDuration = animationDuration
+      exports.animationTiming = animationTiming
+      exports.animationDelay = animationDelay
+      exports.animationEnd = animationEnd
+      exports.default = {
+        transform: transform,
+        end: transitionEnd,
+        property: transitionProperty,
+        timing: transitionTiming,
+        delay: transitionDelay,
+        duration: transitionDuration,
+      }
+
+      function getTransitionProperties() {
+        var style = document.createElement('div').style
+
+        var vendorMap = {
+          O: function O(e) {
+            return 'o' + e.toLowerCase()
+          },
+          Moz: function Moz(e) {
+            return e.toLowerCase()
+          },
+          Webkit: function Webkit(e) {
+            return 'webkit' + e
+          },
+          ms: function ms(e) {
+            return 'MS' + e
+          },
+        }
+
+        var vendors = Object.keys(vendorMap)
+
+        var transitionEnd = void 0,
+          animationEnd = void 0
+        var prefix = ''
+
+        for (var i = 0; i < vendors.length; i++) {
+          var vendor = vendors[i]
+
+          if (vendor + 'TransitionProperty' in style) {
+            prefix = '-' + vendor.toLowerCase()
+            transitionEnd = vendorMap[vendor]('TransitionEnd')
+            animationEnd = vendorMap[vendor]('AnimationEnd')
+            break
+          }
+        }
+
+        if (!transitionEnd && 'transitionProperty' in style)
+          transitionEnd = 'transitionend'
+
+        if (!animationEnd && 'animationName' in style)
+          animationEnd = 'animationend'
+
+        style = null
+
+        return {
+          animationEnd: animationEnd,
+          transitionEnd: transitionEnd,
+          prefix: prefix,
+        }
+      }
+
+      /***/
+    },
+    /* 304 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = isTransform
+      var supportedTransforms = /^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i
+
+      function isTransform(property) {
+        return !!(property && supportedTransforms.test(property))
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 305 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+      exports.default = scrollTop
+
+      var _isWindow = __webpack_require__(90)
+
+      var _isWindow2 = _interopRequireDefault(_isWindow)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      function scrollTop(node, val) {
+        var win = (0, _isWindow2.default)(node)
+
+        if (val === undefined)
+          return win
+            ? 'pageXOffset' in win
+              ? win.pageXOffset
+              : win.document.documentElement.scrollLeft
+            : node.scrollLeft
+
+        if (win)
+          win.scrollTo(
+            val,
+            'pageYOffset' in win
+              ? win.pageYOffset
+              : win.document.documentElement.scrollTop
+          )
+        else node.scrollLeft = val
+      }
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 306 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -50937,7 +51601,7 @@ object-assign
         }
       })()
 
-      var _contains = __webpack_require__(55)
+      var _contains = __webpack_require__(147)
 
       var _contains2 = _interopRequireDefault(_contains)
 
@@ -50953,11 +51617,11 @@ object-assign
 
       var _reactDom2 = _interopRequireDefault(_reactDom)
 
-      var _addEventListener = __webpack_require__(301)
+      var _addEventListener = __webpack_require__(307)
 
       var _addEventListener2 = _interopRequireDefault(_addEventListener)
 
-      var _ownerDocument = __webpack_require__(56)
+      var _ownerDocument = __webpack_require__(60)
 
       var _ownerDocument2 = _interopRequireDefault(_ownerDocument)
 
@@ -51176,7 +51840,7 @@ object-assign
 
       /***/
     },
-    /* 301 */
+    /* 307 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -51194,11 +51858,11 @@ object-assign
         }
       }
 
-      var _on = __webpack_require__(87)
+      var _on = __webpack_require__(308)
 
       var _on2 = _interopRequireDefault(_on)
 
-      var _off = __webpack_require__(88)
+      var _off = __webpack_require__(309)
 
       var _off2 = _interopRequireDefault(_off)
 
@@ -51210,11 +51874,90 @@ object-assign
 
       /***/
     },
-    /* 302 */
+    /* 308 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseFindIndex = __webpack_require__(152),
-        baseIteratee = __webpack_require__(72),
-        toInteger = __webpack_require__(141)
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+
+      var _inDOM = __webpack_require__(61)
+
+      var _inDOM2 = _interopRequireDefault(_inDOM)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      var on = function on() {}
+      if (_inDOM2.default) {
+        on = (function() {
+          if (document.addEventListener)
+            return function(node, eventName, handler, capture) {
+              return node.addEventListener(eventName, handler, capture || false)
+            }
+          else if (document.attachEvent)
+            return function(node, eventName, handler) {
+              return node.attachEvent('on' + eventName, function(e) {
+                e = e || window.event
+                e.target = e.target || e.srcElement
+                e.currentTarget = node
+                handler.call(node, e)
+              })
+            }
+        })()
+      }
+
+      exports.default = on
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 309 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      Object.defineProperty(exports, '__esModule', {
+        value: true,
+      })
+
+      var _inDOM = __webpack_require__(61)
+
+      var _inDOM2 = _interopRequireDefault(_inDOM)
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj }
+      }
+
+      var off = function off() {}
+      if (_inDOM2.default) {
+        off = (function() {
+          if (document.addEventListener)
+            return function(node, eventName, handler, capture) {
+              return node.removeEventListener(
+                eventName,
+                handler,
+                capture || false
+              )
+            }
+          else if (document.attachEvent)
+            return function(node, eventName, handler) {
+              return node.detachEvent('on' + eventName, handler)
+            }
+        })()
+      }
+
+      exports.default = off
+      module.exports = exports['default']
+
+      /***/
+    },
+    /* 310 */
+    /***/ function(module, exports, __webpack_require__) {
+      var baseFindIndex = __webpack_require__(153),
+        baseIteratee = __webpack_require__(78),
+        toInteger = __webpack_require__(136)
 
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeMax = Math.max
@@ -51270,7 +52013,7 @@ object-assign
 
       /***/
     },
-    /* 303 */
+    /* 311 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -51308,15 +52051,15 @@ object-assign
 
       var _dates2 = _interopRequireDefault(_dates)
 
-      var _eventLevels = __webpack_require__(20)
+      var _eventLevels = __webpack_require__(21)
 
-      var _helpers = __webpack_require__(31)
+      var _helpers = __webpack_require__(37)
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _selection = __webpack_require__(34)
+      var _selection = __webpack_require__(39)
 
-      var _Selection = __webpack_require__(153)
+      var _Selection = __webpack_require__(154)
 
       var _Selection2 = _interopRequireDefault(_Selection)
 
@@ -51594,22 +52337,18 @@ object-assign
 
       /***/
     },
-    /* 304 */
+    /* 312 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = closest
+      var babelHelpers = __webpack_require__(58)
 
-      var _matches = __webpack_require__(305)
+      exports.__esModule = true
+      exports['default'] = closest
 
-      var _matches2 = _interopRequireDefault(_matches)
+      var _matches = __webpack_require__(313)
 
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
+      var _matches2 = babelHelpers.interopRequireDefault(_matches)
 
       var isDoc = function isDoc(obj) {
         return obj != null && obj.nodeType === obj.DOCUMENT_NODE
@@ -51618,195 +52357,143 @@ object-assign
       function closest(node, selector, context) {
         while (
           node &&
-          (isDoc(node) || !(0, _matches2.default)(node, selector))
+          (isDoc(node) || !(0, _matches2['default'])(node, selector))
         ) {
           node = node !== context && !isDoc(node) ? node.parentNode : undefined
         }
         return node
       }
+
       module.exports = exports['default']
 
       /***/
     },
-    /* 305 */
+    /* 313 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
+      var canUseDOM = __webpack_require__(26),
+        qsa = __webpack_require__(91),
+        matches
 
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      var _querySelectorAll = __webpack_require__(89)
-
-      var _querySelectorAll2 = _interopRequireDefault(_querySelectorAll)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var matches = void 0
-      if (_inDOM2.default) {
-        ;(function() {
-          var body = document.body
-          var nativeMatch =
+      if (canUseDOM) {
+        var body = document.body,
+          nativeMatch =
             body.matches ||
             body.matchesSelector ||
             body.webkitMatchesSelector ||
             body.mozMatchesSelector ||
             body.msMatchesSelector
 
-          matches = nativeMatch
-            ? function(node, selector) {
-                return nativeMatch.call(node, selector)
-              }
-            : ie8MatchesSelector
+        matches = nativeMatch
+          ? function(node, selector) {
+              return nativeMatch.call(node, selector)
+            }
+          : ie8MatchesSelector
+      }
+
+      module.exports = matches
+
+      function ie8MatchesSelector(node, selector) {
+        var matches = qsa(node.document || node.ownerDocument, selector),
+          i = 0
+
+        while (matches[i] && matches[i] !== node) i++
+
+        return !!matches[i]
+      }
+
+      /***/
+    },
+    /* 314 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var on = __webpack_require__(315),
+        off = __webpack_require__(316),
+        filter = __webpack_require__(317)
+
+      module.exports = { on: on, off: off, filter: filter }
+
+      /***/
+    },
+    /* 315 */
+    /***/ function(module, exports, __webpack_require__) {
+      'use strict'
+
+      var canUseDOM = __webpack_require__(26)
+      var on = function on() {}
+
+      if (canUseDOM) {
+        on = (function() {
+          if (document.addEventListener)
+            return function(node, eventName, handler, capture) {
+              return node.addEventListener(eventName, handler, capture || false)
+            }
+          else if (document.attachEvent)
+            return function(node, eventName, handler) {
+              return node.attachEvent('on' + eventName, handler)
+            }
         })()
       }
 
-      exports.default = matches
-
-      function ie8MatchesSelector(node, selector) {
-        var matches = (0, _querySelectorAll2.default)(
-            node.document || node.ownerDocument,
-            selector
-          ),
-          i = 0
-
-        while (matches[i] && matches[i] !== node) {
-          i++
-        }
-        return !!matches[i]
-      }
-      module.exports = exports['default']
+      module.exports = on
 
       /***/
     },
-    /* 306 */
+    /* 316 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.listen = exports.filter = exports.off = exports.on = undefined
+      var canUseDOM = __webpack_require__(26)
+      var off = function off() {}
 
-      var _on = __webpack_require__(87)
-
-      var _on2 = _interopRequireDefault(_on)
-
-      var _off = __webpack_require__(88)
-
-      var _off2 = _interopRequireDefault(_off)
-
-      var _filter = __webpack_require__(307)
-
-      var _filter2 = _interopRequireDefault(_filter)
-
-      var _listen = __webpack_require__(308)
-
-      var _listen2 = _interopRequireDefault(_listen)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
+      if (canUseDOM) {
+        off = (function() {
+          if (document.addEventListener)
+            return function(node, eventName, handler, capture) {
+              return node.removeEventListener(
+                eventName,
+                handler,
+                capture || false
+              )
+            }
+          else if (document.attachEvent)
+            return function(node, eventName, handler) {
+              return node.detachEvent('on' + eventName, handler)
+            }
+        })()
       }
 
-      exports.on = _on2.default
-      exports.off = _off2.default
-      exports.filter = _filter2.default
-      exports.listen = _listen2.default
-      exports.default = {
-        on: _on2.default,
-        off: _off2.default,
-        filter: _filter2.default,
-        listen: _listen2.default,
-      }
+      module.exports = off
 
       /***/
     },
-    /* 307 */
+    /* 317 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = filterEvents
+      var contains = __webpack_require__(88),
+        qsa = __webpack_require__(91)
 
-      var _contains = __webpack_require__(55)
-
-      var _contains2 = _interopRequireDefault(_contains)
-
-      var _querySelectorAll = __webpack_require__(89)
-
-      var _querySelectorAll2 = _interopRequireDefault(_querySelectorAll)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function filterEvents(selector, handler) {
-        return function filterHandler(e) {
+      module.exports = function(selector, handler) {
+        return function(e) {
           var top = e.currentTarget,
             target = e.target,
-            matches = (0, _querySelectorAll2.default)(top, selector)
+            matches = qsa(top, selector)
 
           if (
             matches.some(function(match) {
-              return (0, _contains2.default)(match, target)
+              return contains(match, target)
             })
           )
             handler.call(this, e)
         }
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 308 */
-    /***/ function(module, exports, __webpack_require__) {
-      'use strict'
-
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-
-      var _inDOM = __webpack_require__(14)
-
-      var _inDOM2 = _interopRequireDefault(_inDOM)
-
-      var _on = __webpack_require__(87)
-
-      var _on2 = _interopRequireDefault(_on)
-
-      var _off = __webpack_require__(88)
-
-      var _off2 = _interopRequireDefault(_off)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      var listen = function listen() {}
-
-      if (_inDOM2.default) {
-        listen = function listen(node, eventName, handler, capture) {
-          ;(0, _on2.default)(node, eventName, handler, capture)
-          return function() {
-            ;(0, _off2.default)(node, eventName, handler, capture)
-          }
-        }
-      }
-
-      exports.default = listen
-      module.exports = exports['default']
-
-      /***/
-    },
-    /* 309 */
+    /* 318 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -51834,7 +52521,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _EventRowMixin = __webpack_require__(154)
+      var _EventRowMixin = __webpack_require__(155)
 
       var _EventRowMixin2 = _interopRequireDefault(_EventRowMixin)
 
@@ -51956,7 +52643,7 @@ object-assign
 
       /***/
     },
-    /* 310 */
+    /* 319 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -51984,17 +52671,17 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _EventRowMixin = __webpack_require__(154)
+      var _EventRowMixin = __webpack_require__(155)
 
       var _EventRowMixin2 = _interopRequireDefault(_EventRowMixin)
 
-      var _eventLevels = __webpack_require__(20)
+      var _eventLevels = __webpack_require__(21)
 
-      var _messages = __webpack_require__(54)
+      var _messages = __webpack_require__(57)
 
       var _messages2 = _interopRequireDefault(_messages)
 
-      var _range = __webpack_require__(311)
+      var _range = __webpack_require__(320)
 
       var _range2 = _interopRequireDefault(_range)
 
@@ -52211,9 +52898,9 @@ object-assign
 
       /***/
     },
-    /* 311 */
+    /* 320 */
     /***/ function(module, exports, __webpack_require__) {
-      var createRange = __webpack_require__(312)
+      var createRange = __webpack_require__(321)
 
       /**
        * Creates an array of numbers (positive and/or negative) progressing from
@@ -52262,11 +52949,11 @@ object-assign
 
       /***/
     },
-    /* 312 */
+    /* 321 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseRange = __webpack_require__(313),
-        isIterateeCall = __webpack_require__(84),
-        toFinite = __webpack_require__(142)
+      var baseRange = __webpack_require__(322),
+        isIterateeCall = __webpack_require__(87),
+        toFinite = __webpack_require__(137)
 
       /**
        * Creates a `_.range` or `_.rangeRight` function.
@@ -52301,7 +52988,7 @@ object-assign
 
       /***/
     },
-    /* 313 */
+    /* 322 */
     /***/ function(module, exports) {
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeCeil = Math.ceil,
@@ -52334,7 +53021,7 @@ object-assign
 
       /***/
     },
-    /* 314 */
+    /* 323 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -52381,7 +53068,7 @@ object-assign
 
       /***/
     },
-    /* 315 */
+    /* 324 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -52415,7 +53102,7 @@ object-assign
 
       var _constants = __webpack_require__(13)
 
-      var _TimeGrid = __webpack_require__(57)
+      var _TimeGrid = __webpack_require__(62)
 
       var _TimeGrid2 = _interopRequireDefault(_TimeGrid)
 
@@ -52536,7 +53223,7 @@ object-assign
 
       /***/
     },
-    /* 316 */
+    /* 325 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -52570,7 +53257,7 @@ object-assign
 
       var _classnames2 = _interopRequireDefault(_classnames)
 
-      var _Selection = __webpack_require__(153)
+      var _Selection = __webpack_require__(154)
 
       var _Selection2 = _interopRequireDefault(_Selection)
 
@@ -52578,23 +53265,23 @@ object-assign
 
       var _dates2 = _interopRequireDefault(_dates)
 
-      var _selection = __webpack_require__(34)
+      var _selection = __webpack_require__(39)
 
       var _localizer = __webpack_require__(6)
 
       var _localizer2 = _interopRequireDefault(_localizer)
 
-      var _helpers = __webpack_require__(31)
+      var _helpers = __webpack_require__(37)
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
-      var _dayViewLayout = __webpack_require__(317)
+      var _dayViewLayout = __webpack_require__(326)
 
       var _dayViewLayout2 = _interopRequireDefault(_dayViewLayout)
 
-      var _TimeColumn = __webpack_require__(156)
+      var _TimeColumn = __webpack_require__(157)
 
       var _TimeColumn2 = _interopRequireDefault(_TimeColumn)
 
@@ -53179,7 +53866,7 @@ object-assign
 
       /***/
     },
-    /* 317 */
+    /* 326 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -53188,7 +53875,7 @@ object-assign
       exports.positionFromDate = positionFromDate
       exports.default = getStyledEvents
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
       var _dates = __webpack_require__(3)
 
@@ -53635,7 +54322,7 @@ object-assign
 
       /***/
     },
-    /* 318 */
+    /* 327 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -53649,7 +54336,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _TimeSlot = __webpack_require__(319)
+      var _TimeSlot = __webpack_require__(328)
 
       var _TimeSlot2 = _interopRequireDefault(_TimeSlot)
 
@@ -53793,7 +54480,7 @@ object-assign
 
       /***/
     },
-    /* 319 */
+    /* 328 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -53922,7 +54609,7 @@ object-assign
 
       /***/
     },
-    /* 320 */
+    /* 329 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -53950,11 +54637,11 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _Week = __webpack_require__(159)
+      var _Week = __webpack_require__(160)
 
       var _Week2 = _interopRequireDefault(_Week)
 
-      var _TimeGrid = __webpack_require__(57)
+      var _TimeGrid = __webpack_require__(62)
 
       var _TimeGrid2 = _interopRequireDefault(_TimeGrid)
 
@@ -54075,7 +54762,7 @@ object-assign
 
       /***/
     },
-    /* 321 */
+    /* 330 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -54089,15 +54776,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _class = __webpack_require__(322)
+      var _class = __webpack_require__(331)
 
       var _class2 = _interopRequireDefault(_class)
 
-      var _width = __webpack_require__(157)
+      var _width = __webpack_require__(158)
 
       var _width2 = _interopRequireDefault(_width)
 
-      var _scrollbarSize = __webpack_require__(158)
+      var _scrollbarSize = __webpack_require__(159)
 
       var _scrollbarSize2 = _interopRequireDefault(_scrollbarSize)
 
@@ -54105,7 +54792,7 @@ object-assign
 
       var _localizer2 = _interopRequireDefault(_localizer)
 
-      var _messages = __webpack_require__(54)
+      var _messages = __webpack_require__(57)
 
       var _messages2 = _interopRequireDefault(_messages)
 
@@ -54115,13 +54802,13 @@ object-assign
 
       var _constants = __webpack_require__(13)
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _eventLevels = __webpack_require__(20)
+      var _eventLevels = __webpack_require__(21)
 
-      var _selection = __webpack_require__(34)
+      var _selection = __webpack_require__(39)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -54524,69 +55211,33 @@ object-assign
 
       /***/
     },
-    /* 322 */
+    /* 331 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.hasClass = exports.removeClass = exports.addClass = undefined
-
-      var _addClass = __webpack_require__(323)
-
-      var _addClass2 = _interopRequireDefault(_addClass)
-
-      var _removeClass = __webpack_require__(324)
-
-      var _removeClass2 = _interopRequireDefault(_removeClass)
-
-      var _hasClass = __webpack_require__(160)
-
-      var _hasClass2 = _interopRequireDefault(_hasClass)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      exports.addClass = _addClass2.default
-      exports.removeClass = _removeClass2.default
-      exports.hasClass = _hasClass2.default
-      exports.default = {
-        addClass: _addClass2.default,
-        removeClass: _removeClass2.default,
-        hasClass: _hasClass2.default,
+      module.exports = {
+        addClass: __webpack_require__(332),
+        removeClass: __webpack_require__(333),
+        hasClass: __webpack_require__(161),
       }
 
       /***/
     },
-    /* 323 */
+    /* 332 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
-      Object.defineProperty(exports, '__esModule', {
-        value: true,
-      })
-      exports.default = addClass
+      var hasClass = __webpack_require__(161)
 
-      var _hasClass = __webpack_require__(160)
-
-      var _hasClass2 = _interopRequireDefault(_hasClass)
-
-      function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : { default: obj }
-      }
-
-      function addClass(element, className) {
+      module.exports = function addClass(element, className) {
         if (element.classList) element.classList.add(className)
-        else if (!(0, _hasClass2.default)(element))
+        else if (!hasClass(element))
           element.className = element.className + ' ' + className
       }
-      module.exports = exports['default']
 
       /***/
     },
-    /* 324 */
+    /* 333 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -54601,7 +55252,7 @@ object-assign
 
       /***/
     },
-    /* 325 */
+    /* 334 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -54789,16 +55440,16 @@ object-assign
 
       /***/
     },
-    /* 326 */
+    /* 335 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayMap = __webpack_require__(28),
-        baseClone = __webpack_require__(327),
-        baseUnset = __webpack_require__(347),
-        castPath = __webpack_require__(46),
-        copyObject = __webpack_require__(23),
-        customOmitClone = __webpack_require__(350),
-        flatRest = __webpack_require__(351),
-        getAllKeysIn = __webpack_require__(165)
+      var arrayMap = __webpack_require__(34),
+        baseClone = __webpack_require__(336),
+        baseUnset = __webpack_require__(356),
+        castPath = __webpack_require__(50),
+        copyObject = __webpack_require__(27),
+        customOmitClone = __webpack_require__(359),
+        flatRest = __webpack_require__(360),
+        getAllKeysIn = __webpack_require__(166)
 
       /** Used to compose bitmasks for cloning. */
       var CLONE_DEEP_FLAG = 1,
@@ -54855,27 +55506,27 @@ object-assign
 
       /***/
     },
-    /* 327 */
+    /* 336 */
     /***/ function(module, exports, __webpack_require__) {
-      var Stack = __webpack_require__(73),
-        arrayEach = __webpack_require__(105),
-        assignValue = __webpack_require__(162),
-        baseAssign = __webpack_require__(328),
-        baseAssignIn = __webpack_require__(329),
-        cloneBuffer = __webpack_require__(332),
-        copyArray = __webpack_require__(333),
-        copySymbols = __webpack_require__(334),
-        copySymbolsIn = __webpack_require__(335),
-        getAllKeys = __webpack_require__(116),
-        getAllKeysIn = __webpack_require__(165),
-        getTag = __webpack_require__(120),
-        initCloneArray = __webpack_require__(336),
-        initCloneByTag = __webpack_require__(337),
-        initCloneObject = __webpack_require__(346),
+      var Stack = __webpack_require__(79),
+        arrayEach = __webpack_require__(104),
+        assignValue = __webpack_require__(163),
+        baseAssign = __webpack_require__(337),
+        baseAssignIn = __webpack_require__(338),
+        cloneBuffer = __webpack_require__(341),
+        copyArray = __webpack_require__(342),
+        copySymbols = __webpack_require__(343),
+        copySymbolsIn = __webpack_require__(344),
+        getAllKeys = __webpack_require__(115),
+        getAllKeysIn = __webpack_require__(166),
+        getTag = __webpack_require__(119),
+        initCloneArray = __webpack_require__(345),
+        initCloneByTag = __webpack_require__(346),
+        initCloneObject = __webpack_require__(355),
         isArray = __webpack_require__(5),
-        isBuffer = __webpack_require__(36),
+        isBuffer = __webpack_require__(40),
         isObject = __webpack_require__(10),
-        keys = __webpack_require__(26)
+        keys = __webpack_require__(32)
 
       /** Used to compose bitmasks for cloning. */
       var CLONE_DEEP_FLAG = 1,
@@ -55024,10 +55675,10 @@ object-assign
 
       /***/
     },
-    /* 328 */
+    /* 337 */
     /***/ function(module, exports, __webpack_require__) {
-      var copyObject = __webpack_require__(23),
-        keys = __webpack_require__(26)
+      var copyObject = __webpack_require__(27),
+        keys = __webpack_require__(32)
 
       /**
        * The base implementation of `_.assign` without support for multiple sources
@@ -55046,10 +55697,10 @@ object-assign
 
       /***/
     },
-    /* 329 */
+    /* 338 */
     /***/ function(module, exports, __webpack_require__) {
-      var copyObject = __webpack_require__(23),
-        keysIn = __webpack_require__(92)
+      var copyObject = __webpack_require__(27),
+        keysIn = __webpack_require__(94)
 
       /**
        * The base implementation of `_.assignIn` without support for multiple sources
@@ -55068,11 +55719,11 @@ object-assign
 
       /***/
     },
-    /* 330 */
+    /* 339 */
     /***/ function(module, exports, __webpack_require__) {
       var isObject = __webpack_require__(10),
-        isPrototype = __webpack_require__(70),
-        nativeKeysIn = __webpack_require__(331)
+        isPrototype = __webpack_require__(76),
+        nativeKeysIn = __webpack_require__(340)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -55111,7 +55762,7 @@ object-assign
 
       /***/
     },
-    /* 331 */
+    /* 340 */
     /***/ function(module, exports) {
       /**
        * This function is like
@@ -55136,7 +55787,7 @@ object-assign
 
       /***/
     },
-    /* 332 */
+    /* 341 */
     /***/ function(module, exports, __webpack_require__) {
       /* WEBPACK VAR INJECTION */ ;(function(module) {
         var root = __webpack_require__(11)
@@ -55184,11 +55835,11 @@ object-assign
         module.exports = cloneBuffer
 
         /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(37)(module)))
+      }.call(exports, __webpack_require__(41)(module)))
 
       /***/
     },
-    /* 333 */
+    /* 342 */
     /***/ function(module, exports) {
       /**
        * Copies the values of `source` to `array`.
@@ -55213,10 +55864,10 @@ object-assign
 
       /***/
     },
-    /* 334 */
+    /* 343 */
     /***/ function(module, exports, __webpack_require__) {
-      var copyObject = __webpack_require__(23),
-        getSymbols = __webpack_require__(77)
+      var copyObject = __webpack_require__(27),
+        getSymbols = __webpack_require__(83)
 
       /**
        * Copies own symbols of `source` to `object`.
@@ -55234,10 +55885,10 @@ object-assign
 
       /***/
     },
-    /* 335 */
+    /* 344 */
     /***/ function(module, exports, __webpack_require__) {
-      var copyObject = __webpack_require__(23),
-        getSymbolsIn = __webpack_require__(164)
+      var copyObject = __webpack_require__(27),
+        getSymbolsIn = __webpack_require__(165)
 
       /**
        * Copies own and inherited symbols of `source` to `object`.
@@ -55255,7 +55906,7 @@ object-assign
 
       /***/
     },
-    /* 336 */
+    /* 345 */
     /***/ function(module, exports) {
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -55290,15 +55941,15 @@ object-assign
 
       /***/
     },
-    /* 337 */
+    /* 346 */
     /***/ function(module, exports, __webpack_require__) {
-      var cloneArrayBuffer = __webpack_require__(93),
-        cloneDataView = __webpack_require__(338),
-        cloneMap = __webpack_require__(339),
-        cloneRegExp = __webpack_require__(341),
-        cloneSet = __webpack_require__(342),
-        cloneSymbol = __webpack_require__(344),
-        cloneTypedArray = __webpack_require__(345)
+      var cloneArrayBuffer = __webpack_require__(95),
+        cloneDataView = __webpack_require__(347),
+        cloneMap = __webpack_require__(348),
+        cloneRegExp = __webpack_require__(350),
+        cloneSet = __webpack_require__(351),
+        cloneSymbol = __webpack_require__(353),
+        cloneTypedArray = __webpack_require__(354)
 
       /** `Object#toString` result references. */
       var boolTag = '[object Boolean]',
@@ -55381,9 +56032,9 @@ object-assign
 
       /***/
     },
-    /* 338 */
+    /* 347 */
     /***/ function(module, exports, __webpack_require__) {
-      var cloneArrayBuffer = __webpack_require__(93)
+      var cloneArrayBuffer = __webpack_require__(95)
 
       /**
        * Creates a clone of `dataView`.
@@ -55408,11 +56059,11 @@ object-assign
 
       /***/
     },
-    /* 339 */
+    /* 348 */
     /***/ function(module, exports, __webpack_require__) {
-      var addMapEntry = __webpack_require__(340),
-        arrayReduce = __webpack_require__(166),
-        mapToArray = __webpack_require__(115)
+      var addMapEntry = __webpack_require__(349),
+        arrayReduce = __webpack_require__(167),
+        mapToArray = __webpack_require__(114)
 
       /** Used to compose bitmasks for cloning. */
       var CLONE_DEEP_FLAG = 1
@@ -55437,7 +56088,7 @@ object-assign
 
       /***/
     },
-    /* 340 */
+    /* 349 */
     /***/ function(module, exports) {
       /**
        * Adds the key-value `pair` to `map`.
@@ -55457,7 +56108,7 @@ object-assign
 
       /***/
     },
-    /* 341 */
+    /* 350 */
     /***/ function(module, exports) {
       /** Used to match `RegExp` flags from their coerced string values. */
       var reFlags = /\w*$/
@@ -55479,11 +56130,11 @@ object-assign
 
       /***/
     },
-    /* 342 */
+    /* 351 */
     /***/ function(module, exports, __webpack_require__) {
-      var addSetEntry = __webpack_require__(343),
-        arrayReduce = __webpack_require__(166),
-        setToArray = __webpack_require__(45)
+      var addSetEntry = __webpack_require__(352),
+        arrayReduce = __webpack_require__(167),
+        setToArray = __webpack_require__(49)
 
       /** Used to compose bitmasks for cloning. */
       var CLONE_DEEP_FLAG = 1
@@ -55508,7 +56159,7 @@ object-assign
 
       /***/
     },
-    /* 343 */
+    /* 352 */
     /***/ function(module, exports) {
       /**
        * Adds `value` to `set`.
@@ -55528,9 +56179,9 @@ object-assign
 
       /***/
     },
-    /* 344 */
+    /* 353 */
     /***/ function(module, exports, __webpack_require__) {
-      var Symbol = __webpack_require__(22)
+      var Symbol = __webpack_require__(25)
 
       /** Used to convert symbols to primitives and strings. */
       var symbolProto = Symbol ? Symbol.prototype : undefined,
@@ -55551,9 +56202,9 @@ object-assign
 
       /***/
     },
-    /* 345 */
+    /* 354 */
     /***/ function(module, exports, __webpack_require__) {
-      var cloneArrayBuffer = __webpack_require__(93)
+      var cloneArrayBuffer = __webpack_require__(95)
 
       /**
        * Creates a clone of `typedArray`.
@@ -55578,11 +56229,11 @@ object-assign
 
       /***/
     },
-    /* 346 */
+    /* 355 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseCreate = __webpack_require__(106),
-        getPrototype = __webpack_require__(48),
-        isPrototype = __webpack_require__(70)
+      var baseCreate = __webpack_require__(105),
+        getPrototype = __webpack_require__(52),
+        isPrototype = __webpack_require__(76)
 
       /**
        * Initializes an object clone.
@@ -55601,12 +56252,12 @@ object-assign
 
       /***/
     },
-    /* 347 */
+    /* 356 */
     /***/ function(module, exports, __webpack_require__) {
-      var castPath = __webpack_require__(46),
-        last = __webpack_require__(348),
-        parent = __webpack_require__(349),
-        toKey = __webpack_require__(29)
+      var castPath = __webpack_require__(50),
+        last = __webpack_require__(357),
+        parent = __webpack_require__(358),
+        toKey = __webpack_require__(35)
 
       /**
        * The base implementation of `_.unset`.
@@ -55626,7 +56277,7 @@ object-assign
 
       /***/
     },
-    /* 348 */
+    /* 357 */
     /***/ function(module, exports) {
       /**
        * Gets the last element of `array`.
@@ -55651,10 +56302,10 @@ object-assign
 
       /***/
     },
-    /* 349 */
+    /* 358 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseGet = __webpack_require__(78),
-        baseSlice = __webpack_require__(140)
+      var baseGet = __webpack_require__(84),
+        baseSlice = __webpack_require__(135)
 
       /**
        * Gets the parent value at `path` of `object`.
@@ -55674,9 +56325,9 @@ object-assign
 
       /***/
     },
-    /* 350 */
+    /* 359 */
     /***/ function(module, exports, __webpack_require__) {
-      var isPlainObject = __webpack_require__(15)
+      var isPlainObject = __webpack_require__(16)
 
       /**
        * Used by `_.omit` to customize its `_.cloneDeep` use to only clone plain
@@ -55695,11 +56346,11 @@ object-assign
 
       /***/
     },
-    /* 351 */
+    /* 360 */
     /***/ function(module, exports, __webpack_require__) {
-      var flatten = __webpack_require__(352),
-        overRest = __webpack_require__(167),
-        setToString = __webpack_require__(169)
+      var flatten = __webpack_require__(361),
+        overRest = __webpack_require__(168),
+        setToString = __webpack_require__(170)
 
       /**
        * A specialized version of `baseRest` which flattens the rest array.
@@ -55716,9 +56367,9 @@ object-assign
 
       /***/
     },
-    /* 352 */
+    /* 361 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseFlatten = __webpack_require__(94)
+      var baseFlatten = __webpack_require__(96)
 
       /**
        * Flattens `array` a single level deep.
@@ -55743,10 +56394,10 @@ object-assign
 
       /***/
     },
-    /* 353 */
+    /* 362 */
     /***/ function(module, exports, __webpack_require__) {
-      var Symbol = __webpack_require__(22),
-        isArguments = __webpack_require__(64),
+      var Symbol = __webpack_require__(25),
+        isArguments = __webpack_require__(70),
         isArray = __webpack_require__(5)
 
       /** Built-in value references. */
@@ -55771,11 +56422,11 @@ object-assign
 
       /***/
     },
-    /* 354 */
+    /* 363 */
     /***/ function(module, exports, __webpack_require__) {
-      var constant = __webpack_require__(355),
-        defineProperty = __webpack_require__(163),
-        identity = __webpack_require__(80)
+      var constant = __webpack_require__(364),
+        defineProperty = __webpack_require__(164),
+        identity = __webpack_require__(86)
 
       /**
        * The base implementation of `setToString` without support for hot loop shorting.
@@ -55800,7 +56451,7 @@ object-assign
 
       /***/
     },
-    /* 355 */
+    /* 364 */
     /***/ function(module, exports) {
       /**
        * Creates a function that returns `value`.
@@ -55831,7 +56482,7 @@ object-assign
 
       /***/
     },
-    /* 356 */
+    /* 365 */
     /***/ function(module, exports) {
       /** Used to detect hot functions by number of calls within a span of milliseconds. */
       var HOT_COUNT = 800,
@@ -55873,11 +56524,11 @@ object-assign
 
       /***/
     },
-    /* 357 */
+    /* 366 */
     /***/ function(module, exports, __webpack_require__) {
-      var copyObject = __webpack_require__(23),
-        createAssigner = __webpack_require__(358),
-        keysIn = __webpack_require__(92)
+      var copyObject = __webpack_require__(27),
+        createAssigner = __webpack_require__(367),
+        keysIn = __webpack_require__(94)
 
       /**
        * This method is like `_.assignIn` except that it accepts `customizer`
@@ -55921,10 +56572,10 @@ object-assign
 
       /***/
     },
-    /* 358 */
+    /* 367 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseRest = __webpack_require__(24),
-        isIterateeCall = __webpack_require__(84)
+      var baseRest = __webpack_require__(28),
+        isIterateeCall = __webpack_require__(87)
 
       /**
        * Creates a function like `_.assign`.
@@ -55964,9 +56615,9 @@ object-assign
 
       /***/
     },
-    /* 359 */
+    /* 368 */
     /***/ function(module, exports, __webpack_require__) {
-      var eq = __webpack_require__(27)
+      var eq = __webpack_require__(33)
 
       /** Used for built-in method references. */
       var objectProto = Object.prototype
@@ -56000,11 +56651,11 @@ object-assign
 
       /***/
     },
-    /* 360 */
+    /* 369 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseAssignValue = __webpack_require__(91),
-        baseForOwn = __webpack_require__(107),
-        baseIteratee = __webpack_require__(72)
+      var baseAssignValue = __webpack_require__(93),
+        baseForOwn = __webpack_require__(106),
+        baseIteratee = __webpack_require__(78)
 
       /**
        * Creates an object with the same keys as `object` and values generated
@@ -56048,7 +56699,7 @@ object-assign
 
       /***/
     },
-    /* 361 */
+    /* 370 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -56082,7 +56733,7 @@ object-assign
 
       var _dates2 = _interopRequireDefault(_dates)
 
-      var _formats = __webpack_require__(50)
+      var _formats = __webpack_require__(53)
 
       var _localizer = __webpack_require__(6)
 
@@ -56168,7 +56819,7 @@ object-assign
 
       /***/
     },
-    /* 362 */
+    /* 371 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -56178,11 +56829,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -56190,7 +56845,7 @@ object-assign
         return obj && obj.__esModule ? obj : { default: obj }
       }
 
-      var Selectable = _react2.default.createClass({
+      var Selectable = (0, _createReactClass2.default)({
         displayName: 'Selectable',
         render: function render() {
           return _react2.default.createElement(
@@ -56229,7 +56884,7 @@ object-assign
 
       /***/
     },
-    /* 363 */
+    /* 372 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -56239,11 +56894,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -56251,12 +56910,12 @@ object-assign
         return obj && obj.__esModule ? obj : { default: obj }
       }
 
-      __webpack_require__(364)
-      __webpack_require__(365)
-      __webpack_require__(366)
-      __webpack_require__(367)
+      __webpack_require__(373)
+      __webpack_require__(374)
+      __webpack_require__(375)
+      __webpack_require__(376)
 
-      var Cultures = _react2.default.createClass({
+      var Cultures = (0, _createReactClass2.default)({
         displayName: 'Cultures',
         getInitialState: function getInitialState() {
           return { culture: 'fr' }
@@ -56309,7 +56968,7 @@ object-assign
 
       /***/
     },
-    /* 364 */
+    /* 373 */
     /***/ function(module, exports, __webpack_require__) {
       /*
  * Globalize Culture en-GB
@@ -56329,7 +56988,7 @@ object-assign
 
         if (true) {
           // Assume CommonJS
-          Globalize = __webpack_require__(30)
+          Globalize = __webpack_require__(36)
         } else {
           // Global variable
           Globalize = window.Globalize
@@ -56365,7 +57024,7 @@ object-assign
 
       /***/
     },
-    /* 365 */
+    /* 374 */
     /***/ function(module, exports, __webpack_require__) {
       /*
  * Globalize Culture es
@@ -56385,7 +57044,7 @@ object-assign
 
         if (true) {
           // Assume CommonJS
-          Globalize = __webpack_require__(30)
+          Globalize = __webpack_require__(36)
         } else {
           // Global variable
           Globalize = window.Globalize
@@ -56481,7 +57140,7 @@ object-assign
 
       /***/
     },
-    /* 366 */
+    /* 375 */
     /***/ function(module, exports, __webpack_require__) {
       /*
  * Globalize Culture fr
@@ -56501,7 +57160,7 @@ object-assign
 
         if (true) {
           // Assume CommonJS
-          Globalize = __webpack_require__(30)
+          Globalize = __webpack_require__(36)
         } else {
           // Global variable
           Globalize = window.Globalize
@@ -56605,7 +57264,7 @@ object-assign
 
       /***/
     },
-    /* 367 */
+    /* 376 */
     /***/ function(module, exports, __webpack_require__) {
       /*
  * Globalize Culture ar-AE
@@ -56625,7 +57284,7 @@ object-assign
 
         if (true) {
           // Assume CommonJS
-          Globalize = __webpack_require__(30)
+          Globalize = __webpack_require__(36)
         } else {
           // Global variable
           Globalize = window.Globalize
@@ -57360,7 +58019,7 @@ object-assign
 
       /***/
     },
-    /* 368 */
+    /* 377 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -57370,11 +58029,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -57382,7 +58045,7 @@ object-assign
         return obj && obj.__esModule ? obj : { default: obj }
       }
 
-      var Popup = _react2.default.createClass({
+      var Popup = (0, _createReactClass2.default)({
         displayName: 'Popup',
         render: function render() {
           return _react2.default.createElement(
@@ -57407,7 +58070,7 @@ object-assign
 
       /***/
     },
-    /* 369 */
+    /* 378 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -57417,11 +58080,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -57474,7 +58141,7 @@ object-assign
         else return {}
       }
 
-      var Rendering = _react2.default.createClass({
+      var Rendering = (0, _createReactClass2.default)({
         displayName: 'Rendering',
         render: function render() {
           return _react2.default.createElement(
@@ -57502,7 +58169,7 @@ object-assign
 
       /***/
     },
-    /* 370 */
+    /* 379 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -57526,11 +58193,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _dateArithmetic = __webpack_require__(135)
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
+      var _dateArithmetic = __webpack_require__(131)
 
       var _dateArithmetic2 = _interopRequireDefault(_dateArithmetic)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -57542,7 +58213,7 @@ object-assign
 
       var _localizer2 = _interopRequireDefault(_localizer)
 
-      var _TimeGrid = __webpack_require__(57)
+      var _TimeGrid = __webpack_require__(62)
 
       var _TimeGrid2 = _interopRequireDefault(_TimeGrid)
 
@@ -57651,7 +58322,7 @@ object-assign
         return 'My awesome week: ' + Date.toLocaleString()
       }
 
-      var CustomView = _react2.default.createClass({
+      var CustomView = (0, _createReactClass2.default)({
         displayName: 'CustomView',
         render: function render() {
           return _react2.default.createElement(
@@ -57672,7 +58343,7 @@ object-assign
 
       /***/
     },
-    /* 371 */
+    /* 380 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -57696,11 +58367,15 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
+      var _createReactClass = __webpack_require__(14)
+
+      var _createReactClass2 = _interopRequireDefault(_createReactClass)
+
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
@@ -57708,7 +58383,7 @@ object-assign
         return obj && obj.__esModule ? obj : { default: obj }
       }
 
-      var Timeslots = _react2.default.createClass({
+      var Timeslots = (0, _createReactClass2.default)({
         displayName: 'Timeslots',
         render: function render() {
           return _react2.default.createElement(
@@ -57729,7 +58404,7 @@ object-assign
 
       /***/
     },
-    /* 372 */
+    /* 381 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -57753,25 +58428,25 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _events = __webpack_require__(16)
+      var _events = __webpack_require__(17)
 
       var _events2 = _interopRequireDefault(_events)
 
-      var _reactDndHtml5Backend = __webpack_require__(58)
+      var _reactDndHtml5Backend = __webpack_require__(63)
 
       var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend)
 
-      var _reactDnd = __webpack_require__(25)
+      var _reactDnd = __webpack_require__(29)
 
       var _reactBigCalendar = __webpack_require__(12)
 
       var _reactBigCalendar2 = _interopRequireDefault(_reactBigCalendar)
 
-      var _dragAndDrop = __webpack_require__(425)
+      var _dragAndDrop = __webpack_require__(434)
 
       var _dragAndDrop2 = _interopRequireDefault(_dragAndDrop)
 
-      __webpack_require__(430)
+      __webpack_require__(439)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -57896,7 +58571,7 @@ object-assign
 
       /***/
     },
-    /* 373 */
+    /* 382 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -57919,27 +58594,27 @@ object-assign
           if (staticProps) defineProperties(Constructor, staticProps)
           return Constructor
         }
-      })()
+      })() /* eslint-disable no-underscore-dangle */
 
-      var _defaults = __webpack_require__(170)
+      var _defaults = __webpack_require__(171)
 
       var _defaults2 = _interopRequireDefault(_defaults)
 
-      var _shallowEqual = __webpack_require__(374)
+      var _shallowEqual = __webpack_require__(383)
 
       var _shallowEqual2 = _interopRequireDefault(_shallowEqual)
 
-      var _EnterLeaveCounter = __webpack_require__(375)
+      var _EnterLeaveCounter = __webpack_require__(384)
 
       var _EnterLeaveCounter2 = _interopRequireDefault(_EnterLeaveCounter)
 
-      var _BrowserDetector = __webpack_require__(175)
+      var _BrowserDetector = __webpack_require__(176)
 
-      var _OffsetUtils = __webpack_require__(381)
+      var _OffsetUtils = __webpack_require__(390)
 
-      var _NativeDragSources = __webpack_require__(383)
+      var _NativeDragSources = __webpack_require__(392)
 
-      var _NativeTypes = __webpack_require__(97)
+      var _NativeTypes = __webpack_require__(99)
 
       var NativeTypes = _interopRequireWildcard(_NativeTypes)
 
@@ -58019,6 +58694,7 @@ object-assign
           )
           this.endDragNativeItem = this.endDragNativeItem.bind(this)
           this.asyncEndDragNativeItem = this.asyncEndDragNativeItem.bind(this)
+          this.isNodeInDocument = this.isNodeInDocument.bind(this)
         }
 
         _createClass(HTML5Backend, [
@@ -58030,12 +58706,11 @@ object-assign
               }
 
               if (this.window.__isReactDndBackendSetUp) {
-                // eslint-disable-line no-underscore-dangle
                 throw new Error(
                   'Cannot have two HTML5 backends at the same time.'
                 )
               }
-              this.window.__isReactDndBackendSetUp = true // eslint-disable-line no-underscore-dangle
+              this.window.__isReactDndBackendSetUp = true
               this.addEventListeners(this.window)
             },
           },
@@ -58046,7 +58721,7 @@ object-assign
                 return
               }
 
-              this.window.__isReactDndBackendSetUp = false // eslint-disable-line no-underscore-dangle
+              this.window.__isReactDndBackendSetUp = false
               this.removeEventListeners(this.window)
               this.clearCurrentDragSourceNode()
               if (this.asyncEndDragFrameId) {
@@ -58057,6 +58732,10 @@ object-assign
           {
             key: 'addEventListeners',
             value: function addEventListeners(target) {
+              // SSR Fix (https://github.com/react-dnd/react-dnd/pull/813
+              if (!target.addEventListener) {
+                return
+              }
               target.addEventListener('dragstart', this.handleTopDragStart)
               target.addEventListener(
                 'dragstart',
@@ -58092,6 +58771,10 @@ object-assign
           {
             key: 'removeEventListeners',
             value: function removeEventListeners(target) {
+              // SSR Fix (https://github.com/react-dnd/react-dnd/pull/813
+              if (!target.removeEventListener) {
+                return
+              }
               target.removeEventListener('dragstart', this.handleTopDragStart)
               target.removeEventListener(
                 'dragstart',
@@ -58308,10 +58991,19 @@ object-assign
             },
           },
           {
+            key: 'isNodeInDocument',
+            value: function isNodeInDocument(node) {
+              // Check the node either in the main document or in the current context
+              return document.body.contains(node) || this.window
+                ? this.window.document.body.contains(node)
+                : false
+            },
+          },
+          {
             key: 'endDragIfSourceWasRemovedFromDOM',
             value: function endDragIfSourceWasRemovedFromDOM() {
               var node = this.currentDragSourceNode
-              if (document.body.contains(node)) {
+              if (this.isNodeInDocument(node)) {
                 return
               }
 
@@ -58402,6 +59094,11 @@ object-assign
 
               var clientOffset = (0, _OffsetUtils.getEventClientOffset)(e)
 
+              // Avoid crashing if we missed a drop event or our previous drag died
+              if (this.monitor.isDragging()) {
+                this.actions.endDrag()
+              }
+
               // Don't publish the source just yet (see why below)
               this.actions.beginDrag(dragStartSourceIds, {
                 publishSource: false,
@@ -58427,16 +59124,21 @@ object-assign
 
                   var _getCurrentSourcePrev = this.getCurrentSourcePreviewNodeOptions(),
                     anchorX = _getCurrentSourcePrev.anchorX,
-                    anchorY = _getCurrentSourcePrev.anchorY
+                    anchorY = _getCurrentSourcePrev.anchorY,
+                    offsetX = _getCurrentSourcePrev.offsetX,
+                    offsetY = _getCurrentSourcePrev.offsetY
 
                   var anchorPoint = { anchorX: anchorX, anchorY: anchorY }
+                  var offsetPoint = { offsetX: offsetX, offsetY: offsetY }
                   var dragPreviewOffset = (0,
                   _OffsetUtils.getDragPreviewOffset)(
                     sourceNode,
                     dragPreview,
                     clientOffset,
-                    anchorPoint
+                    anchorPoint,
+                    offsetPoint
                   )
+
                   dataTransfer.setDragImage(
                     dragPreview,
                     dragPreviewOffset.x,
@@ -58736,7 +59438,7 @@ object-assign
 
       /***/
     },
-    /* 374 */
+    /* 383 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -58779,7 +59481,7 @@ object-assign
 
       /***/
     },
-    /* 375 */
+    /* 384 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -58804,11 +59506,11 @@ object-assign
         }
       })()
 
-      var _union = __webpack_require__(376)
+      var _union = __webpack_require__(385)
 
       var _union2 = _interopRequireDefault(_union)
 
-      var _without = __webpack_require__(173)
+      var _without = __webpack_require__(174)
 
       var _without2 = _interopRequireDefault(_without)
 
@@ -58880,12 +59582,12 @@ object-assign
 
       /***/
     },
-    /* 376 */
+    /* 385 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseFlatten = __webpack_require__(94),
-        baseRest = __webpack_require__(24),
-        baseUniq = __webpack_require__(171),
-        isArrayLikeObject = __webpack_require__(59)
+      var baseFlatten = __webpack_require__(96),
+        baseRest = __webpack_require__(28),
+        baseUniq = __webpack_require__(172),
+        isArrayLikeObject = __webpack_require__(64)
 
       /**
        * Creates an array of unique values, in order, from all given arrays using
@@ -58911,11 +59613,11 @@ object-assign
 
       /***/
     },
-    /* 377 */
+    /* 386 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseFindIndex = __webpack_require__(152),
-        baseIsNaN = __webpack_require__(378),
-        strictIndexOf = __webpack_require__(379)
+      var baseFindIndex = __webpack_require__(153),
+        baseIsNaN = __webpack_require__(387),
+        strictIndexOf = __webpack_require__(388)
 
       /**
        * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
@@ -58936,7 +59638,7 @@ object-assign
 
       /***/
     },
-    /* 378 */
+    /* 387 */
     /***/ function(module, exports) {
       /**
        * The base implementation of `_.isNaN` without support for number objects.
@@ -58953,7 +59655,7 @@ object-assign
 
       /***/
     },
-    /* 379 */
+    /* 388 */
     /***/ function(module, exports) {
       /**
        * A specialized version of `_.indexOf` which performs strict equality
@@ -58981,11 +59683,11 @@ object-assign
 
       /***/
     },
-    /* 380 */
+    /* 389 */
     /***/ function(module, exports, __webpack_require__) {
-      var Set = __webpack_require__(121),
-        noop = __webpack_require__(172),
-        setToArray = __webpack_require__(45)
+      var Set = __webpack_require__(120),
+        noop = __webpack_require__(173),
+        setToArray = __webpack_require__(49)
 
       /** Used as references for various `Number` constants. */
       var INFINITY = 1 / 0
@@ -59007,7 +59709,7 @@ object-assign
 
       /***/
     },
-    /* 381 */
+    /* 390 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59018,9 +59720,9 @@ object-assign
       exports.getEventClientOffset = getEventClientOffset
       exports.getDragPreviewOffset = getDragPreviewOffset
 
-      var _BrowserDetector = __webpack_require__(175)
+      var _BrowserDetector = __webpack_require__(176)
 
-      var _MonotonicInterpolant = __webpack_require__(382)
+      var _MonotonicInterpolant = __webpack_require__(391)
 
       var _MonotonicInterpolant2 = _interopRequireDefault(_MonotonicInterpolant)
 
@@ -59054,33 +59756,20 @@ object-assign
         }
       }
 
-      function getDragPreviewOffset(
-        sourceNode,
-        dragPreview,
-        clientOffset,
-        anchorPoint
-      ) {
-        // The browsers will use the image intrinsic size under different conditions.
-        // Firefox only cares if it's an image, but WebKit also wants it to be detached.
-        var isImage =
-          dragPreview.nodeName === 'IMG' &&
+      function isImageNode(node) {
+        return (
+          node.nodeName === 'IMG' &&
           ((0, _BrowserDetector.isFirefox)() ||
-            !document.documentElement.contains(dragPreview))
-        var dragPreviewNode = isImage ? sourceNode : dragPreview
-
-        var dragPreviewNodeOffsetFromClient = getNodeClientOffset(
-          dragPreviewNode
+            !document.documentElement.contains(node))
         )
-        var offsetFromDragPreview = {
-          x: clientOffset.x - dragPreviewNodeOffsetFromClient.x,
-          y: clientOffset.y - dragPreviewNodeOffsetFromClient.y,
-        }
+      }
 
-        var sourceWidth = sourceNode.offsetWidth,
-          sourceHeight = sourceNode.offsetHeight
-        var anchorX = anchorPoint.anchorX,
-          anchorY = anchorPoint.anchorY
-
+      function getDragPreviewSize(
+        isImage,
+        dragPreview,
+        sourceWidth,
+        sourceHeight
+      ) {
         var dragPreviewWidth = isImage ? dragPreview.width : sourceWidth
         var dragPreviewHeight = isImage ? dragPreview.height : sourceHeight
 
@@ -59089,46 +59778,97 @@ object-assign
           dragPreviewHeight /= window.devicePixelRatio
           dragPreviewWidth /= window.devicePixelRatio
         }
+        return {
+          dragPreviewWidth: dragPreviewWidth,
+          dragPreviewHeight: dragPreviewHeight,
+        }
+      }
 
-        // Interpolate coordinates depending on anchor point
-        // If you know a simpler way to do this, let me know
-        var interpolantX = new _MonotonicInterpolant2.default(
-          [0, 0.5, 1],
-          [
-            // Dock to the left
-            offsetFromDragPreview.x,
-            // Align at the center
-            offsetFromDragPreview.x / sourceWidth * dragPreviewWidth,
-            // Dock to the right
-            offsetFromDragPreview.x + dragPreviewWidth - sourceWidth,
-          ]
+      function getDragPreviewOffset(
+        sourceNode,
+        dragPreview,
+        clientOffset,
+        anchorPoint,
+        offsetPoint
+      ) {
+        // The browsers will use the image intrinsic size under different conditions.
+        // Firefox only cares if it's an image, but WebKit also wants it to be detached.
+        var isImage = isImageNode(dragPreview)
+        var dragPreviewNode = isImage ? sourceNode : dragPreview
+        var dragPreviewNodeOffsetFromClient = getNodeClientOffset(
+          dragPreviewNode
         )
-        var interpolantY = new _MonotonicInterpolant2.default(
-          [0, 0.5, 1],
-          [
-            // Dock to the top
-            offsetFromDragPreview.y,
-            // Align at the center
-            offsetFromDragPreview.y / sourceHeight * dragPreviewHeight,
-            // Dock to the bottom
-            offsetFromDragPreview.y + dragPreviewHeight - sourceHeight,
-          ]
-        )
-        var x = interpolantX.interpolate(anchorX)
-        var y = interpolantY.interpolate(anchorY)
+        var offsetFromDragPreview = {
+          x: clientOffset.x - dragPreviewNodeOffsetFromClient.x,
+          y: clientOffset.y - dragPreviewNodeOffsetFromClient.y,
+        }
+        var sourceWidth = sourceNode.offsetWidth,
+          sourceHeight = sourceNode.offsetHeight
+        var anchorX = anchorPoint.anchorX,
+          anchorY = anchorPoint.anchorY
 
-        // Work around Safari 8 positioning bug
-        if ((0, _BrowserDetector.isSafari)() && isImage) {
-          // We'll have to wait for @3x to see if this is entirely correct
-          y += (window.devicePixelRatio - 1) * dragPreviewHeight
+        var _getDragPreviewSize = getDragPreviewSize(
+            isImage,
+            dragPreview,
+            sourceWidth,
+            sourceHeight
+          ),
+          dragPreviewWidth = _getDragPreviewSize.dragPreviewWidth,
+          dragPreviewHeight = _getDragPreviewSize.dragPreviewHeight
+
+        var calculateYOffset = function calculateYOffset() {
+          var interpolantY = new _MonotonicInterpolant2.default(
+            [0, 0.5, 1],
+            [
+              // Dock to the top
+              offsetFromDragPreview.y,
+              // Align at the center
+              offsetFromDragPreview.y / sourceHeight * dragPreviewHeight,
+              // Dock to the bottom
+              offsetFromDragPreview.y + dragPreviewHeight - sourceHeight,
+            ]
+          )
+          var y = interpolantY.interpolate(anchorY)
+          // Work around Safari 8 positioning bug
+          if ((0, _BrowserDetector.isSafari)() && isImage) {
+            // We'll have to wait for @3x to see if this is entirely correct
+            y += (window.devicePixelRatio - 1) * dragPreviewHeight
+          }
+          return y
         }
 
-        return { x: x, y: y }
+        var calculateXOffset = function calculateXOffset() {
+          // Interpolate coordinates depending on anchor point
+          // If you know a simpler way to do this, let me know
+          var interpolantX = new _MonotonicInterpolant2.default(
+            [0, 0.5, 1],
+            [
+              // Dock to the left
+              offsetFromDragPreview.x,
+              // Align at the center
+              offsetFromDragPreview.x / sourceWidth * dragPreviewWidth,
+              // Dock to the right
+              offsetFromDragPreview.x + dragPreviewWidth - sourceWidth,
+            ]
+          )
+          return interpolantX.interpolate(anchorX)
+        }
+
+        // Force offsets if specified in the options.
+        var offsetX = offsetPoint.offsetX,
+          offsetY = offsetPoint.offsetY
+
+        var isManualOffsetX = offsetX === 0 || offsetX
+        var isManualOffsetY = offsetY === 0 || offsetY
+        return {
+          x: isManualOffsetX ? offsetX : calculateXOffset(),
+          y: isManualOffsetY ? offsetY : calculateYOffset(),
+        }
       }
 
       /***/
     },
-    /* 382 */
+    /* 391 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59281,7 +60021,7 @@ object-assign
 
       /***/
     },
-    /* 383 */
+    /* 392 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59311,7 +60051,7 @@ object-assign
       exports.createNativeDragSource = createNativeDragSource
       exports.matchNativeItemType = matchNativeItemType
 
-      var _NativeTypes = __webpack_require__(97)
+      var _NativeTypes = __webpack_require__(99)
 
       var NativeTypes = _interopRequireWildcard(_NativeTypes)
 
@@ -59413,8 +60153,8 @@ object-assign
             (_mutatorMap = {}),
             (_mutatorMap[exposeProperty] = _mutatorMap[exposeProperty] || {}),
             (_mutatorMap[exposeProperty].get = function() {
+              // eslint-disable-next-line no-console
               console.warn(
-                // eslint-disable-line no-console
                 'Browser doesn\'t allow reading "' +
                   exposeProperty +
                   '" until the drop event.'
@@ -59479,7 +60219,7 @@ object-assign
 
       /***/
     },
-    /* 384 */
+    /* 393 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59500,7 +60240,7 @@ object-assign
 
       /***/
     },
-    /* 385 */
+    /* 394 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59508,7 +60248,7 @@ object-assign
         value: true,
       })
 
-      var _DragDropManager = __webpack_require__(386)
+      var _DragDropManager = __webpack_require__(395)
 
       Object.defineProperty(exports, 'DragDropManager', {
         enumerable: true,
@@ -59517,7 +60257,7 @@ object-assign
         },
       })
 
-      var _DragSource = __webpack_require__(405)
+      var _DragSource = __webpack_require__(414)
 
       Object.defineProperty(exports, 'DragSource', {
         enumerable: true,
@@ -59526,7 +60266,7 @@ object-assign
         },
       })
 
-      var _DropTarget = __webpack_require__(406)
+      var _DropTarget = __webpack_require__(415)
 
       Object.defineProperty(exports, 'DropTarget', {
         enumerable: true,
@@ -59535,7 +60275,7 @@ object-assign
         },
       })
 
-      var _createTestBackend = __webpack_require__(407)
+      var _createTestBackend = __webpack_require__(416)
 
       Object.defineProperty(exports, 'createTestBackend', {
         enumerable: true,
@@ -59550,7 +60290,7 @@ object-assign
 
       /***/
     },
-    /* 386 */
+    /* 395 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59575,19 +60315,19 @@ object-assign
         }
       })()
 
-      var _createStore = __webpack_require__(387)
+      var _createStore = __webpack_require__(396)
 
       var _createStore2 = _interopRequireDefault(_createStore)
 
-      var _reducers = __webpack_require__(391)
+      var _reducers = __webpack_require__(400)
 
       var _reducers2 = _interopRequireDefault(_reducers)
 
-      var _dragDrop = __webpack_require__(60)
+      var _dragDrop = __webpack_require__(65)
 
       var dragDropActions = _interopRequireWildcard(_dragDrop)
 
-      var _DragDropMonitor = __webpack_require__(400)
+      var _DragDropMonitor = __webpack_require__(409)
 
       var _DragDropMonitor2 = _interopRequireDefault(_DragDropMonitor)
 
@@ -59717,7 +60457,7 @@ object-assign
 
       /***/
     },
-    /* 387 */
+    /* 396 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -59725,11 +60465,11 @@ object-assign
       exports.ActionTypes = undefined
       exports['default'] = createStore
 
-      var _isPlainObject = __webpack_require__(15)
+      var _isPlainObject = __webpack_require__(16)
 
       var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
-      var _symbolObservable = __webpack_require__(388)
+      var _symbolObservable = __webpack_require__(397)
 
       var _symbolObservable2 = _interopRequireDefault(_symbolObservable)
 
@@ -60003,13 +60743,13 @@ object-assign
 
       /***/
     },
-    /* 388 */
+    /* 397 */
     /***/ function(module, exports, __webpack_require__) {
-      module.exports = __webpack_require__(389)
+      module.exports = __webpack_require__(398)
 
       /***/
     },
-    /* 389 */
+    /* 398 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(global, module) {
@@ -60017,7 +60757,7 @@ object-assign
           value: true,
         })
 
-        var _ponyfill = __webpack_require__(390)
+        var _ponyfill = __webpack_require__(399)
 
         var _ponyfill2 = _interopRequireDefault(_ponyfill)
 
@@ -60042,11 +60782,11 @@ object-assign
         var result = (0, _ponyfill2['default'])(root)
         exports['default'] = result
         /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(65), __webpack_require__(37)(module)))
+      }.call(exports, __webpack_require__(71), __webpack_require__(41)(module)))
 
       /***/
     },
-    /* 390 */
+    /* 399 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60074,7 +60814,7 @@ object-assign
 
       /***/
     },
-    /* 391 */
+    /* 400 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60083,23 +60823,23 @@ object-assign
       })
       exports.default = reduce
 
-      var _dragOffset = __webpack_require__(177)
+      var _dragOffset = __webpack_require__(178)
 
       var _dragOffset2 = _interopRequireDefault(_dragOffset)
 
-      var _dragOperation = __webpack_require__(392)
+      var _dragOperation = __webpack_require__(401)
 
       var _dragOperation2 = _interopRequireDefault(_dragOperation)
 
-      var _refCount = __webpack_require__(393)
+      var _refCount = __webpack_require__(402)
 
       var _refCount2 = _interopRequireDefault(_refCount)
 
-      var _dirtyHandlerIds = __webpack_require__(179)
+      var _dirtyHandlerIds = __webpack_require__(180)
 
       var _dirtyHandlerIds2 = _interopRequireDefault(_dirtyHandlerIds)
 
-      var _stateId = __webpack_require__(399)
+      var _stateId = __webpack_require__(408)
 
       var _stateId2 = _interopRequireDefault(_stateId)
 
@@ -60130,7 +60870,7 @@ object-assign
 
       /***/
     },
-    /* 392 */
+    /* 401 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60154,13 +60894,13 @@ object-assign
 
       exports.default = dragOperation
 
-      var _without = __webpack_require__(173)
+      var _without = __webpack_require__(174)
 
       var _without2 = _interopRequireDefault(_without)
 
-      var _dragDrop = __webpack_require__(60)
+      var _dragDrop = __webpack_require__(65)
 
-      var _registry = __webpack_require__(61)
+      var _registry = __webpack_require__(66)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -60234,7 +60974,7 @@ object-assign
 
       /***/
     },
-    /* 393 */
+    /* 402 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60243,7 +60983,7 @@ object-assign
       })
       exports.default = refCount
 
-      var _registry = __webpack_require__(61)
+      var _registry = __webpack_require__(66)
 
       function refCount() {
         var state =
@@ -60264,12 +61004,12 @@ object-assign
 
       /***/
     },
-    /* 394 */
+    /* 403 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayFilter = __webpack_require__(118),
-        baseRest = __webpack_require__(24),
-        baseXor = __webpack_require__(395),
-        isArrayLikeObject = __webpack_require__(59)
+      var arrayFilter = __webpack_require__(117),
+        baseRest = __webpack_require__(28),
+        baseXor = __webpack_require__(404),
+        isArrayLikeObject = __webpack_require__(64)
 
       /**
        * Creates an array of unique values that is the
@@ -60297,11 +61037,11 @@ object-assign
 
       /***/
     },
-    /* 395 */
+    /* 404 */
     /***/ function(module, exports, __webpack_require__) {
-      var baseDifference = __webpack_require__(174),
-        baseFlatten = __webpack_require__(94),
-        baseUniq = __webpack_require__(171)
+      var baseDifference = __webpack_require__(175),
+        baseFlatten = __webpack_require__(96),
+        baseUniq = __webpack_require__(172)
 
       /**
        * The base implementation of methods like `_.xor`, without support for
@@ -60343,12 +61083,12 @@ object-assign
 
       /***/
     },
-    /* 396 */
+    /* 405 */
     /***/ function(module, exports, __webpack_require__) {
-      var arrayMap = __webpack_require__(28),
-        baseIntersection = __webpack_require__(397),
-        baseRest = __webpack_require__(24),
-        castArrayLikeObject = __webpack_require__(398)
+      var arrayMap = __webpack_require__(34),
+        baseIntersection = __webpack_require__(406),
+        baseRest = __webpack_require__(28),
+        castArrayLikeObject = __webpack_require__(407)
 
       /**
        * Creates an array of unique values that are included in all given arrays
@@ -60378,14 +61118,14 @@ object-assign
 
       /***/
     },
-    /* 397 */
+    /* 406 */
     /***/ function(module, exports, __webpack_require__) {
-      var SetCache = __webpack_require__(43),
-        arrayIncludes = __webpack_require__(95),
-        arrayIncludesWith = __webpack_require__(96),
-        arrayMap = __webpack_require__(28),
-        baseUnary = __webpack_require__(69),
-        cacheHas = __webpack_require__(44)
+      var SetCache = __webpack_require__(47),
+        arrayIncludes = __webpack_require__(97),
+        arrayIncludesWith = __webpack_require__(98),
+        arrayMap = __webpack_require__(34),
+        baseUnary = __webpack_require__(75),
+        cacheHas = __webpack_require__(48)
 
       /* Built-in method references for those with the same name as other `lodash` methods. */
       var nativeMin = Math.min
@@ -60459,9 +61199,9 @@ object-assign
 
       /***/
     },
-    /* 398 */
+    /* 407 */
     /***/ function(module, exports, __webpack_require__) {
-      var isArrayLikeObject = __webpack_require__(59)
+      var isArrayLikeObject = __webpack_require__(64)
 
       /**
        * Casts `value` to an empty array if it's not an array like object.
@@ -60478,7 +61218,7 @@ object-assign
 
       /***/
     },
-    /* 399 */
+    /* 408 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60495,7 +61235,7 @@ object-assign
 
       /***/
     },
-    /* 400 */
+    /* 409 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60528,17 +61268,17 @@ object-assign
 
       var _isArray2 = _interopRequireDefault(_isArray)
 
-      var _matchesType = __webpack_require__(178)
+      var _matchesType = __webpack_require__(179)
 
       var _matchesType2 = _interopRequireDefault(_matchesType)
 
-      var _HandlerRegistry = __webpack_require__(401)
+      var _HandlerRegistry = __webpack_require__(410)
 
       var _HandlerRegistry2 = _interopRequireDefault(_HandlerRegistry)
 
-      var _dragOffset = __webpack_require__(177)
+      var _dragOffset = __webpack_require__(178)
 
-      var _dirtyHandlerIds = __webpack_require__(179)
+      var _dirtyHandlerIds = __webpack_require__(180)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -60810,7 +61550,7 @@ object-assign
 
       /***/
     },
-    /* 401 */
+    /* 410 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -60857,13 +61597,13 @@ object-assign
 
       var _isArray2 = _interopRequireDefault(_isArray)
 
-      var _asap = __webpack_require__(402)
+      var _asap = __webpack_require__(411)
 
       var _asap2 = _interopRequireDefault(_asap)
 
-      var _registry = __webpack_require__(61)
+      var _registry = __webpack_require__(66)
 
-      var _getNextUniqueId = __webpack_require__(404)
+      var _getNextUniqueId = __webpack_require__(413)
 
       var _getNextUniqueId2 = _interopRequireDefault(_getNextUniqueId)
 
@@ -61137,12 +61877,12 @@ object-assign
 
       /***/
     },
-    /* 402 */
+    /* 411 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
       // rawAsap provides everything we need except exception management.
-      var rawAsap = __webpack_require__(403)
+      var rawAsap = __webpack_require__(412)
       // RawTasks are recycled to reduce GC churn.
       var freeTasks = []
       // We queue errors to ensure they are thrown in right order (FIFO).
@@ -61208,7 +61948,7 @@ object-assign
 
       /***/
     },
-    /* 403 */
+    /* 412 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(global) {
@@ -61440,11 +62180,11 @@ object-assign
         // https://github.com/tildeio/rsvp.js/blob/cddf7232546a9cf858524b75cde6f9edf72620a7/lib/rsvp/asap.js
 
         /* WEBPACK VAR INJECTION */
-      }.call(exports, __webpack_require__(65)))
+      }.call(exports, __webpack_require__(71)))
 
       /***/
     },
-    /* 404 */
+    /* 413 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -61460,7 +62200,7 @@ object-assign
 
       /***/
     },
-    /* 405 */
+    /* 414 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -61522,7 +62262,7 @@ object-assign
 
       /***/
     },
-    /* 406 */
+    /* 415 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -61582,7 +62322,7 @@ object-assign
 
       /***/
     },
-    /* 407 */
+    /* 416 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -61609,7 +62349,7 @@ object-assign
 
       exports.default = createBackend
 
-      var _noop = __webpack_require__(172)
+      var _noop = __webpack_require__(173)
 
       var _noop2 = _interopRequireDefault(_noop)
 
@@ -61702,7 +62442,7 @@ object-assign
 
       /***/
     },
-    /* 408 */
+    /* 417 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -61736,7 +62476,7 @@ object-assign
 
       var _propTypes2 = _interopRequireDefault(_propTypes)
 
-      var _DragDropContext = __webpack_require__(176)
+      var _DragDropContext = __webpack_require__(177)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -61790,6 +62530,11 @@ object-assign
         function DragDropContextProvider(props, context) {
           _classCallCheck(this, DragDropContextProvider)
 
+          /**
+           * This property determines which window global to use for creating the DragDropManager.
+           * If a window has been injected explicitly via props, that is used first. If it is available
+           * as a context value, then use that, otherwise use the browser global.
+           */
           var _this = _possibleConstructorReturn(
             this,
             (
@@ -61798,37 +62543,47 @@ object-assign
             ).call(this, props, context)
           )
 
+          var getWindow = function getWindow() {
+            if (props && props.window) {
+              return props.window
+            } else if (context && context.window) {
+              return context.window
+            } else if (typeof window !== 'undefined') {
+              return window
+            }
+            return undefined
+          }
+
           _this.backend = (0, _DragDropContext.unpackBackendForEs5Users)(
             props.backend
+          )
+          _this.childContext = (0, _DragDropContext.createChildContext)(
+            _this.backend,
+            {
+              window: getWindow(),
+            }
           )
           return _this
         }
 
         _createClass(DragDropContextProvider, [
           {
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+              if (
+                nextProps.backend !== this.props.backend ||
+                nextProps.window !== this.props.window
+              ) {
+                throw new Error(
+                  'DragDropContextProvider backend and window props must not change.'
+                )
+              }
+            },
+          },
+          {
             key: 'getChildContext',
             value: function getChildContext() {
-              var _this2 = this
-
-              /**
-               * This property determines which window global to use for creating the DragDropManager.
-               * If a window has been injected explicitly via props, that is used first. If it is available
-               * as a context value, then use that, otherwise use the browser global.
-               */
-              var getWindow = function getWindow() {
-                if (_this2.props && _this2.props.window) {
-                  return _this2.props.window
-                } else if (_this2.context && _this2.context.window) {
-                  return _this2.context.window
-                } else if (typeof window !== 'undefined') {
-                  return window
-                }
-                return undefined
-              }
-
-              return (0, _DragDropContext.createChildContext)(this.backend, {
-                window: getWindow(),
-              })
+              return this.childContext
             },
           },
           {
@@ -61847,7 +62602,7 @@ object-assign
           _propTypes2.default.object,
         ]).isRequired,
         children: _propTypes2.default.element.isRequired,
-        window: _propTypes2.default.object,
+        window: _propTypes2.default.object, // eslint-disable-line react/forbid-prop-types
       }),
       (_class.defaultProps = {
         window: undefined,
@@ -61862,7 +62617,7 @@ object-assign
 
       /***/
     },
-    /* 409 */
+    /* 418 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -61925,11 +62680,11 @@ object-assign
 
       var _propTypes2 = _interopRequireDefault(_propTypes)
 
-      var _hoistNonReactStatics = __webpack_require__(98)
+      var _hoistNonReactStatics = __webpack_require__(100)
 
       var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics)
 
-      var _isPlainObject = __webpack_require__(15)
+      var _isPlainObject = __webpack_require__(16)
 
       var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
@@ -61937,15 +62692,15 @@ object-assign
 
       var _invariant2 = _interopRequireDefault(_invariant)
 
-      var _shallowEqual = __webpack_require__(99)
+      var _shallowEqual = __webpack_require__(101)
 
       var _shallowEqual2 = _interopRequireDefault(_shallowEqual)
 
-      var _shallowEqualScalar = __webpack_require__(180)
+      var _shallowEqualScalar = __webpack_require__(181)
 
       var _shallowEqualScalar2 = _interopRequireDefault(_shallowEqualScalar)
 
-      var _checkDecoratorArguments = __webpack_require__(62)
+      var _checkDecoratorArguments = __webpack_require__(67)
 
       var _checkDecoratorArguments2 = _interopRequireDefault(
         _checkDecoratorArguments
@@ -62005,18 +62760,14 @@ object-assign
         ) // eslint-disable-line prefer-rest-params
         ;(0, _invariant2.default)(
           typeof collect === 'function',
-          'Expected "collect" provided as the first argument to DragLayer ' +
-            'to be a function that collects props to inject into the component. ',
-          'Instead, received %s. ' +
-            'Read more: http://react-dnd.github.io/react-dnd/docs-drag-layer.html',
+          'Expected "collect" provided as the first argument to DragLayer to be a function that collects props to inject into the component. ',
+          'Instead, received %s. Read more: http://react-dnd.github.io/react-dnd/docs-drag-layer.html',
           collect
         )
         ;(0, _invariant2.default)(
           (0, _isPlainObject2.default)(options),
-          'Expected "options" provided as the second argument to DragLayer to be ' +
-            'a plain object when specified. ' +
-            'Instead, received %s. ' +
-            'Read more: http://react-dnd.github.io/react-dnd/docs-drag-layer.html',
+          'Expected "options" provided as the second argument to DragLayer to be a plain object when specified. ' +
+            'Instead, received %s. Read more: http://react-dnd.github.io/react-dnd/docs-drag-layer.html',
           options
         )
 
@@ -62043,8 +62794,7 @@ object-assign
                 value: function getDecoratedComponentInstance() {
                   ;(0, _invariant2.default)(
                     this.child,
-                    'In order to access an instance of the decorated component it can ' +
-                      'not be a stateless component.'
+                    'In order to access an instance of the decorated component it can not be a stateless component.'
                   )
                   return this.child
                 },
@@ -62142,7 +62892,7 @@ object-assign
                     DecoratedComponent,
                     _extends({}, this.props, this.state, {
                       ref: function ref(child) {
-                        return (_this2.child = child)
+                        _this2.child = child
                       },
                     })
                   )
@@ -62168,7 +62918,7 @@ object-assign
 
       /***/
     },
-    /* 410 */
+    /* 419 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62181,39 +62931,39 @@ object-assign
 
       var _invariant2 = _interopRequireDefault(_invariant)
 
-      var _isPlainObject = __webpack_require__(15)
+      var _isPlainObject = __webpack_require__(16)
 
       var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
-      var _checkDecoratorArguments = __webpack_require__(62)
+      var _checkDecoratorArguments = __webpack_require__(67)
 
       var _checkDecoratorArguments2 = _interopRequireDefault(
         _checkDecoratorArguments
       )
 
-      var _decorateHandler = __webpack_require__(181)
+      var _decorateHandler = __webpack_require__(182)
 
       var _decorateHandler2 = _interopRequireDefault(_decorateHandler)
 
-      var _registerSource = __webpack_require__(415)
+      var _registerSource = __webpack_require__(424)
 
       var _registerSource2 = _interopRequireDefault(_registerSource)
 
-      var _createSourceFactory = __webpack_require__(416)
+      var _createSourceFactory = __webpack_require__(425)
 
       var _createSourceFactory2 = _interopRequireDefault(_createSourceFactory)
 
-      var _createSourceMonitor = __webpack_require__(417)
+      var _createSourceMonitor = __webpack_require__(426)
 
       var _createSourceMonitor2 = _interopRequireDefault(_createSourceMonitor)
 
-      var _createSourceConnector = __webpack_require__(418)
+      var _createSourceConnector = __webpack_require__(427)
 
       var _createSourceConnector2 = _interopRequireDefault(
         _createSourceConnector
       )
 
-      var _isValidType = __webpack_require__(184)
+      var _isValidType = __webpack_require__(185)
 
       var _isValidType2 = _interopRequireDefault(_isValidType)
 
@@ -62230,7 +62980,7 @@ object-assign
           ['DragSource', 'type, spec, collect[, options]'].concat(
             Array.prototype.slice.call(arguments)
           )
-        ) // eslint-disable-line prefer-rest-params
+        )
         var getType = type
         if (typeof type !== 'function') {
           ;(0, _invariant2.default)(
@@ -62290,7 +63040,7 @@ object-assign
 
       /***/
     },
-    /* 411 */
+    /* 420 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62300,25 +63050,25 @@ object-assign
 
       exports.__esModule = true
 
-      var _isDisposable2 = __webpack_require__(100)
+      var _isDisposable2 = __webpack_require__(102)
 
       var _isDisposable3 = _interopRequireWildcard(_isDisposable2)
 
       exports.isDisposable = _isDisposable3['default']
 
-      var _Disposable2 = __webpack_require__(412)
+      var _Disposable2 = __webpack_require__(421)
 
       var _Disposable3 = _interopRequireWildcard(_Disposable2)
 
       exports.Disposable = _Disposable3['default']
 
-      var _CompositeDisposable2 = __webpack_require__(413)
+      var _CompositeDisposable2 = __webpack_require__(422)
 
       var _CompositeDisposable3 = _interopRequireWildcard(_CompositeDisposable2)
 
       exports.CompositeDisposable = _CompositeDisposable3['default']
 
-      var _SerialDisposable2 = __webpack_require__(414)
+      var _SerialDisposable2 = __webpack_require__(423)
 
       var _SerialDisposable3 = _interopRequireWildcard(_SerialDisposable2)
 
@@ -62326,7 +63076,7 @@ object-assign
 
       /***/
     },
-    /* 412 */
+    /* 421 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62391,7 +63141,7 @@ object-assign
 
       /***/
     },
-    /* 413 */
+    /* 422 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62407,7 +63157,7 @@ object-assign
 
       exports.__esModule = true
 
-      var _isDisposable = __webpack_require__(100)
+      var _isDisposable = __webpack_require__(102)
 
       var _isDisposable2 = _interopRequireWildcard(_isDisposable)
 
@@ -62507,7 +63257,7 @@ object-assign
 
       /***/
     },
-    /* 414 */
+    /* 423 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62523,7 +63273,7 @@ object-assign
 
       exports.__esModule = true
 
-      var _isDisposable = __webpack_require__(100)
+      var _isDisposable = __webpack_require__(102)
 
       var _isDisposable2 = _interopRequireWildcard(_isDisposable)
 
@@ -62601,7 +63351,7 @@ object-assign
 
       /***/
     },
-    /* 415 */
+    /* 424 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62625,7 +63375,7 @@ object-assign
 
       /***/
     },
-    /* 416 */
+    /* 425 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -62656,7 +63406,7 @@ object-assign
 
         var _invariant2 = _interopRequireDefault(_invariant)
 
-        var _isPlainObject = __webpack_require__(15)
+        var _isPlainObject = __webpack_require__(16)
 
         var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
@@ -62776,7 +63526,7 @@ object-assign
 
       /***/
     },
-    /* 417 */
+    /* 426 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62933,7 +63683,7 @@ object-assign
 
       /***/
     },
-    /* 418 */
+    /* 427 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -62942,11 +63692,11 @@ object-assign
       })
       exports.default = createSourceConnector
 
-      var _wrapConnectorHooks = __webpack_require__(182)
+      var _wrapConnectorHooks = __webpack_require__(183)
 
       var _wrapConnectorHooks2 = _interopRequireDefault(_wrapConnectorHooks)
 
-      var _areOptionsEqual = __webpack_require__(183)
+      var _areOptionsEqual = __webpack_require__(184)
 
       var _areOptionsEqual2 = _interopRequireDefault(_areOptionsEqual)
 
@@ -63043,7 +63793,7 @@ object-assign
 
       /***/
     },
-    /* 419 */
+    /* 428 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63091,7 +63841,7 @@ object-assign
 
       /***/
     },
-    /* 420 */
+    /* 429 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63104,39 +63854,39 @@ object-assign
 
       var _invariant2 = _interopRequireDefault(_invariant)
 
-      var _isPlainObject = __webpack_require__(15)
+      var _isPlainObject = __webpack_require__(16)
 
       var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
-      var _checkDecoratorArguments = __webpack_require__(62)
+      var _checkDecoratorArguments = __webpack_require__(67)
 
       var _checkDecoratorArguments2 = _interopRequireDefault(
         _checkDecoratorArguments
       )
 
-      var _decorateHandler = __webpack_require__(181)
+      var _decorateHandler = __webpack_require__(182)
 
       var _decorateHandler2 = _interopRequireDefault(_decorateHandler)
 
-      var _registerTarget = __webpack_require__(421)
+      var _registerTarget = __webpack_require__(430)
 
       var _registerTarget2 = _interopRequireDefault(_registerTarget)
 
-      var _createTargetFactory = __webpack_require__(422)
+      var _createTargetFactory = __webpack_require__(431)
 
       var _createTargetFactory2 = _interopRequireDefault(_createTargetFactory)
 
-      var _createTargetMonitor = __webpack_require__(423)
+      var _createTargetMonitor = __webpack_require__(432)
 
       var _createTargetMonitor2 = _interopRequireDefault(_createTargetMonitor)
 
-      var _createTargetConnector = __webpack_require__(424)
+      var _createTargetConnector = __webpack_require__(433)
 
       var _createTargetConnector2 = _interopRequireDefault(
         _createTargetConnector
       )
 
-      var _isValidType = __webpack_require__(184)
+      var _isValidType = __webpack_require__(185)
 
       var _isValidType2 = _interopRequireDefault(_isValidType)
 
@@ -63153,7 +63903,7 @@ object-assign
           ['DropTarget', 'type, spec, collect[, options]'].concat(
             Array.prototype.slice.call(arguments)
           )
-        ) // eslint-disable-line prefer-rest-params
+        )
         var getType = type
         if (typeof type !== 'function') {
           ;(0, _invariant2.default)(
@@ -63213,7 +63963,7 @@ object-assign
 
       /***/
     },
-    /* 421 */
+    /* 430 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63237,7 +63987,7 @@ object-assign
 
       /***/
     },
-    /* 422 */
+    /* 431 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
       /* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -63268,7 +64018,7 @@ object-assign
 
         var _invariant2 = _interopRequireDefault(_invariant)
 
-        var _isPlainObject = __webpack_require__(15)
+        var _isPlainObject = __webpack_require__(16)
 
         var _isPlainObject2 = _interopRequireDefault(_isPlainObject)
 
@@ -63379,7 +64129,7 @@ object-assign
 
       /***/
     },
-    /* 423 */
+    /* 432 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63524,7 +64274,7 @@ object-assign
 
       /***/
     },
-    /* 424 */
+    /* 433 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63533,11 +64283,11 @@ object-assign
       })
       exports.default = createTargetConnector
 
-      var _wrapConnectorHooks = __webpack_require__(182)
+      var _wrapConnectorHooks = __webpack_require__(183)
 
       var _wrapConnectorHooks2 = _interopRequireDefault(_wrapConnectorHooks)
 
-      var _areOptionsEqual = __webpack_require__(183)
+      var _areOptionsEqual = __webpack_require__(184)
 
       var _areOptionsEqual2 = _interopRequireDefault(_areOptionsEqual)
 
@@ -63600,7 +64350,7 @@ object-assign
 
       /***/
     },
-    /* 425 */
+    /* 434 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63630,7 +64380,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _reactDnd = __webpack_require__(25)
+      var _reactDnd = __webpack_require__(29)
 
       var _classnames = __webpack_require__(7)
 
@@ -63638,21 +64388,21 @@ object-assign
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _DraggableEventWrapper = __webpack_require__(426)
+      var _DraggableEventWrapper = __webpack_require__(435)
 
       var _DraggableEventWrapper2 = _interopRequireDefault(
         _DraggableEventWrapper
       )
 
-      var _ResizableEvent = __webpack_require__(427)
+      var _ResizableEvent = __webpack_require__(436)
 
       var _ResizableEvent2 = _interopRequireDefault(_ResizableEvent)
 
-      var _ResizableMonthEvent = __webpack_require__(428)
+      var _ResizableMonthEvent = __webpack_require__(437)
 
       var _ResizableMonthEvent2 = _interopRequireDefault(_ResizableMonthEvent)
 
-      var _backgroundWrapper = __webpack_require__(429)
+      var _backgroundWrapper = __webpack_require__(438)
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj }
@@ -63709,7 +64459,7 @@ object-assign
       var html5Backend = void 0
 
       try {
-        html5Backend = __webpack_require__(58)
+        html5Backend = __webpack_require__(63)
       } catch (err) {
         /* optional dep missing */
       }
@@ -63854,7 +64604,7 @@ object-assign
 
       /***/
     },
-    /* 426 */
+    /* 435 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -63868,7 +64618,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _reactDnd = __webpack_require__(25)
+      var _reactDnd = __webpack_require__(29)
 
       var _classnames = __webpack_require__(7)
 
@@ -63990,7 +64740,7 @@ object-assign
 
       /***/
     },
-    /* 427 */
+    /* 436 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -64018,11 +64768,11 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _reactDnd = __webpack_require__(25)
+      var _reactDnd = __webpack_require__(29)
 
-      var _reactDndHtml5Backend = __webpack_require__(58)
+      var _reactDndHtml5Backend = __webpack_require__(63)
 
-      var _compose = __webpack_require__(185)
+      var _compose = __webpack_require__(186)
 
       var _compose2 = _interopRequireDefault(_compose)
 
@@ -64242,7 +64992,7 @@ object-assign
 
       /***/
     },
-    /* 428 */
+    /* 437 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -64270,11 +65020,11 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _reactDnd = __webpack_require__(25)
+      var _reactDnd = __webpack_require__(29)
 
-      var _reactDndHtml5Backend = __webpack_require__(58)
+      var _reactDndHtml5Backend = __webpack_require__(63)
 
-      var _compose = __webpack_require__(185)
+      var _compose = __webpack_require__(186)
 
       var _compose2 = _interopRequireDefault(_compose)
 
@@ -64421,7 +65171,7 @@ object-assign
 
       /***/
     },
-    /* 429 */
+    /* 438 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
 
@@ -64452,7 +65202,7 @@ object-assign
 
       var _react2 = _interopRequireDefault(_react)
 
-      var _reactDnd = __webpack_require__(25)
+      var _reactDnd = __webpack_require__(29)
 
       var _classnames = __webpack_require__(7)
 
@@ -64460,7 +65210,7 @@ object-assign
 
       var _propTypes3 = __webpack_require__(8)
 
-      var _accessors = __webpack_require__(19)
+      var _accessors = __webpack_require__(20)
 
       var _dates = __webpack_require__(3)
 
@@ -64720,12 +65470,12 @@ object-assign
 
       /***/
     },
-    /* 430 */
+    /* 439 */
     /***/ function(module, exports, __webpack_require__) {
       // style-loader: Adds some css to the DOM by adding a <style> tag
 
       // load the styles
-      var content = __webpack_require__(431)
+      var content = __webpack_require__(440)
       if (typeof content === 'string') content = [[module.i, content, '']]
       // Prepare cssTransformation
       var transform
@@ -64733,7 +65483,7 @@ object-assign
       var options = { hmr: true }
       options.transform = transform
       // add the styles to the DOM
-      var update = __webpack_require__(52)(content, options)
+      var update = __webpack_require__(55)(content, options)
       if (content.locals) module.exports = content.locals
       // Hot Module Replacement
       if (false) {
@@ -64757,9 +65507,9 @@ object-assign
 
       /***/
     },
-    /* 431 */
+    /* 440 */
     /***/ function(module, exports, __webpack_require__) {
-      exports = module.exports = __webpack_require__(51)(true)
+      exports = module.exports = __webpack_require__(54)(true)
       // imports
 
       // module

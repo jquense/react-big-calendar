@@ -1,8 +1,9 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
 
-let Timeslots = React.createClass({
+let Timeslots = createReactClass({
   render() {
     return (
       <BigCalendar

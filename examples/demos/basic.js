@@ -1,10 +1,11 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
 
 let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
 
-let Basic = React.createClass({
+let Basic = createReactClass({
   render() {
     return (
       <BigCalendar

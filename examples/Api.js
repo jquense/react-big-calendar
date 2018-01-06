@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import transform from 'lodash/transform'
 
 import metadata from 'component-metadata-loader!react-big-calendar/lib/Calendar'
@@ -14,7 +15,7 @@ let cleanDocletValue = str =>
     .replace(/^\{/, '')
     .replace(/\}$/, '')
 
-let Api = React.createClass({
+let Api = createReactClass({
   render() {
     let calData = metadata.Calendar
 

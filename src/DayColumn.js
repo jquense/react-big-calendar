@@ -129,8 +129,9 @@ class DayColumn extends React.Component {
         max={max}
         step={step}
       >
-        {this.renderEvents()}
-
+        <div className={cn('rbc-events-container', { rtl: this.props.rtl })}>
+          {this.renderEvents()}
+        </div>
         {selecting && (
           <div className="rbc-slot-selection" style={slotStyle}>
             <span>

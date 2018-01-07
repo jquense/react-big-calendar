@@ -117,6 +117,11 @@ export default function createEvents(idx = 0, date = new Date()) {
         start: new Date(y, m, d, 6, 30, 0, 0),
         end: new Date(y, m, d, 8, 0, 0, 0),
       },
+      {
+        title: 'Event 16',
+        start: new Date(y, m, d, 16, 0, 0, 0),
+        end: new Date(y, m, d, 17, 30, 0, 0),
+      },
     ],
     [
       {
@@ -133,6 +138,55 @@ export default function createEvents(idx = 0, date = new Date()) {
         title: 'Event 3',
         start: new Date(y, m, d, 3, 0, 0, 0),
         end: new Date(y, m, d, 4, 0, 0, 0),
+      },
+    ],
+    [
+      {
+        title: 'Event 1',
+        start: new Date(y, m, d, 6, 30, 0, 0),
+        end: new Date(y, m, d, 7, 0, 0, 0),
+      },
+      {
+        title: 'Event 2',
+        start: new Date(y, m, d, 8, 0, 0, 0),
+        end: new Date(y, m, d, 17, 0, 0, 0),
+      },
+      {
+        title: 'Event 3',
+        start: new Date(y, m, d, 8, 0, 0, 0),
+        end: new Date(y, m, d, 11, 0, 0, 0),
+      },
+      {
+        title: 'Event 4',
+        start: new Date(y, m, d, 8, 0, 0, 0),
+        end: new Date(y, m, d, 12, 0, 0, 0),
+      },
+      {
+        title: 'Event 5',
+        start: new Date(y, m, d, 10, 0, 0, 0),
+        end: new Date(y, m, d, 13, 0, 0, 0),
+      },
+      {
+        title: 'Event 6',
+        start: new Date(y, m, d, 10, 0, 0, 0),
+        end: new Date(y, m, d, 13, 0, 0, 0),
+      },
+      {
+        title: 'Event 7',
+        start: new Date(y, m, d, 10, 0, 0, 0),
+        end: new Date(y, m, d, 13, 0, 0, 0),
+      },
+    ],
+    [
+      {
+        title: 'test',
+        start: new Date(y, m, d, 21, 45, 0, 0),
+        end: new Date(y, m, d, 21, 45, 0, 0),
+      },
+      {
+        title: 'test 2',
+        start: new Date(y, m, d, 21, 45, 0, 0),
+        end: new Date(y, m, d, 21, 45, 0, 0),
       },
     ],
   ]

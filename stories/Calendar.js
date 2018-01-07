@@ -352,6 +352,18 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('complex day view layout', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <Calendar
+          defaultDate={new Date()}
+          defaultView={Calendar.Views.DAY}
+          events={createEvents(1)}
+          step={30}
+        />
+      </div>
+    )
+  })
   .add('multi-day', () => {
     return (
       <div style={{ height: 600 }}>

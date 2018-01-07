@@ -47,19 +47,15 @@ MyWeek.title = (date, { formats, culture }) => {
   return `My awesome week: ${Date.toLocaleString()}`
 }
 
-let CustomView = React.createClass({
-  render() {
-    return (
-      <div>
-        <BigCalendar
-          events={events}
-          defaultDate={new Date(2015, 3, 1)}
-          views={{ month: true, week: MyWeek }}
-          test="io"
-        />
-      </div>
-    )
-  },
-})
+let CustomView = props => (
+  <div>
+    <BigCalendar
+      events={events}
+      defaultDate={new Date(2015, 3, 1)}
+      views={{ month: true, week: MyWeek }}
+      test="io"
+    />
+  </div>
+)
 
 export default CustomView

@@ -24,12 +24,8 @@ import Dnd from './demos/dnd'
 let demoRoot =
   'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
-const Example = React.createClass({
-  getInitialState() {
-    return {
-      selected: 'basic',
-    }
-  },
+class Example extends React.Component {
+  state = { selected: 'basic' }
 
   render() {
     let selected = this.state.selected
@@ -133,12 +129,12 @@ const Example = React.createClass({
         </div>
       </div>
     )
-  },
+  }
 
-  select(selected, e) {
+  select = (selected, e) => {
     e.preventDefault()
     this.setState({ selected })
-  },
-})
+  }
+}
 
 render(<Example />, document.getElementById('root'))

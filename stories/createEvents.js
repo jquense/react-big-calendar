@@ -179,14 +179,34 @@ export default function createEvents(idx = 0, date = new Date()) {
     ],
     [
       {
-        title: 'test',
-        start: new Date(y, m, d, 21, 45, 0, 0),
-        end: new Date(y, m, d, 21, 45, 0, 0),
+        title: 'Event 1',
+        start: new Date(y, m, d, 19, 0, 0, 0),
+        end: new Date(y, m, d, 20, 55, 0, 0),
       },
       {
-        title: 'test 2',
-        start: new Date(y, m, d, 21, 45, 0, 0),
-        end: new Date(y, m, d, 21, 45, 0, 0),
+        title: 'Event 2',
+        start: new Date(y, m, d, 19, 15, 0, 0),
+        end: new Date(y, m, d, 20, 15, 0, 0),
+      },
+      {
+        title: 'Event 3',
+        start: new Date(y, m, d, 19, 45, 0, 0),
+        end: new Date(y, m, d, 22, 30, 0, 0),
+      },
+      {
+        title: 'Event 4',
+        start: new Date(y, m, d, 20, 45, 0, 0),
+        end: new Date(y, m, d, 22, 5, 0, 0),
+      },
+      {
+        title: 'Event 5',
+        start: new Date(y, m, d, 10, 0, 0, 0),
+        end: new Date(y, m, d, 11, 0, 0, 0),
+      },
+      {
+        title: 'Event 6',
+        start: new Date(y, m, d, 10, 30, 0, 0),
+        end: new Date(y, m, d, 11, 30, 0, 0),
       },
     ],
   ]

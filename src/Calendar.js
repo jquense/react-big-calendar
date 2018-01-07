@@ -37,12 +37,12 @@ function isValidView(view, { views: _views }) {
 let now = new Date()
 
 /**
- * react-big-calendar is full featured Calendar component for managing events and dates. It uses
- * modern `flexbox` for layout making it super responsive and performant. Leaving most of the layout heavy lifting
+ * react-big-calendar is a full featured Calendar component for managing events and dates. It uses
+ * modern `flexbox` for layout, making it super responsive and performant. Leaving most of the layout heavy lifting
  * to the browser. __note:__ The default styles use `height: 100%` which means your container must set an explicit
  * height (feel free to adjust the styles to suit your specific needs).
  *
- * Big Calendar is unopiniated about editing and moving events, prefering to let you implement it in a way that makes
+ * Big Calendar is unopiniated about editing and moving events, preferring to let you implement it in a way that makes
  * the most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it
  * how to find the start and end datetimes and you can pass it whatever you want.
  *
@@ -201,7 +201,7 @@ class Calendar extends React.Component {
     /**
      * Callback fired when the `view` value changes.
      *
-     * @controllable date
+     * @controllable view
      */
     onView: PropTypes.func,
 

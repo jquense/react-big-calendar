@@ -1,5 +1,4 @@
 import React from 'react'
-import createReactClass from 'create-react-class'
 
 import dates from 'date-arithmetic'
 import events from '../events'
@@ -48,19 +47,15 @@ MyWeek.title = (date, { formats, culture }) => {
   return `My awesome week: ${Date.toLocaleString()}`
 }
 
-let CustomView = createReactClass({
-  render() {
-    return (
-      <div>
-        <BigCalendar
-          events={events}
-          defaultDate={new Date(2015, 3, 1)}
-          views={{ month: true, week: MyWeek }}
-          test="io"
-        />
-      </div>
-    )
-  },
-})
+let CustomView = props => (
+  <div>
+    <BigCalendar
+      events={events}
+      defaultDate={new Date(2015, 3, 1)}
+      views={{ month: true, week: MyWeek }}
+      test="io"
+    />
+  </div>
+)
 
 export default CustomView

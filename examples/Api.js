@@ -1,5 +1,4 @@
 import React from 'react'
-import createReactClass from 'create-react-class'
 import transform from 'lodash/transform'
 
 import metadata from 'component-metadata-loader!react-big-calendar/lib/Calendar'
@@ -15,7 +14,7 @@ let cleanDocletValue = str =>
     .replace(/^\{/, '')
     .replace(/\}$/, '')
 
-let Api = createReactClass({
+class Api extends React.Component {
   render() {
     let calData = metadata.Calendar
 
@@ -34,7 +33,7 @@ let Api = createReactClass({
         })}
       </div>
     )
-  },
+  }
 
   renderProp(data, name, Heading) {
     let typeInfo = this.renderType(data)
@@ -79,7 +78,7 @@ let Api = createReactClass({
         )}
       </section>
     )
-  },
+  }
 
   renderType(prop) {
     let type = prop.type || {}
@@ -137,12 +136,12 @@ let Api = createReactClass({
       default:
         return name
     }
-  },
+  }
 
   renderEnum(enumType) {
     const enumValues = enumType.value || []
     return <code>{enumValues.join(' | ')}</code>
-  },
+  }
 
   renderControllableNote(prop, propName) {
     let controllable = prop.doclets && prop.doclets.controllable
@@ -171,8 +170,8 @@ let Api = createReactClass({
         </em>
       </div>
     )
-  },
-})
+  }
+}
 
 function getDisplayTypeName(typeName) {
   if (typeName === 'func') {

@@ -1,5 +1,4 @@
 import React from 'react'
-import createReactClass from 'create-react-class'
 import Api from './Api'
 import Intro from './Intro.md'
 import cn from 'classnames'
@@ -25,12 +24,8 @@ import Dnd from './demos/dnd'
 let demoRoot =
   'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
-const Example = createReactClass({
-  getInitialState() {
-    return {
-      selected: 'basic',
-    }
-  },
+class Example extends React.Component {
+  state = { selected: 'basic' }
 
   render() {
     let selected = this.state.selected
@@ -134,12 +129,12 @@ const Example = createReactClass({
         </div>
       </div>
     )
-  },
+  }
 
-  select(selected, e) {
+  select = (selected, e) => {
     e.preventDefault()
     this.setState({ selected })
-  },
-})
+  }
+}
 
 render(<Example />, document.getElementById('root'))

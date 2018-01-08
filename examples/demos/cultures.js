@@ -1,5 +1,4 @@
 import React from 'react'
-import createReactClass from 'create-react-class'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
 
@@ -8,10 +7,8 @@ require('globalize/lib/cultures/globalize.culture.es')
 require('globalize/lib/cultures/globalize.culture.fr')
 require('globalize/lib/cultures/globalize.culture.ar-AE')
 
-let Cultures = createReactClass({
-  getInitialState() {
-    return { culture: 'fr' }
-  },
+class Cultures extends React.Component {
+  state = { culture: 'fr' }
 
   render() {
     let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
@@ -42,7 +39,7 @@ let Cultures = createReactClass({
         />
       </div>
     )
-  },
-})
+  }
+}
 
 export default Cultures

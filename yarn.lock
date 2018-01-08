@@ -5280,17 +5280,22 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
-markdown-jsx-loader@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/markdown-jsx-loader/-/markdown-jsx-loader-2.0.1.tgz#290dced67f8a08d4582a42d47605e21e70a96edf"
+markdown-jsx-loader@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-jsx-loader/-/markdown-jsx-loader-3.0.0.tgz#c4b75260d64dbba435838998854409900534a5d2"
   dependencies:
     case "^1.3.2"
-    marked "^0.3.5"
+    loader-utils "^1.1.0"
+    marked "^0.3.6"
     prismjs "^1.3.0"
 
 marked@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
+
+marked@^0.3.6:
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.9.tgz#54ce6a57e720c3ac6098374ec625fcbcc97ff290"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"

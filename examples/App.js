@@ -124,7 +124,9 @@ class Example extends React.Component {
           </div>
         </div>
         <div className="docs">
-          <Intro className="contain section" />
+          <div className="contain section">
+            <Intro />
+          </div>
           <Api className="contain section" />
         </div>
       </div>

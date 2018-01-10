@@ -5475,23 +5475,22 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
-map-visit@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
-  dependencies:
-    object-visit "^1.0.0"
-
-markdown-jsx-loader@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/markdown-jsx-loader/-/markdown-jsx-loader-2.0.1.tgz#290dced67f8a08d4582a42d47605e21e70a96edf"
+markdown-jsx-loader@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/markdown-jsx-loader/-/markdown-jsx-loader-3.0.2.tgz#74fa8b1523f9967c0f5b82a617a2550b68f50514"
   dependencies:
     case "^1.3.2"
-    marked "^0.3.5"
+    loader-utils "^1.1.0"
+    marked "^0.3.6"
     prismjs "^1.3.0"
 
 marked@^0.3.5:
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.9.tgz#54ce6a57e720c3ac6098374ec625fcbcc97ff290"
+
+marked@^0.3.6:
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.12.tgz#7cf25ff2252632f3fe2406bde258e94eee927519"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -8373,20 +8372,11 @@ uncontrollable@^3.1.3:
   dependencies:
     invariant "^2.1.0"
 
-"uncontrollable@^3.3.1 || ^4.0.0":
+uncontrollable@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-4.1.0.tgz#e0358291252e1865222d90939b19f2f49f81c1a9"
   dependencies:
     invariant "^2.1.0"
-
-union-value@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.0.tgz#5c71c34cb5bad5dcebe3ea0cd08207ba5aa1aea4"
-  dependencies:
-    arr-union "^3.1.0"
-    get-value "^2.0.6"
-    is-extendable "^0.1.1"
-    set-value "^0.4.3"
 
 uniq@^1.0.1:
   version "1.0.1"

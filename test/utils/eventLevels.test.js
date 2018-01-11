@@ -292,6 +292,18 @@ describe('inRange', () => {
     const weekOfThe12th = [d(12), d(18)]
     ;[
       [
+        'single day with time, 1 day range',
+        { start: d(11, 5), end: d(11, 6) },
+        [d(11), d(11)],
+        true,
+      ],
+      [
+        'multiday w/ time, 1 day range',
+        { start: d(10, 5), end: d(11, 6) },
+        [d(11), d(11)],
+        true,
+      ],
+      [
         'single day event, end of the week',
         { start: d(11), end: d(12) },
         weekOfThe5th,
@@ -317,7 +329,13 @@ describe('inRange', () => {
         true,
       ],
       [
-        'no duration, first of the week',
+        'no duration, end of the week',
+        { start: d(11), end: d(11) },
+        weekOfThe5th,
+        true,
+      ],
+      [
+        'no duration, first of the next week',
         { start: d(12), end: d(12) },
         weekOfThe5th,
         false,
@@ -328,7 +346,6 @@ describe('inRange', () => {
         weekOfThe12th,
         true,
       ],
-
       [
         'single day w/ time event, end of the week',
         { start: d(11, 10), end: d(11, 12) },
@@ -341,14 +358,18 @@ describe('inRange', () => {
         weekOfThe12th,
         false,
       ],
-
+      [
+        'multi day w/ time event, end of the week',
+        { start: d(11, 10), end: d(13, 12) },
+        weekOfThe12th,
+        true,
+      ],
       [
         'single day w/ time event, middle of the week',
         { start: d(10, 10), end: d(10, 12) },
         weekOfThe5th,
         true,
       ],
-
       [
         'multi day event, first of the week',
         { start: d(11), end: d(13) },
@@ -356,8 +377,14 @@ describe('inRange', () => {
         true,
       ],
       [
-        'multi day event, first of the week',
+        'multi day event, midnight of next the week',
         { start: d(11), end: d(13) },
+        weekOfThe12th,
+        true,
+      ],
+      [
+        'multi day event w/ time, first of next the week',
+        { start: d(11, 5), end: d(13, 5) },
         weekOfThe12th,
         true,
       ],

@@ -368,6 +368,9 @@ class Calendar extends React.Component {
      */
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
+    /** Determines whether you want events to be resizable */
+    resizable: PropTypes.bool,
+
     /**
      * Specifies the number of miliseconds the user must press and hold on the screen for a touch
      * to be considered a "long press." Long presses are used for time slot selection on touch

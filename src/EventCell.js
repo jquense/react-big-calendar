@@ -11,6 +11,7 @@ let propTypes = {
   slotEnd: PropTypes.instanceOf(Date),
 
   selected: PropTypes.bool,
+  isAllDay: PropTypes.bool,
   eventPropGetter: PropTypes.func,
   titleAccessor: accessor,
   allDayAccessor: accessor,
@@ -29,6 +30,7 @@ class EventCell extends React.Component {
       className,
       event,
       selected,
+      isAllDay,
       eventPropGetter,
       startAccessor,
       endAccessor,
@@ -45,7 +47,10 @@ class EventCell extends React.Component {
     let title = get(event, titleAccessor),
       end = get(event, endAccessor),
       start = get(event, startAccessor),
-      isAllDay = get(event, props.allDayAccessor),
+      isAllDayEvent =
+        isAllDay ||
+        get(event, props.allDayAccessor) ||
+        dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
       continuesPrior = dates.lt(start, slotStart, 'day'),
       continuesAfter = dates.gte(end, slotEnd, 'day')
 
@@ -63,8 +68,7 @@ class EventCell extends React.Component {
           style={{ ...props.style, ...style }}
           className={cn('rbc-event', className, xClassName, {
             'rbc-selected': selected,
-            'rbc-event-allday':
-              isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
+            'rbc-event-allday': isAllDayEvent,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
@@ -72,7 +76,11 @@ class EventCell extends React.Component {
           onDoubleClick={e => onDoubleClick(event, e)}
         >
           <div className="rbc-event-content" title={title}>
-            {Event ? <Event event={event} title={title} /> : title}
+            {Event ? (
+              <Event event={event} title={title} isAllDay={isAllDayEvent} />
+            ) : (
+              title
+            )}
           </div>
         </div>
       </EventWrapper>

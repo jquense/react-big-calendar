@@ -29,7 +29,7 @@
     "build":
       "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
     "build:examples":
-      "npm run clean:examples && webpack --config webpack/examples.config.js",
+      "npm run clean:examples && webpack --config examples/webpack.config.js",
     "examples":
       "npm run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
     "lint": "eslint src test",
@@ -56,7 +56,6 @@
     "react": "^15.3.0 || ^16.0.0",
     "react-dom": "^15.3.0 || ^16.0.0"
   },
-
   "devDependencies": {
     "@storybook/react": "3.2.16",
     "babel-cli": "^6.7.5",

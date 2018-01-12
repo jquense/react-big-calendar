@@ -21,6 +21,7 @@ $ cd react-big-calendar
 $ npm install
 $ npm run examples
 ```
+
 * Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
 ### Localization and Date Formatting

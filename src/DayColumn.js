@@ -31,6 +31,7 @@ function startsAfter(date, max) {
 class DayColumn extends React.Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
+    components: PropTypes.object,
     step: PropTypes.number.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
@@ -145,28 +146,26 @@ class DayColumn extends React.Component {
 
   renderEvents = () => {
     let {
-      events,
-      min,
-      max,
-      showMultiDayTimes,
+      components: { event: EventComponent },
       culture,
+      endAccessor,
       eventPropGetter,
-      selected,
-      messages,
-      eventComponent,
+      eventTimeRangeEndFormat,
       eventTimeRangeFormat,
       eventTimeRangeStartFormat,
-      eventTimeRangeEndFormat,
       eventWrapperComponent: EventWrapper,
+      events,
+      max,
+      messages,
+      min,
       rtl: isRtl,
+      selected,
+      showMultiDayTimes,
+      startAccessor,
       step,
       timeslots,
-      startAccessor,
-      endAccessor,
       titleAccessor,
     } = this.props
-
-    let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
       events,

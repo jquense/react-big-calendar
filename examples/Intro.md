@@ -28,8 +28,8 @@ const MyCalendar = props => (
   <div>
     <BigCalendar
       events={myEventsList}
-      startAccessor='start'
-      endAccessor='end'
+      startAccessor="start"
+      endAccessor="end"
     />
   </div>
 )

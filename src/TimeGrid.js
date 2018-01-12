@@ -315,6 +315,7 @@ export default class TimeGrid extends Component {
             allDayAccessor={this.props.allDayAccessor}
             eventPropGetter={this.props.eventPropGetter}
             selected={this.props.selected}
+            isAllDay={true}
             onSelect={this.handleSelectEvent}
             onDoubleClick={this.handleDoubleClickEvent}
             longPressThreshold={this.props.longPressThreshold}

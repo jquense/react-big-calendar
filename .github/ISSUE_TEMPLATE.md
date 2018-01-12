@@ -1,4 +1,4 @@
-#### Do you want to request a *feature* or report a *bug*?
+#### Do you want to request a _feature_ or report a _bug_?
 
 #### What's the current behavior?
 

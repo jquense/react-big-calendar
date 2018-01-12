@@ -35,12 +35,28 @@ class Dnd extends React.Component {
     alert(`${event.title} was dropped onto ${event.start}`)
   }
 
+  resizeEvent = (resizeType, { event, start, end }) => {
+    const { events } = this.state
+
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
+
+    this.setState({
+      events: nextEvents,
+    })
+  }
+
   render() {
     return (
       <DragAndDropCalendar
         selectable
         events={this.state.events}
         onEventDrop={this.moveEvent}
+        resizable
+        onEventResize={this.resizeEvent}
         defaultView="week"
         defaultDate={new Date(2015, 3, 12)}
       />

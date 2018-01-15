@@ -459,6 +459,17 @@ class Calendar extends React.Component {
     scrollToTime: PropTypes.instanceOf(Date),
 
     /**
+     * Hides the gutter on the left that shows the time intervals on views where the gutter is shown.
+     */
+    hideGutter: PropTypes.bool,
+
+    /**
+     * Hides the time indicator line on views where it is shown.
+     * The time indicator will always be hidden if `hideGutter` is true
+     */
+    hideTimeIndicator: PropTypes.bool,
+
+    /**
      * Specify a specific culture code for the Calendar.
      *
      * **Note: it's generally better to handle this globally via your i18n library.**
@@ -647,6 +658,8 @@ class Calendar extends React.Component {
     resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
+    hideGutter: false,
+    hideTimeIndicator: false,
   }
 
   getViews = () => {

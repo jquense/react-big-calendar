@@ -45,6 +45,7 @@ let propTypes = {
   width: PropTypes.number,
 
   titleAccessor: accessor.isRequired,
+  tooltipAccessor: accessor.isRequired,
   allDayAccessor: accessor.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
@@ -157,6 +158,7 @@ class MonthView extends React.Component {
       components,
       selectable,
       titleAccessor,
+      tooltipAccessor,
       startAccessor,
       endAccessor,
       allDayAccessor,
@@ -189,6 +191,7 @@ class MonthView extends React.Component {
         selectable={selectable}
         messages={messages}
         titleAccessor={titleAccessor}
+        tooltipAccessor={tooltipAccessor}
         startAccessor={startAccessor}
         endAccessor={endAccessor}
         allDayAccessor={allDayAccessor}

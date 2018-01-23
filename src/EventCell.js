@@ -78,7 +78,7 @@ class EventCell extends React.Component {
           onClick={e => onSelect(event, e)}
           onDoubleClick={e => onDoubleClick(event, e)}
         >
-          <div className="rbc-event-content" {...tooltip ? { title: tooltip } : {}}>
+          <div className="rbc-event-content" title={tooltip || undefined}>
             {Event ? (
               <Event event={event} title={title} isAllDay={isAllDayEvent} />
             ) : (

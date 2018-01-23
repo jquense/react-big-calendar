@@ -233,12 +233,11 @@ class DayColumn extends React.Component {
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
               width: `${width}%`,
             }}
-            {...(tooltip
-              ? {
-                  title:
-                    (typeof label === 'string' ? label + ': ' : '') + tooltip,
-                }
-              : {})}
+            title={
+              tooltip
+                ? (typeof label === 'string' ? label + ': ' : '') + tooltip
+                : undefined
+            }
             onClick={e => this._select(event, e)}
             onDoubleClick={e => this._doubleClick(event, e)}
             className={cn('rbc-event', className, {

@@ -203,6 +203,15 @@ export default class TimeGrid extends Component {
         {this.renderHeader(range, allDayEvents, width, resources)}
 
         <div ref="content" className="rbc-time-content">
+<<<<<<< 3903fd7066dafcc7dd528fa9889748cf75e0e5df
+=======
+          <div ref="timeIndicator" className="rbc-current-time-indicator" />
+          <div
+            ref="timeIndicatorLine"
+            className="rbc-current-time-indicator-line"
+          />
+
+>>>>>>> Update display of time indicator
           <TimeColumn
             {...this.props}
             showLabels
@@ -478,18 +487,24 @@ export default class TimeGrid extends Component {
   }
 
   positionTimeIndicator() {
-    const { rtl, min, max, getNow } = this.props
+    const { rtl, min, max, getNow, range } = this.props
     const current = getNow()
 
     const secondsGrid = dates.diff(max, min, 'seconds')
     const secondsPassed = dates.diff(current, min, 'seconds')
 
     const timeIndicator = this.refs.timeIndicator
+    const timeIndicatorLine = this.refs.timeIndicatorLine
     const factor = secondsPassed / secondsGrid
     const timeGutter = this._gutters[this._gutters.length - 1]
 
+    const content = this.refs.content
+
     if (timeGutter && current >= min && current <= max) {
       const pixelHeight = timeGutter.offsetHeight
+      const dayPixelWidth =
+        (content.offsetWidth - timeGutter.offsetWidth) / this.slots
+      const dayOffset = range.findIndex(d => dates.isToday(d)) * dayPixelWidth
       const offset = Math.floor(factor * pixelHeight)
 
       timeIndicator.style.display = 'block'
@@ -497,8 +512,16 @@ export default class TimeGrid extends Component {
       timeIndicator.style[rtl ? 'right' : 'left'] =
         timeGutter.offsetWidth + 'px'
       timeIndicator.style.top = offset + 'px'
+
+      timeIndicatorLine.style.display = dayOffset >= 0 ? 'block' : 'none'
+      timeIndicatorLine.style[rtl ? 'left' : 'right'] = 0
+      timeIndicatorLine.style[rtl ? 'right' : 'left'] =
+        timeGutter.offsetWidth + dayOffset + 'px'
+      timeIndicatorLine.style.top = offset + 'px'
+      timeIndicatorLine.style.width = dayPixelWidth + 'px'
     } else {
       timeIndicator.style.display = 'none'
+      timeIndicatorLine.style.display = 'none'
     }
   }
 

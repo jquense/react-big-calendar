@@ -114,6 +114,7 @@
   position: absolute;
   left: 0;
   height: 1px;
+  width: 1px;
 
   background-color: @current-time-color;
   pointer-events: none;
@@ -137,4 +138,13 @@
     left: 0;
     right: -3px;
   }
+}
+
+.rbc-current-time-indicator-line {
+  position: absolute;
+  z-index: 1;
+  height: 1px;
+
+  background-color: @current-time-color;
+  pointer-events: none;
 }

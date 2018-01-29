@@ -1,23 +1,23 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import React from 'react'
-import { DragSource } from 'react-dnd';
-import cn from 'classnames';
+import { DragSource } from 'react-dnd'
+import cn from 'classnames'
 
-import BigCalendar from '../../index';
+import BigCalendar from '../../index'
 
 /* drag sources */
 
 let eventSource = {
   beginDrag(props) {
-    return props.event;
-  }
+    return props.event
+  },
 }
 
 function collectSource(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-  };
+    isDragging: monitor.isDragging(),
+  }
 }
 
 const propTypes = {
@@ -28,24 +28,24 @@ const propTypes = {
 
 class DraggableEventWrapper extends React.Component {
   render() {
-    let { connectDragSource, isDragging, children, event } = this.props;
-    let EventWrapper = BigCalendar.components.eventWrapper;
+    let { connectDragSource, isDragging, children, event } = this.props
+    let EventWrapper = BigCalendar.components.eventWrapper
 
     children = React.cloneElement(children, {
       className: cn(
         children.props.className,
         isDragging && 'rbc-addons-dnd-dragging'
-      )
+      ),
     })
 
     return (
-      <EventWrapper event={event}>
-        {connectDragSource(children)}
-      </EventWrapper>
-    );
+      <EventWrapper event={event}>{connectDragSource(children)}</EventWrapper>
+    )
   }
 }
 
-DraggableEventWrapper.propTypes = propTypes;
+DraggableEventWrapper.propTypes = propTypes
 
-export default DragSource('event', eventSource, collectSource)(DraggableEventWrapper);
+export default DragSource('event', eventSource, collectSource)(
+  DraggableEventWrapper
+)

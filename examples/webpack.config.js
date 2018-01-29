@@ -1,5 +1,4 @@
 var path = require('path')
-var webpack = require('webpack')
 const { rules, loaders, plugins, stats } = require('webpack-atoms')
 
 const browsers = ['last 2 versions', 'ie >= 10']
@@ -28,16 +27,14 @@ module.exports = {
     rules: [
       rules.js({}),
       rules.images(),
-      rules.woff(),
+      rules.fonts(),
       rules.css(),
       rules.less({ browsers }),
       {
         test: /\.md/,
-        use: [...loaders.js({}), 'markdown-jsx-loader'],
+        use: [loaders.js(), 'markdown-jsx-loader'],
       },
     ],
   },
-  plugins: [
-    plugins.extractText()
-  ]
+  plugins: [plugins.extractText()],
 }

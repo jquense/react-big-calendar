@@ -18,6 +18,7 @@ import Cultures from './demos/cultures'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
+import Resource from './demos/resource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
 
@@ -36,6 +37,7 @@ class Example extends React.Component {
       popup: Popup,
       rendering: Rendering,
       customView: CustomView,
+      resource: Resource,
       timeslots: Timeslots,
       dnd: Dnd,
     }[selected]
@@ -104,6 +106,11 @@ class Example extends React.Component {
                 <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
               </li>
               */}
+              <li className={cn({ active: selected === 'Resource' })}>
+                <a href="#" onClick={this.select.bind(null, 'resource')}>
+                  Resource columns
+                </a>
+              </li>
               <li className={cn({ active: selected === 'dnd' })}>
                 <a href="#" onClick={this.select.bind(null, 'dnd')}>
                   Drag and Drop

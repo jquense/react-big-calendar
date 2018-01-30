@@ -1,3 +1,11 @@
+/**
+ * Retrieve via an accessor-like property
+ *
+ *    accessor(obj, 'name')   // => retrieves obj['name']
+ *    accessor(data, func)    // => retrieves func(data)
+ *    accessor(func)          // => retrieves func()
+ *    ... otherwise null
+ */
 export function accessor(data, field) {
   var value = null
 
@@ -9,6 +17,7 @@ export function accessor(data, field) {
     field in data
   )
     value = data[field]
+  else if (typeof data === 'function' && field === undefined) value = data()
 
   return value
 }

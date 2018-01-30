@@ -81,7 +81,7 @@ class Example extends React.Component {
               </li>
               <li className={cn({ active: selected === 'cultures' })}>
                 <a href="#" onClick={this.select.bind(null, 'cultures')}>
-                  I18n and Locales
+                  I18n &amp; Locales
                 </a>
               </li>
               <li className={cn({ active: selected === 'popup' })}>
@@ -96,7 +96,7 @@ class Example extends React.Component {
               </li>
               <li className={cn({ active: selected === 'rendering' })}>
                 <a href="#" onClick={this.select.bind(null, 'rendering')}>
-                  Custom rendering
+                  Custom rendering &amp; now
                 </a>
               </li>
               {/* temporary hide link to documentation
@@ -106,7 +106,7 @@ class Example extends React.Component {
               */}
               <li className={cn({ active: selected === 'dnd' })}>
                 <a href="#" onClick={this.select.bind(null, 'dnd')}>
-                  Drag and Drop
+                  Drag &amp; Drop
                 </a>
               </li>
             </ul>

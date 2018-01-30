@@ -12,6 +12,8 @@ import {
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
+import { accessor as get } from './utils/accessors'
+import dates from './utils/dates'
 import defaultFormats from './formats'
 import message from './utils/messages'
 import moveDate from './utils/move'
@@ -34,8 +36,6 @@ function isValidView(view, { views: _views }) {
   return names.indexOf(view) !== -1
 }
 
-let now = new Date()
-
 /**
  * react-big-calendar is a full featured Calendar component for managing events and dates. It uses
  * modern `flexbox` for layout, making it super responsive and performant. Leaving most of the layout heavy lifting
@@ -53,6 +53,12 @@ let now = new Date()
  * on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a
  * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
  */
+/**
+ *
+ *
+ * @static
+ * @memberof Calendar
+ */
 class Calendar extends React.Component {
   static propTypes = {
     /**
@@ -62,7 +68,9 @@ class Calendar extends React.Component {
     elementProps: PropTypes.object,
 
     /**
-     * The current date value of the calendar. Determines the visible view range
+     * The current date value of the calendar. Determines the visible view range.
+     * If `date` is omitted then the result of `nowAccessor` is used; otherwise the
+     * current date is used.
      *
      * @controllable onNavigate
      */
@@ -190,6 +198,21 @@ class Calendar extends React.Component {
      * @type {(func|string)}
      */
     resourceTitleAccessor: accessor,
+
+    /**
+     * Determines the current date/time which is highlighted in the views.
+     *
+     * The value affects which day is shaded and which time is shown as
+     * the current time. It also affects the date used by the Today button in
+     * the toolbar.
+     *
+     * Providing a value here can be useful when you are implementing time zones
+     * using the `startAccessor` and `endAccessor` properties.
+     *
+     * @type {func}
+     * @default () => new Date()
+     */
+    nowAccessor: PropTypes.func,
 
     /**
      * Callback fired when the `date` value changes.
@@ -631,7 +654,6 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-    date: now,
     step: 30,
     length: 30,
 
@@ -647,6 +669,7 @@ class Calendar extends React.Component {
     resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
+    nowAccessor: () => new Date(),
   }
 
   getViews = () => {
@@ -696,9 +719,18 @@ class Calendar extends React.Component {
       className,
       elementProps,
       date: current,
+      nowAccessor,
+      min,
+      max,
+      scrollToTime,
       length,
       ...props
     } = this.props
+
+    current = current || get(nowAccessor)
+    min = min || dates.startOf(current, 'day')
+    max = max || dates.endOf(current, 'day')
+    scrollToTime = scrollToTime || dates.endOf(current, 'day')
 
     formats = defaultFormats(formats)
     messages = message(messages)
@@ -747,6 +779,10 @@ class Calendar extends React.Component {
           formats={undefined}
           events={events}
           date={current}
+          nowAccessor={nowAccessor}
+          min={min}
+          max={max}
+          scrollToTime={scrollToTime}
           length={length}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}
@@ -762,13 +798,14 @@ class Calendar extends React.Component {
   }
 
   handleNavigate = (action, newDate) => {
-    let { view, date, onNavigate, ...props } = this.props
+    let { view, date, nowAccessor, onNavigate, ...props } = this.props
     let ViewComponent = this.getView()
 
     date = moveDate(ViewComponent, {
       ...props,
       action,
       date: newDate || date,
+      today: get(nowAccessor),
     })
 
     onNavigate(date, view, action)

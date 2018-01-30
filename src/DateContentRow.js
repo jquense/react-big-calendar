@@ -6,6 +6,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
+import { accessor as get } from './utils/accessors'
 import { accessor, elementType } from './utils/propTypes'
 import {
   segStyle,
@@ -39,7 +40,7 @@ const propTypes = {
   onSelectStart: PropTypes.func,
   dayPropGetter: PropTypes.func,
 
-  now: PropTypes.instanceOf(Date).isRequired,
+  nowAccessor: PropTypes.func.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
@@ -102,7 +103,7 @@ class DateContentRow extends React.Component {
   }
 
   renderHeadingCell = (date, index) => {
-    let { renderHeader, range } = this.props
+    let { renderHeader, range, nowAccessor } = this.props
 
     return renderHeader({
       date,
@@ -110,7 +111,7 @@ class DateContentRow extends React.Component {
       style: segStyle(1, range.length),
       className: cn(
         'rbc-date-cell',
-        dates.eq(date, this.props.now, 'day') && 'rbc-now' // FIXME use props.now
+        dates.eq(date, get(nowAccessor), 'day') && 'rbc-now'
       ),
     })
   }
@@ -149,6 +150,7 @@ class DateContentRow extends React.Component {
       renderForMeasure,
       startAccessor,
       endAccessor,
+      nowAccessor,
       renderHeader,
       minRows,
       maxRows,
@@ -185,6 +187,7 @@ class DateContentRow extends React.Component {
       <div className={className}>
         <BackgroundCells
           date={date}
+          nowAccessor={nowAccessor}
           rtl={rtl}
           range={range}
           selectable={selectable}

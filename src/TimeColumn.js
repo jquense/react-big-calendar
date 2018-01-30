@@ -4,6 +4,7 @@ import cn from 'classnames'
 
 import dates from './utils/dates'
 import { elementType, dateFormat } from './utils/propTypes'
+import { accessor as get } from './utils/accessors'
 import BackgroundWrapper from './BackgroundWrapper'
 import TimeSlotGroup from './TimeSlotGroup'
 
@@ -12,7 +13,7 @@ export default class TimeColumn extends Component {
     step: PropTypes.number.isRequired,
     culture: PropTypes.string,
     timeslots: PropTypes.number.isRequired,
-    now: PropTypes.instanceOf(Date).isRequired,
+    nowAccessor: PropTypes.func.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
@@ -69,7 +70,7 @@ export default class TimeColumn extends Component {
       className,
       children,
       style,
-      now,
+      nowAccessor,
       min,
       max,
       step,
@@ -83,6 +84,7 @@ export default class TimeColumn extends Component {
 
     let date = min
     let next = date
+    let now = get(nowAccessor)
     let isNow = false
 
     for (var i = 0; i < numGroups; i++) {

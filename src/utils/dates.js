@@ -80,8 +80,8 @@ let dates = {
     return dates.eq(dateA, dateB, 'month')
   },
 
-  isToday(date) {
-    return dates.eq(date, dates.today(), 'day')
+  sameDay(dateA, dateB) {
+    return dates.eq(dateA, dateB, 'day')
   },
 
   eqTime(dateA, dateB) {

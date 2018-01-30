@@ -1,9 +1,3 @@
-## v0.18.1 - Tue, 30 Jan 2018 14:46:57 GMT
-
-## v0.18.0 - Tue, 30 Jan 2018 14:45:19 GMT
-
-## v0.18.0 - Tue, 30 Jan 2018 14:43:35 GMT
-
 ## v0.17.1 - Tue, 05 Dec 2017 19:42:18 GMT
 
 * [#634](../../pull/634) added a new optional callback `dayPropGetter` to allow customization of the cell backgrounds of month, week, and work week views without the need for custom components

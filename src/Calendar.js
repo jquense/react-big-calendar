@@ -12,7 +12,6 @@ import {
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
-import { accessor as get } from './utils/accessors'
 import dates from './utils/dates'
 import defaultFormats from './formats'
 import message from './utils/messages'
@@ -727,7 +726,7 @@ class Calendar extends React.Component {
       ...props
     } = this.props
 
-    current = current || get(getNow)
+    current = current || getNow()
     min = min || dates.startOf(current, 'day')
     max = max || dates.endOf(current, 'day')
     scrollToTime = scrollToTime || dates.endOf(current, 'day')
@@ -805,7 +804,7 @@ class Calendar extends React.Component {
       ...props,
       action,
       date: newDate || date,
-      today: get(getNow),
+      today: getNow(),
     })
 
     onNavigate(date, view, action)

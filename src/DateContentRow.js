@@ -6,7 +6,6 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
-import { accessor as get } from './utils/accessors'
 import { accessor, elementType } from './utils/propTypes'
 import {
   segStyle,
@@ -111,7 +110,7 @@ class DateContentRow extends React.Component {
       style: segStyle(1, range.length),
       className: cn(
         'rbc-date-cell',
-        dates.eq(date, get(getNow), 'day') && 'rbc-now'
+        dates.eq(date, getNow(), 'day') && 'rbc-now'
       ),
     })
   }

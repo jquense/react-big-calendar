@@ -185,7 +185,7 @@ export default class TimeGrid extends Component {
     let eventsRendered = this.renderEvents(
       range,
       rangeEvents,
-      get(getNow),
+      getNow(),
       resources || [null]
     )
 
@@ -325,7 +325,7 @@ export default class TimeGrid extends Component {
 
   renderHeaderResources(range, resources) {
     const { resourceTitleAccessor, getNow } = this.props
-    const today = get(getNow)
+    const today = getNow()
     return range.map((date, i) => {
       return resources.map((resource, j) => {
         return (
@@ -354,7 +354,7 @@ export default class TimeGrid extends Component {
       getNow,
     } = this.props
     let HeaderComponent = components.header || Header
-    const today = get(getNow)
+    const today = getNow()
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date)
@@ -469,7 +469,7 @@ export default class TimeGrid extends Component {
 
   positionTimeIndicator() {
     const { rtl, min, max, getNow } = this.props
-    const current = get(getNow)
+    const current = getNow()
 
     const secondsGrid = dates.diff(max, min, 'seconds')
     const secondsPassed = dates.diff(current, min, 'seconds')

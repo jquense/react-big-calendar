@@ -115,7 +115,7 @@ class DayColumn extends React.Component {
     }
 
     const { className, style } = (dayPropGetter && dayPropGetter(max)) || {}
-    const current = get(getNow)
+    const current = getNow()
 
     return (
       <TimeColumn

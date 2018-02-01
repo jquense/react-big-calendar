@@ -4,7 +4,6 @@ import cn from 'classnames'
 
 import dates from './utils/dates'
 import { elementType, dateFormat } from './utils/propTypes'
-import { accessor as get } from './utils/accessors'
 import BackgroundWrapper from './BackgroundWrapper'
 import TimeSlotGroup from './TimeSlotGroup'
 
@@ -84,7 +83,7 @@ export default class TimeColumn extends Component {
 
     let date = min
     let next = date
-    let now = get(getNow)
+    let now = getNow()
     let isNow = false
 
     for (var i = 0; i < numGroups; i++) {

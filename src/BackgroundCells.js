@@ -7,7 +7,6 @@ import dates from './utils/dates'
 import { segStyle } from './utils/eventLevels'
 import { notify } from './utils/helpers'
 import { elementType } from './utils/propTypes'
-import { accessor as get } from './utils/accessors'
 import {
   dateCellSelection,
   slotWidth,
@@ -67,7 +66,7 @@ class BackgroundCells extends React.Component {
       getNow,
     } = this.props
     let { selecting, startIdx, endIdx } = this.state
-    let current = get(getNow)
+    let current = getNow()
 
     return (
       <div className="rbc-row-bg">

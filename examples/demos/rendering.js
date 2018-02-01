@@ -20,14 +20,6 @@ function EventAgenda({ event }) {
   )
 }
 
-const customNow = () => {
-  let now = new Date()
-  now.setFullYear(2015)
-  now.setMonth(3)
-  now.setDate(1)
-  return now
-}
-
 const customDayPropGetter = date => {
   if (date.getDate() === 7 || date.getDate() === 15)
     return {
@@ -49,13 +41,9 @@ const customSlotPropGetter = date => {
 
 let Rendering = props => (
   <div {...props}>
-    <p>
-      <small>Custom now is {customNow().toString()}</small>
-    </p>
     <BigCalendar
       events={events}
       defaultDate={new Date(2015, 3, 1)}
-      nowAccessor={customNow}
       defaultView="agenda"
       dayPropGetter={customDayPropGetter}
       slotPropGetter={customSlotPropGetter}

@@ -71,6 +71,9 @@ export default class TimeGrid extends Component {
 
   static defaultProps = {
     step: 30,
+    min: dates.startOf(new Date(), 'day'),
+    max: dates.endOf(new Date(), 'day'),
+    scrollToTime: dates.startOf(new Date(), 'day'),
     /* these 2 are needed to satisfy requirements from TimeColumn required props
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */

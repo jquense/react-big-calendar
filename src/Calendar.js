@@ -12,7 +12,6 @@ import {
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
-import dates from './utils/dates'
 import defaultFormats from './formats'
 import message from './utils/messages'
 import moveDate from './utils/move'
@@ -719,17 +718,11 @@ class Calendar extends React.Component {
       elementProps,
       date: current,
       getNow,
-      min,
-      max,
-      scrollToTime,
       length,
       ...props
     } = this.props
 
     current = current || getNow()
-    min = min || dates.startOf(current, 'day')
-    max = max || dates.endOf(current, 'day')
-    scrollToTime = scrollToTime || dates.endOf(current, 'day')
 
     formats = defaultFormats(formats)
     messages = message(messages)
@@ -779,9 +772,6 @@ class Calendar extends React.Component {
           events={events}
           date={current}
           getNow={getNow}
-          min={min}
-          max={max}
-          scrollToTime={scrollToTime}
           length={length}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}

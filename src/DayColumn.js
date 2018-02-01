@@ -123,7 +123,7 @@ class DayColumn extends React.Component {
         className={cn(
           'rbc-day-slot',
           className,
-          dates.sameDay(max, current) && 'rbc-today'
+          dates.eq(max, current, 'day') && 'rbc-today'
         )}
         style={style}
         getNow={getNow}

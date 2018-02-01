@@ -335,7 +335,7 @@ export default class TimeGrid extends Component {
             key={i + '-' + j}
             className={cn(
               'rbc-header',
-              dates.sameDay(date, today) && 'rbc-today'
+              dates.eq(date, today, 'day') && 'rbc-today'
             )}
             style={segStyle(1, this.slots)}
           >
@@ -381,7 +381,7 @@ export default class TimeGrid extends Component {
           className={cn(
             'rbc-header',
             className,
-            dates.sameDay(date, today) && 'rbc-today'
+            dates.eq(date, today, 'day') && 'rbc-today'
           )}
           style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
         >

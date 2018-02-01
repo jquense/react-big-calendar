@@ -76,14 +76,6 @@ let dates = {
     return dates.milliseconds(date, dates.milliseconds(time))
   },
 
-  sameMonth(dateA, dateB) {
-    return dates.eq(dateA, dateB, 'month')
-  },
-
-  sameDay(dateA, dateB) {
-    return dates.eq(dateA, dateB, 'day')
-  },
-
   eqTime(dateA, dateB) {
     return (
       dates.hours(dateA) === dates.hours(dateB) &&

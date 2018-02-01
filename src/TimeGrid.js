@@ -74,11 +74,10 @@ export default class TimeGrid extends Component {
     min: dates.startOf(new Date(), 'day'),
     max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
-    /* these 2 are needed to satisfy requirements from TimeColumn required props
+    /* this is needed to satisfy requirements from TimeColumn required props
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    getNow: () => new Date(),
   }
 
   constructor(props) {

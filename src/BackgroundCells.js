@@ -19,7 +19,7 @@ import Selection, { getBoundsForNode, isEvent } from './Selection'
 class BackgroundCells extends React.Component {
   static propTypes = {
     date: PropTypes.instanceOf(Date),
-    nowAccessor: PropTypes.func.isRequired,
+    getNow: PropTypes.func.isRequired,
     cellWrapperComponent: elementType,
     container: PropTypes.func,
     dayPropGetter: PropTypes.func,
@@ -64,10 +64,10 @@ class BackgroundCells extends React.Component {
       cellWrapperComponent: Wrapper,
       dayPropGetter,
       date: currentDate,
-      nowAccessor,
+      getNow,
     } = this.props
     let { selecting, startIdx, endIdx } = this.state
-    let current = get(nowAccessor)
+    let current = get(getNow)
 
     return (
       <div className="rbc-row-bg">

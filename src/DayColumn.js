@@ -35,7 +35,7 @@ class DayColumn extends React.Component {
     step: PropTypes.number.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
-    nowAccessor: PropTypes.func.isRequired,
+    getNow: PropTypes.func.isRequired,
 
     rtl: PropTypes.bool,
     titleAccessor: accessor,
@@ -98,7 +98,7 @@ class DayColumn extends React.Component {
       min,
       max,
       step,
-      nowAccessor,
+      getNow,
       selectRangeFormat,
       culture,
       dayPropGetter,
@@ -115,7 +115,7 @@ class DayColumn extends React.Component {
     }
 
     const { className, style } = (dayPropGetter && dayPropGetter(max)) || {}
-    const current = get(nowAccessor)
+    const current = get(getNow)
 
     return (
       <TimeColumn
@@ -126,7 +126,7 @@ class DayColumn extends React.Component {
           dates.sameDay(max, current) && 'rbc-today'
         )}
         style={style}
-        nowAccessor={nowAccessor}
+        getNow={getNow}
         min={min}
         max={max}
         step={step}

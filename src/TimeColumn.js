@@ -13,7 +13,7 @@ export default class TimeColumn extends Component {
     step: PropTypes.number.isRequired,
     culture: PropTypes.string,
     timeslots: PropTypes.number.isRequired,
-    nowAccessor: PropTypes.func.isRequired,
+    getNow: PropTypes.func.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
@@ -70,7 +70,7 @@ export default class TimeColumn extends Component {
       className,
       children,
       style,
-      nowAccessor,
+      getNow,
       min,
       max,
       step,
@@ -84,7 +84,7 @@ export default class TimeColumn extends Component {
 
     let date = min
     let next = date
-    let now = get(nowAccessor)
+    let now = get(getNow)
     let isNow = false
 
     for (var i = 0; i < numGroups; i++) {

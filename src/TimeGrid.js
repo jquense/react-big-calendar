@@ -31,7 +31,7 @@ export default class TimeGrid extends Component {
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
-    nowAccessor: PropTypes.func.isRequired,
+    getNow: PropTypes.func.isRequired,
 
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
@@ -75,7 +75,7 @@ export default class TimeGrid extends Component {
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    nowAccessor: () => new Date(),
+    getNow: () => new Date(),
   }
 
   constructor(props) {
@@ -145,7 +145,7 @@ export default class TimeGrid extends Component {
       width,
       startAccessor,
       endAccessor,
-      nowAccessor,
+      getNow,
       resources,
       allDayAccessor,
       showMultiDayTimes,
@@ -185,7 +185,7 @@ export default class TimeGrid extends Component {
     let eventsRendered = this.renderEvents(
       range,
       rangeEvents,
-      get(nowAccessor),
+      get(getNow),
       resources || [null]
     )
 
@@ -259,7 +259,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width, resources) {
-    let { messages, rtl, selectable, components, nowAccessor } = this.props
+    let { messages, rtl, selectable, components, getNow } = this.props
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -295,7 +295,7 @@ export default class TimeGrid extends Component {
             {message(messages).allDay}
           </div>
           <DateContentRow
-            nowAccessor={nowAccessor}
+            getNow={getNow}
             minRows={2}
             range={range}
             rtl={this.props.rtl}
@@ -324,8 +324,8 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderResources(range, resources) {
-    const { resourceTitleAccessor, nowAccessor } = this.props
-    const today = get(nowAccessor)
+    const { resourceTitleAccessor, getNow } = this.props
+    const today = get(getNow)
     return range.map((date, i) => {
       return resources.map((resource, j) => {
         return (
@@ -351,10 +351,10 @@ export default class TimeGrid extends Component {
       components,
       dayPropGetter,
       getDrilldownView,
-      nowAccessor,
+      getNow,
     } = this.props
     let HeaderComponent = components.header || Header
-    const today = get(nowAccessor)
+    const today = get(getNow)
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date)
@@ -468,8 +468,8 @@ export default class TimeGrid extends Component {
   }
 
   positionTimeIndicator() {
-    const { rtl, min, max, nowAccessor } = this.props
-    const current = get(nowAccessor)
+    const { rtl, min, max, getNow } = this.props
+    const current = get(getNow)
 
     const secondsGrid = dates.diff(max, min, 'seconds')
     const secondsPassed = dates.diff(current, min, 'seconds')

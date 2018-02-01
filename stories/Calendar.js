@@ -207,7 +207,7 @@ storiesOf('module.Calendar.week', module)
           defaultView="week"
           selectable
           timeslots={3}
-          nowAccessor={() => moment('9:30am', 'h:mma').toDate()}
+          getNow={() => moment('9:30am', 'h:mma').toDate()}
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
@@ -459,7 +459,7 @@ storiesOf('module.Calendar.week', module)
       <div style={{ height: 600 }}>
         <Calendar
           defaultView="week"
-          nowAccessor={customNow}
+          getNow={customNow}
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}

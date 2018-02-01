@@ -69,7 +69,7 @@ class Calendar extends React.Component {
 
     /**
      * The current date value of the calendar. Determines the visible view range.
-     * If `date` is omitted then the result of `nowAccessor` is used; otherwise the
+     * If `date` is omitted then the result of `getNow` is used; otherwise the
      * current date is used.
      *
      * @controllable onNavigate
@@ -212,7 +212,7 @@ class Calendar extends React.Component {
      * @type {func}
      * @default () => new Date()
      */
-    nowAccessor: PropTypes.func,
+    getNow: PropTypes.func,
 
     /**
      * Callback fired when the `date` value changes.
@@ -669,7 +669,7 @@ class Calendar extends React.Component {
     resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
-    nowAccessor: () => new Date(),
+    getNow: () => new Date(),
   }
 
   getViews = () => {
@@ -719,7 +719,7 @@ class Calendar extends React.Component {
       className,
       elementProps,
       date: current,
-      nowAccessor,
+      getNow,
       min,
       max,
       scrollToTime,
@@ -727,7 +727,7 @@ class Calendar extends React.Component {
       ...props
     } = this.props
 
-    current = current || get(nowAccessor)
+    current = current || get(getNow)
     min = min || dates.startOf(current, 'day')
     max = max || dates.endOf(current, 'day')
     scrollToTime = scrollToTime || dates.endOf(current, 'day')
@@ -779,7 +779,7 @@ class Calendar extends React.Component {
           formats={undefined}
           events={events}
           date={current}
-          nowAccessor={nowAccessor}
+          getNow={getNow}
           min={min}
           max={max}
           scrollToTime={scrollToTime}
@@ -798,14 +798,14 @@ class Calendar extends React.Component {
   }
 
   handleNavigate = (action, newDate) => {
-    let { view, date, nowAccessor, onNavigate, ...props } = this.props
+    let { view, date, getNow, onNavigate, ...props } = this.props
     let ViewComponent = this.getView()
 
     date = moveDate(ViewComponent, {
       ...props,
       action,
       date: newDate || date,
-      today: get(nowAccessor),
+      today: get(getNow),
     })
 
     onNavigate(date, view, action)

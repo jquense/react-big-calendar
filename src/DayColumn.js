@@ -31,6 +31,7 @@ function startsAfter(date, max) {
 class DayColumn extends React.Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
+    components: PropTypes.object,
     step: PropTypes.number.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
@@ -68,6 +69,7 @@ class DayColumn extends React.Component {
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
+    resource: PropTypes.string,
   }
 
   static defaultProps = {
@@ -112,8 +114,7 @@ class DayColumn extends React.Component {
       end: this.state.endDate,
     }
 
-    const { className, style } =
-      (dayPropGetter && dayPropGetter(max)) || {}
+    const { className, style } = (dayPropGetter && dayPropGetter(max)) || {}
 
     return (
       <TimeColumn
@@ -129,8 +130,9 @@ class DayColumn extends React.Component {
         max={max}
         step={step}
       >
-        {this.renderEvents()}
-
+        <div className={cn('rbc-events-container', { rtl: this.props.rtl })}>
+          {this.renderEvents()}
+        </div>
         {selecting && (
           <div className="rbc-slot-selection" style={slotStyle}>
             <span>
@@ -144,28 +146,26 @@ class DayColumn extends React.Component {
 
   renderEvents = () => {
     let {
-      events,
-      min,
-      max,
-      showMultiDayTimes,
+      components: { event: EventComponent },
       culture,
+      endAccessor,
       eventPropGetter,
-      selected,
-      messages,
-      eventComponent,
+      eventTimeRangeEndFormat,
       eventTimeRangeFormat,
       eventTimeRangeStartFormat,
-      eventTimeRangeEndFormat,
       eventWrapperComponent: EventWrapper,
+      events,
+      max,
+      messages,
+      min,
       rtl: isRtl,
+      selected,
+      showMultiDayTimes,
+      startAccessor,
       step,
       timeslots,
-      startAccessor,
-      endAccessor,
       titleAccessor,
     } = this.props
-
-    let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
       events,
@@ -367,6 +367,7 @@ class DayColumn extends React.Component {
       slots,
       start: startDate,
       end: endDate,
+      resourceId: this.props.resource,
       action,
     })
   }

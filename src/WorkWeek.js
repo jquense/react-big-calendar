@@ -3,7 +3,7 @@ import React from 'react'
 
 import Week from './Week'
 import TimeGrid from './TimeGrid'
-import localizer  from './localizer';
+import localizer from './localizer'
 
 function workWeekRange(date, options) {
   return Week.range(date, options).filter(
@@ -34,8 +34,7 @@ WorkWeek.title = (date, { formats, culture }) => {
     { start, end: rest.pop() },
     formats.dayRangeHeaderFormat,
     culture
-  );
+  )
 }
-
 
 export default WorkWeek

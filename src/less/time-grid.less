@@ -24,6 +24,7 @@
   }
 
   .rbc-allday-cell {
+    box-sizing: content-box;
     width: 100%;
     position: relative;
   }
@@ -34,6 +35,7 @@
   }
 
   .rbc-row {
+    box-sizing: border-box;
     min-height: 20px;
   }
 }
@@ -63,6 +65,10 @@
   }
 
   > .rbc-row:first-child {
+    border-bottom: 1px solid  @cell-border;
+  }
+
+  > .rbc-row.rbc-row-resource {
     border-bottom: 1px solid  @cell-border;
   }
 

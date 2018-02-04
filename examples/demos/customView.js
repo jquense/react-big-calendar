@@ -1,19 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import dates from 'date-arithmetic';
-import events from '../events';
-import BigCalendar from 'react-big-calendar';
-import localizer from 'react-big-calendar/lib/localizer';
-import TimeGrid from 'react-big-calendar/lib/TimeGrid';
-
+import dates from 'date-arithmetic'
+import events from '../events'
+import BigCalendar from 'react-big-calendar'
+import localizer from 'react-big-calendar/lib/localizer'
+import TimeGrid from 'react-big-calendar/lib/TimeGrid'
 
 const getRange = (date, culture) => {
-  let firstOfWeek = localizer.startOfWeek(culture);
-  let start = dates.startOf(date, 'week', firstOfWeek);
-  let end = dates.endOf(date, 'week', firstOfWeek);
+  let firstOfWeek = localizer.startOfWeek(culture)
+  let start = dates.startOf(date, 'week', firstOfWeek)
+  let end = dates.endOf(date, 'week', firstOfWeek)
 
   if (firstOfWeek === 1) {
-    end = dates.subtract(end, 2, 'day');
+    end = dates.subtract(end, 2, 'day')
   } else {
     start = dates.add(start, 1, 'day');
   }
@@ -31,25 +30,23 @@ const getRange = (date, culture) => {
 
 class MyWeek extends React.Component {
   render() {
-    let { date, culture } = this.props;
-    let range = getRange(date, culture);
+    let { date, culture } = this.props
+    let range = getRange(date, culture)
 
-    return (
-      <TimeGrid {...this.props} range={range} eventOffset={15} />
-    );
+    return <TimeGrid {...this.props} range={range} eventOffset={15} />
   }
 }
 
 MyWeek.navigate = (date, action) => {
-  switch (action){
+  switch (action) {
     case BigCalendar.Navigate.PREVIOUS:
-      return dates.add(date, -1, 'week');
+      return dates.add(date, -1, 'week')
 
     case BigCalendar.Navigate.NEXT:
       return dates.add(date, 1, 'week')
 
     default:
-      return date;
+      return date
   }
 }
 

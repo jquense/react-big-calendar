@@ -206,10 +206,6 @@ export default class TimeGrid extends Component {
 <<<<<<< 3903fd7066dafcc7dd528fa9889748cf75e0e5df
 =======
           <div ref="timeIndicator" className="rbc-current-time-indicator" />
-          <div
-            ref="timeIndicatorLine"
-            className="rbc-current-time-indicator-line"
-          />
 
 >>>>>>> Update display of time indicator
           <TimeColumn
@@ -494,7 +490,6 @@ export default class TimeGrid extends Component {
     const secondsPassed = dates.diff(current, min, 'seconds')
 
     const timeIndicator = this.refs.timeIndicator
-    const timeIndicatorLine = this.refs.timeIndicatorLine
     const factor = secondsPassed / secondsGrid
     const timeGutter = this._gutters[this._gutters.length - 1]
 
@@ -507,21 +502,14 @@ export default class TimeGrid extends Component {
       const dayOffset = range.findIndex(d => dates.isToday(d)) * dayPixelWidth
       const offset = Math.floor(factor * pixelHeight)
 
-      timeIndicator.style.display = 'block'
+      timeIndicator.style.display = dayOffset >= 0 ? 'block' : 'none'
       timeIndicator.style[rtl ? 'left' : 'right'] = 0
       timeIndicator.style[rtl ? 'right' : 'left'] =
-        timeGutter.offsetWidth + 'px'
-      timeIndicator.style.top = offset + 'px'
-
-      timeIndicatorLine.style.display = dayOffset >= 0 ? 'block' : 'none'
-      timeIndicatorLine.style[rtl ? 'left' : 'right'] = 0
-      timeIndicatorLine.style[rtl ? 'right' : 'left'] =
         timeGutter.offsetWidth + dayOffset + 'px'
-      timeIndicatorLine.style.top = offset + 'px'
-      timeIndicatorLine.style.width = dayPixelWidth + 'px'
+      timeIndicator.style.top = offset + 'px'
+      timeIndicator.style.width = dayPixelWidth + 'px'
     } else {
       timeIndicator.style.display = 'none'
-      timeIndicatorLine.style.display = 'none'
     }
   }
 

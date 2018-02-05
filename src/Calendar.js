@@ -81,6 +81,13 @@ class Calendar extends React.Component {
      * @controllable onView
      */
     view: PropTypes.string,
+    
+    /**
+     * The initial view set for the Calendar.
+     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @default 'month'
+     */
+    defaultView: PropTypes.string,
 
     /**
      * An array of event objects to display on the calendar. Events objects
@@ -120,6 +127,18 @@ class Calendar extends React.Component {
      * @type {(func|string)}
      */
     titleAccessor: accessor,
+
+    /**
+     * Accessor for the event tooltip. Should
+     * resolve to a `renderable` value. Removes the tooltip if null.
+     *
+     * ```js
+     * string | (event: Object) => string
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    tooltipAccessor: accessor,
 
     /**
      * Determines whether the event should be considered an "all day" event and ignore time.
@@ -312,7 +331,8 @@ class Calendar extends React.Component {
      * ```
      *
      * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
-     * @default ['month', 'week', 'day', 'agenda']
+     * @View
+     ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
 
@@ -658,6 +678,7 @@ class Calendar extends React.Component {
     drilldownView: views.DAY,
 
     titleAccessor: 'title',
+    tooltipAccessor: 'title',
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',

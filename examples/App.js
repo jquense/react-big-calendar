@@ -130,7 +130,7 @@ class Example extends React.Component {
                 </strong>
               </a>
             </div>
-            <Current className="demo" />
+            <Current />
           </div>
         </div>
         <div className="docs">

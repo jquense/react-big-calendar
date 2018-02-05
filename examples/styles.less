@@ -41,29 +41,25 @@ h4 {
 
 .examples {
   position: relative;
-  min-height: 100vh;
   max-width: 1200px;
-  height: min-content;
-  display: flex;
-  flex-direction: column;
   margin: 0 auto;
 }
 
 .example {
   font-size: 14px;
   padding: 0 40px;
+  min-height: ~"calc(100vh - 20px)";
+  min-height: max-content;
+  height: ~"calc(100vh - 20px)";
   width: 100%;
   margin: auto;
-  flex: 1;
 
   &,
   & > * {
     display: flex;
     flex-direction: column;
-    min-height: 0;
   }
 
-  .demo,
   .rbc-calendar {
     flex: 1;
     min-height: 580px;

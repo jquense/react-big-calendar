@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import cn from 'classnames'
+import raf from 'dom-helpers/util/requestAnimationFrame'
+import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
@@ -104,6 +105,11 @@ export default class TimeGrid extends Component {
 
     this.positionTimeIndicator()
     this.triggerTimeIndicatorUpdate()
+
+    window.addEventListener('resize', () => {
+      raf.cancel(this.rafHandle)
+      this.rafHandle = raf(this.checkOverflow)
+    })
   }
 
   componentWillUnmount() {
@@ -457,7 +463,7 @@ export default class TimeGrid extends Component {
     this._scrollRatio = diffMillis / totalMillis
   }
 
-  checkOverflow() {
+  checkOverflow = () => {
     if (this._updatingOverflow) return
 
     let isOverflowing =

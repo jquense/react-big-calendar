@@ -39,7 +39,7 @@ const propTypes = {
   onSelectStart: PropTypes.func,
   dayPropGetter: PropTypes.func,
 
-  now: PropTypes.instanceOf(Date).isRequired,
+  getNow: PropTypes.func.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
@@ -102,7 +102,7 @@ class DateContentRow extends React.Component {
   }
 
   renderHeadingCell = (date, index) => {
-    let { renderHeader, range } = this.props
+    let { renderHeader, range, getNow } = this.props
 
     return renderHeader({
       date,
@@ -110,7 +110,7 @@ class DateContentRow extends React.Component {
       style: segStyle(1, range.length),
       className: cn(
         'rbc-date-cell',
-        dates.eq(date, this.props.now, 'day') && 'rbc-now' // FIXME use props.now
+        dates.eq(date, getNow(), 'day') && 'rbc-now'
       ),
     })
   }
@@ -149,6 +149,7 @@ class DateContentRow extends React.Component {
       renderForMeasure,
       startAccessor,
       endAccessor,
+      getNow,
       renderHeader,
       minRows,
       maxRows,
@@ -185,6 +186,7 @@ class DateContentRow extends React.Component {
       <div className={className}>
         <BackgroundCells
           date={date}
+          getNow={getNow}
           rtl={rtl}
           range={range}
           selectable={selectable}

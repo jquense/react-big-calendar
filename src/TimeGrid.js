@@ -31,7 +31,7 @@ export default class TimeGrid extends Component {
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
-    now: PropTypes.instanceOf(Date),
+    getNow: PropTypes.func.isRequired,
 
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
@@ -74,11 +74,10 @@ export default class TimeGrid extends Component {
     min: dates.startOf(new Date(), 'day'),
     max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
-    /* these 2 are needed to satisfy requirements from TimeColumn required props
+    /* this is needed to satisfy requirements from TimeColumn required props
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    now: new Date(),
   }
 
   constructor(props) {
@@ -148,6 +147,7 @@ export default class TimeGrid extends Component {
       width,
       startAccessor,
       endAccessor,
+      getNow,
       resources,
       allDayAccessor,
       showMultiDayTimes,
@@ -187,7 +187,7 @@ export default class TimeGrid extends Component {
     let eventsRendered = this.renderEvents(
       range,
       rangeEvents,
-      this.props.now,
+      getNow(),
       resources || [null]
     )
 
@@ -261,7 +261,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width, resources) {
-    let { messages, rtl, selectable, components, now } = this.props
+    let { messages, rtl, selectable, components, getNow } = this.props
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -297,7 +297,7 @@ export default class TimeGrid extends Component {
             {message(messages).allDay}
           </div>
           <DateContentRow
-            now={now}
+            getNow={getNow}
             minRows={2}
             range={range}
             rtl={this.props.rtl}
@@ -326,13 +326,17 @@ export default class TimeGrid extends Component {
   }
 
   renderHeaderResources(range, resources) {
-    const { resourceTitleAccessor } = this.props
+    const { resourceTitleAccessor, getNow } = this.props
+    const today = getNow()
     return range.map((date, i) => {
       return resources.map((resource, j) => {
         return (
           <div
             key={i + '-' + j}
-            className={cn('rbc-header', dates.isToday(date) && 'rbc-today')}
+            className={cn(
+              'rbc-header',
+              dates.eq(date, today, 'day') && 'rbc-today'
+            )}
             style={segStyle(1, this.slots)}
           >
             <span>{get(resource, resourceTitleAccessor)}</span>
@@ -349,8 +353,10 @@ export default class TimeGrid extends Component {
       components,
       dayPropGetter,
       getDrilldownView,
+      getNow,
     } = this.props
     let HeaderComponent = components.header || Header
+    const today = getNow()
 
     return range.map((date, i) => {
       let drilldownView = getDrilldownView(date)
@@ -375,7 +381,7 @@ export default class TimeGrid extends Component {
           className={cn(
             'rbc-header',
             className,
-            dates.isToday(date) && 'rbc-today'
+            dates.eq(date, today, 'day') && 'rbc-today'
           )}
           style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
         >
@@ -464,17 +470,17 @@ export default class TimeGrid extends Component {
   }
 
   positionTimeIndicator() {
-    const { rtl, min, max } = this.props
-    const now = new Date()
+    const { rtl, min, max, getNow } = this.props
+    const current = getNow()
 
     const secondsGrid = dates.diff(max, min, 'seconds')
-    const secondsPassed = dates.diff(now, min, 'seconds')
+    const secondsPassed = dates.diff(current, min, 'seconds')
 
     const timeIndicator = this.refs.timeIndicator
     const factor = secondsPassed / secondsGrid
     const timeGutter = this._gutters[this._gutters.length - 1]
 
-    if (timeGutter && now >= min && now <= max) {
+    if (timeGutter && current >= min && current <= max) {
       const pixelHeight = timeGutter.offsetHeight
       const offset = Math.floor(factor * pixelHeight)
 

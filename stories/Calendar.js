@@ -84,6 +84,10 @@ const DragCalendar = () => {
 
 const DragableCalendar = DragDropContext(HTML5Backend)(DragCalendar)
 
+const CustomEvent = ({ title }) => (
+  <div style={{ color: 'white', backgroundColor: 'red' }}>{title}</div>
+)
+
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
     return (
@@ -465,6 +469,33 @@ storiesOf('module.Calendar.week', module)
           events={events}
           onSelectEvent={action('event selected')}
           defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          resizable
+          onEventDrop={() => alert('event dropped!')}
+          onEventResize={() => alert('event resized!')}
+          defaultView="week"
+          events={events}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable with custom Event component', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          resizable
+          onEventDrop={() => alert('event dropped!')}
+          onEventResize={() => alert('event resized!')}
+          defaultView="week"
+          events={events}
+          components={{ event: CustomEvent }}
         />
       </div>
     )

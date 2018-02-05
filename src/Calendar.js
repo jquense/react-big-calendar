@@ -81,6 +81,13 @@ class Calendar extends React.Component {
      * @controllable onView
      */
     view: PropTypes.string,
+    
+    /**
+     * The initial view set for the Calendar.
+     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @default 'month'
+     */
+    defaultView: PropTypes.string,
 
     /**
      * An array of event objects to display on the calendar. Events objects
@@ -324,7 +331,8 @@ class Calendar extends React.Component {
      * ```
      *
      * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
-     * @default ['month', 'week', 'day', 'agenda']
+     * @View
+     ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
 

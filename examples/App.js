@@ -9,6 +9,9 @@ import globalize from 'globalize'
 
 localizer(globalize)
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'font-awesome/css/font-awesome.min.css'
+
 import 'react-big-calendar/lib/less/styles.less'
 import './styles.less'
 import './prism.less'
@@ -69,8 +72,8 @@ class Example extends React.Component {
           </div>
         </div>
         <div className="examples">
-          <header className="contain">
-            <ul className="nav nav-pills">
+          <header>
+            <ul className="examples--list list-unstyled">
               <li className={cn({ active: selected === 'basic' })}>
                 <a href="#" onClick={this.select.bind(null, 'basic')}>
                   Basic
@@ -146,4 +149,4 @@ class Example extends React.Component {
   }
 }
 
-render(<Example />, document.getElementById('root'))
+render(<Example />, document.getElementById('app'))

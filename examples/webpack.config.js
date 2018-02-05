@@ -36,5 +36,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [plugins.extractText()],
+  plugins: [plugins.html(), plugins.extractText()],
 }

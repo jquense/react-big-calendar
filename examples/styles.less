@@ -1,8 +1,11 @@
 
-// .panel-default {
-//   border-radius: 0;
-// }
+@import "~bootstrap/less/variables.less";
+
 @blue: #3174ad;
+
+html {
+  font-size: 10px;
+}
 
 body {
   font-size: 16px;
@@ -39,15 +42,16 @@ h4 {
 .examples {
   position: relative;
   min-height: 100vh;
+  max-width: 1200px;
   height: min-content;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
 }
 
 .example {
   font-size: 14px;
   padding: 0 40px;
-  max-width: 1200px;
   width: 100%;
   margin: auto;
   flex: 1;
@@ -66,7 +70,37 @@ h4 {
   }
 }
 
+.examples--list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 
+  & > li {
+    text-align: center;
+  }
+
+  & a {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    padding: 1.4rem 1rem;
+    white-space: nowrap;
+    border-radius: .3rem;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 0;
+      height: 4px;
+    }
+
+    &:hover:after {
+      background-color: @blue;
+    }
+  }
+}
 .section {
   margin-bottom: 20px;
 }

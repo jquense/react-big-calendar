@@ -19,6 +19,7 @@ class Agenda extends React.Component {
     date: PropTypes.instanceOf(Date),
     length: PropTypes.number.isRequired,
     titleAccessor: accessor.isRequired,
+    tooltipAccessor: accessor.isRequired,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,

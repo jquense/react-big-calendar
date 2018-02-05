@@ -122,6 +122,18 @@ class Calendar extends React.Component {
     titleAccessor: accessor,
 
     /**
+     * Accessor for the event tooltip. Should
+     * resolve to a `renderable` value. Removes the tooltip if null.
+     *
+     * ```js
+     * string | (event: Object) => string
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    tooltipAccessor: accessor,
+
+    /**
      * Determines whether the event should be considered an "all day" event and ignore time.
      * Must resolve to a `boolean` value.
      *
@@ -658,6 +670,7 @@ class Calendar extends React.Component {
     drilldownView: views.DAY,
 
     titleAccessor: 'title',
+    tooltipAccessor: 'title',
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',

@@ -5,9 +5,9 @@ import cn from 'classnames'
 
 import { accessor } from '../../utils/propTypes'
 import DraggableEventWrapper from './DraggableEventWrapper'
-import ResizableEvent from './ResizableEvent'
-import ResizableMonthEvent from './ResizableMonthEvent'
 import { DayWrapper, DateCellWrapper } from './backgroundWrapper'
+import TitleComponent from './TitleComponent'
+import withEventResizability from './withEventResizability'
 
 let html5Backend
 
@@ -17,15 +17,59 @@ try {
   /* optional dep missing */
 }
 
+/**
+ * Creates a HOC component supporting drag & drop and optionally resizing
+ * of events:
+ *
+ *    import BigCalendar from 'react-big-calendar'
+ *    import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
+ *    export default withDragAndDrop(BigCalendar)
+ *
+ * The HOC adds `onEventDrop` and `onEventResize` callback properties if the
+ * events are moved or resized. This component supports custom `event` components,
+ * but not view-specific ones:
+ *
+ * ```js
+ * <Calendar components={{event: MyEvent}} />          // okay
+ * <Calendar components={{week: {event: MyEvent}}} />  // bad
+ * ```
+ *
+ * @param {*} Calendar
+ * @param {*} backend
+ */
 export default function withDragAndDrop(
   Calendar,
   { backend = html5Backend } = {}
 ) {
   class DragAndDropCalendar extends React.Component {
     static propTypes = {
+      onEventDrop: PropTypes.func.isRequired,
+      onEventResize: PropTypes.func.isRequired,
+      startAccessor: accessor,
+      endAccessor: accessor,
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']).isRequired,
+      resizable: PropTypes.bool,
       components: PropTypes.object,
+      view: PropTypes.string.isRequired,
     }
+
+    static defaultProps = {
+      view: 'month',
+      startAccessor: 'start',
+      endAccessor: 'end',
+    }
+
+    static contextTypes = {
+      dragDropManager: PropTypes.object,
+    }
+
+    static childContextTypes = {
+      onEventDrop: PropTypes.func,
+      onEventResize: PropTypes.func,
+      startAccessor: accessor,
+      endAccessor: accessor,
+    }
+
     getChildContext() {
       return {
         onEventDrop: this.props.onEventDrop,
@@ -62,7 +106,13 @@ export default function withDragAndDrop(
     }
 
     render() {
-      const { selectable, components, resizable, ...props } = this.props
+      const {
+        selectable,
+        resizable,
+        components = {},
+        view,
+        ...props
+      } = this.props
 
       delete props.onEventDrop
       delete props.onEventResize
@@ -75,42 +125,24 @@ export default function withDragAndDrop(
         this.state.isDragging && 'rbc-addons-dnd-is-dragging'
       )
 
+      let EventComponent = components.event || TitleComponent
+      if (resizable) {
+        EventComponent = withEventResizability(
+          EventComponent,
+          view === 'month' ? 'horizontal' : 'vertical'
+        )
+      }
+
       props.components = {
         ...components,
+        event: EventComponent,
         dateCellWrapper: DateCellWrapper,
-        day: { event: resizable && ResizableEvent },
         dayWrapper: DayWrapper,
         eventWrapper: DraggableEventWrapper,
-        month: { event: resizable && ResizableMonthEvent },
-        week: { event: resizable && ResizableEvent },
       }
 
       return <Calendar {...props} />
     }
-  }
-
-  DragAndDropCalendar.propTypes = {
-    onEventDrop: PropTypes.func.isRequired,
-    resizable: PropTypes.bool,
-    onEventResize: PropTypes.func,
-    startAccessor: accessor,
-    endAccessor: accessor,
-  }
-
-  DragAndDropCalendar.defaultProps = {
-    startAccessor: 'start',
-    endAccessor: 'end',
-  }
-
-  DragAndDropCalendar.contextTypes = {
-    dragDropManager: PropTypes.object,
-  }
-
-  DragAndDropCalendar.childContextTypes = {
-    onEventDrop: PropTypes.func,
-    onEventResize: PropTypes.func,
-    startAccessor: accessor,
-    endAccessor: accessor,
   }
 
   if (backend === false) {

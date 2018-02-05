@@ -197,8 +197,6 @@ export default class TimeGrid extends Component {
         {this.renderHeader(range, allDayEvents, width, resources)}
 
         <div ref="content" className="rbc-time-content">
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
-
           <TimeColumn
             {...this.props}
             showLabels
@@ -207,6 +205,8 @@ export default class TimeGrid extends Component {
             className="rbc-time-gutter"
           />
           {eventsRendered}
+
+          <div ref="timeIndicator" className="rbc-current-time-indicator" />
         </div>
       </div>
     )

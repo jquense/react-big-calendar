@@ -78,15 +78,19 @@ export default class TimeGrid extends Component {
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */
     type: 'gutter',
-    now: new Date(),
   }
 
   constructor(props) {
     super(props)
-    this.state = { gutterWidth: undefined, isOverflowing: null }
+    this.state = {
+      gutterWidth: undefined,
+      isOverflowing: null,
+      now: props.now || new Date(),
+    }
     this.handleSelectEvent = this.handleSelectEvent.bind(this)
     this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
     this.handleHeaderClick = this.handleHeaderClick.bind(this)
+    this.updateNow = this.updateNow.bind(this)
   }
 
   componentWillMount() {
@@ -129,6 +133,13 @@ export default class TimeGrid extends Component {
     ) {
       this.calculateScroll()
     }
+    // If now changed, then use nextProps.now unless null|undefined
+    if (nextProps.now !== this.props.now) {
+      this.updateNow(nextProps.now || new Date())
+    } else {
+      // update now if prop does not exist
+      this.updateNow(this.props.now || new Date())
+    }
   }
 
   handleSelectAllDaySlot = (slots, slotInfo) => {
@@ -139,6 +150,10 @@ export default class TimeGrid extends Component {
       end: slots[slots.length - 1],
       action: slotInfo.action,
     })
+  }
+
+  updateNow(now) {
+    this.setState({ now })
   }
 
   render() {
@@ -187,7 +202,7 @@ export default class TimeGrid extends Component {
     let eventsRendered = this.renderEvents(
       range,
       rangeEvents,
-      this.props.now,
+      this.state.now,
       resources || [null]
     )
 
@@ -200,6 +215,7 @@ export default class TimeGrid extends Component {
 
           <TimeColumn
             {...this.props}
+            now={this.state.now}
             showLabels
             style={{ width }}
             ref={gutterRef}
@@ -243,6 +259,7 @@ export default class TimeGrid extends Component {
         return (
           <DayColumn
             {...this.props}
+            now={this.state.now}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
             resource={resource && resource.id}
@@ -261,7 +278,8 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width, resources) {
-    let { messages, rtl, selectable, components, now } = this.props
+    let { messages, rtl, selectable, components } = this.props
+    let now = this.state.now
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -492,6 +510,7 @@ export default class TimeGrid extends Component {
     // Update the position of the time indicator every minute
     this._timeIndicatorTimeout = window.setTimeout(() => {
       this.positionTimeIndicator()
+      this.updateNow(this.props.now || new Date())
 
       this.triggerTimeIndicatorUpdate()
     }, 60000)

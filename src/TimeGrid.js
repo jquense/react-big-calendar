@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import cn from 'classnames'
+import raf from 'dom-helpers/util/requestAnimationFrame'
+import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
@@ -104,6 +105,11 @@ export default class TimeGrid extends Component {
 
     this.positionTimeIndicator()
     this.triggerTimeIndicatorUpdate()
+
+    window.addEventListener('resize', () => {
+      raf.cancel(this.rafHandle)
+      this.rafHandle = raf(this.checkOverflow)
+    })
   }
 
   componentWillUnmount() {
@@ -127,7 +133,7 @@ export default class TimeGrid extends Component {
       !dates.eq(nextProps.range[0], range[0], 'minute') ||
       !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
     ) {
-      this.calculateScroll()
+      this.calculateScroll(nextProps)
     }
   }
 
@@ -197,8 +203,6 @@ export default class TimeGrid extends Component {
         {this.renderHeader(range, allDayEvents, width, resources)}
 
         <div ref="content" className="rbc-time-content">
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
-
           <TimeColumn
             {...this.props}
             showLabels
@@ -207,6 +211,8 @@ export default class TimeGrid extends Component {
             className="rbc-time-gutter"
           />
           {eventsRendered}
+
+          <div ref="timeIndicator" className="rbc-current-time-indicator" />
         </div>
       </div>
     )
@@ -448,8 +454,8 @@ export default class TimeGrid extends Component {
     }
   }
 
-  calculateScroll() {
-    const { min, max, scrollToTime } = this.props
+  calculateScroll(props = this.props) {
+    const { min, max, scrollToTime } = props
 
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
     const totalMillis = dates.diff(max, min)
@@ -457,7 +463,7 @@ export default class TimeGrid extends Component {
     this._scrollRatio = diffMillis / totalMillis
   }
 
-  checkOverflow() {
+  checkOverflow = () => {
     if (this._updatingOverflow) return
 
     let isOverflowing =

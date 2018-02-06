@@ -81,7 +81,7 @@ class Calendar extends React.Component {
      * @controllable onView
      */
     view: PropTypes.string,
-    
+
     /**
      * The initial view set for the Calendar.
      * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')

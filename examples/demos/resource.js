@@ -40,9 +40,8 @@ const resourceMap = [
   { resourceId: 4, resourceTitle: 'Meeting room 2' },
 ]
 
-let Resource = props => (
+let Resource = () => (
   <BigCalendar
-    {...props}
     events={events}
     defaultView="day"
     views={['day', 'work_week']}

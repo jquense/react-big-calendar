@@ -15,7 +15,7 @@ class Cultures extends React.Component {
     let rtl = this.state.culture === 'ar-AE'
 
     return (
-      <div {...this.props}>
+      <React.Fragment>
         <h3 className="callout">
           <label>Select a Culture</label>{' '}
           <select
@@ -37,7 +37,7 @@ class Cultures extends React.Component {
           culture={this.state.culture}
           defaultDate={new Date(2015, 3, 1)}
         />
-      </div>
+      </React.Fragment>
     )
   }
 }

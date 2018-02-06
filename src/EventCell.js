@@ -21,8 +21,8 @@ let propTypes = {
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func,
-  onDoubleClick: PropTypes.func,
+  onSelect: PropTypes.func.isRequired,
+  onDoubleClick: PropTypes.func.isRequired,
 }
 
 class EventCell extends React.Component {

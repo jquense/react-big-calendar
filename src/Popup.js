@@ -13,9 +13,9 @@ const propTypes = {
   position: PropTypes.object,
   popupOffset: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.shape({ 
-      x: PropTypes.number, 
-      y: PropTypes.number 
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
     }),
   ]),
   events: PropTypes.array,

@@ -35,10 +35,11 @@ class DayColumn extends React.Component {
     step: PropTypes.number.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
-    now: PropTypes.instanceOf(Date),
+    getNow: PropTypes.func.isRequired,
 
     rtl: PropTypes.bool,
     titleAccessor: accessor,
+    tooltipAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
@@ -98,7 +99,7 @@ class DayColumn extends React.Component {
       min,
       max,
       step,
-      now,
+      getNow,
       selectRangeFormat,
       culture,
       dayPropGetter,
@@ -115,6 +116,7 @@ class DayColumn extends React.Component {
     }
 
     const { className, style } = (dayPropGetter && dayPropGetter(max)) || {}
+    const current = getNow()
 
     return (
       <TimeColumn
@@ -122,10 +124,10 @@ class DayColumn extends React.Component {
         className={cn(
           'rbc-day-slot',
           className,
-          dates.isToday(max) && 'rbc-today'
+          dates.eq(max, current, 'day') && 'rbc-today'
         )}
         style={style}
-        now={now}
+        getNow={getNow}
         min={min}
         max={max}
         step={step}
@@ -165,6 +167,7 @@ class DayColumn extends React.Component {
       step,
       timeslots,
       titleAccessor,
+      tooltipAccessor,
     } = this.props
 
     let styledEvents = getStyledEvents({
@@ -201,6 +204,7 @@ class DayColumn extends React.Component {
       let continuesAfter = startsAfter(end, max)
 
       let title = get(event, titleAccessor)
+      let tooltip = get(event, tooltipAccessor)
       let label
       if (_continuesPrior && _continuesAfter) {
         label = messages.allDay
@@ -230,7 +234,11 @@ class DayColumn extends React.Component {
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
               width: `${width}%`,
             }}
-            title={(typeof label === 'string' ? label + ': ' : '') + title}
+            title={
+              tooltip
+                ? (typeof label === 'string' ? label + ': ' : '') + tooltip
+                : undefined
+            }
             onClick={e => this._select(event, e)}
             onDoubleClick={e => this._doubleClick(event, e)}
             className={cn('rbc-event', className, {

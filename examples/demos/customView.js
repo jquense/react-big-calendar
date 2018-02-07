@@ -55,19 +55,13 @@ MyWeek.title = (date, { formats, culture }) => {
 }
 
 
-let CustomView = React.createClass({
-  render(){
-    return (
-      <div>
-        <BigCalendar
-          events={events}
-          defaultDate={new Date(2015, 3, 1)}
-          views={{ month: true, week: MyWeek, work_week: true }}
-          test="io"
-        />
-      </div>
-    )
-  }
-})
+let CustomView = () => (
+  <BigCalendar
+    events={events}
+    defaultDate={new Date(2015, 3, 1)}
+    views={{ month: true, week: MyWeek, work_week: true }}
+    test="io"
+  />
+)
 
-export default CustomView;
+export default CustomView

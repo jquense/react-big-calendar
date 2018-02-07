@@ -2,8 +2,8 @@ import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
 
-let Selectable = props => (
-  <div {...props}>
+let Selectable = () => (
+  <React.Fragment>
     <h3 className="callout">
       Click an event to see more info, or drag the mouse over the calendar to
       select a date/time range.
@@ -23,7 +23,7 @@ let Selectable = props => (
         )
       }
     />
-  </div>
+  </React.Fragment>
 )
 
 export default Selectable

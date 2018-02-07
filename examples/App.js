@@ -9,6 +9,9 @@ import globalize from 'globalize'
 
 localizer(globalize)
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'font-awesome/css/font-awesome.min.css'
+
 import 'react-big-calendar/lib/less/styles.less'
 import './styles.less'
 import './prism.less'
@@ -18,6 +21,7 @@ import Cultures from './demos/cultures'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
+import Resource from './demos/resource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
 
@@ -36,6 +40,7 @@ class Example extends React.Component {
       popup: Popup,
       rendering: Rendering,
       customView: CustomView,
+      resource: Resource,
       timeslots: Timeslots,
       dnd: Dnd,
     }[selected]
@@ -67,8 +72,8 @@ class Example extends React.Component {
           </div>
         </div>
         <div className="examples">
-          <header className="contain">
-            <ul className="nav nav-pills">
+          <header>
+            <ul className="examples--list list-unstyled">
               <li className={cn({ active: selected === 'basic' })}>
                 <a href="#" onClick={this.select.bind(null, 'basic')}>
                   Basic
@@ -100,10 +105,19 @@ class Example extends React.Component {
                 </a>
               </li>
               <li className={cn({active: selected === 'customView' })}>
-                <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
+                <a href='#' onClick={this.select.bind(null, 'customView')}>
+                  Custom View
+                </a>
               </li>
-              <li className={cn({active: selected === 'dnd' })}>
-                <a href='#' onClick={this.select.bind(null, 'dnd')}>Drag and Drop</a>
+              <li className={cn({ active: selected === 'Resource' })}>
+                <a href="#" onClick={this.select.bind(null, 'resource')}>
+                  Resource columns
+                </a>
+              </li>
+              <li className={cn({ active: selected === 'dnd' })}>
+                <a href="#" onClick={this.select.bind(null, 'dnd')}>
+                  Drag and Drop
+                </a>
               </li>
             </ul>
           </header>
@@ -116,7 +130,7 @@ class Example extends React.Component {
                 </strong>
               </a>
             </div>
-            <Current className="demo" />
+            <Current />
           </div>
         </div>
         <div className="docs">
@@ -135,4 +149,4 @@ class Example extends React.Component {
   }
 }
 
-render(<Example />, document.getElementById('root'))
+render(<Example />, document.getElementById('app'))

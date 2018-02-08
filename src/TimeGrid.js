@@ -203,11 +203,6 @@ export default class TimeGrid extends Component {
         {this.renderHeader(range, allDayEvents, width, resources)}
 
         <div ref="content" className="rbc-time-content">
-<<<<<<< 3903fd7066dafcc7dd528fa9889748cf75e0e5df
-=======
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
-
->>>>>>> Update display of time indicator
           <TimeColumn
             {...this.props}
             showLabels
@@ -499,7 +494,8 @@ export default class TimeGrid extends Component {
       const pixelHeight = timeGutter.offsetHeight
       const dayPixelWidth =
         (content.offsetWidth - timeGutter.offsetWidth) / this.slots
-      const dayOffset = range.findIndex(d => dates.isToday(d)) * dayPixelWidth
+      const dayOffset =
+        range.findIndex(d => dates.eq(d, dates.today(), 'day')) * dayPixelWidth
       const offset = Math.floor(factor * pixelHeight)
 
       timeIndicator.style.display = dayOffset >= 0 ? 'block' : 'none'

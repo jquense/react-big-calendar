@@ -23,6 +23,10 @@ let propTypes = {
   onDoubleClick: PropTypes.func
 }
 
+function padNumber(param) {
+  return (param > 9) ? param : `0${param}`;
+}
+
 class EventCell extends React.Component {
   render() {
     let {
@@ -49,6 +53,10 @@ class EventCell extends React.Component {
     if (eventPropGetter)
       var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
 
+      let startHour = new Date(start).getHours();
+      let startMinute = new Date(start).getMinutes();
+      let endHour = new Date(end).getHours();
+      let endMinute = new Date(end).getMinutes();
     return (
       <EventWrapper event={event}>
         <div
@@ -65,7 +73,7 @@ class EventCell extends React.Component {
           <div className='rbc-event-content' title={title}>
             { Event
               ? <Event event={event} title={title}/>
-              : title
+              : (isAllDay ? title : (title + ' ' + padNumber(startHour) + ':' + padNumber(startMinute) + '-' + padNumber(endHour) + ':' + padNumber(endMinute)))
             }
           </div>
         </div>

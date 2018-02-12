@@ -11,8 +11,10 @@ let propTypes = {
   slotEnd: PropTypes.instanceOf(Date),
 
   selected: PropTypes.bool,
+  isAllDay: PropTypes.bool,
   eventPropGetter: PropTypes.func,
   titleAccessor: accessor,
+  tooltipAccessor: accessor,
   allDayAccessor: accessor,
   startAccessor: accessor,
   endAccessor: accessor,
@@ -30,28 +32,42 @@ function padNumber(param) {
 class EventCell extends React.Component {
   render() {
     let {
-        className
-      , event
-      , selected
-      , eventPropGetter
-      , startAccessor, endAccessor, titleAccessor
-      , slotStart
-      , slotEnd
-      , onSelect
-      , onDoubleClick
-      , eventComponent: Event
-      , eventWrapperComponent: EventWrapper
-      , ...props } = this.props;
+      className,
+      event,
+      selected,
+      isAllDay,
+      eventPropGetter,
+      startAccessor,
+      endAccessor,
+      titleAccessor,
+      tooltipAccessor,
+      slotStart,
+      slotEnd,
+      onSelect,
+      onDoubleClick,
+      eventComponent: Event,
+      eventWrapperComponent: EventWrapper,
+      ...props
+    } = this.props
 
-    let title = get(event, titleAccessor)
-      , end = get(event, endAccessor)
-      , start = get(event, startAccessor)
-      , isAllDay = get(event, props.allDayAccessor)
-      , continuesPrior = dates.lt(start, slotStart, 'day')
-      , continuesAfter = dates.gte(end, slotEnd, 'day')
+    let title = get(event, titleAccessor),
+      tooltip = get(event, tooltipAccessor),
+      end = get(event, endAccessor),
+      start = get(event, startAccessor),
+      isAllDayEvent =
+        isAllDay ||
+        get(event, props.allDayAccessor) ||
+        dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
+      continuesPrior = dates.lt(start, slotStart, 'day'),
+      continuesAfter = dates.gte(end, slotEnd, 'day')
 
     if (eventPropGetter)
-      var { style, className: xClassName } = eventPropGetter(event, start, end, selected);
+      var { style, className: xClassName } = eventPropGetter(
+        event,
+        start,
+        end,
+        selected
+      )
 
       let startHour = new Date(start).getHours();
       let startMinute = new Date(start).getMinutes();
@@ -60,19 +76,19 @@ class EventCell extends React.Component {
     return (
       <EventWrapper event={event}>
         <div
-          style={{...props.style, ...style}}
+          style={{ ...props.style, ...style }}
           className={cn('rbc-event', className, xClassName, {
             'rbc-selected': selected,
-            'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
+            'rbc-event-allday': isAllDayEvent,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter
           })}
-          onClick={(e) => onSelect(event, e)}
-          onDoubleClick={(e) => onDoubleClick(event, e)}
+          onClick={e => onSelect(event, e)}
+          onDoubleClick={e => onDoubleClick(event, e)}
         >
-          <div className='rbc-event-content' title={title}>
+          <div className='rbc-event-content' title={tooltip || undefined}>
             { Event
-              ? <Event event={event} title={title}/>
+              ? <Event event={event} title={title} isAllDay={isAllDayEvent} />
               : (isAllDay ? title : (title + ' ' + padNumber(startHour) + ':' + padNumber(startMinute) + '-' + padNumber(endHour) + ':' + padNumber(endMinute)))
             }
           </div>

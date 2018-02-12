@@ -1,38 +1,34 @@
-import React from 'react';
-import BigCalendar from 'react-big-calendar';
-import events from '../events';
+import React from 'react'
+import BigCalendar from 'react-big-calendar'
+import events from '../events'
 
-require('globalize/lib/cultures/globalize.culture.en-GB');
-require('globalize/lib/cultures/globalize.culture.es');
-require('globalize/lib/cultures/globalize.culture.fr');
-require('globalize/lib/cultures/globalize.culture.ar-AE');
+require('globalize/lib/cultures/globalize.culture.en-GB')
+require('globalize/lib/cultures/globalize.culture.es')
+require('globalize/lib/cultures/globalize.culture.fr')
+require('globalize/lib/cultures/globalize.culture.ar-AE')
 
-let Cultures = React.createClass({
+class Cultures extends React.Component {
+  state = { culture: 'fr' }
 
-  getInitialState(){
-    return { culture: 'fr' }
-  },
-
-  render(){
+  render() {
     let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
-    let rtl = this.state.culture === 'ar-AE';
+    let rtl = this.state.culture === 'ar-AE'
 
     return (
-      <div {...this.props}>
+      <React.Fragment>
         <h3 className="callout">
-          <label>Select a Culture</label>
-          {' '}
+          <label>Select a Culture</label>{' '}
           <select
-            className='form-control'
-            style={{ width: 200, display: 'inline-block'}}
+            className="form-control"
+            style={{ width: 200, display: 'inline-block' }}
             defaultValue={'fr'}
             onChange={e => this.setState({ culture: e.target.value })}
           >
-          {
-            cultures.map((c, idx) =>
-              <option key={idx} value={c}>{c}</option>
-            )
-          }
+            {cultures.map((c, idx) => (
+              <option key={idx} value={c}>
+                {c}
+              </option>
+            ))}
           </select>
         </h3>
         <BigCalendar
@@ -41,9 +37,9 @@ let Cultures = React.createClass({
           culture={this.state.culture}
           defaultDate={new Date(2015, 3, 1)}
         />
-      </div>
+      </React.Fragment>
     )
   }
-})
+}
 
-export default Cultures;
+export default Cultures

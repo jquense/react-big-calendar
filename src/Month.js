@@ -91,6 +91,7 @@ class MonthView extends React.Component {
       rowLimit: 5,
       needLimitMeasure: true,
     }
+    this.slotRow = undefined;
   }
 
   componentWillReceiveProps({ date }) {
@@ -175,7 +176,11 @@ class MonthView extends React.Component {
     return (
       <DateContentRow
         key={weekIdx}
-        ref={weekIdx === 0 ? 'slotRow' : undefined}
+        ref={input => {
+          if(weekIdx === 0) {
+            this.slotRow = input
+          }
+        }}
         container={this.getContainer}
         className="rbc-month-row"
         getNow={getNow}
@@ -289,7 +294,7 @@ class MonthView extends React.Component {
   measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
-      rowLimit: this.refs.slotRow.getRowLimit(),
+      rowLimit: this.slotRow.getRowLimit(),
     })
   }
 

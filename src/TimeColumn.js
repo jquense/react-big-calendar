@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import cn from 'classnames';
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import cn from 'classnames'
 
-import dates from './utils/dates';
-import { elementType } from './utils/propTypes';
-import BackgroundWrapper from './BackgroundWrapper';
+import dates from './utils/dates'
+import { elementType, dateFormat } from './utils/propTypes'
+import BackgroundWrapper from './BackgroundWrapper'
 import TimeSlotGroup from './TimeSlotGroup'
 
 export default class TimeColumn extends Component {
@@ -12,14 +12,17 @@ export default class TimeColumn extends Component {
     step: PropTypes.number.isRequired,
     culture: PropTypes.string,
     timeslots: PropTypes.number.isRequired,
-    now: PropTypes.instanceOf(Date).isRequired,
+    getNow: PropTypes.func.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     showLabels: PropTypes.bool,
-    timeGutterFormat: PropTypes.string,
+    timeGutterFormat: dateFormat,
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
+    resource: PropTypes.string,
 
+    slotPropGetter: PropTypes.func,
+    dayPropGetter: PropTypes.func,
     dayWrapperComponent: elementType,
   }
   static defaultProps = {
@@ -31,8 +34,17 @@ export default class TimeColumn extends Component {
     dayWrapperComponent: BackgroundWrapper,
   }
 
-  renderTimeSliceGroup(key, isNow, date) {
-    const { dayWrapperComponent, timeslots, showLabels, step, timeGutterFormat, culture } = this.props;
+  renderTimeSliceGroup(key, isNow, date, resource) {
+    const {
+      dayWrapperComponent,
+      timeslots,
+      showLabels,
+      step,
+      slotPropGetter,
+      dayPropGetter,
+      timeGutterFormat,
+      culture,
+    } = this.props
 
     return (
       <TimeSlotGroup
@@ -40,8 +52,11 @@ export default class TimeColumn extends Component {
         isNow={isNow}
         value={date}
         step={step}
+        slotPropGetter={slotPropGetter}
+        dayPropGetter={dayPropGetter}
         culture={culture}
         timeslots={timeslots}
+        resource={resource}
         showLabels={showLabels}
         timeGutterFormat={timeGutterFormat}
         dayWrapperComponent={dayWrapperComponent}
@@ -50,7 +65,17 @@ export default class TimeColumn extends Component {
   }
 
   render() {
-    const { className, children, style, now, min, max, step, timeslots } = this.props;
+    const {
+      className,
+      children,
+      style,
+      getNow,
+      min,
+      max,
+      step,
+      timeslots,
+      resource,
+    } = this.props
     const totalMin = dates.diff(min, max, 'minutes')
     const numGroups = Math.ceil(totalMin / (step * timeslots))
     const renderedSlots = []
@@ -58,27 +83,25 @@ export default class TimeColumn extends Component {
 
     let date = min
     let next = date
+    let now = getNow()
     let isNow = false
 
     for (var i = 0; i < numGroups; i++) {
       isNow = dates.inRange(
-          now
-        , date
-        , dates.add(next, groupLengthInMinutes - 1, 'minutes')
-        , 'minutes'
+        now,
+        date,
+        dates.add(next, groupLengthInMinutes - 1, 'minutes'),
+        'minutes'
       )
 
-      next = dates.add(date, groupLengthInMinutes, 'minutes');
-      renderedSlots.push(this.renderTimeSliceGroup(i, isNow, date))
+      next = dates.add(date, groupLengthInMinutes, 'minutes')
+      renderedSlots.push(this.renderTimeSliceGroup(i, isNow, date, resource))
 
       date = next
     }
 
     return (
-      <div
-        className={cn(className, 'rbc-time-column')}
-        style={style}
-      >
+      <div className={cn(className, 'rbc-time-column')} style={style}>
         {renderedSlots}
         {children}
       </div>

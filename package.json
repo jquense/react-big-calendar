@@ -4,9 +4,9 @@
   "description": "Calendar! with events",
   "repository": "qultoltd/react-big-calendar",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
+  "files": ["src/", "lib/css", "LICENSE", "README.md", "CHANGELOG.md"],
   "keywords": [
     "scheduler",
     "react-component",
@@ -53,10 +53,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "^16.2.0",
-    "react-dnd": "^2.1.4",
-    "react-dnd-html5-backend": "^2.1.2",
-    "react-bootstrap": "^0.32.0"
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "@storybook/react": "3.2.16",
@@ -102,6 +99,9 @@
     "invariant": "^2.1.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
+    "react-bootstrap": "^0.32.0",
+    "react-dnd": "^2.1.4",
+    "react-dnd-html5-backend": "^2.1.2",
     "react-overlays": "^0.7.0",
     "react-prop-types": "^0.4.0",
     "uncontrollable": "^5.0.0",

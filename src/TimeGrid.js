@@ -202,7 +202,7 @@ export default class TimeGrid extends Component {
       <div className="rbc-time-view">
         {this.renderHeader(range, allDayEvents, width, resources)}
 
-        <div ref="content" className="rbc-time-content">
+        <div ref={(input) => { this.content = input }} className="rbc-time-content">
           <TimeColumn
             {...this.props}
             showLabels
@@ -212,7 +212,7 @@ export default class TimeGrid extends Component {
           />
           {eventsRendered}
 
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
+          <div ref={(input) => { this.timeIndicator = input }} className="rbc-current-time-indicator" />
         </div>
       </div>
     )
@@ -281,7 +281,7 @@ export default class TimeGrid extends Component {
 
     return (
       <div
-        ref="headerCell"
+        ref={(input) => { this.headerCell = input }}
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
         style={style}
       >
@@ -447,7 +447,7 @@ export default class TimeGrid extends Component {
 
   applyScroll() {
     if (this._scrollRatio) {
-      const { content } = this.refs
+      const content = this.content
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once
       this._scrollRatio = null
@@ -467,7 +467,7 @@ export default class TimeGrid extends Component {
     if (this._updatingOverflow) return
 
     let isOverflowing =
-      this.refs.content.scrollHeight > this.refs.content.clientHeight
+      this.content.scrollHeight > this.content.clientHeight
 
     if (this.state.isOverflowing !== isOverflowing) {
       this._updatingOverflow = true
@@ -484,7 +484,7 @@ export default class TimeGrid extends Component {
     const secondsGrid = dates.diff(max, min, 'seconds')
     const secondsPassed = dates.diff(current, min, 'seconds')
 
-    const timeIndicator = this.refs.timeIndicator
+    const timeIndicator = this.timeIndicator
     const factor = secondsPassed / secondsGrid
     const timeGutter = this._gutters[this._gutters.length - 1]
 

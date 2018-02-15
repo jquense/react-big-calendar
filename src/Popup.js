@@ -27,7 +27,7 @@ const propTypes = {
 class Popup extends React.Component {
   componentDidMount() {
     let { popupOffset = 5 } = this.props,
-      { top, left, width, height } = getOffset(this.refs.root),
+      { top, left, width, height } = getOffset(this.root),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -65,7 +65,7 @@ class Popup extends React.Component {
     }
 
     return (
-      <div ref="root" style={style} className="rbc-overlay">
+      <div ref={(input) => { this.root = input }} style={style} className="rbc-overlay">
         <div className="rbc-overlay-header">
           {localizer.format(
             props.slotStart,

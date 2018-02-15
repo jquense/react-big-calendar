@@ -19,7 +19,6 @@ import VIEWS from './Views'
 import Toolbar from './Toolbar'
 import EventWrapper from './EventWrapper'
 import BackgroundWrapper from './BackgroundWrapper'
-import ErrorBoundary from './ErrorBoundary'
 
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
@@ -738,12 +737,12 @@ class Calendar extends React.Component {
       style,
       className,
       elementProps,
-      date: current,
       getNow,
       length,
       ...props
     } = this.props
 
+    let { date: current } = this.props || this.view.props
     current = current || getNow()
 
     formats = defaultFormats(formats)
@@ -766,7 +765,6 @@ class Calendar extends React.Component {
     const label = View.title(current, { formats, culture, length })
 
     return (
-      <ErrorBoundary>
       <div
         {...elementProps}
         className={cn('rbc-calendar', className, {
@@ -775,7 +773,6 @@ class Calendar extends React.Component {
         style={style}
       >
         {toolbar && (
-          <ErrorBoundary>
           <CalToolbar
             date={current}
             view={view}
@@ -785,9 +782,7 @@ class Calendar extends React.Component {
             onNavigate={this.handleNavigate}
             messages={messages}
           />
-          </ErrorBoundary>
         )}
-        <ErrorBoundary>
         <View
           ref={(input) => { this.view = input }}
           {...props}
@@ -808,15 +803,16 @@ class Calendar extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
         />
-        </ErrorBoundary>
       </div>
-      </ErrorBoundary>
     )
   }
 
   handleNavigate = (action, newDate) => {
-    let { view, date, getNow, onNavigate, ...props } = this.props
+    let { view, getNow, onNavigate, ...props } = this.props,
+    date = this.view.props.date
+
     let ViewComponent = this.getView()
+    this.view = ViewComponent
 
     date = moveDate(ViewComponent, {
       ...props,

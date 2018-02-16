@@ -102,7 +102,7 @@
     "react-bootstrap": "^0.32.0",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
-    "react-overlays": "^0.7.0",
+    "react-overlays": "^0.8.3",
     "react-prop-types": "^0.4.0",
     "uncontrollable": "^5.0.0",
     "warning": "^3.0.0"

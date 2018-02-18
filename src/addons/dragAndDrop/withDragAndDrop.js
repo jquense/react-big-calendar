@@ -16,7 +16,7 @@ try {
 }
 
 /**
- * Creates a HOC component supporting drag & drop and optionally resizing
+ * Creates a higher-order component (HOC) supporting drag & drop and optionally resizing
  * of events:
  *
  * ```js

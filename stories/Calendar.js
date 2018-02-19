@@ -1,4 +1,3 @@
-// XXX: actions now in addon -- move
 import { storiesOf, action } from '@storybook/react'
 import moment from 'moment'
 import React from 'react'
@@ -84,18 +83,6 @@ const events = [
 ]
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
-
-const handleDropped = params => handleDnDEvent('dropped', params)
-const handleResized = (_type, params) => handleDnDEvent('resized', params)
-
-function handleDnDEvent(eventType, eventParams) {
-  const { event: { title = '(no title)' }, start, end, allDay } = eventParams
-  const msg = `${title} ${eventType} to ${
-    allDay ? 'allDay ' : ''
-  } ${start.toLocaleString()}...${end.toLocaleString()}`
-  action(eventType, msg, eventParams)
-  window && window.alert && window.alert(msg)
-}
 
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
@@ -498,8 +485,8 @@ storiesOf('module.Calendar.week', module)
           defaultView="week"
           events={events}
           resizable
-          onEventDrop={handleDropped}
-          onEventResize={handleResized}
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
         />
       </div>
     )
@@ -514,8 +501,8 @@ storiesOf('module.Calendar.week', module)
           resizable
           step={15}
           timeslots={4}
-          onEventDrop={handleDropped}
-          onEventResize={handleResized}
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
         />
       </div>
     )
@@ -529,8 +516,8 @@ storiesOf('module.Calendar.week', module)
           events={events}
           resizable
           showMultiDayTimes
-          onEventDrop={handleDropped}
-          onEventResize={handleResized}
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
         />
       </div>
     )

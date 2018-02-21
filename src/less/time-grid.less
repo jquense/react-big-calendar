@@ -4,11 +4,15 @@
 .rbc-slot-selection {
   z-index: 10;
   position: absolute;
-  cursor: default;
   background-color: @time-selection-bg-color;
   color: @time-selection-color;
   font-size: 75%;
+  width: 100%;
   padding: 3px;
+}
+
+.rbc-slot-selecting {
+  cursor: move;
 }
 
 .rbc-time-view {
@@ -44,7 +48,7 @@
 .rbc-time-header {
   display: flex;
   flex: 0 0 auto; // should not shrink below height
-  flex-direction: column;
+  flex-direction: row;
 
   &.rbc-overflowing {
     border-right: 1px solid @cell-border;
@@ -55,15 +59,6 @@
     border-left: 1px solid @cell-border;
   }
 
-  > .rbc-row > * + * {
-    border-left: 1px solid @cell-border;
-  }
-
-  .rbc-rtl & > .rbc-row > * + * {
-    border-left-width: 0;
-    border-right: 1px solid @cell-border;
-  }
-
   > .rbc-row:first-child {
     border-bottom: 1px solid  @cell-border;
   }
@@ -72,12 +67,24 @@
     border-bottom: 1px solid  @cell-border;
   }
 
-  .rbc-gutter-cell {
-    flex: none;
-  }
+  // .rbc-gutter-cell {
+  //   flex: none;
+  // }
 
-  > .rbc-gutter-cell + * {
-    width: 100%;
+  // > .rbc-gutter-cell + * {
+  //   width: 100%;
+  // }
+}
+
+.rbc-time-header-content {
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  border-left: 1px solid @cell-border;
+
+  .rbc-rtl &  {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
   }
 }
 

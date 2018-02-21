@@ -19,7 +19,7 @@ import Header from './Header'
 import DateHeader from './DateHeader'
 
 import { accessor, dateFormat } from './utils/propTypes'
-import { segStyle, inRange, sortEvents } from './utils/eventLevels'
+import { inRange, sortEvents } from './utils/eventLevels'
 
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props))
@@ -201,7 +201,7 @@ class MonthView extends React.Component {
         onSelectSlot={this.handleSelectSlot}
         eventComponent={components.event}
         eventWrapperComponent={components.eventWrapper}
-        dateCellWrapper={components.dateCellWrapper}
+        dateCellWrapperComponent={components.dateCellWrapper}
         longPressThreshold={longPressThreshold}
       />
     )
@@ -247,7 +247,7 @@ class MonthView extends React.Component {
     let HeaderComponent = this.props.components.header || Header
 
     return dates.range(first, last, 'day').map((day, idx) => (
-      <div key={'header_' + idx} className="rbc-header" style={segStyle(1, 7)}>
+      <div key={'header_' + idx} className="rbc-header">
         <HeaderComponent
           date={day}
           label={localizer.format(day, format, culture)}

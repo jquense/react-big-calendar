@@ -1,8 +1,6 @@
 import { storiesOf, action } from '@storybook/react'
 import moment from 'moment'
 import React from 'react'
-import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext } from 'react-dnd'
 
 import Calendar from '../src'
 import momentLocalizer from '../src/localizers/moment.js'
@@ -65,24 +63,18 @@ const events = [
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
-const DragCalendar = () => {
+const DragableCalendar = props => {
   return (
     <DragAndDropCalendar
       popup
       selectable
-      events={resources.events}
-      resources={resources.list}
-      onEventDrop={event => {
-        action(event)
-      }}
+      onEventDrop={action('event dropped')}
       onSelectEvent={action('event selected')}
       onSelectSlot={action('slot selected')}
-      defaultDate={new Date(2015, 3, 1)}
+      {...props}
     />
   )
 }
-
-const DragableCalendar = DragDropContext(HTML5Backend)(DragCalendar)
 
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
@@ -111,6 +103,32 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('Daylight savings', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragableCalendar
+          defaultView="day"
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={[
+            {
+              title: 'on DST',
+              start: new Date(2017, 2, 12, 1),
+              end: new Date(2017, 2, 12, 2, 30),
+              allDay: false,
+            },
+            {
+              title: 'crosses DST',
+              start: new Date(2017, 2, 12, 1),
+              end: new Date(2017, 2, 12, 6, 30),
+              allDay: false,
+            },
+          ]}
+          defaultDate={new Date(2017, 2, 12)}
+        />
+      </div>
+    )
+  })
   .add('event layout', () => {
     return (
       <div style={{ height: 600 }}>
@@ -126,7 +144,10 @@ storiesOf('module.Calendar.week', module)
   .add('resource', () => {
     return (
       <div style={{ height: 500 }}>
-        <DragableCalendar />
+        <DragableCalendar
+          events={resources.events}
+          resources={resources.list}
+        />
       </div>
     )
   })

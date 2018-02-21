@@ -76,7 +76,8 @@
     /* 0 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         if (process.env.NODE_ENV === 'production') {
           module.exports = __webpack_require__(188)
         } else {
@@ -526,7 +527,8 @@
     /* 4 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright 2013-2015, Facebook, Inc.
          * All rights reserved.
@@ -618,7 +620,8 @@
     /* 6 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         exports.__esModule = true
         exports.set = set
 
@@ -790,8 +793,7 @@
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
-      /* global define */
-
+        /* global define */
       ;(function() {
         'use strict'
 
@@ -973,7 +975,8 @@
     /* 9 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         function checkDCE() {
           /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
           if (
@@ -1791,7 +1794,8 @@ object-assign
     /* 23 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          *
@@ -2038,7 +2042,8 @@ object-assign
     /* 30 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          *
@@ -2062,7 +2067,8 @@ object-assign
     /* 31 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2014-present, Facebook, Inc.
          *
@@ -5178,7 +5184,8 @@ object-assign
     /* 57 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         exports.__esModule = true
 
         var _extends =
@@ -5540,7 +5547,6 @@ object-assign
 
           _this.handleSelectAllDaySlot = function(slots, slotInfo) {
             var onSelectSlot = _this.props.onSelectSlot
-
             ;(0, _helpers.notify)(onSelectSlot, {
               slots: slots,
               start: slots[0],
@@ -5731,7 +5737,7 @@ object-assign
                   resource: resource && resource.id,
                   eventComponent: components.event,
                   eventWrapperComponent: components.eventWrapper,
-                  dayWrapperComponent: components.dayWrapper,
+                  timeSlotWrapperComponent: components.dayWrapper,
                   className: (0, _classnames2.default)({
                     'rbc-now': _dates2.default.eq(date, today, 'day'),
                   }),
@@ -6297,7 +6303,6 @@ object-assign
         var publishSource = options.publishSource,
           clientOffset = options.clientOffset,
           getSourceClientOffset = options.getSourceClientOffset
-
         ;(0, _invariant2.default)(
           (0, _isArray2.default)(sourceIds),
           'Expected sourceIds to be an array.'
@@ -6375,7 +6380,6 @@ object-assign
           _ref$clientOffset = _ref.clientOffset,
           clientOffset =
             _ref$clientOffset === undefined ? null : _ref$clientOffset
-
         ;(0, _invariant2.default)(
           (0, _isArray2.default)(targetIdsArg),
           'Expected targetIds to be an array.'
@@ -6542,7 +6546,8 @@ object-assign
     /* 67 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         Object.defineProperty(exports, '__esModule', {
           value: true,
         })
@@ -6579,7 +6584,8 @@ object-assign
     /* 68 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          *
@@ -8630,7 +8636,8 @@ object-assign
     /* 125 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          *
@@ -8903,7 +8910,8 @@ object-assign
     /* 130 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         exports.__esModule = true
         exports.formats = undefined
 
@@ -8945,7 +8953,6 @@ object-assign
           }
 
           if (!globalize.load) return (0, _oldGlobalize2.default)(globalize)
-
           ;(0, _formats.set)(formats)
 
           return (0, _localizer.set)({
@@ -9394,7 +9401,8 @@ object-assign
     /* 133 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         exports.__esModule = true
         exports.default = moveDate
 
@@ -11648,7 +11656,7 @@ object-assign
           resource
         ) {
           var _props = this.props,
-            dayWrapperComponent = _props.dayWrapperComponent,
+            timeSlotWrapperComponent = _props.timeSlotWrapperComponent,
             timeslots = _props.timeslots,
             showLabels = _props.showLabels,
             step = _props.step,
@@ -11669,7 +11677,7 @@ object-assign
             resource: resource,
             showLabels: showLabels,
             timeGutterFormat: timeGutterFormat,
-            dayWrapperComponent: dayWrapperComponent,
+            timeSlotWrapperComponent: timeSlotWrapperComponent,
           })
         }
 
@@ -11742,7 +11750,7 @@ object-assign
 
         slotPropGetter: _propTypes2.default.func,
         dayPropGetter: _propTypes2.default.func,
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
       }
       TimeColumn.defaultProps = {
         step: 30,
@@ -11750,7 +11758,7 @@ object-assign
         showLabels: false,
         type: 'day',
         className: '',
-        dayWrapperComponent: _BackgroundWrapper2.default,
+        timeSlotWrapperComponent: _BackgroundWrapper2.default,
       }
       exports.default = TimeColumn
       module.exports = exports['default']
@@ -13120,7 +13128,8 @@ object-assign
     /* 182 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         Object.defineProperty(exports, '__esModule', {
           value: true,
         })
@@ -13321,7 +13330,6 @@ object-assign
 
               _this.handleChange = _this.handleChange.bind(_this)
               _this.handleChildRef = _this.handleChildRef.bind(_this)
-
               ;(0, _invariant2.default)(
                 _typeof(_this.context.dragDropManager) === 'object',
                 'Could not find the drag and drop manager in the context of %s. ' +
@@ -14015,7 +14023,6 @@ object-assign
           this.setState({ selected: selected })
         },
       })
-
       ;(0, _reactDom.render)(
         _react2.default.createElement(Example, null),
         document.getElementById('root')
@@ -14351,7 +14358,8 @@ object-assign
     /* 189 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /** @license React v16.2.0
          * react.development.js
          *
@@ -16087,7 +16095,8 @@ object-assign
     /* 190 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          *
@@ -25871,7 +25880,8 @@ object-assign
     /* 258 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /** @license React v16.2.0
          * react-dom.development.js
          *
@@ -45748,7 +45758,8 @@ object-assign
     /* 263 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright (c) 2013-present, Facebook, Inc.
          *
@@ -46757,7 +46768,8 @@ object-assign
     /* 266 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         /**
          * Copyright 2014-2015, Facebook, Inc.
          * All rights reserved.
@@ -48362,7 +48374,6 @@ object-assign
             basePropTypes,
             displayName
           )
-
           ;(0, _invariant2.default)(
             isCompositeComponent || !methods.length,
             '[uncontrollable] stateless function components cannot pass through methods ' +
@@ -48528,7 +48539,8 @@ object-assign
     /* 278 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         exports.__esModule = true
         exports.version = undefined
         exports.customPropType = customPropType
@@ -48593,7 +48605,6 @@ object-assign
               controlledValues,
               function(obj, handler, prop) {
                 var type = basePropTypes[prop]
-
                 ;(0, _invariant2.default)(
                   typeof handler === 'string' && handler.trim().length,
                   'Uncontrollable - [%s]: the prop `%s` needs a valid handler key name in order to make it uncontrollable',
@@ -49128,7 +49139,6 @@ object-assign
           slots.sort(function(a, b) {
             return +a - +b
           })
-
           ;(0, _helpers.notify)(this.props.onSelectSlot, {
             slots: slots,
             start: slots[0],
@@ -50137,7 +50147,6 @@ object-assign
 
             if (_this.props.onExited) {
               var _this$props
-
               ;(_this$props = _this.props).onExited.apply(
                 _this$props,
                 arguments
@@ -53502,7 +53511,7 @@ object-assign
         dragThroughEvents: _propTypes2.default.bool,
         eventPropGetter: _propTypes2.default.func,
         dayPropGetter: _propTypes2.default.func,
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
         eventComponent: _propTypes3.elementType,
         eventWrapperComponent: _propTypes3.elementType.isRequired,
         resource: _propTypes2.default.string,
@@ -54410,7 +54419,7 @@ object-assign
           value
         ) {
           var _props = this.props,
-            dayWrapperComponent = _props.dayWrapperComponent,
+            timeSlotWrapperComponent = _props.timeSlotWrapperComponent,
             showLabels = _props.showLabels,
             isNow = _props.isNow,
             culture = _props.culture,
@@ -54420,7 +54429,7 @@ object-assign
           return _react2.default.createElement(_TimeSlot2.default, {
             key: slotNumber,
             slotPropGetter: slotPropGetter,
-            dayWrapperComponent: dayWrapperComponent,
+            timeSlotWrapperComponent: timeSlotWrapperComponent,
             showLabel: showLabels && !slotNumber,
             content: content,
             culture: culture,
@@ -54458,7 +54467,7 @@ object-assign
       })(_react.Component)
 
       TimeSlotGroup.propTypes = {
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
         timeslots: _propTypes2.default.number.isRequired,
         step: _propTypes2.default.number.isRequired,
         value: _propTypes2.default.instanceOf(Date).isRequired,
@@ -54560,7 +54569,7 @@ object-assign
             slotPropGetter = _props.slotPropGetter,
             resource = _props.resource
 
-          var Wrapper = this.props.dayWrapperComponent
+          var Wrapper = this.props.timeSlotWrapperComponent
 
           var _ref = (slotPropGetter && slotPropGetter(value)) || {},
             className = _ref.className,
@@ -54590,7 +54599,7 @@ object-assign
       })(_react.Component)
 
       TimeSlot.propTypes = {
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
         value: _propTypes2.default.instanceOf(Date).isRequired,
         isNow: _propTypes2.default.bool,
         showLabel: _propTypes2.default.bool,
@@ -56710,7 +56719,6 @@ object-assign
         var locale = function locale(m, c) {
           return c ? m.locale(c) : m
         }
-
         ;(0, _formats.set)(formats)
 
         return (0, _localizer.set)({
@@ -60752,7 +60760,8 @@ object-assign
     /* 398 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(global, module) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(global, module) {
         Object.defineProperty(exports, '__esModule', {
           value: true,
         })
@@ -61309,7 +61318,6 @@ object-assign
                   ? arguments[1]
                   : {}
               var handlerIds = options.handlerIds
-
               ;(0, _invariant2.default)(
                 typeof listener === 'function',
                 'listener must be a function.'
@@ -61348,7 +61356,6 @@ object-assign
             key: 'subscribeToOffsetChange',
             value: function subscribeToOffsetChange(listener) {
               var _this2 = this
-
               ;(0, _invariant2.default)(
                 typeof listener === 'function',
                 'listener must be a function.'
@@ -61816,13 +61823,11 @@ object-assign
             key: 'removeSource',
             value: function removeSource(sourceId) {
               var _this2 = this
-
               ;(0, _invariant2.default)(
                 this.getSource(sourceId),
                 'Expected an existing source.'
               )
               this.store.dispatch((0, _registry.removeSource)(sourceId))
-
               ;(0, _asap2.default)(function() {
                 delete _this2.handlers[sourceId]
                 delete _this2.types[sourceId]
@@ -61833,13 +61838,11 @@ object-assign
             key: 'removeTarget',
             value: function removeTarget(targetId) {
               var _this3 = this
-
               ;(0, _invariant2.default)(
                 this.getTarget(targetId),
                 'Expected an existing target.'
               )
               this.store.dispatch((0, _registry.removeTarget)(targetId))
-
               ;(0, _asap2.default)(function() {
                 delete _this3.handlers[targetId]
                 delete _this3.types[targetId]
@@ -61951,7 +61954,8 @@ object-assign
     /* 412 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(global) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(global) {
         // Use the fastest means possible to execute a task in its own turn, with
         // priority over other events including IO, animation, reflow, and redraw
         // events in browsers.
@@ -63378,7 +63382,8 @@ object-assign
     /* 425 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         Object.defineProperty(exports, '__esModule', {
           value: true,
         })
@@ -63990,7 +63995,8 @@ object-assign
     /* 431 */
     /***/ function(module, exports, __webpack_require__) {
       'use strict'
-      /* WEBPACK VAR INJECTION */ ;(function(process) {
+      /* WEBPACK VAR INJECTION */
+      ;(function(process) {
         Object.defineProperty(exports, '__esModule', {
           value: true,
         })

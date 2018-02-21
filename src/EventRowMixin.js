@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom'
 import EventCell from './EventCell'
 import getHeight from 'dom-helpers/query/height'
 import { accessor, elementType } from './utils/propTypes'
-import { segStyle } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
 /* eslint-disable react/prop-types */
@@ -74,14 +73,15 @@ export default {
     )
   },
 
-  renderSpan(props, len, key, content = ' ') {
-    let { slots } = props
+  renderSpan(slots, len, key, content = ' ') {
+    let per = Math.abs(len) / slots * 100 + '%'
 
     return (
       <div
         key={key}
         className="rbc-row-segment"
-        style={segStyle(Math.abs(len), slots)}
+        // IE10/11 need max-width. flex-basis doesn't respect box-sizing
+        style={{ WebkitFlexBasis: per, flexBasis: per, maxWidth: per }}
       >
         {content}
       </div>

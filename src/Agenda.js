@@ -63,7 +63,7 @@ class Agenda extends React.Component {
 
     return (
       <div className="rbc-agenda-view">
-        <table ref="header">
+        <table ref="header" className="rbc-agenda-table">
           <thead>
             <tr>
               <th className="rbc-header" ref="dateCol">
@@ -77,7 +77,7 @@ class Agenda extends React.Component {
           </thead>
         </table>
         <div className="rbc-agenda-content" ref="content">
-          <table>
+          <table className="rbc-agenda-table">
             <tbody ref="tbody">
               {range.map((day, idx) => this.renderDay(day, events, idx))}
             </tbody>

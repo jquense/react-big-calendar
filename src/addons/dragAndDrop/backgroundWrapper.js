@@ -111,10 +111,11 @@ function createWrapper(type) {
   const dropTarget = {
     drop(_, monitor, { props, context }) {
       const event = monitor.getItem()
-      const { value } = props
       const { onEventDrop, onEventResize, startAccessor, endAccessor } = context
       const start = get(event, startAccessor)
       const end = get(event, endAccessor)
+
+      const value = props.value
 
       if (monitor.getItemType() === 'event') {
         onEventDrop({

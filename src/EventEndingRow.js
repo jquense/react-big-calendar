@@ -46,15 +46,15 @@ class EventEndingRow extends React.Component {
         let content = EventRowMixin.renderEvent(this.props, event)
 
         if (gap) {
-          row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'))
+          row.push(EventRowMixin.renderSpan(slotCount, gap, key + '_gap'))
         }
 
-        row.push(EventRowMixin.renderSpan(this.props, span, key, content))
+        row.push(EventRowMixin.renderSpan(slotCount, span, key, content))
 
         lastEnd = current = right + 1
       } else {
         if (gap) {
-          row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'))
+          row.push(EventRowMixin.renderSpan(slotCount, gap, key + '_gap'))
         }
 
         row.push(

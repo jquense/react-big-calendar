@@ -767,9 +767,7 @@ class Calendar extends React.Component {
     return (
       <div
         {...elementProps}
-        className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl,
-        })}
+        className={cn(className, 'rbc-calendar', props.rtl && 'rbc-is-rtl')}
         style={style}
       >
         {toolbar && (

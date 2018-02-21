@@ -14,6 +14,19 @@ import { accessor, dateFormat } from './utils/propTypes'
 import { notify } from './utils/helpers'
 import { accessor as get } from './utils/accessors'
 import { inRange, sortEvents } from './utils/eventLevels'
+import Resources from './utils/Resources'
+
+// const EMPTY_RESOURCE_MAP = new Map([[NONE, null]])
+
+// function getResourceMap(resources, resourceIdAccessor) {
+//   if (!resources) return EMPTY_RESOURCE_MAP
+//   const resourceMap = new Map()
+
+//   resources.forEach(resource => {
+//     resourceMap.set(get(resource, resourceIdAccessor), resource)
+//   })
+//   return resourceMap
+// }
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -75,6 +88,7 @@ export default class TimeGrid extends Component {
     super(props)
 
     this.state = { gutterWidth: undefined, isOverflowing: null }
+    this.resources = Resources(props.resources, props.resourceIdAccessor)
   }
 
   componentWillMount() {
@@ -115,6 +129,12 @@ export default class TimeGrid extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { range, scrollToTime } = this.props
+
+    this.resources = Resources(
+      nextProps.resources,
+      nextProps.resourceIdAccessor
+    )
+
     // When paginating, reset scroll
     if (
       !dates.eq(nextProps.range[0], range[0], 'minute') ||
@@ -144,53 +164,46 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events, today, resources) {
+  renderEvents(range, events, today) {
     let {
       min,
       max,
       endAccessor,
       startAccessor,
       resourceAccessor,
-      resourceIdAccessor,
       components,
     } = this.props
 
-    return range.map((date, idx) => {
-      let daysEvents = events.filter(event =>
-        dates.inRange(
-          date,
-          get(event, startAccessor),
-          get(event, endAccessor),
-          'day'
-        )
-      )
+    const groupedEvents = this.resources.groupEvents(events, resourceAccessor)
 
-      return resources.map((resource, id) => {
-        let eventsToDisplay = !resource
-          ? daysEvents
-          : daysEvents.filter(
-              event =>
-                get(event, resourceAccessor) ===
-                get(resource, resourceIdAccessor)
-            )
+    return this.resources.map(([id, resource], i) =>
+      range.map((date, jj) => {
+        let daysEvents = (groupedEvents.get(id) || []).filter(event =>
+          dates.inRange(
+            date,
+            get(event, startAccessor),
+            get(event, endAccessor),
+            'day'
+          )
+        )
 
         return (
           <DayColumn
             {...this.props}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            resource={resource && resource.id}
+            resourceId={resource && id}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
             timeSlotWrapperComponent={components.dayWrapper}
             className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
-            key={idx + '-' + id}
+            key={i + '-' + jj}
             date={date}
-            events={eventsToDisplay}
+            events={daysEvents}
           />
         )
       })
-    })
+    )
   }
 
   render() {
@@ -247,8 +260,8 @@ export default class TimeGrid extends Component {
           width={width}
           getNow={getNow}
           dayFormat={this.props.dayFormat}
+          resources={this.resources}
           culture={this.props.culture}
-          resources={resources}
           selected={selected}
           selectable={this.props.selectable}
           startAccessor={startAccessor}
@@ -257,7 +270,6 @@ export default class TimeGrid extends Component {
           tooltipAccessor={this.props.tooltipAccessor}
           allDayAccessor={this.props.allDayAccessor}
           resourceAccessor={this.props.resourceAccessor}
-          resourceIdAccessor={this.props.resourceIdAccessor}
           resourceTitleAccessor={this.props.resourceTitleAccessor}
           isOverflowing={this.state.isOverflowing}
           dayPropGetter={this.props.dayPropGetter}

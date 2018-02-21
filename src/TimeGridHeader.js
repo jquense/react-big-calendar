@@ -15,7 +15,7 @@ class TimeGridHeader extends React.Component {
   static propTypes = {
     range: PropTypes.array.isRequired,
     events: PropTypes.array.isRequired,
-    resources: PropTypes.array,
+    resources: PropTypes.object,
     getNow: PropTypes.func.isRequired,
     isOverflowing: PropTypes.bool,
 
@@ -145,6 +145,8 @@ class TimeGridHeader extends React.Component {
       getNow,
       range,
       isOverflowing,
+      resourceAccessor,
+      resourceTitleAccessor,
       eventComponent,
       dateCellWrapperComponent,
       eventWrapperComponent,
@@ -155,6 +157,8 @@ class TimeGridHeader extends React.Component {
       style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize()}px`
     }
 
+    const groupedEvents = resources.groupEvents(events, resourceAccessor)
+
     return (
       <div
         ref="headerCell"
@@ -163,42 +167,49 @@ class TimeGridHeader extends React.Component {
       >
         <div className="rbc-label rbc-time-header-gutter" style={{ width }} />
 
-        <div className="rbc-time-header-content">
-          <div className="rbc-row rbc-time-header-cell">
-            {this.renderHeaderCells(range)}
-          </div>
-          {resources && (
-            <div className="rbc-row rbc-row-resource">
-              {this.renderHeaderResources(range, resources)}
-            </div>
-          )}
+        {resources.map(([id, resource], idx) => (
+          <div key={idx} className="rbc-time-header-content">
+            {resource && (
+              <div className="rbc-row rbc-row-resource">
+                <div key={`resource_${idx}`} className="rbc-header">
+                  {get(resource, resourceTitleAccessor)}
+                </div>
+              </div>
+            )}
+            {range.length > 1 && (
+              <div className="rbc-row rbc-time-header-cell">
+                {this.renderHeaderCells(range)}
+              </div>
+            )}
 
-          <DateContentRow
-            isAllDay
-            rtl={rtl}
-            getNow={getNow}
-            minRows={2}
-            range={range}
-            events={events}
-            className="rbc-allday-cell"
-            selectable={selectable}
-            selected={this.props.selected}
-            eventComponent={eventComponent}
-            eventWrapperComponent={eventWrapperComponent}
-            dateCellWrapperComponent={dateCellWrapperComponent}
-            dayPropGetter={this.props.dayPropGetter}
-            titleAccessor={this.props.titleAccessor}
-            tooltipAccessor={this.props.tooltipAccessor}
-            startAccessor={this.props.startAccessor}
-            endAccessor={this.props.endAccessor}
-            allDayAccessor={this.props.allDayAccessor}
-            eventPropGetter={this.props.eventPropGetter}
-            onSelect={this.props.onSelectEvent}
-            onDoubleClick={this.props.onDoubleClickEvent}
-            onSelectSlot={this.props.onSelectSlot}
-            longPressThreshold={this.props.longPressThreshold}
-          />
-        </div>
+            <DateContentRow
+              isAllDay
+              rtl={rtl}
+              getNow={getNow}
+              minRows={2}
+              range={range}
+              resourceId={resource && id}
+              events={groupedEvents.get(id) || []}
+              className="rbc-allday-cell"
+              selectable={selectable}
+              selected={this.props.selected}
+              eventComponent={eventComponent}
+              eventWrapperComponent={eventWrapperComponent}
+              dateCellWrapperComponent={dateCellWrapperComponent}
+              dayPropGetter={this.props.dayPropGetter}
+              titleAccessor={this.props.titleAccessor}
+              tooltipAccessor={this.props.tooltipAccessor}
+              startAccessor={this.props.startAccessor}
+              endAccessor={this.props.endAccessor}
+              allDayAccessor={this.props.allDayAccessor}
+              eventPropGetter={this.props.eventPropGetter}
+              onSelect={this.props.onSelectEvent}
+              onDoubleClick={this.props.onDoubleClickEvent}
+              onSelectSlot={this.props.onSelectSlot}
+              longPressThreshold={this.props.longPressThreshold}
+            />
+          </div>
+        ))}
       </div>
     )
   }

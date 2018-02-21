@@ -145,8 +145,11 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 500 }}>
         <DragableCalendar
+          defaultView="day"
           events={resources.events}
           resources={resources.list}
+          formats={{ dayFormat: 'D dd' }}
+          defaultDate={new Date(2015, 3, 4)}
         />
       </div>
     )

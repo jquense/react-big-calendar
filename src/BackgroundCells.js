@@ -31,6 +31,7 @@ class BackgroundCells extends React.Component {
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     rtl: PropTypes.bool,
     type: PropTypes.string,
+    resourceId: PropTypes.any,
   }
 
   constructor(props, context) {
@@ -61,6 +62,7 @@ class BackgroundCells extends React.Component {
       range,
       cellWrapperComponent: Wrapper,
       dayPropGetter,
+      resourceId,
       date: currentDate,
       getNow,
     } = this.props
@@ -75,7 +77,12 @@ class BackgroundCells extends React.Component {
             (dayPropGetter && dayPropGetter(date)) || {}
 
           return (
-            <Wrapper key={index} value={date} range={range}>
+            <Wrapper
+              key={index}
+              value={date}
+              range={range}
+              resourceId={resourceId}
+            >
               <div
                 style={style}
                 className={cn(
@@ -188,6 +195,7 @@ class BackgroundCells extends React.Component {
         this.props.onSelectSlot({
           start: startIdx,
           end: endIdx,
+          resourceId: this.props.resourceId,
           action,
         })
   }

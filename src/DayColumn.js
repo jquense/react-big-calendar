@@ -59,7 +59,7 @@ class DayColumn extends React.Component {
     timeSlotWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
-    resource: PropTypes.string,
+    resourceId: PropTypes.any,
   }
 
   static defaultProps = {
@@ -100,7 +100,7 @@ class DayColumn extends React.Component {
       selectRangeFormat,
       culture,
       slotPropGetter,
-      resource,
+      resourceId,
       timeSlotWrapperComponent,
       dayPropGetter,
     } = this.props
@@ -128,7 +128,7 @@ class DayColumn extends React.Component {
           <TimeSlotGroup
             key={idx}
             group={grp}
-            resource={resource}
+            resourceId={resourceId}
             slotPropGetter={slotPropGetter}
             timeSlotWrapperComponent={timeSlotWrapperComponent}
           />
@@ -358,7 +358,7 @@ class DayColumn extends React.Component {
       slots,
       start: startDate,
       end: endDate,
-      resourceId: this.props.resource,
+      resourceId: this.props.resourceId,
       action,
     })
   }

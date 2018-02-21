@@ -22,6 +22,7 @@ export function getEventTimes(start, end, dropDate, type) {
   return {
     start: nextStart,
     end: nextEnd,
+    isAllDay: type === 'dateCellWrapper',
   }
 }
 
@@ -115,11 +116,12 @@ function createWrapper(type) {
       const start = get(event, startAccessor)
       const end = get(event, endAccessor)
 
-      const value = props.value
+      const { resourceId, value } = props
 
       if (monitor.getItemType() === 'event') {
         onEventDrop({
           event,
+          resourceId,
           ...getEventTimes(start, end, value, type),
         })
       }
@@ -129,6 +131,7 @@ function createWrapper(type) {
           case 'resizeTop': {
             return onEventResize('drop', {
               event,
+              resourceId,
               start: value,
               end: event.end,
             })
@@ -144,6 +147,7 @@ function createWrapper(type) {
           case 'resizeLeft': {
             return onEventResize('drop', {
               event,
+              resourceId,
               start: value,
               end: event.end,
             })
@@ -152,6 +156,7 @@ function createWrapper(type) {
             const nextEnd = dates.add(value, 1, 'day')
             return onEventResize('drop', {
               event,
+              resourceId,
               start: event.start,
               end: nextEnd,
             })
@@ -161,6 +166,7 @@ function createWrapper(type) {
         // Catch all
         onEventResize('drop', {
           event,
+          resourceId,
           start: event.start,
           end: value,
         })

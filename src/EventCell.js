@@ -89,7 +89,7 @@ class EventCell extends React.Component {
           <div className='rbc-event-content' title={tooltip || undefined}>
             { Event
               ? <Event event={event} title={title} isAllDay={isAllDayEvent} />
-              : (isAllDayEvent ? title : (title + ' ' + padNumber(startHour) + ':' + padNumber(startMinute) + '-' + padNumber(endHour) + ':' + padNumber(endMinute)))
+              : (isAllDayEvent ? '00:00-24:00' : (padNumber(startHour) + ':' + padNumber(startMinute) + '-' + padNumber(endHour) + ':' + padNumber(endMinute)))
             }
           </div>
         </div>

@@ -106,14 +106,19 @@ export default class TimeGrid extends Component {
     this.positionTimeIndicator()
     this.triggerTimeIndicatorUpdate()
 
-    window.addEventListener('resize', () => {
-      raf.cancel(this.rafHandle)
-      this.rafHandle = raf(this.checkOverflow)
-    })
+    window.addEventListener('resize', this.handleResize)
+  }
+
+  handleResize = () => {
+    raf.cancel(this.rafHandle)
+    this.rafHandle = raf(this.checkOverflow)
   }
 
   componentWillUnmount() {
     window.clearTimeout(this._timeIndicatorTimeout)
+    window.removeEventListener('resize', this.handleResize)
+
+    raf.cancel(this.rafHandle)
   }
 
   componentDidUpdate() {

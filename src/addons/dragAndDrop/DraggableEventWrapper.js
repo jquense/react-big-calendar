@@ -66,22 +66,22 @@ class DraggableEventWrapper extends React.Component {
      * The resizability of events depends on whether they are
      * allDay events and how they are displayed.
      *  
-     * 1. If the event is an allDay event, we can drag it east-west
-     * to resize the days.
+     * 1. If the event is being shown in an event row (because
+     * it is an allDay event shown in the header row or because as
+     * in month view the view is showing all events as rows) then we
+     * allow east-west resizing.
      * 
-     * 2. If the event is a non-allDay event and is being displayed
+     * 2. Otherwise the event is being displayed
      * normally, we can drag it north-south to resize the times.
      * 
-     * 3. If the event is a non-allDay event and is being displayed
-     * squished in a row (which happens in the month view, for example),
-     * then we don't permit any resizing, since what would it mean?
-     * 
+     * See `DropWrappers` for handling of the drop of such events.
+     *
      * Notwithstanding the above, we never show drag anchors for
      * events which continue beyond current component. This happens
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
-    if (allDay) {
+    if (isRow || allDay) {
       const anchor = (
         <div className="rbc-addons-dnd-resize-ew-anchor">
           <div className="rbc-addons-dnd-resize-ew-icon" />
@@ -89,7 +89,7 @@ class DraggableEventWrapper extends React.Component {
       )
       StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
       EndAnchor = !continuesAfter && connectRightDragSource(anchor)
-    } else if (!isRow && !allDay) {
+    } else {
       const anchor = (
         <div className="rbc-addons-dnd-resize-ns-anchor">
           <div className="rbc-addons-dnd-resize-ns-icon" />

@@ -9,7 +9,7 @@ import { accessor as get } from '../../utils/accessors'
 import dates from '../../utils/dates'
 import BigCalendar from '../../index'
 
-function getEventDropProps(start, end, dropDate, type) {
+function getEventDropProps(start, end, dropDate, droppedInAllDay) {
   // Calculate duration between original start and end dates
   const duration = dates.diff(start, end)
 
@@ -26,14 +26,13 @@ function getEventDropProps(start, end, dropDate, type) {
    * event was dropped on the day header or not.
    */
 
-  const allDay = type === 'dateCellWrapper'
-  const nextStart = allDay ? dates.merge(dropDate, start) : dropDate
+  const nextStart = droppedInAllDay ? dates.merge(dropDate, start) : dropDate
   const nextEnd = dates.add(nextStart, duration, 'milliseconds')
 
   return {
-    allDay,
     start: nextStart,
     end: nextEnd,
+    allDay: droppedInAllDay,
   }
 }
 
@@ -50,9 +49,14 @@ class DropWrapper extends React.Component {
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor,
+    allDayAccessor: accessor,
     step: PropTypes.number,
   }
 
+  // TODO: this is WIP to retain the drag offset so the
+  // drag target better tracks the mouseDown location, not
+  // just the top of the event.
+  //
   // constructor(...args) {
   //   super(...args);
   //   this.state = { isOver: false };
@@ -133,36 +137,64 @@ function createDropWrapper(type) {
         onEventResize = noop,
         startAccessor,
         endAccessor,
+        allDayAccessor,
         step,
       } = context
 
       let start = get(event, startAccessor)
       let end = get(event, endAccessor)
+      let allDay = get(event, allDayAccessor)
+      let droppedInAllDay = type === 'dateCellWrapper'
 
       switch (anchor) {
         case 'drop':
-          onEventDrop({ event, ...getEventDropProps(start, end, value, type) })
-          break
+          onEventDrop({
+            event,
+            ...getEventDropProps(start, end, value, droppedInAllDay),
+          })
+          return // all the other cases issue resize action...
+
+        // the remaining cases are all resizes...
 
         case 'resizeTop':
-        case 'resizeLeft':
-          start = value
-          // note: the 'drop' param is here for backward compatibility - maybe remove in future?
-          onEventResize('drop', { event, start, end })
+          // dragging the top means the event isn't an allDay
+          // dropping into the header changes the date, preserves the time
+          // dropping elsewhere is just a normal resize
+          start = droppedInAllDay ? dates.merge(value, start) : value
           break
 
         case 'resizeBottom':
-          // end dates are *exclusive* so advance it the next slot (e.g. just past the end of this one)
-          end = dates.add(value, step, 'minutes')
-          onEventResize('drop', { event, start, end })
+          // dragging the bottom means the event isn't an allDay
+          // dropping into the header changes the date, preserves the time
+          // dropping elsewhere is just a normal resize
+          // ... but end dates are exclusive so advance it the next slot (e.g. just past the end of this one)
+          end = droppedInAllDay
+            ? dates.merge(value, end)
+            : dates.add(value, step, 'minutes')
+          break
+
+        case 'resizeLeft':
+          // dragging the left means we're dragging something from an event row
+          // all cases are the same:
+          // preserve its start time, but change the date (works for both allDay and non-allDay)
+          start = dates.merge(value, start)
           break
 
         case 'resizeRight':
-          // end dates are *exclusive* so advance it the next day
-          end = dates.add(value, 1, 'day')
-          onEventResize('drop', { event, start, end })
+          // dragging the right means we're dragging something from an event row
+          // this case is tricky: for non-allDay events, we just want to change
+          // the end date (preserving the end time). For allDay events, we want to change
+          // the end date to one day later than the drop date because end dates are exclusive
+          end = allDay ? dates.add(value, 1, 'day') : dates.merge(value, end)
           break
+
+        default:
+          return // don't issue resize
       }
+
+      // fall here for all of the resize cases
+      // note: the 'drop' param is here for backward compatibility - maybe remove in future?
+      onEventResize('drop', { event, start, end, allDay: droppedInAllDay })
     },
   }
 

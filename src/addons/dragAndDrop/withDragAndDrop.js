@@ -28,13 +28,29 @@ try {
  * It defaults to `react-dnd-html5-backend` which you should probably include in
  * your project if using this default).
  *
+ * Set `resizable` to true in your calendar if you want events to be resizable.
+ *
  * The HOC adds `onEventDrop` and `onEventResize` callback properties if the events are
  * moved or resized. They are called with these signatures:
  *
  * ```js
- *    function onEventDrop({ event, start, end, allDay }) {...}  // allDay is true when dropping onto the day header
- *    function onEventResize(type, { event, start, end }) {...}  // type is always 'drop'
+ *    function onEventDrop({ event, start, end, allDay }) {...}
+ *    function onEventResize(type, { event, start, end, allDay }) {...}  // type is always 'drop'
  * ```
+ *
+ * Moving and resizing of events has some subtlety which one should be aware of.
+ *
+ * In some situations, non-allDay events are displayed in "row" format where they
+ * are rendered horizontally. This is the case for ALL events in a month view. It
+ * is also occurs with multi-day events in a day or week view (unless `showMultiDayTimes`
+ * is set).
+ *
+ * When dropping or resizing non-allDay events into a the header area or when
+ * resizing them horizontally because they are displayed in row format, their
+ * times are preserved, only their date is changed.
+ *
+ * If you care about these corner cases, you can examine the `allDay` param suppled
+ * in the callback to determine how the user dropped or resized the event.
  *
  * Note: you cannot use custom `EventWrapper`, `DayWrapper` or `DateCellWrapper`
  * components when using this HOC as they are overwritten here.

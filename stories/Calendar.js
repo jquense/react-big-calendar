@@ -57,8 +57,13 @@ const events = [
   },
   {
     title: 'test all day',
-    start: moment().toDate(),
-    end: moment().toDate(),
+    start: moment()
+      .startOf('day')
+      .toDate(),
+    end: moment()
+      .startOf('day')
+      .add(1, 'day')
+      .toDate(),
     allDay: true,
   },
   {

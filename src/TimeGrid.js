@@ -3,6 +3,7 @@ import cn from 'classnames'
 import raf from 'dom-helpers/util/requestAnimationFrame'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
+import { compose, withPropsOnChange } from 'recompose'
 
 import dates from './utils/dates'
 import localizer from './localizer'
@@ -23,7 +24,7 @@ import { accessor as get } from './utils/accessors'
 
 import { inRange, sortEvents, segStyle } from './utils/eventLevels'
 
-export default class TimeGrid extends Component {
+class TimeGrid extends Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
     resources: PropTypes.array,
@@ -32,6 +33,8 @@ export default class TimeGrid extends Component {
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
+    allDayEvents: PropTypes.arrayOf(PropTypes.object),
+    rangeEvents: PropTypes.arrayOf(PropTypes.object),
     getNow: PropTypes.func.isRequired,
 
     scrollToTime: PropTypes.instanceOf(Date),
@@ -147,49 +150,21 @@ export default class TimeGrid extends Component {
     })
   }
 
+  setRef = ref => (this._gutters[1] = ref && findDOMNode(ref))
+
   render() {
     let {
-      events,
       range,
       width,
-      startAccessor,
-      endAccessor,
       getNow,
       resources,
-      allDayAccessor,
-      showMultiDayTimes,
+      allDayEvents,
+      rangeEvents,
     } = this.props
 
     width = width || this.state.gutterWidth
 
-    let start = range[0],
-      end = range[range.length - 1]
-
     this.slots = range.length
-
-    let allDayEvents = [],
-      rangeEvents = []
-
-    events.forEach(event => {
-      if (inRange(event, start, end, this.props)) {
-        let eStart = get(event, startAccessor),
-          eEnd = get(event, endAccessor)
-
-        if (
-          get(event, allDayAccessor) ||
-          (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
-          (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
-        ) {
-          allDayEvents.push(event)
-        } else {
-          rangeEvents.push(event)
-        }
-      }
-    })
-
-    allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
-
-    let gutterRef = ref => (this._gutters[1] = ref && findDOMNode(ref))
 
     let eventsRendered = this.renderEvents(
       range,
@@ -207,7 +182,7 @@ export default class TimeGrid extends Component {
             {...this.props}
             showLabels
             style={{ width }}
-            ref={gutterRef}
+            ref={this.setRef}
             className="rbc-time-gutter"
           />
           {eventsRendered}
@@ -250,8 +225,8 @@ export default class TimeGrid extends Component {
         return (
           <DayColumn
             {...this.props}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
+            min={+dates.merge(date, min)}
+            max={+dates.merge(date, max)}
             resource={resource && resource.id}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
@@ -511,3 +486,54 @@ export default class TimeGrid extends Component {
     }, 60000)
   }
 }
+
+const enhance = compose(
+  withPropsOnChange(
+    [
+      'events',
+      'range',
+      'startAccessor',
+      'endAccessor',
+      'allDayAccessor',
+      'showMultiDayTimes',
+    ],
+    ({
+      events,
+      range,
+      startAccessor,
+      endAccessor,
+      allDayAccessor,
+      showMultiDayTimes,
+    }) => {
+      let start = range[0],
+        end = range[range.length - 1]
+
+      let allDayEvents = [],
+        rangeEvents = []
+
+      events.forEach(event => {
+        if (inRange(event, start, end, { startAccessor, endAccessor })) {
+          let eStart = get(event, startAccessor),
+            eEnd = get(event, endAccessor)
+
+          if (
+            get(event, allDayAccessor) ||
+            (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
+            (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
+          ) {
+            allDayEvents.push(event)
+          } else {
+            rangeEvents.push(event)
+          }
+        }
+      })
+
+      allDayEvents.sort((a, b) =>
+        sortEvents(a, b, { startAccessor, endAccessor, allDayAccessor })
+      )
+      return { allDayEvents, rangeEvents }
+    }
+  )
+)
+
+export default enhance(TimeGrid)

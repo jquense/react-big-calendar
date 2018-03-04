@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import cn from 'classnames'
 import { elementType } from './utils/propTypes'
+import { onlyUpdateForPropTypes } from 'recompose'
 
-export default class TimeSlot extends Component {
+class TimeSlot extends Component {
   static propTypes = {
     dayWrapperComponent: elementType,
     value: PropTypes.instanceOf(Date).isRequired,
@@ -43,3 +44,5 @@ export default class TimeSlot extends Component {
     )
   }
 }
+
+export default onlyUpdateForPropTypes(TimeSlot)

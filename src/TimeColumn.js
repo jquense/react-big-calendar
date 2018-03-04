@@ -6,8 +6,9 @@ import dates from './utils/dates'
 import { elementType, dateFormat } from './utils/propTypes'
 import BackgroundWrapper from './BackgroundWrapper'
 import TimeSlotGroup from './TimeSlotGroup'
+import { withPropsOnChange } from 'recompose'
 
-export default class TimeColumn extends Component {
+class TimeColumn extends Component {
   static propTypes = {
     step: PropTypes.number.isRequired,
     culture: PropTypes.string,
@@ -20,6 +21,7 @@ export default class TimeColumn extends Component {
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
     resource: PropTypes.string,
+    slices: PropTypes.arrayOf(PropTypes.object),
 
     slotPropGetter: PropTypes.func,
     dayPropGetter: PropTypes.func,
@@ -34,7 +36,7 @@ export default class TimeColumn extends Component {
     dayWrapperComponent: BackgroundWrapper,
   }
 
-  renderTimeSliceGroup(key, isNow, date, resource) {
+  renderTimeSliceGroup = ({ key, isNow, date, resource }) => {
     const {
       dayWrapperComponent,
       timeslots,
@@ -65,17 +67,20 @@ export default class TimeColumn extends Component {
   }
 
   render() {
-    const {
-      className,
-      children,
-      style,
-      getNow,
-      min,
-      max,
-      step,
-      timeslots,
-      resource,
-    } = this.props
+    const { className, children, style, slices } = this.props
+
+    return (
+      <div className={cn(className, 'rbc-time-column')} style={style}>
+        {slices.map(this.renderTimeSliceGroup)}
+        {children}
+      </div>
+    )
+  }
+}
+
+export default withPropsOnChange(
+  ['min', 'max', 'step', 'timeslots', 'resource'],
+  ({ min, max, step, timeslots, getNow, resource }) => {
     const totalMin = dates.diff(min, max, 'minutes')
     const numGroups = Math.ceil(totalMin / (step * timeslots))
     const renderedSlots = []
@@ -95,16 +100,10 @@ export default class TimeColumn extends Component {
       )
 
       next = dates.add(date, groupLengthInMinutes, 'minutes')
-      renderedSlots.push(this.renderTimeSliceGroup(i, isNow, date, resource))
+      renderedSlots.push({ key: i, isNow, date, resource })
 
       date = next
     }
-
-    return (
-      <div className={cn(className, 'rbc-time-column')} style={style}>
-        {renderedSlots}
-        {children}
-      </div>
-    )
+    return { slices: renderedSlots }
   }
-}
+)(TimeColumn)

@@ -18,6 +18,7 @@ import getStyledEvents, {
 } from './utils/dayViewLayout'
 
 import TimeColumn from './TimeColumn'
+import { compose, withPropsOnChange } from 'recompose'
 
 function snapToSlot(date, step) {
   var roundTo = 1000 * 60 * step
@@ -36,6 +37,7 @@ class DayColumn extends React.Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     getNow: PropTypes.func.isRequired,
+    totalMin: PropTypes.number.isRequired,
 
     rtl: PropTypes.bool,
     titleAccessor: accessor,
@@ -106,7 +108,6 @@ class DayColumn extends React.Component {
       ...props
     } = this.props
 
-    this._totalMin = dates.diff(min, max, 'minutes')
     let { selecting, startSlot, endSlot } = this.state
     let slotStyle = this._slotStyle(startSlot, endSlot)
 
@@ -168,6 +169,7 @@ class DayColumn extends React.Component {
       timeslots,
       titleAccessor,
       tooltipAccessor,
+      totalMin,
     } = this.props
 
     let styledEvents = getStyledEvents({
@@ -176,7 +178,7 @@ class DayColumn extends React.Component {
       endAccessor,
       min,
       showMultiDayTimes,
-      totalMin: this._totalMin,
+      totalMin,
       step,
       timeslots,
     })
@@ -264,8 +266,8 @@ class DayColumn extends React.Component {
   }
 
   _slotStyle = (startSlot, endSlot) => {
-    let top = startSlot / this._totalMin * 100
-    let bottom = endSlot / this._totalMin * 100
+    let top = startSlot / this.props.totalMin * 100
+    let bottom = endSlot / this.props.totalMin * 100
 
     return {
       top: top + '%',
@@ -298,16 +300,14 @@ class DayColumn extends React.Component {
     }
 
     let selectionState = ({ y }) => {
-      let { step, min, max } = this.props
+      let { step, min, max, totalMin } = this.props
       let { top, bottom } = getBoundsForNode(node)
-
-      let mins = this._totalMin
 
       let range = Math.abs(top - bottom)
 
       let current = (y - top) / range
 
-      current = snapToSlot(minToDate(mins * current, min), step)
+      current = snapToSlot(minToDate(totalMin * current, min), step)
 
       if (!this.state.selecting) this._initialDateSlot = current
 
@@ -323,8 +323,8 @@ class DayColumn extends React.Component {
         selecting: true,
         startDate: start,
         endDate: end,
-        startSlot: positionFromDate(start, min, this._totalMin),
-        endSlot: positionFromDate(end, min, this._totalMin),
+        startSlot: positionFromDate(start, min, totalMin),
+        endSlot: positionFromDate(end, min, totalMin),
       }
     }
 
@@ -399,4 +399,9 @@ function minToDate(min, date) {
   return dates.milliseconds(dt, 0)
 }
 
-export default DayColumn
+const enhance = compose(
+  withPropsOnChange(['min', 'max'], ({ min, max }) => ({
+    totalMin: dates.diff(min, max, 'minutes'),
+  }))
+)
+export default enhance(DayColumn)

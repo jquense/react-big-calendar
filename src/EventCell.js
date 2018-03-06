@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
+import { FormattedTime } from 'react-intl';
 import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
@@ -23,10 +24,6 @@ let propTypes = {
   eventWrapperComponent: elementType.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func
-}
-
-function padNumber(param) {
-  return (param > 9) ? param : `0${param}`;
 }
 
 class EventCell extends React.Component {
@@ -69,10 +66,6 @@ class EventCell extends React.Component {
         selected
       )
 
-      let startHour = new Date(start).getHours();
-      let startMinute = new Date(start).getMinutes();
-      let endHour = new Date(end).getHours();
-      let endMinute = new Date(end).getMinutes();
     return (
       <EventWrapper event={event}>
         <div
@@ -89,7 +82,7 @@ class EventCell extends React.Component {
           <div className='rbc-event-content' title={tooltip || undefined}>
             { Event
               ? <Event event={event} title={title} isAllDay={isAllDayEvent} />
-              : (isAllDayEvent ? '00:00-24:00' : (padNumber(startHour) + ':' + padNumber(startMinute) + '-' + padNumber(endHour) + ':' + padNumber(endMinute)))
+              : (isAllDayEvent ? 'All day' : (<div><FormattedTime value={start} />-<FormattedTime value={end} /></div>))
             }
           </div>
         </div>

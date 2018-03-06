@@ -688,11 +688,11 @@ class Calendar extends React.Component {
     );
   }
 
-  handleRangeChange = (date) => {
+  handleRangeChange = (date, view) => {
     let { onRangeChange } = this.props
     if(onRangeChange) {
-      if(this.getView().range) {
-        onRangeChange(this.getView().range(date, {}))
+      if(view.range) {
+        onRangeChange(view.range(date, {}))
       }
       else {
         warning(true, 'onRangeChange prop not supported for this view')
@@ -711,13 +711,15 @@ class Calendar extends React.Component {
     })
 
     onNavigate(date, view, action)
-    this.handleRangeChange(date)
+    this.handleRangeChange(date, ViewComponent)
   };
 
   handleViewChange = (view) => {
     if (view !== this.props.view && isValidView(view, this.props))
       this.props.onView(view)
-      this.handleRangeChange(this.props.date)
+
+    let views = this.getViews();
+    this.handleRangeChange(this.props.date, views[view])
   };
 
   handleSelectEvent = (...args) => {

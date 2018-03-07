@@ -36,7 +36,10 @@ let eventSource = {
       ['children', '_owner', 'stateNode', 'state', 'isEditingEventTitle'],
       props,
     );
-    return !isEditing;
+
+    const isLocked = path(['event', 'data', 'locked'], props);
+
+    return !isEditing && !isLocked;
   },
 };
 

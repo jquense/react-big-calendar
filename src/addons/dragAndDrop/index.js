@@ -41,9 +41,10 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       return {
         endAccessor: this.props.endAccessor,
         onEventDrop: this.props.onEventDrop,
-        onEventResize: this.props.onEventResize,
         onEventReorder: this.props.onEventReorder,
+        onEventResize: this.props.onEventResize,
         onOutsideEventDrop: this.props.onOutsideEventDrop,
+        onOutsideEventOrderAndDrop: this.props.onOutsideEventOrderAndDrop,
         startAccessor: this.props.startAccessor,
 
         // accessors for global drag item state
@@ -107,6 +108,7 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
       delete props.onEventResize;
       delete props.onEventReorder;
       delete props.onOutsideEventDrop;
+      delete props.onOutsideEventOrderAndDrop;
 
       props.selectable = selectable ? 'ignoreEvents' : false;
 
@@ -149,14 +151,15 @@ export default function withDragAndDrop(Calendar, { backend = html5Backend } = {
 
   DragAndDropCalendar.childContextTypes = {
     endAccessor: accessor,
-    onEventUpdate: PropTypes.func,
-    onEventDrop: PropTypes.func,
-    onEventResize: PropTypes.func,
-    onEventReorder: PropTypes.func,
-    onOutsideEventDrop: PropTypes.func,
-    startAccessor: accessor,
     getInternalState: PropTypes.func,
+    onEventDrop: PropTypes.func,
+    onEventReorder: PropTypes.func,
+    onEventResize: PropTypes.func,
+    onEventUpdate: PropTypes.func,
+    onOutsideEventDrop: PropTypes.func,
+    onOutsideEventOrderAndDrop: PropTypes.func,
     setInternalState: PropTypes.func,
+    startAccessor: accessor,
   };
 
   if (backend === false) {

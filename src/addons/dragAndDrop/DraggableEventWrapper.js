@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import cn from 'classnames';
 import { compose } from 'recompose';
-import { path } from 'ramda';
+import { path, pathEq } from 'ramda';
 
 import BigCalendar from '../../index';
 
@@ -65,20 +65,27 @@ const eventTarget = {
     onSegmentHover(hoverEvent, dragEvent);
   },
   drop(_, monitor, { props, decoratedComponentInstance: component }) {
-    const { onSegmentDrop } = component.context;
-    const { position } = monitor.getItem();
+    const item = monitor.getItem();
+    const { position } = item;
+    const { onSegmentDrop, onOutsideEventOrderAndDrop } = component.context;
+
+    if (pathEq(['type'], 'outsideEvent', item)) {
+      onOutsideEventOrderAndDrop(item.data);
+    }
+
     onSegmentDrop(position);
   },
 };
 
 const contextTypes = {
+  getInternalState: PropTypes.func,
   onEventReorder: PropTypes.func,
+  onOutsideEventOrderAndDrop: PropTypes.func,
   onSegmentDrag: PropTypes.func,
   onSegmentDragEnd: PropTypes.func,
   onSegmentDrop: PropTypes.func,
   onSegmentHover: PropTypes.func,
   setInternalState: PropTypes.func,
-  getInternalState: PropTypes.func,
 };
 
 const propTypes = {

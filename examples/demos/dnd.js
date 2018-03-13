@@ -47,6 +47,8 @@ class Dnd extends React.Component {
     this.setState({
       events: nextEvents,
     })
+
+    alert(`${event.title} was resized to ${start}-${end}`)
   }
 
   render() {

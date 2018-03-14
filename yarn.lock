@@ -6039,9 +6039,9 @@ uncontrollable@^3.1.3:
   dependencies:
     invariant "^2.1.0"
 
-"uncontrollable@^3.3.1 || ^4.0.0":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-4.0.3.tgz#06ec76cb9e02914756085d9cea0354fc746b09b4"
+uncontrollable@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-5.0.0.tgz#ab713baa04df3fcb6ac65bc18f1792fee1729119"
   dependencies:
     invariant "^2.1.0"
 

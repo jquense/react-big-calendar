@@ -123,6 +123,7 @@ class BackgroundCells extends React.Component {
             startIdx: currentCell,
             endIdx: currentCell,
             action: actionType,
+            bounds: point,
           })
         }
       }
@@ -172,9 +173,6 @@ class BackgroundCells extends React.Component {
     )
 
     selector.on('select', bounds => {
-      /* eslint-disable */
-      console.log('bounds', bounds)
-      /* eslint-enable */
       this._selectSlot({ ...this.state, action: 'select', bounds })
       this._initial = {}
       this.setState({ selecting: false })

@@ -330,7 +330,11 @@ class DayColumn extends React.Component {
 
     let selectorClicksHandler = (box, actionType) => {
       if (!isEvent(findDOMNode(this), box))
-        this._selectSlot({ ...selectionState(box), action: actionType })
+        this._selectSlot({
+          ...selectionState(box),
+          action: actionType,
+          bounds: box,
+        })
 
       this.setState({ selecting: false })
     }
@@ -350,9 +354,6 @@ class DayColumn extends React.Component {
 
     selector.on('select', bounds => {
       if (this.state.selecting) {
-        /* eslint-disable */
-        console.log('bounds', bounds)
-        /* eslint-enable */
         this._selectSlot({ ...this.state, action: 'select', bounds })
         this.setState({ selecting: false })
       }

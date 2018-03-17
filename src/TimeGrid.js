@@ -343,6 +343,7 @@ export default class TimeGrid extends Component {
     const today = getNow()
     return range.map((date, i) => {
       return resources.map((resource, j) => {
+        const resourceName = get(resource, resourceTitleAccessor)
         return (
           <div
             key={i + '-' + j}
@@ -352,7 +353,7 @@ export default class TimeGrid extends Component {
             )}
             style={segStyle(1, this.slots)}
           >
-            <span>{get(resource, resourceTitleAccessor)}</span>
+            <span title={resourceName}>{resourceName}</span>
           </div>
         )
       })

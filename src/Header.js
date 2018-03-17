@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const Header = ({ label }) => {
-  return <span>{label}</span>
+  return <span title={label}>{label}</span>
 }
 
 Header.propTypes = {

@@ -48,3 +48,7 @@ import globalize from 'globalize'
 
 BigCalendar.setLocalizer(BigCalendar.globalizeLocalizer(globalize))
 ```
+
+## Join us on Reactiflux Discord
+
+Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.

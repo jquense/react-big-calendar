@@ -12,20 +12,25 @@ class Day extends React.Component {
   }
 
   render() {
-    let { date, ...props } = this.props
+    let { date, ...props } = this.props;
+    let range = Day.range(date);
 
     return (
       <TimeGrid
         {...props}
-        range={[dates.startOf(date, 'day')]}
+        range={range}
         eventOffset={10}
       />
-    )
+    );
   }
 }
 
-Day.navigate = (date, action) => {
-  switch (action) {
+Day.range = (date) => {
+  return [dates.startOf(date, 'day')]
+}
+
+Day.navigate = (date, action)=>{
+  switch (action){
     case navigate.PREVIOUS:
       return dates.add(date, -1, 'day')
 

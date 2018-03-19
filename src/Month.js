@@ -355,6 +355,12 @@ class MonthView extends React.Component {
   }
 }
 
+MonthView.range = (date, { culture }) => {
+  let start = dates.firstVisibleDay(date, culture)
+  let end = dates.lastVisibleDay(date, culture)
+  return { start, end }
+}
+
 MonthView.navigate = (date, action) => {
   switch (action) {
     case navigate.PREVIOUS:

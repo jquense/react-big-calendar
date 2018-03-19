@@ -21,7 +21,6 @@ import DateHeader from './DateHeader'
 import { accessor, dateFormat } from './utils/propTypes'
 import { segStyle, inRange, sortEvents } from './utils/eventLevels'
 
-
 let eventsForWeek = (evts, start, end, props) =>
   evts.filter(e => inRange(e, start, end, props))
 
@@ -33,7 +32,7 @@ let propTypes = {
   max: PropTypes.instanceOf(Date),
 
   step: PropTypes.number,
-  now: PropTypes.instanceOf(Date),
+  getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date),
   eventPropGetter: PropTypes.func,
@@ -46,6 +45,7 @@ let propTypes = {
   width: PropTypes.number,
 
   titleAccessor: accessor.isRequired,
+  tooltipAccessor: accessor.isRequired,
   allDayAccessor: accessor.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
@@ -81,10 +81,6 @@ let propTypes = {
 class MonthView extends React.Component {
   static displayName = 'MonthView'
   static propTypes = propTypes
-
-  static defaultProps = {
-    now: new Date()
-  }
 
   constructor(...args) {
     super(...args)
@@ -146,7 +142,7 @@ class MonthView extends React.Component {
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0], weekdayFormat, culture)}
         </div>
-        {weeks.map((week, idx) => this.renderWeek(week, idx))}
+        {weeks.map(this.renderWeek)}
         {this.props.popup && this.renderOverlay()}
       </div>
     )
@@ -158,14 +154,15 @@ class MonthView extends React.Component {
       components,
       selectable,
       titleAccessor,
+      tooltipAccessor,
       startAccessor,
       endAccessor,
       allDayAccessor,
+      getNow,
       eventPropGetter,
       dayPropGetter,
       messages,
       selected,
-      now,
       date,
       longPressThreshold,
     } = this.props
@@ -181,7 +178,7 @@ class MonthView extends React.Component {
         ref={weekIdx === 0 ? 'slotRow' : undefined}
         container={this.getContainer}
         className="rbc-month-row"
-        now={now}
+        getNow={getNow}
         date={date}
         range={week}
         events={events}
@@ -190,6 +187,7 @@ class MonthView extends React.Component {
         selectable={selectable}
         messages={messages}
         titleAccessor={titleAccessor}
+        tooltipAccessor={tooltipAccessor}
         startAccessor={startAccessor}
         endAccessor={endAccessor}
         allDayAccessor={allDayAccessor}
@@ -237,7 +235,8 @@ class MonthView extends React.Component {
           date={date}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
-          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)} />
+          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+        />
       </div>
     )
   }
@@ -260,7 +259,7 @@ class MonthView extends React.Component {
     ))
   }
 
-  renderOverlay () {
+  renderOverlay() {
     let overlay = (this.state && this.state.overlay) || {}
     let { components } = this.props
 
@@ -281,6 +280,7 @@ class MonthView extends React.Component {
           slotStart={overlay.date}
           slotEnd={overlay.end}
           onSelect={this.handleSelectEvent}
+          onDoubleClick={this.handleDoubleClickEvent}
         />
       </Overlay>
     )
@@ -374,9 +374,7 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-
 MonthView.title = (date, { formats, culture }) =>
-  localizer.format(date, formats.monthHeaderFormat, culture);
-
+  localizer.format(date, formats.monthHeaderFormat, culture)
 
 export default MonthView

@@ -31,13 +31,15 @@ function startsAfter(date, max) {
 class DayColumn extends React.Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
+    components: PropTypes.object,
     step: PropTypes.number.isRequired,
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
-    now: PropTypes.instanceOf(Date),
+    getNow: PropTypes.func.isRequired,
 
     rtl: PropTypes.bool,
     titleAccessor: accessor,
+    tooltipAccessor: accessor,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
@@ -68,6 +70,7 @@ class DayColumn extends React.Component {
     dayWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
+    resource: PropTypes.string,
   }
 
   static defaultProps = {
@@ -96,7 +99,7 @@ class DayColumn extends React.Component {
       min,
       max,
       step,
-      now,
+      getNow,
       selectRangeFormat,
       culture,
       dayPropGetter,
@@ -112,8 +115,8 @@ class DayColumn extends React.Component {
       end: this.state.endDate,
     }
 
-    const { className, style } =
-      (dayPropGetter && dayPropGetter(max)) || {}
+    const { className, style } = (dayPropGetter && dayPropGetter(max)) || {}
+    const current = getNow()
 
     return (
       <TimeColumn
@@ -121,16 +124,17 @@ class DayColumn extends React.Component {
         className={cn(
           'rbc-day-slot',
           className,
-          dates.isToday(max) && 'rbc-today'
+          dates.eq(max, current, 'day') && 'rbc-today'
         )}
         style={style}
-        now={now}
+        getNow={getNow}
         min={min}
         max={max}
         step={step}
       >
-        {this.renderEvents()}
-
+        <div className={cn('rbc-events-container', { rtl: this.props.rtl })}>
+          {this.renderEvents()}
+        </div>
         {selecting && (
           <div className="rbc-slot-selection" style={slotStyle}>
             <span>
@@ -144,28 +148,27 @@ class DayColumn extends React.Component {
 
   renderEvents = () => {
     let {
-      events,
-      min,
-      max,
-      showMultiDayTimes,
+      components: { event: EventComponent },
       culture,
+      endAccessor,
       eventPropGetter,
-      selected,
-      messages,
-      eventComponent,
+      eventTimeRangeEndFormat,
       eventTimeRangeFormat,
       eventTimeRangeStartFormat,
-      eventTimeRangeEndFormat,
       eventWrapperComponent: EventWrapper,
+      events,
+      max,
+      messages,
+      min,
       rtl: isRtl,
+      selected,
+      showMultiDayTimes,
+      startAccessor,
       step,
       timeslots,
-      startAccessor,
-      endAccessor,
       titleAccessor,
+      tooltipAccessor,
     } = this.props
-
-    let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
       events,
@@ -201,6 +204,7 @@ class DayColumn extends React.Component {
       let continuesAfter = startsAfter(end, max)
 
       let title = get(event, titleAccessor)
+      let tooltip = get(event, tooltipAccessor)
       let label
       if (_continuesPrior && _continuesAfter) {
         label = messages.allDay
@@ -220,8 +224,14 @@ class DayColumn extends React.Component {
 
       let { height, top, width, xOffset } = style
 
+      let wrapperProps = {
+        event,
+        continuesPrior: _continuesPrior,
+        continuesAfter: _continuesAfter,
+      }
+
       return (
-        <EventWrapper event={event} key={'evt_' + idx}>
+        <EventWrapper {...wrapperProps} key={'evt_' + idx}>
           <div
             style={{
               ...xStyle,
@@ -230,7 +240,11 @@ class DayColumn extends React.Component {
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
               width: `${width}%`,
             }}
-            title={(typeof label === 'string' ? label + ': ' : '') + title}
+            title={
+              tooltip
+                ? (typeof label === 'string' ? label + ': ' : '') + tooltip
+                : undefined
+            }
             onClick={e => this._select(event, e)}
             onDoubleClick={e => this._doubleClick(event, e)}
             className={cn('rbc-event', className, {
@@ -367,6 +381,7 @@ class DayColumn extends React.Component {
       slots,
       start: startDate,
       end: endDate,
+      resourceId: this.props.resource,
       action,
     })
   }

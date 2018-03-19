@@ -29,6 +29,25 @@ import mapValues from 'lodash/mapValues';
 import { ContextMenu, MenuItem, connectMenu } from 'react-contextmenu';
 import { RIGHT_CLICK_EVENT, RIGHT_CLICK_DAY_CELL } from './ContextMenuTypes';
 
+import addMonths from 'date-fns/add_months';
+import getMonth from 'date-fns/get_month';
+import getYear from 'date-fns/get_year';
+
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views;
 }
@@ -60,6 +79,7 @@ let now = new Date();
 class Calendar extends React.Component {
   state = {
     selected: {},
+    view: 'one-month',
   };
 
   static propTypes = {
@@ -695,6 +715,8 @@ class Calendar extends React.Component {
     let CalToolbar = components.toolbar || Toolbar;
     const label = View.title(current, { formats, culture });
 
+    const nextMonth = addMonths(current, 1);
+
     return (
       <div
         {...elementProps}
@@ -737,6 +759,46 @@ class Calendar extends React.Component {
           selected={this.state.selected}
           showAllEvents={this.props.showAllEvents}
         />
+        {this.props.showTwoMonths && (
+          <div>
+            <div
+              style={{
+                borderColor: '#ddd',
+                borderStyle: 'solid none solid none',
+                borderWidth: '1px',
+                color: '#454545',
+                fontSize: '22px',
+                fontWeight: '500',
+                padding: '10px 0',
+                textAlign: 'center',
+              }}
+            >
+              {MONTHS[getMonth(nextMonth)]} {getYear(nextMonth)}
+            </div>
+            <View
+              {...formats}
+              {...props}
+              components={viewComponents}
+              culture={culture}
+              date={addMonths(current, 1)}
+              events={events}
+              formats={undefined}
+              getDrilldownView={this.getDrilldownView}
+              messages={messages}
+              onDoubleClickEvent={this.handleDoubleClickEvent}
+              onDrillDown={this.handleDrillDown}
+              onInlineEditEventTitle={this.props.onInlineEditEventTitle}
+              onNavigate={this.handleNavigate}
+              onRightClickSlot={this.handleRightClickSlot}
+              onSelectEvent={this.handleSelectEvent}
+              onSelectSlot={this.handleSelectSlot}
+              onShowMore={this._showMore}
+              ref="view"
+              selected={this.state.selected}
+              showAllEvents={this.props.showAllEvents}
+            />
+          </div>
+        )}
         {this.renderDayCellMenu()}
         {this.renderEventMenu()}
       </div>

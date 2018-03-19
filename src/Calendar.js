@@ -79,7 +79,6 @@ let now = new Date();
 class Calendar extends React.Component {
   state = {
     selected: {},
-    view: 'one-month',
   };
 
   static propTypes = {

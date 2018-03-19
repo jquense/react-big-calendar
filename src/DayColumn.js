@@ -224,8 +224,14 @@ class DayColumn extends React.Component {
 
       let { height, top, width, xOffset } = style
 
+      let wrapperProps = {
+        event,
+        continuesPrior: _continuesPrior,
+        continuesAfter: _continuesAfter,
+      }
+
       return (
-        <EventWrapper event={event} key={'evt_' + idx}>
+        <EventWrapper {...wrapperProps} key={'evt_' + idx}>
           <div
             style={{
               ...xStyle,

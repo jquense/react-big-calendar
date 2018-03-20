@@ -32,6 +32,7 @@ import { RIGHT_CLICK_EVENT, RIGHT_CLICK_DAY_CELL } from './ContextMenuTypes';
 import addMonths from 'date-fns/add_months';
 import getMonth from 'date-fns/get_month';
 import getYear from 'date-fns/get_year';
+import isSameMonth from 'date-fns/is_same_month';
 
 const MONTHS = [
   'January',
@@ -742,7 +743,11 @@ class Calendar extends React.Component {
           components={viewComponents}
           culture={culture}
           date={current}
-          events={events}
+          events={
+            this.props.showTwoMonths
+              ? events.filter(event => event && event.start && isSameMonth(event.start, current))
+              : events
+          }
           formats={undefined}
           getDrilldownView={this.getDrilldownView}
           messages={messages}
@@ -779,8 +784,14 @@ class Calendar extends React.Component {
               {...props}
               components={viewComponents}
               culture={culture}
-              date={addMonths(current, 1)}
-              events={events}
+              date={nextMonth}
+              events={
+                this.props.showTwoMonths
+                  ? events.filter(
+                      event => event && event.start && isSameMonth(event.start, nextMonth),
+                    )
+                  : events
+              }
               formats={undefined}
               getDrilldownView={this.getDrilldownView}
               messages={messages}

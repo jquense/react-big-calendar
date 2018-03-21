@@ -269,7 +269,21 @@ class Calendar extends React.Component {
      *     start: Date,
      *     end: Date,
      *     slots: Array<Date>,
-     *     action: "select" | "click" | "doubleClick"
+     *     action: "select" | "click" | "doubleClick",
+     *     bounds: ?{ // For "select" action
+     *       x: number,
+     *       y: number,
+     *       top: number,
+     *       right: number,
+     *       left: number,
+     *       bottom: number,
+     *     },
+     *     box: ?{ // For "click" or "doubleClick" actions
+     *       clientX: number,
+     *       clientY: number,
+     *       x: number,
+     *       y: number,
+     *     },
      *   }
      * ) => any
      * ```

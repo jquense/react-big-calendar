@@ -300,7 +300,11 @@ class DayColumn extends React.Component {
           return
       }
 
-      this.setState(state)
+      if (this.state.startSlot !== state.startSlot
+        || this.state.endSlot !== state.endSlot
+        || this.state.selecting !== state.selecting) {
+        this.setState(state);
+      }
     }
 
     let selectionState = ({ y }) => {

@@ -1,7 +1,6 @@
 import {
   endOfRange,
   eventSegments,
-  segStyle,
   eventLevels,
   inRange,
   segsOverlap,
@@ -161,22 +160,6 @@ describe('eventSegments', () => {
 
       expect(result.right).toBe(5)
     })
-  })
-})
-
-describe('segStyle', () => {
-  test('it returns percent that span covers slots as a string for flex basis', () => {
-    const span = 1
-    const slots = 7
-    const result = segStyle(span, slots)
-
-    const expectedPercentage = span / slots * 100
-    const expectedResult = {
-      WebkitFlexBasis: `${expectedPercentage}%`,
-      flexBasis: `${expectedPercentage}%`,
-      maxWidth: `${expectedPercentage}%`,
-    }
-    expect(result).toEqual(expectedResult)
   })
 })
 

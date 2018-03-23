@@ -5,23 +5,15 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
-import localizer from './localizer'
 import DayColumn from './DayColumn'
-import TimeColumn from './TimeColumn'
-import DateContentRow from './DateContentRow'
-import Header from './Header'
+import TimeGutter from './TimeGutter'
 
 import getWidth from 'dom-helpers/query/width'
-import scrollbarSize from 'dom-helpers/util/scrollbarSize'
-import message from './utils/messages'
-
+import TimeGridHeader from './TimeGridHeader'
 import { accessor, dateFormat } from './utils/propTypes'
-
 import { notify } from './utils/helpers'
-
 import { accessor as get } from './utils/accessors'
-
-import { inRange, sortEvents, segStyle } from './utils/eventLevels'
+import { inRange, sortEvents } from './utils/eventLevels'
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -73,25 +65,19 @@ export default class TimeGrid extends Component {
 
   static defaultProps = {
     step: 30,
+    timeslots: 2,
     min: dates.startOf(new Date(), 'day'),
     max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
-    /* this is needed to satisfy requirements from TimeColumn required props
-     * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
-     */
-    type: 'gutter',
   }
 
   constructor(props) {
     super(props)
+
     this.state = { gutterWidth: undefined, isOverflowing: null }
-    this.handleSelectEvent = this.handleSelectEvent.bind(this)
-    this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
-    this.handleHeaderClick = this.handleHeaderClick.bind(this)
   }
 
   componentWillMount() {
-    this._gutters = []
     this.calculateScroll()
   }
 
@@ -101,6 +87,7 @@ export default class TimeGrid extends Component {
     if (this.props.width == null) {
       this.measureGutter()
     }
+
     this.applyScroll()
 
     this.positionTimeIndicator()
@@ -122,7 +109,7 @@ export default class TimeGrid extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.width == null && !this.state.gutterWidth) {
+    if (this.props.width == null) {
       this.measureGutter()
     }
 
@@ -142,6 +129,16 @@ export default class TimeGrid extends Component {
     }
   }
 
+  gutterRef = ref => {
+    this.gutter = ref && findDOMNode(ref)
+  }
+
+  handleSelectAlldayEvent = (...args) => {
+    //cancel any pending selections so only the event click goes through.
+    this.clearSelection()
+    notify(this.props.onSelectEvent, args)
+  }
+
   handleSelectAllDaySlot = (slots, slotInfo) => {
     const { onSelectSlot } = this.props
     notify(onSelectSlot, {
@@ -152,76 +149,6 @@ export default class TimeGrid extends Component {
     })
   }
 
-  render() {
-    let {
-      events,
-      range,
-      width,
-      startAccessor,
-      endAccessor,
-      getNow,
-      resources,
-      allDayAccessor,
-      showMultiDayTimes,
-    } = this.props
-
-    width = width || this.state.gutterWidth
-
-    let start = range[0],
-      end = range[range.length - 1]
-
-    this.slots = range.length
-
-    let allDayEvents = [],
-      rangeEvents = []
-
-    events.forEach(event => {
-      if (inRange(event, start, end, this.props)) {
-        let eStart = get(event, startAccessor),
-          eEnd = get(event, endAccessor)
-
-        if (
-          get(event, allDayAccessor) ||
-          (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
-          (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
-        ) {
-          allDayEvents.push(event)
-        } else {
-          rangeEvents.push(event)
-        }
-      }
-    })
-
-    allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
-
-    let gutterRef = ref => (this._gutters[1] = ref && findDOMNode(ref))
-
-    let eventsRendered = this.renderEvents(
-      range,
-      rangeEvents,
-      getNow(),
-      resources || [null]
-    )
-
-    return (
-      <div className="rbc-time-view">
-        {this.renderHeader(range, allDayEvents, width, resources)}
-
-        <div ref="content" className="rbc-time-content">
-          <TimeColumn
-            {...this.props}
-            showLabels
-            style={{ width }}
-            ref={gutterRef}
-            className="rbc-time-gutter"
-          />
-          {eventsRendered}
-
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
-        </div>
-      </div>
-    )
-  }
   renderEvents(range, events, today, resources) {
     let {
       min,
@@ -260,9 +187,8 @@ export default class TimeGrid extends Component {
             resource={resource && resource.id}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
-            dayWrapperComponent={components.dayWrapper}
+            timeSlotWrapperComponent={components.dayWrapper}
             className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
-            style={segStyle(1, this.slots)}
             key={idx + '-' + id}
             date={date}
             events={eventsToDisplay}
@@ -272,164 +198,100 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderHeader(range, events, width, resources) {
-    let { messages, rtl, selectable, components, getNow } = this.props
-    let { isOverflowing } = this.state || {}
+  render() {
+    let {
+      events,
+      range,
+      width,
+      startAccessor,
+      endAccessor,
+      selected,
+      getNow,
+      resources,
+      components,
+      allDayAccessor,
+      eventPropGetter,
+      showMultiDayTimes,
+      longPressThreshold,
+    } = this.props
 
-    let style = {}
-    if (isOverflowing)
-      style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px'
+    width = width || this.state.gutterWidth
 
-    let headerRendered = resources
-      ? this.renderHeaderResources(range, resources)
-      : message(messages).allDay
+    let start = range[0],
+      end = range[range.length - 1]
+
+    this.slots = range.length
+
+    let allDayEvents = [],
+      rangeEvents = []
+
+    events.forEach(event => {
+      if (inRange(event, start, end, this.props)) {
+        let eStart = get(event, startAccessor),
+          eEnd = get(event, endAccessor)
+
+        if (
+          get(event, allDayAccessor) ||
+          (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
+          (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
+        ) {
+          allDayEvents.push(event)
+        } else {
+          rangeEvents.push(event)
+        }
+      }
+    })
+
+    allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     return (
-      <div
-        ref="headerCell"
-        className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
-        style={style}
-      >
-        <div className="rbc-row">
-          <div className="rbc-label rbc-header-gutter" style={{ width }} />
-          {this.renderHeaderCells(range)}
-        </div>
-        {resources && (
-          <div className="rbc-row rbc-row-resource">
-            <div className="rbc-label rbc-header-gutter" style={{ width }} />
-            {headerRendered}
-          </div>
-        )}
-        <div className="rbc-row">
-          <div
-            ref={ref => (this._gutters[0] = ref)}
-            className="rbc-label rbc-header-gutter"
-            style={{ width }}
-          >
-            {message(messages).allDay}
-          </div>
-          <DateContentRow
-            getNow={getNow}
-            minRows={2}
-            range={range}
-            rtl={this.props.rtl}
-            events={events}
-            className="rbc-allday-cell"
-            selectable={selectable}
-            onSelectSlot={this.handleSelectAllDaySlot}
-            dateCellWrapper={components.dateCellWrapper}
-            dayPropGetter={this.props.dayPropGetter}
-            eventComponent={this.props.components.event}
-            eventWrapperComponent={this.props.components.eventWrapper}
-            titleAccessor={this.props.titleAccessor}
-            tooltipAccessor={this.props.tooltipAccessor}
-            startAccessor={this.props.startAccessor}
-            endAccessor={this.props.endAccessor}
-            allDayAccessor={this.props.allDayAccessor}
-            eventPropGetter={this.props.eventPropGetter}
-            selected={this.props.selected}
-            isAllDay={true}
-            onSelect={this.handleSelectEvent}
-            onDoubleClick={this.handleDoubleClickEvent}
-            longPressThreshold={this.props.longPressThreshold}
+      <div className="rbc-time-view">
+        <TimeGridHeader
+          range={range}
+          events={allDayEvents}
+          width={width}
+          getNow={getNow}
+          dayFormat={this.props.dayFormat}
+          culture={this.props.culture}
+          resources={resources}
+          selected={selected}
+          selectable={this.props.selectable}
+          startAccessor={startAccessor}
+          endAccessor={endAccessor}
+          titleAccessor={this.props.titleAccessor}
+          tooltipAccessor={this.props.tooltipAccessor}
+          allDayAccessor={this.props.allDayAccessor}
+          resourceAccessor={this.props.resourceAccessor}
+          resourceIdAccessor={this.props.resourceIdAccessor}
+          resourceTitleAccessor={this.props.resourceTitleAccessor}
+          isOverflowing={this.state.isOverflowing}
+          dayPropGetter={this.props.dayPropGetter}
+          eventPropGetter={eventPropGetter}
+          longPressThreshold={longPressThreshold}
+          headerComponent={components.header}
+          eventComponent={components.event}
+          eventWrapperComponent={components.eventWrapper}
+          dateCellWrapperComponent={components.dateCellWrapper}
+          onSelectSlot={this.handleSelectAllDaySlot}
+          onSelectEvent={this.handleSelectAlldayEvent}
+          onDoubleClickEvent={this.props.onDoubleClickEvent}
+          resourceIdAccessor={this.props.resourceIdAccessor}
+          onDrillDown={this.props.onDrillDown}
+          getDrilldownView={this.props.getDrilldownView}
+        />
+        <div ref="content" className="rbc-time-content">
+          <TimeGutter
+            {...this.props}
+            date={start}
+            ref={this.gutterRef}
+            className="rbc-time-gutter"
           />
+          {this.renderEvents(range, rangeEvents, getNow(), resources || [null])}
+
+          <div ref="timeIndicator" className="rbc-current-time-indicator" />
         </div>
       </div>
     )
-  }
-
-  renderHeaderResources(range, resources) {
-    const { resourceTitleAccessor, getNow } = this.props
-    const today = getNow()
-    return range.map((date, i) => {
-      return resources.map((resource, j) => {
-        return (
-          <div
-            key={i + '-' + j}
-            className={cn(
-              'rbc-header',
-              dates.eq(date, today, 'day') && 'rbc-today'
-            )}
-            style={segStyle(1, this.slots)}
-          >
-            <span>{get(resource, resourceTitleAccessor)}</span>
-          </div>
-        )
-      })
-    })
-  }
-
-  renderHeaderCells(range) {
-    let {
-      dayFormat,
-      culture,
-      components,
-      dayPropGetter,
-      getDrilldownView,
-      getNow,
-    } = this.props
-    let HeaderComponent = components.header || Header
-    const today = getNow()
-
-    return range.map((date, i) => {
-      let drilldownView = getDrilldownView(date)
-      let label = localizer.format(date, dayFormat, culture)
-
-      const { className, style: dayStyles } =
-        (dayPropGetter && dayPropGetter(date)) || {}
-
-      let header = (
-        <HeaderComponent
-          date={date}
-          label={label}
-          localizer={localizer}
-          format={dayFormat}
-          culture={culture}
-        />
-      )
-
-      return (
-        <div
-          key={i}
-          className={cn(
-            'rbc-header',
-            className,
-            dates.eq(date, today, 'day') && 'rbc-today'
-          )}
-          style={Object.assign({}, dayStyles, segStyle(1, this.slots))}
-        >
-          {drilldownView ? (
-            <a
-              href="#"
-              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
-            >
-              {header}
-            </a>
-          ) : (
-            <span>{header}</span>
-          )}
-        </div>
-      )
-    })
-  }
-
-  handleHeaderClick(date, view, e) {
-    e.preventDefault()
-    notify(this.props.onDrillDown, [date, view])
-  }
-
-  handleSelectEvent(...args) {
-    notify(this.props.onSelectEvent, args)
-  }
-
-  handleDoubleClickEvent(...args) {
-    notify(this.props.onDoubleClickEvent, args)
-  }
-
-  handleSelectAlldayEvent(...args) {
-    //cancel any pending selections so only the event click goes through.
-    this.clearSelection()
-    notify(this.props.onSelectEvent, args)
   }
 
   clearSelection() {
@@ -438,15 +300,10 @@ export default class TimeGrid extends Component {
   }
 
   measureGutter() {
-    let width = this.state.gutterWidth
-    let gutterCells = this._gutters
+    const width = getWidth(this.gutter)
 
-    if (!width) {
-      width = Math.max(...gutterCells.map(getWidth))
-
-      if (width) {
-        this.setState({ gutterWidth: width })
-      }
+    if (width && this.state.gutterWidth !== width) {
+      this.setState({ gutterWidth: width })
     }
   }
 
@@ -491,7 +348,7 @@ export default class TimeGrid extends Component {
 
     const timeIndicator = this.refs.timeIndicator
     const factor = secondsPassed / secondsGrid
-    const timeGutter = this._gutters[this._gutters.length - 1]
+    const timeGutter = this.gutter
 
     const content = this.refs.content
 

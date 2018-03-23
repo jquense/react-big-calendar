@@ -9,7 +9,7 @@ import {
   dateRangeFormat,
   views as componentViews,
 } from './utils/propTypes'
-import warning from 'warning';
+import warning from 'warning'
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
@@ -790,9 +790,7 @@ class Calendar extends React.Component {
     return (
       <div
         {...elementProps}
-        className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl,
-        })}
+        className={cn(className, 'rbc-calendar', props.rtl && 'rbc-is-rtl')}
         style={style}
       >
         {toolbar && (
@@ -832,11 +830,10 @@ class Calendar extends React.Component {
 
   handleRangeChange = (date, view) => {
     let { onRangeChange } = this.props
-    if(onRangeChange) {
-      if(view.range) {
+    if (onRangeChange) {
+      if (view.range) {
         onRangeChange(view.range(date, {}))
-      }
-      else {
+      } else {
         warning(true, 'onRangeChange prop not supported for this view')
       }
     }
@@ -855,16 +852,16 @@ class Calendar extends React.Component {
 
     onNavigate(date, view, action)
     this.handleRangeChange(date, ViewComponent)
-  };
+  }
 
   handleViewChange = view => {
     if (view !== this.props.view && isValidView(view, this.props)) {
       this.props.onView(view)
     }
 
-    let views = this.getViews();
+    let views = this.getViews()
     this.handleRangeChange(this.props.date, views[view])
-  };
+  }
 
   handleSelectEvent = (...args) => {
     notify(this.props.onSelectEvent, args)

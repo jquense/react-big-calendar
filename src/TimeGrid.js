@@ -483,7 +483,7 @@ export default class TimeGrid extends Component {
   }
 
   positionTimeIndicator() {
-    const { rtl, min, max, getNow } = this.props
+    const { rtl, min, max, getNow, range } = this.props
     const current = getNow()
 
     const secondsGrid = dates.diff(max, min, 'seconds')
@@ -493,15 +493,22 @@ export default class TimeGrid extends Component {
     const factor = secondsPassed / secondsGrid
     const timeGutter = this._gutters[this._gutters.length - 1]
 
+    const content = this.refs.content
+
     if (timeGutter && current >= min && current <= max) {
       const pixelHeight = timeGutter.offsetHeight
+      const dayPixelWidth =
+        (content.offsetWidth - timeGutter.offsetWidth) / this.slots
+      const dayOffset =
+        range.findIndex(d => dates.eq(d, dates.today(), 'day')) * dayPixelWidth
       const offset = Math.floor(factor * pixelHeight)
 
-      timeIndicator.style.display = 'block'
+      timeIndicator.style.display = dayOffset >= 0 ? 'block' : 'none'
       timeIndicator.style[rtl ? 'left' : 'right'] = 0
       timeIndicator.style[rtl ? 'right' : 'left'] =
-        timeGutter.offsetWidth + 'px'
+        timeGutter.offsetWidth + dayOffset + 'px'
       timeIndicator.style.top = offset + 'px'
+      timeIndicator.style.width = dayPixelWidth + 'px'
     } else {
       timeIndicator.style.display = 'none'
     }

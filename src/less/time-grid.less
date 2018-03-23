@@ -112,29 +112,9 @@
 
 .rbc-current-time-indicator {
   position: absolute;
-  left: 0;
+  z-index: 3;
   height: 1px;
 
   background-color: @current-time-color;
   pointer-events: none;
-
-  &::before {
-    display: block;
-
-    position: absolute;
-    left: -3px;
-    top: -3px;
-
-    content: ' ';
-    background-color: @current-time-color;
-
-    border-radius: 50%;
-    width: 8px;
-    height: 8px;
-  }
-
-  .rbc-rtl &::before {
-    left: 0;
-    right: -3px;
-  }
 }

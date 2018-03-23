@@ -14,11 +14,18 @@ const getRange = (date, culture) => {
   if (firstOfWeek === 1) {
     end = dates.subtract(end, 2, 'day')
   } else {
-    start = dates.add(start, 1, 'day')
-    end = dates.subtract(end, 1, 'day')
+    start = dates.add(start, 1, 'day');
   }
 
-  return dates.range(start, end)
+  let dateInRange = start;
+  let range = [];
+
+  while (dates.inRange(dateInRange, start, end, 'day')) {
+    range.push(dateInRange);
+    dateInRange = dates.add(dateInRange, 1, 'day');
+  }
+
+  return range;
 }
 
 class MyWeek extends React.Component {
@@ -44,14 +51,15 @@ MyWeek.navigate = (date, action) => {
 }
 
 MyWeek.title = (date, { formats, culture }) => {
-  return `My awesome week: ${Date.toLocaleString()}`
+  return `My awesome week: ${date.toLocaleString()}`
 }
+
 
 let CustomView = () => (
   <BigCalendar
     events={events}
     defaultDate={new Date(2015, 3, 1)}
-    views={{ month: true, week: MyWeek }}
+    views={{ month: true, week: MyWeek, work_week: true }}
     test="io"
   />
 )

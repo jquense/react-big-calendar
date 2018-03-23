@@ -104,11 +104,11 @@ class Example extends React.Component {
                   Custom rendering
                 </a>
               </li>
-              {/* temporary hide link to documentation
               <li className={cn({active: selected === 'customView' })}>
-                <a href='#' onClick={this.select.bind(null, 'customView')}>Custom View</a>
+                <a href='#' onClick={this.select.bind(null, 'customView')}>
+                  Custom View
+                </a>
               </li>
-              */}
               <li className={cn({ active: selected === 'Resource' })}>
                 <a href="#" onClick={this.select.bind(null, 'resource')}>
                   Resource columns

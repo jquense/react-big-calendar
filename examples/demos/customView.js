@@ -3,64 +3,55 @@ import React from 'react'
 import dates from 'date-arithmetic'
 import events from '../events'
 import BigCalendar from 'react-big-calendar'
-import localizer from 'react-big-calendar/lib/localizer'
 import TimeGrid from 'react-big-calendar/lib/TimeGrid'
-
-const getRange = (date, culture) => {
-  let firstOfWeek = localizer.startOfWeek(culture)
-  let start = dates.startOf(date, 'week', firstOfWeek)
-  let end = dates.endOf(date, 'week', firstOfWeek)
-
-  if (firstOfWeek === 1) {
-    end = dates.subtract(end, 2, 'day')
-  } else {
-    start = dates.add(start, 1, 'day');
-  }
-
-  let dateInRange = start;
-  let range = [];
-
-  while (dates.inRange(dateInRange, start, end, 'day')) {
-    range.push(dateInRange);
-    dateInRange = dates.add(dateInRange, 1, 'day');
-  }
-
-  return range;
-}
 
 class MyWeek extends React.Component {
   render() {
-    let { date, culture } = this.props
-    let range = getRange(date, culture)
+    let { date } = this.props
+    let range = MyWeek.range(date)
 
     return <TimeGrid {...this.props} range={range} eventOffset={15} />
   }
 }
 
+MyWeek.range = date => {
+  let start = date
+  let end = dates.add(start, 2, 'day')
+
+  let current = start
+  let range = []
+
+  while (dates.lte(current, end, 'day')) {
+    range.push(current)
+    current = dates.add(current, 1, 'day')
+  }
+
+  return range
+}
+
 MyWeek.navigate = (date, action) => {
   switch (action) {
     case BigCalendar.Navigate.PREVIOUS:
-      return dates.add(date, -1, 'week')
+      return dates.add(date, -3, 'day')
 
     case BigCalendar.Navigate.NEXT:
-      return dates.add(date, 1, 'week')
+      return dates.add(date, 3, 'day')
 
     default:
       return date
   }
 }
 
-MyWeek.title = (date, { formats, culture }) => {
-  return `My awesome week: ${date.toLocaleString()}`
+MyWeek.title = date => {
+  return `My awesome week: ${date.toLocaleDateString()}`
 }
-
 
 let CustomView = () => (
   <BigCalendar
     events={events}
+    defaultView="week"
     defaultDate={new Date(2015, 3, 1)}
-    views={{ month: true, week: MyWeek, work_week: true }}
-    test="io"
+    views={{ month: true, week: MyWeek }}
   />
 )
 

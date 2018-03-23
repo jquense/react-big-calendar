@@ -104,8 +104,8 @@ class Example extends React.Component {
                   Custom rendering
                 </a>
               </li>
-              <li className={cn({active: selected === 'customView' })}>
-                <a href='#' onClick={this.select.bind(null, 'customView')}>
+              <li className={cn({ active: selected === 'customView' })}>
+                <a href="#" onClick={this.select.bind(null, 'customView')}>
                   Custom View
                 </a>
               </li>

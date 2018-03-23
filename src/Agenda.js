@@ -248,12 +248,4 @@ Agenda.title = (
   return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)
 }
 
-Agenda.title = (
-  start,
-  { length = (length = Agenda.defaultProps.length), formats, culture }
-) => {
-  let end = dates.add(start, length, 'day')
-  return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)
-}
-
 export default Agenda

@@ -59,7 +59,22 @@ function getStyledEvents({ events, ...props }) {
     const event = eventsInRenderOrder[i]
 
     // Check if this event can go into a container event.
-    const container = containerEvents.find(c => c.endSlot > event.startSlot)
+    let container = null
+    for (let j = 0; j < containerEvents.length; j++) {
+      var tempContainer = containerEvents[j]
+      if (tempContainer.endSlot >= event.startSlot) {
+        container = tempContainer
+        break
+      } else {
+        if (
+          tempContainer.rows.find(function(r) {
+            return r.endSlot >= event.startSlot
+          })
+        ) {
+          container = tempContainer
+        }
+      }
+    }
 
     // Couldn't find a container — that means this event is a container.
     if (!container) {

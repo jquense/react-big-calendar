@@ -61,18 +61,13 @@ function getStyledEvents({ events, ...props }) {
     // Check if this event can go into a container event.
     let container = null
     for (let j = 0; j < containerEvents.length; j++) {
-      var tempContainer = containerEvents[j]
-      if (tempContainer.endSlot >= event.startSlot) {
+      let tempContainer = containerEvents[j]
+      if (
+        tempContainer.endSlot > event.startSlot ||
+        Math.abs(event.startSlot - tempContainer.startSlot) <= 30
+      ) {
         container = tempContainer
         break
-      } else {
-        if (
-          tempContainer.rows.find(function(r) {
-            return r.endSlot >= event.startSlot
-          })
-        ) {
-          container = tempContainer
-        }
       }
     }
 

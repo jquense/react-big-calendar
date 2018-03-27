@@ -611,18 +611,26 @@ class Calendar extends React.Component {
   };
 
   componentDidMount() {
-    window.addEventListener('scroll', () => {
-      const { switchMonthHeader } = this.state;
-      const secondMonthFromTop = document.getElementById('month-view-two').getBoundingClientRect()
-        .top;
-
-      if (secondMonthFromTop < 130 && !switchMonthHeader) {
-        this.setState({ switchMonthHeader: true });
-      } else if (secondMonthFromTop > 130 && switchMonthHeader) {
-        this.setState({ switchMonthHeader: false });
-      }
-    });
+    window.addEventListener('scroll', this.handleScroll);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    const { switchMonthHeader } = this.state;
+    const secondMonthFromTop = document.getElementById('month-view-two').getBoundingClientRect()
+      .top;
+
+    if (secondMonthFromTop === 0) {
+      this.setState({ switchMonthHeader: false });
+    } else if (secondMonthFromTop < 130 && !switchMonthHeader) {
+      this.setState({ switchMonthHeader: true });
+    } else if (secondMonthFromTop > 130 && switchMonthHeader) {
+      this.setState({ switchMonthHeader: false });
+    }
+  };
 
   getViews = () => {
     const views = this.props.views;

@@ -38,6 +38,7 @@ class EventCell extends React.Component {
       endAccessor,
       titleAccessor,
       tooltipAccessor,
+      allDayAccessor,
       slotStart,
       slotEnd,
       onSelect,
@@ -51,9 +52,10 @@ class EventCell extends React.Component {
       tooltip = get(event, tooltipAccessor),
       end = get(event, endAccessor),
       start = get(event, startAccessor),
+      allDay = get(event, allDayAccessor),
       isAllDayEvent =
         isAllDay ||
-        get(event, props.allDayAccessor) ||
+        allDay ||
         dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
       continuesPrior = dates.lt(start, slotStart, 'day'),
       continuesAfter = dates.gte(end, slotEnd, 'day')
@@ -66,8 +68,15 @@ class EventCell extends React.Component {
         selected
       )
 
+    let wrapperProps = {
+      event,
+      allDay,
+      continuesPrior,
+      continuesAfter,
+    }
+
     return (
-      <EventWrapper event={event}>
+      <EventWrapper {...wrapperProps} isRow={true}>
         <div
           style={{ ...props.style, ...style }}
           className={cn('rbc-event', className, xClassName, {

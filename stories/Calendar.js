@@ -1,8 +1,6 @@
 import { storiesOf, action } from '@storybook/react'
 import moment from 'moment'
 import React from 'react'
-import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext } from 'react-dnd'
 
 import Calendar from '../src'
 import momentLocalizer from '../src/localizers/moment.js'
@@ -12,6 +10,8 @@ import demoEvents from '../examples/events'
 import createEvents from './createEvents'
 import resources from './resourceEvents'
 import withDragAndDrop from '../src/addons/dragAndDrop'
+
+/* eslint-disable react/prop-types */
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -57,32 +57,50 @@ const events = [
   },
   {
     title: 'test all day',
-    start: moment().toDate(),
-    end: moment().toDate(),
+    start: moment()
+      .startOf('day')
+      .toDate(),
+    end: moment()
+      .startOf('day')
+      .add(1, 'day')
+      .toDate(),
     allDay: true,
+  },
+  {
+    title: 'test 2 days',
+    start: moment()
+      .startOf('day')
+      .toDate(),
+    end: moment()
+      .startOf('day')
+      .add(2, 'days')
+      .toDate(),
+    allDay: true,
+  },
+  {
+    title: 'test multi-day',
+    start: moment().toDate(),
+    end: moment()
+      .add(3, 'days')
+      .toDate(),
+    allDay: false,
   },
 ]
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
-const DragCalendar = () => {
+const DragableCalendar = props => {
   return (
     <DragAndDropCalendar
       popup
       selectable
-      events={resources.events}
-      resources={resources.list}
-      onEventDrop={event => {
-        action(event)
-      }}
+      onEventDrop={action('event dropped')}
       onSelectEvent={action('event selected')}
       onSelectSlot={action('slot selected')}
-      defaultDate={new Date(2015, 3, 1)}
+      {...props}
     />
   )
 }
-
-const DragableCalendar = DragDropContext(HTML5Backend)(DragCalendar)
 
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
@@ -111,6 +129,32 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('Daylight savings', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragableCalendar
+          defaultView="day"
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={[
+            {
+              title: 'on DST',
+              start: new Date(2017, 2, 12, 1),
+              end: new Date(2017, 2, 12, 2, 30),
+              allDay: false,
+            },
+            {
+              title: 'crosses DST',
+              start: new Date(2017, 2, 12, 1),
+              end: new Date(2017, 2, 12, 6, 30),
+              allDay: false,
+            },
+          ]}
+          defaultDate={new Date(2017, 2, 12)}
+        />
+      </div>
+    )
+  })
   .add('event layout', () => {
     return (
       <div style={{ height: 600 }}>
@@ -126,7 +170,10 @@ storiesOf('module.Calendar.week', module)
   .add('resource', () => {
     return (
       <div style={{ height: 500 }}>
-        <DragableCalendar />
+        <DragableCalendar
+          events={resources.events}
+          resources={resources.list}
+        />
       </div>
     )
   })
@@ -465,6 +512,51 @@ storiesOf('module.Calendar.week', module)
           events={events}
           onSelectEvent={action('event selected')}
           defaultDate={new Date()}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          defaultDate={new Date()}
+          defaultView="week"
+          events={events}
+          resizable
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable with non-default steps and timeslots', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          defaultDate={new Date()}
+          defaultView="week"
+          events={events}
+          resizable
+          step={15}
+          timeslots={4}
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable with showMultiDayTimes', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          defaultDate={new Date()}
+          defaultView="week"
+          events={events}
+          resizable
+          showMultiDayTimes
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
         />
       </div>
     )

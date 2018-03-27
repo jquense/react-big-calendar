@@ -9,6 +9,7 @@ import {
   dateRangeFormat,
   views as componentViews,
 } from './utils/propTypes'
+import warning from 'warning'
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
@@ -252,6 +253,14 @@ class Calendar extends React.Component {
     onDrillDown: PropTypes.func,
 
     /**
+     * Callback fired when the visible date range changes. Returns an Array of dates
+     * or an object with start and end dates for BUILTIN views.
+     *
+     * Cutom views may return something different.
+     */
+    onRangeChange: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
@@ -260,7 +269,21 @@ class Calendar extends React.Component {
      *     start: Date,
      *     end: Date,
      *     slots: Array<Date>,
-     *     action: "select" | "click" | "doubleClick"
+     *     action: "select" | "click" | "doubleClick",
+     *     bounds: ?{ // For "select" action
+     *       x: number,
+     *       y: number,
+     *       top: number,
+     *       right: number,
+     *       left: number,
+     *       bottom: number,
+     *     },
+     *     box: ?{ // For "click" or "doubleClick" actions
+     *       clientX: number,
+     *       clientY: number,
+     *       x: number,
+     *       y: number,
+     *     },
      *   }
      * ) => any
      * ```
@@ -767,9 +790,7 @@ class Calendar extends React.Component {
     return (
       <div
         {...elementProps}
-        className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl,
-        })}
+        className={cn(className, 'rbc-calendar', props.rtl && 'rbc-is-rtl')}
         style={style}
       >
         {toolbar && (
@@ -807,6 +828,17 @@ class Calendar extends React.Component {
     )
   }
 
+  handleRangeChange = (date, view) => {
+    let { onRangeChange } = this.props
+    if (onRangeChange) {
+      if (view.range) {
+        onRangeChange(view.range(date, {}))
+      } else {
+        warning(true, 'onRangeChange prop not supported for this view')
+      }
+    }
+  }
+
   handleNavigate = (action, newDate) => {
     let { view, getNow, onNavigate, ...props } = this.props,
     date = this.view.props.date
@@ -822,12 +854,16 @@ class Calendar extends React.Component {
     })
 
     onNavigate(date, view, action)
+    this.handleRangeChange(date, ViewComponent)
   }
 
   handleViewChange = view => {
     if (view !== this.props.view && isValidView(view, this.props)) {
       this.props.onView(view)
     }
+
+    let views = this.getViews()
+    this.handleRangeChange(this.props.date, views[view])
   }
 
   handleSelectEvent = (...args) => {

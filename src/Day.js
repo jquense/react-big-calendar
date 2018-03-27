@@ -13,15 +13,14 @@ class Day extends React.Component {
 
   render() {
     let { date, ...props } = this.props
+    let range = Day.range(date)
 
-    return (
-      <TimeGrid
-        {...props}
-        range={[dates.startOf(date, 'day')]}
-        eventOffset={10}
-      />
-    )
+    return <TimeGrid {...props} range={range} eventOffset={10} />
   }
+}
+
+Day.range = date => {
+  return [dates.startOf(date, 'day')]
 }
 
 Day.navigate = (date, action) => {

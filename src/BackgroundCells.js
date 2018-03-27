@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 
 import dates from './utils/dates'
-import { segStyle } from './utils/eventLevels'
 import { notify } from './utils/helpers'
 import { elementType } from './utils/propTypes'
 import {
@@ -72,15 +71,13 @@ class BackgroundCells extends React.Component {
       <div className="rbc-row-bg">
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style: dayStyles } =
+          const { className, style } =
             (dayPropGetter && dayPropGetter(date)) || {}
-          const segmStyles = segStyle(1, range.length)
-          const styles = Object.assign({}, dayStyles, segmStyles)
 
           return (
             <Wrapper key={index} value={date} range={range}>
               <div
-                style={styles}
+                style={style}
                 className={cn(
                   'rbc-day-bg',
                   className,
@@ -123,6 +120,7 @@ class BackgroundCells extends React.Component {
             startIdx: currentCell,
             endIdx: currentCell,
             action: actionType,
+            box: point,
           })
         }
       }
@@ -171,8 +169,8 @@ class BackgroundCells extends React.Component {
       selectorClicksHandler(point, 'doubleClick')
     )
 
-    selector.on('select', () => {
-      this._selectSlot({ ...this.state, action: 'select' })
+    selector.on('select', bounds => {
+      this._selectSlot({ ...this.state, action: 'select', bounds })
       this._initial = {}
       this.setState({ selecting: false })
       notify(this.props.onSelectEnd, [this.state])
@@ -185,13 +183,14 @@ class BackgroundCells extends React.Component {
     this._selector = null
   }
 
-  _selectSlot({ endIdx, startIdx, action }) {
+  _selectSlot({ endIdx, startIdx, action, bounds }) {
     if (endIdx !== -1 && startIdx !== -1)
       this.props.onSelectSlot &&
         this.props.onSelectSlot({
           start: startIdx,
           end: endIdx,
           action,
+          bounds,
         })
   }
 }

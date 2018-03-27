@@ -753,9 +753,7 @@ class Calendar extends React.Component {
             date={current}
             view={view}
             views={names}
-            label={
-              this.state.switchMonthHeader && this.props.showTwoMonths ? labelNextMonth : label
-            }
+            label={this.state.switchMonthHeader ? labelNextMonth : label}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
             messages={messages}

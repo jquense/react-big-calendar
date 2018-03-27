@@ -79,6 +79,7 @@ let now = new Date();
 class Calendar extends React.Component {
   state = {
     selected: {},
+    switchMonthHeader: false,
   };
 
   static propTypes = {
@@ -609,6 +610,20 @@ class Calendar extends React.Component {
     longPressThreshold: 250,
   };
 
+  componentDidMount() {
+    window.addEventListener('scroll', () => {
+      const { switchMonthHeader } = this.state;
+      const secondMonthFromTop = document.getElementById('month-view-two').getBoundingClientRect()
+        .top;
+
+      if (secondMonthFromTop < 130 && !switchMonthHeader) {
+        this.setState({ switchMonthHeader: true });
+      } else if (secondMonthFromTop > 130 && switchMonthHeader) {
+        this.setState({ switchMonthHeader: false });
+      }
+    });
+  }
+
   getViews = () => {
     const views = this.props.views;
 
@@ -711,10 +726,11 @@ class Calendar extends React.Component {
       dateContentRowWrapper: DateContentRowWrapper,
     });
 
+    const nextMonth = addMonths(current, 1);
+
     let CalToolbar = components.toolbar || Toolbar;
     const label = View.title(current, { formats, culture });
-
-    const nextMonth = addMonths(current, 1);
+    const labelNextMonth = View.title(nextMonth, { formats, culture });
 
     return (
       <div
@@ -729,7 +745,7 @@ class Calendar extends React.Component {
             date={current}
             view={view}
             views={names}
-            label={label}
+            label={this.state.switchMonthHeader ? labelNextMonth : label}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
             messages={messages}
@@ -758,46 +774,55 @@ class Calendar extends React.Component {
           selected={this.state.selected}
           showAllEvents={this.props.showAllEvents}
         />
-        {this.props.showTwoMonths && (
-          <div>
-            <div
-              style={{
-                borderColor: '#ddd',
-                borderStyle: 'solid none solid none',
-                borderWidth: '1px',
-                color: '#454545',
-                fontSize: '22px',
-                fontWeight: '500',
-                padding: '10px 0',
-                textAlign: 'center',
-              }}
-            >
+        <div
+          id="month-view-two"
+          className="rbc-month-view-two"
+          style={{ display: this.props.showTwoMonths ? 'block' : 'none' }}
+        >
+          <div
+            className="rbc-month-header-two"
+            style={{
+              borderColor: '#ddd',
+              borderStyle: 'solid none solid none',
+              borderWidth: '1px',
+              color: '#454545',
+              display: 'flex',
+              fontSize: '22px',
+              fontWeight: '500',
+              padding: '10px 27px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ minWidth: 206 }} />
+            <span style={{ flex: 2 }}>
               {MONTHS[getMonth(nextMonth)]} {getYear(nextMonth)}
-            </div>
-            <View
-              {...formats}
-              {...props}
-              components={viewComponents}
-              culture={culture}
-              date={nextMonth}
-              events={events}
-              formats={undefined}
-              getDrilldownView={this.getDrilldownView}
-              messages={messages}
-              onDoubleClickEvent={this.handleDoubleClickEvent}
-              onDrillDown={this.handleDrillDown}
-              onInlineEditEventTitle={this.props.onInlineEditEventTitle}
-              onNavigate={this.handleNavigate}
-              onRightClickSlot={this.handleRightClickSlot}
-              onSelectEvent={this.handleSelectEvent}
-              onSelectSlot={this.handleSelectSlot}
-              onShowMore={this._showMore}
-              ref="view"
-              selected={this.state.selected}
-              showAllEvents={this.props.showAllEvents}
-            />
+            </span>
+            <span style={{ minWidth: 362 }} />
           </div>
-        )}
+          <View
+            {...formats}
+            {...props}
+            components={viewComponents}
+            culture={culture}
+            date={nextMonth}
+            events={events}
+            formats={undefined}
+            getDrilldownView={this.getDrilldownView}
+            messages={messages}
+            onDoubleClickEvent={this.handleDoubleClickEvent}
+            onDrillDown={this.handleDrillDown}
+            onInlineEditEventTitle={this.props.onInlineEditEventTitle}
+            onNavigate={this.handleNavigate}
+            onRightClickSlot={this.handleRightClickSlot}
+            onSelectEvent={this.handleSelectEvent}
+            onSelectSlot={this.handleSelectSlot}
+            onShowMore={this._showMore}
+            ref="view"
+            selected={this.state.selected}
+            showAllEvents={this.props.showAllEvents}
+          />
+        </div>
+
         {this.renderDayCellMenu()}
         {this.renderEventMenu()}
       </div>

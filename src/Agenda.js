@@ -241,6 +241,11 @@ class Agenda extends React.Component {
   }
 }
 
+Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
+  let end = dates.add(start, length, 'day')
+  return { start, end }
+}
+
 Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   switch (action) {
     case navigate.PREVIOUS:
@@ -257,14 +262,6 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 Agenda.title = (
   start,
   { length = Agenda.defaultProps.length, formats, culture }
-) => {
-  let end = dates.add(start, length, 'day')
-  return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)
-}
-
-Agenda.title = (
-  start,
-  { length = (length = Agenda.defaultProps.length), formats, culture }
 ) => {
   let end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)

@@ -89,6 +89,19 @@ const events = [
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
+const DragableCalendar = props => {
+  return (
+    <DragAndDropCalendar
+      popup
+      selectable
+      onEventDrop={action('event dropped')}
+      onSelectEvent={action('event selected')}
+      onSelectSlot={action('slot selected')}
+      {...props}
+    />
+  )
+}
+
 storiesOf('module.Calendar.week', module)
   .add('demo', () => {
     return (
@@ -116,6 +129,32 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('Daylight savings', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragableCalendar
+          defaultView="day"
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={[
+            {
+              title: 'on DST',
+              start: new Date(2017, 2, 12, 1),
+              end: new Date(2017, 2, 12, 2, 30),
+              allDay: false,
+            },
+            {
+              title: 'crosses DST',
+              start: new Date(2017, 2, 12, 1),
+              end: new Date(2017, 2, 12, 6, 30),
+              allDay: false,
+            },
+          ]}
+          defaultDate={new Date(2017, 2, 12)}
+        />
+      </div>
+    )
+  })
   .add('event layout', () => {
     return (
       <div style={{ height: 600 }}>
@@ -131,14 +170,9 @@ storiesOf('module.Calendar.week', module)
   .add('resource', () => {
     return (
       <div style={{ height: 500 }}>
-        <Calendar
-          popup
-          selectable
+        <DragableCalendar
           events={resources.events}
           resources={resources.list}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date(2015, 3, 1)}
         />
       </div>
     )

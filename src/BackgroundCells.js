@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 
 import dates from './utils/dates'
-import { segStyle } from './utils/eventLevels'
 import { notify } from './utils/helpers'
 import { elementType } from './utils/propTypes'
 import {
@@ -72,15 +71,13 @@ class BackgroundCells extends React.Component {
       <div className="rbc-row-bg">
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style: dayStyles } =
+          const { className, style } =
             (dayPropGetter && dayPropGetter(date)) || {}
-          const segmStyles = segStyle(1, range.length)
-          const styles = Object.assign({}, dayStyles, segmStyles)
 
           return (
             <Wrapper key={index} value={date} range={range}>
               <div
-                style={styles}
+                style={style}
                 className={cn(
                   'rbc-day-bg',
                   className,

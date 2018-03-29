@@ -42,7 +42,7 @@ const StyledEvent = styled.div`
 
 const StyledInput = styled.input`
   width: 100%;
-  padding: 2px 0;
+  padding: 2px 5px;
   border: 0;
   background-color: ${({ backgroundColor: v }) => v || 'transparent'};
   color: ${({ color: v }) => v || 'currentColor'};

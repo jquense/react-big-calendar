@@ -40,6 +40,23 @@ const StyledEvent = styled.div`
   text-align: ${({ textAlign: v }) => v || 'center'};
 `;
 
+const StyledInput = styled.input`
+  width: 100%;
+  padding: 2px 5px;
+  border: 0;
+  background-color: ${({ backgroundColor: v }) => v || 'transparent'};
+  color: ${({ color: v }) => v || 'currentColor'};
+  font-family: ${({ fontFamily: v }) => v || 'inherit'};
+  font-size: ${({ fontSize: v }) => v || 'medium'};
+  font-style: ${({ fontStyle: v }) => v || 'normal'};
+  font-weight: ${({ fontWeight: v }) => v || 'normal'};
+  text-align: ${({ textAlign: v }) => v || 'center'};
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 class EventCell extends React.Component {
   constructor(props) {
     super(props);
@@ -148,13 +165,14 @@ class EventCell extends React.Component {
                   {Event && !this.state.isEditingEventTitle ? (
                     <Event event={data} title={title} />
                   ) : this.state.isEditingEventTitle ? (
-                    <input
+                    <StyledInput
+                      {...data.styles}
+                      spellCheck={true}
                       autoFocus={this.state.isEditingEventTitle}
                       onBlur={this.handleBlur}
                       onChange={this.handleChange}
                       onFocus={this.handleMoveCaretToEnd}
                       onKeyPress={this.handleKeyPress}
-                      style={{ color: '#000' }}
                       type="text"
                       value={this.state.title}
                     />

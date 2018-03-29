@@ -33,7 +33,7 @@
       "yarn run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
-    "test": "yarn run lint && jest",
+    "test": "jest",
     "tdd": "jest --watch",
     "release": "release",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",

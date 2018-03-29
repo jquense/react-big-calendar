@@ -90,7 +90,9 @@ class MonthView extends React.Component {
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
+      hasError: false,
     }
+    this.slotRow = undefined;
   }
 
   componentWillReceiveProps({ date }) {
@@ -126,6 +128,10 @@ class MonthView extends React.Component {
     window.removeEventListener('resize', this._resizeListener, false)
   }
 
+  componentDidCatch(error, info) {
+    this.setState({ hasError: true });
+}
+
   getContainer = () => {
     return findDOMNode(this)
   }
@@ -136,6 +142,10 @@ class MonthView extends React.Component {
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
+
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
 
     return (
       <div className={cn('rbc-month-view', className)}>
@@ -175,7 +185,11 @@ class MonthView extends React.Component {
     return (
       <DateContentRow
         key={weekIdx}
-        ref={weekIdx === 0 ? 'slotRow' : undefined}
+        ref={input => {
+          if(weekIdx === 0) {
+            this.slotRow = input
+          }
+        }}
         container={this.getContainer}
         className="rbc-month-row"
         getNow={getNow}
@@ -289,7 +303,7 @@ class MonthView extends React.Component {
   measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
-      rowLimit: this.refs.slotRow.getRowLimit(),
+      rowLimit: this.slotRow.getRowLimit(),
     })
   }
 

@@ -13,8 +13,21 @@ class Toolbar extends React.Component {
     onViewChange: PropTypes.func.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  componentDidCatch(error, info) {
+    this.setState({ hasError: true });
+}
+
   render() {
     let { messages, label } = this.props
+
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
 
     return (
       <div className="rbc-toolbar">

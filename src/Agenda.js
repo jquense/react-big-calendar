@@ -42,6 +42,15 @@ class Agenda extends React.Component {
     length: 30,
   }
 
+  constructor(props) {
+    super(props);
+    this.header = undefined;
+    this.dateCol = undefined;
+    this.timeCol = undefined;
+    this.content = undefined;
+    this.tbody = undefined;
+  }
+
   componentDidMount() {
     this._adjustHeader()
   }
@@ -63,22 +72,32 @@ class Agenda extends React.Component {
 
     return (
       <div className="rbc-agenda-view">
-        <table ref="header" className="rbc-agenda-table">
+        <table ref={inst => {
+            this.header = inst;
+          }}>
           <thead>
             <tr>
-              <th className="rbc-header" ref="dateCol">
+              <th className="rbc-header" ref={inst => {
+                this.dateCol = inst;
+              }}>
                 {messages.date}
               </th>
-              <th className="rbc-header" ref="timeCol">
+              <th className="rbc-header" ref={inst => {
+                this.timeCol = inst;
+              }}>
                 {messages.time}
               </th>
               <th className="rbc-header">{messages.event}</th>
             </tr>
           </thead>
         </table>
-        <div className="rbc-agenda-content" ref="content">
-          <table className="rbc-agenda-table">
-            <tbody ref="tbody">
+        <div className="rbc-agenda-content" ref={inst => {
+            this.content = inst;
+          }}>
+          <table>
+            <tbody ref={inst => {
+              this.tbody = inst;
+            }}>
               {range.map((day, idx) => this.renderDay(day, events, idx))}
             </tbody>
           </table>
@@ -194,13 +213,13 @@ class Agenda extends React.Component {
   }
 
   _adjustHeader = () => {
-    let header = this.refs.header
-    let firstRow = this.refs.tbody.firstChild
+    let header = this.header
+    let firstRow = this.tbody.firstChild
 
     if (!firstRow) return
 
     let isOverflowing =
-      this.refs.content.scrollHeight > this.refs.content.clientHeight
+      this.content.scrollHeight > this.content.clientHeight
     let widths = this._widths || []
 
     this._widths = [
@@ -209,8 +228,8 @@ class Agenda extends React.Component {
     ]
 
     if (widths[0] !== this._widths[0] || widths[1] !== this._widths[1]) {
-      this.refs.dateCol.style.width = this._widths[0] + 'px'
-      this.refs.timeCol.style.width = this._widths[1] + 'px'
+      this.dateCol.style.width = this._widths[0] + 'px'
+      this.timeCol.style.width = this._widths[1] + 'px'
     }
 
     if (isOverflowing) {

@@ -760,12 +760,12 @@ class Calendar extends React.Component {
       style,
       className,
       elementProps,
-      date: current,
       getNow,
       length,
       ...props
     } = this.props
 
+    let { date: current } = this.props || this.view.props
     current = current || getNow()
 
     formats = defaultFormats(formats)
@@ -805,7 +805,7 @@ class Calendar extends React.Component {
           />
         )}
         <View
-          ref="view"
+          ref={(input) => { this.view = input }}
           {...props}
           {...formats}
           messages={messages}
@@ -840,8 +840,11 @@ class Calendar extends React.Component {
   }
 
   handleNavigate = (action, newDate) => {
-    let { view, date, getNow, onNavigate, ...props } = this.props
+    let { view, getNow, onNavigate, ...props } = this.props,
+    date = this.view.props.date
+
     let ViewComponent = this.getView()
+    this.view = ViewComponent
 
     date = moveDate(ViewComponent, {
       ...props,

@@ -279,7 +279,7 @@ export default class TimeGrid extends Component {
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
         />
-        <div ref="content" className="rbc-time-content">
+        <div ref={(ref) => { this.content = ref; }} className="rbc-time-content">
           <TimeGutter
             {...this.props}
             date={start}
@@ -288,7 +288,7 @@ export default class TimeGrid extends Component {
           />
           {this.renderEvents(range, rangeEvents, getNow(), resources || [null])}
 
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
+          <div ref={(ref) => { this.timeIndicator = ref; }} className="rbc-current-time-indicator" />
         </div>
       </div>
     )
@@ -309,7 +309,7 @@ export default class TimeGrid extends Component {
 
   applyScroll() {
     if (this._scrollRatio) {
-      const { content } = this.refs
+      const content = this.content
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once
       this._scrollRatio = null
@@ -329,7 +329,7 @@ export default class TimeGrid extends Component {
     if (this._updatingOverflow) return
 
     let isOverflowing =
-      this.refs.content.scrollHeight > this.refs.content.clientHeight
+      this.content.scrollHeight > this.content.clientHeight
 
     if (this.state.isOverflowing !== isOverflowing) {
       this._updatingOverflow = true
@@ -346,11 +346,11 @@ export default class TimeGrid extends Component {
     const secondsGrid = dates.diff(max, min, 'seconds')
     const secondsPassed = dates.diff(current, min, 'seconds')
 
-    const timeIndicator = this.refs.timeIndicator
+    const timeIndicator = this.timeIndicator
     const factor = secondsPassed / secondsGrid
     const timeGutter = this.gutter
 
-    const content = this.refs.content
+    const content = this.content
 
     if (timeGutter && current >= min && current <= max) {
       const pixelHeight = timeGutter.offsetHeight

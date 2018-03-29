@@ -1,9 +1,10 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import cn from 'classnames'
-import dates from './utils/dates'
-import { accessor, elementType } from './utils/propTypes'
-import { accessor as get } from './utils/accessors'
+import PropTypes from 'prop-types';
+import React from 'react';
+import cn from 'classnames';
+import { FormattedTime } from 'react-intl';
+import dates from './utils/dates';
+import { accessor, elementType } from './utils/propTypes';
+import { accessor as get } from './utils/accessors';
 
 let propTypes = {
   event: PropTypes.object.isRequired,
@@ -21,8 +22,8 @@ let propTypes = {
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onDoubleClick: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func
 }
 
 class EventCell extends React.Component {
@@ -52,7 +53,7 @@ class EventCell extends React.Component {
       end = get(event, endAccessor),
       start = get(event, startAccessor),
       allDay = get(event, allDayAccessor),
-      showAsAllDay =
+      isAllDayEvent =
         isAllDay ||
         allDay ||
         dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
@@ -75,33 +76,30 @@ class EventCell extends React.Component {
     }
 
     return (
-      // give EventWrapper some extra info to help it determine whether it
-      // it's in a row, etc. Useful for dnd, etc.
       <EventWrapper {...wrapperProps} isRow={true}>
         <div
           style={{ ...props.style, ...style }}
           className={cn('rbc-event', className, xClassName, {
             'rbc-selected': selected,
-            'rbc-event-allday': showAsAllDay,
+            'rbc-event-allday': isAllDayEvent,
             'rbc-event-continues-prior': continuesPrior,
-            'rbc-event-continues-after': continuesAfter,
+            'rbc-event-continues-after': continuesAfter
           })}
           onClick={e => onSelect(event, e)}
           onDoubleClick={e => onDoubleClick(event, e)}
         >
-          <div className="rbc-event-content" title={tooltip || undefined}>
-            {Event ? (
-              <Event event={event} title={title} isAllDay={allDay} />
-            ) : (
-              title
-            )}
+          <div className='rbc-event-content' title={tooltip || undefined}>
+            { Event
+              ? <Event event={event} title={title} isAllDay={isAllDayEvent} />
+              : (isAllDayEvent ? 'All day' : (<div><FormattedTime value={start} />-<FormattedTime value={end} /></div>))
+            }
           </div>
         </div>
       </EventWrapper>
-    )
+    );
   }
 }
 
-EventCell.propTypes = propTypes
+EventCell.propTypes = propTypes;
 
 export default EventCell

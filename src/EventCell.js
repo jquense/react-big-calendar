@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import prop from 'ramda/src/prop';
 import { ContextMenuTrigger } from 'react-contextmenu';
 

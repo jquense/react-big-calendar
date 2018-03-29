@@ -104,12 +104,11 @@ export function sortEvents(
     'day'
   )
 
-  const returnValue = (
+  return (
     startSort || // sort by start Day first
     timeSort || // sort by milliseconds next
     Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
     !!get(evtB, allDayAccessor) - !!get(evtA, allDayAccessor) || // then allDay single day events
     +get(evtA, startAccessor) - +get(evtB, startAccessor)
   ) // then sort by start time
-  return returnValue;
 }

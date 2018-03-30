@@ -59,7 +59,7 @@ class EventEndingRow extends React.Component {
 
         row.push(
           EventRowMixin.renderSpan(
-            this.props,
+            slotCount,
             1,
             key,
             this.renderShowMore(segments, current)

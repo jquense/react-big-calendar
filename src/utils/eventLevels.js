@@ -88,6 +88,10 @@ export function sortEvents(
     +dates.startOf(get(evtA, startAccessor), 'day') -
     +dates.startOf(get(evtB, startAccessor), 'day')
 
+  let timeSort = 
+    dates.ceil(get(evtA, startAccessor),"milliseconds") - 
+    dates.ceil(get(evtB, startAccessor),"milliseconds")
+
   let durA = dates.diff(
     get(evtA, startAccessor),
     dates.ceil(get(evtA, endAccessor), 'day'),
@@ -102,6 +106,7 @@ export function sortEvents(
 
   return (
     startSort || // sort by start Day first
+    timeSort || // sort by milliseconds next
     Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
     !!get(evtB, allDayAccessor) - !!get(evtA, allDayAccessor) || // then allDay single day events
     +get(evtA, startAccessor) - +get(evtB, startAccessor)

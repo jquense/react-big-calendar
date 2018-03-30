@@ -573,12 +573,12 @@ describe('sortEvents', () => {
 
       describe('when neither of the events are all day events', () => {
         const earlierEvent = {
-          start: new Date(2017, 0, 1, 12),
+          start: new Date(2017, 0, 1, 16, 0, 0, 1),
           end: new Date(2017, 0, 2),
           allDay: false,
         }
         const laterEvent = {
-          start: new Date(2017, 0, 1, 16),
+          start: new Date(2017, 0, 1, 16, 0, 0, 2),
           end: new Date(2017, 0, 2),
           allDay: false,
         }

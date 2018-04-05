@@ -1,7 +1,4 @@
-parser: babel-eslint
-extends:
-  - jason/react
-  - prettier
-
-rules:
-  global-require: off
+{
+  "parser": "babel-eslint",
+  "extends": "@folio/eslint-config-stripes"
+}

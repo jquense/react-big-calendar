@@ -183,7 +183,7 @@ class BackgroundCells extends React.Component {
     this._selector = null
   }
 
-  _selectSlot({ endIdx, startIdx, action, bounds }) {
+  _selectSlot({ endIdx, startIdx, action, bounds, box }) {
     if (endIdx !== -1 && startIdx !== -1)
       this.props.onSelectSlot &&
         this.props.onSelectSlot({
@@ -191,6 +191,7 @@ class BackgroundCells extends React.Component {
           end: endIdx,
           action,
           bounds,
+          box,
         })
   }
 }

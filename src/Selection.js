@@ -31,7 +31,7 @@ function getEventCoordinates(e) {
     clientX: target.clientX,
     clientY: target.clientY,
     pageX: target.pageX / window.getComputedStyle(document.body).zoom,
-    pageY: target.pageY / window.getComputedStyle(document.body).zoom
+    pageY: target.pageY / window.getComputedStyle(document.body).zoom,
   }
 }
 

@@ -135,7 +135,7 @@ class DraggableEventWrapper extends React.Component {
 /* drag sources */
 const makeEventSource = anchor => ({
   beginDrag: ({ event }) => ({ event, anchor }),
-  // canDrag: ({ event }) => event.draggable === undefined || event.draggable - e.g. support per-event dragability/sizability
+  canDrag: ({ event }) => event.draggable === undefined || event.draggable // support per-event dragability/sizability
 })
 
 export default compose(

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
+import Button from '@folio/stripes-components/lib/Button';
 import { navigate } from './utils/constants'
 
 class Toolbar extends React.Component {
@@ -31,30 +32,23 @@ class Toolbar extends React.Component {
 
     return (
       <div className="rbc-toolbar">
-        <span className="rbc-btn-group">
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.TODAY)}
-          >
+        <span>
+          <Button title={messages.today} onClick={this.navigate.bind(null, navigate.TODAY)}>
             {messages.today}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
-          >
+          </Button>
+
+          <Button title={messages.previous} onClick={this.navigate.bind(null, navigate.PREVIOUS)}>
             {messages.previous}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.NEXT)}
-          >
+          </Button>
+
+          <Button title={messages.next} onClick={this.navigate.bind(null, navigate.NEXT)}>
             {messages.next}
-          </button>
+          </Button>
         </span>
 
         <span className="rbc-toolbar-label">{label}</span>
 
-        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
+        <span>{this.viewNamesGroup(messages)}</span>
       </div>
     )
   }
@@ -73,14 +67,13 @@ class Toolbar extends React.Component {
 
     if (viewNames.length > 1) {
       return viewNames.map(name => (
-        <button
-          type="button"
+        <Button 
+          title={messages[name]} 
           key={name}
-          className={cn({ 'rbc-active': view === name })}
           onClick={this.view.bind(null, name)}
-        >
+          buttonStyle={view === name ? 'primary': 'default'}>
           {messages[name]}
-        </button>
+        </Button>        
       ))
     }
   }

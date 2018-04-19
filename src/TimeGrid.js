@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
+import moment from 'moment'
 import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
 
@@ -122,8 +123,8 @@ export default class TimeGrid extends Component {
     const { range, scrollToTime } = this.props
     // When paginating, reset scroll
     if (
-      !dates.eq(nextProps.range[0], range[0], 'minute') ||
-      !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
+      !moment(nextProps.range[0]).isSame(range[0], 'minute') ||
+      !moment(nextProps.scrollToTime).isSame(scrollToTime, 'minute')
     ) {
       this.calculateScroll(nextProps)
     }
@@ -146,6 +147,7 @@ export default class TimeGrid extends Component {
       start: slots[0],
       end: slots[slots.length - 1],
       action: slotInfo.action,
+      box: slotInfo.box,
     })
   }
 

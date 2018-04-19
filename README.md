@@ -13,6 +13,11 @@ Inspired by [Full Calendar](http://fullcalendar.io/).
 Include `react-big-calendar/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
 element has a height, or the calendar won't be visible.
 
+## Starters
+
+* [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
+* [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+
 ## Run examples locally
 
 ```

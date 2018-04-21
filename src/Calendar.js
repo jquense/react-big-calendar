@@ -176,6 +176,17 @@ class Calendar extends React.Component {
     endAccessor: accessor,
 
     /**
+     * Determine if an event is draggable. Must resolve to a Boolean
+     *
+     * ```js
+     * string | (event: Object) => Boolean
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    draggableAccessor: accessor,
+
+    /**
      * Returns the id of the `resource` that the event is a member of. This
      * id should match at least one resource in the `resources` array.
      *
@@ -705,6 +716,7 @@ class Calendar extends React.Component {
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',
+    draggableAccessor: 'draggable',
     resourceAccessor: 'resourceId',
 
     resourceIdAccessor: 'id',

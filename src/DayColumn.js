@@ -31,6 +31,7 @@ class DayColumn extends React.Component {
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
+    draggableAccessor: accessor,
 
     selectRangeFormat: dateFormat,
     eventTimeRangeFormat: dateFormat,
@@ -165,6 +166,7 @@ class DayColumn extends React.Component {
       rtl: isRtl,
       selected,
       startAccessor,
+      draggableAccessor,
       titleAccessor,
       tooltipAccessor,
     } = this.props
@@ -219,8 +221,10 @@ class DayColumn extends React.Component {
 
       let { height, top, width, xOffset } = style
 
+      let _draggable = get(event, draggableAccessor)
       let wrapperProps = {
         event,
+        draggable: _draggable === null ? true : _draggable,
         continuesPrior: _continuesPrior,
         continuesAfter: _continuesAfter,
       }

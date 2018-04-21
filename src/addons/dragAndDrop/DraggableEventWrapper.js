@@ -22,6 +22,7 @@ class DraggableEventWrapper extends React.Component {
     connectRightDragPreview: PropTypes.func.isRequired,
     connectRightDragSource: PropTypes.func.isRequired,
 
+    draggable: PropTypes.bool,
     allDay: PropTypes.bool,
     isRow: PropTypes.bool,
     continuesPrior: PropTypes.bool,
@@ -52,6 +53,7 @@ class DraggableEventWrapper extends React.Component {
       isDragging,
       isResizing,
       children,
+      draggable,
       event,
       allDay,
       isRow,
@@ -81,22 +83,27 @@ class DraggableEventWrapper extends React.Component {
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
-    if (isRow || allDay) {
-      const anchor = (
-        <div className="rbc-addons-dnd-resize-ew-anchor">
-          <div className="rbc-addons-dnd-resize-ew-icon" />
-        </div>
-      )
-      StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
-      EndAnchor = !continuesAfter && connectRightDragSource(anchor)
-    } else {
-      const anchor = (
-        <div className="rbc-addons-dnd-resize-ns-anchor">
-          <div className="rbc-addons-dnd-resize-ns-icon" />
-        </div>
-      )
-      StartAnchor = !continuesPrior && connectTopDragSource(anchor)
-      EndAnchor = !continuesAfter && connectBottomDragSource(anchor)
+    /*
+      *  We add anchors only if the event is indeed draggable
+     */
+    if (draggable) {
+      if (isRow || allDay) {
+        const anchor = (
+          <div className="rbc-addons-dnd-resize-ew-anchor">
+            <div className="rbc-addons-dnd-resize-ew-icon" />
+          </div>
+        )
+        StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
+        EndAnchor = !continuesAfter && connectRightDragSource(anchor)
+      } else {
+        const anchor = (
+          <div className="rbc-addons-dnd-resize-ns-anchor">
+            <div className="rbc-addons-dnd-resize-ns-icon" />
+          </div>
+        )
+        StartAnchor = !continuesPrior && connectTopDragSource(anchor)
+        EndAnchor = !continuesAfter && connectBottomDragSource(anchor)
+      }
     }
 
     /*
@@ -108,7 +115,7 @@ class DraggableEventWrapper extends React.Component {
      * would lose the positioning.
      */
     const childrenWithAnchors = (
-      <div className="rbc-addons-dnd-resizable">
+      <div className={cn(draggable && 'rbc-addons-dnd-resizable')}>
         {StartAnchor}
         {children.props.children}
         {EndAnchor}
@@ -135,7 +142,7 @@ class DraggableEventWrapper extends React.Component {
 /* drag sources */
 const makeEventSource = anchor => ({
   beginDrag: ({ event }) => ({ event, anchor }),
-  canDrag: ({ event }) => event.draggable === undefined || event.draggable // support per-event dragability/sizability
+  canDrag: ({ draggable }) => draggable, // support per-event dragability/sizability
 })
 
 export default compose(

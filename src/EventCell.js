@@ -18,6 +18,7 @@ let propTypes = {
   allDayAccessor: accessor,
   startAccessor: accessor,
   endAccessor: accessor,
+  draggableAccessor: accessor,
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
@@ -35,6 +36,7 @@ class EventCell extends React.Component {
       eventPropGetter,
       startAccessor,
       endAccessor,
+      draggableAccessor,
       titleAccessor,
       tooltipAccessor,
       allDayAccessor,
@@ -67,7 +69,9 @@ class EventCell extends React.Component {
         selected
       )
 
+    let _draggable = get(event, draggableAccessor)
     let wrapperProps = {
+      draggable: _draggable === null ? true : _draggable,
       event,
       allDay,
       continuesPrior,

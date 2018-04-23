@@ -3,6 +3,7 @@ import cn from 'classnames'
 import raf from 'dom-helpers/util/requestAnimationFrame'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 import dates from './utils/dates'
 import DayColumn from './DayColumn'
@@ -278,17 +279,24 @@ export default class TimeGrid extends Component {
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
         />
-        <div ref="content" className="rbc-time-content">
-          <TimeGutter
-            {...this.props}
-            date={start}
-            ref={this.gutterRef}
-            className="rbc-time-gutter"
-          />
-          {this.renderEvents(range, rangeEvents, getNow(), resources || [null])}
+        <Scrollbars universal>
+          <div ref="content" className="rbc-time-content">
+            <TimeGutter
+              {...this.props}
+              date={start}
+              ref={this.gutterRef}
+              className="rbc-time-gutter"
+            />
+            {this.renderEvents(
+              range,
+              rangeEvents,
+              getNow(),
+              resources || [null]
+            )}
 
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
-        </div>
+            <div ref="timeIndicator" className="rbc-current-time-indicator" />
+          </div>
+        </Scrollbars>
       </div>
     )
   }

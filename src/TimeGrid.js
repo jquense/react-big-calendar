@@ -275,7 +275,6 @@ export default class TimeGrid extends Component {
           onSelectSlot={this.handleSelectAllDaySlot}
           onSelectEvent={this.handleSelectAlldayEvent}
           onDoubleClickEvent={this.props.onDoubleClickEvent}
-          resourceIdAccessor={this.props.resourceIdAccessor}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
         />

@@ -68,7 +68,7 @@ class DraggableEventWrapper extends React.Component {
 
     let { draggableAccessor } = this.context
 
-    let isDraggable = !!get(event, draggableAccessor)
+    let isDraggable = draggableAccessor ? !!get(event, draggableAccessor) : true
 
     /* Event is not draggable, no need to wrap it */
     if (!isDraggable) {

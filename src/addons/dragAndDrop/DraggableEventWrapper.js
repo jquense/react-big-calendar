@@ -4,11 +4,17 @@ import { DragSource } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import cn from 'classnames'
 import compose from './compose'
+import { accessor } from '../../utils/propTypes'
+import { accessor as get } from '../../utils/accessors'
 
 import BigCalendar from '../../index'
 const EventWrapper = BigCalendar.components.eventWrapper
 
 class DraggableEventWrapper extends React.Component {
+  static contextTypes = {
+    draggableAccessor: accessor,
+  }
+
   static propTypes = {
     event: PropTypes.object.isRequired,
 
@@ -53,7 +59,6 @@ class DraggableEventWrapper extends React.Component {
       isDragging,
       isResizing,
       children,
-      draggable,
       event,
       allDay,
       isRow,
@@ -61,21 +66,30 @@ class DraggableEventWrapper extends React.Component {
       continuesAfter,
     } = this.props
 
+    let { draggableAccessor } = this.context
+
+    let isDraggable = !!get(event, draggableAccessor)
+
+    /* Event is not draggable, no need to wrap it */
+    if (!isDraggable) {
+      return children
+    }
+
     let StartAnchor = null,
       EndAnchor = null
 
     /*
      * The resizability of events depends on whether they are
      * allDay events and how they are displayed.
-     *  
+     *
      * 1. If the event is being shown in an event row (because
      * it is an allDay event shown in the header row or because as
      * in month view the view is showing all events as rows) then we
      * allow east-west resizing.
-     * 
+     *
      * 2. Otherwise the event is being displayed
      * normally, we can drag it north-south to resize the times.
-     * 
+     *
      * See `DropWrappers` for handling of the drop of such events.
      *
      * Notwithstanding the above, we never show drag anchors for
@@ -83,27 +97,23 @@ class DraggableEventWrapper extends React.Component {
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
-    /*
-      *  We add anchors only if the event is indeed draggable
-     */
-    if (draggable) {
-      if (isRow || allDay) {
-        const anchor = (
-          <div className="rbc-addons-dnd-resize-ew-anchor">
-            <div className="rbc-addons-dnd-resize-ew-icon" />
-          </div>
-        )
-        StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
-        EndAnchor = !continuesAfter && connectRightDragSource(anchor)
-      } else {
-        const anchor = (
-          <div className="rbc-addons-dnd-resize-ns-anchor">
-            <div className="rbc-addons-dnd-resize-ns-icon" />
-          </div>
-        )
-        StartAnchor = !continuesPrior && connectTopDragSource(anchor)
-        EndAnchor = !continuesAfter && connectBottomDragSource(anchor)
-      }
+
+    if (isRow || allDay) {
+      const anchor = (
+        <div className="rbc-addons-dnd-resize-ew-anchor">
+          <div className="rbc-addons-dnd-resize-ew-icon" />
+        </div>
+      )
+      StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
+      EndAnchor = !continuesAfter && connectRightDragSource(anchor)
+    } else {
+      const anchor = (
+        <div className="rbc-addons-dnd-resize-ns-anchor">
+          <div className="rbc-addons-dnd-resize-ns-icon" />
+        </div>
+      )
+      StartAnchor = !continuesPrior && connectTopDragSource(anchor)
+      EndAnchor = !continuesAfter && connectBottomDragSource(anchor)
     }
 
     /*
@@ -115,7 +125,7 @@ class DraggableEventWrapper extends React.Component {
      * would lose the positioning.
      */
     const childrenWithAnchors = (
-      <div className={cn(draggable && 'rbc-addons-dnd-resizable')}>
+      <div className="rbc-addons-dnd-resizable">
         {StartAnchor}
         {children.props.children}
         {EndAnchor}
@@ -142,7 +152,7 @@ class DraggableEventWrapper extends React.Component {
 /* drag sources */
 const makeEventSource = anchor => ({
   beginDrag: ({ event }) => ({ event, anchor }),
-  canDrag: ({ draggable }) => draggable, // support per-event dragability/sizability
+  //canDrag: ({ event }) => true, // support per-event dragability/sizability
 })
 
 export default compose(

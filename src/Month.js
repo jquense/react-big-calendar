@@ -102,7 +102,10 @@ class MonthView extends React.Component {
   componentDidMount() {
     let running
 
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    setTimeout(() => {
+      // Delay this to the next tic to make sure the DOM can be measured
+      if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    }, 0)
 
     window.addEventListener(
       'resize',

@@ -83,14 +83,14 @@ export default class TimeGrid extends Component {
   }
 
   componentDidMount() {
-    this.checkOverflow()
+    setTimeout(() => {
+      this.checkOverflow()
+      this.applyScroll()
+    }, 0)
 
     if (this.props.width == null) {
       this.measureGutter()
     }
-
-    this.applyScroll()
-
     this.positionTimeIndicator()
     this.triggerTimeIndicatorUpdate()
 

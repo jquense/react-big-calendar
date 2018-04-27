@@ -28,7 +28,7 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   for (let grp = 0; grp < numGroups; grp++) {
     groups[grp] = new Array(timeslots)
 
-    for (let slot = 0; slot < timeslots; slot++) {
+    for (let slot = 0; slot <= timeslots; slot++) {
       const slotIdx = grp * timeslots + slot
       const minFromStart = slotIdx * step
       // A date with total minutes calculated from the start of the day

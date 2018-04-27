@@ -28,7 +28,7 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   for (let grp = 0; grp < numGroups; grp++) {
     groups[grp] = new Array(timeslots)
 
-    for (let slot = 0; slot <= timeslots; slot++) {
+    for (let slot = 0; slot < timeslots; slot++) {
       const slotIdx = grp * timeslots + slot
       const minFromStart = slotIdx * step
       // A date with total minutes calculated from the start of the day
@@ -43,6 +43,19 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       )
     }
   }
+  
+  const lastSlotMinFromStart = slots.length * step
+  slots.push(
+    new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate(),
+      0,
+      minutesFromMidnight + lastSlotMinFromStart,
+      0,
+      0
+    )
+  )
 
   function positionFromDate(date) {
     const diff = dates.diff(start, date, 'minutes') + getDstOffset(start, date)

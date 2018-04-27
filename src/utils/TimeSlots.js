@@ -87,7 +87,10 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
     },
 
     closestSlotToPosition(percent) {
-      const slot = Math.max(0, Math.floor(percent * numSlots))
+      const slot = Math.min(
+        slots.length - 1,
+        Math.max(0, Math.floor(percent * numSlots))
+      )
       return slots[slot]
     },
 

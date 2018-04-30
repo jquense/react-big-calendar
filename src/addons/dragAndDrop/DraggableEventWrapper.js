@@ -4,11 +4,17 @@ import { DragSource } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import cn from 'classnames'
 import compose from './compose'
+import { accessor } from '../../utils/propTypes'
+import { accessor as get } from '../../utils/accessors'
 
 import BigCalendar from '../../index'
 const EventWrapper = BigCalendar.components.eventWrapper
 
 class DraggableEventWrapper extends React.Component {
+  static contextTypes = {
+    draggableAccessor: accessor,
+  }
+
   static propTypes = {
     event: PropTypes.object.isRequired,
 
@@ -22,6 +28,7 @@ class DraggableEventWrapper extends React.Component {
     connectRightDragPreview: PropTypes.func.isRequired,
     connectRightDragSource: PropTypes.func.isRequired,
 
+    draggable: PropTypes.bool,
     allDay: PropTypes.bool,
     isRow: PropTypes.bool,
     continuesPrior: PropTypes.bool,
@@ -59,21 +66,30 @@ class DraggableEventWrapper extends React.Component {
       continuesAfter,
     } = this.props
 
+    let { draggableAccessor } = this.context
+
+    let isDraggable = draggableAccessor ? !!get(event, draggableAccessor) : true
+
+    /* Event is not draggable, no need to wrap it */
+    if (!isDraggable) {
+      return children
+    }
+
     let StartAnchor = null,
       EndAnchor = null
 
     /*
      * The resizability of events depends on whether they are
      * allDay events and how they are displayed.
-     *  
+     *
      * 1. If the event is being shown in an event row (because
      * it is an allDay event shown in the header row or because as
      * in month view the view is showing all events as rows) then we
      * allow east-west resizing.
-     * 
+     *
      * 2. Otherwise the event is being displayed
      * normally, we can drag it north-south to resize the times.
-     * 
+     *
      * See `DropWrappers` for handling of the drop of such events.
      *
      * Notwithstanding the above, we never show drag anchors for
@@ -81,6 +97,7 @@ class DraggableEventWrapper extends React.Component {
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
+
     if (isRow || allDay) {
       const anchor = (
         <div className="rbc-addons-dnd-resize-ew-anchor">
@@ -135,7 +152,7 @@ class DraggableEventWrapper extends React.Component {
 /* drag sources */
 const makeEventSource = anchor => ({
   beginDrag: ({ event }) => ({ event, anchor }),
-  // canDrag: ({ event }) => event.draggable === undefined || event.draggable - e.g. support per-event dragability/sizability
+  //canDrag: ({ event }) => true, // support per-event dragability/sizability
 })
 
 export default compose(

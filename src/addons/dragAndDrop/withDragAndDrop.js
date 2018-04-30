@@ -69,6 +69,7 @@ export default function withDragAndDrop(
       startAccessor: accessor,
       endAccessor: accessor,
       allDayAccessor: accessor,
+      draggableAccessor: accessor,
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
       components: PropTypes.object,
@@ -80,6 +81,7 @@ export default function withDragAndDrop(
       startAccessor: 'start',
       endAccessor: 'end',
       allDayAccessor: 'allDay',
+      draggableAccessor: null,
       step: 30,
     }
 
@@ -92,6 +94,7 @@ export default function withDragAndDrop(
       onEventResize: PropTypes.func,
       startAccessor: accessor,
       endAccessor: accessor,
+      draggableAccessor: accessor,
       step: PropTypes.number,
     }
 
@@ -102,6 +105,7 @@ export default function withDragAndDrop(
         startAccessor: this.props.startAccessor,
         endAccessor: this.props.endAccessor,
         step: this.props.step,
+        draggableAccessor: this.props.draggableAccessor,
       }
     }
 

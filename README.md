@@ -1,3 +1,14 @@
+## This is the Brickwork Software fork of react-big-calendar.
+
+To publish the package manually to NPM
+
+```
+$ yarn install
+$ yarn build
+$ yarn version
+$ yarn publish
+```
+
 # react-big-calendar
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.

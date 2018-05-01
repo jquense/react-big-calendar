@@ -1,5 +1,5 @@
 {
-  "name": "react-big-calendar",
+  "name": "@brickwork-software/react-big-calendar",
   "version": "0.18.1",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",

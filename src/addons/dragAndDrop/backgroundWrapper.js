@@ -111,7 +111,7 @@ function createWrapper(type) {
   const dropTarget = {
     drop(_, monitor, { props, context }) {
       const event = monitor.getItem()
-      const { value } = props
+      const { value, resource } = props
       const { onEventDrop, onEventResize, startAccessor, endAccessor } = context
       const start = get(event, startAccessor)
       const end = get(event, endAccessor)
@@ -120,6 +120,7 @@ function createWrapper(type) {
         onEventDrop({
           event,
           ...getEventTimes(start, end, value, type),
+          ...(resource && { resource }),
         })
       }
 

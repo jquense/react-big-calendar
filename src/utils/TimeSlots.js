@@ -43,7 +43,8 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       )
     }
   }
-  
+
+  // Necessary to be able to select up until the last timeslot in a day
   const lastSlotMinFromStart = slots.length * step
   slots.push(
     new Date(

@@ -15,6 +15,7 @@ import { accessor, dateFormat } from './utils/propTypes'
 import { notify } from './utils/helpers'
 import { accessor as get } from './utils/accessors'
 import { inRange, sortEvents } from './utils/eventLevels'
+import ResizeObserver from 'resize-observer-polyfill'
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -76,6 +77,7 @@ export default class TimeGrid extends Component {
     super(props)
 
     this.state = { gutterWidth: undefined, isOverflowing: null }
+    this.timeViewRef = React.createRef()
   }
 
   componentWillMount() {
@@ -95,11 +97,17 @@ export default class TimeGrid extends Component {
     this.triggerTimeIndicatorUpdate()
 
     window.addEventListener('resize', this.handleResize)
+
+    const ro = new ResizeObserver(() => {
+      this.positionTimeIndicator()
+    })
+    ro.observe(this.timeViewRef.current)
   }
 
   handleResize = () => {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
+    this.positionTimeIndicator()
   }
 
   componentWillUnmount() {
@@ -247,7 +255,7 @@ export default class TimeGrid extends Component {
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     return (
-      <div className="rbc-time-view">
+      <div className="rbc-time-view" ref={this.timeViewRef}>
         <TimeGridHeader
           range={range}
           events={allDayEvents}
@@ -349,6 +357,9 @@ export default class TimeGrid extends Component {
     const secondsPassed = dates.diff(current, min, 'seconds')
 
     const timeIndicator = this.refs.timeIndicator
+
+    if (!timeIndicator) return
+
     const factor = secondsPassed / secondsGrid
     const timeGutter = this.gutter
 

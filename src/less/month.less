@@ -30,7 +30,7 @@
   white-space: nowrap;
 }
 
-.rbc-month-view {
+.rbc-month-holder {
   position: relative;
   border: 1px solid @calendar-border;
   display: flex;
@@ -43,11 +43,20 @@
   height: 100%; // ie-fix
 }
 
+.rbc-month-view {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+
+  height: 100%; // ie-fix
+}
+
 .rbc-month-view-infinite {
   overflow-y: scroll;
-  height: 500px;
-  min-height: 500px;
-  max-height: 500px;
 }
 
 .rbc-month-header {
@@ -74,8 +83,8 @@
   display: block;
   overflow: hidden;
 
-  min-height: 100px;
-  height: 100px; // ie-fix
+  min-height: 120px;
+  height: 120px; // ie-fix
 }
 
 .rbc-date-cell {

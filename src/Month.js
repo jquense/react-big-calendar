@@ -125,12 +125,10 @@ class MonthView extends React.Component {
 
   scrollToCenter = () => {
     const month = this.refs.monthHolder
+    const rows = month.getElementsByClassName('rbc-month-row')
+    const rowHeight = rows[0].offsetHeight
     setTimeout(() => {
-      month.scroll({
-        top: 800, //month.offsetHeight * 2 -
-        left: 0,
-        behavior: 'smooth',
-      })
+      month.scrollTop = month.offsetHeight * 2 - rowHeight * 2
     }, 400)
   }
 
@@ -173,7 +171,7 @@ class MonthView extends React.Component {
         scrollY: scrollPos - diff,
       })
     }
-  }, 300)
+  }, 100)
 
   render() {
     let {
@@ -189,20 +187,22 @@ class MonthView extends React.Component {
     this._weekCount = weeks.length
 
     return (
-      <div
-        onScroll={infinityScroll ? this.onScroll : undefined}
-        ref="monthHolder"
-        className={cn(
-          'rbc-month-view',
-          className,
-          infinityScroll ? 'rbc-month-view-infinite' : ''
-        )}
-      >
+      <div className="rbc-month-holder">
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0], weekdayFormat, culture)}
         </div>
-        {weeks.map(this.renderWeek)}
-        {this.props.popup && this.renderOverlay()}
+        <div
+          onScroll={infinityScroll ? this.onScroll : undefined}
+          ref="monthHolder"
+          className={cn(
+            'rbc-month-view',
+            className,
+            infinityScroll ? 'rbc-month-view-infinite' : ''
+          )}
+        >
+          {weeks.map(this.renderWeek)}
+          {this.props.popup && this.renderOverlay()}
+        </div>
       </div>
     )
   }

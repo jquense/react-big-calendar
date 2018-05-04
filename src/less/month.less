@@ -43,6 +43,13 @@
   height: 100%; // ie-fix
 }
 
+.rbc-month-view-infinite {
+  overflow-y: scroll;
+  height: 500px;
+  min-height: 500px;
+  max-height: 500px;
+}
+
 .rbc-month-header {
   display: flex;
   flex-direction: row;
@@ -61,6 +68,14 @@
   & + & {
     border-top: 1px solid @cell-border;
   }
+}
+
+.rbc-month-row-infinite {
+  display: block;
+  overflow: hidden;
+
+  min-height: 100px;
+  height: 100px; // ie-fix
 }
 
 .rbc-date-cell {

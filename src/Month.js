@@ -6,6 +6,7 @@ import cn from 'classnames'
 import dates from './utils/dates'
 import localizer from './localizer'
 import chunk from 'lodash/chunk'
+import debounce from 'lodash/debounce'
 
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
@@ -27,7 +28,7 @@ let eventsForWeek = (evts, start, end, props) =>
 let propTypes = {
   events: PropTypes.array.isRequired,
   date: PropTypes.instanceOf(Date),
-
+  infinityScroll: PropTypes.bool,
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
 
@@ -116,10 +117,29 @@ class MonthView extends React.Component {
       }),
       false
     )
+
+    if (this.props.infinityScroll) {
+      this.scrollToCenter()
+    }
+  }
+
+  scrollToCenter = () => {
+    const month = this.refs.monthHolder
+    setTimeout(() => {
+      month.scroll({
+        top: 800, //month.offsetHeight * 2 -
+        left: 0,
+        behavior: 'smooth',
+      })
+    }, 400)
   }
 
   componentDidUpdate() {
     if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+
+    if (this.state.scrollY) {
+      this.refs.monthHolder.scrollTop = this.state.scrollY
+    }
   }
 
   componentWillUnmount() {
@@ -130,15 +150,54 @@ class MonthView extends React.Component {
     return findDOMNode(this)
   }
 
+  onScroll = e => {
+    this.checkScroll(e.target)
+  }
+
+  checkScroll = debounce(node => {
+    const scrollPos = node.scrollTop
+    const rows = node.getElementsByClassName('rbc-month-row')
+    const rowHeight = rows[0].offsetHeight
+    const nodeHeight = node.offsetHeight
+    const diff = nodeHeight - rowHeight
+    const totalRowHeight = rows.length * rowHeight
+
+    if (scrollPos < diff) {
+      this.props.onNavigate('PREV')
+      this.setState({
+        scrollY: scrollPos + diff,
+      })
+    } else if (scrollPos > totalRowHeight - nodeHeight * 2) {
+      this.props.onNavigate('NEXT')
+      this.setState({
+        scrollY: scrollPos - diff,
+      })
+    }
+  }, 300)
+
   render() {
-    let { date, culture, weekdayFormat, className } = this.props,
-      month = dates.visibleDays(date, culture),
+    let {
+        date,
+        culture,
+        weekdayFormat,
+        className,
+        infinityScroll,
+      } = this.props,
+      month = dates.visibleDays(date, culture, infinityScroll),
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
 
     return (
-      <div className={cn('rbc-month-view', className)}>
+      <div
+        onScroll={infinityScroll ? this.onScroll : undefined}
+        ref="monthHolder"
+        className={cn(
+          'rbc-month-view',
+          className,
+          infinityScroll ? 'rbc-month-view-infinite' : ''
+        )}
+      >
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0], weekdayFormat, culture)}
         </div>
@@ -165,6 +224,7 @@ class MonthView extends React.Component {
       selected,
       date,
       longPressThreshold,
+      infinityScroll,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -177,7 +237,10 @@ class MonthView extends React.Component {
         key={weekIdx}
         ref={weekIdx === 0 ? 'slotRow' : undefined}
         container={this.getContainer}
-        className="rbc-month-row"
+        className={cn(
+          'rbc-month-row',
+          infinityScroll ? 'rbc-month-row-infinite' : ''
+        )}
         getNow={getNow}
         date={date}
         range={week}
@@ -356,8 +419,9 @@ class MonthView extends React.Component {
 }
 
 MonthView.range = (date, { culture }) => {
-  let start = dates.firstVisibleDay(date, culture)
-  let end = dates.lastVisibleDay(date, culture)
+  const infinityScroll = this.props.infinityScroll
+  let start = dates.firstVisibleDay(date, culture, infinityScroll)
+  let end = dates.lastVisibleDay(date, culture, infinityScroll)
   return { start, end }
 }
 

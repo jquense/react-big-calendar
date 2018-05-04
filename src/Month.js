@@ -129,7 +129,7 @@ class MonthView extends React.Component {
     const rowHeight = rows[0].offsetHeight
     setTimeout(() => {
       month.scrollTop = month.offsetHeight * 2 - rowHeight * 2
-    }, 400)
+    }, 0)
   }
 
   componentDidUpdate() {
@@ -171,7 +171,7 @@ class MonthView extends React.Component {
         scrollY: scrollPos - diff,
       })
     }
-  }, 100)
+  }, 10)
 
   render() {
     let {

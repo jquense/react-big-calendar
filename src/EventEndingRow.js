@@ -25,14 +25,15 @@ class EventEndingRow extends React.Component {
     let { segments, slots: slotCount } = this.props
     let rowSegments = eventLevels(segments).levels[0]
 
-    let current = 1, lastEnd = 1, row = []
+    let current = 1,
+      lastEnd = 1,
+      row = []
 
     while (current <= slotCount) {
       let key = '_lvl_' + current
 
-      let { event, left, right, span } = rowSegments.filter(seg =>
-        isSegmentInSlot(seg, current)
-      )[0] || {} //eslint-disable-line
+      let { event, left, right, span } =
+        rowSegments.filter(seg => isSegmentInSlot(seg, current))[0] || {} //eslint-disable-line
 
       if (!event) {
         current++
@@ -45,20 +46,20 @@ class EventEndingRow extends React.Component {
         let content = EventRowMixin.renderEvent(this.props, event)
 
         if (gap) {
-          row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'))
+          row.push(EventRowMixin.renderSpan(slotCount, gap, key + '_gap'))
         }
 
-        row.push(EventRowMixin.renderSpan(this.props, span, key, content))
+        row.push(EventRowMixin.renderSpan(slotCount, span, key, content))
 
         lastEnd = current = right + 1
       } else {
         if (gap) {
-          row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'))
+          row.push(EventRowMixin.renderSpan(slotCount, gap, key + '_gap'))
         }
 
         row.push(
           EventRowMixin.renderSpan(
-            this.props,
+            slotCount,
             1,
             key,
             this.renderShowMore(segments, current)
@@ -68,11 +69,7 @@ class EventEndingRow extends React.Component {
       }
     }
 
-    return (
-      <div className="rbc-row">
-        {row}
-      </div>
-    )
+    return <div className="rbc-row">{row}</div>
   }
 
   canRenderSlotEvent(slot, span) {
@@ -89,16 +86,18 @@ class EventEndingRow extends React.Component {
     let messages = message(this.props.messages)
     let count = eventsInSlot(segments, slot)
 
-    return count
-      ? <a
-          key={'sm_' + slot}
-          href="#"
-          className={'rbc-show-more'}
-          onClick={e => this.showMore(slot, e)}
-        >
-          {messages.showMore(count)}
-        </a>
-      : false
+    return count ? (
+      <a
+        key={'sm_' + slot}
+        href="#"
+        className={'rbc-show-more'}
+        onClick={e => this.showMore(slot, e)}
+      >
+        {messages.showMore(count)}
+      </a>
+    ) : (
+      false
+    )
   }
 
   showMore(slot, e) {

@@ -131,7 +131,7 @@ function createDropWrapper(type) {
 
       const item = monitor.getItem()
       const { event, anchor } = item
-      const { value } = props
+      const { value, resource } = props
       const {
         onEventDrop = noop,
         onEventResize = noop,
@@ -151,6 +151,7 @@ function createDropWrapper(type) {
           onEventDrop({
             event,
             ...getEventDropProps(start, end, value, droppedInAllDay),
+            resourceId: resource,
           })
           return // all the other cases issue resize action...
 
@@ -194,7 +195,13 @@ function createDropWrapper(type) {
 
       // fall here for all of the resize cases
       // note: the 'drop' param is here for backward compatibility - maybe remove in future?
-      onEventResize('drop', { event, start, end, allDay: droppedInAllDay })
+      onEventResize('drop', {
+        event,
+        start,
+        end,
+        resourceId: resource,
+        allDay: droppedInAllDay,
+      })
     },
   }
 

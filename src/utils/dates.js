@@ -1,7 +1,6 @@
 /* eslint no-fallthrough: off */
 import dateMath from 'date-arithmetic'
 import localizer from '../localizer'
-import moment from 'moment'
 
 const MILLI = {
   seconds: 1000,
@@ -22,14 +21,14 @@ let dates = {
   },
 
   firstVisibleDay(date, culture, infinityScroll) {
-    let beginDate = moment(date).subtract(infinityScroll ? 2 : 0, 'months')._d
+    let beginDate = dateMath.subtract(date, infinityScroll ? 2 : 0, 'month')
     let firstOfMonth = dates.startOf(beginDate, 'month')
 
     return dates.startOf(firstOfMonth, 'week', localizer.startOfWeek(culture))
   },
 
   lastVisibleDay(date, culture, infinityScroll) {
-    let endDate = moment(date).add(infinityScroll ? 2 : 0, 'months')._d
+    let endDate = dateMath.add(date, infinityScroll ? 2 : 0, 'month')
     let endOfMonth = dates.endOf(endDate, 'month')
 
     return dates.endOf(endOfMonth, 'week', localizer.startOfWeek(culture))

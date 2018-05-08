@@ -20,21 +20,23 @@ let dates = {
     return MONTHS.map(i => dates.month(date, i))
   },
 
-  firstVisibleDay(date, culture) {
-    let firstOfMonth = dates.startOf(date, 'month')
+  firstVisibleDay(date, culture, infinityScroll) {
+    let beginDate = dateMath.subtract(date, infinityScroll ? 2 : 0, 'month')
+    let firstOfMonth = dates.startOf(beginDate, 'month')
 
     return dates.startOf(firstOfMonth, 'week', localizer.startOfWeek(culture))
   },
 
-  lastVisibleDay(date, culture) {
-    let endOfMonth = dates.endOf(date, 'month')
+  lastVisibleDay(date, culture, infinityScroll) {
+    let endDate = dateMath.add(date, infinityScroll ? 2 : 0, 'month')
+    let endOfMonth = dates.endOf(endDate, 'month')
 
     return dates.endOf(endOfMonth, 'week', localizer.startOfWeek(culture))
   },
 
-  visibleDays(date, culture) {
-    let current = dates.firstVisibleDay(date, culture),
-      last = dates.lastVisibleDay(date, culture),
+  visibleDays(date, culture, infinityScroll) {
+    let current = dates.firstVisibleDay(date, culture, infinityScroll),
+      last = dates.lastVisibleDay(date, culture, infinityScroll),
       days = []
 
     while (dates.lte(current, last, 'day')) {

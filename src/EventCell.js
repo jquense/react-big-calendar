@@ -14,14 +14,15 @@ let propTypes = {
   isAllDay: PropTypes.bool,
   eventPropGetter: PropTypes.func,
   titleAccessor: accessor,
+  tooltipAccessor: accessor,
   allDayAccessor: accessor,
   startAccessor: accessor,
   endAccessor: accessor,
 
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
-  onSelect: PropTypes.func,
-  onDoubleClick: PropTypes.func,
+  onSelect: PropTypes.func.isRequired,
+  onDoubleClick: PropTypes.func.isRequired,
 }
 
 class EventCell extends React.Component {
@@ -35,6 +36,8 @@ class EventCell extends React.Component {
       startAccessor,
       endAccessor,
       titleAccessor,
+      tooltipAccessor,
+      allDayAccessor,
       slotStart,
       slotEnd,
       onSelect,
@@ -45,11 +48,13 @@ class EventCell extends React.Component {
     } = this.props
 
     let title = get(event, titleAccessor),
+      tooltip = get(event, tooltipAccessor),
       end = get(event, endAccessor),
       start = get(event, startAccessor),
-      isAllDayEvent =
+      allDay = get(event, allDayAccessor),
+      showAsAllDay =
         isAllDay ||
-        get(event, props.allDayAccessor) ||
+        allDay ||
         dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
       continuesPrior = dates.lt(start, slotStart, 'day'),
       continuesAfter = dates.gte(end, slotEnd, 'day')
@@ -62,22 +67,31 @@ class EventCell extends React.Component {
         selected
       )
 
+    let wrapperProps = {
+      event,
+      allDay,
+      continuesPrior,
+      continuesAfter,
+    }
+
     return (
-      <EventWrapper event={event}>
+      // give EventWrapper some extra info to help it determine whether it
+      // it's in a row, etc. Useful for dnd, etc.
+      <EventWrapper {...wrapperProps} isRow={true}>
         <div
           style={{ ...props.style, ...style }}
           className={cn('rbc-event', className, xClassName, {
             'rbc-selected': selected,
-            'rbc-event-allday': isAllDayEvent,
+            'rbc-event-allday': showAsAllDay,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
           onClick={e => onSelect(event, e)}
           onDoubleClick={e => onDoubleClick(event, e)}
         >
-          <div className="rbc-event-content" title={title}>
+          <div className="rbc-event-content" title={tooltip || undefined}>
             {Event ? (
-              <Event event={event} title={title} isAllDay={isAllDayEvent} />
+              <Event event={event} title={title} isAllDay={allDay} />
             ) : (
               title
             )}

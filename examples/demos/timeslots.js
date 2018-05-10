@@ -2,9 +2,8 @@ import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
 
-let Timeslots = props => (
+let Timeslots = () => (
   <BigCalendar
-    {...props}
     events={events}
     step={15}
     timeslots={8}

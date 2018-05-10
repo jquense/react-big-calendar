@@ -39,22 +39,20 @@ const customSlotPropGetter = date => {
   else return {}
 }
 
-let Rendering = props => (
-  <div {...props}>
-    <BigCalendar
-      events={events}
-      defaultDate={new Date(2015, 3, 1)}
-      defaultView="agenda"
-      dayPropGetter={customDayPropGetter}
-      slotPropGetter={customSlotPropGetter}
-      components={{
-        event: Event,
-        agenda: {
-          event: EventAgenda,
-        },
-      }}
-    />
-  </div>
+let Rendering = () => (
+  <BigCalendar
+    events={events}
+    defaultDate={new Date(2015, 3, 1)}
+    defaultView="agenda"
+    dayPropGetter={customDayPropGetter}
+    slotPropGetter={customSlotPropGetter}
+    components={{
+      event: Event,
+      agenda: {
+        event: EventAgenda,
+      },
+    }}
+  />
 )
 
 export default Rendering

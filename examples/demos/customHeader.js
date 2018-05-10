@@ -12,9 +12,8 @@ let MyCustomHeader = ({ label }) => (
   </div>
 )
 
-let CustomHeader = props => (
+let CustomHeader = () => (
   <BigCalendar
-    {...this.props}
     events={events}
     defaultDate={new Date(2015, 3, 1)}
     components={{

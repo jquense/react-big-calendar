@@ -9,6 +9,7 @@ import {
   dateRangeFormat,
   views as componentViews,
 } from './utils/propTypes'
+import warning from 'warning'
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
@@ -34,8 +35,6 @@ function isValidView(view, { views: _views }) {
   return names.indexOf(view) !== -1
 }
 
-let now = new Date()
-
 /**
  * react-big-calendar is a full featured Calendar component for managing events and dates. It uses
  * modern `flexbox` for layout, making it super responsive and performant. Leaving most of the layout heavy lifting
@@ -53,6 +52,12 @@ let now = new Date()
  * on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a
  * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
  */
+/**
+ *
+ *
+ * @static
+ * @memberof Calendar
+ */
 class Calendar extends React.Component {
   static propTypes = {
     /**
@@ -62,7 +67,9 @@ class Calendar extends React.Component {
     elementProps: PropTypes.object,
 
     /**
-     * The current date value of the calendar. Determines the visible view range
+     * The current date value of the calendar. Determines the visible view range.
+     * If `date` is omitted then the result of `getNow` is used; otherwise the
+     * current date is used.
      *
      * @controllable onNavigate
      */
@@ -75,6 +82,13 @@ class Calendar extends React.Component {
      * @controllable onView
      */
     view: PropTypes.string,
+
+    /**
+     * The initial view set for the Calendar.
+     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @default 'month'
+     */
+    defaultView: PropTypes.string,
 
     /**
      * An array of event objects to display on the calendar. Events objects
@@ -114,6 +128,18 @@ class Calendar extends React.Component {
      * @type {(func|string)}
      */
     titleAccessor: accessor,
+
+    /**
+     * Accessor for the event tooltip. Should
+     * resolve to a `renderable` value. Removes the tooltip if null.
+     *
+     * ```js
+     * string | (event: Object) => string
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    tooltipAccessor: accessor,
 
     /**
      * Determines whether the event should be considered an "all day" event and ignore time.
@@ -192,6 +218,21 @@ class Calendar extends React.Component {
     resourceTitleAccessor: accessor,
 
     /**
+     * Determines the current date/time which is highlighted in the views.
+     *
+     * The value affects which day is shaded and which time is shown as
+     * the current time. It also affects the date used by the Today button in
+     * the toolbar.
+     *
+     * Providing a value here can be useful when you are implementing time zones
+     * using the `startAccessor` and `endAccessor` properties.
+     *
+     * @type {func}
+     * @default () => new Date()
+     */
+    getNow: PropTypes.func,
+
+    /**
      * Callback fired when the `date` value changes.
      *
      * @controllable date
@@ -212,6 +253,14 @@ class Calendar extends React.Component {
     onDrillDown: PropTypes.func,
 
     /**
+     * Callback fired when the visible date range changes. Returns an Array of dates
+     * or an object with start and end dates for BUILTIN views.
+     *
+     * Cutom views may return something different.
+     */
+    onRangeChange: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js
@@ -220,7 +269,21 @@ class Calendar extends React.Component {
      *     start: Date,
      *     end: Date,
      *     slots: Array<Date>,
-     *     action: "select" | "click" | "doubleClick"
+     *     action: "select" | "click" | "doubleClick",
+     *     bounds: ?{ // For "select" action
+     *       x: number,
+     *       y: number,
+     *       top: number,
+     *       right: number,
+     *       left: number,
+     *       bottom: number,
+     *     },
+     *     box: ?{ // For "click" or "doubleClick" actions
+     *       clientX: number,
+     *       clientY: number,
+     *       x: number,
+     *       y: number,
+     *     },
      *   }
      * ) => any
      * ```
@@ -291,7 +354,8 @@ class Calendar extends React.Component {
      * ```
      *
      * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
-     * @default ['month', 'week', 'day', 'agenda']
+     * @View
+     ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
 
@@ -631,13 +695,13 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-    date: now,
     step: 30,
     length: 30,
 
     drilldownView: views.DAY,
 
     titleAccessor: 'title',
+    tooltipAccessor: 'title',
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',
@@ -647,6 +711,7 @@ class Calendar extends React.Component {
     resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
+    getNow: () => new Date(),
   }
 
   getViews = () => {
@@ -696,9 +761,12 @@ class Calendar extends React.Component {
       className,
       elementProps,
       date: current,
+      getNow,
       length,
       ...props
     } = this.props
+
+    current = current || getNow()
 
     formats = defaultFormats(formats)
     messages = message(messages)
@@ -722,9 +790,7 @@ class Calendar extends React.Component {
     return (
       <div
         {...elementProps}
-        className={cn('rbc-calendar', className, {
-          'rbc-rtl': props.rtl,
-        })}
+        className={cn(className, 'rbc-calendar', props.rtl && 'rbc-is-rtl')}
         style={style}
       >
         {toolbar && (
@@ -747,6 +813,7 @@ class Calendar extends React.Component {
           formats={undefined}
           events={events}
           date={current}
+          getNow={getNow}
           length={length}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}
@@ -761,23 +828,39 @@ class Calendar extends React.Component {
     )
   }
 
+  handleRangeChange = (date, view) => {
+    let { onRangeChange } = this.props
+    if (onRangeChange) {
+      if (view.range) {
+        onRangeChange(view.range(date, {}))
+      } else {
+        warning(true, 'onRangeChange prop not supported for this view')
+      }
+    }
+  }
+
   handleNavigate = (action, newDate) => {
-    let { view, date, onNavigate, ...props } = this.props
+    let { view, date, getNow, onNavigate, ...props } = this.props
     let ViewComponent = this.getView()
 
     date = moveDate(ViewComponent, {
       ...props,
       action,
       date: newDate || date,
+      today: getNow(),
     })
 
     onNavigate(date, view, action)
+    this.handleRangeChange(date, ViewComponent)
   }
 
   handleViewChange = view => {
     if (view !== this.props.view && isValidView(view, this.props)) {
       this.props.onView(view)
     }
+
+    let views = this.getViews()
+    this.handleRangeChange(this.props.date, views[view])
   }
 
   handleSelectEvent = (...args) => {

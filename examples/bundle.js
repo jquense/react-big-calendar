@@ -5737,7 +5737,7 @@ object-assign
                   resource: resource && resource.id,
                   eventComponent: components.event,
                   eventWrapperComponent: components.eventWrapper,
-                  dayWrapperComponent: components.dayWrapper,
+                  timeSlotWrapperComponent: components.dayWrapper,
                   className: (0, _classnames2.default)({
                     'rbc-now': _dates2.default.eq(date, today, 'day'),
                   }),
@@ -11656,7 +11656,7 @@ object-assign
           resource
         ) {
           var _props = this.props,
-            dayWrapperComponent = _props.dayWrapperComponent,
+            timeSlotWrapperComponent = _props.timeSlotWrapperComponent,
             timeslots = _props.timeslots,
             showLabels = _props.showLabels,
             step = _props.step,
@@ -11677,7 +11677,7 @@ object-assign
             resource: resource,
             showLabels: showLabels,
             timeGutterFormat: timeGutterFormat,
-            dayWrapperComponent: dayWrapperComponent,
+            timeSlotWrapperComponent: timeSlotWrapperComponent,
           })
         }
 
@@ -11750,7 +11750,7 @@ object-assign
 
         slotPropGetter: _propTypes2.default.func,
         dayPropGetter: _propTypes2.default.func,
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
       }
       TimeColumn.defaultProps = {
         step: 30,
@@ -11758,7 +11758,7 @@ object-assign
         showLabels: false,
         type: 'day',
         className: '',
-        dayWrapperComponent: _BackgroundWrapper2.default,
+        timeSlotWrapperComponent: _BackgroundWrapper2.default,
       }
       exports.default = TimeColumn
       module.exports = exports['default']
@@ -53511,7 +53511,7 @@ object-assign
         dragThroughEvents: _propTypes2.default.bool,
         eventPropGetter: _propTypes2.default.func,
         dayPropGetter: _propTypes2.default.func,
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
         eventComponent: _propTypes3.elementType,
         eventWrapperComponent: _propTypes3.elementType.isRequired,
         resource: _propTypes2.default.string,
@@ -54419,7 +54419,7 @@ object-assign
           value
         ) {
           var _props = this.props,
-            dayWrapperComponent = _props.dayWrapperComponent,
+            timeSlotWrapperComponent = _props.timeSlotWrapperComponent,
             showLabels = _props.showLabels,
             isNow = _props.isNow,
             culture = _props.culture,
@@ -54429,7 +54429,7 @@ object-assign
           return _react2.default.createElement(_TimeSlot2.default, {
             key: slotNumber,
             slotPropGetter: slotPropGetter,
-            dayWrapperComponent: dayWrapperComponent,
+            timeSlotWrapperComponent: timeSlotWrapperComponent,
             showLabel: showLabels && !slotNumber,
             content: content,
             culture: culture,
@@ -54467,7 +54467,7 @@ object-assign
       })(_react.Component)
 
       TimeSlotGroup.propTypes = {
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
         timeslots: _propTypes2.default.number.isRequired,
         step: _propTypes2.default.number.isRequired,
         value: _propTypes2.default.instanceOf(Date).isRequired,
@@ -54569,7 +54569,7 @@ object-assign
             slotPropGetter = _props.slotPropGetter,
             resource = _props.resource
 
-          var Wrapper = this.props.dayWrapperComponent
+          var Wrapper = this.props.timeSlotWrapperComponent
 
           var _ref = (slotPropGetter && slotPropGetter(value)) || {},
             className = _ref.className,
@@ -54599,7 +54599,7 @@ object-assign
       })(_react.Component)
 
       TimeSlot.propTypes = {
-        dayWrapperComponent: _propTypes3.elementType,
+        timeSlotWrapperComponent: _propTypes3.elementType,
         value: _propTypes2.default.instanceOf(Date).isRequired,
         isNow: _propTypes2.default.bool,
         showLabel: _propTypes2.default.bool,

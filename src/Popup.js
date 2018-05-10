@@ -11,7 +11,13 @@ import { elementType, dateFormat } from './utils/propTypes'
 
 const propTypes = {
   position: PropTypes.object,
-  popupOffset: PropTypes.number,
+  popupOffset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ]),
   events: PropTypes.array,
   selected: PropTypes.object,
   eventComponent: elementType,

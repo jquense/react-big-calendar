@@ -19,6 +19,7 @@ class Agenda extends React.Component {
     date: PropTypes.instanceOf(Date),
     length: PropTypes.number.isRequired,
     titleAccessor: accessor.isRequired,
+    tooltipAccessor: accessor.isRequired,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
@@ -62,7 +63,7 @@ class Agenda extends React.Component {
 
     return (
       <div className="rbc-agenda-view">
-        <table ref="header">
+        <table ref="header" className="rbc-agenda-table">
           <thead>
             <tr>
               <th className="rbc-header" ref="dateCol">
@@ -76,7 +77,7 @@ class Agenda extends React.Component {
           </thead>
         </table>
         <div className="rbc-agenda-content" ref="content">
-          <table>
+          <table className="rbc-agenda-table">
             <tbody ref="tbody">
               {range.map((day, idx) => this.renderDay(day, events, idx))}
             </tbody>
@@ -221,6 +222,11 @@ class Agenda extends React.Component {
   }
 }
 
+Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
+  let end = dates.add(start, length, 'day')
+  return { start, end }
+}
+
 Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   switch (action) {
     case navigate.PREVIOUS:
@@ -237,14 +243,6 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 Agenda.title = (
   start,
   { length = Agenda.defaultProps.length, formats, culture }
-) => {
-  let end = dates.add(start, length, 'day')
-  return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)
-}
-
-Agenda.title = (
-  start,
-  { length = (length = Agenda.defaultProps.length), formats, culture }
 ) => {
   let end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, formats.agendaHeaderFormat, culture)

@@ -26,6 +26,12 @@ class WorkWeek extends React.Component {
   }
 }
 
+WorkWeek.range = (date, options) => {
+  return Week.range(date, options).filter(
+    d => [6, 0].indexOf(d.getDay()) === -1
+  )
+}
+
 WorkWeek.navigate = Week.navigate
 
 WorkWeek.title = (date, { formats, culture }) => {

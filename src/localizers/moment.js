@@ -15,13 +15,13 @@ let timeRangeEndFormat = ({ start, end }, culture, local) =>
   ' — ' + local.format(end, 'h:mma', culture)
 
 let weekRangeFormat = ({ start, end }, culture, local) =>
-  local.format(start, 'MMM DD', culture) +
+  local.format(start, 'MMMM DD', culture) +
   ' - ' +
-  local.format(end, dates.eq(start, end, 'month') ? 'DD' : 'MMM DD', culture)
+  local.format(end, dates.eq(start, end, 'month') ? 'DD' : 'MMMM DD', culture)
 
 export let formats = {
   dateFormat: 'DD',
-  dayFormat: 'ddd DD/MM',
+  dayFormat: 'DD ddd',
   weekdayFormat: 'ddd',
 
   selectRangeFormat: timeRangeFormat,

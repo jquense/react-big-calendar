@@ -7,12 +7,7 @@ import { findDOMNode } from 'react-dom'
 
 import dates from './utils/dates'
 import { accessor, elementType } from './utils/propTypes'
-import {
-  segStyle,
-  eventSegments,
-  endOfRange,
-  eventLevels,
-} from './utils/eventLevels'
+import { eventSegments, endOfRange, eventLevels } from './utils/eventLevels'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
@@ -39,13 +34,13 @@ const propTypes = {
   onSelectStart: PropTypes.func,
   dayPropGetter: PropTypes.func,
 
-  now: PropTypes.instanceOf(Date).isRequired,
+  getNow: PropTypes.func.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
-  dateCellWrapper: elementType,
   eventComponent: elementType,
   eventWrapperComponent: elementType.isRequired,
+  dateCellWrapperComponent: elementType,
   minRows: PropTypes.number.isRequired,
   maxRows: PropTypes.number.isRequired,
 }
@@ -56,10 +51,6 @@ const defaultProps = {
 }
 
 class DateContentRow extends React.Component {
-  constructor(...args) {
-    super(...args)
-  }
-
   handleSelectSlot = slot => {
     const { range, onSelectSlot } = this.props
 
@@ -102,15 +93,14 @@ class DateContentRow extends React.Component {
   }
 
   renderHeadingCell = (date, index) => {
-    let { renderHeader, range } = this.props
+    let { renderHeader, getNow } = this.props
 
     return renderHeader({
       date,
       key: `header_${index}`,
-      style: segStyle(1, range.length),
       className: cn(
         'rbc-date-cell',
-        dates.eq(date, this.props.now, 'day') && 'rbc-now' // FIXME use props.now
+        dates.eq(date, getNow(), 'day') && 'rbc-now'
       ),
     })
   }
@@ -126,7 +116,7 @@ class DateContentRow extends React.Component {
             </div>
           )}
           <div className="rbc-row" ref={this.createEventRef}>
-            <div className="rbc-row-segment" style={segStyle(1, range.length)}>
+            <div className="rbc-row-segment">
               <div className="rbc-event">
                 <div className="rbc-event-content">&nbsp;</div>
               </div>
@@ -149,10 +139,11 @@ class DateContentRow extends React.Component {
       renderForMeasure,
       startAccessor,
       endAccessor,
+      getNow,
       renderHeader,
       minRows,
       maxRows,
-      dateCellWrapper,
+      dateCellWrapperComponent,
       eventComponent,
       eventWrapperComponent,
       onSelectStart,
@@ -185,6 +176,7 @@ class DateContentRow extends React.Component {
       <div className={className}>
         <BackgroundCells
           date={date}
+          getNow={getNow}
           rtl={rtl}
           range={range}
           selectable={selectable}
@@ -193,7 +185,7 @@ class DateContentRow extends React.Component {
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
           onSelectSlot={this.handleSelectSlot}
-          cellWrapperComponent={dateCellWrapper}
+          cellWrapperComponent={dateCellWrapperComponent}
           longPressThreshold={longPressThreshold}
         />
 

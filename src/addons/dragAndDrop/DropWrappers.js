@@ -16,12 +16,12 @@ function getEventDropProps(start, end, dropDate, droppedInAllDay) {
   /*
    * If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
    * the original start date and add it to newDate.value
-   * 
+   *
    * note: this behavior remains for backward compatibility, but might be counter-intuitive to some:
    * dragging an event from the grid to the day header might more commonly mean "make this an allDay event
    * on that day" - but the behavior here implements "keep the times of the event, but move it to the
    * new day".
-   * 
+   *
    * To permit either interpretation, we embellish a new `allDay` parameter which determines whether the
    * event was dropped on the day header or not.
    */
@@ -46,6 +46,7 @@ class DropWrapper extends React.Component {
   static contextTypes = {
     onEventDrop: PropTypes.func,
     onEventResize: PropTypes.func,
+    components: PropTypes.object,
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
     endAccessor: accessor,
@@ -99,7 +100,10 @@ class DropWrapper extends React.Component {
 
   render() {
     const { connectDropTarget, children, type, isOver } = this.props
-    const BackgroundWrapper = BigCalendar.components[type]
+
+    // Check if wrapper component of this type was passed in, otherwise use library default
+    const { components } = this.context
+    const BackgroundWrapper = components[type] || BigCalendar.components[type]
 
     let resultingChildren = children
     if (isOver)

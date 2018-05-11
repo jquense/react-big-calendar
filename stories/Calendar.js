@@ -372,6 +372,38 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('add custom dateCellWrapper', () => {
+    const components = {
+      dateCellWrapper: props => {
+        const hasAlert = Math.random() <= 1 / 3
+        const style = {
+          display: 'flex',
+          flex: 1,
+          borderLeft: '1px solid #DDD',
+          backgroundColor: hasAlert ? 'green' : '#fff',
+        }
+        return (
+          <div style={style}>
+            {hasAlert && (
+              <a onClick={action('custom dateCellWrapper component clicked')}>
+                Click me
+              </a>
+            )}
+            {props.children}
+          </div>
+        )
+      },
+    }
+    return (
+      <div style={{ height: 600 }}>
+        <Calendar
+          defaultView={Calendar.Views.MONTH}
+          events={events}
+          components={components}
+        />
+      </div>
+    )
+  })
   .add('no duration', () => {
     return (
       <div style={{ height: 600 }}>
@@ -552,6 +584,43 @@ storiesOf('module.Calendar.week', module)
         <DragAndDropCalendar
           defaultDate={new Date()}
           defaultView="week"
+          events={events}
+          resizable
+          showMultiDayTimes
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable with custom dateCellWrapper', () => {
+    const components = {
+      dateCellWrapper: props => {
+        const hasAlert = Math.random() <= 1 / 3
+        const style = {
+          display: 'flex',
+          flex: 1,
+          borderLeft: '1px solid #DDD',
+          backgroundColor: hasAlert ? 'green' : '#fff',
+        }
+        return (
+          <div style={style}>
+            {hasAlert && (
+              <a onClick={action('custom dateCellWrapper component clicked')}>
+                Click me
+              </a>
+            )}
+            {props.children}
+          </div>
+        )
+      },
+    }
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          components={components}
+          defaultDate={new Date()}
+          defaultView="month"
           events={events}
           resizable
           showMultiDayTimes

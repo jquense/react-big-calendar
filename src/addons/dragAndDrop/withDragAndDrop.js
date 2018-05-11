@@ -78,6 +78,7 @@ export default function withDragAndDrop(
 
     static defaultProps = {
       // TODO: pick these up from Calendar.defaultProps
+      components: {},
       startAccessor: 'start',
       endAccessor: 'end',
       allDayAccessor: 'allDay',
@@ -92,6 +93,7 @@ export default function withDragAndDrop(
     static childContextTypes = {
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
+      components: PropTypes.object,
       startAccessor: accessor,
       endAccessor: accessor,
       draggableAccessor: accessor,
@@ -102,6 +104,7 @@ export default function withDragAndDrop(
       return {
         onEventDrop: this.props.onEventDrop,
         onEventResize: this.props.onEventResize,
+        components: this.props.components,
         startAccessor: this.props.startAccessor,
         endAccessor: this.props.endAccessor,
         step: this.props.step,

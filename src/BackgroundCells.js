@@ -70,7 +70,7 @@ class BackgroundCells extends React.Component {
     return (
       <div className="rbc-row-bg">
         {range.map((date, index) => {
-          let selected = selecting && index >= startIdx && index <= endIdx
+          let selected = index >= startIdx && index <= endIdx
           const { className, style } =
             (dayPropGetter && dayPropGetter(date)) || {}
 

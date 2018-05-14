@@ -43,7 +43,7 @@ const resourceMap = [
 let Resource = () => (
   <BigCalendar
     events={events}
-    defaultView="day"
+    defaultView={BigCalendar.Views.DAY}
     views={['day', 'work_week']}
     step={60}
     defaultDate={new Date(2018, 0, 29)}

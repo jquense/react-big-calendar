@@ -49,7 +49,7 @@ MyWeek.title = date => {
 let CustomView = () => (
   <BigCalendar
     events={events}
-    defaultView="week"
+    defaultView={BigCalendar.Views.WEEK}
     defaultDate={new Date(2015, 3, 1)}
     views={{ month: true, week: MyWeek }}
   />

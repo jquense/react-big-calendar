@@ -119,7 +119,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
@@ -133,7 +133,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <DragableCalendar
-          defaultView="day"
+          defaultView={Calendar.Views.DAY}
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={[
@@ -181,7 +181,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           selectable
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
@@ -197,7 +197,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           selectable
           timeslots={4}
           step={15}
@@ -215,7 +215,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           selectable
           timeslots={6}
           step={10}
@@ -233,7 +233,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           selectable
           timeslots={6}
           step={5}
@@ -251,7 +251,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           selectable
           timeslots={3}
           getNow={() => moment('9:30am', 'h:mma').toDate()}
@@ -537,7 +537,7 @@ storiesOf('module.Calendar.week', module)
     return (
       <div style={{ height: 600 }}>
         <Calendar
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           getNow={customNow}
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
@@ -553,7 +553,7 @@ storiesOf('module.Calendar.week', module)
       <div style={{ height: 600 }}>
         <DragAndDropCalendar
           defaultDate={new Date()}
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           events={events}
           resizable
           onEventDrop={action('event dropped')}
@@ -567,7 +567,7 @@ storiesOf('module.Calendar.week', module)
       <div style={{ height: 600 }}>
         <DragAndDropCalendar
           defaultDate={new Date()}
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           events={events}
           resizable
           step={15}
@@ -583,7 +583,7 @@ storiesOf('module.Calendar.week', module)
       <div style={{ height: 600 }}>
         <DragAndDropCalendar
           defaultDate={new Date()}
-          defaultView="week"
+          defaultView={Calendar.Views.WEEK}
           events={events}
           resizable
           showMultiDayTimes
@@ -620,7 +620,7 @@ storiesOf('module.Calendar.week', module)
         <DragAndDropCalendar
           components={components}
           defaultDate={new Date()}
-          defaultView="month"
+          defaultView={Calendar.Views.MONTH}
           events={events}
           resizable
           showMultiDayTimes

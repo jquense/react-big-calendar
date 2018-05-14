@@ -43,7 +43,7 @@ let Rendering = () => (
   <BigCalendar
     events={events}
     defaultDate={new Date(2015, 3, 1)}
-    defaultView="agenda"
+    defaultView={BigCalendar.Views.AGENDA}
     dayPropGetter={customDayPropGetter}
     slotPropGetter={customSlotPropGetter}
     components={{

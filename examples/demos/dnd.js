@@ -59,7 +59,7 @@ class Dnd extends React.Component {
         onEventDrop={this.moveEvent}
         resizable
         onEventResize={this.resizeEvent}
-        defaultView="week"
+        defaultView={BigCalendar.Views.WEEK}
         defaultDate={new Date(2015, 3, 12)}
       />
     )

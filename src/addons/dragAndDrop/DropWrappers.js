@@ -39,8 +39,10 @@ function getEventDropProps(start, end, dropDate, droppedInAllDay) {
 class DropWrapper extends React.Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
-    type: PropTypes.string,
     isOver: PropTypes.bool,
+    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    type: PropTypes.string,
+    value: PropTypes.instanceOf(Date),
   }
 
   static contextTypes = {
@@ -99,20 +101,35 @@ class DropWrapper extends React.Component {
   // };
 
   render() {
-    const { connectDropTarget, children, type, isOver } = this.props
+    const {
+      connectDropTarget,
+      children,
+      isOver,
+      range,
+      type,
+      value,
+    } = this.props
 
     // Check if wrapper component of this type was passed in, otherwise use library default
     const { components } = this.context
     const BackgroundWrapper = components[type] || BigCalendar.components[type]
+    const backgroundWrapperProps = {
+      value,
+    }
+
+    if (range) {
+      backgroundWrapperProps.range = range
+    }
 
     let resultingChildren = children
-    if (isOver)
+    if (isOver) {
       resultingChildren = React.cloneElement(children, {
         className: cn(children.props.className, 'rbc-addons-dnd-over'),
       })
+    }
 
     return (
-      <BackgroundWrapper>
+      <BackgroundWrapper {...backgroundWrapperProps}>
         {connectDropTarget(resultingChildren)}
       </BackgroundWrapper>
     )

@@ -8,6 +8,7 @@ import '../src/less/styles.less'
 import '../src/addons/dragAndDrop/styles.less'
 import demoEvents from '../examples/events'
 import createEvents from './createEvents'
+import customComponents from './customComponents'
 import resources from './resourceEvents'
 import withDragAndDrop from '../src/addons/dragAndDrop'
 
@@ -373,33 +374,27 @@ storiesOf('module.Calendar.week', module)
     )
   })
   .add('add custom dateCellWrapper', () => {
-    const components = {
-      dateCellWrapper: props => {
-        const hasAlert = Math.random() <= 1 / 3
-        const style = {
-          display: 'flex',
-          flex: 1,
-          borderLeft: '1px solid #DDD',
-          backgroundColor: hasAlert ? 'green' : '#fff',
-        }
-        return (
-          <div style={style}>
-            {hasAlert && (
-              <a onClick={action('custom dateCellWrapper component clicked')}>
-                Click me
-              </a>
-            )}
-            {props.children}
-          </div>
-        )
-      },
-    }
     return (
       <div style={{ height: 600 }}>
         <Calendar
           defaultView={Calendar.Views.MONTH}
           events={events}
-          components={components}
+          components={{
+            dateCellWrapper: customComponents.dateCellWrapper,
+          }}
+        />
+      </div>
+    )
+  })
+  .add('add custom dayWrapper', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <Calendar
+          defaultView={Calendar.Views.DAY}
+          events={events}
+          components={{
+            dayWrapper: customComponents.dayWrapper,
+          }}
         />
       </div>
     )
@@ -594,33 +589,32 @@ storiesOf('module.Calendar.week', module)
     )
   })
   .add('draggable and resizable with custom dateCellWrapper', () => {
-    const components = {
-      dateCellWrapper: props => {
-        const hasAlert = Math.random() <= 1 / 3
-        const style = {
-          display: 'flex',
-          flex: 1,
-          borderLeft: '1px solid #DDD',
-          backgroundColor: hasAlert ? 'green' : '#fff',
-        }
-        return (
-          <div style={style}>
-            {hasAlert && (
-              <a onClick={action('custom dateCellWrapper component clicked')}>
-                Click me
-              </a>
-            )}
-            {props.children}
-          </div>
-        )
-      },
-    }
     return (
       <div style={{ height: 600 }}>
         <DragAndDropCalendar
-          components={components}
+          components={{
+            dateCellWrapper: customComponents.dateCellWrapper,
+          }}
           defaultDate={new Date()}
           defaultView={Calendar.Views.MONTH}
+          events={events}
+          resizable
+          showMultiDayTimes
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable with custom dayWrapper', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          components={{
+            dayWrapper: customComponents.dayWrapper,
+          }}
+          defaultDate={new Date()}
+          defaultView={Calendar.Views.WEEK}
           events={events}
           resizable
           showMultiDayTimes

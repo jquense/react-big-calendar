@@ -52,8 +52,9 @@ try {
  * If you care about these corner cases, you can examine the `allDay` param suppled
  * in the callback to determine how the user dropped or resized the event.
  *
- * Note: you cannot use custom `EventWrapper`, `DayWrapper` or `DateCellWrapper`
- * components when using this HOC as they are overwritten here.
+ * Note: you cannot use custom `EventWrapper` components when using this HOC as it
+ * is overwritten here.
+ *
  *
  * @param {*} Calendar
  * @param {*} backend

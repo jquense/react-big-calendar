@@ -43,7 +43,7 @@ export class Event {
           return Math.max(max, row.leaves.length + 1) // add itself
         }, 0) + 1 // add the container
 
-      return 100 / columns
+      return (100 - (columns - 1) * 2) / columns
     }
 
     const availableWidth = 100 - this.container._width
@@ -64,7 +64,7 @@ export class Event {
    */
   get width() {
     const noOverlap = this._width
-    const overlap = Math.min(100, this._width * 1.7)
+    const overlap = Math.min(100, this._width)
 
     // Containers can always grow.
     if (this.rows) {
@@ -90,13 +90,13 @@ export class Event {
 
     // Rows always start where their container ends.
     if (this.leaves) {
-      return this.container._width
+      return this.container._width + 2
     }
 
     // Leaves are spread out evenly on the space left by its row.
     const { leaves, xOffset, _width } = this.row
     const index = leaves.indexOf(this) + 1
-    return xOffset + index * _width
+    return xOffset + index * (_width + 2)
   }
 }
 

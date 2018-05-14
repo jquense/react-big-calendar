@@ -7,7 +7,7 @@ import sortBy from 'lodash/sortBy'
 function onSameRow(a, b) {
   return (
     // Occupies the same start slot.
-    Math.abs(b.startSlot - a.startSlot) <= 30 ||
+    Math.abs(b.startSlot - a.startSlot) < 30 ||
     // A's start slot overlaps with b's end slot.
     (a.startSlot > b.startSlot && a.startSlot < b.endSlot)
   )

@@ -500,7 +500,7 @@ class Calendar extends React.Component {
 
     /**
      * Optionally provide a function that returns an object of className or style props
-     * to be applied to the the resource header.
+     * to be applied to the resource header.
      *
      * ```js
      * (resource: Object) => { className?: string, style?: Object }

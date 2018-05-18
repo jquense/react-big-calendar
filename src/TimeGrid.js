@@ -29,6 +29,7 @@ export default class TimeGrid extends Component {
     scrollToTime: PropTypes.instanceOf(Date),
     eventPropGetter: PropTypes.func,
     dayPropGetter: PropTypes.func,
+    resourceHeaderPropGetter: PropTypes.func,
     dayFormat: dateFormat,
     showMultiDayTimes: PropTypes.bool,
     culture: PropTypes.string,
@@ -264,6 +265,7 @@ export default class TimeGrid extends Component {
           resourceAccessor={this.props.resourceAccessor}
           resourceIdAccessor={this.props.resourceIdAccessor}
           resourceTitleAccessor={this.props.resourceTitleAccessor}
+          resourceHeaderPropGetter={this.props.resourceHeaderPropGetter}
           isOverflowing={this.state.isOverflowing}
           dayPropGetter={this.props.dayPropGetter}
           eventPropGetter={eventPropGetter}

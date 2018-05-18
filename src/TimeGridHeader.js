@@ -22,6 +22,7 @@ class TimeGridHeader extends React.Component {
     dayFormat: dateFormat,
     eventPropGetter: PropTypes.func,
     dayPropGetter: PropTypes.func,
+    resourceHeaderPropGetter: PropTypes.func,
     culture: PropTypes.string,
 
     rtl: PropTypes.bool,
@@ -62,16 +63,24 @@ class TimeGridHeader extends React.Component {
   }
 
   renderHeaderResources(range, resources) {
-    const { resourceTitleAccessor, getNow } = this.props
+    const {
+      resourceHeaderPropGetter,
+      resourceTitleAccessor,
+      getNow,
+    } = this.props
     const today = getNow()
 
     return range.map((date, i) => {
       return resources.map((resource, j) => {
+        const { className, style } =
+          (resourceHeaderPropGetter && resourceHeaderPropGetter(resource)) || {}
         return (
           <div
             key={`${i}-${j}`}
+            style={style}
             className={cn(
               'rbc-header',
+              className,
               dates.eq(date, today, 'day') && 'rbc-today'
             )}
           >

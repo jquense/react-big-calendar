@@ -499,6 +499,16 @@ class Calendar extends React.Component {
     dayPropGetter: PropTypes.func,
 
     /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the the resource header.
+     *
+     * ```js
+     * (resource: Object) => { className?: string, style?: Object }
+     * ```
+     */
+    resourceHeaderPropGetter: PropTypes.func,
+
+    /**
      * Support to show multi-day events with specific start and end times in the
      * main time grid (rather than in the all day header).
      *

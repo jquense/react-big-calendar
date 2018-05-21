@@ -44,6 +44,19 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
     }
   }
 
+  // Necessary to be able to select up until the last timeslot in a day
+  const lastSlotMinFromStart = slots.length * step
+  slots.push(
+    new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate(),
+      0,
+      minutesFromMidnight + lastSlotMinFromStart,
+      0,
+      0
+    )
+  )
   function positionFromDate(date) {
     const diff = dates.diff(start, date, 'minutes') + getDstOffset(start, date)
     return Math.min(diff, totalMin)
@@ -74,7 +87,10 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
     },
 
     closestSlotToPosition(percent) {
-      const slot = Math.max(0, Math.floor(percent * numSlots))
+      const slot = Math.min(
+        slots.length - 1,
+        Math.max(0, Math.floor(percent * numSlots))
+      )
       return slots[slot]
     },
 
@@ -94,7 +110,7 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
 
       return {
         top,
-        height: rangeEndMin / totalMin * 100 - top,
+        height: (rangeEndMin - 2) / totalMin * 100 - top,
         start: positionFromDate(rangeStart),
         startDate: rangeStart,
         end: positionFromDate(rangeEnd),

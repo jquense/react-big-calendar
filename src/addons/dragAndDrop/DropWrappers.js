@@ -16,12 +16,12 @@ function getEventDropProps(start, end, dropDate, droppedInAllDay) {
   /*
    * If the event is dropped in a "Day" cell, preserve an event's start time by extracting the hours and minutes off
    * the original start date and add it to newDate.value
-   * 
+   *
    * note: this behavior remains for backward compatibility, but might be counter-intuitive to some:
    * dragging an event from the grid to the day header might more commonly mean "make this an allDay event
    * on that day" - but the behavior here implements "keep the times of the event, but move it to the
    * new day".
-   * 
+   *
    * To permit either interpretation, we embellish a new `allDay` parameter which determines whether the
    * event was dropped on the day header or not.
    */
@@ -131,7 +131,7 @@ function createDropWrapper(type) {
 
       const item = monitor.getItem()
       const { event, anchor } = item
-      const { value } = props
+      const { value, resource } = props
       const {
         onEventDrop = noop,
         onEventResize = noop,
@@ -151,6 +151,7 @@ function createDropWrapper(type) {
           onEventDrop({
             event,
             ...getEventDropProps(start, end, value, droppedInAllDay),
+            resourceId: resource,
           })
           return // all the other cases issue resize action...
 
@@ -194,7 +195,13 @@ function createDropWrapper(type) {
 
       // fall here for all of the resize cases
       // note: the 'drop' param is here for backward compatibility - maybe remove in future?
-      onEventResize('drop', { event, start, end, allDay: droppedInAllDay })
+      onEventResize('drop', {
+        event,
+        start,
+        end,
+        resourceId: resource,
+        allDay: droppedInAllDay,
+      })
     },
   }
 

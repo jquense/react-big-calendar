@@ -9,6 +9,7 @@ import message from './utils/messages'
 import dates from './utils/dates'
 import { navigate } from './utils/constants'
 import { accessor as get } from './utils/accessors'
+import { notify } from './utils/helpers'
 import { accessor, dateFormat, dateRangeFormat } from './utils/propTypes'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
@@ -25,6 +26,9 @@ class Agenda extends React.Component {
     endAccessor: accessor.isRequired,
     eventPropGetter: PropTypes.func,
     selected: PropTypes.object,
+
+    onSelectEvent: PropTypes.func.isRequired,
+    onDoubleClickEvent: PropTypes.func.isRequired,
 
     agendaDateFormat: dateFormat,
     agendaTimeFormat: dateFormat,
@@ -131,7 +135,13 @@ class Agenda extends React.Component {
       let title = get(event, titleAccessor)
 
       return (
-        <tr key={dayKey + '_' + idx} className={className} style={style}>
+        <tr
+          key={dayKey + '_' + idx}
+          className={className}
+          style={style}
+          onClick={e => this._select(event, e)}
+          onDoubleClick={e => this._doubleClick(event, e)}
+        >
           {first}
           <td className="rbc-agenda-time-cell">
             {this.timeRangeLabel(day, event)}
@@ -219,6 +229,14 @@ class Agenda extends React.Component {
     } else {
       classes.removeClass(header, 'rbc-header-overflowing')
     }
+  }
+
+  _select = (...args) => {
+    notify(this.props.onSelectEvent, args)
+  }
+
+  _doubleClick = (...args) => {
+    notify(this.props.onDoubleClickEvent, args)
   }
 }
 

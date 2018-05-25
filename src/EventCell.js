@@ -7,8 +7,8 @@ import { accessor as get } from './utils/accessors'
 
 let propTypes = {
   event: PropTypes.object.isRequired,
-  slotStart: PropTypes.instanceOf(Date),
-  slotEnd: PropTypes.instanceOf(Date),
+  slotStart: PropTypes.object,
+  slotEnd: PropTypes.object,
 
   selected: PropTypes.bool,
   isAllDay: PropTypes.bool,

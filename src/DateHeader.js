@@ -15,7 +15,7 @@ const DateHeader = ({ label, drilldownView, onDrillDown }) => {
 
 DateHeader.propTypes = {
   label: PropTypes.node,
-  date: PropTypes.instanceOf(Date),
+  date: PropTypes.object,
   drilldownView: PropTypes.string,
   onDrillDown: PropTypes.func,
   isOffRange: PropTypes.bool,

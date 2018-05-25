@@ -17,7 +17,7 @@ import Selection, { getBoundsForNode, isEvent } from './Selection'
 
 class BackgroundCells extends React.Component {
   static propTypes = {
-    date: PropTypes.instanceOf(Date),
+    date: PropTypes.object,
     getNow: PropTypes.func.isRequired,
     cellWrapperComponent: elementType,
     container: PropTypes.func,
@@ -29,7 +29,7 @@ class BackgroundCells extends React.Component {
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
 
-    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    range: PropTypes.arrayOf(PropTypes.object),
     rtl: PropTypes.bool,
     type: PropTypes.string,
   }

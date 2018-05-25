@@ -11,8 +11,8 @@ import { isSelected } from './utils/selection'
 export default {
   propTypes: {
     slots: PropTypes.number.isRequired,
-    end: PropTypes.instanceOf(Date),
-    start: PropTypes.instanceOf(Date),
+    end: PropTypes.object,
+    start: PropTypes.object,
 
     selected: PropTypes.object,
     isAllDay: PropTypes.bool,

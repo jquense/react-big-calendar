@@ -9,8 +9,8 @@ class BackgroundWrapper extends React.Component {
 
 BackgroundWrapper.propTypes = {
   children: PropTypes.element,
-  value: PropTypes.instanceOf(Date),
-  range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  value: PropTypes.object,
+  range: PropTypes.arrayOf(PropTypes.object),
 }
 
 export default BackgroundWrapper

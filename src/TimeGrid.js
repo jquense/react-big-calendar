@@ -29,12 +29,12 @@ export default class TimeGrid extends Component {
     resources: PropTypes.array,
 
     step: PropTypes.number,
-    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-    min: PropTypes.instanceOf(Date),
-    max: PropTypes.instanceOf(Date),
+    range: PropTypes.arrayOf(PropTypes.object),
+    min: PropTypes.object,
+    max: PropTypes.object,
     getNow: PropTypes.func.isRequired,
 
-    scrollToTime: PropTypes.instanceOf(Date),
+    scrollToTime: PropTypes.object,
     eventPropGetter: PropTypes.func,
     dayPropGetter: PropTypes.func,
     dayFormat: dateFormat,

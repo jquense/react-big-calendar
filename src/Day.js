@@ -8,7 +8,7 @@ import localizer from './localizer'
 
 class Day extends React.Component {
   static propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.object.isRequired,
   }
 
   render() {

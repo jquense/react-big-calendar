@@ -33,8 +33,8 @@ class DayColumn extends React.Component {
     events: PropTypes.array.isRequired,
     components: PropTypes.object,
     step: PropTypes.number.isRequired,
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
+    min: PropTypes.object.isRequired,
+    max: PropTypes.object.isRequired,
     getNow: PropTypes.func.isRequired,
 
     rtl: PropTypes.bool,

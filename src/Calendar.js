@@ -72,7 +72,7 @@ class Calendar extends React.Component {
      *
      * @controllable onNavigate
      */
-    date: PropTypes.instanceOf(Date),
+    date: PropTypes.object,
 
     /**
      * The current view of the calendar.
@@ -487,17 +487,17 @@ class Calendar extends React.Component {
     /**
      * Constrains the minimum _time_ of the Day and Week views.
      */
-    min: PropTypes.instanceOf(Date),
+    min: PropTypes.object,
 
     /**
      * Constrains the maximum _time_ of the Day and Week views.
      */
-    max: PropTypes.instanceOf(Date),
+    max: PropTypes.object,
 
     /**
      * Determines how far down the scroll pane is initially scrolled down.
      */
-    scrollToTime: PropTypes.instanceOf(Date),
+    scrollToTime: PropTypes.object,
 
     /**
      * Specify a specific culture code for the Calendar.

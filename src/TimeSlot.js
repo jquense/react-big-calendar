@@ -6,7 +6,7 @@ import { elementType } from './utils/propTypes'
 export default class TimeSlot extends Component {
   static propTypes = {
     dayWrapperComponent: elementType,
-    value: PropTypes.instanceOf(Date).isRequired,
+    value: PropTypes.object.isRequired,
     isNow: PropTypes.bool,
     showLabel: PropTypes.bool,
     content: PropTypes.string,

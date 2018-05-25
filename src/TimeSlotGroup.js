@@ -10,7 +10,7 @@ export default class TimeSlotGroup extends Component {
     dayWrapperComponent: elementType,
     timeslots: PropTypes.number.isRequired,
     step: PropTypes.number.isRequired,
-    value: PropTypes.instanceOf(Date).isRequired,
+    value: PropTypes.object.isRequired,
     showLabels: PropTypes.bool,
     isNow: PropTypes.bool,
     slotPropGetter: PropTypes.func,

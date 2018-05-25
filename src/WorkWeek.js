@@ -13,7 +13,7 @@ function workWeekRange(date, options) {
 
 class WorkWeek extends React.Component {
   static propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.object.isRequired,
   }
 
   static defaultProps = TimeGrid.defaultProps

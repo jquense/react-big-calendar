@@ -26,15 +26,15 @@ let eventsForWeek = (evts, start, end, props) =>
 
 let propTypes = {
   events: PropTypes.array.isRequired,
-  date: PropTypes.instanceOf(Date),
+  date: PropTypes.object,
 
-  min: PropTypes.instanceOf(Date),
-  max: PropTypes.instanceOf(Date),
+  min: PropTypes.object,
+  max: PropTypes.object,
 
   step: PropTypes.number,
   getNow: PropTypes.func.isRequired,
 
-  scrollToTime: PropTypes.instanceOf(Date),
+  scrollToTime: PropTypes.object,
   eventPropGetter: PropTypes.func,
   dayPropGetter: PropTypes.func,
 

@@ -1,3 +1,4 @@
+import { ZonedDateTime, LocalDateTime } from 'js-joda'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
@@ -21,7 +22,9 @@ import TimeColumn from './TimeColumn'
 
 function snapToSlot(date, step) {
   var roundTo = 1000 * 60 * step
-  return new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+  return LocalDateTime.ofInstant(
+    Math.floor(dates.nativeTime(date) / roundTo) * roundTo
+  )
 }
 
 function startsAfter(date, max) {
@@ -395,7 +398,7 @@ class DayColumn extends React.Component {
 }
 
 function minToDate(min, date) {
-  var dt = new Date(date),
+  var dt = ZonedDateTime.now(),
     totalMins = dates.diff(dates.startOf(date, 'day'), date, 'minutes')
 
   dt = dates.hours(dt, 0)

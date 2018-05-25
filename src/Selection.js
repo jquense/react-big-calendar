@@ -1,3 +1,5 @@
+import { ZonedDateTime } from 'js-joda'
+import dates from './utils/dates'
 import contains from 'dom-helpers/query/contains'
 import closest from 'dom-helpers/query/closest'
 import events from 'dom-helpers/events'
@@ -284,7 +286,7 @@ class Selection {
 
   _handleClickEvent(e) {
     const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
-    const now = new Date().getTime()
+    const now = dates.nativeTime(ZonedDateTime.now())
 
     if (
       this._lastClickData &&

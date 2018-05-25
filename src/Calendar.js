@@ -1,3 +1,4 @@
+import { ZonedDateTime } from 'js-joda'
 import PropTypes from 'prop-types'
 import React from 'react'
 import uncontrollable from 'uncontrollable'
@@ -227,7 +228,7 @@ class Calendar extends React.Component {
      * using the `startAccessor` and `endAccessor` properties.
      *
      * @type {func}
-     * @default () => new Date()
+     * @default () => ZonedDateTime.now()
      */
     getNow: PropTypes.func,
 
@@ -688,7 +689,7 @@ class Calendar extends React.Component {
     resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
-    getNow: () => new Date(),
+    getNow: () => ZonedDateTime.now(),
   }
 
   getViews = () => {

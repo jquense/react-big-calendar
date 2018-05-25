@@ -6,7 +6,7 @@ const jsJodaZonedDtToJsDate = zdt => {
   // Format into a correct UTC string with trailing Z and parse with new Date()
   const jodaFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
   const utcStr = jodaFormatter.format(zdt.withZoneSameInstant(ZoneId.of('UTC')))
-  return new Date(utcStr) // this Date is safe
+  return new Date(utcStr) // ignore this one
 }
 
 export default function() {

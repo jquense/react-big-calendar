@@ -69,7 +69,7 @@ export default function(globalize) {
             Is supplemental data loaded into CLDR?`
       )
       // maybe cldr supplemental is not loaded? revert to original method
-      const date = new Date()
+      const date = new Date() // ignore this one
       //cldr-data doesn't seem to be zero based
       let localeDay = Math.max(
         parseInt(locale(culture).formatDate(date, { raw: 'e' }), 10) - 1,

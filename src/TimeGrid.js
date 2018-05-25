@@ -1,3 +1,4 @@
+import { ZonedDateTime } from 'js-joda'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import raf from 'dom-helpers/util/requestAnimationFrame'
@@ -73,9 +74,9 @@ export default class TimeGrid extends Component {
 
   static defaultProps = {
     step: 30,
-    min: dates.startOf(new Date(), 'day'),
-    max: dates.endOf(new Date(), 'day'),
-    scrollToTime: dates.startOf(new Date(), 'day'),
+    min: dates.startOf(ZonedDateTime.now(), 'day'),
+    max: dates.endOf(ZonedDateTime.now(), 'day'),
+    scrollToTime: dates.startOf(ZonedDateTime.now(), 'day'),
     /* this is needed to satisfy requirements from TimeColumn required props
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
      */

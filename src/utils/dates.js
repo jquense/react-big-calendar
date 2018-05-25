@@ -1,5 +1,6 @@
 /* eslint no-fallthrough: off */
-import dateMath from 'date-arithmetic'
+// import dateMath from 'date-arithmetic'
+import dateMath from './joda-date-arithmetic'
 import localizer from '../localizer'
 
 const MILLI = {

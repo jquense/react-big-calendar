@@ -2568,10 +2568,6 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-date-arithmetic@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/date-arithmetic/-/date-arithmetic-3.1.0.tgz#1fcd03dbd504b9dbee2b9078c85a5f1c7d3cc2d3"
-
 date-fns@^1.27.2:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
@@ -4972,6 +4968,14 @@ jest@^21.1.0:
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.0.tgz#9e566fee624751a1d720c966cd6226d29d4025aa"
+
+js-joda-timezone@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/js-joda-timezone/-/js-joda-timezone-1.2.1.tgz#ded948e1b6ffcb8cad57e7824d0ba2288f50879d"
+
+js-joda@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/js-joda/-/js-joda-1.8.2.tgz#4a7f3aa0cd1e386c35d7628a741184d761cb1401"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"

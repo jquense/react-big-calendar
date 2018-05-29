@@ -8,12 +8,12 @@ module.exports = {
   entry: path.join(__dirname, '../examples/App.js'),
   output: {
     path: path.join(__dirname, '../examples/'),
-    filename: 'bundle.js',
     publicPath: '/examples',
+    filename: 'bundle.js',
   },
   stats: stats.minimal,
   devServer: {
-    port: 3000,
+    port: 3333,
     stats: stats.minimal,
   },
 

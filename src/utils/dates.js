@@ -109,8 +109,8 @@ let dates = {
     let start, end
 
     if (!unit || unit === 'milliseconds') {
-      start = dates.nativeTime(dates[unit](dateA))
-      end = dates.nativeTime(dates[unit](dateB))
+      start = dates.nativeTime(dateA)
+      end = dates.nativeTime(dateB)
       return Math.abs(start - end)
     }
 

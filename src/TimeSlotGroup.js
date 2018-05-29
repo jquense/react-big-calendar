@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import TimeSlot from './TimeSlot'
-import date from './utils/dates.js'
+import dates from './utils/dates.js'
 import localizer from './localizer'
 import { elementType, dateFormat } from './utils/propTypes'
 
@@ -52,7 +52,7 @@ export default class TimeSlotGroup extends Component {
   renderSlices() {
     const ret = []
     const sliceLength = this.props.step
-    let sliceValue = this.props.value
+    let sliceValue = dates.minutes(this.props.value, 0)
     for (let i = 0; i < this.props.timeslots; i++) {
       const content = localizer.format(
         sliceValue,
@@ -60,7 +60,7 @@ export default class TimeSlotGroup extends Component {
         this.props.culture
       )
       ret.push(this.renderSlice(i, content, sliceValue))
-      sliceValue = date.add(sliceValue, sliceLength, 'minutes')
+      sliceValue = dates.add(sliceValue, sliceLength, 'minutes')
     }
     return ret
   }

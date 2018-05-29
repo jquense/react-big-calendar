@@ -100,7 +100,7 @@ const maths = {
   lt: createComparer((a, b) => a.isBefore(b)),
   min: function() {
     let min
-    arguments.forEach(zdt => {
+    ;[...arguments].forEach(zdt => {
       if (!min || zdt.isBefore(min)) {
         min = zdt
       }
@@ -109,7 +109,7 @@ const maths = {
   },
   max: function() {
     let max
-    arguments.forEach(zdt => {
+    ;[...arguments].forEach(zdt => {
       if (!max || zdt.isAfter(max)) {
         max = zdt
       }
@@ -192,8 +192,9 @@ const inRange = (day, min, max, unit) => {
   )
 }
 
+// this is confusing, needs specs
 const startOf = (date, unit, firstOfWeek) => {
-  let result
+  let result = date
   // do some pre-work
   switch (unit) {
     case CENTURY:
@@ -206,7 +207,10 @@ const startOf = (date, unit, firstOfWeek) => {
       break
     case WEEK:
     case DAY:
-      result = accessors.hours(date, 0)
+      result = result
+        .toLocalDate()
+        .atStartOfDay()
+        .atZone(date.zone())
       break
     case HOURS:
       result = accessors.minutes(date, 0)
@@ -235,9 +239,9 @@ const startOf = (date, unit, firstOfWeek) => {
   return result
 }
 
-// this is confusing, needs specs?
+// this is confusing, needs specs
 const endOf = (date, unit, firstOfWeek) => {
-  let result
+  let result = date
   result = startOf(date, unit, firstOfWeek)
   result = maths.add(result, 1, unit)
   result = maths.subtract(result, 1, MILI)

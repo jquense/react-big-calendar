@@ -2,15 +2,45 @@ import { set } from '../formats'
 import { set as setLocalizer } from '../localizer'
 import { DateTimeFormatter, ZonedDateTime, ZoneId, nativeJs } from 'js-joda'
 
-const jsJodaZonedDtToJsDate = zdt => {
+const formats = {
+  // dateFormat: {
+  // dayFormat: 'ddd DD/MM',
+  // weekdayFormat: 'ddd',
+  // selectRangeFormat: timeRangeFormat,
+  // eventTimeRangeFormat: timeRangeFormat,
+  // eventTimeRangeStartFormat: timeRangeStartFormat,
+  // eventTimeRangeEndFormat: timeRangeEndFormat,
+  // timeGutterFormat: 'LT',
+  // monthHeaderFormat: 'MMMM YYYY',
+  // dayHeaderFormat: 'dddd MMM DD',
+  // dayRangeHeaderFormat: weekRangeFormat,
+  // agendaHeaderFormat: dateRangeFormat,
+  // agendaDateFormat: 'ddd MMM DD',
+  // agendaTimeFormat: 'LT',
+  // agendaTimeRangeFormat: timeRangeFormat,
+
+  //   dateFormat: {
+
+  //   },
+
+  timeGutterFormat: {
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: 'short',
+  },
+}
+
+const jsJodaZonedDtToJsDate = (zdt, timezone) => {
   // Format into a correct UTC string with trailing Z and parse with new Date()
   const jodaFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-  const utcStr = jodaFormatter.format(zdt.withZoneSameInstant(ZoneId.of('UTC')))
+  const utcStr = jodaFormatter.format(
+    zdt.withZoneSameInstant(ZoneId.of(timezone || 'UTC'))
+  )
   return new Date(utcStr) // ignore this one
 }
 
 export default function() {
-  set({})
+  set(formats)
 
   // NB: we only care about the english (EN) locale
   return setLocalizer({

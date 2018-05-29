@@ -6,13 +6,13 @@ export function startsBefore(date, min) {
   return dates.lt(dates.merge(min, date), min, 'minutes')
 }
 
-export function positionFromDate(date, min, total) {
+export function positionFromDate(date, min) {
   if (startsBefore(date, min)) {
     return 0
   }
 
   const diff = dates.diff(min, dates.merge(min, date), 'minutes')
-  return Math.min(diff, total)
+  return diff
 }
 
 export class Event {
@@ -23,8 +23,9 @@ export class Event {
       get(data, endAccessor),
       props
     )
-    this.startSlot = positionFromDate(startDate, min, totalMin)
-    this.endSlot = positionFromDate(endDate, min, totalMin)
+    this.startSlot = positionFromDate(startDate, min)
+    this.endSlot = positionFromDate(endDate, min)
+
     this.start = dates.nativeTime(startDate)
     this.end = dates.nativeTime(endDate)
     this.top = this.startSlot / totalMin * 100
@@ -112,8 +113,8 @@ function normalizeDates(startDate, endDate, { showMultiDayTimes }) {
   let current = ZonedDateTime.now()
 
   // Use noon to compare dates to avoid DST issues.
-  let s = dates.hours(s, 12)
-  let e = dates.hours(e, 12)
+  let s = dates.hours(startDate, 12)
+  let e = dates.hours(endDate, 12)
   let c = dates.hours(current, 12)
 
   // Current day is at the start, but it spans multiple days,

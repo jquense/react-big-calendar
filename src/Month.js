@@ -26,6 +26,8 @@ let eventsForWeek = (evts, start, end, props) =>
 
 let propTypes = {
   events: PropTypes.array.isRequired,
+  timezone: PropTypes.string.isRequired,
+
   date: PropTypes.object,
 
   min: PropTypes.object,

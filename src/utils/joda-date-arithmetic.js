@@ -92,7 +92,7 @@ const maths = {
     }
     return zdt.minus(value, chronoUnit)
   },
-  eq: createComparer((a, b) => a.equals(b)),
+  eq: createComparer((a, b) => a.toLocalDateTime().equals(b.toLocalDateTime())),
   neq: createComparer((a, b) => !a.equals(b)),
   gte: createComparer((a, b) => a.equals(b) || a.isAfter(b)),
   gt: createComparer((a, b) => a.isAfter(b)),

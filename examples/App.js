@@ -27,7 +27,7 @@ let demoRoot =
   'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
 class Example extends React.Component {
-  state = { selected: 'basic' }
+  state = { selected: 'basic', timezone: 'America/Los_Angeles' }
 
   render() {
     let selected = this.state.selected
@@ -128,7 +128,12 @@ class Example extends React.Component {
                 </strong>
               </a>
             </div>
-            <Current />
+            <Current
+              timezone={this.state.timezone}
+              onTzChange={tz => {
+                this.setState({ timezone: tz })
+              }}
+            />
           </div>
         </div>
         <div className="docs">

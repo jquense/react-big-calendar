@@ -16,6 +16,7 @@ import { isSelected } from './utils/selection'
 class Agenda extends React.Component {
   static propTypes = {
     events: PropTypes.array,
+    timezone: PropTypes.string.isRequired,
     date: PropTypes.object,
     length: PropTypes.number.isRequired,
     titleAccessor: accessor.isRequired,

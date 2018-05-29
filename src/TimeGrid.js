@@ -27,6 +27,7 @@ import { inRange, sortEvents, segStyle } from './utils/eventLevels'
 export default class TimeGrid extends Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
+    timezone: PropTypes.string.isRequired,
     resources: PropTypes.array,
 
     step: PropTypes.number,

@@ -1,4 +1,4 @@
-import { ZonedDateTime } from 'js-joda'
+import { ZonedDateTime, ZoneId } from 'js-joda'
 import PropTypes from 'prop-types'
 import React from 'react'
 import uncontrollable from 'uncontrollable'
@@ -118,6 +118,12 @@ class Calendar extends React.Component {
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * Timezone in IANA format i.e 'America/Los_Angeles'
+     */
+    timezone: PropTypes.string,
+    onTzChange: PropTypes.func,
+
+    /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
      *
@@ -230,7 +236,7 @@ class Calendar extends React.Component {
      * @type {func}
      * @default () => ZonedDateTime.now()
      */
-    getNow: PropTypes.func,
+    // getNow: PropTypes.func,
 
     /**
      * Callback fired when the `date` value changes.
@@ -689,7 +695,13 @@ class Calendar extends React.Component {
     resourceTitleAccessor: 'title',
 
     longPressThreshold: 250,
-    getNow: () => ZonedDateTime.now(),
+
+    /* no default timezone: must be provided */
+  }
+
+  getNow = () => {
+    const { timezone } = this.props
+    return ZonedDateTime.now(timezone && ZoneId.of(timezone))
   }
 
   getViews = () => {
@@ -732,6 +744,8 @@ class Calendar extends React.Component {
       toolbar,
       events,
       culture,
+      timezone,
+      onTzChange,
       components = {},
       formats = {},
       messages = {},
@@ -739,12 +753,11 @@ class Calendar extends React.Component {
       className,
       elementProps,
       date: current,
-      getNow,
       length,
       ...props
     } = this.props
 
-    current = current || getNow()
+    current = current || this.getNow()
 
     formats = defaultFormats(formats)
     messages = message(messages)
@@ -779,6 +792,8 @@ class Calendar extends React.Component {
             view={view}
             views={names}
             label={label}
+            timezone={timezone}
+            onTzChange={onTzChange}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
             messages={messages}
@@ -792,8 +807,9 @@ class Calendar extends React.Component {
           culture={culture}
           formats={undefined}
           events={events}
+          timezone={timezone}
           date={current}
-          getNow={getNow}
+          getNow={this.getNow}
           length={length}
           components={viewComponents}
           getDrilldownView={this.getDrilldownView}
@@ -809,14 +825,14 @@ class Calendar extends React.Component {
   }
 
   handleNavigate = (action, newDate) => {
-    let { view, date, getNow, onNavigate, ...props } = this.props
+    let { view, date, onNavigate, ...props } = this.props
     let ViewComponent = this.getView()
 
     date = moveDate(ViewComponent, {
       ...props,
       action,
       date: newDate || date,
-      today: getNow(),
+      today: this.getNow(),
     })
 
     onNavigate(date, view, action)

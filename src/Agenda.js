@@ -3,7 +3,6 @@ import React from 'react'
 import classes from 'dom-helpers/class'
 import getWidth from 'dom-helpers/query/width'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
-import cn from 'classnames'
 
 import localizer from './localizer'
 import message from './utils/messages'
@@ -110,13 +109,12 @@ class Agenda extends React.Component {
     events = events.filter(e => inRange(e, day, day, this.props))
 
     return events.map((event, idx) => {
-      const _isSelected = isSelected(event, selected)
       const { className, style } = eventPropGetter
         ? eventPropGetter(
             event,
             get(event, startAccessor),
             get(event, endAccessor),
-            _isSelected
+            isSelected(event, selected)
           )
         : {}
       let dateLabel =
@@ -139,9 +137,7 @@ class Agenda extends React.Component {
       return (
         <tr
           key={dayKey + '_' + idx}
-          className={cn('rbc-event', className, {
-            'rbc-selected': _isSelected,
-          })}
+          className={className}
           style={style}
           onClick={e => this._select(event, e)}
           onDoubleClick={e => this._doubleClick(event, e)}

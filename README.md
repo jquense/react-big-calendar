@@ -54,6 +54,29 @@ import globalize from 'globalize'
 BigCalendar.setLocalizer(BigCalendar.globalizeLocalizer(globalize))
 ```
 
+#### Date-fns v2.0.0-alpha7
+
+Complete support will be after date-fns v2 release
+
+```js
+import BigCalendar from 'react-big-calendar'
+
+import format from 'date-fns/format'
+import parse from 'date-fns/parse'
+import startOfWeek from 'date-fns/startOfWeek'
+import getDay from 'date-fns/getDay'
+
+const locales = {
+  'en-US': require('date-fns/locale/en-US'),
+  es: require('date-fns/locale/es'),
+  // ...
+}
+
+BigCalendar.setLocalizer(
+  BigCalendar.dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales })
+)
+```
+
 ## Join us on Reactiflux Discord
 
 Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.

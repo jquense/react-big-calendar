@@ -209,6 +209,7 @@ class MonthView extends React.Component {
 
   readerDateHeading = ({ date, className, ...props }) => {
     let {
+      events,
       date: currentDate,
       getDrilldownView,
       dateFormat,
@@ -233,6 +234,7 @@ class MonthView extends React.Component {
         <DateHeaderComponent
           label={label}
           date={date}
+          events={events.filter(evt => inRange(evt, date, date, this.props))}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
           onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}

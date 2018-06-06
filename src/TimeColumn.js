@@ -6,6 +6,7 @@ import dates from './utils/dates'
 import { elementType, dateFormat } from './utils/propTypes'
 import BackgroundWrapper from './BackgroundWrapper'
 import TimeSlotGroup from './TimeSlotGroup'
+import moment from 'moment'
 
 export default class TimeColumn extends Component {
   static propTypes = {
@@ -76,7 +77,7 @@ export default class TimeColumn extends Component {
       timeslots,
       resource,
     } = this.props
-    const totalMin = dates.diff(min, max, 'minutes')
+    const totalMin = moment(max).diff(moment(min), 'minutes')
     const numGroups = Math.ceil(totalMin / (step * timeslots))
     const renderedSlots = []
     const groupLengthInMinutes = step * timeslots

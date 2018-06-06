@@ -193,7 +193,7 @@ class MonthView extends React.Component {
         allDayAccessor={allDayAccessor}
         eventPropGetter={eventPropGetter}
         dayPropGetter={dayPropGetter}
-        renderHeader={this.readerDateHeading}
+        renderHeader={this.renderDateHeading}
         renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
@@ -207,7 +207,7 @@ class MonthView extends React.Component {
     )
   }
 
-  readerDateHeading = ({ date, className, ...props }) => {
+  renderDateHeading = ({ date, className, ...props }) => {
     let {
       events,
       date: currentDate,

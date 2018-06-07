@@ -221,6 +221,14 @@ class MonthView extends React.Component {
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, dateFormat, culture)
     let DateHeaderComponent = this.props.components.dateHeader || DateHeader
+    events = events.filter(evt =>
+      inRange(
+        evt,
+        dates.startOf(date, 'day'),
+        dates.endOf(date, 'day'),
+        this.props
+      )
+    )
 
     return (
       <div
@@ -234,7 +242,7 @@ class MonthView extends React.Component {
         <DateHeaderComponent
           label={label}
           date={date}
-          events={events.filter(evt => inRange(evt, date, date, this.props))}
+          events={events}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
           onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}

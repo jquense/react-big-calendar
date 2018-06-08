@@ -59,7 +59,7 @@ class DayColumn extends React.Component {
     timeSlotWrapperComponent: elementType,
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
-    resource: PropTypes.number,
+    resource: PropTypes.any,
   }
 
   static defaultProps = {

@@ -184,7 +184,7 @@ export default class TimeGrid extends Component {
             {...this.props}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            resource={resource && resource.id}
+            resource={resource.resourceId}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
             timeSlotWrapperComponent={components.dayWrapper}

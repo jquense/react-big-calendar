@@ -102,7 +102,9 @@ class Agenda extends React.Component {
     let EventComponent = components.event
     let DateComponent = components.date
 
-    events = events.filter(e => inRange(e, day, day, this.props))
+    events = events.filter(e =>
+      inRange(e, dates.startOf(day, 'day'), dates.endOf(day, 'day'), this.props)
+    )
 
     return events.map((event, idx) => {
       const { className, style } = eventPropGetter

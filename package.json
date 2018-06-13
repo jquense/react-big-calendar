@@ -1,6 +1,6 @@
 {
   "name": "@hitask/react-big-calendar",
-  "version": "0.19.2",
+  "version": "0.19.3",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "HiTask/react-big-calendar",

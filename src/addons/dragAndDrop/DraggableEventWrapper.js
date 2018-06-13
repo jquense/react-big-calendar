@@ -13,6 +13,7 @@ const EventWrapper = BigCalendar.components.eventWrapper
 class DraggableEventWrapper extends React.Component {
   static contextTypes = {
     draggableAccessor: accessor,
+    resizableAccessor: accessor,
   }
 
   static propTypes = {
@@ -66,7 +67,7 @@ class DraggableEventWrapper extends React.Component {
       continuesAfter,
     } = this.props
 
-    let { draggableAccessor } = this.context
+    let { draggableAccessor, resizableAccessor } = this.context
 
     let isDraggable = draggableAccessor ? !!get(event, draggableAccessor) : true
 
@@ -97,7 +98,10 @@ class DraggableEventWrapper extends React.Component {
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
-    if (typeof event.$resizable === 'undefined' || event.$resizable === true) {
+
+    let isResizable = resizableAccessor ? !!get(event, resizableAccessor) : true
+
+    if (isResizable) {
       if (isRow || allDay) {
         const anchor = (
           <div className="rbc-addons-dnd-resize-ew-anchor">

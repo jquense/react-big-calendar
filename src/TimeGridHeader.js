@@ -149,7 +149,7 @@ class TimeGridHeader extends React.Component {
       eventComponent,
       dateCellWrapperComponent,
       eventWrapperComponent,
-      timeGutterHeaderComponent,
+      timeGutterHeaderComponent: TimeGutterHeader,
     } = this.props
 
     let style = {}
@@ -164,7 +164,7 @@ class TimeGridHeader extends React.Component {
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
         <div className="rbc-label rbc-time-header-gutter" style={{ width }}>
-          {timeGutterHeaderComponent}
+          {TimeGutterHeader && <TimeGutterHeader />}
         </div>
 
         <div className="rbc-time-header-content">

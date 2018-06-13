@@ -52,6 +52,9 @@ let CustomView = () => (
     defaultView="week"
     defaultDate={new Date(2015, 3, 1)}
     views={{ month: true, week: MyWeek }}
+    components={{
+      timeGutterHeader: <p>Custom gutter text</p>,
+    }}
   />
 )
 

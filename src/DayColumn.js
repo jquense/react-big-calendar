@@ -383,7 +383,13 @@ class DayColumn extends React.Component {
   }
 
   _select = (...args) => {
-    notify(this.props.onSelectEvent, args)
+    const event = args[0]
+    if (
+      typeof event.$selectable === 'undefined' ||
+      event.$selectable === true
+    ) {
+      notify(this.props.onSelectEvent, args)
+    }
   }
 
   _doubleClick = (...args) => {

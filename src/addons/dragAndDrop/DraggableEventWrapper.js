@@ -13,6 +13,7 @@ const EventWrapper = BigCalendar.components.eventWrapper
 class DraggableEventWrapper extends React.Component {
   static contextTypes = {
     draggableAccessor: accessor,
+    resizableAccessor: accessor,
   }
 
   static propTypes = {
@@ -66,7 +67,7 @@ class DraggableEventWrapper extends React.Component {
       continuesAfter,
     } = this.props
 
-    let { draggableAccessor } = this.context
+    let { draggableAccessor, resizableAccessor } = this.context
 
     let isDraggable = draggableAccessor ? !!get(event, draggableAccessor) : true
 
@@ -98,48 +99,52 @@ class DraggableEventWrapper extends React.Component {
      * events at the edges of the calendar's min/max location.
      */
 
-    if (isRow || allDay) {
-      const anchor = (
-        <div className="rbc-addons-dnd-resize-ew-anchor">
-          <div className="rbc-addons-dnd-resize-ew-icon" />
+    let isResizable = resizableAccessor ? !!get(event, resizableAccessor) : true
+
+    if (isResizable) {
+      if (isRow || allDay) {
+        const anchor = (
+          <div className="rbc-addons-dnd-resize-ew-anchor">
+            <div className="rbc-addons-dnd-resize-ew-icon" />
+          </div>
+        )
+        StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
+        EndAnchor = !continuesAfter && connectRightDragSource(anchor)
+      } else {
+        const anchor = (
+          <div className="rbc-addons-dnd-resize-ns-anchor">
+            <div className="rbc-addons-dnd-resize-ns-icon" />
+          </div>
+        )
+        StartAnchor = !continuesPrior && connectTopDragSource(anchor)
+        EndAnchor = !continuesAfter && connectBottomDragSource(anchor)
+      }
+
+      /*
+      * props.children is the singular <Event> component.
+      * BigCalendar positions the Event abolutely and we
+      * need the anchors to be part of that positioning.
+      * So we insert the anchors inside the Event's children
+      * rather than wrap the Event here as the latter approach
+      * would lose the positioning.
+      */
+      const childrenWithAnchors = (
+        <div className="rbc-addons-dnd-resizable">
+          {StartAnchor}
+          {children.props.children}
+          {EndAnchor}
         </div>
       )
-      StartAnchor = !continuesPrior && connectLeftDragSource(anchor)
-      EndAnchor = !continuesAfter && connectRightDragSource(anchor)
-    } else {
-      const anchor = (
-        <div className="rbc-addons-dnd-resize-ns-anchor">
-          <div className="rbc-addons-dnd-resize-ns-icon" />
-        </div>
-      )
-      StartAnchor = !continuesPrior && connectTopDragSource(anchor)
-      EndAnchor = !continuesAfter && connectBottomDragSource(anchor)
+
+      children = React.cloneElement(children, {
+        className: cn(
+          children.props.className,
+          isDragging && 'rbc-addons-dnd-dragging',
+          isResizing && 'rbc-addons-dnd-resizing'
+        ),
+        children: childrenWithAnchors, // replace original event child with anchor-embellished child
+      })
     }
-
-    /*
-     * props.children is the singular <Event> component.
-     * BigCalendar positions the Event abolutely and we
-     * need the anchors to be part of that positioning.
-     * So we insert the anchors inside the Event's children
-     * rather than wrap the Event here as the latter approach
-     * would lose the positioning.
-     */
-    const childrenWithAnchors = (
-      <div className="rbc-addons-dnd-resizable">
-        {StartAnchor}
-        {children.props.children}
-        {EndAnchor}
-      </div>
-    )
-
-    children = React.cloneElement(children, {
-      className: cn(
-        children.props.className,
-        isDragging && 'rbc-addons-dnd-dragging',
-        isResizing && 'rbc-addons-dnd-resizing'
-      ),
-      children: childrenWithAnchors, // replace original event child with anchor-embellished child
-    })
 
     return (
       <EventWrapper event={event} allDay={allDay}>

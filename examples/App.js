@@ -22,6 +22,7 @@ import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
 import Resource from './demos/resource'
+import DndResource from './demos/dndresource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
 
@@ -43,6 +44,7 @@ class Example extends React.Component {
       resource: Resource,
       timeslots: Timeslots,
       dnd: Dnd,
+      dndresource: DndResource,
     }[selected]
 
     return (
@@ -117,6 +119,11 @@ class Example extends React.Component {
               <li className={cn({ active: selected === 'dnd' })}>
                 <a href="#" onClick={this.select.bind(null, 'dnd')}>
                   Drag and Drop
+                </a>
+              </li>
+              <li className={cn({ active: selected === 'dndresource' })}>
+                <a href="#" onClick={this.select.bind(null, 'dndresource')}>
+                  D'n'D Resource columns
                 </a>
               </li>
             </ul>

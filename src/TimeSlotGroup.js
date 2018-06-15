@@ -11,7 +11,7 @@ export default class TimeSlotGroup extends Component {
     timeSlotWrapperComponent: elementType,
     group: PropTypes.array.isRequired,
     slotPropGetter: PropTypes.func,
-    resource: PropTypes.string,
+    resource: PropTypes.any,
   }
   static defaultProps = {
     timeSlotWrapperComponent: BackgroundWrapper,

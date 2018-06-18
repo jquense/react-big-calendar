@@ -399,6 +399,19 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('add custom eventWrapper', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <Calendar
+          defaultView={Calendar.Views.DAY}
+          events={events}
+          components={{
+            eventWrapper: customComponents.eventWrapper,
+          }}
+        />
+      </div>
+    )
+  })
   .add('no duration', () => {
     return (
       <div style={{ height: 600 }}>
@@ -612,6 +625,24 @@ storiesOf('module.Calendar.week', module)
         <DragAndDropCalendar
           components={{
             dayWrapper: customComponents.dayWrapper,
+          }}
+          defaultDate={new Date()}
+          defaultView={Calendar.Views.WEEK}
+          events={events}
+          resizable
+          showMultiDayTimes
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+        />
+      </div>
+    )
+  })
+  .add('draggable and resizable with custom eventWrapper', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          components={{
+            eventWrapper: customComponents.eventWrapper,
           }}
           defaultDate={new Date()}
           defaultView={Calendar.Views.WEEK}

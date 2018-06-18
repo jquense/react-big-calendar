@@ -44,6 +44,15 @@ const customComponents = {
       </div>
     )
   },
+  eventWrapper: eventWrapperProps => {
+    const style = {
+      border: '4px solid',
+      borderColor:
+        eventWrapperProps.event.start.getHours() % 2 === 0 ? 'green' : 'red',
+      padding: '5px',
+    }
+    return <div style={style}>{eventWrapperProps.children}</div>
+  },
 }
 
 export default customComponents

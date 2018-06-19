@@ -322,6 +322,10 @@ class Selection {
       top = Math.min(pageY, y),
       old = this.selecting
 
+    if (!old && !(w || h)) {
+      return
+    }
+
     this.selecting = true
     this._selectRect = {
       top,

@@ -8,10 +8,10 @@ import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
 
 import BigCalendar from '../../index'
-const EventWrapper = BigCalendar.components.eventWrapper
 
 class DraggableEventWrapper extends React.Component {
   static contextTypes = {
+    components: PropTypes.object,
     draggableAccessor: accessor,
     resizableAccessor: accessor,
   }
@@ -51,6 +51,10 @@ class DraggableEventWrapper extends React.Component {
   }
 
   render() {
+    const { components } = this.context
+    const EventWrapper =
+      components.eventWrapper || BigCalendar.components.eventWrapper
+
     let {
       connectDragSource,
       connectTopDragSource,

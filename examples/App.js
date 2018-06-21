@@ -4,10 +4,11 @@ import Intro from './Intro.md'
 import cn from 'classnames'
 import { render } from 'react-dom'
 
-import localizer from 'react-big-calendar/lib/localizers/globalize'
-import globalize from 'globalize'
+import moment from 'moment-timezone'
+import BigCalendar from 'react-big-calendar'
 
-localizer(globalize)
+moment.tz.setDefault('America/New_York')
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'

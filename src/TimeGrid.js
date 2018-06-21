@@ -481,7 +481,7 @@ export default class TimeGrid extends Component {
     const { rtl, min, max, getNow } = this.props
     const current = getNow()
 
-    const secondsGrid = dates.diff(max, min, 'seconds')
+    const secondsGrid = 24 * 60 * 60
     const secondsPassed = dates.diff(current, min, 'seconds')
 
     const timeIndicator = this.refs.timeIndicator

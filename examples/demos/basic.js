@@ -13,7 +13,7 @@ let Basic = () => (
     timeslots={1}
     showMultiDayTimes
     defaultView="day"
-    defaultDate={new Date(2015, 3, 1)}
+    defaultDate={new Date(2015, 3, 12)}
     scrollToTime={new Date(1970, 1, 1, 7)}
     min={moment()
       .startOf('day')

@@ -7,7 +7,7 @@ import { render } from 'react-dom'
 import moment from 'moment-timezone'
 import BigCalendar from 'react-big-calendar'
 
-moment.tz.setDefault('America/New_York')
+moment.tz.setDefault('America/Chicago')
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
 import 'bootstrap/dist/css/bootstrap.min.css'

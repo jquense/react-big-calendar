@@ -106,7 +106,7 @@ class DayColumn extends React.Component {
       ...props
     } = this.props
 
-    this._totalMin = dates.diff(min, max, 'minutes')
+    this._totalMin = 24 * 60
     let { selecting, startSlot, endSlot } = this.state
     let slotStyle = this._slotStyle(startSlot, endSlot)
 

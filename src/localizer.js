@@ -31,6 +31,10 @@ class DateLocalizer {
       typeof spec.firstOfWeek === 'function',
       'date localizer `firstOfWeek(..)` must be a function'
     )
+    invariant(
+      typeof spec.startOf === 'function',
+      'date localizer `startOf(..)` must be a function'
+    )
 
     this.propType = spec.propType || localePropType
 
@@ -38,6 +42,8 @@ class DateLocalizer {
     this.startOfWeek = spec.firstOfWeek
 
     this.format = (...args) => _format(this, spec.format, ...args)
+
+    this.startOf = spec.startOf
 
     this.parse = (value, format, culture) => {
       let result = spec.parse.call(this, value, format, culture)
@@ -56,6 +62,7 @@ let localizer = {
   parse: error,
   format: error,
   startOfWeek: error,
+  startOf: error,
 }
 
 export function set(newLocalizer) {
@@ -79,6 +86,10 @@ let exp = {
 
   startOfWeek(...args) {
     return localizer.startOfWeek(...args)
+  },
+
+  startOf(...args) {
+    return localizer.startOf(...args)
   },
 }
 

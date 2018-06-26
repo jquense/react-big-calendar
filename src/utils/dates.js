@@ -51,6 +51,16 @@ let dates = {
     return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
   },
 
+  rangeByLength(start, length, unit = 'day') {
+    let current = start,
+      days = []
+    for (let i = 0; i < length; i++) {
+      days.push(current)
+      current = dates.add(current, 1, unit)
+    }
+    return days
+  },
+
   range(start, end, unit = 'day') {
     let current = start,
       days = []

@@ -59,5 +59,11 @@ export default function(moment) {
     format(value, format, culture) {
       return locale(moment(value), culture).format(format)
     },
+
+    startOf(date, unit) {
+      return moment(date)
+        .startOf(unit)
+        .toDate()
+    },
   })
 }

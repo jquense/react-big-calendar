@@ -27,6 +27,11 @@
     white-space: nowrap;
   }
 
+  .rbc-allday-cell-wrapper {
+    max-height: 115px;
+    overflow: auto;
+  }
+
   .rbc-allday-cell {
     box-sizing: content-box;
     width: 100%;
@@ -44,6 +49,16 @@
   }
 }
 
+.rbc-allday-button {
+  display: none;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 11px;
+  border-top: 1px solid #ccc;
+  padding: 0;
+  line-height: 20px;
+}
 
 .rbc-time-header {
   display: flex;
@@ -65,6 +80,15 @@
 
   > .rbc-row.rbc-row-resource {
     border-bottom: 1px solid  @cell-border;
+  }
+
+  .rbc-allday-button {
+    display: block;
+
+    &.expanded > span {
+      display: inherit;
+      transform: rotate(180deg);
+    }
   }
 
   // .rbc-gutter-cell {

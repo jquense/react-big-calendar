@@ -322,6 +322,8 @@ class Selection {
       top = Math.min(pageY, y),
       old = this.selecting
 
+    // Prevent emitting selectStart event until mouse is moved.
+    // in Chrome on Windows, mouseMove event may be fired just after mouseDown event.
     if (!old && !(w || h)) {
       return
     }

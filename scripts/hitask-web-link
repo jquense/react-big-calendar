@@ -1,0 +1,4 @@
+#!/usr/bin/env bash 
+ 
+rm -rf ../hitask-web/node_modules/@hitask/react-big-calendar/lib
+cp -r lib ../hitask-web/node_modules/@hitask/react-big-calendar

@@ -74,6 +74,26 @@
   }
 }
 
+.rbc-row-content-collapse {
+  &.collapsed {
+    max-height: 23px * 5.5; // 5.5 rows
+    overflow: auto;
+  }
+}
+
+.rbc-collapse-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-top: 1px solid @border-color;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  font-size: 11px;
+  line-height: 20px;
+}
+
 .rbc-row-content {
   position: relative;
   user-select: none;

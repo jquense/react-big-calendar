@@ -11,6 +11,7 @@ import { eventSegments, endOfRange, eventLevels } from './utils/eventLevels'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
+import DateContentRowCollapse from './DateContentRowCollapse'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 
@@ -28,6 +29,8 @@ const propTypes = {
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
   longPressThreshold: PropTypes.number,
 
+  collapsable: PropTypes.bool,
+
   onShowMore: PropTypes.func,
   onSelectSlot: PropTypes.func,
   onSelectEnd: PropTypes.func,
@@ -43,13 +46,12 @@ const propTypes = {
   dateCellWrapperComponent: elementType,
   minRows: PropTypes.number,
   maxRows: PropTypes.number.isRequired,
-  expanded: PropTypes.bool,
 }
 
 const defaultProps = {
   minRows: 0,
   maxRows: Infinity,
-  expanded: false,
+  collapsable: false,
 }
 
 class DateContentRow extends React.Component {
@@ -151,7 +153,7 @@ class DateContentRow extends React.Component {
       onSelectStart,
       onSelectEnd,
       longPressThreshold,
-      expanded,
+      collapsable,
       ...props
     } = this.props
 
@@ -173,61 +175,63 @@ class DateContentRow extends React.Component {
     ))
 
     let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1))
-    if (expanded) levels.push([])
+    levels.push([]) // Always add empty row to catch all-day clicks
     while (levels.length < minRows) levels.push([])
 
     return (
-      <div className={className}>
-        <BackgroundCells
-          date={date}
-          getNow={getNow}
-          rtl={rtl}
-          range={range}
-          selectable={selectable}
-          container={this.getContainer}
-          dayPropGetter={dayPropGetter}
-          onSelectStart={onSelectStart}
-          onSelectEnd={onSelectEnd}
-          onSelectSlot={this.handleSelectSlot}
-          cellWrapperComponent={dateCellWrapperComponent}
-          longPressThreshold={longPressThreshold}
-        />
+      <DateContentRowCollapse enabled={collapsable && levels.length > 5}>
+        <div className={className}>
+          <BackgroundCells
+            date={date}
+            getNow={getNow}
+            rtl={rtl}
+            range={range}
+            selectable={selectable}
+            container={this.getContainer}
+            dayPropGetter={dayPropGetter}
+            onSelectStart={onSelectStart}
+            onSelectEnd={onSelectEnd}
+            onSelectSlot={this.handleSelectSlot}
+            cellWrapperComponent={dateCellWrapperComponent}
+            longPressThreshold={longPressThreshold}
+          />
 
-        <div className="rbc-row-content">
-          {renderHeader && (
-            <div className="rbc-row" ref={this.createHeadingRef}>
-              {range.map(this.renderHeadingCell)}
-            </div>
-          )}
-          {levels.map((segs, idx) => (
-            <EventRow
-              {...props}
-              key={idx}
-              start={first}
-              end={last}
-              segments={segs}
-              slots={range.length}
-              eventComponent={eventComponent}
-              eventWrapperComponent={eventWrapperComponent}
-              startAccessor={startAccessor}
-              endAccessor={endAccessor}
-            />
-          ))}
-          {!!extra.length && (
-            <EventEndingRow
-              {...props}
-              start={first}
-              end={last}
-              segments={extra}
-              onShowMore={this.handleShowMore}
-              eventComponent={eventComponent}
-              eventWrapperComponent={eventWrapperComponent}
-              startAccessor={startAccessor}
-              endAccessor={endAccessor}
-            />
-          )}
+          <div className="rbc-row-content">
+            {renderHeader && (
+              <div className="rbc-row" ref={this.createHeadingRef}>
+                {range.map(this.renderHeadingCell)}
+              </div>
+            )}
+            {levels.map((segs, idx) => (
+              <EventRow
+                {...props}
+                key={idx}
+                start={first}
+                end={last}
+                segments={segs}
+                slots={range.length}
+                eventComponent={eventComponent}
+                eventWrapperComponent={eventWrapperComponent}
+                startAccessor={startAccessor}
+                endAccessor={endAccessor}
+              />
+            ))}
+            {!!extra.length && (
+              <EventEndingRow
+                {...props}
+                start={first}
+                end={last}
+                segments={extra}
+                onShowMore={this.handleShowMore}
+                eventComponent={eventComponent}
+                eventWrapperComponent={eventWrapperComponent}
+                startAccessor={startAccessor}
+                endAccessor={endAccessor}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      </DateContentRowCollapse>
     )
   }
 }

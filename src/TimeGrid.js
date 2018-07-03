@@ -272,6 +272,7 @@ export default class TimeGrid extends Component {
           eventComponent={components.event}
           eventWrapperComponent={components.eventWrapper}
           dateCellWrapperComponent={components.dateCellWrapper}
+          timeGutterHeaderComponent={components.timeGutterHeader}
           onSelectSlot={this.handleSelectAllDaySlot}
           onSelectEvent={this.handleSelectAlldayEvent}
           onDoubleClickEvent={this.props.onDoubleClickEvent}

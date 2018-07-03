@@ -655,3 +655,22 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('custom time gutter header', () => {
+    const TimeGutter = () => <p>Custom gutter text</p>
+
+    return (
+      <div style={{ height: 600 }}>
+        <Calendar
+          popup
+          events={demoEvents}
+          onSelectEvent={action('event selected')}
+          defaultDate={new Date(2015, 3, 1)}
+          defaultView="week"
+          views={['week', 'day']}
+          components={{
+            timeGutterHeader: TimeGutter,
+          }}
+        />
+      </div>
+    )
+  })

@@ -45,6 +45,7 @@ class TimeGridHeader extends React.Component {
     eventComponent: elementType,
     eventWrapperComponent: elementType.isRequired,
     dateCellWrapperComponent: elementType,
+    timeGutterHeaderComponent: elementType,
 
     onSelectSlot: PropTypes.func,
     onSelectEvent: PropTypes.func,
@@ -148,6 +149,7 @@ class TimeGridHeader extends React.Component {
       eventComponent,
       dateCellWrapperComponent,
       eventWrapperComponent,
+      timeGutterHeaderComponent: TimeGutterHeader,
     } = this.props
 
     let style = {}
@@ -161,7 +163,9 @@ class TimeGridHeader extends React.Component {
         style={style}
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        <div className="rbc-label rbc-time-header-gutter" style={{ width }} />
+        <div className="rbc-label rbc-time-header-gutter" style={{ width }}>
+          {TimeGutterHeader && <TimeGutterHeader />}
+        </div>
 
         <div className="rbc-time-header-content">
           <div className="rbc-row rbc-time-header-cell">

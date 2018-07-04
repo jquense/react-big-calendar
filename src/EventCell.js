@@ -91,7 +91,13 @@ class EventCell extends React.Component {
         >
           <div className="rbc-event-content" title={tooltip || undefined}>
             {Event ? (
-              <Event event={event} title={title} isAllDay={allDay} slotStart={slotStart} slotEnd={slotEnd}/>
+              <Event
+                event={event}
+                title={title}
+                isAllDay={allDay}
+                slotStart={slotStart}
+                slotEnd={slotEnd}
+              />
             ) : (
               title
             )}

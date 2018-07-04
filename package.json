@@ -1,5 +1,5 @@
 {
-  "name": "react-big-calendar",
+  "name": "@mondaydotcomorg/react-big-calendar",
   "version": "0.19.4",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
@@ -37,13 +37,6 @@
     "test": "npm run lint && jest",
     "tdd": "jest --watch",
     "release": "release",
-    "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
-    "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "src/**/*.js": "eslint",
-    "test/**/*.js": "eslint",
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 80,

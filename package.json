@@ -36,7 +36,7 @@
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint && jest",
     "tdd": "jest --watch",
-    "release": "release",
+    "release": "release"
   },
   "prettier": {
     "printWidth": 80,

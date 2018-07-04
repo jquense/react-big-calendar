@@ -1,13 +1,18 @@
 {
   "name": "react-big-calendar",
-  "version": "0.19.2",
+  "version": "0.19.3",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": ["lib/", "LICENSE", "README.md", "CHANGELOG.md"],
+  "files": [
+    "lib/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "keywords": [
     "scheduler",
     "react-component",
@@ -20,18 +25,13 @@
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
     "l": "lessc --autoprefix=\"ie >= 10, safari >= 8, last 2 versions\" ",
-    "less":
-      "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
-    "less-dnd":
-      "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
+    "less": "npm run l src/less/styles.less ./lib/css/react-big-calendar.css && npm run less-dnd",
+    "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build":
-      "npm run clean && babel src --out-dir lib && npm run assets && npm run less",
-    "build:examples":
-      "npm run clean:examples && webpack --config examples/webpack.config.js",
-    "examples":
-      "npm run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
+    "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less",
+    "build:examples": "npm run clean:examples && webpack --config examples/webpack.config.js",
+    "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
     "test": "npm run lint && jest",
@@ -43,7 +43,10 @@
   "lint-staged": {
     "src/**/*.js": "eslint",
     "test/**/*.js": "eslint",
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 80,

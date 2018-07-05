@@ -1,9 +1,9 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.20.2",
+  "name": "@clickclickdrive/react-big-calendar",
+  "version": "0.19.3",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "intljusticemission/react-big-calendar",
+  "repository": "aMoRRoMa/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",

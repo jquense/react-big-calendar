@@ -715,6 +715,16 @@ class Calendar extends React.Component {
     getNow: () => new Date(),
   }
 
+  static childContextTypes = {
+    onNavigate: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      onNavigate: this.handleNavigate,
+    }
+  }
+
   getViews = () => {
     const views = this.props.views
 

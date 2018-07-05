@@ -6,6 +6,7 @@ import noop from 'lodash/noop'
 
 import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
+import { navigate } from '../../utils/constants'
 import dates from '../../utils/dates'
 import BigCalendar from '../../index'
 
@@ -48,6 +49,7 @@ class DropWrapper extends React.Component {
   static contextTypes = {
     onEventDrop: PropTypes.func,
     onEventResize: PropTypes.func,
+    onNavigate: PropTypes.func,
     components: PropTypes.object,
     dragDropManager: PropTypes.object,
     startAccessor: accessor,
@@ -147,6 +149,7 @@ function createDropWrapper(type) {
 
   const dropTarget = {
     drop(_, monitor, { props, context }) {
+      clearTimeout(this.timer)
       const itemType = monitor.getItemType()
       if (itemType !== 'event') return
 
@@ -223,6 +226,36 @@ function createDropWrapper(type) {
         resourceId: resource,
         allDay: droppedInAllDay,
       })
+    },
+
+    hover(_, monitor, { context }) {
+      const { onNavigate = noop } = context
+      const selectedDate = new Date(_.value)
+      const hoverDay = selectedDate.getDay()
+
+      if (hoverDay !== this.prevDay) {
+        switch (hoverDay) {
+          case 0: // sunday
+            this.timer = setTimeout(
+              () => onNavigate(navigate.PREVIOUS, selectedDate),
+              1000
+            )
+            this.prevDay = null
+            break
+          case 6: // saturday
+            this.timer = setTimeout(
+              () => onNavigate(navigate.NEXT, selectedDate),
+              1000
+            )
+            this.prevDay = null
+            break
+          default:
+            clearTimeout(this.timer)
+            this.prevDay = null
+            break
+        }
+      }
+      this.prevDay = hoverDay
     },
   }
 

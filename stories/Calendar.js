@@ -674,3 +674,18 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('drag to next/previous', () => {
+    return (
+      <div style={{ height: 600 }}>
+        <DragAndDropCalendar
+          defaultDate={new Date()}
+          defaultView="month"
+          events={events}
+          resizable
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+          onNavigate={action('dragged to next/prev')}
+        />
+      </div>
+    )
+  })

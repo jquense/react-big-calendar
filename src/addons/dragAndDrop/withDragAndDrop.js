@@ -63,6 +63,7 @@ export default function withDragAndDrop(
     static propTypes = {
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
+      onNavigate: PropTypes.func,
       startAccessor: accessor,
       endAccessor: accessor,
       allDayAccessor: accessor,
@@ -92,6 +93,7 @@ export default function withDragAndDrop(
     static childContextTypes = {
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
+      onNavigate: PropTypes.func,
       components: PropTypes.object,
       startAccessor: accessor,
       endAccessor: accessor,
@@ -104,6 +106,7 @@ export default function withDragAndDrop(
       return {
         onEventDrop: this.props.onEventDrop,
         onEventResize: this.props.onEventResize,
+        onNavigate: this.props.onNavigate,
         components: this.props.components,
         startAccessor: this.props.startAccessor,
         endAccessor: this.props.endAccessor,
@@ -136,6 +139,11 @@ export default function withDragAndDrop(
 
       if (isDragging !== this.state.isDragging) {
         setTimeout(() => this.setState({ isDragging }))
+      }
+
+      // Had to add this to support drag across next/prev
+      if (isDragging && this.monitor.didDrop()) {
+        setTimeout(() => this.setState({ isDragging: false }))
       }
     }
 

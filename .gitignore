@@ -1,4 +1,7 @@
-#lib/
+lib/
+
+*.sw[a-z] # swap files
+
 
 # Logs
 logs

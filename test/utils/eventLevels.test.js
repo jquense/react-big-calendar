@@ -290,7 +290,7 @@ describe('inRange', () => {
     }
     const weekOfThe5th = [d(5), d(11)]
     const weekOfThe12th = [d(12), d(18)]
-    ;[
+    [
       [
         'single day with time, 1 day range',
         { start: d(11, 5), end: d(11, 6) },

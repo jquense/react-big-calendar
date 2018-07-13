@@ -11,6 +11,7 @@ export default class TimeColumn extends Component {
   static propTypes = {
     step: PropTypes.number.isRequired,
     culture: PropTypes.string,
+    timezone: PropTypes.string.isRequired,
     timeslots: PropTypes.number.isRequired,
     getNow: PropTypes.func.isRequired,
     min: PropTypes.object.isRequired,
@@ -44,6 +45,7 @@ export default class TimeColumn extends Component {
       dayPropGetter,
       timeGutterFormat,
       culture,
+      timezone,
     } = this.props
 
     return (
@@ -51,6 +53,7 @@ export default class TimeColumn extends Component {
         key={key}
         isNow={isNow}
         value={date}
+        timezone={timezone}
         step={step}
         slotPropGetter={slotPropGetter}
         dayPropGetter={dayPropGetter}

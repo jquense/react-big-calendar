@@ -15,6 +15,7 @@ class Week extends React.Component {
   render() {
     let { date, ...props } = this.props
     let range = Week.range(date, this.props)
+    const events = this.props.events
 
     return <TimeGrid {...props} range={range} eventOffset={15} />
   }
@@ -37,6 +38,7 @@ Week.range = (date, { culture }) => {
   let firstOfWeek = localizer.startOfWeek(culture)
   let start = dates.startOf(date, 'week', firstOfWeek)
   let end = dates.endOf(date, 'week', firstOfWeek)
+  debugger
 
   return dates.range(start, end)
 }

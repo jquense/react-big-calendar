@@ -1,7 +1,14 @@
 /* eslint no-fallthrough: off */
-import dateMath from './joda-date-arithmetic'
+import dateMath from 'joda-date-arithmetic'
 import localizer from '../localizer'
-import { use as jsJodaUse, ZonedDateTime, IsoFields } from 'js-joda'
+import {
+  use as jsJodaUse,
+  nativeJs,
+  ZonedDateTime,
+  LocalDateTime,
+  ZoneId,
+  IsoFields,
+} from 'js-joda'
 import jsJodaTimeZone from 'js-joda-timezone'
 jsJodaUse(jsJodaTimeZone)
 
@@ -17,9 +24,9 @@ const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 let dates = {
   ...dateMath,
 
-  monthsInYear(year) {
-    const date = new Date(year, 0, 1) // ignore this one
-    const zdt = ZonedDateTime.from(dates.nativeJs(date))
+  monthsInYear(year, timezone) {
+    const datetime = LocalDateTime.of(year, 1, 1)
+    const date = ZonedDateTime.of(datetime, timezone || ZoneId.SYSTEM)
 
     return MONTHS.map(i => dates.month(zdt, i))
   },
@@ -67,11 +74,12 @@ let dates = {
     return days
   },
 
-  merge(date, time) {
+  merge(date, time, timezone) {
+    let tz = timezone || ZoneId.SYSTEM
     if (time == null && date == null) return null
 
-    if (time == null) time = ZonedDateTime.now()
-    if (date == null) date = ZonedDateTime.now()
+    if (time == null) time = ZonedDateTime.now(tz)
+    if (date == null) date = ZonedDateTime.now(tz)
 
     date = dates.startOf(date, 'day')
     date = dates.hours(date, dates.hours(time))
@@ -147,16 +155,24 @@ let dates = {
     return date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
   },
 
-  today() {
-    return dates.startOf(ZonedDateTime.now(), 'day')
+  today(timezone) {
+    return dates.startOf(ZonedDateTime.now(timezone || ZoneId.SYSTEM), 'day')
   },
 
-  yesterday() {
-    return dates.add(dates.startOf(ZonedDateTime.now(), 'day'), -1, 'day')
+  yesterday(timezone) {
+    return dates.add(
+      dates.startOf(ZonedDateTime.now(timezone || ZoneId.SYSTEM), 'day'),
+      -1,
+      'day'
+    )
   },
 
-  tomorrow() {
-    return dates.add(dates.startOf(ZonedDateTime.now(), 'day'), 1, 'day')
+  tomorrow(timezone) {
+    return dates.add(
+      dates.startOf(ZonedDateTime.now(timezone || ZoneId.SYSTEM), 'day'),
+      1,
+      'day'
+    )
   },
 }
 

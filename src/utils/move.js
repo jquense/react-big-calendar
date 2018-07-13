@@ -1,6 +1,6 @@
 import invariant from 'invariant'
 import { navigate } from './constants'
-import { ZonedDateTime } from 'js-joda'
+import { ZonedDateTime, ZoneId } from 'js-joda'
 import VIEWS from '../Views'
 
 export default function moveDate(View, { action, date, today, ...props }) {
@@ -8,7 +8,7 @@ export default function moveDate(View, { action, date, today, ...props }) {
 
   switch (action) {
     case navigate.TODAY:
-      date = today || ZonedDateTime.now()
+      date = today || ZonedDateTime.now(props.timezone || ZoneId.SYSTEM)
       break
     case navigate.DATE:
       break

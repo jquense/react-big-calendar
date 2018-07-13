@@ -12,6 +12,7 @@ import {
 } from './utils/propTypes'
 
 import { notify } from './utils/helpers'
+import { convertToTimezone } from './utils/dayViewLayout/event'
 import { navigate, views } from './utils/constants'
 import defaultFormats from './formats'
 import message from './utils/messages'
@@ -25,6 +26,7 @@ import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import transform from 'lodash/transform'
 import mapValues from 'lodash/mapValues'
+import 'js-joda-timezone'
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -120,7 +122,7 @@ class Calendar extends React.Component {
     /**
      * Timezone in IANA format i.e 'America/Los_Angeles'
      */
-    timezone: PropTypes.string,
+    timezone: PropTypes.string.isRequired,
     onTzChange: PropTypes.func,
 
     /**
@@ -690,17 +692,14 @@ class Calendar extends React.Component {
     startAccessor: 'start',
     endAccessor: 'end',
     resourceAccessor: 'resourceId',
-
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
-
     longPressThreshold: 250,
-
-    /* no default timezone: must be provided */
   }
 
   getNow = () => {
     const { timezone } = this.props
+    const now = ZonedDateTime.now(timezone && ZoneId.of(timezone))
     return ZonedDateTime.now(timezone && ZoneId.of(timezone))
   }
 
@@ -757,7 +756,7 @@ class Calendar extends React.Component {
       ...props
     } = this.props
 
-    current = current || this.getNow()
+    current = convertToTimezone(current || this.getNow(), timezone)
 
     formats = defaultFormats(formats)
     messages = message(messages)
@@ -789,10 +788,11 @@ class Calendar extends React.Component {
         {toolbar && (
           <CalToolbar
             date={current}
+            timezone={timezone}
+            getNow={this.getNow}
             view={view}
             views={names}
             label={label}
-            timezone={timezone}
             onTzChange={onTzChange}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
@@ -807,8 +807,8 @@ class Calendar extends React.Component {
           culture={culture}
           formats={undefined}
           events={events}
-          timezone={timezone}
           date={current}
+          timezone={timezone}
           getNow={this.getNow}
           length={length}
           components={viewComponents}

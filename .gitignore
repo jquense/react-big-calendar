@@ -1,7 +1,6 @@
-lib/
+lib
 
-*.sw[a-z] # swap files
-
+*.sw[a-z]
 
 # Logs
 logs

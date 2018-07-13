@@ -4965,6 +4965,13 @@ jest@^21.1.0:
   dependencies:
     jest-cli "^21.2.1"
 
+joda-date-arithmetic@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/joda-date-arithmetic/-/joda-date-arithmetic-1.0.0.tgz#7521da703896ba31dfbbe2f447b466b4cc68d008"
+  dependencies:
+    js-joda "^1.8.2"
+    js-joda-timezone "^2.0.0"
+
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.0.tgz#9e566fee624751a1d720c966cd6226d29d4025aa"
@@ -4972,6 +4979,10 @@ js-base64@^2.1.8, js-base64@^2.1.9:
 js-joda-timezone@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/js-joda-timezone/-/js-joda-timezone-1.2.1.tgz#ded948e1b6ffcb8cad57e7824d0ba2288f50879d"
+
+js-joda-timezone@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/js-joda-timezone/-/js-joda-timezone-2.0.0.tgz#54352ea91004dbe846855c29a2c5961128a25b7b"
 
 js-joda@^1.8.2:
   version "1.8.2"

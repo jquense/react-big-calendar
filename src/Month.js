@@ -166,6 +166,7 @@ class MonthView extends React.Component {
       messages,
       selected,
       date,
+      timezone,
       longPressThreshold,
     } = this.props
 
@@ -173,6 +174,7 @@ class MonthView extends React.Component {
 
     events = eventsForWeek(events, week[0], week[week.length - 1], this.props)
     events.sort((a, b) => sortEvents(a, b, this.props))
+    console.log('events', events)
 
     return (
       <DateContentRow
@@ -182,6 +184,7 @@ class MonthView extends React.Component {
         className="rbc-month-row"
         getNow={getNow}
         date={date}
+        timezone={timezone}
         range={week}
         events={events}
         maxRows={rowLimit}
@@ -215,6 +218,7 @@ class MonthView extends React.Component {
       getDrilldownView,
       dateFormat,
       culture,
+      timezone,
     } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
@@ -235,6 +239,7 @@ class MonthView extends React.Component {
         <DateHeaderComponent
           label={label}
           date={date}
+          timezone={timezone}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
           onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}

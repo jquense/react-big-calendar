@@ -16,6 +16,7 @@ export default class TimeSlotGroup extends Component {
     slotPropGetter: PropTypes.func,
     timeGutterFormat: dateFormat,
     culture: PropTypes.string,
+    timezone: PropTypes.string.isRequired,
     resource: PropTypes.string,
   }
   static defaultProps = {

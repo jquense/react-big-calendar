@@ -41,10 +41,18 @@ const clickTolerance = 5
 const clickInterval = 250
 
 class Selection {
-  constructor(node, { global = false, longPressThreshold = 250 } = {}) {
+  constructor(
+    node,
+    {
+      global = false,
+      longPressThreshold = 250,
+      getNow = () => ZonedDateTime.now(),
+    } = {}
+  ) {
     this.container = node
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
+    this.getNow = getNow
 
     this._listeners = Object.create(null)
 
@@ -286,7 +294,7 @@ class Selection {
 
   _handleClickEvent(e) {
     const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
-    const now = dates.nativeTime(ZonedDateTime.now())
+    const now = dates.nativeTime(this.getNow())
 
     if (
       this._lastClickData &&

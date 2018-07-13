@@ -1,4 +1,4 @@
-import { ZonedDateTime } from 'js-joda'
+import { ZonedDateTime, ZoneId } from 'js-joda'
 import { accessor as get } from '../accessors'
 import dates from '../dates'
 
@@ -17,12 +17,20 @@ export function positionFromDate(date, min) {
 
 export class Event {
   constructor(data, props) {
-    const { startAccessor, endAccessor, min, totalMin } = props
+    const {
+      startAccessor,
+      endAccessor,
+      min,
+      totalMin,
+      timezone,
+      getNow,
+    } = props
     const [startDate, endDate] = normalizeDates(
       get(data, startAccessor),
       get(data, endAccessor),
       props
     )
+
     this.startSlot = positionFromDate(startDate, min)
     this.endSlot = positionFromDate(endDate, min)
 
@@ -102,25 +110,41 @@ export class Event {
   }
 }
 
+export function convertToTimezone(date, tzString) {
+  const zoneId = ZoneId.of(tzString)
+  if (date.zone().equals(zoneId)) {
+    return date
+  }
+
+  return date.withZoneSameInstant(zoneId)
+}
+
 /**
  * Return start and end dates with respect to timeslot positions.
  */
-function normalizeDates(startDate, endDate, { showMultiDayTimes }) {
+function normalizeDates(
+  startDate,
+  endDate,
+  { showMultiDayTimes, timezone, getNow }
+) {
+  const zonedStartDate = convertToTimezone(startDate, timezone)
+  const zonedEndDate = convertToTimezone(endDate, timezone)
+
   if (!showMultiDayTimes) {
-    return [startDate, endDate]
+    return [zonedStartDate, zonedEndDate]
   }
 
-  let current = ZonedDateTime.now()
+  let current = getNow()
 
   // Use noon to compare dates to avoid DST issues.
-  let s = dates.hours(startDate, 12)
-  let e = dates.hours(endDate, 12)
+  let s = dates.hours(zonedStartDate, 12)
+  let e = dates.hours(zonedEndDate, 12)
   let c = dates.hours(current, 12)
 
   // Current day is at the start, but it spans multiple days,
   // so we correct the end.
   if (dates.eq(c, s) && dates.lt(c, e)) {
-    return [startDate, dates.endOf(startDate, 'day')]
+    return [zonedStartDate, dates.endOf(zonedStartDate, 'day')]
   }
 
   // Current day is in between start and end dates,
@@ -132,8 +156,8 @@ function normalizeDates(startDate, endDate, { showMultiDayTimes }) {
   // Current day is at the end of a multi day event,
   // so we make it start at midnight, and end normally.
   if (dates.gt(c, s) && dates.eq(c, e)) {
-    return [current, endDate]
+    return [current, zonedEndDate]
   }
 
-  return [startDate, endDate]
+  return [zonedStartDate, zonedEndDate]
 }

@@ -21,6 +21,7 @@ let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 
 const propTypes = {
   date: PropTypes.object,
+  timezone: PropTypes.string.isRequired,
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
 
@@ -140,6 +141,7 @@ class DateContentRow extends React.Component {
   render() {
     const {
       date,
+      timezone,
       rtl,
       events,
       range,

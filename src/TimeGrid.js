@@ -5,7 +5,6 @@ import raf from 'dom-helpers/util/requestAnimationFrame'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
-import dates from './utils/dates'
 import localizer from './localizer'
 import DayColumn from './DayColumn'
 import TimeColumn from './TimeColumn'
@@ -14,15 +13,14 @@ import Header from './Header'
 
 import getWidth from 'dom-helpers/query/width'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
+
+import dates from './utils/dates'
 import message from './utils/messages'
-
-import { accessor, dateFormat } from './utils/propTypes'
-
+import { convertToTimezone } from './utils/dayViewLayout/event'
 import { notify } from './utils/helpers'
-
 import { accessor as get } from './utils/accessors'
-
 import { inRange, sortEvents, segStyle } from './utils/eventLevels'
+import { accessor, dateFormat } from './utils/propTypes'
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -32,8 +30,8 @@ export default class TimeGrid extends Component {
 
     step: PropTypes.number,
     range: PropTypes.arrayOf(PropTypes.object),
-    min: PropTypes.object,
-    max: PropTypes.object,
+    min: PropTypes.object.isRequired,
+    max: PropTypes.object.isRequired,
     getNow: PropTypes.func.isRequired,
 
     scrollToTime: PropTypes.object,
@@ -160,6 +158,7 @@ export default class TimeGrid extends Component {
       resources,
       allDayAccessor,
       showMultiDayTimes,
+      timezone,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -177,6 +176,7 @@ export default class TimeGrid extends Component {
         let eStart = get(event, startAccessor),
           eEnd = get(event, endAccessor)
 
+        // gather all day events
         if (
           get(event, allDayAccessor) ||
           (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
@@ -184,6 +184,7 @@ export default class TimeGrid extends Component {
         ) {
           allDayEvents.push(event)
         } else {
+          // normal events
           rangeEvents.push(event)
         }
       }
@@ -228,16 +229,16 @@ export default class TimeGrid extends Component {
       resourceAccessor,
       resourceIdAccessor,
       components,
+      timezone,
     } = this.props
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(event =>
-        dates.inRange(
-          date,
-          get(event, startAccessor),
-          get(event, endAccessor),
-          'day'
-        )
+        inRange(event, dates.startOf(date, 'day'), dates.endOf(date, 'day'), {
+          timezone,
+          startAccessor,
+          endAccessor,
+        })
       )
 
       return resources.map((resource, id) => {

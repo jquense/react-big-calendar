@@ -177,7 +177,7 @@ class TimeGridHeader extends React.Component {
             isAllDay
             rtl={rtl}
             getNow={getNow}
-            minRows={2}
+            minRows={1}
             range={range}
             events={events}
             className="rbc-allday-cell"

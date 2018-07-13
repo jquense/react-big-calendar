@@ -44,6 +44,63 @@
   }
 }
 
+.rbc-simplified-time-view {
+  .rbc-today {
+    background: none;
+  }
+
+  .rbc-toolbar,
+  .rbc-time-header-gutter,
+  .rbc-time-header-cell {
+    display: none;
+  }
+
+  .rbc-time-header-content {
+    border-left: none;
+  }
+
+  .rbc-time-view {
+    border: none;
+  }
+
+  .rbc-time-content {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: none;
+  }
+  
+  .rbc-time-gutter {
+    .rbc-timeslot-group {
+      border-color: transparent;
+    }
+
+    .rbc-label {
+      display: block;
+      transform: translateY(-50%);
+      color: #bbc;
+      font-size: 11px;
+    }
+  }
+
+  .rbc-day-slot {
+    border-top: 1px solid @cell-border;
+
+    > .rbc-timeslot-group,
+    > .rbc-events-container {
+      border-left: none;
+    }
+  }
+
+  .rbc-current-time-indicator {
+    transform: translateY(10px);
+  }
+
+  .rbc-collapse-button {
+    border-bottom: 1px solid @cell-border;
+  }
+
+}
+
 
 .rbc-time-header {
   display: flex;

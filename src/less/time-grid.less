@@ -50,10 +50,6 @@
   flex: 0 0 auto; // should not shrink below height
   flex-direction: row;
 
-  &.rbc-overflowing {
-    border-right: 1px solid @cell-border;
-  }
-
   .rbc-rtl &.rbc-overflowing {
     border-right-width: 0;
     border-left: 1px solid @cell-border;
@@ -93,7 +89,7 @@
   flex: 1 1 0%;
   align-items: flex-start;
   width: 100%;
-  border-top: 2px solid @calendar-border;
+  border-top: 1px solid @calendar-border;
   overflow-y: auto;
   position: relative;
 

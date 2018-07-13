@@ -7,7 +7,7 @@ let Timeslots = () => (
     events={events}
     step={15}
     timeslots={8}
-    defaultView="week"
+    defaultView={BigCalendar.Views.WEEK}
     defaultDate={new Date(2015, 3, 12)}
   />
 )

@@ -1,6 +1,6 @@
 {
   "name": "@hitask/react-big-calendar",
-  "version": "0.19.5",
+  "version": "0.19.6",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "HiTask/react-big-calendar",
@@ -27,7 +27,7 @@
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
     "build":
-      "npm run clean && babel src --out-dir lib && npm run assets && npm run less && npm run less",
+      "npm run clean && babel src --out-dir lib && npm run assets && npm run less",
     "build:examples":
       "npm run clean:examples && webpack --config examples/webpack.config.js",
     "examples":

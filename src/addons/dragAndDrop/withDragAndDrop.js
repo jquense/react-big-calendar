@@ -52,9 +52,6 @@ try {
  * If you care about these corner cases, you can examine the `allDay` param suppled
  * in the callback to determine how the user dropped or resized the event.
  *
- * Note: you cannot use custom `EventWrapper`, `DayWrapper` or `DateCellWrapper`
- * components when using this HOC as they are overwritten here.
- *
  * @param {*} Calendar
  * @param {*} backend
  */
@@ -70,6 +67,7 @@ export default function withDragAndDrop(
       endAccessor: accessor,
       allDayAccessor: accessor,
       draggableAccessor: accessor,
+      resizableAccessor: accessor,
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
       components: PropTypes.object,
@@ -78,10 +76,12 @@ export default function withDragAndDrop(
 
     static defaultProps = {
       // TODO: pick these up from Calendar.defaultProps
+      components: {},
       startAccessor: 'start',
       endAccessor: 'end',
       allDayAccessor: 'allDay',
       draggableAccessor: null,
+      resizableAccessor: null,
       step: 30,
     }
 
@@ -92,9 +92,11 @@ export default function withDragAndDrop(
     static childContextTypes = {
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
+      components: PropTypes.object,
       startAccessor: accessor,
       endAccessor: accessor,
       draggableAccessor: accessor,
+      resizableAccessor: accessor,
       step: PropTypes.number,
     }
 
@@ -102,10 +104,12 @@ export default function withDragAndDrop(
       return {
         onEventDrop: this.props.onEventDrop,
         onEventResize: this.props.onEventResize,
+        components: this.props.components,
         startAccessor: this.props.startAccessor,
         endAccessor: this.props.endAccessor,
         step: this.props.step,
         draggableAccessor: this.props.draggableAccessor,
+        resizableAccessor: this.props.resizableAccessor,
       }
     }
 

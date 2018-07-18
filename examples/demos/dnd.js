@@ -16,7 +16,8 @@ class Dnd extends React.Component {
       events: events,
     }
 
-    this.moveEvent = this.moveEvent.bind(this)
+    this.moveEvent = this.moveEvent.bind(this);
+    this.newEvent = this.newEvent.bind(this);
   }
 
   moveEvent({ event, start, end }) {
@@ -51,6 +52,21 @@ class Dnd extends React.Component {
     alert(`${event.title} was resized to ${start}-${end}`)
   }
 
+  newEvent(event) {
+    let idList = this.state.events.map((a) => a.id);
+    let newId = Math.max(...idList) + 1;
+    let hour = {
+      id: newId,
+      title: 'New Event',
+      allDay: event.slots.length == 1,
+      start: event.start,
+      end: event.end,
+    }
+    this.setState({
+      events: this.state.events.concat([hour])
+    });
+  }
+
   render() {
     return (
       <DragAndDropCalendar
@@ -59,6 +75,7 @@ class Dnd extends React.Component {
         onEventDrop={this.moveEvent}
         resizable
         onEventResize={this.resizeEvent}
+        onSelectSlot={this.newEvent}
         defaultView={BigCalendar.Views.WEEK}
         defaultDate={new Date(2015, 3, 12)}
       />

@@ -40,7 +40,7 @@
   color: @out-of-range-color;
 }
 
-.rbc-off-range-bg {
+.rbc-off-range-bg.rbc-day-bg {
   background: @out-of-range-bg-color;
 }
 
@@ -49,11 +49,9 @@
   flex: 1 0 0%;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0 3px;
+  padding: 3px;
   text-align: center;
   vertical-align: middle;
-  font-weight: bold;
-  font-size: 90%;
   min-height: 0;
   border-bottom: 1px solid @cell-border;
 
@@ -105,6 +103,12 @@
   background-color: @today-highlight-bg;
 }
 
+.rbc-month-view,
+.rbc-time-view,
+.rbc-agenda-view {
+  font-size: 14px;
+  color: @cell-color;
+}
 
 @import './toolbar.less';
 @import './event.less';

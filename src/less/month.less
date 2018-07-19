@@ -11,6 +11,7 @@
 
   .rbc-event-content {
     &:extend(.rbc-ellipsis);
+    border-radius: inherit;
   }
 }
 
@@ -91,6 +92,7 @@
 
 .rbc-day-bg {
   flex: 1 0 0%;
+  background: @day-bg-color;
 
   & + & {
     border-left: 1px solid @cell-border;

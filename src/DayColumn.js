@@ -200,7 +200,7 @@ class DayColumn extends React.Component {
 
       let title = get(event, titleAccessor)
       let tooltip = get(event, tooltipAccessor)
-      let label
+      let label // eslint-disable-line
       if (_continuesPrior && _continuesAfter) {
         label = messages.allDay
       } else {
@@ -235,11 +235,7 @@ class DayColumn extends React.Component {
               [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
               width: `${width}%`,
             }}
-            title={
-              tooltip
-                ? (typeof label === 'string' ? label + ': ' : '') + tooltip
-                : undefined
-            }
+            title={tooltip}
             onClick={e => this._select(event, e)}
             onDoubleClick={e => this._doubleClick(event, e)}
             className={cn('rbc-event', className, {
@@ -250,7 +246,6 @@ class DayColumn extends React.Component {
               'rbc-event-continues-day-after': _continuesAfter,
             })}
           >
-            <div className="rbc-event-label">{label}</div>
             <div className="rbc-event-content">
               {EventComponent ? (
                 <EventComponent event={event} title={title} />

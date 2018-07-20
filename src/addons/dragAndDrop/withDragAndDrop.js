@@ -134,7 +134,7 @@ export default function withDragAndDrop(
     render() {
       const { selectable, components, ...props } = this.props
 
-      delete props.onEventDrop
+      delete props.onEventDnD
       delete props.onEventResize
 
       props.selectable = selectable ? 'ignoreEvents' : false

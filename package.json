@@ -56,11 +56,11 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@folio/eslint-config-stripes": "^1.1.0",
-    "@storybook/react": "3.2.16",
+    "@folio/eslint-config-stripes": "^2.0.0",
+    "@storybook/react": "^3.3.13",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^8.0.0",

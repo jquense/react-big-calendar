@@ -165,6 +165,8 @@ class DayColumn extends React.Component {
       rtl: isRtl,
       selected,
       startAccessor,
+      step,
+      timeslots,
       titleAccessor,
       tooltipAccessor,
     } = this.props
@@ -174,6 +176,7 @@ class DayColumn extends React.Component {
       startAccessor,
       endAccessor,
       slotMetrics: this.slotMetrics,
+      minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {

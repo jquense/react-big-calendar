@@ -4,7 +4,6 @@ import React from 'react'
 import dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
-import localizer from './localizer'
 
 class Day extends React.Component {
   static propTypes = {
@@ -36,7 +35,6 @@ Day.navigate = (date, action) => {
   }
 }
 
-Day.title = (date, { formats, culture }) =>
-  localizer.format(date, formats.dayHeaderFormat, culture)
+Day.title = (date, { localizer }) => localizer.format(date, 'dayHeaderFormat')
 
 export default Day

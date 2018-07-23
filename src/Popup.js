@@ -3,11 +3,10 @@ import React from 'react'
 import getOffset from 'dom-helpers/query/offset'
 import getScrollTop from 'dom-helpers/query/scrollTop'
 import getScrollLeft from 'dom-helpers/query/scrollLeft'
+import dates from './utils/dates'
 
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
-import localizer from './localizer'
-import { elementType, dateFormat } from './utils/propTypes'
 
 const propTypes = {
   position: PropTypes.object,
@@ -20,10 +19,17 @@ const propTypes = {
   ]),
   events: PropTypes.array,
   selected: PropTypes.object,
-  eventComponent: elementType,
-  eventWrapperComponent: elementType,
-  dayHeaderFormat: dateFormat,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+  slotStart: PropTypes.number,
+  slotEnd: PropTypes.number,
 }
+
 class Popup extends React.Component {
   componentDidMount() {
     let { popupOffset = 5 } = this.props,
@@ -49,9 +55,14 @@ class Popup extends React.Component {
     let {
       events,
       selected,
-      eventComponent,
-      eventWrapperComponent,
-      ...props
+      getters,
+      accessors,
+      components,
+      onSelect,
+      onDoubleClick,
+      slotStart,
+      slotEnd,
+      localizer,
     } = this.props
 
     let { left, width, top } = this.props.position,
@@ -67,19 +78,20 @@ class Popup extends React.Component {
     return (
       <div ref="root" style={style} className="rbc-overlay">
         <div className="rbc-overlay-header">
-          {localizer.format(
-            props.slotStart,
-            props.dayHeaderFormat,
-            props.culture
-          )}
+          {localizer.format(slotStart, 'dayHeaderFormat')}
         </div>
         {events.map((event, idx) => (
           <EventCell
             key={idx}
-            {...props}
+            type="popup"
             event={event}
-            eventComponent={eventComponent}
-            eventWrapperComponent={eventWrapperComponent}
+            getters={getters}
+            onSelect={onSelect}
+            accessors={accessors}
+            components={components}
+            onDoubleClick={onDoubleClick}
+            continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
+            continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
             selected={isSelected(event, selected)}
           />
         ))}

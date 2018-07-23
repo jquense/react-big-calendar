@@ -1,6 +1,5 @@
 /* eslint no-fallthrough: off */
 import dateMath from 'date-arithmetic'
-import localizer from '../localizer'
 
 const MILLI = {
   seconds: 1000,
@@ -20,21 +19,21 @@ let dates = {
     return MONTHS.map(i => dates.month(date, i))
   },
 
-  firstVisibleDay(date, culture) {
+  firstVisibleDay(date, localizer) {
     let firstOfMonth = dates.startOf(date, 'month')
 
-    return dates.startOf(firstOfMonth, 'week', localizer.startOfWeek(culture))
+    return dates.startOf(firstOfMonth, 'week', localizer.startOfWeek())
   },
 
-  lastVisibleDay(date, culture) {
+  lastVisibleDay(date, localizer) {
     let endOfMonth = dates.endOf(date, 'month')
 
-    return dates.endOf(endOfMonth, 'week', localizer.startOfWeek(culture))
+    return dates.endOf(endOfMonth, 'week', localizer.startOfWeek())
   },
 
-  visibleDays(date, culture) {
-    let current = dates.firstVisibleDay(date, culture),
-      last = dates.lastVisibleDay(date, culture),
+  visibleDays(date, localizer) {
+    let current = dates.firstVisibleDay(date, localizer),
+      last = dates.lastVisibleDay(date, localizer),
       days = []
 
     while (dates.lte(current, last, 'day')) {

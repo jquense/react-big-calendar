@@ -29,11 +29,9 @@ describe('endOfRange', () => {
 
 describe('eventSegments', () => {
   const event = { start: new Date(2017, 0, 8), end: new Date(2017, 0, 11, 12) }
-  const accessors = { startAccessor: 'start', endAccessor: 'end' }
+  const accessors = { start: e => e.start, end: e => e.end }
 
   test('it includes the original event in the returned object', () => {
-    const first = new Date(2017, 0, 8)
-    const last = new Date(2017, 0, 12)
     const range = [
       new Date(2017, 0, 8),
       new Date(2017, 0, 9),
@@ -41,14 +39,12 @@ describe('eventSegments', () => {
       new Date(2017, 0, 11),
     ]
 
-    const result = eventSegments(event, first, last, accessors, range)
+    const result = eventSegments(event, range, accessors)
 
     expect(result.event).toEqual(event)
   })
 
   describe('when the event spans the full range', () => {
-    const first = new Date(2017, 0, 8)
-    const last = new Date(2017, 0, 12)
     const range = [
       new Date(2017, 0, 8),
       new Date(2017, 0, 9),
@@ -57,27 +53,25 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the event spans', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.span).toBe(4)
     })
 
     test('it sets left equal to one', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.left).toBe(1)
     })
 
     test('it sets right equal to the length of the range', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.right).toBe(4)
     })
   })
 
   describe('when the event starts before the range and ends at the end of the range', () => {
-    const first = new Date(2017, 0, 9)
-    const last = new Date(2017, 0, 12)
     const range = [
       new Date(2017, 0, 9),
       new Date(2017, 0, 10),
@@ -85,27 +79,25 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the range spans', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.span).toBe(3)
     })
 
     test('it sets left equal to one', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.left).toBe(1)
     })
 
     test('it sets right equal to the length of the range', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.right).toBe(3)
     })
   })
 
   describe('when the event starts at the start of the range and ends after it', () => {
-    const first = new Date(2017, 0, 8)
-    const last = new Date(2017, 0, 11)
     const range = [
       new Date(2017, 0, 8),
       new Date(2017, 0, 9),
@@ -113,27 +105,25 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the range spans', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.span).toBe(3)
     })
 
     test('it sets left equal to one', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.left).toBe(1)
     })
 
     test('it sets right equal to the length of the range', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.right).toBe(3)
     })
   })
 
   describe('when the event starts and ends within the range', () => {
-    const first = new Date(2017, 0, 7)
-    const last = new Date(2017, 0, 13)
     const range = [
       new Date(2017, 0, 7),
       new Date(2017, 0, 8),
@@ -144,19 +134,19 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the event spans', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.span).toBe(4)
     })
 
     test('it sets left equal to the 1-based index into the range where the event starts', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.left).toBe(2)
     })
 
     test('it sets right equal to the 1-based index into the range where the event ends', () => {
-      const result = eventSegments(event, first, last, accessors, range)
+      const result = eventSegments(event, range, accessors)
 
       expect(result.right).toBe(5)
     })
@@ -263,7 +253,7 @@ describe('inRange', () => {
 
   const rangeStart = new Date(2017, 4, 1)
   const rangeEnd = new Date(2017, 5, 1)
-  const accessors = { startAccessor: 'start', endAccessor: 'end' }
+  const accessors = { start: e => e.start, end: e => e.end }
 
   describe('matrix', () => {
     function compare(title, event, [rangeStart, rangeEnd], result = true) {
@@ -474,9 +464,9 @@ describe('segsOverlap', () => {
 
 describe('sortEvents', () => {
   const accessors = {
-    startAccessor: 'start',
-    endAccessor: 'end',
-    allDayAccessor: 'allDay',
+    start: e => e.start,
+    end: e => e.end,
+    allDay: e => e.allDay,
   }
 
   describe('when the events start on different calendar days', () => {

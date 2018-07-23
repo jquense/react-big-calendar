@@ -1,6 +1,4 @@
 import React from 'react'
-import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext } from 'react-dnd'
 import BigCalendar from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 
@@ -8,7 +6,6 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.less'
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar)
 
-let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
 const events = [
   {
     id: 0,
@@ -57,16 +54,23 @@ class Dnd extends React.Component {
     this.moveEvent = this.moveEvent.bind(this)
   }
 
-  moveEvent({ event, start, end, resourceId }) {
-    console.log('moveEvent.args=', { event, start, end, resourceId })
+  moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
     const { events } = this.state
 
     const idx = events.indexOf(event)
-    const updatedEvent = { ...event, start, end, resourceId }
-    console.log('events', events)
+    let allDay = event.allDay
+
+    if (!event.allDay && droppedOnAllDaySlot) {
+      allDay = true
+    } else if (event.allDay && !droppedOnAllDaySlot) {
+      allDay = false
+    }
+
+    const updatedEvent = { ...event, start, end, resourceId, allDay }
+
     const nextEvents = [...events]
     nextEvents.splice(idx, 1, updatedEvent)
-    console.log('nextEvents', nextEvents)
+
     this.setState({
       events: nextEvents,
     })
@@ -90,6 +94,7 @@ class Dnd extends React.Component {
     return (
       <DragAndDropCalendar
         selectable
+        localizer={this.props.localizer}
         events={this.state.events}
         onEventDrop={this.moveEvent}
         resizable
@@ -104,4 +109,4 @@ class Dnd extends React.Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(Dnd)
+export default Dnd

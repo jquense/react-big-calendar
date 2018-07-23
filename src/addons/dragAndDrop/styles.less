@@ -1,14 +1,21 @@
 @import '../../less/variables.less';
 
 .rbc-addons-dnd {
-  .rbc-row-content {
-    pointer-events: none;
-
-    & .rbc-show-more,
-    & .rbc-event {
-      pointer-events: all;
-    }
+  .rbc-addons-dnd-row-body {
+    position: relative;
   }
+  .rbc-addons-dnd-drag-row {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .rbc-addons-dnd-dragging {
+    opacity: .25;
+    touch-action: manipulation;
+  }
+
 
   .rbc-addons-dnd-over {
     background-color: rgba(
@@ -19,21 +26,15 @@
     );
   }
 
-  .rbc-events-container {
-    pointer-events: none;
-  }
-
   .rbc-event {
     transition: opacity 150ms;
-    pointer-events: all;
 
     &:hover {
       .rbc-addons-dnd-resize-ns-icon, .rbc-addons-dnd-resize-ew-icon { display: block; }
     }
   }
 
-  &.rbc-addons-dnd-is-dragging .rbc-event {
-    pointer-events: none;
+  &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragging):not(.rbc-addons-dnd-drag-preview) {
     opacity: .50;
   }
 

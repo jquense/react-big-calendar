@@ -13,18 +13,18 @@ import warning from 'warning'
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
-import defaultFormats from './formats'
+import { mergeWithDefaults } from './localizer'
 import message from './utils/messages'
 import moveDate from './utils/move'
 import VIEWS from './Views'
 import Toolbar from './Toolbar'
-import EventWrapper from './EventWrapper'
-import BackgroundWrapper from './BackgroundWrapper'
+import NoopWrapper from './NoopWrapper'
 
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import transform from 'lodash/transform'
 import mapValues from 'lodash/mapValues'
+import { wrapAccessor } from './utils/accessors'
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -60,6 +60,8 @@ function isValidView(view, { views: _views }) {
  */
 class Calendar extends React.Component {
   static propTypes = {
+    localizer: PropTypes.object.isRequired,
+
     /**
      * Props passed to main calendar `<div>`.
      *
@@ -644,6 +646,7 @@ class Calendar extends React.Component {
     components: PropTypes.shape({
       event: elementType,
       eventWrapper: elementType,
+      eventContainerWrapper: elementType,
       dayWrapper: elementType,
       dateCellWrapper: elementType,
       timeGutterHeader: elementType,
@@ -715,6 +718,68 @@ class Calendar extends React.Component {
     getNow: () => new Date(),
   }
 
+  constructor(...args) {
+    super(...args)
+    this.state = {
+      context: this.getContext(this.props),
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ context: this.getContext(nextProps) })
+  }
+
+  getContext({
+    startAccessor,
+    endAccessor,
+    allDayAccessor,
+    tooltipAccessor,
+    titleAccessor,
+    resourceAccessor,
+    resourceIdAccessor,
+    resourceTitleAccessor,
+    eventPropGetter,
+    slotPropGetter,
+    dayPropGetter,
+    view,
+    views,
+    localizer,
+    culture,
+    messages = {},
+    components = {},
+    formats = {},
+  }) {
+    let names = viewNames(views)
+    const msgs = message(messages)
+    return {
+      viewNames: names,
+      localizer: mergeWithDefaults(localizer, culture, formats, msgs),
+      getters: {
+        eventProp: (...args) =>
+          (eventPropGetter && eventPropGetter(...args)) || {},
+        slotProp: (...args) =>
+          (slotPropGetter && slotPropGetter(...args)) || {},
+        dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
+      },
+      components: defaults(components[view] || {}, omit(components, names), {
+        eventWrapper: NoopWrapper,
+        eventContainerWrapper: NoopWrapper,
+        dayWrapper: NoopWrapper,
+        dateCellWrapper: NoopWrapper,
+        weekWrapper: NoopWrapper,
+      }),
+      accessors: {
+        start: wrapAccessor(startAccessor),
+        end: wrapAccessor(endAccessor),
+        allDay: wrapAccessor(allDayAccessor),
+        tooltip: wrapAccessor(tooltipAccessor),
+        title: wrapAccessor(titleAccessor),
+        resource: wrapAccessor(resourceAccessor),
+        resourceId: wrapAccessor(resourceIdAccessor),
+        resourceTitle: wrapAccessor(resourceTitleAccessor),
+      },
+    }
+  }
+
   getViews = () => {
     const views = this.props.views
 
@@ -755,38 +820,32 @@ class Calendar extends React.Component {
       toolbar,
       events,
       culture,
-      components = {},
-      formats = {},
-      messages = {},
       style,
       className,
       elementProps,
       date: current,
       getNow,
       length,
+      showMultiDayTimes,
+      components: _0,
+      formats: _1,
+      messages: _2,
       ...props
     } = this.props
 
     current = current || getNow()
 
-    formats = defaultFormats(formats)
-    messages = message(messages)
-
     let View = this.getView()
-    let names = viewNames(this.props.views)
-
-    let viewComponents = defaults(
-      components[view] || {},
-      omit(components, names),
-      {
-        eventWrapper: EventWrapper,
-        dayWrapper: BackgroundWrapper,
-        dateCellWrapper: BackgroundWrapper,
-      }
-    )
+    const {
+      accessors,
+      components,
+      getters,
+      localizer,
+      viewNames,
+    } = this.state.context
 
     let CalToolbar = components.toolbar || Toolbar
-    const label = View.title(current, { formats, culture, length })
+    const label = View.title(current, { localizer, length })
 
     return (
       <div
@@ -798,25 +857,26 @@ class Calendar extends React.Component {
           <CalToolbar
             date={current}
             view={view}
-            views={names}
+            views={viewNames}
             label={label}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
-            messages={messages}
+            localizer={localizer}
           />
         )}
         <View
           ref="view"
           {...props}
-          {...formats}
-          messages={messages}
           culture={culture}
-          formats={undefined}
           events={events}
           date={current}
           getNow={getNow}
           length={length}
-          components={viewComponents}
+          localizer={localizer}
+          getters={getters}
+          components={components}
+          accessors={accessors}
+          showMultiDayTimes={showMultiDayTimes}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}

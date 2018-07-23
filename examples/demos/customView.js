@@ -46,9 +46,10 @@ MyWeek.title = date => {
   return `My awesome week: ${date.toLocaleDateString()}`
 }
 
-let CustomView = () => (
+let CustomView = ({ localizer }) => (
   <BigCalendar
     events={events}
+    localizer={localizer}
     defaultView={BigCalendar.Views.WEEK}
     defaultDate={new Date(2015, 3, 1)}
     views={{ month: true, week: MyWeek }}

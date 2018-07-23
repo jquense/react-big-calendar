@@ -41,12 +41,18 @@
     position: relative;
     width: 100%;
     height: 100%;
+    border-radius: inherit;
   }
 
   .rbc-addons-dnd-resize-ns-anchor {
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
     position: absolute;
+    cursor: ns-resize;
+    padding: 3px;
+    z-index: 1;
+
     &:first-child { top: 0; }
     &:last-child { bottom: 0; }
 
@@ -55,14 +61,17 @@
       border-top: 3px double;
       margin: 0 auto;
       width: 10px;
-      cursor: ns-resize;
     }
   }
 
   .rbc-addons-dnd-resize-ew-anchor {
     position: absolute;
-    top: 4px;
-    bottom: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 3px;
+    z-index: 1;
+
+    cursor: ew-resize;
     &:first-child { left: 0; }
     &:last-child { right: 0; }
 
@@ -72,7 +81,6 @@
       margin-top: auto;
       margin-bottom: auto;
       height: 10px;
-      cursor: ew-resize;
     }
   }
 }

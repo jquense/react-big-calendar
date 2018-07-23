@@ -12,7 +12,7 @@
 }
 
 .rbc-slot-selecting {
-  cursor: move;
+  cursor: row-resize;
 }
 
 .rbc-time-view {
@@ -40,8 +40,65 @@
 
   .rbc-row {
     box-sizing: border-box;
-    min-height: 20px;
+    min-height: 23px;
   }
+}
+
+.rbc-simplified-time-view {
+  .rbc-today {
+    background: none;
+  }
+
+  .rbc-toolbar,
+  .rbc-time-header-gutter,
+  .rbc-time-header-cell {
+    display: none;
+  }
+
+  .rbc-time-header-content {
+    border-left: none;
+  }
+
+  .rbc-time-view {
+    border: none;
+  }
+
+  .rbc-time-content {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: none;
+  }
+  
+  .rbc-time-gutter {
+    .rbc-timeslot-group {
+      border-color: transparent;
+    }
+
+    .rbc-label {
+      display: block;
+      transform: translateY(-50%);
+      color: #bbc;
+      font-size: 11px;
+    }
+  }
+
+  .rbc-day-slot {
+    border-top: 1px solid @cell-border;
+
+    > .rbc-timeslot-group,
+    > .rbc-events-container {
+      border-left: none;
+    }
+  }
+
+  .rbc-current-time-indicator {
+    transform: translateY(10px);
+  }
+
+  .rbc-collapse-button {
+    border-bottom: 1px solid @cell-border;
+  }
+
 }
 
 
@@ -49,10 +106,6 @@
   display: flex;
   flex: 0 0 auto; // should not shrink below height
   flex-direction: row;
-
-  &.rbc-overflowing {
-    border-right: 1px solid @cell-border;
-  }
 
   .rbc-rtl &.rbc-overflowing {
     border-right-width: 0;
@@ -90,10 +143,10 @@
 
 .rbc-time-content {
   display: flex;
-  flex: 1 0 0%;
+  flex: 1 1 0%;
   align-items: flex-start;
   width: 100%;
-  border-top: 2px solid @calendar-border;
+  border-top: 1px solid @calendar-border;
   overflow-y: auto;
   position: relative;
 

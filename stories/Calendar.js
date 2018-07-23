@@ -130,6 +130,23 @@ storiesOf('module.Calendar.week', module)
       </div>
     )
   })
+  .add('day simplified view', () => {
+    return (
+      <div style={{ height: 600, background: '#fafafa' }}>
+        <Calendar
+          defaultView={Calendar.Views.DAY}
+          min={moment('12:00am', 'h:mma').toDate()}
+          max={moment('11:59pm', 'h:mma').toDate()}
+          events={events}
+          onSelectEvent={action('event selected')}
+          defaultDate={new Date()}
+          className="rbc-simplified-time-view"
+          step={15}
+          timeslots={4}
+        />
+      </div>
+    )
+  })
   .add('Daylight savings', () => {
     return (
       <div style={{ height: 600 }}>

@@ -1,9 +1,9 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.19.2",
+  "name": "@hitask/react-big-calendar",
+  "version": "0.19.8",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "intljusticemission/react-big-calendar",
+  "repository": "HiTask/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",

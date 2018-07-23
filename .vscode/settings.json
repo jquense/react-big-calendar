@@ -1,0 +1,7 @@
+{
+  "search.exclude": {
+    "lib": true,
+    "examples/bundle.js": true,
+    "examples/bundle.js.map": true
+  }
+}

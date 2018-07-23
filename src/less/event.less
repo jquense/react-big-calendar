@@ -1,11 +1,14 @@
 @import './variables.less';
 
 .rbc-event {
-  padding: @event-padding;
   background-color: @event-bg;
   border-radius: @event-border-radius;
+  border: 1px solid @event-border;
   color: @event-color;
   cursor: pointer;
+  font-size: 12px;
+  line-height: 2;
+  margin-right: 1px;
 
   .rbc-slot-selecting & {
     cursor: inherit;

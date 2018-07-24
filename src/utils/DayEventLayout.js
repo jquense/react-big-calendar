@@ -94,10 +94,10 @@ function onSameRow(a, b, minimumStartDifference) {
   return (
     // Occupies the same start slot.
     Math.abs(b.start - a.start) < minimumStartDifference ||
-    // b's start slot overlaps with b's end slot.
-    (b.start > a.start && b.start < a.end) ||
     // b's start slot overlaps with a's end slot.
-    (b.start > a.start && b.start < a.end)
+    (b.start > a.start && b.start < a.end) ||
+    // a's start slot overlaps with b's end slot.
+    (a.start > b.start && a.start < b.end)
   )
 }
 

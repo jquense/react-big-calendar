@@ -26,7 +26,7 @@ describe('getStyledEvents', () => {
       })
     }
 
-    ;[
+    const toCheck = [
       [
         'single event',
         [{ start: d(11), end: d(12) }],
@@ -89,6 +89,7 @@ describe('getStyledEvents', () => {
           { width: 33, xOffset: 66 },
         ],
       ],
-    ].forEach(args => compare(...args))
+    ]
+    toCheck.forEach(args => compare(...args))
   })
 })

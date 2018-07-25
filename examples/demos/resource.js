@@ -13,6 +13,7 @@ const events = [
   {
     id: 1,
     title: 'MS training',
+    allDay: true,
     start: new Date(2018, 0, 29, 14, 0, 0),
     end: new Date(2018, 0, 29, 16, 30, 0),
     resourceId: 2,
@@ -40,9 +41,10 @@ const resourceMap = [
   { resourceId: 4, resourceTitle: 'Meeting room 2' },
 ]
 
-let Resource = () => (
+let Resource = ({ localizer }) => (
   <BigCalendar
     events={events}
+    localizer={localizer}
     defaultView={BigCalendar.Views.DAY}
     views={['day', 'work_week']}
     step={60}

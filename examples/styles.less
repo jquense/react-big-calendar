@@ -2,6 +2,7 @@
 @import "~bootstrap/less/variables.less";
 
 @blue: #3174ad;
+@pink: #ad3173;
 
 html {
   font-size: 10px;
@@ -9,10 +10,24 @@ html {
 
 body {
   font-size: 16px;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h4 {
   margin-top: 20px;
+}
+
+a {
+  transform: all 200ms;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
 }
 
 .jumbotron {
@@ -48,9 +63,9 @@ h4 {
 .example {
   font-size: 14px;
   padding: 0 40px;
-  min-height: ~"calc(100vh - 20px)";
+  min-height: ~"calc(100vh - 100px)";
   min-height: max-content;
-  height: ~"calc(100vh - 20px)";
+  height: ~"calc(100vh - 100px)";
   width: 100%;
   margin: auto;
 
@@ -112,11 +127,45 @@ h4 > a > code  {
   padding: 0;
 }
 
-.view-source {
-  font-size: 90%;
-  float: right;
+
+.examples--header {
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   margin-bottom: 15px;
-  margin-left: auto;
+}
+
+.examples--dropdown {
+
+}
+
+.dropdown--toggle {
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 3px;
+  transition: all 200ms;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    color: @pink;
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: darken(@pink, 5%);
+    border: 1px solid @pink;
+    text-decoration: none;
+  }
+}
+
+.examples--view-source {
+  font-size: 90%;
 }
 
 .callout {

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import dates from './utils/dates'
-import localizer from './localizer'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
@@ -33,21 +32,17 @@ Week.navigate = (date, action) => {
   }
 }
 
-Week.range = (date, { culture }) => {
-  let firstOfWeek = localizer.startOfWeek(culture)
+Week.range = (date, { localizer }) => {
+  let firstOfWeek = localizer.startOfWeek()
   let start = dates.startOf(date, 'week', firstOfWeek)
   let end = dates.endOf(date, 'week', firstOfWeek)
 
   return dates.range(start, end)
 }
 
-Week.title = (date, { formats, culture }) => {
-  let [start, ...rest] = Week.range(date, { culture })
-  return localizer.format(
-    { start, end: rest.pop() },
-    formats.dayRangeHeaderFormat,
-    culture
-  )
+Week.title = (date, { localizer }) => {
+  let [start, ...rest] = Week.range(date, { localizer })
+  return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')
 }
 
 export default Week

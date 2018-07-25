@@ -12,9 +12,10 @@ let MyCustomHeader = ({ label }) => (
   </div>
 )
 
-let CustomHeader = () => (
+let CustomHeader = ({ localizer }) => (
   <BigCalendar
     events={events}
+    localizer={localizer}
     defaultDate={new Date(2015, 3, 1)}
     components={{
       day: { header: MyCustomHeader },

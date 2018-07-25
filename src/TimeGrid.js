@@ -10,9 +10,7 @@ import TimeGutter from './TimeGutter'
 
 import getWidth from 'dom-helpers/query/width'
 import TimeGridHeader from './TimeGridHeader'
-import { accessor, dateFormat } from './utils/propTypes'
 import { notify } from './utils/helpers'
-import { accessor as get } from './utils/accessors'
 import { inRange, sortEvents } from './utils/eventLevels'
 
 export default class TimeGrid extends Component {
@@ -21,30 +19,22 @@ export default class TimeGrid extends Component {
     resources: PropTypes.array,
 
     step: PropTypes.number,
+    timeslots: PropTypes.number,
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     getNow: PropTypes.func.isRequired,
 
     scrollToTime: PropTypes.instanceOf(Date),
-    eventPropGetter: PropTypes.func,
-    dayPropGetter: PropTypes.func,
-    dayFormat: dateFormat,
     showMultiDayTimes: PropTypes.bool,
-    culture: PropTypes.string,
 
     rtl: PropTypes.bool,
     width: PropTypes.number,
 
-    titleAccessor: accessor.isRequired,
-    tooltipAccessor: accessor.isRequired,
-    allDayAccessor: accessor.isRequired,
-    startAccessor: accessor.isRequired,
-    endAccessor: accessor.isRequired,
-    resourceAccessor: accessor.isRequired,
-
-    resourceIdAccessor: accessor.isRequired,
-    resourceTitleAccessor: accessor.isRequired,
+    accessors: PropTypes.object.isRequired,
+    components: PropTypes.object.isRequired,
+    getters: PropTypes.object.isRequired,
+    localizer: PropTypes.object.isRequired,
 
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
@@ -58,9 +48,6 @@ export default class TimeGrid extends Component {
     onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
-
-    messages: PropTypes.object,
-    components: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
@@ -150,44 +137,27 @@ export default class TimeGrid extends Component {
   }
 
   renderEvents(range, events, today, resources) {
-    let {
-      min,
-      max,
-      endAccessor,
-      startAccessor,
-      resourceAccessor,
-      resourceIdAccessor,
-      components,
-    } = this.props
+    let { min, max, components, accessors, localizer } = this.props
 
     return range.map((date, idx) => {
       let daysEvents = events.filter(event =>
-        dates.inRange(
-          date,
-          get(event, startAccessor),
-          get(event, endAccessor),
-          'day'
-        )
+        dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
       )
 
       return resources.map((resource, id) => {
+        const resourceId = accessors.resourceId(resource)
         let eventsToDisplay = !resource
           ? daysEvents
-          : daysEvents.filter(
-              event =>
-                get(event, resourceAccessor) ===
-                get(resource, resourceIdAccessor)
-            )
+          : daysEvents.filter(event => accessors.resource(event) === resourceId)
 
         return (
           <DayColumn
             {...this.props}
+            localizer={localizer}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            resource={get(resource, resourceIdAccessor)}
-            eventComponent={components.event}
-            eventWrapperComponent={components.eventWrapper}
-            timeSlotWrapperComponent={components.dayWrapper}
+            resource={resourceId}
+            components={components}
             className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
             key={idx + '-' + id}
             date={date}
@@ -203,14 +173,15 @@ export default class TimeGrid extends Component {
       events,
       range,
       width,
-      startAccessor,
-      endAccessor,
       selected,
       getNow,
       resources,
       components,
-      allDayAccessor,
-      eventPropGetter,
+      accessors,
+      getters,
+      localizer,
+      min,
+      max,
       showMultiDayTimes,
       longPressThreshold,
     } = this.props
@@ -226,12 +197,12 @@ export default class TimeGrid extends Component {
       rangeEvents = []
 
     events.forEach(event => {
-      if (inRange(event, start, end, this.props)) {
-        let eStart = get(event, startAccessor),
-          eEnd = get(event, endAccessor)
+      if (inRange(event, start, end, accessors)) {
+        let eStart = accessors.start(event),
+          eEnd = accessors.end(event)
 
         if (
-          get(event, allDayAccessor) ||
+          accessors.allDay(event) ||
           (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
           (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
         ) {
@@ -242,7 +213,7 @@ export default class TimeGrid extends Component {
       }
     })
 
-    allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
+    allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
 
     return (
       <div className="rbc-time-view">
@@ -251,28 +222,15 @@ export default class TimeGrid extends Component {
           events={allDayEvents}
           width={width}
           getNow={getNow}
-          dayFormat={this.props.dayFormat}
-          culture={this.props.culture}
+          localizer={localizer}
           resources={resources}
           selected={selected}
           selectable={this.props.selectable}
-          startAccessor={startAccessor}
-          endAccessor={endAccessor}
-          titleAccessor={this.props.titleAccessor}
-          tooltipAccessor={this.props.tooltipAccessor}
-          allDayAccessor={this.props.allDayAccessor}
-          resourceAccessor={this.props.resourceAccessor}
-          resourceIdAccessor={this.props.resourceIdAccessor}
-          resourceTitleAccessor={this.props.resourceTitleAccessor}
+          accessors={accessors}
+          getters={getters}
+          components={components}
           isOverflowing={this.state.isOverflowing}
-          dayPropGetter={this.props.dayPropGetter}
-          eventPropGetter={eventPropGetter}
           longPressThreshold={longPressThreshold}
-          headerComponent={components.header}
-          eventComponent={components.event}
-          eventWrapperComponent={components.eventWrapper}
-          dateCellWrapperComponent={components.dateCellWrapper}
-          timeGutterHeaderComponent={components.timeGutterHeader}
           onSelectSlot={this.handleSelectAllDaySlot}
           onSelectEvent={this.handleSelectAlldayEvent}
           onDoubleClickEvent={this.props.onDoubleClickEvent}
@@ -281,9 +239,14 @@ export default class TimeGrid extends Component {
         />
         <div ref="content" className="rbc-time-content">
           <TimeGutter
-            {...this.props}
             date={start}
             ref={this.gutterRef}
+            localizer={localizer}
+            min={dates.merge(start, min)}
+            max={dates.merge(start, max)}
+            step={this.props.step}
+            getNow={this.props.getNow}
+            timeslots={this.props.timeslots}
             className="rbc-time-gutter"
           />
           {this.renderEvents(range, rangeEvents, getNow(), resources || [null])}

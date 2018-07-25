@@ -5,20 +5,17 @@ import cn from 'classnames'
 
 import dates from './utils/dates'
 import { notify } from './utils/helpers'
-import { elementType } from './utils/propTypes'
-import {
-  dateCellSelection,
-  slotWidth,
-  getCellAtX,
-  pointInBox,
-} from './utils/selection'
+import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 
 class BackgroundCells extends React.Component {
   static propTypes = {
     date: PropTypes.instanceOf(Date),
     getNow: PropTypes.func.isRequired,
-    cellWrapperComponent: elementType,
+
+    getters: PropTypes.object.isRequired,
+    components: PropTypes.object.isRequired,
+
     container: PropTypes.func,
     dayPropGetter: PropTypes.func,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
@@ -59,10 +56,10 @@ class BackgroundCells extends React.Component {
   render() {
     let {
       range,
-      cellWrapperComponent: Wrapper,
-      dayPropGetter,
-      date: currentDate,
       getNow,
+      getters,
+      date: currentDate,
+      components: { dateCellWrapper: Wrapper },
     } = this.props
     let { selecting, startIdx, endIdx } = this.state
     let current = getNow()
@@ -71,8 +68,7 @@ class BackgroundCells extends React.Component {
       <div className="rbc-row-bg">
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style } =
-            (dayPropGetter && dayPropGetter(date)) || {}
+          const { className, style } = getters.dayProp(date)
 
           return (
             <Wrapper key={index} value={date} range={range}>
@@ -107,14 +103,7 @@ class BackgroundCells extends React.Component {
         let { range, rtl } = this.props
 
         if (pointInBox(rowBox, point)) {
-          let width = slotWidth(getBoundsForNode(node), range.length)
-          let currentCell = getCellAtX(
-            rowBox,
-            point.x,
-            width,
-            rtl,
-            range.length
-          )
+          let currentCell = getSlotAtX(rowBox, point.x, rtl, range.length)
 
           this._selectSlot({
             startIdx: currentCell,

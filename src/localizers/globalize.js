@@ -1,8 +1,7 @@
 import dates from '../utils/dates'
 import oldGlobalize from './oldGlobalize'
+import { DateLocalizer } from '../localizer'
 import warning from 'warning'
-import { set } from '../formats'
-import { set as setLocalizer } from '../localizer'
 
 let dateRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, { date: 'short' }, culture) +
@@ -82,16 +81,9 @@ export default function(globalize) {
 
   if (!globalize.load) return oldGlobalize(globalize)
 
-  set(formats)
-
-  return setLocalizer({
+  return new DateLocalizer({
     firstOfWeek,
-
-    parse(value, format, culture) {
-      format = typeof format === 'string' ? { raw: format } : format
-      return locale(culture).parseDate(value, format)
-    },
-
+    formats,
     format(value, format, culture) {
       format = typeof format === 'string' ? { raw: format } : format
       return locale(culture).formatDate(value, format)

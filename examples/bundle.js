@@ -4045,7 +4045,7 @@ object-assign
       exports.__esModule = true
       exports.isSelected = isSelected
       exports.slotWidth = slotWidth
-      exports.getCellAtX = getCellAtX
+      exports.getSlotAtX = getSlotAtX
       exports.pointInBox = pointInBox
       exports.dateCellSelection = dateCellSelection
       function isSelected(event, selected) {
@@ -4060,7 +4060,7 @@ object-assign
         return cellWidth
       }
 
-      function getCellAtX(rowBox, x, cellWidth, rtl, slots) {
+      function getSlotAtX(rowBox, x, cellWidth, rtl, slots) {
         return rtl
           ? slots - 1 - Math.floor((x - rowBox.left) / cellWidth)
           : Math.floor((x - rowBox.left) / cellWidth)
@@ -4083,7 +4083,7 @@ object-assign
         var cellWidth = slotWidth(rowBox, slots)
 
         // cell under the mouse
-        var currentSlot = getCellAtX(rowBox, box.x, cellWidth, rtl, slots)
+        var currentSlot = getSlotAtX(rowBox, box.x, cellWidth, rtl, slots)
 
         // Identify row as either the initial row
         // or the row under the current mouse point
@@ -52224,7 +52224,7 @@ object-assign
                   (0, _Selection.getBoundsForNode)(node),
                   range.length
                 )
-                var currentCell = (0, _selection.getCellAtX)(
+                var currentCell = (0, _selection.getSlotAtX)(
                   rowBox,
                   point.x,
                   width,

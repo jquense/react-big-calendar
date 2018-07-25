@@ -10,7 +10,8 @@ export function slotWidth(rowBox, slots) {
   return cellWidth
 }
 
-export function getCellAtX(rowBox, x, cellWidth, rtl, slots) {
+export function getSlotAtX(rowBox, x, rtl, slots) {
+  const cellWidth = slotWidth(rowBox, slots)
   return rtl
     ? slots - 1 - Math.floor((x - rowBox.left) / cellWidth)
     : Math.floor((x - rowBox.left) / cellWidth)
@@ -28,7 +29,7 @@ export function dateCellSelection(start, rowBox, box, slots, rtl) {
   let cellWidth = slotWidth(rowBox, slots)
 
   // cell under the mouse
-  let currentSlot = getCellAtX(rowBox, box.x, cellWidth, rtl, slots)
+  let currentSlot = getSlotAtX(rowBox, box.x, rtl, slots)
 
   // Identify row as either the initial row
   // or the row under the current mouse point

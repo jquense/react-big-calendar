@@ -7,8 +7,6 @@ import { render } from 'react-dom'
 import localizer from 'react-big-calendar/lib/localizers/globalize'
 import globalize from 'globalize'
 
-localizer(globalize)
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 
@@ -25,13 +23,40 @@ import Resource from './demos/resource'
 import DndResource from './demos/dndresource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
+import Dropdown from 'react-bootstrap/lib/Dropdown'
+import MenuItem from 'react-bootstrap/lib/MenuItem'
+
+const globalizeLocalizer = localizer(globalize)
 
 let demoRoot =
   'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
 
-class Example extends React.Component {
-  state = { selected: 'basic' }
+const EXAMPLES = {
+  basic: 'Basic Calendar',
+  selectable: 'Create events',
+  cultures: 'Localization',
+  popup: 'Show more via a popup',
+  timeslots: 'Custom Time Grids',
+  rendering: 'Customized Component Rendering',
+  customView: 'Custom Calendar Views',
+  resource: 'Resource Scheduling',
+  dnd: 'Addon: Drag and drop',
+}
 
+class Example extends React.Component {
+  constructor(...args) {
+    super(...args)
+
+    const hash = (window.location.hash || '').slice(1)
+
+    this.state = {
+      selected: EXAMPLES[hash] ? hash : 'basic',
+    }
+  }
+
+  select = selected => {
+    this.setState({ selected })
+  }
   render() {
     let selected = this.state.selected
     let Current = {
@@ -74,62 +99,8 @@ class Example extends React.Component {
           </div>
         </div>
         <div className="examples">
-          <header>
-            <ul className="examples--list list-unstyled">
-              <li className={cn({ active: selected === 'basic' })}>
-                <a href="#" onClick={this.select.bind(null, 'basic')}>
-                  Basic
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'selectable' })}>
-                <a href="#" onClick={this.select.bind(null, 'selectable')}>
-                  Selectable
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'cultures' })}>
-                <a href="#" onClick={this.select.bind(null, 'cultures')}>
-                  I18n and Locales
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'popup' })}>
-                <a href="#" onClick={this.select.bind(null, 'popup')}>
-                  Popup
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'timeslots' })}>
-                <a href="#" onClick={this.select.bind(null, 'timeslots')}>
-                  Timeslots
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'rendering' })}>
-                <a href="#" onClick={this.select.bind(null, 'rendering')}>
-                  Custom rendering
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'customView' })}>
-                <a href="#" onClick={this.select.bind(null, 'customView')}>
-                  Custom View
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'Resource' })}>
-                <a href="#" onClick={this.select.bind(null, 'resource')}>
-                  Resource columns
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'dnd' })}>
-                <a href="#" onClick={this.select.bind(null, 'dnd')}>
-                  Drag and Drop
-                </a>
-              </li>
-              <li className={cn({ active: selected === 'dndresource' })}>
-                <a href="#" onClick={this.select.bind(null, 'dndresource')}>
-                  D'n'D Resource columns
-                </a>
-              </li>
-            </ul>
-          </header>
-          <div className="example">
-            <div className="view-source">
+          <header className="examples--header">
+            <div className="examples--view-source">
               <a target="_blank" href={demoRoot + '/' + selected + '.js'}>
                 <strong>
                   <i className="fa fa-code" />
@@ -137,7 +108,21 @@ class Example extends React.Component {
                 </strong>
               </a>
             </div>
-            <Current />
+            <Dropdown className="examples--dropdown" pullRight>
+              <Dropdown.Toggle bsStyle="link" className="dropdown--toggle ">
+                {EXAMPLES[selected]}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {Object.entries(EXAMPLES).map(([key, title]) => (
+                  <MenuItem href={`#${key}`} onClick={() => this.select(key)}>
+                    {title}
+                  </MenuItem>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </header>
+          <div className="example">
+            <Current localizer={globalizeLocalizer} />
           </div>
         </div>
         <div className="docs">
@@ -149,11 +134,8 @@ class Example extends React.Component {
       </div>
     )
   }
-
-  select = (selected, e) => {
-    e.preventDefault()
-    this.setState({ selected })
-  }
 }
 
-render(<Example />, document.getElementById('app'))
+document.addEventListener('DOMContentLoaded', () => {
+  render(<Example />, document.getElementById('app'))
+})

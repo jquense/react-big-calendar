@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import * as TimeSlotUtils from './utils/TimeSlots'
-import { dateFormat } from './utils/propTypes'
-import localizer from './localizer'
 import TimeSlotGroup from './TimeSlotGroup'
 
 export default class TimeGutter extends Component {
@@ -15,8 +13,7 @@ export default class TimeGutter extends Component {
     step: PropTypes.number.isRequired,
     getNow: PropTypes.func.isRequired,
 
-    timeGutterFormat: dateFormat,
-    culture: PropTypes.string,
+    localizer: PropTypes.object.isRequired,
     resource: PropTypes.string,
   }
 
@@ -39,18 +36,18 @@ export default class TimeGutter extends Component {
 
   renderSlot = (value, idx) => {
     if (idx !== 0) return null
-    const { timeGutterFormat, getNow, culture } = this.props
+    const { localizer, getNow } = this.props
 
     const isNow = this.slotMetrics.dateIsInGroup(getNow(), idx)
     return (
       <span className={cn('rbc-label', isNow && 'rbc-now')}>
-        {localizer.format(value, timeGutterFormat, culture)}
+        {localizer.format(value, 'timeGutterFormat')}
       </span>
     )
   }
 
   render() {
-    const { culture, resource } = this.props
+    const { resource } = this.props
 
     return (
       <div className="rbc-time-gutter rbc-time-column">
@@ -59,7 +56,6 @@ export default class TimeGutter extends Component {
             <TimeSlotGroup
               key={idx}
               group={grp}
-              culture={culture}
               resource={resource}
               renderSlot={this.renderSlot}
             />

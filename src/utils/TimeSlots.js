@@ -95,12 +95,34 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       return slots[slot]
     },
 
+    closestSlotFromPoint(point, boundaryRect) {
+      let range = Math.abs(boundaryRect.top - boundaryRect.bottom)
+      return this.closestSlotToPosition((point.y - boundaryRect.top) / range)
+    },
+
+    closestSlotFromDate(date, offset = 0) {
+      if (dates.lt(date, start, 'minutes')) return slots[0]
+
+      const diffMins = dates.diff(start, date, 'minutes')
+      return slots[(diffMins - diffMins % step) / step + offset]
+    },
+
+    startsBeforeDay(date) {
+      return dates.lt(date, start, 'day')
+    },
+
+    startsAfterDay(date) {
+      return dates.gt(date, end, 'day')
+    },
+
     startsBefore(date) {
       return dates.lt(dates.merge(start, date), start, 'minutes')
     },
+
     startsAfter(date) {
       return dates.gt(dates.merge(end, date), end, 'minutes')
     },
+
     getRange(rangeStart, rangeEnd) {
       rangeStart = dates.min(end, dates.max(start, rangeStart))
       rangeEnd = dates.min(end, dates.max(start, rangeEnd))

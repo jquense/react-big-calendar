@@ -150,9 +150,13 @@ class DraggableEventWrapper extends React.Component {
       })
     }
 
+    if (typeof event.$moveable === 'undefined' || event.$moveable === true) {
+      children = connectDragSource(children)
+    }
+
     return (
       <EventWrapper event={event} allDay={allDay}>
-        {connectDragSource(children)}
+        {children}
       </EventWrapper>
     )
   }

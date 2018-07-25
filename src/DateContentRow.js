@@ -35,6 +35,7 @@ const propTypes = {
   dayPropGetter: PropTypes.func,
 
   getNow: PropTypes.func.isRequired,
+  isAllDay: PropTypes.bool,
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,

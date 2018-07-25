@@ -149,6 +149,8 @@ class DayColumn extends React.Component {
       localizer,
       getters,
       components,
+      step,
+      timeslots,
     } = this.props
 
     const { slotMetrics } = this

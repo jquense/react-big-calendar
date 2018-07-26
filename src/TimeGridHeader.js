@@ -12,7 +12,7 @@ class TimeGridHeader extends React.Component {
   static propTypes = {
     range: PropTypes.array.isRequired,
     events: PropTypes.array.isRequired,
-    resources: PropTypes.array,
+    resources: PropTypes.object,
     getNow: PropTypes.func.isRequired,
     isOverflowing: PropTypes.bool,
 
@@ -33,32 +33,12 @@ class TimeGridHeader extends React.Component {
     onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
+    scrollRef: PropTypes.any,
   }
 
   handleHeaderClick = (date, view, e) => {
     e.preventDefault()
     notify(this.props.onDrillDown, [date, view])
-  }
-
-  renderHeaderResources(range, resources) {
-    const { accessors, getNow } = this.props
-    const today = getNow()
-
-    return range.map((date, i) => {
-      return resources.map((resource, j) => {
-        return (
-          <div
-            key={`${i}-${j}`}
-            className={cn(
-              'rbc-header',
-              dates.eq(date, today, 'day') && 'rbc-today'
-            )}
-          >
-            {accessors.resourceTitle(resource)}
-          </div>
-        )
-      })
-    })
   }
 
   renderHeaderCells(range) {
@@ -154,6 +134,14 @@ class TimeGridHeader extends React.Component {
       rtl,
       resources,
       range,
+      events,
+      getNow,
+      accessors,
+      selectable,
+      components,
+      getters,
+      scrollRef,
+      localizer,
       isOverflowing,
       components: { timeGutterHeader: TimeGutterHeader },
     } = this.props
@@ -163,34 +151,58 @@ class TimeGridHeader extends React.Component {
       style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize()}px`
     }
 
+    const groupedEvents = resources.groupEvents(events)
+
     return (
       <div
-        ref="headerCell"
         style={style}
+        ref={scrollRef}
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        <div className="rbc-label rbc-time-header-gutter" style={{ width }}>
+        <div
+          className="rbc-label rbc-time-header-gutter"
+          style={{ width, minWidth: width, maxWidth: width }}
+        >
           {TimeGutterHeader && <TimeGutterHeader />}
         </div>
 
-        <div className="rbc-time-header-content">
-          <div className="rbc-row rbc-time-header-cell">
-            {this.renderHeaderCells(range)}
+        {resources.map(([id, resource], idx) => (
+          <div className="rbc-time-header-content" key={id || idx}>
+            {resource && (
+              <div className="rbc-row rbc-row-resource">
+                <div key={`resource_${idx}`} className="rbc-header">
+                  {accessors.resourceTitle(resource)}
+                </div>
+              </div>
+            )}
+            {/* For rendering only one day no need to show the headers */}
+            {range.length > 1 && (
+              <div className="rbc-row rbc-time-header-cell">
+                {this.renderHeaderCells(range)}
+              </div>
+            )}
+            <DateContentRow
+              isAllDay
+              rtl={rtl}
+              getNow={getNow}
+              minRows={2}
+              range={range}
+              events={groupedEvents.get(id) || []}
+              resourceId={resource && id}
+              className="rbc-allday-cell"
+              selectable={selectable}
+              selected={this.props.selected}
+              components={components}
+              accessors={accessors}
+              getters={getters}
+              localizer={localizer}
+              onSelect={this.props.onSelectEvent}
+              onDoubleClick={this.props.onDoubleClickEvent}
+              onSelectSlot={this.props.onSelectSlot}
+              longPressThreshold={this.props.longPressThreshold}
+            />
           </div>
-          {resources && (
-            <div className="rbc-row rbc-row-resource">
-              {this.renderHeaderResources(range, resources)}
-            </div>
-          )}
-
-          {resources ? (
-            <div className="rbc-row rbc-row-resource">
-              {resources.map(resource => this.renderRow(resource))}
-            </div>
-          ) : (
-            this.renderRow()
-          )}
-        </div>
+        ))}
       </div>
     )
   }

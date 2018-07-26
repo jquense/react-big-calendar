@@ -33,12 +33,12 @@ class WeekWrapper extends React.Component {
   }
 
   static contextTypes = {
-    onEventDrop: PropTypes.func,
-    onEventResize: PropTypes.func,
-
-    onMove: PropTypes.func,
-    onResize: PropTypes.func,
-    dragAndDropAction: PropTypes.object,
+    draggable: PropTypes.shape({
+      onStart: PropTypes.func,
+      onEnd: PropTypes.func,
+      dragAndDropAction: PropTypes.object,
+      onBeginAction: PropTypes.func,
+    }),
   }
 
   constructor(...args) {
@@ -77,7 +77,8 @@ class WeekWrapper extends React.Component {
     this.setState({ segment })
   }
 
-  handleMove = ({ event }, { x, y }, node) => {
+  handleMove = ({ x, y }, node) => {
+    const { event } = this.context.draggable.dragAndDropAction
     const metrics = this.props.slotMetrics
     const { accessors } = this.props
 
@@ -105,7 +106,8 @@ class WeekWrapper extends React.Component {
     this.update(event, start, end)
   }
 
-  handleResize({ event, direction }, point, node) {
+  handleResize(point, node) {
+    const { event, direction } = this.context.draggable.dragAndDropAction
     const { accessors, slotMetrics: metrics } = this.props
 
     let { start, end } = eventTimes(event, accessors)
@@ -167,7 +169,7 @@ class WeekWrapper extends React.Component {
 
     selector.on('beforeSelect', point => {
       const { isAllDay } = this.props
-      const { action } = this.context.dragAndDropAction
+      const { action } = this.context.draggable.dragAndDropAction
 
       return (
         action === 'move' ||
@@ -176,74 +178,35 @@ class WeekWrapper extends React.Component {
       )
     })
 
-    let handler = box => {
-      const { dragAndDropAction } = this.context
+    selector.on('selecting', box => {
+      const bounds = getBoundsForNode(node)
+      const { dragAndDropAction } = this.context.draggable
 
-      switch (dragAndDropAction.action) {
-        case 'move':
-          this.handleMove(dragAndDropAction, box, node)
-          break
-        case 'resize':
-          this.handleResize(dragAndDropAction, box, node)
-          break
-      }
-    }
-
-    selector.on('selecting', handler)
-    selector.on('selectStart', handler)
-
-    selector.on('select', box => {
-      const { dragAndDropAction } = this.context
-
-      switch (dragAndDropAction.action) {
-        case 'move':
-          this.handleEventDrop()
-          break
-        case 'resize':
-          this.handleEventResize(box, node)
-          break
-      }
+      if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
+      if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
     })
 
-    selector.on('click', () => {
-      this.context.onMove(null)
+    selector.on('selectStart', () => this.context.draggable.onStart())
+    selector.on('select', point => {
+      const bounds = getBoundsForNode(node)
+
+      if (!this.state.segment || !pointInBox(bounds, point)) return
+      this.handleInteractionEnd()
     })
+    selector.on('click', () => this.context.draggable.onEnd(null))
   }
 
-  handleEventResize = (box, node) => {
-    const { segment } = this.state
-
-    if (!segment || !pointInBox(getBoundsForNode(node), box)) return
-    const { dragAndDropAction, onResize, onEventResize } = this.context
+  handleInteractionEnd = () => {
+    const { resourceId, isAllDay } = this.props
+    const { event } = this.state.segment
 
     this.reset()
 
-    onResize(null)
-
-    onEventResize({
-      event: dragAndDropAction.event,
-      start: segment.event.start,
-      end: segment.event.end,
-    })
-  }
-
-  handleEventDrop = () => {
-    const { resourceId } = this.props
-    const { segment } = this.state
-
-    if (!segment) return
-    const { dragAndDropAction, onMove, onEventDrop } = this.context
-
-    this.reset()
-
-    onMove(null)
-
-    onEventDrop({
+    this.context.draggable.onEnd({
+      start: event.start,
+      end: event.end,
       resourceId,
-      event: dragAndDropAction.event,
-      start: segment.event.start,
-      end: segment.event.end,
-      isAllDay: true,
+      isAllDay,
     })
   }
 

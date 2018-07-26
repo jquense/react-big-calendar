@@ -1,6 +1,9 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
+import Layout from 'react-tackle-box/lib/Layout'
+
+import ExampleControlSlot from '../ExampleControlSlot'
 
 require('globalize/lib/cultures/globalize.culture.en-GB')
 require('globalize/lib/cultures/globalize.culture.es')
@@ -17,21 +20,23 @@ class Cultures extends React.Component {
 
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <label>Select a Culture</label>{' '}
-          <select
-            className="form-control"
-            style={{ width: 200, display: 'inline-block' }}
-            defaultValue={'fr'}
-            onChange={e => this.setState({ culture: e.target.value })}
-          >
-            {cultures.map((c, idx) => (
-              <option key={idx} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
+        <ExampleControlSlot.Entry waitForOutlet>
+          <Layout direction="column" align="center">
+            <label>Select a Culture</label>{' '}
+            <select
+              className="form-control"
+              style={{ width: 200, display: 'inline-block' }}
+              defaultValue={'fr'}
+              onChange={e => this.setState({ culture: e.target.value })}
+            >
+              {cultures.map((c, idx) => (
+                <option key={idx} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </Layout>
+        </ExampleControlSlot.Entry>
         <BigCalendar
           rtl={rtl}
           events={events}

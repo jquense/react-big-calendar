@@ -6,6 +6,7 @@ import { accessor } from '../../utils/propTypes'
 import EventWrapper from './EventWrapper'
 import EventContainerWrapper from './EventContainerWrapper'
 import WeekWrapper from './WeekWrapper'
+import { mergeComponents } from './common'
 
 /**
  * Creates a higher-order component (HOC) supporting drag & drop and optionally resizing
@@ -52,11 +53,10 @@ export default function withDragAndDrop(Calendar) {
     static propTypes = {
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
-      startAccessor: accessor,
-      endAccessor: accessor,
-      allDayAccessor: accessor,
+
       draggableAccessor: accessor,
       resizableAccessor: accessor,
+
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
       components: PropTypes.object,
@@ -66,9 +66,6 @@ export default function withDragAndDrop(Calendar) {
     static defaultProps = {
       // TODO: pick these up from Calendar.defaultProps
       components: {},
-      startAccessor: 'start',
-      endAccessor: 'end',
-      allDayAccessor: 'allDay',
       draggableAccessor: null,
       resizableAccessor: null,
       step: 30,
@@ -79,51 +76,71 @@ export default function withDragAndDrop(Calendar) {
     }
 
     static childContextTypes = {
-      onEventDrop: PropTypes.func,
-      onEventResize: PropTypes.func,
-      onMove: PropTypes.func,
-      onResize: PropTypes.func,
-      dragAndDropAction: PropTypes.object,
-
-      components: PropTypes.object,
-      draggableAccessor: accessor,
-      resizableAccessor: accessor,
-      step: PropTypes.number,
-    }
-
-    getChildContext() {
-      return {
-        onEventDrop: this.props.onEventDrop,
-        onEventResize: this.props.onEventResize,
-        step: this.props.step,
-        components: this.props.components,
-        draggableAccessor: this.props.draggableAccessor,
-        resizableAccessor: this.props.resizableAccessor,
-
-        onResize: (event, direction) =>
-          this.setState({
-            dragAndDropAction: event
-              ? { action: 'resize', event, direction }
-              : {},
-          }),
-
-        onMove: event =>
-          this.setState({
-            dragAndDropAction: event ? { action: 'move', event } : {},
-          }),
-
-        dragAndDropAction: this.state.dragAndDropAction,
-      }
+      draggable: PropTypes.shape({
+        onStart: PropTypes.func,
+        onEnd: PropTypes.func,
+        onBeginAction: PropTypes.func,
+        draggableAccessor: accessor,
+        resizableAccessor: accessor,
+        dragAndDropAction: PropTypes.object,
+      }),
     }
 
     constructor(...args) {
       super(...args)
-      this.state = { isDragging: false, dragAndDropAction: {} }
+
+      const { components } = this.props
+
+      this.components = mergeComponents(components, {
+        eventWrapper: EventWrapper,
+        eventContainerWrapper: EventContainerWrapper,
+        weekWrapper: WeekWrapper,
+      })
+
+      this.state = {}
+    }
+
+    getChildContext() {
+      return {
+        draggable: {
+          onStart: this.handleInteractionStart,
+          onEnd: this.handleInteractionEnd,
+          onBeginAction: this.handleBeginAction,
+          draggableAccessor: this.props.draggableAccessor,
+          resizableAccessor: this.props.resizableAccessor,
+          dragAndDropAction: this.state,
+        },
+      }
+    }
+
+    handleBeginAction = (event, action, direction) => {
+      this.setState({ event, action, direction })
+    }
+
+    handleInteractionStart = () => {
+      this.setState({ interacting: true })
+    }
+
+    handleInteractionEnd = interactionInfo => {
+      const { action, event } = this.state
+
+      this.setState({
+        action: null,
+        event: null,
+        interacting: false,
+        direction: null,
+      })
+
+      if (interactionInfo == null) return
+
+      interactionInfo.event = event
+      if (action === 'move') this.props.onEventDrop(interactionInfo)
+      if (action === 'resize') this.props.onEventResize(interactionInfo)
     }
 
     render() {
-      const { selectable, components, ...props } = this.props
-      const { dragAndDropAction } = this.state
+      const { selectable, ...props } = this.props
+      const { interacting } = this.state
       delete props.onEventDrop
       delete props.onEventResize
 
@@ -132,17 +149,10 @@ export default function withDragAndDrop(Calendar) {
       props.className = cn(
         props.className,
         'rbc-addons-dnd',
-        dragAndDropAction.action && 'rbc-addons-dnd-is-dragging'
+        !!interacting && 'rbc-addons-dnd-is-dragging'
       )
 
-      props.components = {
-        ...components,
-        eventWrapper: EventWrapper,
-        eventContainerWrapper: EventContainerWrapper,
-        weekWrapper: WeekWrapper,
-      }
-
-      return <Calendar {...props} />
+      return <Calendar {...props} components={this.components} />
     }
   }
 

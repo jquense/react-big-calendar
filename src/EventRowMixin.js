@@ -58,7 +58,7 @@ export default {
   },
 
   renderSpan(slots, len, key, content = ' ') {
-    let per = Math.abs(len) / slots * 100 + '%'
+    let per = (Math.abs(len) / slots) * 100 + '%'
 
     return (
       <div

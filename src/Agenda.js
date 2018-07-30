@@ -72,9 +72,7 @@ class Agenda extends React.Component {
             </div>
           </React.Fragment>
         ) : (
-          <span className="rbc-agenda-empty">
-            There are no events in this range
-          </span>
+          <span className="rbc-agenda-empty">{messages.noEventsInRange}</span>
         )}
       </div>
     )

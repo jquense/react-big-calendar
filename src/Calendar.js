@@ -859,7 +859,7 @@ class Calendar extends React.Component {
             view={view}
             views={viewNames}
             label={label}
-            onViewChange={this.handleViewChange}
+            onView={this.handleViewChange}
             onNavigate={this.handleNavigate}
             localizer={localizer}
           />

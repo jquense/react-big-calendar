@@ -14,6 +14,8 @@ let defaultMessages = {
   today: 'today',
   agenda: 'agenda',
 
+  noEventsInRange: 'There are no events in this range.',
+
   showMore: total => `+${total} more`,
 }
 

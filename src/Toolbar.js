@@ -10,7 +10,7 @@ class Toolbar extends React.Component {
     label: PropTypes.node.isRequired,
     localizer: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
-    onViewChange: PropTypes.func.isRequired,
+    onView: PropTypes.func.isRequired,
   }
 
   render() {
@@ -51,7 +51,7 @@ class Toolbar extends React.Component {
   }
 
   view = view => {
-    this.props.onViewChange(view)
+    this.props.onView(view)
   }
 
   viewNamesGroup(messages) {

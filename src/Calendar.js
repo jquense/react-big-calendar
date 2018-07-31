@@ -649,6 +649,10 @@ class Calendar extends React.Component {
       eventContainerWrapper: elementType,
       dayWrapper: elementType,
       dateCellWrapper: elementType,
+      /**
+       * component used as a header for each column in the TimeGridHeader
+       */
+      header: elementType,
       timeGutterHeader: elementType,
 
       toolbar: elementType,

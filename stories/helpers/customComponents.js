@@ -53,6 +53,22 @@ const customComponents = {
     }
     return <div style={style}>{eventWrapperProps.children}</div>
   },
+  timeSlotWrapper: timeSlotWrapperProps => {
+    const style =
+      timeSlotWrapperProps.resource === null ||
+      timeSlotWrapperProps.value.getMinutes() !== 0
+        ? {}
+        : {
+            border: '4px solid',
+            backgroundColor:
+              timeSlotWrapperProps.value.getHours() >= 8 &&
+              timeSlotWrapperProps.value.getHours() <= 17
+                ? 'green'
+                : 'red',
+            padding: '5px',
+          }
+    return <div style={style}>{timeSlotWrapperProps.children}</div>
+  },
 }
 
 export default customComponents

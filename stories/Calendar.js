@@ -197,3 +197,14 @@ storiesOf('Big Calendar', module)
       />
     )
   })
+  .add('add custom timeSlotWrapper', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.WEEK}
+        events={events}
+        components={{
+          timeSlotWrapper: customComponents.timeSlotWrapper,
+        }}
+      />
+    )
+  })

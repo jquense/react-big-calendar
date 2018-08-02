@@ -7,7 +7,7 @@ import localizer from './localizer'
 
 function workWeekRange(date, options) {
   return Week.range(date, options).filter(
-    d => [6, 0].indexOf(d.getDay()) === -1
+    d => [6, 7].indexOf(d.dayOfWeek().value()) === -1
   )
 }
 
@@ -22,7 +22,17 @@ class WorkWeek extends React.Component {
     let { date, ...props } = this.props
     let range = workWeekRange(date, this.props)
 
-    return <TimeGrid {...props} range={range} eventOffset={15} />
+    const start = range[0]
+    const end = range[range.length - 1]
+    return (
+      <TimeGrid
+        {...props}
+        min={start}
+        max={end}
+        range={range}
+        eventOffset={15}
+      />
+    )
   }
 }
 

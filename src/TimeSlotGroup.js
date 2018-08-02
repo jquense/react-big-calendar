@@ -34,6 +34,7 @@ export default class TimeSlotGroup extends Component {
       culture,
       resource,
       slotPropGetter,
+      timezone,
     } = this.props
     return (
       <TimeSlot
@@ -43,6 +44,7 @@ export default class TimeSlotGroup extends Component {
         showLabel={showLabels && !slotNumber}
         content={content}
         culture={culture}
+        timezone={timezone}
         isNow={isNow}
         resource={resource}
         value={value}
@@ -51,20 +53,31 @@ export default class TimeSlotGroup extends Component {
   }
 
   renderSlices() {
+    const {
+      isNow,
+      step,
+      value,
+      timeslots,
+      timeGutterFormat,
+      culture,
+      timezone,
+    } = this.props
     const ret = []
-    const sliceLength = this.props.step
-    let sliceValue = dates.minutes(this.props.value, 0)
-    for (let i = 0; i < this.props.timeslots; i++) {
+    const sliceLength = step
+    let sliceValue = dates.minutes(value, 0)
+    for (let i = 0; i < timeslots; i++) {
       const content = localizer.format(
         sliceValue,
-        this.props.timeGutterFormat,
-        this.props.culture
+        timeGutterFormat,
+        culture,
+        timezone
       )
       ret.push(this.renderSlice(i, content, sliceValue))
       sliceValue = dates.add(sliceValue, sliceLength, 'minutes')
     }
     return ret
   }
+
   render() {
     return <div className="rbc-timeslot-group">{this.renderSlices()}</div>
   }

@@ -22,6 +22,8 @@ import { accessor as get } from './utils/accessors'
 import { inRange, sortEvents, segStyle } from './utils/eventLevels'
 import { accessor, dateFormat } from './utils/propTypes'
 
+const secondsTotal = 86400
+
 export default class TimeGrid extends Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
@@ -73,8 +75,6 @@ export default class TimeGrid extends Component {
 
   static defaultProps = {
     step: 30,
-    min: dates.startOf(ZonedDateTime.now(), 'day'),
-    max: dates.endOf(ZonedDateTime.now(), 'day'),
     scrollToTime: dates.startOf(ZonedDateTime.now(), 'day'),
     /* this is needed to satisfy requirements from TimeColumn required props
      * There is a strange bug in React, using ...TimeColumn.defaultProps causes weird crashes
@@ -158,6 +158,8 @@ export default class TimeGrid extends Component {
       resources,
       allDayAccessor,
       showMultiDayTimes,
+      min,
+      max,
       timezone,
     } = this.props
 
@@ -193,11 +195,12 @@ export default class TimeGrid extends Component {
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     let gutterRef = ref => (this._gutters[1] = ref && findDOMNode(ref))
+    const now = getNow()
 
     let eventsRendered = this.renderEvents(
       range,
       rangeEvents,
-      getNow(),
+      now,
       resources || [null]
     )
 
@@ -208,6 +211,8 @@ export default class TimeGrid extends Component {
         <div ref="content" className="rbc-time-content">
           <TimeColumn
             {...this.props}
+            min={dates.startOf(start, 'day')}
+            max={dates.endOf(start, 'day')}
             showLabels
             style={{ width }}
             ref={gutterRef}
@@ -253,8 +258,8 @@ export default class TimeGrid extends Component {
         return (
           <DayColumn
             {...this.props}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
+            min={dates.startOf(dates.merge(date, min), 'day')}
+            max={dates.endOf(dates.merge(date, max), 'day')}
             resource={resource && resource.id}
             eventComponent={components.event}
             eventWrapperComponent={components.eventWrapper}
@@ -271,7 +276,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width, resources) {
-    let { messages, rtl, selectable, components, getNow } = this.props
+    let { messages, timezone, rtl, selectable, components, getNow } = this.props
     let { isOverflowing } = this.state || {}
 
     let style = {}
@@ -307,6 +312,7 @@ export default class TimeGrid extends Component {
             {message(messages).allDay}
           </div>
           <DateContentRow
+            timezone={timezone}
             getNow={getNow}
             minRows={2}
             range={range}
@@ -461,7 +467,7 @@ export default class TimeGrid extends Component {
     const { min, max, scrollToTime } = props
 
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
-    const totalMillis = dates.diff(max, min)
+    const totalMillis = dates.diff(min, max)
 
     this._scrollRatio = diffMillis / totalMillis
   }
@@ -480,18 +486,28 @@ export default class TimeGrid extends Component {
     }
   }
 
+  // only works in a day-based view
   positionTimeIndicator() {
-    const { rtl, min, max, getNow } = this.props
+    const { rtl, min, max, getNow, timezone } = this.props
     const current = getNow()
+    const zonedMin = convertToTimezone(min, timezone)
+    const zonedMax = convertToTimezone(max, timezone)
 
-    const secondsGrid = dates.diff(max, min, 'seconds')
-    const secondsPassed = dates.diff(current, min, 'seconds')
+    const secondsPassed = dates.diff(
+      dates.startOf(current, 'day'),
+      current,
+      'seconds'
+    )
 
     const timeIndicator = this.refs.timeIndicator
-    const factor = secondsPassed / secondsGrid
+    const factor = (secondsPassed / secondsTotal) % 1
     const timeGutter = this._gutters[this._gutters.length - 1]
 
-    if (timeGutter && current >= min && current <= max) {
+    if (
+      timeGutter &&
+      dates.gte(current, zonedMin) &&
+      dates.lte(current, zonedMax)
+    ) {
       const pixelHeight = timeGutter.offsetHeight
       const offset = Math.floor(factor * pixelHeight)
 

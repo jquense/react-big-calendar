@@ -3,11 +3,11 @@ import invariant from 'invariant'
 
 const localePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 
-function _format(localizer, formatter, value, format, culture) {
+function _format(localizer, formatter, value, format, culture, timezone) {
   let result =
     typeof format === 'function'
-      ? format(value, culture, localizer)
-      : formatter.call(localizer, value, format, culture)
+      ? format(value, culture, localizer, timezone)
+      : formatter.call(localizer, value, format, culture, timezone)
 
   invariant(
     result == null || typeof result === 'string',

@@ -176,6 +176,7 @@ class DateContentRow extends React.Component {
         {
           startAccessor,
           endAccessor,
+          timezone,
         },
         range
       )

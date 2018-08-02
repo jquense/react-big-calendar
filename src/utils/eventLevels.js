@@ -18,10 +18,16 @@ export function eventSegments(
   range
 ) {
   let slots = dates.diff(first, last, 'day')
-  let start = dates.max(dates.startOf(get(event, startAccessor), 'day'), first)
-  let end = dates.min(dates.ceil(get(event, endAccessor), 'day'), last)
+  let zonedStart = convertToTimezone(get(event, startAccessor), timezone)
+  let zonedEnd = convertToTimezone(get(event, endAccessor), timezone)
 
-  let padding = findIndex(range, x => dates.eq(x, start, 'day'))
+  let start = dates.max(dates.startOf(zonedStart, 'day'), first)
+  let end = dates.min(dates.ceil(zonedEnd, 'day'), last)
+
+  let padding = findIndex(range, d => {
+    return dates.eq(d, start, 'day')
+  })
+
   let span = dates.diff(start, end, 'day')
 
   span = Math.min(span, slots)
@@ -85,7 +91,6 @@ export function inRange(
   let endsAfterStart = !dates.eq(eStart, zonedRangeEnd, 'minutes')
     ? dates.gt(eEnd, zonedRangeStart, 'minutes')
     : dates.gte(eEnd, zonedRangeStart, 'minutes')
-  debugger
 
   return startsBeforeEnd && endsAfterStart
 }

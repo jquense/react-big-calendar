@@ -4,6 +4,7 @@ import cn from 'classnames'
 
 import dates from './utils/dates'
 import { elementType, dateFormat } from './utils/propTypes'
+import { convertToTimezone } from './utils/dayViewLayout/event'
 import BackgroundWrapper from './BackgroundWrapper'
 import TimeSlotGroup from './TimeSlotGroup'
 
@@ -69,6 +70,7 @@ export default class TimeColumn extends Component {
 
   render() {
     const {
+      timezone,
       className,
       children,
       style,
@@ -84,7 +86,7 @@ export default class TimeColumn extends Component {
     const renderedSlots = []
     const groupLengthInMinutes = step * timeslots
 
-    let date = min
+    let date = convertToTimezone(min, timezone)
     let next = date
     let now = getNow()
     let isNow = false

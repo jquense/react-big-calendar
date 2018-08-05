@@ -69,6 +69,13 @@ const customComponents = {
           }
     return <div style={style}>{timeSlotWrapperProps.children}</div>
   },
+  customTitle: customTitleProps => {
+    return (
+      <span className={'rbc-toolbar-label'}>
+        ** {customTitleProps.label} ** My Custom Title
+      </span>
+    )
+  },
 }
 
 export default customComponents

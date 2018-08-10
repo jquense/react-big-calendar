@@ -27,6 +27,8 @@ class TimeGridHeader extends React.Component {
     selected: PropTypes.object,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
     longPressThreshold: PropTypes.number,
+    onSelectEnd: PropTypes.func,
+    onSelectStart: PropTypes.func,
 
     onSelectSlot: PropTypes.func,
     onSelectEvent: PropTypes.func,
@@ -117,6 +119,8 @@ class TimeGridHeader extends React.Component {
       localizer,
       accessors,
       components,
+      onSelectEnd,
+      onSelectStart,
     } = this.props
 
     const resourceId = accessors.resourceId(resource)
@@ -136,6 +140,8 @@ class TimeGridHeader extends React.Component {
         className="rbc-allday-cell"
         selectable={selectable}
         selected={this.props.selected}
+        onSelectEnd={onSelectEnd}
+        onSelectStart={onSelectStart}
         components={components}
         accessors={accessors}
         getters={getters}

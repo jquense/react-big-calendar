@@ -44,6 +44,8 @@ let propTypes = {
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
   longPressThreshold: PropTypes.number,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
 
   onNavigate: PropTypes.func,
   onSelectSlot: PropTypes.func,
@@ -146,6 +148,8 @@ class MonthView extends React.Component {
       longPressThreshold,
       accessors,
       getters,
+      onSelectEnd,
+      onSelectStart,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -167,6 +171,8 @@ class MonthView extends React.Component {
         maxRows={rowLimit}
         selected={selected}
         selectable={selectable}
+        onSelectEnd={onSelectEnd}
+        onSelectStart={onSelectStart}
         components={components}
         accessors={accessors}
         getters={getters}

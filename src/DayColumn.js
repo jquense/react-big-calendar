@@ -308,7 +308,9 @@ class DayColumn extends React.Component {
     selector.on('selectStart', maybeSelect)
 
     selector.on('beforeSelect', box => {
+      const didNotClickOnAnEvent = !isEvent(findDOMNode(this), box)
       if (
+        didNotClickOnAnEvent &&
         this.props.components &&
         this.props.components.beforeSelectIndicatorComponent
       ) {
@@ -316,7 +318,7 @@ class DayColumn extends React.Component {
       }
       if (this.props.selectable !== 'ignoreEvents') return
 
-      return !isEvent(findDOMNode(this), box)
+      return didNotClickOnAnEvent
     })
 
     selector.on('click', box => selectorClicksHandler(box, 'click'))

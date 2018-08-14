@@ -136,10 +136,10 @@ export default function withDragAndDrop(Calendar) {
       )
 
       props.components = {
-        ...components,
         eventWrapper: EventWrapper,
         eventContainerWrapper: EventContainerWrapper,
         weekWrapper: WeekWrapper,
+        ...components,
       }
 
       return <Calendar {...props} />

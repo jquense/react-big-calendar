@@ -77,6 +77,44 @@ class DayColumn extends React.Component {
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
 
+  renderSelection() {
+    const { selecting } = this.state
+
+    if (selecting) {
+      let { top, height, startDate, endDate, noMovementYet } = this.state
+
+      const { localizer, components } = this.props
+
+      let selectDates = { start: startDate, end: endDate }
+
+      let selectionElement
+      if (
+        noMovementYet &&
+        components &&
+        components.beforeSelectIndicatorComponent
+      ) {
+        // if the user is about to start selecting but hasn't started dragging yet
+        selectionElement = components.beforeSelectIndicatorComponent({
+          top,
+          height,
+          startDate,
+          endDate,
+        })
+      } else {
+        // the user has already started dragging/selecting a time slot
+        selectionElement = (
+          <div className="rbc-slot-selection" style={{ top, height }}>
+            <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
+          </div>
+        )
+      }
+
+      return selectionElement
+    }
+
+    return null
+  }
+
   render() {
     const {
       max,
@@ -91,9 +129,7 @@ class DayColumn extends React.Component {
     } = this.props
 
     let { slotMetrics } = this
-    let { selecting, top, height, startDate, endDate } = this.state
-
-    let selectDates = { start: startDate, end: endDate }
+    let { selecting } = this.state
 
     const { className, style } = dayProp(max)
     const current = getNow()
@@ -130,12 +166,7 @@ class DayColumn extends React.Component {
             {this.renderEvents()}
           </div>
         </EventContainer>
-
-        {selecting && (
-          <div className="rbc-slot-selection" style={{ top, height }}>
-            <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
-          </div>
-        )}
+        {this.renderSelection()}
       </div>
     )
   }
@@ -160,7 +191,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil((step * timeslots) / 2),
+      minimumStartDifference: Math.ceil(step * timeslots / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -226,7 +257,8 @@ class DayColumn extends React.Component {
       if (
         this.state.start !== state.start ||
         this.state.end !== state.end ||
-        this.state.selecting !== state.selecting
+        this.state.selecting !== state.selecting ||
+        this.state.noMovementYet === true
       ) {
         this.setState(state)
       }
@@ -252,6 +284,7 @@ class DayColumn extends React.Component {
       return {
         ...selectRange,
         selecting: true,
+        noMovementYet: point.noMovementYet,
 
         top: `${selectRange.top}%`,
         height: `${selectRange.height}%`,
@@ -275,9 +308,17 @@ class DayColumn extends React.Component {
     selector.on('selectStart', maybeSelect)
 
     selector.on('beforeSelect', box => {
+      const didNotClickOnAnEvent = !isEvent(findDOMNode(this), box)
+      if (
+        didNotClickOnAnEvent &&
+        this.props.components &&
+        this.props.components.beforeSelectIndicatorComponent
+      ) {
+        maybeSelect({ ...box, noMovementYet: true })
+      }
       if (this.props.selectable !== 'ignoreEvents') return
 
-      return !isEvent(findDOMNode(this), box)
+      return didNotClickOnAnEvent
     })
 
     selector.on('click', box => selectorClicksHandler(box, 'click'))

@@ -38,8 +38,8 @@ function TimeGridEvent(props) {
   return (
     <EventWrapper type="time" {...props}>
       <div
-        onClick={props.onClick}
-        onDoubleClick={props.onDoubleClick}
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
         style={{
           ...userProps.style,
           top: `${top}%`,

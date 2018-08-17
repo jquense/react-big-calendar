@@ -20,10 +20,7 @@ class EventEndingRow extends React.Component {
   }
 
   render() {
-    let {
-      segments,
-      slotMetrics: { slots },
-    } = this.props
+    let { segments, slotMetrics: { slots } } = this.props
     let rowSegments = eventLevels(segments).levels[0]
 
     let current = 1,

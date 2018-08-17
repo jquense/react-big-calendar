@@ -5,6 +5,24 @@ import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
 
 class EventWrapper extends React.Component {
+  static propTypes = {
+    type: PropTypes.oneOf(['date', 'time']),
+    event: PropTypes.object.isRequired,
+
+    // draggable: PropTypes.bool,
+    // allDay: PropTypes.bool,
+    // isRow: PropTypes.bool,
+    // isDragging: PropTypes.bool,
+    // isResizing: PropTypes.bool,
+    continuesPrior: PropTypes.bool,
+    continuesAfter: PropTypes.bool,
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+      PropTypes.func,
+    ]).isRequired,
+  }
+
   static contextTypes = {
     draggable: PropTypes.shape({
       onStart: PropTypes.func,
@@ -15,18 +33,15 @@ class EventWrapper extends React.Component {
       dragAndDropAction: PropTypes.object,
     }),
   }
-
-  static propTypes = {
-    type: PropTypes.oneOf(['date', 'time']),
-    event: PropTypes.object.isRequired,
-
-    draggable: PropTypes.bool,
-    allDay: PropTypes.bool,
-    isRow: PropTypes.bool,
-    continuesPrior: PropTypes.bool,
-    continuesAfter: PropTypes.bool,
-    isDragging: PropTypes.bool,
-    isResizing: PropTypes.bool,
+  static defaultProps = {
+    // draggable: false,
+    // allDay: false,
+    // isRow: false,
+    // isDragging: false,
+    // isResizing: false,
+    continuesPrior: false,
+    continuesAfter: false,
+    type: 'time',
   }
 
   handleResizeUp = e => {
@@ -34,11 +49,13 @@ class EventWrapper extends React.Component {
     e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
   }
+
   handleResizeDown = e => {
     if (e.button !== 0) return
     e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
   }
+
   handleResizeLeft = e => {
     if (e.button !== 0) return
     e.stopPropagation()
@@ -59,6 +76,7 @@ class EventWrapper extends React.Component {
     const cls = direction === 'Up' || direction === 'Down' ? 'ns' : 'ew'
     return (
       <div
+        role="presentation"
         className={`rbc-addons-dnd-resize-${cls}-anchor`}
         onMouseDown={this[`handleResize${direction}`]}
       >
@@ -68,24 +86,28 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    let { children, event, type, continuesPrior, continuesAfter } = this.props
+    const { event, type, continuesPrior, continuesAfter } = this.props
+
+    let { children } = this.props
 
     if (event.__isPreview)
       return React.cloneElement(children, {
         className: cn(children.props.className, 'rbc-addons-dnd-drag-preview'),
       })
 
-    let { draggableAccessor, resizableAccessor } = this.context
+    const { draggableAccessor, resizableAccessor } = this.context
 
-    let isDraggable = draggableAccessor ? !!get(event, draggableAccessor) : true
+    const isDraggable = draggableAccessor
+      ? !!get(event, draggableAccessor)
+      : true
 
     /* Event is not draggable, no need to wrap it */
     if (!isDraggable) {
       return children
     }
 
-    let StartAnchor = null,
-      EndAnchor = null
+    let StartAnchor = null
+    let EndAnchor = null
 
     /*
      * The resizability of events depends on whether they are
@@ -107,7 +129,9 @@ class EventWrapper extends React.Component {
      * events at the edges of the calendar's min/max location.
      */
 
-    let isResizable = resizableAccessor ? !!get(event, resizableAccessor) : true
+    const isResizable = resizableAccessor
+      ? !!get(event, resizableAccessor)
+      : true
 
     if (isResizable) {
       if (type === 'date') {

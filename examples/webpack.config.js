@@ -28,7 +28,14 @@ module.exports = {
       rules.js({}),
       rules.images(),
       rules.fonts(),
-      rules.css(),
+      {
+        oneOf: [
+          Object.assign({}, rules.css({ modules: true }), {
+            test: /\.module\.css/,
+          }),
+          rules.css(),
+        ],
+      },
       rules.less({ browsers }),
       {
         test: /\.md/,

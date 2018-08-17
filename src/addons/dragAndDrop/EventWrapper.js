@@ -4,16 +4,16 @@ import cn from 'classnames'
 import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
 
-import BigCalendar from '../../index'
-
 class EventWrapper extends React.Component {
   static contextTypes = {
-    components: PropTypes.object,
-    draggableAccessor: accessor,
-    resizableAccessor: accessor,
-    onMove: PropTypes.func.isRequired,
-    onResize: PropTypes.func.isRequired,
-    dragAndDropAction: PropTypes.object,
+    draggable: PropTypes.shape({
+      onStart: PropTypes.func,
+      onEnd: PropTypes.func,
+      onBeginAction: PropTypes.func,
+      draggableAccessor: accessor,
+      resizableAccessor: accessor,
+      dragAndDropAction: PropTypes.object,
+    }),
   }
 
   static propTypes = {
@@ -32,25 +32,27 @@ class EventWrapper extends React.Component {
   handleResizeUp = e => {
     if (e.button !== 0) return
     e.stopPropagation()
-    this.context.onResize(this.props.event, 'UP')
+    this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
   }
   handleResizeDown = e => {
     if (e.button !== 0) return
     e.stopPropagation()
-    this.context.onResize(this.props.event, 'DOWN')
+    this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
   }
   handleResizeLeft = e => {
     if (e.button !== 0) return
     e.stopPropagation()
-    this.context.onResize(this.props.event, 'LEFT')
+    this.context.draggable.onBeginAction(this.props.event, 'resize', 'LEFT')
   }
   handleResizeRight = e => {
     if (e.button !== 0) return
     e.stopPropagation()
-    this.context.onResize(this.props.event, 'RIGHT')
+    this.context.draggable.onBeginAction(this.props.event, 'resize', 'RIGHT')
   }
   handleStartDragging = e => {
-    if (e.button === 0) this.context.onMove(this.props.event)
+    if (e.button === 0) {
+      this.context.draggable.onBeginAction(this.props.event, 'move')
+    }
   }
 
   renderAnchor(direction) {
@@ -66,19 +68,7 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    const { components } = this.context
-    const EventWrapper =
-      components.eventWrapper || BigCalendar.components.eventWrapper
-
-    let {
-      isResizing,
-      children,
-      event,
-      allDay,
-      type,
-      continuesPrior,
-      continuesAfter,
-    } = this.props
+    let { children, event, type, continuesPrior, continuesAfter } = this.props
 
     if (event.__isPreview)
       return React.cloneElement(children, {
@@ -128,8 +118,6 @@ class EventWrapper extends React.Component {
         EndAnchor = !continuesAfter && this.renderAnchor('Down')
       }
 
-      const isDragging = this.context.dragAndDropAction.event === event
-
       /*
       * props.children is the singular <Event> component.
       * BigCalendar positions the Event abolutely and we
@@ -141,11 +129,6 @@ class EventWrapper extends React.Component {
       children = React.cloneElement(children, {
         onMouseDown: this.handleStartDragging,
         onTouchStart: this.handleStartDragging,
-        className: cn(
-          children.props.className,
-          isDragging && 'rbc-addons-dnd-dragging',
-          isResizing && 'rbc-addons-dnd-resizing'
-        ),
         // replace original event child with anchor-embellished child
         children: (
           <div className="rbc-addons-dnd-resizable">
@@ -157,11 +140,7 @@ class EventWrapper extends React.Component {
       })
     }
 
-    return (
-      <EventWrapper event={event} allDay={allDay}>
-        {children}
-      </EventWrapper>
-    )
+    return children
   }
 }
 

@@ -14,6 +14,8 @@ function TimeGridEvent(props) {
     continuesEarlier,
     continuesLater,
     getters,
+    onClick,
+    onDoubleClick,
     components: { event: Event, eventWrapper: EventWrapper },
   } = props
   let title = accessors.title(event)

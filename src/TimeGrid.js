@@ -12,6 +12,7 @@ import getWidth from 'dom-helpers/query/width'
 import TimeGridHeader from './TimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
+import Resources from './utils/Resources'
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -62,6 +63,10 @@ export default class TimeGrid extends Component {
     super(props)
 
     this.state = { gutterWidth: undefined, isOverflowing: null }
+
+    this.scrollRef = React.createRef()
+
+    this.resources = Resources(props.resources, props.accessors)
   }
 
   componentWillMount() {
@@ -83,11 +88,16 @@ export default class TimeGrid extends Component {
     window.addEventListener('resize', this.handleResize)
   }
 
+  handleScroll = e => {
+    if (this.scrollRef.current) {
+      this.scrollRef.current.scrollLeft = e.target.scrollLeft
+    }
+  }
+
   handleResize = () => {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
   }
-
   componentWillUnmount() {
     window.clearTimeout(this._timeIndicatorTimeout)
     window.removeEventListener('resize', this.handleResize)
@@ -136,19 +146,21 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events, today, resources) {
+  renderEvents(range, events, today) {
     let { min, max, components, accessors, localizer } = this.props
 
-    return range.map((date, idx) => {
-      let daysEvents = events.filter(event =>
-        dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
-      )
+    const groupedEvents = this.resources.groupEvents(events)
 
-      return resources.map((resource, id) => {
-        const resourceId = accessors.resourceId(resource)
-        let eventsToDisplay = !resource
-          ? daysEvents
-          : daysEvents.filter(event => accessors.resource(event) === resourceId)
+    return this.resources.map(([id, resource], i) =>
+      range.map((date, jj) => {
+        let daysEvents = (groupedEvents.get(id) || []).filter(event =>
+          dates.inRange(
+            date,
+            accessors.start(event),
+            accessors.end(event),
+            'day'
+          )
+        )
 
         return (
           <DayColumn
@@ -156,16 +168,16 @@ export default class TimeGrid extends Component {
             localizer={localizer}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            resource={resourceId}
+            resource={resource && id}
             components={components}
             className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
-            key={idx + '-' + id}
+            key={i + '-' + jj}
             date={date}
-            events={eventsToDisplay}
+            events={daysEvents}
           />
         )
       })
-    })
+    )
   }
 
   render() {
@@ -216,19 +228,22 @@ export default class TimeGrid extends Component {
     allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
 
     return (
-      <div className="rbc-time-view">
+      <div
+        className={cn('rbc-time-view', resources && 'rbc-time-view-resources')}
+      >
         <TimeGridHeader
           range={range}
           events={allDayEvents}
           width={width}
           getNow={getNow}
           localizer={localizer}
-          resources={resources}
           selected={selected}
+          resources={this.resources}
           selectable={this.props.selectable}
           accessors={accessors}
           getters={getters}
           components={components}
+          scrollRef={this.scrollRef}
           isOverflowing={this.state.isOverflowing}
           longPressThreshold={longPressThreshold}
           onSelectSlot={this.handleSelectAllDaySlot}
@@ -237,7 +252,11 @@ export default class TimeGrid extends Component {
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
         />
-        <div ref="content" className="rbc-time-content">
+        <div
+          ref="content"
+          className="rbc-time-content"
+          onScroll={this.handleScroll}
+        >
           <TimeGutter
             date={start}
             ref={this.gutterRef}
@@ -250,7 +269,7 @@ export default class TimeGrid extends Component {
             components={components}
             className="rbc-time-gutter"
           />
-          {this.renderEvents(range, rangeEvents, getNow(), resources || [null])}
+          {this.renderEvents(range, rangeEvents, getNow())}
 
           <div ref="timeIndicator" className="rbc-current-time-indicator" />
         </div>

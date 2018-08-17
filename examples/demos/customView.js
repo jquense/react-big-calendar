@@ -4,6 +4,7 @@ import dates from 'date-arithmetic'
 import events from '../events'
 import BigCalendar from 'react-big-calendar'
 import TimeGrid from 'react-big-calendar/lib/TimeGrid'
+import ExampleControlSlot from '../ExampleControlSlot'
 
 class MyWeek extends React.Component {
   render() {
@@ -47,13 +48,18 @@ MyWeek.title = date => {
 }
 
 let CustomView = ({ localizer }) => (
-  <BigCalendar
-    events={events}
-    localizer={localizer}
-    defaultView={BigCalendar.Views.WEEK}
-    defaultDate={new Date(2015, 3, 1)}
-    views={{ month: true, week: MyWeek }}
-  />
+  <React.Fragment>
+    <ExampleControlSlot.Entry waitForOutlet>
+      <strong>The Calendar below implments a custom 3-day week view</strong>
+    </ExampleControlSlot.Entry>
+    <BigCalendar
+      events={events}
+      localizer={localizer}
+      defaultView={BigCalendar.Views.WEEK}
+      defaultDate={new Date(2015, 3, 1)}
+      views={{ month: true, week: MyWeek }}
+    />
+  </React.Fragment>
 )
 
 export default CustomView

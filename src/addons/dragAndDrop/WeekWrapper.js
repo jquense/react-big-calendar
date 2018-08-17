@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { findDOMNode } from 'react-dom'
 import dates from '../../utils/dates'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
-import { findDOMNode } from 'react-dom'
-
 import { eventSegments } from '../../utils/eventLevels'
 import Selection, { getBoundsForNode } from '../../Selection'
 import EventRow from '../../EventRow'
@@ -12,7 +11,7 @@ import { dragAccessors } from './common'
 const propTypes = {}
 
 const eventTimes = (event, accessors) => {
-  let start = accessors.start(event)
+  const start = accessors.start(event)
   let end = accessors.end(event)
 
   const isZeroDuration =
@@ -30,6 +29,11 @@ class WeekWrapper extends React.Component {
     getters: PropTypes.object.isRequired,
     components: PropTypes.object.isRequired,
     resourceId: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+      PropTypes.func,
+    ]).isRequired,
   }
 
   static contextTypes = {
@@ -39,6 +43,11 @@ class WeekWrapper extends React.Component {
       dragAndDropAction: PropTypes.object,
       onBeginAction: PropTypes.func,
     }),
+  }
+
+  static defaultProps = {
+    resourceId: null,
+    isAllDay: false,
   }
 
   constructor(...args) {
@@ -84,7 +93,7 @@ class WeekWrapper extends React.Component {
 
     if (!event) return
 
-    let rowBox = getBoundsForNode(node)
+    const rowBox = getBoundsForNode(node)
 
     if (!pointInBox(rowBox, { x, y })) {
       this.reset()
@@ -92,12 +101,12 @@ class WeekWrapper extends React.Component {
     }
 
     // Make sure to maintain the time of the start date while moving it to the new slot
-    let start = dates.merge(
+    const start = dates.merge(
       metrics.getDateForSlot(getSlotAtX(rowBox, x, false, metrics.slots)),
       accessors.start(event)
     )
 
-    let end = dates.add(
+    const end = dates.add(
       start,
       dates.diff(accessors.start(event), accessors.end(event), 'minutes'),
       'minutes'
@@ -112,8 +121,8 @@ class WeekWrapper extends React.Component {
 
     let { start, end } = eventTimes(event, accessors)
 
-    let rowBox = getBoundsForNode(node)
-    let cursorInRow = pointInBox(rowBox, point)
+    const rowBox = getBoundsForNode(node)
+    const cursorInRow = pointInBox(rowBox, point)
 
     if (direction === 'RIGHT') {
       if (cursorInRow) {
@@ -133,10 +142,11 @@ class WeekWrapper extends React.Component {
         end = dates.add(metrics.last, 1, 'milliseconds')
       } else {
         this.setState({ segment: null })
-        return
+        return 0
       }
 
       end = dates.max(end, dates.add(start, 1, 'day'))
+      return 0
     } else if (direction === 'LEFT') {
       // inbetween Row
       if (cursorInRow) {
@@ -152,20 +162,24 @@ class WeekWrapper extends React.Component {
         start = dates.add(metrics.first, -1, 'milliseconds')
       } else {
         this.reset()
-        return
+        return 0
       }
 
       start = dates.min(dates.add(end, -1, 'day'), start)
     }
 
     this.update(event, start, end)
+    return 0
   }
 
   _selectable = () => {
-    let node = findDOMNode(this).closest('.rbc-month-row, .rbc-allday-cell')
-    let container = node.closest('.rbc-month-view, .rbc-time-view')
+    // eslint-disable-next-line
+    const node = findDOMNode(this).closest('.rbc-month-row, .rbc-allday-cell')
 
-    let selector = (this._selector = new Selection(() => container))
+    const container = node.closest('.rbc-month-view, .rbc-time-view')
+
+    this._selector = new Selection(() => container)
+    const selector = this._selector
 
     selector.on('beforeSelect', point => {
       const { isAllDay } = this.props
@@ -219,7 +233,7 @@ class WeekWrapper extends React.Component {
   render() {
     const { children, accessors } = this.props
 
-    let { segment } = this.state
+    const { segment } = this.state
 
     return (
       <div className="rbc-addons-dnd-row-body">

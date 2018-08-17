@@ -46,9 +46,9 @@ import { mergeComponents } from './common'
  * in the callback to determine how the user dropped or resized the event.
  *
  * @param {*} Calendar
- * @param {*} backend
+ * @param {func} eventEqualityChecker compares 2 events, and returns true if equal
  */
-export default function withDragAndDrop(Calendar) {
+export default function withDragAndDrop(Calendar, eventEqualityChecker) {
   class DragAndDropCalendar extends React.Component {
     static propTypes = {
       onEventDrop: PropTypes.func,
@@ -63,19 +63,12 @@ export default function withDragAndDrop(Calendar) {
       step: PropTypes.number,
     }
 
-    static defaultProps = {
-      // TODO: pick these up from Calendar.defaultProps
-      components: {},
-      draggableAccessor: null,
-      resizableAccessor: null,
-      step: 30,
-    }
-
     static contextTypes = {
       dragDropManager: PropTypes.object,
     }
 
     static childContextTypes = {
+      eventEqualityChecker: PropTypes.func.isRequired,
       draggable: PropTypes.shape({
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
@@ -84,6 +77,17 @@ export default function withDragAndDrop(Calendar) {
         resizableAccessor: accessor,
         dragAndDropAction: PropTypes.object,
       }),
+    }
+
+    static defaultProps = {
+      components: {},
+      draggableAccessor: null,
+      resizableAccessor: null,
+      step: 30,
+      selectable: true,
+      resizable: true,
+      onEventDrop: () => {},
+      onEventResize: () => {},
     }
 
     constructor(...args) {
@@ -102,6 +106,8 @@ export default function withDragAndDrop(Calendar) {
 
     getChildContext() {
       return {
+        eventEqualityChecker:
+          eventEqualityChecker || ((evt1, evt2) => evt1 === evt2),
         draggable: {
           onStart: this.handleInteractionStart,
           onEnd: this.handleInteractionEnd,
@@ -133,6 +139,7 @@ export default function withDragAndDrop(Calendar) {
 
       if (interactionInfo == null) return
 
+      // eslint-disable-next-line
       interactionInfo.event = event
       if (action === 'move') this.props.onEventDrop(interactionInfo)
       if (action === 'resize') this.props.onEventResize(interactionInfo)

@@ -48,26 +48,32 @@ class Agenda extends React.Component {
 
     return (
       <div className="rbc-agenda-view">
-        <table ref="header" className="rbc-agenda-table">
-          <thead>
-            <tr>
-              <th className="rbc-header" ref="dateCol">
-                {messages.date}
-              </th>
-              <th className="rbc-header" ref="timeCol">
-                {messages.time}
-              </th>
-              <th className="rbc-header">{messages.event}</th>
-            </tr>
-          </thead>
-        </table>
-        <div className="rbc-agenda-content" ref="content">
-          <table className="rbc-agenda-table">
-            <tbody ref="tbody">
-              {range.map((day, idx) => this.renderDay(day, events, idx))}
-            </tbody>
-          </table>
-        </div>
+        {events.length !== 0 ? (
+          <React.Fragment>
+            <table ref="header" className="rbc-agenda-table">
+              <thead>
+                <tr>
+                  <th className="rbc-header" ref="dateCol">
+                    {messages.date}
+                  </th>
+                  <th className="rbc-header" ref="timeCol">
+                    {messages.time}
+                  </th>
+                  <th className="rbc-header">{messages.event}</th>
+                </tr>
+              </thead>
+            </table>
+            <div className="rbc-agenda-content" ref="content">
+              <table className="rbc-agenda-table">
+                <tbody ref="tbody">
+                  {range.map((day, idx) => this.renderDay(day, events, idx))}
+                </tbody>
+              </table>
+            </div>
+          </React.Fragment>
+        ) : (
+          <span className="rbc-agenda-empty">{messages.noEventsInRange}</span>
+        )}
       </div>
     )
   }
@@ -164,6 +170,8 @@ class Agenda extends React.Component {
   }
 
   _adjustHeader = () => {
+    if (!this.refs.tbody) return
+
     let header = this.refs.header
     let firstRow = this.refs.tbody.firstChild
 

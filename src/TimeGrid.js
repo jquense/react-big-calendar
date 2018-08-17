@@ -266,6 +266,7 @@ export default class TimeGrid extends Component {
             step={this.props.step}
             getNow={this.props.getNow}
             timeslots={this.props.timeslots}
+            components={components}
             className="rbc-time-gutter"
           />
           {this.renderEvents(range, rangeEvents, getNow())}

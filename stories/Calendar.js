@@ -185,3 +185,26 @@ storiesOf('Big Calendar', module)
       />
     )
   })
+  .add('add custom no agenda events label', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.AGENDA}
+        events={events}
+        messages={{
+          noEventsInRange:
+            'There are no special events in this range [test message]',
+        }}
+      />
+    )
+  })
+  .add('add custom timeSlotWrapper', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.WEEK}
+        events={events}
+        components={{
+          timeSlotWrapper: customComponents.timeSlotWrapper,
+        }}
+      />
+    )
+  })

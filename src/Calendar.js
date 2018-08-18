@@ -404,8 +404,29 @@ class Calendar extends React.Component {
 
     /**
      * Determines whether the toolbar is displayed
+     * and its layout if it is
+     *
+     *  default config:
+     *
+     *     {
+     *      // add today, last and next button components to left toolbar,
+     *      // replace comma with space to space buttons
+     *      left: 'today,last,next',
+     *      // add calendar title component to center of toolbar
+     *      center: 'title',
+     *      // add buttons linking to the default view components on the right of toolbar
+     *      right: 'month,week,day,agenda'
+     *     }
+     *
      */
-    toolbar: PropTypes.bool,
+    toolbar: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.shape({
+        left: PropTypes.string,
+        center: PropTypes.string,
+        right: PropTypes.string,
+      }),
+    ]),
 
     /**
      * Show truncated events in an overlay when you click the "+_x_ more" link.
@@ -653,6 +674,10 @@ class Calendar extends React.Component {
       timeGutterHeader: elementType,
 
       toolbar: elementType,
+      previous: elementType,
+      next: elementType,
+      today: elementType,
+      title: elementType,
 
       agenda: PropTypes.shape({
         date: elementType,
@@ -698,7 +723,11 @@ class Calendar extends React.Component {
   static defaultProps = {
     elementProps: {},
     popup: false,
-    toolbar: true,
+    toolbar: {
+      left: 'today,previous,next',
+      center: 'title',
+      right: `month,week,day,agenda`,
+    },
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
     step: 30,
@@ -865,6 +894,8 @@ class Calendar extends React.Component {
             onView={this.handleViewChange}
             onNavigate={this.handleNavigate}
             localizer={localizer}
+            toolbarConfig={toolbar}
+            components={components}
           />
         )}
         <View

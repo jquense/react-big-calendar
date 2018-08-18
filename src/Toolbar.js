@@ -1,7 +1,14 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
-import { navigate } from './utils/constants'
+
+import { NextButton, PreviousButton, TodayButton } from './Buttons'
+
+const defaultToolbarConfig = {
+  left: 'today,previous,next',
+  center: 'title',
+  right: 'month,week,agenda',
+}
 
 class Toolbar extends React.Component {
   static propTypes = {
@@ -11,43 +18,66 @@ class Toolbar extends React.Component {
     localizer: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
     onView: PropTypes.func.isRequired,
+    components: PropTypes.object,
+    toolbarConfig: PropTypes.object,
+  }
+
+  static defaultProps = {
+    toolbarConfig: defaultToolbarConfig,
+    components: {},
   }
 
   render() {
     let {
       localizer: { messages },
       label,
+      components,
+      toolbarConfig,
     } = this.props
-
+    const buttons = {
+      today: components.today || TodayButton,
+      next: components.next || NextButton,
+      previous: components.previous || PreviousButton,
+    }
+    let CenterComponent
+    if (toolbarConfig.center in components) {
+      CenterComponent = label => {
+        const Component = components[toolbarConfig.center]
+        return <Component label={label} />
+      }
+    } else {
+      CenterComponent = label => (
+        <span className="rbc-toolbar-label">{label}</span>
+      )
+    }
+    const config = { ...defaultToolbarConfig, ...toolbarConfig }
     return (
       <div className="rbc-toolbar">
-        <span className="rbc-btn-group">
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.TODAY)}
-          >
-            {messages.today}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
-          >
-            {messages.previous}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.NEXT)}
-          >
-            {messages.next}
-          </button>
-        </span>
-
-        <span className="rbc-toolbar-label">{label}</span>
-
-        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
+        {this.leftButtons(messages, config, buttons)}
+        {CenterComponent(label)}
+        {this.rightButtons(messages, config)}
       </div>
     )
   }
+
+  leftButtons = (messages, toolbarConfig, buttons) =>
+    toolbarConfig.left.split(' ').map(group => (
+      <span className="rbc-btn-group">
+        {group.split(',').map(btn => {
+          const ButtonComponent = buttons[btn]
+          return (
+            <ButtonComponent
+              key={btn}
+              messages={messages}
+              navigate={this.navigate}
+            />
+          )
+        })}
+      </span>
+    ))
+
+  rightButtons = (messages, toolbarConfig) =>
+    this.viewNamesGroup(messages, toolbarConfig)
 
   navigate = action => {
     this.props.onNavigate(action)
@@ -57,20 +87,24 @@ class Toolbar extends React.Component {
     this.props.onView(view)
   }
 
-  viewNamesGroup(messages) {
+  viewNamesGroup(messages, toolbarConfig) {
     let viewNames = this.props.views
     const view = this.props.view
 
     if (viewNames.length > 1) {
-      return viewNames.map(name => (
-        <button
-          type="button"
-          key={name}
-          className={cn({ 'rbc-active': view === name })}
-          onClick={this.view.bind(null, name)}
-        >
-          {messages[name]}
-        </button>
+      return toolbarConfig.right.split(' ').map(group => (
+        <span className={'rbc-btn-group'}>
+          {group.split(',').map(name => (
+            <button
+              type="button"
+              key={name}
+              className={cn({ 'rbc-active': view === name })}
+              onClick={this.view.bind(null, name)}
+            >
+              {messages[name]}
+            </button>
+          ))}
+        </span>
       ))
     }
   }

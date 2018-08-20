@@ -89,16 +89,9 @@ class DayColumn extends React.Component {
         components &&
         components.beforeSelectIndicatorComponent != null
       ) {
+        const SelectIndicator = components.beforeSelectIndicatorComponent
         // if the user is about to start selecting but hasn't started dragging yet
-        selectionElement = React.cloneElement(
-          components.beforeSelectIndicatorComponent,
-          {
-            top,
-            height,
-            startDate,
-            endDate,
-          }
-        )
+        selectionElement = <SelectIndicator {...this.state} />
       } else {
         // the user has already started dragging/selecting a time slot
         selectionElement = (

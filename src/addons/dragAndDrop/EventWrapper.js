@@ -153,7 +153,7 @@ class EventWrapper extends React.Component {
         // add a new class to it
         newProps.className = cn(
           children.props.className,
-          'rbc-addons-dnd-drag-dragged-event'
+          'rbc-addons-dnd-dragged-event'
         )
       }
 

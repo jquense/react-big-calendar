@@ -33,10 +33,14 @@
       .rbc-addons-dnd-resize-ns-icon, .rbc-addons-dnd-resize-ew-icon { display: block; }
     }
   }
-
-  &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragging):not(.rbc-addons-dnd-drag-preview) {
-    opacity: .50;
+ 
+  .rbc-time-view .rbc-addons-dnd-drag-dragged-event {
+    opacity: 0;
   }
+
+  // &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragging):not(.rbc-addons-dnd-drag-preview) {
+  //   opacity: .50;
+  // }
 
   .rbc-addons-dnd-resizable {
     position: relative;

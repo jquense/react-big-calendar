@@ -57,6 +57,7 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
+    "react": "^16.4.2",
     "react-dom": "^15.3.0 || ^16.0.0"
   },
   "devDependencies": {

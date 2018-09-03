@@ -278,6 +278,7 @@ export default class TimeGrid extends Component {
           resourceIdAccessor={this.props.resourceIdAccessor}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
+          onDeleteAlldayEvent={this.props.onDeleteAlldayEvent}
         />
         <div ref={(ref) => { this.content = ref; }} className="rbc-time-content">
           <TimeGutter

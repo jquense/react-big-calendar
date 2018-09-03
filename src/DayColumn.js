@@ -15,6 +15,10 @@ import { accessor as get } from './utils/accessors'
 import * as DayEventLayout from './utils/DayEventLayout'
 import TimeSlotGroup from './TimeSlotGroup'
 
+import IconButton from '@folio/stripes-components/lib/IconButton';
+
+
+
 class DayColumn extends React.Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
@@ -72,6 +76,7 @@ class DayColumn extends React.Component {
   constructor(...args) {
     super(...args)
 
+
     this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
   }
 
@@ -90,6 +95,8 @@ class DayColumn extends React.Component {
 
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
+
+
 
   render() {
     const {
@@ -250,7 +257,16 @@ class DayColumn extends React.Component {
               'rbc-event-continues-day-after': _continuesAfter,
             })}
           >
-            <div className="rbc-event-label">{label}</div>
+            <div className="rbc-event-close">
+                <IconButton
+                    className="rbc-event-close-btn"
+                    icon="closeX"
+                    iconSize="small"
+                    onClick={()=>{this.props.onDeleteEvent(events,event)}}
+                />
+            </div>
+            <div className="rbc-event-label">{label}
+           </div>
             <div className="rbc-event-content">
               {EventComponent ? (
                 <EventComponent event={event} title={title} />

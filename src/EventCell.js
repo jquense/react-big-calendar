@@ -6,6 +6,8 @@ import dates from './utils/dates';
 import { accessor, elementType } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
 
+import IconButton from '@folio/stripes-components/lib/IconButton';
+
 let propTypes = {
   event: PropTypes.object.isRequired,
   slotStart: PropTypes.instanceOf(Date),
@@ -91,9 +93,23 @@ class EventCell extends React.Component {
           <div className='rbc-event-content' title={tooltip || undefined}>
             { Event
               ? <Event event={event} title={title} isAllDay={isAllDayEvent} />
-              : (<div><FormattedTime value={start} />-<FormattedTime value={end} /></div>)
+              : (<div>
+                      <div className="rbc-allday-event-content">
+                          <FormattedTime value={start} />-<FormattedTime value={end} />
+                      </div>
+                        <div >
+                            <IconButton
+                                className="rbc-allday-event-close"
+                                icon="closeX"
+                                iconSize="small"
+                                onClick={()=>{this.props.onDeleteAlldayEvent(event)}}
+                            />
+                        </div>
+                </div>)
             }
           </div>
+
+
         </div>
       </EventWrapper>
     );

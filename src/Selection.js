@@ -229,13 +229,12 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
 
   return !(
     // 'a' bottom doesn't touch 'b' top
-    ((aBottom - tolerance ) < bTop)  ||
+    (// 'a' left doesn't touch 'b' right
+    (((aBottom - tolerance ) < bTop)  ||
     // 'a' top doesn't touch 'b' bottom
     ((aTop + tolerance) > (bBottom)) ||
     // 'a' right doesn't touch 'b' left
-    ((aRight - tolerance) < bLeft )  ||
-    // 'a' left doesn't touch 'b' right
-    ((aLeft + tolerance) > (bRight) )
+    ((aRight - tolerance) < bLeft ) || (aLeft + tolerance) > (bRight)))
   );
 }
 

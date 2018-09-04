@@ -36,9 +36,9 @@ module.exports = {
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=[name].[ext]' },
       { test: /\.less/, loader: 'style-loader!css-loader!postcss-loader!less-loader', exclude: [/node_modules/, ELATION_DEMO_DIR] },
       { test: /\.less/, loader: 'style-loader!css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]!less-loader', include: ELATION_DEMO_DIR },
-      { test: /\.md/, loader: 'babel!markdown-jsx-loader'},
-      { test: /\.js/, loaders: ['babel'], exclude: /node_modules/},
-      { test: /\.js/, loaders: ['babel'], include: path.join(__dirname, '..', 'src')},
+      { test: /\.md/, loader: 'babel-loader!markdown-jsx-loader'},
+      { test: /\.js/, loaders: ['babel-loader'], exclude: /node_modules/},
+      { test: /\.js/, loaders: ['babel-loader'], include: path.join(__dirname, '..', 'src')},
       { test: /\.json$/, loader: 'json-loader' }
     ]
   },

@@ -21,8 +21,8 @@ function EventAgenda({ event }) {
 }
 
 
-let Rendering = React.createClass({
-  render(){
+class Rendering extends React.Component {
+  render() {
     return (
       <div {...this.props}>
         <BigCalendar
@@ -39,6 +39,6 @@ let Rendering = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default Rendering;

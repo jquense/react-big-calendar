@@ -14,12 +14,10 @@ import './styles.less';
 import './prism.less';
 
 
-const Example = React.createClass({
-  getInitialState(){
-    return {
-      selected: 'elation',
-    };
-  },
+class Example extends React.Component {
+  state = {
+    selected: 'elation',
+  };
 
   render() {
     let selected = this.state.selected;
@@ -83,12 +81,12 @@ const Example = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  select(selected, e){
+  select = (selected, e) => {
     e.preventDefault();
     this.setState({ selected })
-  }
-});
+  };
+}
 
 render(<Example/>, document.getElementById('root'));

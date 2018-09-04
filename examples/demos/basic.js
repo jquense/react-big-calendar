@@ -2,8 +2,8 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
-let Basic = React.createClass({
-  render(){
+class Basic extends React.Component {
+  render() {
     return (
       <BigCalendar
         {...this.props}
@@ -12,6 +12,6 @@ let Basic = React.createClass({
       />
     )
   }
-})
+}
 
 export default Basic;

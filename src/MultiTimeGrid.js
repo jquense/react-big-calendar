@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 
@@ -21,49 +22,49 @@ import { inRange, multiSegStyle } from './utils/eventLevels';
 export default class MultiTimeGrid extends Component {
 
   static propTypes = {
-    view: React.PropTypes.string.isRequired,
-    eventMap: React.PropTypes.object.isRequired,
-    entities: React.PropTypes.array.isRequired,
-    entityKeyAccessor: React.PropTypes.string.isRequired,
+    view: PropTypes.string.isRequired,
+    eventMap: PropTypes.object.isRequired,
+    entities: PropTypes.array.isRequired,
+    entityKeyAccessor: PropTypes.string.isRequired,
     entityNameAccessor: accessor.isRequired,
 
-    step: React.PropTypes.number,
-    start: React.PropTypes.instanceOf(Date),
-    end: React.PropTypes.instanceOf(Date),
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date),
-    now: React.PropTypes.instanceOf(Date),
+    step: PropTypes.number,
+    start: PropTypes.instanceOf(Date),
+    end: PropTypes.instanceOf(Date),
+    min: PropTypes.instanceOf(Date),
+    max: PropTypes.instanceOf(Date),
+    now: PropTypes.instanceOf(Date),
 
-    scrollToTime: React.PropTypes.instanceOf(Date),
-    eventPropGetter: React.PropTypes.func,
+    scrollToTime: PropTypes.instanceOf(Date),
+    eventPropGetter: PropTypes.func,
     dayFormat: dateFormat,
-    culture: React.PropTypes.string,
+    culture: PropTypes.string,
 
-    rtl: React.PropTypes.bool,
-    width: React.PropTypes.number,
+    rtl: PropTypes.bool,
+    width: PropTypes.number,
 
     titleAccessor: accessor.isRequired,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
     endAccessor: accessor.isRequired,
 
-    selected: React.PropTypes.object,
-    selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+    selected: PropTypes.object,
+    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
-    onNavigate: React.PropTypes.func,
-    onSelectSlot: React.PropTypes.func,
-    onSelectEnd: React.PropTypes.func,
-    onSelectStart: React.PropTypes.func,
-    onSelectEvent: React.PropTypes.func,
-    onDrillDown: React.PropTypes.func,
-    getDrilldownView: React.PropTypes.func.isRequired,
+    onNavigate: PropTypes.func,
+    onSelectSlot: PropTypes.func,
+    onSelectEnd: PropTypes.func,
+    onSelectStart: PropTypes.func,
+    onSelectEvent: PropTypes.func,
+    onDrillDown: PropTypes.func,
+    getDrilldownView: PropTypes.func.isRequired,
 
-    messages: React.PropTypes.object,
-    components: React.PropTypes.object.isRequired,
+    messages: PropTypes.object,
+    components: PropTypes.object.isRequired,
 
     // new props
-    selectedEntityKeys: React.PropTypes.array.isRequired,
-    onSelectedEntityChange: React.PropTypes.func.isRequired,
+    selectedEntityKeys: PropTypes.array.isRequired,
+    onSelectedEntityChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

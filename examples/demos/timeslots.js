@@ -2,8 +2,8 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
-let Timeslots = React.createClass({
-  render(){
+class Timeslots extends React.Component {
+  render() {
     return (
       <BigCalendar
         {...this.props}
@@ -15,6 +15,6 @@ let Timeslots = React.createClass({
       />
     )
   }
-})
+}
 
 export default Timeslots;

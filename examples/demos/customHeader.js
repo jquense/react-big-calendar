@@ -3,14 +3,14 @@ import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
 
-let MyOtherNestedComponent = React.createClass({
-  render(){
+class MyOtherNestedComponent extends React.Component {
+  render() {
     return <div>NESTED COMPONENT</div>
   }
-})
+}
 
-let MyCustomHeader = React.createClass({
-  render(){
+class MyCustomHeader extends React.Component {
+  render() {
     const { label } = this.props
     return (
       <div>
@@ -20,11 +20,10 @@ let MyCustomHeader = React.createClass({
       </div>
     )
   }
-})
+}
 
-
-let CustomHeader = React.createClass({
-  render(){
+class CustomHeader extends React.Component {
+  render() {
     return (
       <BigCalendar
         {...this.props}
@@ -38,6 +37,6 @@ let CustomHeader = React.createClass({
       />
     )
   }
-})
+}
 
 export default CustomHeader;

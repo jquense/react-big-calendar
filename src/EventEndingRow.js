@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import createReactClass from 'create-react-class';
 import EventRowMixin from './EventRowMixin';
 import { eventLevels } from './utils/eventLevels';
 import message from './utils/messages';
@@ -7,15 +9,15 @@ import range from 'lodash/range';
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot;
 let eventsInSlot = (segments, slot) => segments.filter(seg => isSegmentInSlot(seg, slot)).length
 
-let EventRow = React.createClass({
+let EventRow = createReactClass({
 
   displayName: 'EventRow',
 
   propTypes: {
-    segments: React.PropTypes.array,
-    slots: React.PropTypes.number,
-    messages: React.PropTypes.object,
-    onShowMore: React.PropTypes.func,
+    segments: PropTypes.array,
+    slots: PropTypes.number,
+    messages: PropTypes.object,
+    onShowMore: PropTypes.func,
   },
 
   mixins: [ EventRowMixin ],

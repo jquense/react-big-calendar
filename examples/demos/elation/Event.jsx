@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 
@@ -17,8 +18,8 @@ const styles = {
 
 export default class Event extends React.Component {
   static propTypes = {
-    event: React.PropTypes.object,
-    title: React.PropTypes.node
+    event: PropTypes.object,
+    title: PropTypes.node
   }
 
   render() {

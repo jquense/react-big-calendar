@@ -49,8 +49,8 @@ MyWeek.range = (date, { culture }) => {
 
 
 
-let CustomView = React.createClass({
-  render(){
+class CustomView extends React.Component {
+  render() {
     return (
       <div>
         <BigCalendar
@@ -62,6 +62,6 @@ let CustomView = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default CustomView;

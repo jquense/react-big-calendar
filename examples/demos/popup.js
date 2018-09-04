@@ -1,8 +1,9 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
-let Popup = React.createClass({
-  render(){
+
+class Popup extends React.Component {
+  render() {
     return (
       <div {...this.props}>
         <h3 className='callout'>
@@ -17,6 +18,6 @@ let Popup = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default Popup;

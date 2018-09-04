@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from './widgets/Button';
 import ButtonGroup from './widgets/ButtonGroup';
@@ -21,18 +22,18 @@ const stylesJs = {
 
 export default class Toolbar extends Component {
   static propTypes = {
-    view: React.PropTypes.string.isRequired,
-    views: React.PropTypes.arrayOf(
-      React.PropTypes.string,
+    view: PropTypes.string.isRequired,
+    views: PropTypes.arrayOf(
+      PropTypes.string,
     ).isRequired,
-    label: React.PropTypes.node.isRequired,
-    messages: React.PropTypes.object,
-    onNavigate: React.PropTypes.func.isRequired,
-    onViewChange: React.PropTypes.func.isRequired,
+    label: PropTypes.node.isRequired,
+    messages: PropTypes.object,
+    onNavigate: PropTypes.func.isRequired,
+    onViewChange: PropTypes.func.isRequired,
 
-    currentPhysicianId: React.PropTypes.number,
-    onCurrentPhysicianChange: React.PropTypes.func.isRequired,
-    onRefresh: React.PropTypes.func.isRequired,
+    currentPhysicianId: PropTypes.number,
+    onCurrentPhysicianChange: PropTypes.func.isRequired,
+    onRefresh: PropTypes.func.isRequired,
   }
 
   createAppointment = () => alert('Pretend this is a create appointment dialog!');

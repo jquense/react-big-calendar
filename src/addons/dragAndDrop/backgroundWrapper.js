@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import cn from 'classnames';
@@ -23,9 +24,9 @@ export function getEventTimes({ start, end }, dropDate, type) {
 }
 
 const propTypes = {
-  connectDropTarget: React.PropTypes.func.isRequired,
-  type: React.PropTypes.string,
-  isOver: React.PropTypes.bool,
+  connectDropTarget: PropTypes.func.isRequired,
+  type: PropTypes.string,
+  isOver: PropTypes.bool,
 }
 
 class DraggableBackgroundWrapper extends React.Component {
@@ -89,8 +90,8 @@ class DraggableBackgroundWrapper extends React.Component {
 DraggableBackgroundWrapper.propTypes = propTypes;
 
 DraggableBackgroundWrapper.contextTypes = {
-  onEventDrop: React.PropTypes.func,
-  dragDropManager: React.PropTypes.object
+  onEventDrop: PropTypes.func,
+  dragDropManager: PropTypes.object
 }
 
 function createWrapper(type) {

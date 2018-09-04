@@ -2,8 +2,8 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import events from '../events';
 
-let Selectable = React.createClass({
-  render(){
+class Selectable extends React.Component {
+  render() {
     return (
       <div {...this.props}>
         <h3 className="callout">
@@ -25,6 +25,6 @@ let Selectable = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default Selectable;

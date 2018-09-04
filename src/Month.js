@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import cn from 'classnames';
@@ -24,78 +25,74 @@ let eventsForWeek = (evts, start, end, props) =>
 
 
 let propTypes = {
-  events: React.PropTypes.array.isRequired,
-  date: React.PropTypes.instanceOf(Date),
+  events: PropTypes.array.isRequired,
+  date: PropTypes.instanceOf(Date),
 
-  min: React.PropTypes.instanceOf(Date),
-  max: React.PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
 
-  step: React.PropTypes.number,
-  now: React.PropTypes.instanceOf(Date),
+  step: PropTypes.number,
+  now: PropTypes.instanceOf(Date),
 
-  scrollToTime: React.PropTypes.instanceOf(Date),
-  eventPropGetter: React.PropTypes.func,
+  scrollToTime: PropTypes.instanceOf(Date),
+  eventPropGetter: PropTypes.func,
 
-  culture: React.PropTypes.string,
+  culture: PropTypes.string,
   dayFormat: dateFormat,
 
-  rtl: React.PropTypes.bool,
-  width: React.PropTypes.number,
+  rtl: PropTypes.bool,
+  width: PropTypes.number,
 
   titleAccessor: accessor.isRequired,
   allDayAccessor: accessor.isRequired,
   startAccessor: accessor.isRequired,
   endAccessor: accessor.isRequired,
 
-  selected: React.PropTypes.object,
-  selectable: React.PropTypes.oneOf([true, false, 'ignoreEvents']),
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
-  onNavigate: React.PropTypes.func,
-  onSelectSlot: React.PropTypes.func,
-  onSelectEvent: React.PropTypes.func,
-  onShowMore: React.PropTypes.func,
-  onDrillDown: React.PropTypes.func,
-  getDrilldownView: React.PropTypes.func.isRequired,
+  onNavigate: PropTypes.func,
+  onSelectSlot: PropTypes.func,
+  onSelectEvent: PropTypes.func,
+  onShowMore: PropTypes.func,
+  onDrillDown: PropTypes.func,
+  getDrilldownView: PropTypes.func.isRequired,
 
   dateFormat,
 
   weekdayFormat: dateFormat,
-  popup: React.PropTypes.bool,
+  popup: PropTypes.bool,
 
-  messages: React.PropTypes.object,
-  components: React.PropTypes.object.isRequired,
-  popupOffset: React.PropTypes.oneOfType([
-    React.PropTypes.number,
-    React.PropTypes.shape({
-      x: React.PropTypes.number,
-      y: React.PropTypes.number
+  messages: PropTypes.object,
+  components: PropTypes.object.isRequired,
+  popupOffset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
     })
   ]),
 };
 
-let MonthView = React.createClass({
+class MonthView extends React.Component {
+  static displayName = 'MonthView';
+  static propTypes = propTypes;
 
-  displayName: 'MonthView',
-
-  propTypes,
-
-  getInitialState(){
-    return {
-      rowLimit: 5,
-      needLimitMeasure: true
-    }
-  },
+  state = {
+    rowLimit: 5,
+    needLimitMeasure: true
+  };
 
   componentWillMount() {
     this._bgRows = []
     this._pendingSelection = []
-  },
+  }
 
   componentWillReceiveProps({ date }) {
     this.setState({
       needLimitMeasure: !dates.eq(date, this.props.date)
     })
-  },
+  }
 
   componentDidMount() {
     let running;
@@ -111,20 +108,20 @@ let MonthView = React.createClass({
         })
       }
     }, false)
-  },
+  }
 
   componentDidUpdate() {
     if (this.state.needLimitMeasure)
       this.measureRowLimit(this.props)
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._resizeListener, false)
-  },
+  }
 
-  getContainer() {
+  getContainer = () => {
     return findDOMNode(this)
-  },
+  };
 
   render() {
     let { date, culture, weekdayFormat, className } = this.props
@@ -146,9 +143,9 @@ let MonthView = React.createClass({
         }
       </div>
     )
-  },
+  }
 
-  renderWeek(week, weekIdx) {
+  renderWeek = (week, weekIdx) => {
     let {
       events,
       components,
@@ -199,9 +196,9 @@ let MonthView = React.createClass({
         dateCellWrapper={components.dateCellWrapper}
       />
     )
-  },
+  };
 
-  readerDateHeading({ date, className, ...props }) {
+  readerDateHeading = ({ date, className, ...props }) => {
     let { date: currentDate, getDrilldownView, dateFormat, culture  } = this.props;
 
     let isOffRange = dates.month(date) !== dates.month(currentDate);
@@ -232,9 +229,9 @@ let MonthView = React.createClass({
         )}
       </div>
     )
-  },
+  };
 
-  _headers(row, format, culture) {
+  _headers = (row, format, culture) => {
     let first = row[0]
     let last = row[row.length - 1]
     let HeaderComponent = this.props.components.header || Header
@@ -254,9 +251,9 @@ let MonthView = React.createClass({
         />
       </div>
     )
-  },
+  };
 
-  _renderOverlay() {
+  _renderOverlay = () => {
     let overlay = (this.state && this.state.overlay) || {};
     let { components } = this.props;
 
@@ -280,35 +277,35 @@ let MonthView = React.createClass({
         />
       </Overlay>
     )
-  },
+  };
 
-  measureRowLimit() {
+  measureRowLimit = () => {
     this.setState({
       needLimitMeasure: false,
       rowLimit: this.refs.slotRow.getRowLimit(),
     })
-  },
+  };
 
-  handleSelectSlot(range) {
+  handleSelectSlot = (range) => {
     this._pendingSelection = this._pendingSelection
       .concat(range)
 
     clearTimeout(this._selectTimer)
     this._selectTimer = setTimeout(()=> this._selectDates())
-  },
+  };
 
-  handleHeadingClick(date, view, e){
+  handleHeadingClick = (date, view, e) => {
     e.preventDefault();
     this.clearSelection()
     notify(this.props.onDrillDown, [date, view])
-  },
+  };
 
-  handleSelectEvent(...args){
+  handleSelectEvent = (...args) => {
     this.clearSelection()
     notify(this.props.onSelectEvent, args)
-  },
+  };
 
-  _selectDates() {
+  _selectDates = () => {
     let slots = this._pendingSelection.slice()
 
     this._pendingSelection = []
@@ -320,9 +317,9 @@ let MonthView = React.createClass({
       start: slots[0],
       end: slots[slots.length - 1]
     })
-  },
+  };
 
-  handleShowMore(events, date, cell, slot) {
+  handleShowMore = (events, date, cell, slot) => {
     const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
@@ -339,14 +336,13 @@ let MonthView = React.createClass({
     }
 
     notify(onShowMore, [events, date, slot])
-  },
+  };
 
-  clearSelection(){
+  clearSelection = () => {
     clearTimeout(this._selectTimer)
     this._pendingSelection = [];
-  }
-
-});
+  };
+}
 
 MonthView.navigate = (date, action)=> {
   switch (action){

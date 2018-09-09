@@ -117,13 +117,18 @@ class Example extends React.Component {
                     </strong>
                   </a>
                 </div>
-                <Dropdown className="examples--dropdown" pullRight>
+                <Dropdown
+                  pullRight
+                  id="examples-dropdown"
+                  className="examples--dropdown"
+                >
                   <Dropdown.Toggle bsStyle="link" className="dropdown--toggle ">
                     {EXAMPLES[selected]}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     {Object.entries(EXAMPLES).map(([key, title]) => (
                       <MenuItem
+                        key={key}
                         href={`#${key}`}
                         onClick={() => this.select(key)}
                       >

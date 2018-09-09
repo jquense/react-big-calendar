@@ -3,7 +3,6 @@ import React from 'react'
 import cn from 'classnames'
 import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
-import { isSameEvent } from '../../utils/helpers'
 
 class EventWrapper extends React.Component {
   static contextTypes = {
@@ -148,7 +147,7 @@ class EventWrapper extends React.Component {
 
       if (
         draggable.dragAndDropAction.interacting && // if an event is being dragged right now
-        isSameEvent(draggable.dragAndDropAction.event, event) // and it's the current event
+        draggable.dragAndDropAction.event === event // and it's the current event
       ) {
         // add a new class to it
         newProps.className = cn(

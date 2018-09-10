@@ -3,9 +3,12 @@
 .rbc-event {
   padding: @event-padding;
   background-color: @event-bg;
+  border: 0;
   border-radius: @event-border-radius;
   color: @event-color;
   cursor: pointer;
+  width: 100%;
+  text-align: left;
 
   .rbc-slot-selecting & {
     cursor: inherit;
@@ -14,6 +17,10 @@
 
   &.rbc-selected {
     background-color: darken(@event-bg, 10%);
+  }
+
+  &:focus {
+    border: 2px solid red;
   }
 }
 
@@ -44,4 +51,3 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-

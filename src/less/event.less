@@ -3,7 +3,6 @@
 .rbc-event {
   padding: @event-padding;
   background-color: @event-bg;
-  border: 0;
   border-radius: @event-border-radius;
   color: @event-color;
   cursor: pointer;
@@ -20,7 +19,7 @@
   }
 
   &:focus {
-    border: 2px solid red;
+    outline: 5px auto @event-outline;
   }
 }
 

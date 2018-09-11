@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
-import CalendatUtils from '../../ui-calendar/CalendarUtils'
 
 import dates from './utils/dates'
 import { notify } from './utils/helpers'
@@ -90,7 +89,7 @@ class BackgroundCells extends React.Component {
                 )}
               >
               <div className="rbc-allday-label">
-                {CalendatUtils.translate('ui-calendar.allDayOpening')}
+                {this.props.labelTranslate('ui-calendar.allDayOpening')}
               </div>
              </div>
             </Wrapper>

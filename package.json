@@ -1,6 +1,6 @@
 {
   "name": "@folio/react-big-calendar",
-  "version": "0.19.0",
+  "version": "1.0.0",
   "description": "Calendar! with events",
   "repository": "folio-org/react-big-calendar",
   "publishConfig": {

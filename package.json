@@ -59,7 +59,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@folio/eslint-config-stripes": "^2.0.0",
+    "@folio/eslint-config-stripes": "^3.2.0",
     "@storybook/react": "^3.3.13",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
@@ -98,7 +98,7 @@
     "webpack-dev-server": "^2.9.5"
   },
   "dependencies": {
-    "@folio/stripes-components": "^2.0.0",
+    "@folio/stripes-components": "^3.0.0",
     "classnames": "^2.1.3",
     "date-arithmetic": "^3.0.0",
     "invariant": "^2.1.0",

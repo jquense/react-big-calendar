@@ -49,7 +49,7 @@
     (n.o = function(e, t) {
       return Object.prototype.hasOwnProperty.call(e, t)
     }),
-    (n.p = '/examples'),
+    (n.p = ''),
     n((n.s = 195))
 })([
   function(e, t) {

@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../examples/'),
     filename: 'bundle.js',
-    publicPath: '/examples',
+    publicPath: '',
   },
   stats: stats.minimal,
   devServer: {

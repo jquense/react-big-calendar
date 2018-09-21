@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import elementType from 'react-prop-types/lib/elementType'
-import all from 'react-prop-types/lib/all'
+import elementType from 'prop-types-extra/lib/elementType'
+import all from 'prop-types-extra/lib/all'
 import { views as Views } from './constants'
 
 export { elementType }

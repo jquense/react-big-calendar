@@ -10,7 +10,7 @@ export default function Resources(resources, accessors) {
     },
 
     groupEvents(events) {
-      const eventsByResource = new Map()
+      const eventsByResource = new window.Map()
       events.forEach(event => {
         const id = accessors.resource(event) || NONE
         let resourceEvents = eventsByResource.get(id) || []

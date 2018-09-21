@@ -30,7 +30,7 @@ class Selectable extends React.Component {
   render() {
     const { localizer } = this.props
     return (
-      <React.Fragment>
+      <>
         <ExampleControlSlot.Entry waitForOutlet>
           <strong>
             Click an event to see more info, or drag the mouse over the calendar
@@ -47,7 +47,7 @@ class Selectable extends React.Component {
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.handleSelect}
         />
-      </React.Fragment>
+      </>
     )
   }
 }

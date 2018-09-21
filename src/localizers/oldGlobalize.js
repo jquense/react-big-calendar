@@ -7,10 +7,10 @@ let dateRangeFormat = ({ start, end }, culture, local) =>
 let timeRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 't', culture) + ' — ' + local.format(end, 't', culture)
 
-let timeRangeStartFormat = ({ start, end }, culture, local) =>
+let timeRangeStartFormat = ({ start }, culture, local) =>
   local.format(start, 't', culture) + ' — '
 
-let timeRangeEndFormat = ({ start, end }, culture, local) =>
+let timeRangeEndFormat = ({ end }, culture, local) =>
   ' — ' + local.format(end, 't', culture)
 
 let weekRangeFormat = ({ start, end }, culture, local) =>

@@ -327,9 +327,9 @@ class MonthView extends React.Component {
   }
 }
 
-MonthView.range = (date, { culture }) => {
-  let start = dates.firstVisibleDay(date, culture)
-  let end = dates.lastVisibleDay(date, culture)
+MonthView.range = (date, { localizer }) => {
+  let start = dates.firstVisibleDay(date, localizer)
+  let end = dates.lastVisibleDay(date, localizer)
   return { start, end }
 }
 

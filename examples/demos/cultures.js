@@ -1,7 +1,7 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import events from '../events'
-import Layout from 'react-tackle-box/lib/Layout'
+import Layout from 'react-tackle-box/Layout'
 
 import ExampleControlSlot from '../ExampleControlSlot'
 

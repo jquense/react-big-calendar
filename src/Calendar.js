@@ -434,9 +434,6 @@ class Calendar extends React.Component {
      */
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
-    /** Determines whether you want events to be resizable */
-    resizable: PropTypes.bool,
-
     /**
      * Specifies the number of miliseconds the user must press and hold on the screen for a touch
      * to be considered a "long press." Long presses are used for time slot selection on touch
@@ -541,12 +538,12 @@ class Calendar extends React.Component {
      * let formats = {
      *   dateFormat: 'dd',
      *
-     *   dayFormat: (date, culture, localizer) =>
+     *   dayFormat: (date, , localizer) =>
      *     localizer.format(date, 'DDD', culture),
      *
-     *   dayRangeHeaderFormat: ({ start, end }, culture, local) =>
-     *     local.format(start, { date: 'short' }, culture) + ' — ' +
-     *     local.format(end, { date: 'short' }, culture)
+     *   dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
+     *     localizer.format(start, { date: 'short' }, culture) + ' — ' +
+     *     localizer.format(end, { date: 'short' }, culture)
      * }
      *
      * <Calendar formats={formats} />
@@ -822,7 +819,6 @@ class Calendar extends React.Component {
       view,
       toolbar,
       events,
-      culture,
       style,
       className,
       elementProps,
@@ -833,6 +829,7 @@ class Calendar extends React.Component {
       components: _0,
       formats: _1,
       messages: _2,
+      culture: _3,
       ...props
     } = this.props
 
@@ -870,7 +867,6 @@ class Calendar extends React.Component {
         <View
           ref="view"
           {...props}
-          culture={culture}
           events={events}
           date={current}
           getNow={getNow}

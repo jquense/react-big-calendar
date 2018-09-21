@@ -47,7 +47,7 @@ class Api extends React.Component {
           {data.required && <strong>{' required'}</strong>}
           {this.renderControllableNote(data, name)}
         </Heading>
-        <div dangerouslySetInnerHTML={{ __html: data.descHtml }} />
+        <div dangerouslySetInnerHTML={{ __html: data.descriptionHtml }} />
 
         {name !== 'formats' ? (
           <div style={{ paddingLeft: 0 }}>
@@ -61,7 +61,7 @@ class Api extends React.Component {
             </div>
             {data.defaultValue && (
               <div>
-                default: <code>{data.defaultValue.trim()}</code>
+                default: <code>{data.defaultValue.value.trim()}</code>
               </div>
             )}
           </div>

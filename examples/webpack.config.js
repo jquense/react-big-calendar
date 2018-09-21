@@ -1,4 +1,4 @@
-var path = require('path')
+const path = require('path')
 const { rules, loaders, plugins, stats } = require('webpack-atoms')
 
 const browsers = ['last 2 versions', 'ie >= 10', 'not android <= 4.4.3']
@@ -28,14 +28,7 @@ module.exports = {
       rules.js({}),
       rules.images(),
       rules.fonts(),
-      {
-        oneOf: [
-          Object.assign({}, rules.css({ modules: true }), {
-            test: /\.module\.css/,
-          }),
-          rules.css(),
-        ],
-      },
+      { oneOf: [rules.css.modules(), rules.css()] },
       rules.less({ browsers }),
       {
         test: /\.md/,
@@ -43,5 +36,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [plugins.html(), plugins.extractText()],
+  plugins: [plugins.html(), plugins.extractCss()],
 }

@@ -11,7 +11,8 @@ const getKey = (min, max, step, slots) =>
 export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   const key = getKey(start, end, step, timeslots)
 
-  const totalMin = dates.diff(start, end, 'minutes') + getDstOffset(start, end)
+  const totalMin =
+    1 + dates.diff(start, end, 'minutes') + getDstOffset(start, end)
   const minutesFromMidnight = dates.diff(
     dates.startOf(start, 'day'),
     start,

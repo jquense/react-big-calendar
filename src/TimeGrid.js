@@ -82,9 +82,6 @@ export default class TimeGrid extends Component {
 
     this.applyScroll()
 
-    this.positionTimeIndicator()
-    this.triggerTimeIndicatorUpdate()
-
     window.addEventListener('resize', this.handleResize)
   }
 
@@ -99,7 +96,6 @@ export default class TimeGrid extends Component {
     this.rafHandle = raf(this.checkOverflow)
   }
   componentWillUnmount() {
-    window.clearTimeout(this._timeIndicatorTimeout)
     window.removeEventListener('resize', this.handleResize)
 
     raf.cancel(this.rafHandle)
@@ -111,7 +107,6 @@ export default class TimeGrid extends Component {
     }
 
     this.applyScroll()
-    this.positionTimeIndicator()
     //this.checkOverflow()
   }
 
@@ -146,7 +141,7 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events, today) {
+  renderEvents(range, events, now) {
     let { min, max, components, accessors, localizer } = this.props
 
     const groupedEvents = this.resources.groupEvents(events)
@@ -170,7 +165,7 @@ export default class TimeGrid extends Component {
             max={dates.merge(date, max)}
             resource={resource && id}
             components={components}
-            className={cn({ 'rbc-now': dates.eq(date, today, 'day') })}
+            isNow={dates.eq(date, now, 'day')}
             key={i + '-' + jj}
             date={date}
             events={daysEvents}
@@ -270,8 +265,6 @@ export default class TimeGrid extends Component {
             className="rbc-time-gutter"
           />
           {this.renderEvents(range, rangeEvents, getNow())}
-
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
         </div>
       </div>
     )
@@ -320,46 +313,5 @@ export default class TimeGrid extends Component {
         this._updatingOverflow = false
       })
     }
-  }
-
-  positionTimeIndicator() {
-    const { rtl, min, max, getNow, range } = this.props
-    const current = getNow()
-
-    const secondsGrid = dates.diff(max, min, 'seconds')
-    const secondsPassed = dates.diff(current, min, 'seconds')
-
-    const timeIndicator = this.refs.timeIndicator
-    const factor = secondsPassed / secondsGrid
-    const timeGutter = this.gutter
-
-    const content = this.refs.content
-
-    if (timeGutter && current >= min && current <= max) {
-      const pixelHeight = timeGutter.offsetHeight
-      const dayPixelWidth =
-        (content.offsetWidth - timeGutter.offsetWidth) / this.slots
-      const dayOffset =
-        range.findIndex(d => dates.eq(d, dates.today(), 'day')) * dayPixelWidth
-      const offset = Math.floor(factor * pixelHeight)
-
-      timeIndicator.style.display = dayOffset >= 0 ? 'block' : 'none'
-      timeIndicator.style[rtl ? 'left' : 'right'] = 0
-      timeIndicator.style[rtl ? 'right' : 'left'] =
-        timeGutter.offsetWidth + dayOffset + 'px'
-      timeIndicator.style.top = offset + 'px'
-      timeIndicator.style.width = dayPixelWidth + 'px'
-    } else {
-      timeIndicator.style.display = 'none'
-    }
-  }
-
-  triggerTimeIndicatorUpdate() {
-    // Update the position of the time indicator every minute
-    this._timeIndicatorTimeout = window.setTimeout(() => {
-      this.positionTimeIndicator()
-
-      this.triggerTimeIndicatorUpdate()
-    }, 60000)
   }
 }

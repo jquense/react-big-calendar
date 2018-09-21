@@ -21,6 +21,7 @@ class DayColumn extends React.Component {
     min: PropTypes.instanceOf(Date).isRequired,
     max: PropTypes.instanceOf(Date).isRequired,
     getNow: PropTypes.func.isRequired,
+    isNow: PropTypes.bool,
 
     rtl: PropTypes.bool,
 
@@ -63,10 +64,16 @@ class DayColumn extends React.Component {
 
   componentDidMount() {
     this.props.selectable && this._selectable()
+
+    if (this.props.isNow) {
+      this.positionTimeIndicator()
+      this.triggerTimeIndicatorUpdate()
+    }
   }
 
   componentWillUnmount() {
     this._teardownSelectable()
+    window.clearTimeout(this._timeIndicatorTimeout)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,12 +84,30 @@ class DayColumn extends React.Component {
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
 
+  triggerTimeIndicatorUpdate() {
+    // Update the position of the time indicator every minute
+    this._timeIndicatorTimeout = window.setTimeout(() => {
+      this.positionTimeIndicator()
+      this.triggerTimeIndicatorUpdate()
+    }, 60000)
+  }
+
+  positionTimeIndicator() {
+    const { min, max, getNow } = this.props
+    const current = getNow()
+    const timeIndicator = this.refs.timeIndicator
+
+    if (current >= min && current <= max) {
+      const { top } = this.slotMetrics.getRange(current, current)
+      timeIndicator.style.top = `${top}%`
+    }
+  }
+
   render() {
     const {
       max,
       rtl,
-      date,
-      getNow,
+      isNow,
       resource,
       accessors,
       localizer,
@@ -96,7 +121,6 @@ class DayColumn extends React.Component {
     let selectDates = { start: startDate, end: endDate }
 
     const { className, style } = dayProp(max)
-    const current = getNow()
 
     return (
       <div
@@ -105,8 +129,9 @@ class DayColumn extends React.Component {
           className,
           'rbc-day-slot',
           'rbc-time-column',
-          selecting && 'rbc-slot-selecting',
-          dates.eq(date, current, 'day') && 'rbc-today'
+          isNow && 'rbc-now',
+          isNow && 'rbc-today', // WHY
+          selecting && 'rbc-slot-selecting'
         )}
       >
         {slotMetrics.groups.map((grp, idx) => (
@@ -135,6 +160,9 @@ class DayColumn extends React.Component {
           <div className="rbc-slot-selection" style={{ top, height }}>
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
+        )}
+        {isNow && (
+          <div ref="timeIndicator" className="rbc-current-time-indicator" />
         )}
       </div>
     )

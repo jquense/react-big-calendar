@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import EventRowMixin from './EventRowMixin'
 import { eventLevels } from './utils/eventLevels'
-import message from './utils/messages'
 import range from 'lodash/range'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
@@ -13,7 +12,6 @@ class EventEndingRow extends React.Component {
   static propTypes = {
     segments: PropTypes.array,
     slots: PropTypes.number,
-    messages: PropTypes.object,
     onShowMore: PropTypes.func,
     ...EventRowMixin.propTypes,
   }
@@ -22,17 +20,18 @@ class EventEndingRow extends React.Component {
   }
 
   render() {
-    let { segments, slots: slotCount } = this.props
+    let { segments, slotMetrics: { slots } } = this.props
     let rowSegments = eventLevels(segments).levels[0]
 
-    let current = 1, lastEnd = 1, row = []
+    let current = 1,
+      lastEnd = 1,
+      row = []
 
-    while (current <= slotCount) {
+    while (current <= slots) {
       let key = '_lvl_' + current
 
-      let { event, left, right, span } = rowSegments.filter(seg =>
-        isSegmentInSlot(seg, current)
-      )[0] || {} //eslint-disable-line
+      let { event, left, right, span } =
+        rowSegments.filter(seg => isSegmentInSlot(seg, current))[0] || {} //eslint-disable-line
 
       if (!event) {
         current++
@@ -45,20 +44,20 @@ class EventEndingRow extends React.Component {
         let content = EventRowMixin.renderEvent(this.props, event)
 
         if (gap) {
-          row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'))
+          row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))
         }
 
-        row.push(EventRowMixin.renderSpan(this.props, span, key, content))
+        row.push(EventRowMixin.renderSpan(slots, span, key, content))
 
         lastEnd = current = right + 1
       } else {
         if (gap) {
-          row.push(EventRowMixin.renderSpan(this.props, gap, key + '_gap'))
+          row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))
         }
 
         row.push(
           EventRowMixin.renderSpan(
-            this.props,
+            slots,
             1,
             key,
             this.renderShowMore(segments, current)
@@ -68,13 +67,8 @@ class EventEndingRow extends React.Component {
       }
     }
 
-    return (
-      <div className="rbc-row">
-        {row}
-      </div>
-    )
+    return <div className="rbc-row">{row}</div>
   }
-  S
 
   canRenderSlotEvent(slot, span) {
     let { segments } = this.props
@@ -87,19 +81,21 @@ class EventEndingRow extends React.Component {
   }
 
   renderShowMore(segments, slot) {
-    let messages = message(this.props.messages)
+    let { localizer } = this.props
     let count = eventsInSlot(segments, slot)
 
-    return count
-      ? <a
-          key={'sm_' + slot}
-          href="#"
-          className={'rbc-show-more'}
-          onClick={e => this.showMore(slot, e)}
-        >
-          {messages.showMore(count)}
-        </a>
-      : false
+    return count ? (
+      <a
+        key={'sm_' + slot}
+        href="#"
+        className={'rbc-show-more'}
+        onClick={e => this.showMore(slot, e)}
+      >
+        {localizer.messages.showMore(count)}
+      </a>
+    ) : (
+      false
+    )
   }
 
   showMore(slot, e) {

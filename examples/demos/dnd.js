@@ -1,51 +1,93 @@
 import React from 'react'
 import events from '../events'
-import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext } from 'react-dnd'
 import BigCalendar from 'react-big-calendar'
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.less'
 
-const DragAndDropCalendar = withDragAndDrop(BigCalendar);
+const DragAndDropCalendar = withDragAndDrop(BigCalendar)
 
 class Dnd extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      events: events
+      events: events,
     }
 
     this.moveEvent = this.moveEvent.bind(this)
+    this.newEvent = this.newEvent.bind(this)
   }
 
-  moveEvent({ event, start, end }) {
-    const { events } = this.state;
+  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
+    const { events } = this.state
 
-    const idx = events.indexOf(event);
-    const updatedEvent = { ...event, start, end };
+    const idx = events.indexOf(event)
+    let allDay = event.allDay
+
+    if (!event.allDay && droppedOnAllDaySlot) {
+      allDay = true
+    } else if (event.allDay && !droppedOnAllDaySlot) {
+      allDay = false
+    }
+
+    const updatedEvent = { ...event, start, end, allDay }
 
     const nextEvents = [...events]
     nextEvents.splice(idx, 1, updatedEvent)
 
     this.setState({
-      events: nextEvents
+      events: nextEvents,
     })
 
-    alert(`${event.title} was dropped onto ${event.start}`);
+    // alert(`${event.title} was dropped onto ${updatedEvent.start}`)
   }
 
-  render(){
+  resizeEvent = ({ event, start, end }) => {
+    const { events } = this.state
+
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
+
+    this.setState({
+      events: nextEvents,
+    })
+
+    //alert(`${event.title} was resized to ${start}-${end}`)
+  }
+
+  newEvent(event) {
+    // let idList = this.state.events.map(a => a.id)
+    // let newId = Math.max(...idList) + 1
+    // let hour = {
+    //   id: newId,
+    //   title: 'New Event',
+    //   allDay: event.slots.length == 1,
+    //   start: event.start,
+    //   end: event.end,
+    // }
+    // this.setState({
+    //   events: this.state.events.concat([hour]),
+    // })
+  }
+
+  render() {
     return (
       <DragAndDropCalendar
         selectable
+        localizer={this.props.localizer}
         events={this.state.events}
         onEventDrop={this.moveEvent}
-        defaultView='week'
+        resizable
+        onEventResize={this.resizeEvent}
+        onSelectSlot={this.newEvent}
+        defaultView={BigCalendar.Views.MONTH}
         defaultDate={new Date(2015, 3, 12)}
       />
     )
   }
 }
 
-export default DragDropContext(HTML5Backend)(Dnd)
+export default Dnd

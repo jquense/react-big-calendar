@@ -1,3 +1,4 @@
+@import './variables.less';
 
 .rbc-agenda-view {
   display: flex;
@@ -5,14 +6,15 @@
   flex: 1 0 0;
   overflow: auto;
 
-  table {
+  table.rbc-agenda-table {
     width: 100%;
     border: 1px solid @cell-border;
+    border-spacing: 0;
+    border-collapse: collapse;
 
     tbody > tr > td {
       padding: 5px 10px;
       vertical-align: top;
-
     }
 
     .rbc-agenda-time-cell {

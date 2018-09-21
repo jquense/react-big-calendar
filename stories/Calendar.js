@@ -1,334 +1,210 @@
-import { storiesOf, action } from '@kadira/storybook';
-import moment from 'moment';
-import React from 'react';
+import { storiesOf, action } from '@storybook/react'
+import moment from 'moment'
+import React from 'react'
 
-import Calendar from '../src';
-import momentLocalizer from '../src/localizers/moment.js'
 import '../src/less/styles.less'
-import demoEvents from '../examples/events';
-import createEvents from './createEvents';
+import '../src/addons/dragAndDrop/styles.less'
+import demoEvents from '../examples/events'
+import createEvents from './helpers/createEvents'
+import customComponents from './helpers/customComponents'
 
-// Setup the localizer by providing the moment (or globalize) Object
-// to the correct localizer.
-momentLocalizer(moment); // or globalizeLocalizer
+import { events, Calendar } from './helpers'
 
-const events = [{
-    title: 'test',
-    start: moment().add(1, 'days').subtract(5, 'hours').toDate(),
-    end: moment().add(1, 'days').subtract(4, 'hours').toDate(),
-    allDay: false
-  },
-  {
-    title: 'test larger',
-    start: moment().startOf('day').add(5, 'hours').toDate(),
-    end: moment().startOf('day').add(10, 'hours').toDate(),
-    allDay: false
-  },
-
-  {
-    title: 'test larger',
-    start: moment().startOf('day').add(15, 'hours').toDate(),
-    end: moment().startOf('day').add(23, 'hours').toDate(),
-    allDay: false
-  },
-  {
-    title: 'test all day',
-    start: moment().toDate(),
-    end: moment().toDate(),
-    allDay: true
-  }]
-
-storiesOf('module.Calendar.week', module)
-  .add('demo', () => {
-    return (
-      <div style={{height: 500}}>
-        <Calendar
-          popup
-          events={demoEvents}
-          onSelectEvent={action('event selected')}
-          defaultDate={new Date(2015, 3, 1)}
-        />
-      </div>
-    )
-  })
-
+storiesOf('Big Calendar', module)
+  .add('demo', () => (
+    <Calendar
+      popup
+      events={demoEvents}
+      onSelectEvent={action('event selected')}
+      defaultDate={new Date(2015, 3, 1)}
+    />
+  ))
   .add('default view', () => {
     return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-
-  .add('event layout', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView={Calendar.Views.DAY}
-          defaultDate={new Date()}
-          timeslots={4}
-          events={createEvents(1)}
-        />
-      </div>
+      <Calendar
+        defaultView={Calendar.Views.WEEK}
+        min={moment('12:00am', 'h:mma').toDate()}
+        max={moment('11:59pm', 'h:mma').toDate()}
+        events={events}
+        onSelectEvent={action('event selected')}
+        defaultDate={new Date()}
+      />
     )
   })
 
   .add('selectable', () => {
     return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          selectable
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-
-  .add('selectable, step 15, 4 timeslots', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          selectable
-          timeslots={4}
-          step={15}
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-
-  .add('selectable, step 10, 6 timeslots', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          selectable
-          timeslots={6}
-          step={10}
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-
-  .add('selectable, step 5, 6 timeslots', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          selectable
-          timeslots={6}
-          step={5}
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-
-  .add('selectable, 3 timeslots', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          selectable
-          timeslots={3}
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-
-  .add('selectable, 9 timeslots, force now to 9:30am', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView="week"
-          selectable
-          timeslots={9}
-          now={moment('9:30am', 'h:mma').toDate()}
-          min={moment('12:00am', 'h:mma').toDate()}
-          max={moment('11:59pm', 'h:mma').toDate()}
-          events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
-          defaultDate={new Date()}
-        />
-      </div>
-    )
-  })
-  .add('first of the week all-day event', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultDate={new Date(2016, 11, 4)}
-          events={[{
-              allDay: true,
-              title: 'All Day Event',
-              start: new Date(2016, 11, 4),
-              end: new Date(2016, 11, 4)
-          }]}
-        />
-      </div>
-    )
-  })
-  .add('end of the week all-day event', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultDate={new Date(2016, 11, 3)}
-          events={[{
-              allDay: true,
-              title: 'All Day Event',
-              start: new Date(2016, 11, 3),
-              end: new Date(2016, 11, 3)
-          }]}
-        />
-      </div>
-    )
-  })
-  .add('event at end of week', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultDate={new Date(2016, 11, 3)}
-          events={[
-            {
-              title: 'has time',
-              start: moment(new Date(2016, 11, 3)).add(1, 'days').subtract(5, 'hours').toDate(),
-              end: moment(new Date(2016, 11, 3)).add(1, 'days').subtract(4, 'hours').toDate(),
-            },
-          ]}
-        />
-      </div>
-    )
-  })
-  .add('event at start of week', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultDate={new Date(2016, 11, 4)}
-          events={[{
-            title: 'has time',
-            start: moment(new Date(2016, 11, 4)).add(1, 'days').subtract(5, 'hours').toDate(),
-            end: moment(new Date(2016, 11, 4)).add(1, 'days').subtract(4, 'hours').toDate(),
-          }]}
-        />
-      </div>
-    )
-  })
-  .add('events on a constrained day column', () => {
-    return (
-      <div style={{height: 600}}>
-        <Calendar
-          defaultView={Calendar.Views.DAY}
-          min={moment('8 am', 'h a').toDate()}
-          max={moment('5 pm', 'h a').toDate()}
-          events={events}
-        />
-      </div>
+      <Calendar
+        selectable
+        defaultView={Calendar.Views.WEEK}
+        min={moment('12:00am', 'h:mma').toDate()}
+        max={moment('11:59pm', 'h:mma').toDate()}
+        events={events}
+        onSelectEvent={action('event selected')}
+        onSelectSlot={action('slot selected')}
+        defaultDate={new Date()}
+      />
     )
   })
   .add('add custom date header', () => {
     return (
-        <div style={{height: 600}}>
-          <Calendar
-            defaultView={Calendar.Views.MONTH}
-            events={events}
-            components={{
-              month: {
-                dateHeader: ({ label }) => <span>{label} - Custom date header</span>
-              }
-            }}
-          />
-        </div>
+      <Calendar
+        defaultView={Calendar.Views.MONTH}
+        events={events}
+        components={{
+          month: {
+            dateHeader: ({ label }) => (
+              <span>{label} - Custom date header</span>
+            ),
+          },
+        }}
+      />
     )
   })
-  .add('no duration', () => {
+  .add('complex day view layout', () => {
     return (
-      <div style={{height: 600}}>
-        {/* should display all three events */}
-        <Calendar
-          defaultDate={new Date(2016, 11, 4)}
-          events={[
-            {
-              title: 'start of the week',
-              start: new Date(2016, 11, 4),
-              end: new Date(2016, 11, 4)
-            },
-            {
-                title: 'end of the week',
-                start: new Date(2016, 11, 3),
-                end: new Date(2016, 11, 3)
-            },
-            {
-                title: 'middle',
-                start: new Date(2016, 11, 6),
-                end: new Date(2016, 11, 6)
-            }
-          ]}
-        />
-      </div>
+      <Calendar
+        defaultDate={new Date()}
+        defaultView={Calendar.Views.DAY}
+        events={createEvents(1)}
+        step={30}
+      />
     )
   })
   .add('multi-day', () => {
     return (
-      <div style={{height: 600}}>
-        {/* should display all three events */}
-        <Calendar
-          showMultiDayTimes
-          defaultDate={new Date(2016, 11, 4)}
-          events={[
-            {
-              title: 'start of the week',
-              start: new Date(2016, 11, 4, 15),
-              end: new Date(2016, 11, 5, 3)
-            },
-            {
-                title: 'end of the week',
-                start: new Date(2016, 11, 3),
-                end: new Date(2016, 11, 3)
-            },
-            {
-                title: 'middle',
-                start: new Date(2016, 11, 6),
-                end: new Date(2016, 11, 6)
-            }
-          ]}
-        />
-      </div>
+      /* should display all three events */
+      <Calendar
+        showMultiDayTimes
+        defaultDate={new Date(2016, 11, 4)}
+        max={moment()
+          .endOf('day')
+          .add(-1, 'hours')
+          .toDate()}
+        events={[
+          {
+            title: 'start of the week',
+            start: new Date(2016, 11, 4, 15),
+            end: new Date(2016, 11, 5, 3),
+          },
+          {
+            title: 'single day longer than max',
+            start: new Date(2016, 11, 4, 15),
+            end: new Date(2016, 11, 4, 23, 30),
+          },
+          {
+            title: 'end of the week',
+            start: new Date(2016, 11, 3),
+            end: new Date(2016, 11, 3),
+          },
+          {
+            title: 'middle',
+            start: new Date(2016, 11, 6),
+            end: new Date(2016, 11, 6),
+          },
+        ]}
+      />
+    )
+  })
+  .add('agenda view - with length prop', () => {
+    return (
+      /* should display as title toolbar (from now to now + 14 days) */
+      <Calendar
+        defaultView={Calendar.Views.AGENDA}
+        events={events}
+        length={14}
+      />
+    )
+  })
+  .add('custom now is the first of the month', () => {
+    const customNow = () => {
+      let now = new Date()
+      now.setDate(1)
+      return now
+    }
+    return (
+      <Calendar
+        defaultView={Calendar.Views.WEEK}
+        getNow={customNow}
+        min={moment('12:00am', 'h:mma').toDate()}
+        max={moment('11:59pm', 'h:mma').toDate()}
+        events={events}
+        onSelectEvent={action('event selected')}
+        defaultDate={new Date()}
+      />
+    )
+  })
+
+  .add('custom time gutter header', () => {
+    const TimeGutter = () => <p>Custom gutter text</p>
+
+    return (
+      <Calendar
+        popup
+        events={demoEvents}
+        onSelectEvent={action('event selected')}
+        defaultDate={new Date(2015, 3, 1)}
+        defaultView="week"
+        views={['week', 'day']}
+        components={{
+          timeGutterHeader: TimeGutter,
+        }}
+      />
+    )
+  })
+  .add('add custom dateCellWrapper', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.MONTH}
+        events={events}
+        components={{
+          dateCellWrapper: customComponents.dateCellWrapper,
+        }}
+      />
+    )
+  })
+  .add('add custom dayWrapper', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.DAY}
+        events={events}
+        components={{
+          dayWrapper: customComponents.dayWrapper,
+        }}
+      />
+    )
+  })
+  .add('add custom eventWrapper', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.DAY}
+        events={events}
+        components={{
+          eventWrapper: customComponents.eventWrapper,
+        }}
+      />
+    )
+  })
+  .add('add custom no agenda events label', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.AGENDA}
+        events={events}
+        messages={{
+          noEventsInRange:
+            'There are no special events in this range [test message]',
+        }}
+      />
+    )
+  })
+  .add('add custom timeSlotWrapper', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.WEEK}
+        events={events}
+        components={{
+          timeSlotWrapper: customComponents.timeSlotWrapper,
+        }}
+      />
     )
   })

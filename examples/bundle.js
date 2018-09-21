@@ -16249,7 +16249,7 @@ object-assign
             t = e.view,
             n = e.toolbar,
             o = e.events,
-            i = (e.culture, e.style),
+            i = e.style,
             l = e.className,
             s = e.elementProps,
             A = e.date,
@@ -16259,11 +16259,11 @@ object-assign
             b = (e.components,
             e.formats,
             e.messages,
+            e.culture,
             (0, a.default)(e, [
               'view',
               'toolbar',
               'events',
-              'culture',
               'style',
               'className',
               'elementProps',
@@ -16274,6 +16274,7 @@ object-assign
               'components',
               'formats',
               'messages',
+              'culture',
             ]))
           A = A || f()
           var g = this.getView(),

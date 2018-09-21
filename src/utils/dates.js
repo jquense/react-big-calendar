@@ -14,6 +14,18 @@ const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 let dates = {
   ...dateMath,
 
+  eq(a, b, unit) {
+    return +dates.startOf(a, unit) == +dates.startOf(b, unit)
+  },
+
+  startOf() {
+    try {
+      return localizer.startOf.apply(localizer, [...arguments])
+    } catch (e) {
+      return dateMath.startOf.apply(localizer, [...arguments])
+    }
+  },
+
   monthsInYear(year) {
     let date = new Date(year, 0, 1)
 
@@ -95,12 +107,7 @@ let dates = {
   },
 
   isJustDate(date) {
-    return (
-      dates.hours(date) === 0 &&
-      dates.minutes(date) === 0 &&
-      dates.seconds(date) === 0 &&
-      dates.milliseconds(date) === 0
-    )
+    return +dates.startOf(date, 'day') == +date
   },
 
   duration(start, end, unit, firstOfWeek) {

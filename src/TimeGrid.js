@@ -229,19 +229,10 @@ export default class TimeGrid extends Component {
     } = this.props
 
     return range.map((date, idx) => {
-      let daysEvents = events.filter(event =>
-        dates.inRange(
-          date,
-          get(event, startAccessor),
-          get(event, endAccessor),
-          'day'
-        )
-      )
-
       return resources.map((resource, id) => {
         let eventsToDisplay = !resource
-          ? daysEvents
-          : daysEvents.filter(
+          ? events
+          : events.filter(
               event =>
                 get(event, resourceAccessor) ===
                 get(resource, resourceIdAccessor)

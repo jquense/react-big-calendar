@@ -42,7 +42,18 @@ Regardless of your choice, you **must** choose a localizer to use this library:
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
+const localizer = BigCalendar.momentLocalizer(moment) 
+
+const MyCalendar = props => (
+  <div>
+    <BigCalendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  </div>
+)
 ```
 
 #### Globalize.js v0.1.1
@@ -51,7 +62,18 @@ BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 import BigCalendar from 'react-big-calendar'
 import globalize from 'globalize'
 
-BigCalendar.setLocalizer(BigCalendar.globalizeLocalizer(globalize))
+const localizer = BigCalendar.globalizeLocalizer(moment) 
+
+const MyCalendar = props => (
+  <div>
+    <BigCalendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  </div>
+)
 ```
 
 ## Join us on Reactiflux Discord

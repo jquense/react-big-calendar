@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
@@ -103,6 +103,7 @@
   },
   "dependencies": {
     "@babel/cli": "^7.1.0",
+    "@babel/runtime": "^7.0.0",
     "classnames": "^2.2.6",
     "date-arithmetic": "^3.0.0",
     "dom-helpers": "^2.3.0 || ^3.0.0",

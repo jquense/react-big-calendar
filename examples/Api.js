@@ -117,8 +117,7 @@ class Api extends React.Component {
 
           return i === list.length - 1 ? current : current.concat(' | ')
         }, [])
-      case 'array':
-      case 'Array': {
+      case 'array': {
         let child = this.renderType({ type: type.value })
 
         return (
@@ -140,7 +139,18 @@ class Api extends React.Component {
 
   renderEnum(enumType) {
     const enumValues = enumType.value || []
-    return <code>{enumValues.join(' | ')}</code>
+    if (!Array.isArray(enumValues)) return enumValues
+
+    const renderedEnumValues = []
+    enumValues.forEach(({ value }, i) => {
+      if (i > 0) {
+        renderedEnumValues.push(<span key={`${i}c`}> | </span>)
+      }
+
+      renderedEnumValues.push(<code key={i}>{value}</code>)
+    })
+
+    return <span>{renderedEnumValues}</span>
   }
 
   renderControllableNote(prop, propName) {

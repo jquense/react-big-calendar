@@ -229,10 +229,19 @@ export default class TimeGrid extends Component {
     } = this.props
 
     return range.map((date, idx) => {
+      let daysEvents = events.filter(event =>
+        dates.inRange(
+          date,
+          get(event, startAccessor),
+          get(event, endAccessor),
+          'day'
+        )
+      )
+
       return resources.map((resource, id) => {
         let eventsToDisplay = !resource
-          ? events
-          : events.filter(
+          ? daysEvents
+          : daysEvents.filter(
               event =>
                 get(event, resourceAccessor) ===
                 get(resource, resourceIdAccessor)
@@ -458,6 +467,7 @@ export default class TimeGrid extends Component {
     if (this._updatingOverflow) return
 
     let isOverflowing =
+      this.refs.content &&
       this.refs.content.scrollHeight > this.refs.content.clientHeight
 
     if (this.state.isOverflowing !== isOverflowing) {

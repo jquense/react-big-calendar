@@ -65,5 +65,11 @@ export default function(moment) {
         .startOf(unit)
         .toDate()
     },
+
+    endOf(date, unit) {
+      return moment(date)
+        .endOf(unit)
+        .toDate()
+    },
   })
 }

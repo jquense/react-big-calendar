@@ -14,8 +14,33 @@ const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 let dates = {
   ...dateMath,
 
+  inRange(time, start, end, unit) {
+    let timeStart = dates.startOf(time, unit)
+    let timeEnd = dates.endOf(time, unit)
+    let startsBeforeEnd = +start <= +timeEnd
+    let endsAfterStart = +end >= timeStart
+
+    return startsBeforeEnd && endsAfterStart
+  },
+
   eq(a, b, unit) {
     return +dates.startOf(a, unit) == +dates.startOf(b, unit)
+  },
+
+  gt(a, b, unit) {
+    return +dates.startOf(a, unit) > +dates.startOf(b, unit)
+  },
+
+  gte(a, b, unit) {
+    return +dates.startOf(a, unit) >= +dates.startOf(b, unit)
+  },
+
+  lt(a, b, unit) {
+    return +dates.startOf(a, unit) < +dates.startOf(b, unit)
+  },
+
+  lte(a, b, unit) {
+    return +dates.startOf(a, unit) <= +dates.startOf(b, unit)
   },
 
   startOf() {
@@ -23,6 +48,14 @@ let dates = {
       return localizer.startOf.apply(localizer, [...arguments])
     } catch (e) {
       return dateMath.startOf.apply(localizer, [...arguments])
+    }
+  },
+
+  endOf() {
+    try {
+      return localizer.endOf.apply(localizer, [...arguments])
+    } catch (e) {
+      return dateMath.endOf.apply(localizer, [...arguments])
     }
   },
 

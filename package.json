@@ -113,7 +113,8 @@
     "prop-types-extra": "^1.1.0",
     "react-overlays": "^0.8.3",
     "uncontrollable": "^6.0.0",
-    "warning": "^4.0.2"
+    "warning": "^4.0.2",
+    "react-tippy": "^1.2.2"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"

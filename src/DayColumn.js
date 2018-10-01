@@ -108,7 +108,7 @@ class DayColumn extends React.Component {
     const { selecting } = this.state
     if (selecting) {
       let { top, height, startDate, endDate, noMovementYet } = this.state
-      const { localizer, tooltipProps, components } = this.props
+      const { localizer, components } = this.props
       let selectDates = { start: startDate, end: endDate }
       let selectionElement
       if (noMovementYet) {
@@ -143,7 +143,7 @@ class DayColumn extends React.Component {
       getters: { dayProp, ...getters },
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
-    
+
     let { slotMetrics } = this
     let { selecting } = this.state
 
@@ -211,7 +211,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil(step * timeslots / 2),
+      minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {

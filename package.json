@@ -63,6 +63,7 @@
   "devDependencies": {
     "@4c/rollout": "^1.2.0",
     "@babel/core": "^7.1.0",
+    "@babel/runtime": "^7.1.2",
     "@storybook/addon-actions": "^3.4.11",
     "@storybook/react": "3.4.11",
     "babel-core": "^7.0.0-bridge.0",

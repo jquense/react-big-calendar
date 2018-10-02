@@ -97,7 +97,7 @@ export default function withDragAndDrop(Calendar) {
         weekWrapper: WeekWrapper,
       })
 
-      this.state = {}
+      this.state = { interacting: false }
     }
 
     getChildContext() {
@@ -118,7 +118,7 @@ export default function withDragAndDrop(Calendar) {
     }
 
     handleInteractionStart = () => {
-      this.setState({ interacting: true })
+      if (this.state.interacting === false) this.setState({ interacting: true })
     }
 
     handleInteractionEnd = interactionInfo => {

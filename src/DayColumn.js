@@ -117,6 +117,7 @@ class DayColumn extends React.Component {
           <SelectIndicator
             {...this.state}
             tooltipProps={components && components.tooltipProps}
+            localizer={localizer}
           />
         )
       } else {

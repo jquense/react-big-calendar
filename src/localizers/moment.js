@@ -23,6 +23,10 @@ export let formats = {
   dayFormat: 'DD ddd',
   weekdayFormat: 'ddd',
 
+  minutesOnly: 'mm',
+  hoursOnly: 'ha',
+  hourAndMinutes: 'h:mma',
+
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
   eventTimeRangeStartFormat: timeRangeStartFormat,

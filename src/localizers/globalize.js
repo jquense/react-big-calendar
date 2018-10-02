@@ -29,6 +29,10 @@ export let formats = {
   dayFormat: 'eee dd/MM',
   weekdayFormat: 'eee',
 
+  minutesOnly: { skeleton: 'm' },
+  hoursOnly: { skeleton: 'h' },
+  hourAndMinutes: { skeleton: 'hm' },
+
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
   eventTimeRangeStartFormat: timeRangeStartFormat,

@@ -2,16 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tippy'
 import 'react-tippy/dist/tippy.css'
-import renderTime from './utils/renderTime'
 
-const tooltipContent = time => {
+const renderTime = (time, localizer) => {
+  if (localizer.format(time, 'minutesOnly') === '00') {
+    // '00'
+    return localizer.format(time, 'hoursOnly') // '5 PM'
+  }
+  return localizer.format(time, 'hourAndMinutes') // '5:00 PM'
+}
+
+const tooltipContent = (time, localizer) => {
   if (!time) {
     return 'Drag to create an event'
   }
-  return renderTime(time)
+  return renderTime(time, localizer)
 }
 
-const SelectIndicator = ({ top, startDate, tooltipProps }) => (
+const SelectIndicator = ({ top, startDate, tooltipProps, localizer }) => (
   <div className="pre-selection-time-indicator-parent" style={{ top }}>
     <Tooltip
       position="top"
@@ -26,7 +33,7 @@ const SelectIndicator = ({ top, startDate, tooltipProps }) => (
         tooltipProps && tooltipProps.tooltipContent ? (
           tooltipProps.tooltipContent
         ) : (
-          <div>{tooltipContent(startDate)}</div>
+          <div>{tooltipContent(startDate, localizer)}</div>
         )
       }
       unmountHTMLWhenHide

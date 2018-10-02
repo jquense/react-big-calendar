@@ -175,7 +175,11 @@ class TimeGridHeader extends React.Component {
                 </div>
               </div>
             )}
-            <div className="rbc-row rbc-time-header-cell">
+            <div
+              className={`rbc-row rbc-time-header-cell${
+                range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
+              }`}
+            >
               {this.renderHeaderCells(range)}
             </div>
             <DateContentRow

@@ -20,13 +20,48 @@
   position: absolute;
   width: 100%;
   cursor: row-resize;
+
 }
 
-.pre-selection-time-indicator {
+.pre-selection-time-indicator-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   width: 100%;
+}
+
+.pre-selection-time-indicator-arrow {
+  display: flex;
+  width: 0;
+  height: 0;
+  align-self: center;
+  border-width: 0.3em 0.5em 0;
+  border-style: solid;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-top-color: #606060;
+  border-bottom-color: transparent;
+  opacity: 0.7;
+}
+
+.pre-selection-time-indicator-line {
+  width: 100%;
+  min-height: 1;
   border-width: 0.2rem 0 0 0;
   border-style: dashed;
-  border-color: #444444;
+  border-color: #b2b0b0;
+}
+
+.pre-selection-time-indicator-text {
+  align-self: center;
+  font-size: 0.9em;
+  border-radius: 0.2em;
+  background-color: #606060;
+  text-align: center;
+  padding: 0.2em 1em;
+  color: #FFF;
+  opacity: 0.7;
 }
 
 .rbc-time-view {

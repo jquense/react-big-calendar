@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Tooltip } from 'react-tippy'
-import 'react-tippy/dist/tippy.css'
 
 const renderTime = (time, localizer) => {
   if (localizer.format(time, 'minutesOnly') === '00') {
@@ -11,43 +9,33 @@ const renderTime = (time, localizer) => {
   return localizer.format(time, 'hourAndMinutes') // '5:00 PM'
 }
 
-const tooltipContent = (time, localizer) => {
-  if (!time) {
-    return 'Drag to create an event'
-  }
-  return renderTime(time, localizer)
-}
+const getTooltipText = (time, localizer) =>
+  !time ? 'Drag to create an event' : renderTime(time, localizer)
 
-const SelectIndicator = ({ top, startDate, tooltipProps, localizer }) => (
-  <div className="pre-selection-time-indicator-parent" style={{ top }}>
-    <Tooltip
-      position="top"
-      delay={0}
-      arrow
-      trigger="manual"
-      open
-      duration={150}
-      distance={5}
-      touchHold
-      html={
-        tooltipProps && tooltipProps.tooltipContent ? (
-          tooltipProps.tooltipContent
-        ) : (
-          <div>{tooltipContent(startDate, localizer)}</div>
-        )
-      }
-      unmountHTMLWhenHide
-      {...tooltipProps}
+const SelectIndicator = props => {
+  const { top, height, startDate, localizer } = props
+  const newTopPerc = parseFloat(top) - parseFloat(height)
+  return (
+    <div
+      className="pre-selection-time-indicator-parent"
+      style={{ top: `${newTopPerc}%` }}
     >
-      <div className="pre-selection-time-indicator" />
-    </Tooltip>
-  </div>
-)
+      <div className="pre-selection-time-indicator-container">
+        <div className="pre-selection-time-indicator-text">
+          {getTooltipText(startDate, localizer)}
+        </div>
+        <div className="pre-selection-time-indicator-arrow" />
+        <div className="pre-selection-time-indicator-line" />
+      </div>
+    </div>
+  )
+}
 
 SelectIndicator.propTypes = {
   top: PropTypes.string.isRequired,
+  height: PropTypes.string.isRequired,
   startDate: PropTypes.instanceOf(Date).isRequired,
-  tooltipProps: PropTypes.object,
+  localizer: PropTypes.object.isRequired,
 }
 
 SelectIndicator.displayName = 'SelectIndicator'

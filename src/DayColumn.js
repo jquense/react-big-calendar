@@ -64,15 +64,22 @@ class DayColumn extends React.Component {
   }
 
   componentDidMount() {
-    this.props.selectable && this._selectable()
+    const { selectable, isNow, components } = this.props
 
-    if (this.props.isNow) {
+    selectable && this._selectable()
+
+    this.preSelectionComponent =
+      components && components.preSelectIndicatorComponent
+        ? components.preSelectIndicatorComponent
+        : SelectIndicator
+    if (isNow) {
       this.positionTimeIndicator()
       this.triggerTimeIndicatorUpdate()
     }
   }
 
   componentWillUnmount() {
+    this.preSelectionComponent = null
     this._teardownSelectable()
     window.clearTimeout(this._timeIndicatorTimeout)
   }
@@ -107,18 +114,15 @@ class DayColumn extends React.Component {
   renderSelection() {
     const { selecting } = this.state
     if (selecting) {
-      let { top, height, startDate, endDate, noMovementYet } = this.state
-      const { localizer, components } = this.props
-      let selectDates = { start: startDate, end: endDate }
+      const { top, height, startDate, endDate, noMovementYet } = this.state
+      const { localizer } = this.props
+      const selectDates = { start: startDate, end: endDate }
       let selectionElement
       if (noMovementYet) {
         // if the user is about to start selecting but hasn't started dragging yet
+        const PreSelectionComp = this.preSelectionComponent || SelectIndicator
         selectionElement = (
-          <SelectIndicator
-            {...this.state}
-            tooltipProps={components && components.tooltipProps}
-            localizer={localizer}
-          />
+          <PreSelectionComp {...this.state} localizer={localizer} />
         )
       } else {
         // the user has already started dragging/selecting a time slot

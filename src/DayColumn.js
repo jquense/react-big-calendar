@@ -334,11 +334,7 @@ class DayColumn extends React.Component {
 
     selector.on('beforeSelect', box => {
       const didNotClickOnAnEvent = !isEvent(findDOMNode(this), box)
-      if (
-        didNotClickOnAnEvent &&
-        this.props.components &&
-        this.props.components.beforeSelectIndicatorComponent != null
-      ) {
+      if (didNotClickOnAnEvent) {
         maybeSelect({ ...box, noMovementYet: true })
       }
 

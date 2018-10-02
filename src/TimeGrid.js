@@ -54,15 +54,17 @@ export default class TimeGrid extends Component {
   static defaultProps = {
     step: 30,
     timeslots: 2,
-    min: dates.startOf(new Date(), 'day'),
-    max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
   }
 
   constructor(props) {
     super(props)
 
-    this.state = { gutterWidth: undefined, isOverflowing: null }
+    this.state = {
+      gutterWidth: undefined,
+      isOverflowing: null,
+      ...this.calculateMinMaxNow(props),
+    }
 
     this.scrollRef = React.createRef()
 
@@ -83,6 +85,31 @@ export default class TimeGrid extends Component {
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)
+
+    if (this.props.min == null && this.props.max == null) {
+      // if the user is not handling min and max themselves
+      // set an interval (per minute)
+      this.minuteTracker = window.setInterval(
+        this.onMinuteChange.bind(this),
+        60000
+      )
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.minuteTracker) {
+      window.clearInterval(this.minuteTracker)
+      this.minuteTracker = null
+    }
+
+    window.removeEventListener('resize', this.handleResize)
+    raf.cancel(this.rafHandle)
+  }
+
+  onMinuteChange() {
+    // every minute
+
+    this.setState(this.calculateMinMaxNow(this.props)) // update the min max values
   }
 
   handleScroll = e => {
@@ -94,11 +121,6 @@ export default class TimeGrid extends Component {
   handleResize = () => {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
-
-    raf.cancel(this.rafHandle)
   }
 
   componentDidUpdate() {
@@ -118,6 +140,15 @@ export default class TimeGrid extends Component {
       !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
     ) {
       this.calculateScroll(nextProps)
+    }
+  }
+
+  calculateMinMaxNow(propsToUse = this.props) {
+    const now = propsToUse.getNow ? propsToUse.getNow() : new Date()
+    return {
+      now,
+      min: propsToUse.min || dates.startOf(now, 'day'),
+      max: propsToUse.max || dates.endOf(now, 'day'),
     }
   }
 
@@ -141,8 +172,9 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events, now) {
-    let { min, max, components, accessors, localizer } = this.props
+  renderEvents(range, events) {
+    let { components, accessors, localizer } = this.props
+    let { min, max, now } = this.state
 
     const groupedEvents = this.resources.groupEvents(events)
 
@@ -157,15 +189,21 @@ export default class TimeGrid extends Component {
           )
         )
 
+        const isCurrentDay = dates.eq(date, now, 'day')
+        let timeIndicatorTime
+        if (isCurrentDay) {
+          timeIndicatorTime = now
+        }
         return (
           <DayColumn
             {...this.props}
             localizer={localizer}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
+            timeIndicatorTime={timeIndicatorTime}
             resource={resource && id}
             components={components}
-            isNow={dates.eq(date, now, 'day')}
+            isNow={isCurrentDay}
             key={i + '-' + jj}
             date={date}
             events={daysEvents}
@@ -187,11 +225,11 @@ export default class TimeGrid extends Component {
       accessors,
       getters,
       localizer,
-      min,
-      max,
       showMultiDayTimes,
       longPressThreshold,
     } = this.props
+
+    let { min, max } = this.state
 
     width = width || this.state.gutterWidth
 
@@ -264,7 +302,7 @@ export default class TimeGrid extends Component {
             components={components}
             className="rbc-time-gutter"
           />
-          {this.renderEvents(range, rangeEvents, getNow())}
+          {this.renderEvents(range, rangeEvents)}
         </div>
       </div>
     )
@@ -293,7 +331,8 @@ export default class TimeGrid extends Component {
   }
 
   calculateScroll(props = this.props) {
-    const { min, max, scrollToTime } = props
+    const { scrollToTime } = props
+    const { min, max } = this.state
 
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
     const totalMillis = dates.diff(max, min)

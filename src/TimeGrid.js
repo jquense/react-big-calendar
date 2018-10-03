@@ -25,7 +25,6 @@ export default class TimeGrid extends Component {
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     getNow: PropTypes.func.isRequired,
-
     scrollToTime: PropTypes.instanceOf(Date),
     showMultiDayTimes: PropTypes.bool,
 
@@ -49,6 +48,7 @@ export default class TimeGrid extends Component {
     onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
+    resourceWeekViewHeader: PropTypes.oneOf(['day', 'resource']),
   }
 
   static defaultProps = {
@@ -141,37 +141,66 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events, now) {
+  renderEventDayColumn({
+    id,
+    resource,
+    date,
+    index1,
+    index2,
+    groupedEvents,
+    now,
+  }) {
     let { min, max, components, accessors, localizer } = this.props
+    let daysEvents = (groupedEvents.get(id) || []).filter(event =>
+      dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
+    )
 
+    return (
+      <DayColumn
+        {...this.props}
+        localizer={localizer}
+        min={dates.merge(date, min)}
+        max={dates.merge(date, max)}
+        resource={resource && id}
+        components={components}
+        isNow={dates.eq(date, now, 'day')}
+        key={index1 + '-' + index2}
+        date={date}
+        events={daysEvents}
+      />
+    )
+  }
+
+  renderEvents(range, events, now) {
     const groupedEvents = this.resources.groupEvents(events)
-
-    return this.resources.map(([id, resource], i) =>
-      range.map((date, jj) => {
-        let daysEvents = (groupedEvents.get(id) || []).filter(event =>
-          dates.inRange(
+    const { resourceWeekViewHeader } = this.props
+    if (resourceWeekViewHeader === 'resource') {
+      return this.resources.map(([id, resource], index1) =>
+        range.map((date, index2) => {
+          return this.renderEventDayColumn({
+            id,
+            resource,
             date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
-
-        return (
-          <DayColumn
-            {...this.props}
-            localizer={localizer}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
-            resource={resource && id}
-            components={components}
-            isNow={dates.eq(date, now, 'day')}
-            key={i + '-' + jj}
-            date={date}
-            events={daysEvents}
-          />
-        )
-      })
+            index1,
+            index2,
+            groupedEvents,
+            now,
+          })
+        })
+      )
+    }
+    return range.map((date, index2) =>
+      this.resources.map(([id, resource], index1) =>
+        this.renderEventDayColumn({
+          id,
+          resource,
+          date,
+          index1,
+          index2,
+          groupedEvents,
+          now,
+        })
+      )
     )
   }
 
@@ -246,6 +275,7 @@ export default class TimeGrid extends Component {
           onDoubleClickEvent={this.props.onDoubleClickEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
+          resourceWeekViewHeader={this.props.resourceWeekViewHeader}
         />
         <div
           ref="content"

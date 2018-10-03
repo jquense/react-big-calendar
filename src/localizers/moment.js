@@ -40,11 +40,17 @@ export let formats = {
   agendaTimeRangeFormat: timeRangeFormat,
 }
 
-export default function(moment) {
+/**
+ * Create localizer using moment library
+ *
+ * @param {*} moment moment function
+ * @param {*} customFormats custom formats to allow override default formats
+ */
+export default function(moment, customFormats) {
   let locale = (m, c) => (c ? m.locale(c) : m)
 
   return new DateLocalizer({
-    formats,
+    formats: { ...formats, ...customFormats },
     firstOfWeek(culture) {
       let data = culture ? moment.localeData(culture) : moment.localeData()
       return data ? data.firstDayOfWeek() : 0

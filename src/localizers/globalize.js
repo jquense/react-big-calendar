@@ -46,7 +46,13 @@ export let formats = {
   agendaTimeRangeFormat: timeRangeFormat,
 }
 
-export default function(globalize) {
+/**
+ * Create localizer using globalize library
+ *
+ * @param {*} globalize globalize function
+ * @param {*} customFormats custom formats to allow override default formats
+ */
+export default function(globalize, customFormats) {
   let locale = culture => (culture ? globalize(culture) : globalize)
 
   // return the first day of the week from the locale data. Defaults to 'world'
@@ -83,7 +89,7 @@ export default function(globalize) {
 
   return new DateLocalizer({
     firstOfWeek,
-    formats,
+    formats: { ...formats, ...customFormats },
     format(value, format, culture) {
       format = typeof format === 'string' ? { raw: format } : format
       return locale(culture).formatDate(value, format)

@@ -220,6 +220,14 @@ class Calendar extends React.Component {
     resourceTitleAccessor: accessor,
 
     /**
+     * Determines the group header of week view or work_week view with resources
+     *
+     * date - display date as group header and show resources as sub-headers
+     * resource - display resource as group header and show dates as sub-headers
+     */
+    resourceWeekViewHeader: PropTypes.oneOf(['day', 'resource']),
+
+    /**
      * Determines the current date/time which is highlighted in the views.
      *
      * The value affects which day is shaded and which time is shown as
@@ -712,6 +720,7 @@ class Calendar extends React.Component {
 
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
+    resourceWeekViewHeader: 'resource',
 
     longPressThreshold: 250,
     getNow: () => new Date(),

@@ -258,7 +258,7 @@ class Calendar extends React.Component {
      * Callback fired when the visible date range changes. Returns an Array of dates
      * or an object with start and end dates for BUILTIN views.
      *
-     * Cutom views may return something different.
+     * Custom views may return something different.
      */
     onRangeChange: PropTypes.func,
 

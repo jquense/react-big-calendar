@@ -7,8 +7,10 @@ import { findDOMNode } from 'react-dom'
 import dates from './utils/dates'
 import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
+import TimeIndicatorLine from './TimeIndicatorLine'
 
 import getWidth from 'dom-helpers/query/width'
+import getHeight from 'dom-helpers/query/height'
 import TimeGridHeader from './TimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
@@ -54,6 +56,8 @@ export default class TimeGrid extends Component {
   static defaultProps = {
     step: 30,
     timeslots: 2,
+    min: dates.startOf(new Date(), 'day'),
+    max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
   }
 
@@ -63,7 +67,7 @@ export default class TimeGrid extends Component {
     this.state = {
       gutterWidth: undefined,
       isOverflowing: null,
-      ...this.calculateMinMaxNow(props),
+      gutterHeight: undefined,
     }
 
     this.scrollRef = React.createRef()
@@ -81,35 +85,25 @@ export default class TimeGrid extends Component {
     if (this.props.width == null) {
       this.measureGutter()
     }
-
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)
 
-    if (this.props.min == null && this.props.max == null) {
-      // if the user is not handling min and max themselves
-      // set an interval (per minute)
-      this.minuteTracker = window.setInterval(
-        this.onMinuteChange.bind(this),
-        60000
-      )
-    }
+    this.curDay = null
+
+    this.biMinuteInterval = window.setInterval(
+      this.checkDayChanged.bind(this),
+      120000 // every 2 minutes
+    )
   }
 
-  componentWillUnmount() {
-    if (this.minuteTracker) {
-      window.clearInterval(this.minuteTracker)
-      this.minuteTracker = null
+  checkDayChanged() {
+    const now = this.props.getNow() || new Date()
+    const isSameDay = dates.isSameDay(now, this.curDay)
+    if (isSameDay === false) {
+      this.curDay = now // set the new date as our cur day
+      this.setState(this.state) // and refresh the state
     }
-
-    window.removeEventListener('resize', this.handleResize)
-    raf.cancel(this.rafHandle)
-  }
-
-  onMinuteChange() {
-    // every minute
-
-    this.setState(this.calculateMinMaxNow(this.props)) // update the min max values
   }
 
   handleScroll = e => {
@@ -121,6 +115,17 @@ export default class TimeGrid extends Component {
   handleResize = () => {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+
+    raf.cancel(this.rafHandle)
+
+    if (this.biMinuteInterval) {
+      window.clearInterval(this.biMinuteInterval)
+      this.biMinuteInterval = null
+    }
+    this.curDay = null
   }
 
   componentDidUpdate() {
@@ -140,15 +145,6 @@ export default class TimeGrid extends Component {
       !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
     ) {
       this.calculateScroll(nextProps)
-    }
-  }
-
-  calculateMinMaxNow(propsToUse = this.props) {
-    const now = propsToUse.getNow ? propsToUse.getNow() : new Date()
-    return {
-      now,
-      min: propsToUse.min || dates.startOf(now, 'day'),
-      max: propsToUse.max || dates.endOf(now, 'day'),
     }
   }
 
@@ -172,9 +168,8 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events) {
-    let { components, accessors, localizer } = this.props
-    let { min, max, now } = this.state
+  renderEvents(range, events, now) {
+    let { min, max, components, accessors, localizer } = this.props
 
     const groupedEvents = this.resources.groupEvents(events)
 
@@ -189,21 +184,15 @@ export default class TimeGrid extends Component {
           )
         )
 
-        const isCurrentDay = dates.eq(date, now, 'day')
-        let timeIndicatorTime
-        if (isCurrentDay) {
-          timeIndicatorTime = now
-        }
         return (
           <DayColumn
             {...this.props}
             localizer={localizer}
             min={dates.merge(date, min)}
             max={dates.merge(date, max)}
-            timeIndicatorTime={timeIndicatorTime}
             resource={resource && id}
             components={components}
-            isNow={isCurrentDay}
+            isNow={dates.eq(date, now, 'day')}
             key={i + '-' + jj}
             date={date}
             events={daysEvents}
@@ -225,11 +214,11 @@ export default class TimeGrid extends Component {
       accessors,
       getters,
       localizer,
+      min,
+      max,
       showMultiDayTimes,
       longPressThreshold,
     } = this.props
-
-    let { min, max } = this.state
 
     width = width || this.state.gutterWidth
 
@@ -290,6 +279,15 @@ export default class TimeGrid extends Component {
           className="rbc-time-content"
           onScroll={this.handleScroll}
         >
+          <TimeIndicatorLine
+            date={start}
+            localizer={localizer}
+            step={this.props.step}
+            getNow={this.props.getNow}
+            timeslots={this.props.timeslots}
+            components={components}
+            totalHeight={this.state.gutterHeight}
+          />
           <TimeGutter
             date={start}
             ref={this.gutterRef}
@@ -302,7 +300,7 @@ export default class TimeGrid extends Component {
             components={components}
             className="rbc-time-gutter"
           />
-          {this.renderEvents(range, rangeEvents)}
+          {this.renderEvents(range, rangeEvents, getNow())}
         </div>
       </div>
     )
@@ -315,24 +313,38 @@ export default class TimeGrid extends Component {
 
   measureGutter() {
     const width = getWidth(this.gutter)
+    const height = getHeight(this.gutter)
 
+    let newState
     if (width && this.state.gutterWidth !== width) {
-      this.setState({ gutterWidth: width })
+      newState = { gutterWidth: width }
+    }
+
+    if (height && this.state.gutterHeight !== height) {
+      if (newState == null) {
+        newState = {}
+      }
+      newState.gutterHeight = height
+    }
+
+    if (newState) {
+      this.setState(newState)
     }
   }
 
   applyScroll() {
     if (this._scrollRatio) {
       const { content } = this.refs
+
       content.scrollTop = content.scrollHeight * this._scrollRatio
+      // tIndicator.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once
       this._scrollRatio = null
     }
   }
 
   calculateScroll(props = this.props) {
-    const { scrollToTime } = props
-    const { min, max } = this.state
+    const { min, max, scrollToTime } = props
 
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
     const totalMillis = dates.diff(max, min)

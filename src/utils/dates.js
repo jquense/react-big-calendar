@@ -141,6 +141,13 @@ let dates = {
     return Math.ceil(((d - new Date(d.getFullYear(), 0, 1)) / 8.64e7 + 1) / 7)
   },
 
+  isSameDay(dateA, dateB) {
+    if (dateA && dateB) {
+      return dates.startOf(dateA, 'day') === dates.startOf(dateB, 'day')
+    }
+    return false
+  },
+
   today() {
     return dates.startOf(new Date(), 'day')
   },

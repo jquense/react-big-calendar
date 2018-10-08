@@ -62,7 +62,7 @@ const MyCalendar = props => (
 import BigCalendar from 'react-big-calendar'
 import globalize from 'globalize'
 
-const localizer = BigCalendar.globalizeLocalizer(moment) 
+const localizer = BigCalendar.globalizeLocalizer(globalize) 
 
 const MyCalendar = props => (
   <div>

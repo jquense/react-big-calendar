@@ -193,6 +193,7 @@ function getStyledEvents({
       height: event.height,
       width: event.width,
       xOffset: event.xOffset,
+      zIndex: Math.floor(event.xOffset),
     },
   }))
 }

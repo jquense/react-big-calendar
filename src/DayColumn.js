@@ -84,6 +84,15 @@ class DayColumn extends React.Component {
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.date.getTime() !== this.props.date.getTime()) {
+      if (this.props.isNow) {
+        this.positionTimeIndicator()
+        this.triggerTimeIndicatorUpdate()
+      }
+    }
+  }
+
   triggerTimeIndicatorUpdate() {
     // Update the position of the time indicator every minute
     this._timeIndicatorTimeout = window.setTimeout(() => {
@@ -188,7 +197,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil(step * timeslots / 2),
+      minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {

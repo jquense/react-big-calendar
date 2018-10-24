@@ -101,7 +101,7 @@ class Calendar extends React.Component {
      *  - end time
      *  - title
      *  - whether its an "all day" event or not
-     *  - any resource the event may be a related too
+     *  - any resource the event may be related to
      *
      * Each of these properties can be customized or generated dynamically by
      * setting the various "accessor" props. Without any configuration the default

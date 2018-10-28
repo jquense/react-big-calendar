@@ -113,8 +113,8 @@ export default function withDragAndDrop(Calendar) {
       }
     }
 
-    handleBeginAction = (event, action, direction) => {
-      this.setState({ event, action, direction })
+    handleBeginAction = (event, action, direction, nativeEvent) => {
+      this.setState({ event, action, direction, nativeEvent })
     }
 
     handleInteractionStart = () => {

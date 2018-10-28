@@ -186,7 +186,6 @@ class EventContainerWrapper extends React.Component {
 
     if (!event) return children
 
-    const events = children.props.children
     const { start, end } = event
 
     let label
@@ -201,27 +200,25 @@ class EventContainerWrapper extends React.Component {
     if (startsBeforeDay && startsAfterDay) label = localizer.messages.allDay
     else label = localizer.format({ start, end }, format)
 
-    return React.cloneElement(children, {
-      children: (
-        <React.Fragment>
-          {events}
+    return (
+      <React.Fragment>
+        {children}
 
-          {event && (
-            <TimeGridEvent
-              event={event}
-              label={label}
-              className="rbc-addons-dnd-drag-preview"
-              style={{ top, height, width: 100 }}
-              getters={getters}
-              components={{ ...components, eventWrapper: NoopWrapper }}
-              accessors={{ ...accessors, ...dragAccessors }}
-              continuesEarlier={startsBeforeDay}
-              continuesLater={startsAfterDay}
-            />
-          )}
-        </React.Fragment>
-      ),
-    })
+        {event && (
+          <TimeGridEvent
+            event={event}
+            label={label}
+            className="rbc-addons-dnd-drag-preview"
+            style={{ top, height, width: 100 }}
+            getters={getters}
+            components={{ ...components, eventWrapper: NoopWrapper }}
+            accessors={{ ...accessors, ...dragAccessors }}
+            continuesEarlier={startsBeforeDay}
+            continuesLater={startsAfterDay}
+          />
+        )}
+      </React.Fragment>
+    )
   }
 }
 

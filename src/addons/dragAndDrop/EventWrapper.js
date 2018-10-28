@@ -32,26 +32,83 @@ class EventWrapper extends React.Component {
   handleResizeUp = e => {
     if (e.button !== 0) return
     e.stopPropagation()
+
+    const lastNativeEvent = this.context.draggable.dragAndDropAction.nativeEvent
+    const nativeEvent = e.nativeEvent.type
+    const touchEndThenMouseDown =
+      lastNativeEvent === 'touchend' && nativeEvent === 'mousedown'
+    const { interacting } = this.context.draggable.dragAndDropAction
+
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
+
+    if ((nativeEvent === 'touchend' && !interacting) || touchEndThenMouseDown) {
+      this.context.draggable.onEnd(null)
+    }
   }
   handleResizeDown = e => {
     if (e.button !== 0) return
     e.stopPropagation()
+
+    const lastNativeEvent = this.context.draggable.dragAndDropAction.nativeEvent
+    const nativeEvent = e.nativeEvent.type
+    const touchEndThenMouseDown =
+      lastNativeEvent === 'touchend' && nativeEvent === 'mousedown'
+    const { interacting } = this.context.draggable.dragAndDropAction
+
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
+
+    if ((nativeEvent === 'touchend' && !interacting) || touchEndThenMouseDown) {
+      this.context.draggable.onEnd(null)
+    }
   }
   handleResizeLeft = e => {
     if (e.button !== 0) return
     e.stopPropagation()
+
+    const lastNativeEvent = this.context.draggable.dragAndDropAction.nativeEvent
+    const nativeEvent = e.nativeEvent.type
+    const touchEndThenMouseDown =
+      lastNativeEvent === 'touchend' && nativeEvent === 'mousedown'
+    const { interacting } = this.context.draggable.dragAndDropAction
+
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'LEFT')
+
+    if ((nativeEvent === 'touchend' && !interacting) || touchEndThenMouseDown) {
+      this.context.draggable.onEnd(null)
+    }
   }
   handleResizeRight = e => {
     if (e.button !== 0) return
     e.stopPropagation()
+
+    const lastNativeEvent = this.context.draggable.dragAndDropAction.nativeEvent
+    const nativeEvent = e.nativeEvent.type
+    const touchEndThenMouseDown =
+      lastNativeEvent === 'touchend' && nativeEvent === 'mousedown'
+    const { interacting } = this.context.draggable.dragAndDropAction
+
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'RIGHT')
+
+    if ((nativeEvent === 'touchend' && !interacting) || touchEndThenMouseDown) {
+      this.context.draggable.onEnd(null)
+    }
   }
   handleStartDragging = e => {
-    if (e.button === 0) {
-      this.context.draggable.onBeginAction(this.props.event, 'move')
+    const lastNativeEvent = this.context.draggable.dragAndDropAction.nativeEvent
+    const nativeEvent = e.nativeEvent.type
+    const touchEndThenMouseDown =
+      lastNativeEvent === 'touchend' && nativeEvent === 'mousedown'
+    const { interacting } = this.context.draggable.dragAndDropAction
+
+    this.context.draggable.onBeginAction(
+      this.props.event,
+      'move',
+      null,
+      nativeEvent
+    )
+
+    if ((nativeEvent === 'touchend' && !interacting) || touchEndThenMouseDown) {
+      this.context.draggable.onEnd(null)
     }
   }
 
@@ -134,6 +191,7 @@ class EventWrapper extends React.Component {
       const newProps = {
         onMouseDown: this.handleStartDragging,
         onTouchStart: this.handleStartDragging,
+        onTouchEnd: this.handleStartDragging,
         // replace original event child with anchor-embellished child
 
         children: (

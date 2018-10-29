@@ -1,0 +1,38 @@
+import PropTypes from 'prop-types'
+import React from 'react'
+
+import dates from './utils/dates'
+import { navigate } from './utils/constants'
+import TimeGrid from './TimeGrid'
+
+const Day = props => {
+  let { date, ...other } = props
+  let range = Day.range(date)
+
+  return <TimeGrid {...other} range={range} eventOffset={10} />
+}
+
+Day.range = date => {
+  return [dates.startOf(date, 'day')]
+}
+
+Day.navigate = (date, action) => {
+  switch (action) {
+    case navigate.PREVIOUS:
+      return dates.add(date, -1, 'day')
+
+    case navigate.NEXT:
+      return dates.add(date, 1, 'day')
+
+    default:
+      return date
+  }
+}
+
+Day.title = (date, { localizer }) => localizer.format(date, 'dayHeaderFormat')
+
+Day.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+}
+
+export default Day

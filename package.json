@@ -1,9 +1,9 @@
 {
-  "name": "react-big-calendar",
+  "name": "@optune/react-big-calendar",
   "version": "0.20.0",
-  "description": "Calendar! with events",
-  "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "intljusticemission/react-big-calendar",
+  "description": "Optune Calendar as copy of the awesome react-big-calendar Version 0.20",
+  "author": "Jason Quense <monastic.panic@gmail.com>, Joel Meiller <joel.meiller@gmail.com>",
+  "repository": "optune/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
@@ -19,7 +19,8 @@
     "react",
     "calendar",
     "events",
-    "full calendar"
+    "full calendar",
+    "optune"
   ],
   "scripts": {
     "clean": "rimraf lib",
@@ -57,8 +58,8 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0",
-    "react-dom": "^15.3.0 || ^16.0.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "@4c/rollout": "^1.2.0",

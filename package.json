@@ -3,20 +3,17 @@
   "version": "0.20.0",
   "description": "Optune Calendar as copy of the awesome react-big-calendar Version 0.20",
   "author": "Jason Quense <monastic.panic@gmail.com>",
-  "contributers": [ {
+  "contributors": [ {
     "name": "Joel Meiller",
     "email": "joel.meiller@gmail.com"
   }],
-  "repository": "optune/react-big-calendar",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/optune/react-big-calendar.git"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
-  "files": [
-    "lib/",
-    "LICENSE",
-    "README.md",
-    "CHANGELOG.md"
-  ],
   "keywords": [
     "scheduler",
     "react-component",

@@ -2,7 +2,7 @@ import contains from 'dom-helpers/query/contains'
 import closest from 'dom-helpers/query/closest'
 import events from 'dom-helpers/events'
 
-function addEventListener(type, handler, target = document) {
+const addEventListener = (type, handler, target = document) => {
   events.on(target, type, handler, { passive: false })
   return {
     remove() {
@@ -11,20 +11,17 @@ function addEventListener(type, handler, target = document) {
   }
 }
 
-function isOverContainer(container, x, y) {
-  return !container || contains(container, document.elementFromPoint(x, y))
-}
+const isOverContainer = (container, x, y) =>
+  !container || contains(container, document.elementFromPoint(x, y))
 
-export function getEventNodeFromPoint(node, { clientX, clientY }) {
+export const getEventNodeFromPoint = (node, { clientX, clientY }) => {
   let target = document.elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-event', node)
 }
 
-export function isEvent(node, bounds) {
-  return !!getEventNodeFromPoint(node, bounds)
-}
+export const isEvent = (node, bounds) => !!getEventNodeFromPoint(node, bounds)
 
-function getEventCoordinates(e) {
+const getEventCoordinates = e => {
   let target = e
 
   if (e.touches && e.touches.length) {
@@ -369,7 +366,7 @@ class Selection {
  * Resolve the disance prop from either an Int or an Object
  * @return {Object}
  */
-function normalizeDistance(distance = 0) {
+const normalizeDistance = (distance = 0) => {
   if (typeof distance !== 'object')
     distance = {
       top: distance,
@@ -388,7 +385,7 @@ function normalizeDistance(distance = 0) {
  * @param  {Object|HTMLElement} b
  * @return {bool}
  */
-export function objectsCollide(nodeA, nodeB, tolerance = 0) {
+export const objectsCollide = (nodeA, nodeB, tolerance = 0) => {
   let {
     top: aTop,
     left: aLeft,
@@ -419,7 +416,7 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
  * @param  {HTMLElement} node
  * @return {Object}
  */
-export function getBoundsForNode(node) {
+export const getBoundsForNode = node => {
   if (!node.getBoundingClientRect) return node
 
   let rect = node.getBoundingClientRect(),
@@ -434,8 +431,9 @@ export function getBoundsForNode(node) {
   }
 }
 
-function pageOffset(dir) {
+const pageOffset = dir => {
   if (dir === 'left') return window.pageXOffset || document.body.scrollLeft || 0
   if (dir === 'top') return window.pageYOffset || document.body.scrollTop || 0
 }
+
 export default Selection

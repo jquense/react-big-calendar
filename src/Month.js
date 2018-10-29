@@ -67,9 +67,6 @@ let propTypes = {
 }
 
 class MonthView extends React.Component {
-  static displayName = 'MonthView'
-  static propTypes = propTypes
-
   constructor(...args) {
     super(...args)
 
@@ -115,7 +112,7 @@ class MonthView extends React.Component {
     window.removeEventListener('resize', this._resizeListener, false)
   }
 
-  getContainer = () => {
+  getContainer() {
     return findDOMNode(this)
   }
 
@@ -137,7 +134,7 @@ class MonthView extends React.Component {
     )
   }
 
-  renderWeek = (week, weekIdx) => {
+  renderWeek(week, weekIdx) {
     let {
       events,
       components,
@@ -189,7 +186,7 @@ class MonthView extends React.Component {
     )
   }
 
-  readerDateHeading = ({ date, className, ...props }) => {
+  readerDateHeading({ date, className, ...props }) {
     let { date: currentDate, getDrilldownView, localizer } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
@@ -264,37 +261,37 @@ class MonthView extends React.Component {
     )
   }
 
-  measureRowLimit(isDesktop) {
+  measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
       // rowLimit: isDesktop ? this.rowLimit : this.refs.slotRow.getRowLimit(),
     })
   }
 
-  handleSelectSlot = (range, slotInfo) => {
+  handleSelectSlot(range, slotInfo) {
     this._pendingSelection = this._pendingSelection.concat(range)
 
     clearTimeout(this._selectTimer)
     this._selectTimer = setTimeout(() => this.selectDates(slotInfo))
   }
 
-  handleHeadingClick = (date, view, e) => {
+  handleHeadingClick(date, view, e) {
     e.preventDefault()
     this.clearSelection()
     notify(this.props.onDrillDown, [date, view])
   }
 
-  handleSelectEvent = (...args) => {
+  handleSelectEvent(...args) {
     this.clearSelection()
     notify(this.props.onSelectEvent, args)
   }
 
-  handleDoubleClickEvent = (...args) => {
+  handleDoubleClickEvent(...args) {
     this.clearSelection()
     notify(this.props.onDoubleClickEvent, args)
   }
 
-  handleShowMore = (events, date, cell, slot) => {
+  handleShowMore(events, date, cell, slot) {
     const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
@@ -354,5 +351,7 @@ MonthView.navigate = (date, action) => {
 
 MonthView.title = (date, { localizer }) =>
   localizer.format(date, 'monthHeaderFormat')
+
+MonthView.propTypes = propTypes
 
 export default MonthView

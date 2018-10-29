@@ -5,12 +5,6 @@ import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
 class Week extends React.Component {
-  static propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-  }
-
-  static defaultProps = TimeGrid.defaultProps
-
   render() {
     let { date, ...props } = this.props
     let range = Week.range(date, this.props)
@@ -44,5 +38,11 @@ Week.title = (date, { localizer }) => {
   let [start, ...rest] = Week.range(date, { localizer })
   return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')
 }
+
+Week.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+}
+
+Week.defaultProps = TimeGrid.defaultProps
 
 export default Week

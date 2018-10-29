@@ -2,7 +2,7 @@ import cn from 'classnames'
 import React from 'react'
 
 /* eslint-disable react/prop-types */
-function TimeGridEvent(props) {
+const TimeGridEvent = props => {
   const {
     style,
     className,

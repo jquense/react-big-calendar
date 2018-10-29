@@ -14,51 +14,7 @@ import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
 
-export default class TimeGrid extends Component {
-  static propTypes = {
-    events: PropTypes.array.isRequired,
-    resources: PropTypes.array,
-
-    step: PropTypes.number,
-    timeslots: PropTypes.number,
-    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-    min: PropTypes.instanceOf(Date),
-    max: PropTypes.instanceOf(Date),
-    getNow: PropTypes.func.isRequired,
-
-    scrollToTime: PropTypes.instanceOf(Date),
-    showMultiDayTimes: PropTypes.bool,
-
-    rtl: PropTypes.bool,
-    width: PropTypes.number,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    longPressThreshold: PropTypes.number,
-
-    onNavigate: PropTypes.func,
-    onSelectSlot: PropTypes.func,
-    onSelectEnd: PropTypes.func,
-    onSelectStart: PropTypes.func,
-    onSelectEvent: PropTypes.func,
-    onDoubleClickEvent: PropTypes.func,
-    onDrillDown: PropTypes.func,
-    getDrilldownView: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    step: 30,
-    timeslots: 2,
-    min: dates.startOf(new Date(), 'day'),
-    max: dates.endOf(new Date(), 'day'),
-    scrollToTime: dates.startOf(new Date(), 'day'),
-  }
-
+class TimeGrid extends Component {
   constructor(props) {
     super(props)
 
@@ -85,13 +41,13 @@ export default class TimeGrid extends Component {
     window.addEventListener('resize', this.handleResize)
   }
 
-  handleScroll = e => {
+  handleScroll(e) {
     if (this.scrollRef.current) {
       this.scrollRef.current.scrollLeft = e.target.scrollLeft
     }
   }
 
-  handleResize = () => {
+  handleResize() {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
   }
@@ -121,17 +77,17 @@ export default class TimeGrid extends Component {
     }
   }
 
-  gutterRef = ref => {
+  gutterRef(ref) {
     this.gutter = ref && findDOMNode(ref)
   }
 
-  handleSelectAlldayEvent = (...args) => {
+  handleSelectAlldayEvent(...args) {
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
     notify(this.props.onSelectEvent, args)
   }
 
-  handleSelectAllDaySlot = (slots, slotInfo) => {
+  handleSelectAllDaySlot(slots, slotInfo) {
     const { onSelectSlot } = this.props
     notify(onSelectSlot, {
       slots,
@@ -301,7 +257,7 @@ export default class TimeGrid extends Component {
     this._scrollRatio = diffMillis / totalMillis
   }
 
-  checkOverflow = () => {
+  checkOverflow() {
     if (this._updatingOverflow) return
 
     let isOverflowing =
@@ -315,3 +271,49 @@ export default class TimeGrid extends Component {
     }
   }
 }
+
+TimeGrid.propTypes = {
+  events: PropTypes.array.isRequired,
+  resources: PropTypes.array,
+
+  step: PropTypes.number,
+  timeslots: PropTypes.number,
+  range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
+  getNow: PropTypes.func.isRequired,
+
+  scrollToTime: PropTypes.instanceOf(Date),
+  showMultiDayTimes: PropTypes.bool,
+
+  rtl: PropTypes.bool,
+  width: PropTypes.number,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onNavigate: PropTypes.func,
+  onSelectSlot: PropTypes.func,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
+  onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
+  onDrillDown: PropTypes.func,
+  getDrilldownView: PropTypes.func.isRequired,
+}
+
+TimeGrid.defaultProps = {
+  step: 30,
+  timeslots: 2,
+  min: dates.startOf(new Date(), 'day'),
+  max: dates.endOf(new Date(), 'day'),
+  scrollToTime: dates.startOf(new Date(), 'day'),
+}
+
+export default TimeGrid

@@ -14,50 +14,10 @@ import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 
 class DayColumn extends React.Component {
-  static propTypes = {
-    events: PropTypes.array.isRequired,
-    step: PropTypes.number.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
-    getNow: PropTypes.func.isRequired,
-    isNow: PropTypes.bool,
-
-    rtl: PropTypes.bool,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-
-    showMultiDayTimes: PropTypes.bool,
-    culture: PropTypes.string,
-    timeslots: PropTypes.number,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    eventOffset: PropTypes.number,
-    longPressThreshold: PropTypes.number,
-
-    onSelecting: PropTypes.func,
-    onSelectSlot: PropTypes.func.isRequired,
-    onSelectEvent: PropTypes.func.isRequired,
-    onDoubleClickEvent: PropTypes.func.isRequired,
-
-    className: PropTypes.string,
-    dragThroughEvents: PropTypes.bool,
-    resource: PropTypes.any,
-  }
-
-  static defaultProps = {
-    dragThroughEvents: true,
-    timeslots: 2,
-  }
-
-  state = { selecting: false }
-
   constructor(...args) {
     super(...args)
+
+    this.state = { selecting: false }
 
     this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
   }
@@ -168,7 +128,7 @@ class DayColumn extends React.Component {
     )
   }
 
-  renderEvents = () => {
+  renderEvents() {
     let {
       events,
       rtl: isRtl,
@@ -188,7 +148,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil(step * timeslots / 2),
+      minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -230,7 +190,7 @@ class DayColumn extends React.Component {
     })
   }
 
-  _selectable = () => {
+  _selectable() {
     let node = findDOMNode(this)
     let selector = (this._selector = new Selection(() => findDOMNode(this), {
       longPressThreshold: this.props.longPressThreshold,
@@ -320,13 +280,13 @@ class DayColumn extends React.Component {
     })
   }
 
-  _teardownSelectable = () => {
+  _teardownSelectable() {
     if (!this._selector) return
     this._selector.teardown()
     this._selector = null
   }
 
-  _selectSlot = ({ startDate, endDate, action, bounds, box }) => {
+  _selectSlot({ startDate, endDate, action, bounds, box }) {
     let current = startDate,
       slots = []
 
@@ -346,13 +306,53 @@ class DayColumn extends React.Component {
     })
   }
 
-  _select = (...args) => {
+  _select(...args) {
     notify(this.props.onSelectEvent, args)
   }
 
-  _doubleClick = (...args) => {
+  _doubleClick(...args) {
     notify(this.props.onDoubleClickEvent, args)
   }
+}
+
+DayColumn.propTypes = {
+  events: PropTypes.array.isRequired,
+  step: PropTypes.number.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
+  getNow: PropTypes.func.isRequired,
+  isNow: PropTypes.bool,
+
+  rtl: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+
+  showMultiDayTimes: PropTypes.bool,
+  culture: PropTypes.string,
+  timeslots: PropTypes.number,
+
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  eventOffset: PropTypes.number,
+  longPressThreshold: PropTypes.number,
+
+  onSelecting: PropTypes.func,
+  onSelectSlot: PropTypes.func.isRequired,
+  onSelectEvent: PropTypes.func.isRequired,
+  onDoubleClickEvent: PropTypes.func.isRequired,
+
+  className: PropTypes.string,
+  dragThroughEvents: PropTypes.bool,
+  resource: PropTypes.any,
+}
+
+DayColumn.defaultProps = {
+  dragThroughEvents: true,
+  timeslots: 2,
 }
 
 export default DayColumn

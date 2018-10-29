@@ -10,23 +10,6 @@ import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
 class Agenda extends React.Component {
-  static propTypes = {
-    events: PropTypes.array,
-    date: PropTypes.instanceOf(Date),
-    length: PropTypes.number.isRequired,
-
-    selected: PropTypes.object,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    length: 30,
-  }
-
   componentDidMount() {
     this._adjustHeader()
   }
@@ -78,7 +61,7 @@ class Agenda extends React.Component {
     )
   }
 
-  renderDay = (day, events, dayKey) => {
+  renderDay(day, events, dayKey) {
     let {
       selected,
       getters,
@@ -135,7 +118,7 @@ class Agenda extends React.Component {
     }, [])
   }
 
-  timeRangeLabel = (day, event) => {
+  timeRangeLabel(day, event) {
     let { accessors, localizer, components } = this.props
 
     let labelClass = '',
@@ -169,7 +152,7 @@ class Agenda extends React.Component {
     )
   }
 
-  _adjustHeader = () => {
+  _adjustHeader() {
     if (!this.refs.tbody) return
 
     let header = this.refs.header
@@ -221,6 +204,23 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
   let end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
+}
+
+Agenda.propTypes = {
+  events: PropTypes.array,
+  date: PropTypes.instanceOf(Date),
+  length: PropTypes.number.isRequired,
+
+  selected: PropTypes.object,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+}
+
+Agenda.defaultProps = {
+  length: 30,
 }
 
 export default Agenda

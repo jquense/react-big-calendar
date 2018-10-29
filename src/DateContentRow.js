@@ -1,11 +1,9 @@
-import cn from 'classnames'
 import getHeight from 'dom-helpers/query/height'
 import qsa from 'dom-helpers/query/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-import dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
@@ -58,13 +56,13 @@ class DateContentRow extends React.Component {
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
   }
 
-  handleSelectSlot = slot => {
+  handleSelectSlot(slot) {
     const { range, onSelectSlot } = this.props
 
     onSelectSlot(range.slice(slot.start, slot.end + 1), slot)
   }
 
-  handleShowMore = slot => {
+  handleShowMore(slot) {
     const { range, onShowMore } = this.props
     let metrics = this.slotMetrics(this.props)
     let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
@@ -76,15 +74,15 @@ class DateContentRow extends React.Component {
     onShowMore(events, range[slot - 1], cell, slot)
   }
 
-  createHeadingRef = r => {
+  createHeadingRef(r) {
     this.headingRow = r
   }
 
-  createEventRef = r => {
+  createEventRef(r) {
     this.eventRow = r
   }
 
-  getContainer = () => {
+  getContainer() {
     const { container } = this.props
     return container ? container() : findDOMNode(this)
   }
@@ -98,7 +96,7 @@ class DateContentRow extends React.Component {
   }
 
   renderDummy = () => {
-    let { className, range } = this.props
+    let { className } = this.props
     return (
       <div className={className}>
         <div className="rbc-row-content">
@@ -178,7 +176,7 @@ class DateContentRow extends React.Component {
         />
 
         <div className="rbc-row-content">
-          <div className='rbc-row body'>
+          <div className="rbc-row body">
             <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
               {levels.map((segs, idx) => (
                 <EventRow key={idx} segments={segs} {...eventRowProps} />

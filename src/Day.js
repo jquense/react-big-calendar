@@ -5,17 +5,11 @@ import dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
-class Day extends React.Component {
-  static propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-  }
+const Day = props => {
+  let { date, ...other } = props
+  let range = Day.range(date)
 
-  render() {
-    let { date, ...props } = this.props
-    let range = Day.range(date)
-
-    return <TimeGrid {...props} range={range} eventOffset={10} />
-  }
+  return <TimeGrid {...other} range={range} eventOffset={10} />
 }
 
 Day.range = date => {
@@ -36,5 +30,9 @@ Day.navigate = (date, action) => {
 }
 
 Day.title = (date, { localizer }) => localizer.format(date, 'dayHeaderFormat')
+
+Day.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+}
 
 export default Day

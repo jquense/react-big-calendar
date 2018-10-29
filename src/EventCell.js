@@ -24,73 +24,71 @@ let propTypes = {
   isDesktop: PropTypes.bool,
 }
 
-class EventCell extends React.Component {
-  render() {
-    let {
-      style,
-      className,
-      event,
-      selected,
-      isAllDay,
-      onSelect,
-      onDoubleClick,
-      localizer,
-      continuesPrior,
-      continuesAfter,
-      accessors,
-      getters,
-      children,
-      components: { event: Event, eventWrapper: EventWrapper },
-      isDesktop,
-      ...props
-    } = this.props
+const EventCell = props => {
+  let {
+    style,
+    className,
+    event,
+    selected,
+    isAllDay,
+    onSelect,
+    onDoubleClick,
+    localizer,
+    continuesPrior,
+    continuesAfter,
+    accessors,
+    getters,
+    children,
+    components: { event: Event, eventWrapper: EventWrapper },
+    isDesktop,
+    ...other
+  } = props
 
-    let title = accessors.title(event)
-    let tooltip = accessors.tooltip(event)
-    let end = accessors.end(event)
-    let start = accessors.start(event)
-    let allDay = accessors.allDay(event)
+  let title = accessors.title(event)
+  let tooltip = accessors.tooltip(event)
+  let end = accessors.end(event)
+  let start = accessors.start(event)
+  let allDay = accessors.allDay(event)
 
-    let showAsAllDay =
-      isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
+  let showAsAllDay =
+    isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
 
-    let userProps = getters.eventProp(event, start, end, selected)
+  let userProps = getters.eventProp(event, start, end, selected)
 
-    const content = (
-      <div className="rbc-event-content" title={tooltip || undefined}>
-        {Event ? (
-          <Event
-            event={event}
-            title={title}
-            isAllDay={allDay}
-            localizer={localizer}
-            isDesktop={isDesktop}
-          />
-        ) : (
-          title
-        )}
-      </div>
-    )
+  const content = (
+    <div className="rbc-event-content" title={tooltip || undefined}>
+      {Event ? (
+        <Event
+          event={event}
+          title={title}
+          isAllDay={allDay}
+          localizer={localizer}
+          isDesktop={isDesktop}
+        />
+      ) : (
+        title
+      )}
+    </div>
+  )
 
-    return (
-      <EventWrapper {...this.props} type="date">
-        <button
-          {...props}
-          style={{ ...userProps.style, ...style }}
-          className={cn('rbc-event', className, userProps.className, {
-            'rbc-selected': selected,
-            'rbc-event-allday': showAsAllDay,
-            'rbc-event-continues-prior': continuesPrior,
-            'rbc-event-continues-after': continuesAfter,
-          })}
-          onClick={e => onSelect && onSelect(event, e)}
-          onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
-        >
-          {typeof children === 'function' ? children(content) : content}
-        </button>
-      </EventWrapper>
-    )
-  }
+  return (
+    <EventWrapper {...this.props} type="date">
+      <button
+        {...other}
+        style={{ ...userProps.style, ...style }}
+        className={cn('rbc-event', className, userProps.className, {
+          'rbc-selected': selected,
+          'rbc-event-allday': showAsAllDay,
+          'rbc-event-continues-prior': continuesPrior,
+          'rbc-event-continues-after': continuesAfter,
+        })}
+        onClick={e => onSelect && onSelect(event, e)}
+        onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
+      >
+        {typeof children === 'function' ? children(content) : content}
+      </button>
+    </EventWrapper>
+  )
 }
 
 EventCell.propTypes = propTypes

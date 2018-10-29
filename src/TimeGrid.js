@@ -23,6 +23,17 @@ class TimeGrid extends Component {
     this.scrollRef = React.createRef()
 
     this.resources = Resources(props.resources, props.accessors)
+
+    this.applyScroll = this.applyScroll.bind(this)
+    this.calculateScroll = this.calculateScroll.bind(this)
+    this.checkOverflow = this.checkOverflow.bind(this)
+    this.clearSelection = this.clearSelection.bind(this)
+    this.gutterRef = this.gutterRef.bind(this)
+    this.handleResize = this.handleResize.bind(this)
+    this.handleScroll = this.handleScroll.bind(this)
+    this.handleSelectAlldayEvent = this.handleSelectAlldayEvent.bind(this)
+    this.handleSelectAllDaySlot = this.handleSelectAllDaySlot.bind(this)
+    this.measureGutter = this.measureGutter.bind(this)
   }
 
   componentWillMount() {

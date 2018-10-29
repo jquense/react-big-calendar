@@ -9,12 +9,17 @@ import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 
 class BackgroundCells extends React.Component {
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
 
     this.state = {
       selecting: false,
     }
+
+    this._renderHeadingCell = this._renderHeadingCell.bind(this)
+    this._selectable = this._selectable.bind(this)
+    this._selectSlot = this._selectSlot.bind(this)
+    this._teardownSelectable = this._teardownSelectable.bind(this)
   }
 
   componentDidMount() {
@@ -78,7 +83,7 @@ class BackgroundCells extends React.Component {
     )
   }
 
-  _renderHeadingCell = (date, index) => {
+  _renderHeadingCell(date, index) {
     let { renderHeader, getNow } = this.props
 
     return renderHeader({

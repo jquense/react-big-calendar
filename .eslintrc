@@ -11,3 +11,4 @@ rules:
     varsIgnorePattern: ^_,
     argsIgnorePattern: ^_,
   }]
+  import-no-unresolved: off

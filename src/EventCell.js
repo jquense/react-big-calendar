@@ -72,7 +72,7 @@ const EventCell = props => {
   )
 
   return (
-    <EventWrapper {...this.props} type="date">
+    <EventWrapper {...props} type="date">
       <button
         {...other}
         style={{ ...userProps.style, ...style }}

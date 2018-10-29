@@ -6,16 +6,18 @@ import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
 class TimeGutter extends Component {
-  constructor(...args) {
-    super(...args)
+  constructor(props) {
+    super(props)
 
-    const { min, max, timeslots, step } = this.props
+    const { min, max, timeslots, step } = props
     this.slotMetrics = TimeSlotUtils.getSlotMetrics({
       min,
       max,
       timeslots,
       step,
     })
+
+    this.renderSlot = this.renderSlot.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {

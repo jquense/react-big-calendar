@@ -1,4 +1,4 @@
-const { rules, loaders, plugins, stats } = require('webpack-atoms')
+const { rules, loaders, stats } = require('webpack-atoms')
 
 const browsers = ['last 2 versions', 'ie >= 10']
 
@@ -14,6 +14,6 @@ module.exports = function(config) {
         rules.less({ browsers }),
       ],
     },
-    plugins: [...config.plugins, plugins.extractText()],
+    plugins: config.plugins,
   }
 }

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 import { plugin as analyze } from 'rollup-plugin-analyzer'
 
 import config from './shared'
@@ -26,7 +26,7 @@ const prod = {
       output: {
         comments: false,
       },
-      sourceMap: false,
+      sourcemap: false,
     }),
     analyze({ limit: 5, filter: [], root: __dirname }),
   ],

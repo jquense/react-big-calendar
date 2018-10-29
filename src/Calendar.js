@@ -59,12 +59,26 @@ function isValidView(view, { views: _views }) {
  * @memberof Calendar
  */
 class Calendar extends React.Component {
-  constructor(...args) {
-    super(...args)
+  constructor(props) {
+    super(props)
+
+    this.getContext = this.getContext.bind(this)
+    this.getDrilldownView = this.getDrilldownView.bind(this)
+    this.getView = this.getView.bind(this)
+    this.getViews = this.getViews.bind(this)
+    this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
+    this.handleDrillDown = this.handleDrillDown.bind(this)
+    this.handleNavigate = this.handleNavigate.bind(this)
+    this.handleRangeChange = this.handleRangeChange.bind(this)
+    this.handleSelectEvent = this.handleSelectEvent.bind(this)
+    this.handleSelectSlot = this.handleSelectSlot.bind(this)
+    this.handleViewChange = this.handleViewChange.bind(this)
+
     this.state = {
-      context: this.getContext(this.props),
+      context: this.getContext(props),
     }
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ context: this.getContext(nextProps) })
   }
@@ -275,7 +289,7 @@ class Calendar extends React.Component {
     notify(this.props.onDoubleClickEvent, args)
   }
 
-  handleSelectSlotslotInfo(slotInfo) {
+  handleSelectSlot(slotInfo) {
     notify(this.props.onSelectSlot, slotInfo)
   }
 

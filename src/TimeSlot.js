@@ -15,11 +15,11 @@ const TimeSlot = props => {
         className={cn(
           'rbc-time-slot',
           className,
-          this.props.showLabel && 'rbc-label',
-          this.props.isNow && 'rbc-now'
+          props.showLabel && 'rbc-label',
+          props.isNow && 'rbc-now'
         )}
       >
-        {this.props.showLabel && <span>{this.props.content}</span>}
+        {props.showLabel && <span>{props.content}</span>}
       </div>
     </Wrapper>
   )

@@ -9,6 +9,14 @@ import Header from './Header'
 import { notify } from './utils/helpers'
 
 class TimeGridHeader extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.handleHeaderClick = this.handleHeaderClick.bind(this)
+    this.renderHeaderCells = this.renderHeaderCells.bind(this)
+    this.renderRow = this.renderRow.bind(this)
+  }
+
   handleHeaderClick(date, view, e) {
     e.preventDefault()
     notify(this.props.onDrillDown, [date, view])

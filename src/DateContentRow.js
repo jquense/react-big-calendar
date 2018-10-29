@@ -50,10 +50,18 @@ const defaultProps = {
 }
 
 class DateContentRow extends React.Component {
-  constructor(...args) {
-    super(...args)
+  constructor(props) {
+    super(props)
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
+
+    this.handleSelectSlot = this.handleSelectSlot.bind(this)
+    this.handleShowMore = this.handleShowMore.bind(this)
+    this.createHeadingRef = this.createHeadingRef.bind(this)
+    this.createEventRef = this.createEventRef.bind(this)
+    this.getContainer = this.getContainer.bind(this)
+    this.getRowLimit = this.getRowLimit.bind(this)
+    this.renderDummy = this.renderDummy.bind(this)
   }
 
   handleSelectSlot(slot) {
@@ -95,7 +103,7 @@ class DateContentRow extends React.Component {
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
 
-  renderDummy = () => {
+  renderDummy() {
     let { className } = this.props
     return (
       <div className={className}>

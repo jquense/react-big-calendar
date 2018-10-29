@@ -67,8 +67,8 @@ let propTypes = {
 }
 
 class MonthView extends React.Component {
-  constructor(...args) {
-    super(...args)
+  constructor(props) {
+    super(props)
 
     this._bgRows = []
     this._pendingSelection = []
@@ -76,6 +76,20 @@ class MonthView extends React.Component {
       rowLimit: 999,
       needLimitMeasure: true,
     }
+
+    this.clearSelection = this.clearSelection.bind(this)
+    this.getContainer = this.getContainer.bind(this)
+    this.handleDoubleClickEvent = this.handleDoubleClickEvent.bind(this)
+    this.handleHeadingClick = this.handleHeadingClick.bind(this)
+    this.handleSelectEvent = this.handleSelectEvent.bind(this)
+    this.handleSelectSlot = this.handleSelectSlot.bind(this)
+    this.handleShowMore = this.handleShowMore.bind(this)
+    this.measureRowLimit = this.measureRowLimit.bind(this)
+    this.renderDateHeading = this.renderDateHeading.bind(this)
+    this.renderHeaders = this.renderHeaders.bind(this)
+    this.renderOverlay = this.renderOverlay.bind(this)
+    this.renderWeek = this.renderWeek.bind(this)
+    this.selectDates = this.selectDates.bind(this)
   }
 
   componentWillReceiveProps({ date }) {
@@ -173,7 +187,7 @@ class MonthView extends React.Component {
         accessors={accessors}
         getters={getters}
         localizer={localizer}
-        renderHeader={this.readerDateHeading}
+        renderHeader={this.renderDateHeading}
         renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
@@ -186,7 +200,7 @@ class MonthView extends React.Component {
     )
   }
 
-  readerDateHeading({ date, className, ...props }) {
+  renderDateHeading({ date, className, ...props }) {
     let { date: currentDate, getDrilldownView, localizer } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)

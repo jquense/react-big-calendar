@@ -32,9 +32,9 @@
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
     "build": "yarn clean && babel -d lib/ src/ && yarn assets && yarn less",
     "build:examples": "yarn clean:examples && webpack --config examples/webpack.config.js",
-    "build:dev": "yarn clean && rollup -c config/dev.js",
+    "build:dev": "rollup -c config/dev.js",
     "build:prod": "yarn clean && rollup -c config/prod.js",
-    "watch": "yarn build -w",
+    "watch": "yarn build:dev -w",
     "examples": "yarn clean:examples && webpack-dev-server --config examples/webpack.config.js --mode development",
     "lint": "eslint --ext js,jsx src/ test/",
     "storybook": "start-storybook -p 9002",
@@ -43,7 +43,7 @@
     "release": "rollout",
     "prepublishOnly": "yarn build",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
-    "precommit": "lint-staged"
+    "prepush": "lint-staged"
   },
   "lint-staged": {
     "src/**/*.js": "eslint",
@@ -97,10 +97,8 @@
     "postcss-import": "^12.0.1",
     "postcss-simple-vars": "^5.0.1",
     "prettier": "^1.14.3",
-    "react": "^16.5.2",
     "react-bootstrap": "^0.32.4",
     "react-docgen": "^3.0.0-rc.1",
-    "react-dom": "^16.5.2",
     "react-tackle-box": "^2.1.0",
     "rimraf": "^2.4.2",
     "rollup": "^0.66.6",
@@ -114,7 +112,7 @@
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-uglify": "^6.0.0",
     "webpack": "^4.19.1",
-    "webpack-atoms": "^8.0.0",
+    "webpack-atoms": "^8.3.0",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8"
   },

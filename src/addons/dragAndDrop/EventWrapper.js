@@ -77,7 +77,8 @@ class EventWrapper extends React.Component {
         className: cn(children.props.className, 'rbc-addons-dnd-drag-preview'),
       })
 
-    const { draggableAccessor, resizableAccessor, draggable } = this.context
+    const { draggable } = this.context
+    const { draggableAccessor, resizableAccessor } = draggable
 
     const isDraggable = draggableAccessor
       ? !!get(event, draggableAccessor)

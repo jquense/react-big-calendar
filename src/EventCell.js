@@ -73,7 +73,7 @@ const EventCell = props => {
 
   return (
     <EventWrapper {...props} type="date">
-      <button
+      <div
         {...other}
         style={{ ...userProps.style, ...style }}
         className={cn('rbc-event', className, userProps.className, {
@@ -86,7 +86,7 @@ const EventCell = props => {
         onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
       >
         {typeof children === 'function' ? children(content) : content}
-      </button>
+      </div>
     </EventWrapper>
   )
 }

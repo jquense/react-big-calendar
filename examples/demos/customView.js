@@ -1,67 +1,65 @@
-import React from 'react';
+import React from 'react'
 
-import events from '../events';
-import BigCalendar from 'react-big-calendar';
-import Week from 'react-big-calendar/lib/Week';
-import dates from 'react-big-calendar/lib/utils/dates';
-import localizer from 'react-big-calendar/lib/localizer';
-import TimeGrid from 'react-big-calendar/lib/TimeGrid';
+import dates from 'date-arithmetic'
+import events from '../events'
+import BigCalendar from 'react-big-calendar'
+import TimeGrid from 'react-big-calendar/lib/TimeGrid'
+import ExampleControlSlot from '../ExampleControlSlot'
 
-class MyWeek extends Week {
+class MyWeek extends React.Component {
   render() {
-    let { date } = this.props;
-    let { start, end } = MyWeek.range(date, this.props);
+    let { date } = this.props
+    let range = MyWeek.range(date)
 
-    return (
-      <TimeGrid {...this.props} start={start} end={end} eventOffset={15} />
-    );
+    return <TimeGrid {...this.props} range={range} eventOffset={15} />
   }
 }
 
-MyWeek.navigate = (date, action)=>{
-  switch (action){
+MyWeek.range = date => {
+  let start = date
+  let end = dates.add(start, 2, 'day')
+
+  let current = start
+  let range = []
+
+  while (dates.lte(current, end, 'day')) {
+    range.push(current)
+    current = dates.add(current, 1, 'day')
+  }
+
+  return range
+}
+
+MyWeek.navigate = (date, action) => {
+  switch (action) {
     case BigCalendar.Navigate.PREVIOUS:
-      return dates.add(date, -1, 'week');
+      return dates.add(date, -3, 'day')
 
     case BigCalendar.Navigate.NEXT:
-      return dates.add(date, 1, 'week')
+      return dates.add(date, 3, 'day')
 
     default:
-      return date;
+      return date
   }
 }
 
-MyWeek.range = (date, { culture }) => {
-  let firstOfWeek = localizer.startOfWeek(culture);
-  let start = dates.startOf(date, 'week', firstOfWeek);
-  let end = dates.endOf(date, 'week', firstOfWeek);
-
-  if (firstOfWeek === 1) {
-    end = dates.subtract(end, 2, 'day');
-  } else {
-    start = dates.add(start, 1, 'day');
-    end = dates.subtract(end, 1, 'day');
-  }
-
-  return { start, end };
+MyWeek.title = date => {
+  return `My awesome week: ${date.toLocaleDateString()}`
 }
 
+let CustomView = ({ localizer }) => (
+  <React.Fragment>
+    <ExampleControlSlot.Entry waitForOutlet>
+      <strong>The Calendar below implments a custom 3-day week view</strong>
+    </ExampleControlSlot.Entry>
+    <BigCalendar
+      events={events}
+      localizer={localizer}
+      defaultView={BigCalendar.Views.WEEK}
+      defaultDate={new Date(2015, 3, 1)}
+      views={{ month: true, week: MyWeek }}
+    />
+  </React.Fragment>
+)
 
-
-
-let CustomView = React.createClass({
-  render(){
-    return (
-      <div>
-        <BigCalendar
-          events={events}
-          defaultDate={new Date(2015, 3, 1)}
-          views={{ month: true, week: MyWeek }}
-          test="io"
-        />
-      </div>
-    )
-  }
-})
-
-export default CustomView;
+export default CustomView

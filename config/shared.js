@@ -24,9 +24,6 @@ export default {
   },
   external,
   plugins: [
-    // scss({
-    //   output: 'lib/app.css',
-    // }),
     postcss({
       // preprocessor: (content, id) =>
       //   new Promise(_resolve => {

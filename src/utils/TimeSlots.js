@@ -1,7 +1,7 @@
 import dates from './dates'
 
 const getDstOffset = (start, end) =>
-  Math.abs(start.getTimezoneOffset() - end.getTimezoneOffset())
+  start.getTimezoneOffset() - end.getTimezoneOffset()
 
 const getKey = (min, max, step, slots) =>
   `${+dates.startOf(min, 'minutes')}` +
@@ -105,7 +105,7 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       if (dates.lt(date, start, 'minutes')) return slots[0]
 
       const diffMins = dates.diff(start, date, 'minutes')
-      return slots[(diffMins - diffMins % step) / step + offset]
+      return slots[(diffMins - (diffMins % step)) / step + offset]
     },
 
     startsBeforeDay(date) {
@@ -130,11 +130,11 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
 
       const rangeStartMin = positionFromDate(rangeStart)
       const rangeEndMin = positionFromDate(rangeEnd)
-      const top = rangeStartMin / totalMin * 100
+      const top = (rangeStartMin / totalMin) * 100
 
       return {
         top,
-        height: rangeEndMin / totalMin * 100 - top,
+        height: (rangeEndMin / totalMin) * 100 - top,
         start: positionFromDate(rangeStart),
         startDate: rangeStart,
         end: positionFromDate(rangeEnd),

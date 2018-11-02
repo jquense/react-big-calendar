@@ -26,27 +26,43 @@ function TimeGridEvent(props) {
   let userProps = getters.eventProp(event, start, end, selected)
 
   let { height, top, width, xOffset } = style
-  const inner = [
-    <div key="1" className="rbc-event-label">
-      {label}
-    </div>,
-    <div key="2" className="rbc-event-content">
-      {Event ? <Event event={event} title={title} /> : title}
-    </div>,
-  ]
+  const { rendering } = event
+  const isBackground = rendering === 'background'
+  let inner = null
+  let divStyle = {
+    ...userProps.style,
+    top: `${top}%`,
+    height: `${height}%`,
+  }
+  if (!isBackground) {
+    inner = [
+      <div key="1" className="rbc-event-label">
+        {label}
+      </div>,
+      <div key="2" className="rbc-event-content">
+        {Event ? <Event event={event} title={title} /> : title}
+      </div>,
+    ]
+    divStyle = {
+      ...divStyle,
+      width: `${width}%`,
+      [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
+      zIndex: 1,
+    }
+  } else {
+    divStyle = {
+      ...divStyle,
+      width: '100%',
+      zIndex: 0,
+    }
+  }
 
   return (
     <EventWrapper type="time" {...props}>
       <div
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        style={{
-          ...userProps.style,
-          top: `${top}%`,
-          height: `${height}%`,
-          [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-          width: `${width}%`,
-        }}
+        style={divStyle}
         title={
           tooltip
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip

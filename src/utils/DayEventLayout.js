@@ -26,26 +26,33 @@ class Event {
   get _width() {
     // The container event's width is determined by the maximum number of
     // events in any of its rows.
-    if (this.rows) {
-      const columns =
-        this.rows.reduce(
-          (max, row) => Math.max(max, row.leaves.length + 1), // add itself
-          0
-        ) + 1 // add the container
+    const isBackground = this.data.rendering === 'background'
+    if (isBackground) {
+      return 0
+    } else {
+      if (this.rows) {
+        const columns =
+          this.rows
+            .filter(event => event.data.rendering !== 'background')
+            .reduce(
+              (max, row) => Math.max(max, row.leaves.length + 1), // add itself
+              0
+            ) + 1 // add the container
 
-      return 100 / columns
+        return 100 / columns
+      }
+
+      const availableWidth = 100 - this.container._width
+
+      // The row event's width is the space left by the container, divided
+      // among itself and its leaves.
+      if (this.leaves) {
+        return availableWidth / (this.leaves.length + 1)
+      }
+
+      // The leaf event's width is determined by its row's width
+      return this.row._width
     }
-
-    const availableWidth = 100 - this.container._width
-
-    // The row event's width is the space left by the container, divided
-    // among itself and its leaves.
-    if (this.leaves) {
-      return availableWidth / (this.leaves.length + 1)
-    }
-
-    // The leaf event's width is determined by its row's width
-    return this.row._width
   }
 
   /**

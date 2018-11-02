@@ -26,7 +26,7 @@ const propTypes = {
   localizer: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
-  slotStart: PropTypes.number,
+  slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
 }
 

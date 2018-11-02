@@ -16,7 +16,7 @@ let propTypes = {
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
   getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object.isRequired,
+  localizer: PropTypes.object,
 
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,

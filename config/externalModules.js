@@ -3,6 +3,7 @@ export default [
   'react',
   'react-dom',
   'react-is',
+  'moment',
   'lodash/default',
   'lodash/transform',
   'lodash/mapValues',

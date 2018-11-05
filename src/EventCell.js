@@ -84,6 +84,7 @@ const EventCell = props => {
         })}
         onClick={e => onSelect && onSelect(event, e)}
         onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
+        data-cy={props.event.link.split('/').pop()}
       >
         {typeof children === 'function' ? children(content) : content}
       </div>

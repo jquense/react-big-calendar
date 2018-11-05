@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import getHeight from 'dom-helpers/query/height'
 import qsa from 'dom-helpers/query/querySelectorAll'
 import PropTypes from 'prop-types'
@@ -166,7 +168,7 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className}>
+      <div className={className} data-cy={`date-content-row-${moment(range[0]).format('DD-MM-YYYY')}`}>
         <BackgroundCells
           date={date}
           getNow={getNow}

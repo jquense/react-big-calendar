@@ -626,9 +626,30 @@ class Calendar extends React.Component {
      * ```jsx
      * let components = {
      *   event: MyEvent, // used by each view (Month, Day, Week)
+     *   eventWrapper: MyEventWrapper,
+     *   eventContainerWrapper: MyEventContainerWrapper,
+     *   dayWrapper: MyDayWrapper,
+     *   dateCellWrapper: MyDateCellWrapper,
+     *   timeSlotWrapper: MyTimeSlotWrapper,
+     *   timeGutterHeader: MyTimeGutterWrapper,
      *   toolbar: MyToolbar,
      *   agenda: {
      *   	 event: MyAgendaEvent // with the agenda view use a different component to render events
+     *     time: MyAgendaTime,
+     *     date: MyAgendaDate,
+     *   },
+     *   day: {
+     *     header: MyDayHeader,
+     *     event: MyDayEvent,
+     *   },
+     *   week: {
+     *     header: MyWeekHeader,
+     *     event: MyWeekEvent,
+     *   },
+     *   month: {
+     *     header: MyMonthHeader,
+     *     dateHeader: MyMonthDateHeader,
+     *     event: MyMonthEvent,
      *   }
      * }
      * <Calendar components={components} />

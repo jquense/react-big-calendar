@@ -14,6 +14,6 @@ module.exports = function(config) {
         rules.less({ browsers }),
       ],
     },
-    plugins: [...config.plugins, plugins.extractText()],
+    plugins: [...config.plugins],
   }
 }

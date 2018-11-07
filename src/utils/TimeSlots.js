@@ -1,7 +1,7 @@
 import dates from './dates'
 
 const getDstOffset = (start, end) =>
-  Math.abs(start.getTimezoneOffset() - end.getTimezoneOffset())
+  start.getTimezoneOffset() - end.getTimezoneOffset()
 
 const getKey = (min, max, step, slots) =>
   `${+dates.startOf(min, 'minutes')}` +

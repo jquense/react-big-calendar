@@ -77,7 +77,8 @@ class EventWrapper extends React.Component {
         className: cn(children.props.className, 'rbc-addons-dnd-drag-preview'),
       })
 
-    const { draggableAccessor, resizableAccessor, draggable } = this.context
+    const { draggable } = this.context
+    const { draggableAccessor, resizableAccessor } = draggable
 
     const isDraggable = draggableAccessor
       ? !!get(event, draggableAccessor)
@@ -87,9 +88,6 @@ class EventWrapper extends React.Component {
     if (!isDraggable) {
       return children
     }
-
-    let StartAnchor = null
-    let EndAnchor = null
 
     /*
  * The resizability of events depends on whether they are
@@ -114,15 +112,7 @@ class EventWrapper extends React.Component {
       ? !!get(event, resizableAccessor)
       : true
 
-    if (isResizable) {
-      if (type === 'date') {
-        StartAnchor = !continuesPrior && this.renderAnchor('Left')
-        EndAnchor = !continuesAfter && this.renderAnchor('Right')
-      } else {
-        StartAnchor = !continuesPrior && this.renderAnchor('Up')
-        EndAnchor = !continuesAfter && this.renderAnchor('Down')
-      }
-
+    if (isResizable || isDraggable) {
       /*
   * props.children is the singular <Event> component.
   * BigCalendar positions the Event abolutely and we
@@ -134,15 +124,28 @@ class EventWrapper extends React.Component {
       const newProps = {
         onMouseDown: this.handleStartDragging,
         onTouchStart: this.handleStartDragging,
-        // replace original event child with anchor-embellished child
+      }
 
-        children: (
+      if (isResizable) {
+        // replace original event child with anchor-embellished child
+        let StartAnchor = null
+        let EndAnchor = null
+
+        if (type === 'date') {
+          StartAnchor = !continuesPrior && this.renderAnchor('Left')
+          EndAnchor = !continuesAfter && this.renderAnchor('Right')
+        } else {
+          StartAnchor = !continuesPrior && this.renderAnchor('Up')
+          EndAnchor = !continuesAfter && this.renderAnchor('Down')
+        }
+
+        newProps.children = (
           <div className="rbc-addons-dnd-resizable">
             {StartAnchor}
             {children.props.children}
             {EndAnchor}
           </div>
-        ),
+        )
       }
 
       if (

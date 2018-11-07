@@ -62,6 +62,7 @@
   },
   "devDependencies": {
     "@4c/rollout": "^1.2.0",
+    "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
     "@storybook/addon-actions": "^3.4.11",
     "@storybook/react": "3.4.11",
@@ -102,7 +103,6 @@
     "webpack-dev-server": "^3.1.8"
   },
   "dependencies": {
-    "@babel/cli": "^7.1.0",
     "classnames": "^2.2.6",
     "date-arithmetic": "^3.0.0",
     "dom-helpers": "^2.3.0 || ^3.0.0",

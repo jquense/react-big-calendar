@@ -95,22 +95,26 @@ class DayColumn extends React.Component {
     }
   }
 
+  intervalTriggered = false
   /**
    * @param tail {Boolean} - whether `positionTimeIndicator` call should be
    *   deferred or called upon setting interval (`true` - if deferred);
    */
   setTimeIndicatorPositionUpdateInterval(tail = false) {
-    if (!tail) {
+    if (!this.intervalTriggered && !tail) {
       this.positionTimeIndicator()
     }
 
-    this._timeIndicatorInterval = window.setInterval(() => {
+    this._timeIndicatorTimeout = window.setTimeout(() => {
+      this.intervalTriggered = true
       this.positionTimeIndicator()
+      this.setTimeIndicatorPositionUpdateInterval()
     }, 60000)
   }
 
   clearTimeIndicatorInterval() {
-    window.clearInterval(this._timeIndicatorInterval)
+    this.intervalTriggered = false
+    window.clearTimeout(this._timeIndicatorTimeout)
   }
 
   positionTimeIndicator() {

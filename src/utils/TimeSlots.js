@@ -130,11 +130,11 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
 
       const rangeStartMin = positionFromDate(rangeStart)
       const rangeEndMin = positionFromDate(rangeEnd)
-      const top = (rangeStartMin / totalMin) * 100
+      const top = (rangeStartMin / (step * numSlots)) * 100
 
       return {
         top,
-        height: (rangeEndMin / totalMin) * 100 - top,
+        height: (rangeEndMin / (step * numSlots)) * 100 - top,
         start: positionFromDate(rangeStart),
         startDate: rangeStart,
         end: positionFromDate(rangeEnd),

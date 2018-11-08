@@ -937,8 +937,10 @@ class Calendar extends React.Component {
     }
 
     let views = this.getViews()
-    const date = this.props.date ? this.props.date : this.props.getNow()
-    this.handleRangeChange(date, views[view])
+    this.handleRangeChange(
+      this.props.date ? this.props.date : this.props.getNow(),
+      views[view]
+    )
   }
 
   handleSelectEvent = (...args) => {

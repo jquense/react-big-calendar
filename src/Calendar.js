@@ -249,8 +249,14 @@ class Calendar extends React.Component {
     onDrillDown: PropTypes.func,
 
     /**
+     *
+     * ```js
+     * (dates: Date[] | { start: Date; end: Date }, view?: 'month'|'week'|'work_week'|'day'|'agenda') => void
+     * ```
+     *
      * Callback fired when the visible date range changes. Returns an Array of dates
-     * or an object with start and end dates for BUILTIN views.
+     * or an object with start and end dates for BUILTIN views. Optionally new `view`
+     * will be returned when callback called after view change.
      *
      * Custom views may return something different.
      */
@@ -903,12 +909,21 @@ class Calendar extends React.Component {
     )
   }
 
-  handleRangeChange = (date, view) => {
+  /**
+   *
+   * @param date
+   * @param viewComponent
+   * @param {'month'|'week'|'work_week'|'day'|'agenda'} [view] - optional
+   * parameter. It appears when range change on view changing. It could be handy
+   * when you need to have both: range and view type at once, i.e. for manage rbc
+   * state via url
+   */
+  handleRangeChange = (date, viewComponent, view) => {
     let { onRangeChange, localizer } = this.props
 
     if (onRangeChange) {
-      if (view.range) {
-        onRangeChange(view.range(date, { localizer }))
+      if (viewComponent.range) {
+        onRangeChange(viewComponent.range(date, { localizer }), view)
       } else {
         warning(true, 'onRangeChange prop not supported for this view')
       }
@@ -937,7 +952,7 @@ class Calendar extends React.Component {
     }
 
     let views = this.getViews()
-    this.handleRangeChange(this.props.date, views[view])
+    this.handleRangeChange(this.props.date, views[view], view)
   }
 
   handleSelectEvent = (...args) => {

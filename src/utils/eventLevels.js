@@ -29,12 +29,27 @@ export function eventSegments(event, range, accessors) {
   }
 }
 
-export function eventLevels(rowSegments, limit = Infinity) {
+export function eventLevels(_rowSegments, limit = Infinity) {
   let i,
     j,
     seg,
     levels = [],
     extra = []
+
+  let rowSegments = [..._rowSegments]
+
+  //If a segment has a key positionTop = true, handle it first.
+
+  for (i = 0; i < rowSegments.length; i++) {
+    let seg = rowSegments[i]
+
+    //Allow only one for now, we'll think about supporting multiple top events
+    if (seg.event.positionTop) {
+      levels[0] = [seg]
+      rowSegments.splice(i, 1)
+      break
+    }
+  }
 
   for (i = 0; i < rowSegments.length; i++) {
     seg = rowSegments[i]

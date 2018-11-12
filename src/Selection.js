@@ -317,6 +317,10 @@ class Selection {
   }
 
   _handleMoveEvent(e) {
+    if (this._initialEventData === null) {
+      return;
+    }
+
     let { x, y } = this._initialEventData
     const { pageX, pageY } = getEventCoordinates(e)
     let w = Math.abs(x - pageX)

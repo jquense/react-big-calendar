@@ -71,6 +71,14 @@ class DayColumn extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    window.clearTimeout(this._timeIndicatorTimeout)
+    if (this.props.isNow) {
+      this.positionTimeIndicator()
+      this.triggerTimeIndicatorUpdate()
+    }
+  }
+
   componentWillUnmount() {
     this._teardownSelectable()
     window.clearTimeout(this._timeIndicatorTimeout)
@@ -188,7 +196,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil(step * timeslots / 2),
+      minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {

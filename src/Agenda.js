@@ -221,7 +221,7 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 }
 
 Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
-  let end = dates.add(start, length, 'day')
+  let end = dates.add(start, length - 1, 'day')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }
 

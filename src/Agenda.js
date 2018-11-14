@@ -38,11 +38,13 @@ class Agenda extends React.Component {
   render() {
     let { length, date, events, accessors, localizer } = this.props
     let { messages } = localizer
-    let end = dates.add(date, length, 'day')
+    let end = dates.add(date, length - 1, 'day')
 
     let range = dates.range(date, end, 'day')
 
-    events = events.filter(event => inRange(event, date, end, accessors))
+    events = events.filter(e =>
+      inRange(e, dates.startOf(date, 'day'), dates.endOf(end, 'day'), accessors)
+    )
 
     events.sort((a, b) => +accessors.start(a) - +accessors.start(b))
 

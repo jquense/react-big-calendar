@@ -3,7 +3,7 @@ import closest from 'dom-helpers/query/closest'
 import events from 'dom-helpers/events'
 
 function addEventListener(type, handler, target = document) {
-  events.on(target, type, handler, { passive: false })
+  events.on(target, type, handler)
   return {
     remove() {
       events.off(target, type, handler)
@@ -317,6 +317,9 @@ class Selection {
   }
 
   _handleMoveEvent(e) {
+    if (!this._initialEventData) {
+      return
+    }
     let { x, y } = this._initialEventData
     const { pageX, pageY } = getEventCoordinates(e)
     let w = Math.abs(x - pageX)

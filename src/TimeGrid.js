@@ -285,8 +285,11 @@ export default class TimeGrid extends Component {
 
   applyScroll() {
     if (this._scrollRatio) {
-      const { content } = this.refs
-      content.scrollTop = content.scrollHeight * this._scrollRatio
+      const { content } = this.refs;
+      const scrollRatio = this._scrollRatio;
+      setTimeout(() => {
+        content.scrollTop = content.scrollHeight * scrollRatio;
+      }, 2);
       // Only do this once
       this._scrollRatio = null
     }

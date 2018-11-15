@@ -3,7 +3,7 @@ import closest from 'dom-helpers/query/closest'
 import events from 'dom-helpers/events'
 
 function addEventListener(type, handler, target = document) {
-  events.on(target, type, handler, { passive: false })
+  events.on(target, type, handler)
   return {
     remove() {
       events.off(target, type, handler)
@@ -59,7 +59,7 @@ class Selection {
     // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
     this._onTouchMoveWindowListener = addEventListener(
       'touchmove',
-      () => { },
+      () => {},
       window
     )
     this._onKeyDownListener = addEventListener('keydown', this._keyListener)
@@ -318,7 +318,7 @@ class Selection {
 
   _handleMoveEvent(e) {
     if (!this._initialEventData) {
-      return;
+      return
     }
     let { x, y } = this._initialEventData
     const { pageX, pageY } = getEventCoordinates(e)
@@ -406,15 +406,15 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
   } = getBoundsForNode(nodeB)
 
   return !// 'a' bottom doesn't touch 'b' top
-    (
-      aBottom - tolerance < bTop ||
-      // 'a' top doesn't touch 'b' bottom
-      aTop + tolerance > bBottom ||
-      // 'a' right doesn't touch 'b' left
-      aRight - tolerance < bLeft ||
-      // 'a' left doesn't touch 'b' right
-      aLeft + tolerance > bRight
-    )
+  (
+    aBottom - tolerance < bTop ||
+    // 'a' top doesn't touch 'b' bottom
+    aTop + tolerance > bBottom ||
+    // 'a' right doesn't touch 'b' left
+    aRight - tolerance < bLeft ||
+    // 'a' left doesn't touch 'b' right
+    aLeft + tolerance > bRight
+  )
 }
 
 /**

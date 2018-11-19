@@ -10,7 +10,7 @@ import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
 
 import getWidth from 'dom-helpers/query/width'
-import TimeGridHeader from './TimeGridHeader'
+import DefaultTimeGridHeader from './TimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
@@ -203,6 +203,8 @@ export default class TimeGrid extends Component {
 
     let allDayEvents = [],
       rangeEvents = []
+
+    let TimeGridHeader = components.timeGridHeader || DefaultTimeGridHeader
 
     events.forEach(event => {
       if (inRange(event, start, end, accessors)) {

@@ -636,6 +636,7 @@ class Calendar extends React.Component {
      *   eventContainerWrapper: MyEventContainerWrapper,
      *   dayWrapper: MyDayWrapper,
      *   dateCellWrapper: MyDateCellWrapper,
+     *   timeGridHeader: MyTimeGridHeader,
      *   timeSlotWrapper: MyTimeSlotWrapper,
      *   timeGutterHeader: MyTimeGutterWrapper,
      *   toolbar: MyToolbar,
@@ -667,6 +668,7 @@ class Calendar extends React.Component {
       eventContainerWrapper: elementType,
       dayWrapper: elementType,
       dateCellWrapper: elementType,
+      timeGridHeader: elementType,
       timeSlotWrapper: elementType,
       timeGutterHeader: elementType,
 

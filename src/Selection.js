@@ -283,7 +283,7 @@ class Selection {
       return this.emit('reset')
     }
 
-    if (click && !inRoot) {
+    if (!inRoot) {
       return this.emit('reset')
     }
 

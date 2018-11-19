@@ -124,6 +124,8 @@ export default function withDragAndDrop(Calendar) {
     handleInteractionEnd = interactionInfo => {
       const { action, event } = this.state
 
+      if (!action) return
+
       this.setState({
         action: null,
         event: null,

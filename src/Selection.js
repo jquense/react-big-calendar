@@ -94,6 +94,7 @@ class Selection {
     this._onTouchMoveWindowListener && this._onTouchMoveWindowListener.remove()
     this._onInitialEventListener && this._onInitialEventListener.remove()
     this._onEndListener && this._onEndListener.remove()
+    this._onEscListener && this._onEscListener.remove()
     this._onMoveListener && this._onMoveListener.remove()
     this._onKeyUpListener && this._onKeyUpListener.remove()
     this._onKeyDownListener && this._onKeyDownListener.remove()
@@ -237,6 +238,10 @@ class Selection {
           'mouseup',
           this._handleTerminatingEvent
         )
+        this._onEscListener = addEventListener(
+          'keydown',
+          this._handleTerminatingEvent
+        )
         this._onMoveListener = addEventListener(
           'mousemove',
           this._handleMoveEvent
@@ -273,6 +278,10 @@ class Selection {
     let click = this.isClick(pageX, pageY)
 
     this._initialEventData = null
+
+    if (e.key === 'Escape') {
+      return this.emit('reset')
+    }
 
     if (click && !inRoot) {
       return this.emit('reset')
@@ -318,7 +327,7 @@ class Selection {
 
   _handleMoveEvent(e) {
     if (this._initialEventData === null) {
-      return;
+      return
     }
 
     let { x, y } = this._initialEventData

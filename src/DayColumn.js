@@ -188,7 +188,7 @@ class DayColumn extends React.Component {
       events,
       accessors,
       slotMetrics,
-      minimumStartDifference: Math.ceil(step * timeslots / 2),
+      minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -315,6 +315,12 @@ class DayColumn extends React.Component {
     selector.on('select', bounds => {
       if (this.state.selecting) {
         this._selectSlot({ ...this.state, action: 'select', bounds })
+        this.setState({ selecting: false })
+      }
+    })
+
+    selector.on('reset', () => {
+      if (this.state.selecting) {
         this.setState({ selecting: false })
       }
     })

@@ -144,6 +144,7 @@ class TimeGridHeader extends React.Component {
       localizer,
       isOverflowing,
       components: { timeGutterHeader: TimeGutterHeader },
+      extraGutter
     } = this.props
 
     let style = {}
@@ -159,6 +160,15 @@ class TimeGridHeader extends React.Component {
         ref={scrollRef}
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
+        {extraGutter && extraGutter.map((gutter, idx)=>
+          <div
+            key={idx}
+            className="rbc-label rbc-time-header-gutter"
+            style={{ width, minWidth: width, maxWidth: width }}
+          >
+            {TimeGutterHeader && <TimeGutterHeader gutter={gutter}/>}
+          </div>)
+        }
         <div
           className="rbc-label rbc-time-header-gutter"
           style={{ width, minWidth: width, maxWidth: width }}
@@ -175,13 +185,13 @@ class TimeGridHeader extends React.Component {
                 </div>
               </div>
             )}
-            <div
-              className={`rbc-row rbc-time-header-cell${
-                range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
-              }`}
-            >
-              {this.renderHeaderCells(range)}
-            </div>
+            {/* For rendering only one day no need to show the headers */}
+            {/* Modified, as we require header to be shown even in day view */}
+            {range.length > 0 && (
+              <div className="rbc-row rbc-time-header-cell">
+                {this.renderHeaderCells(range)}
+              </div>
+            )}
             <DateContentRow
               isAllDay
               rtl={rtl}

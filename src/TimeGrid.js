@@ -191,6 +191,7 @@ export default class TimeGrid extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      extraGutter,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -246,12 +247,28 @@ export default class TimeGrid extends Component {
           onDoubleClickEvent={this.props.onDoubleClickEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
+          extraGutter={extraGutter}
         />
         <div
           ref="content"
           className="rbc-time-content"
           onScroll={this.handleScroll}
         >
+          {extraGutter && extraGutter.map( (gutter, idx) =>
+            <TimeGutter
+              key={idx}
+              date={start}
+              ref={this.gutterRef}
+              localizer={localizer}
+              min={gutter.min}
+              max={gutter.max}
+              step={this.props.step}
+              getNow={this.props.getNow}
+              timeslots={this.props.timeslots}
+              components={components}
+              className="rbc-time-gutter"
+            />)
+          }
           <TimeGutter
             date={start}
             ref={this.gutterRef}

@@ -186,12 +186,13 @@ class TimeGridHeader extends React.Component {
               </div>
             )}
             {/* For rendering only one day no need to show the headers */}
-            {/* Modified, as we require header to be shown even in day view */}
-            {range.length > 0 && (
-              <div className="rbc-row rbc-time-header-cell">
-                {this.renderHeaderCells(range)}
-              </div>
-            )}
+            <div
+               className={`rbc-row rbc-time-header-cell${
+                 range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
+               }`}
+             >
+              {this.renderHeaderCells(range)}
+           </div>
             <DateContentRow
               isAllDay
               rtl={rtl}

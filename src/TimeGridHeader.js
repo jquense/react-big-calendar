@@ -34,6 +34,7 @@ class TimeGridHeader extends React.Component {
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
     scrollRef: PropTypes.any,
+    extraGutter: PropTypes.array,
   }
 
   handleHeaderClick = (date, view, e) => {
@@ -144,7 +145,7 @@ class TimeGridHeader extends React.Component {
       localizer,
       isOverflowing,
       components: { timeGutterHeader: TimeGutterHeader },
-      extraGutter
+      extraGutter,
     } = this.props
 
     let style = {}
@@ -160,15 +161,16 @@ class TimeGridHeader extends React.Component {
         ref={scrollRef}
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        {extraGutter && extraGutter.map((gutter, idx)=>
-          <div
-            key={idx}
-            className="rbc-label rbc-time-header-gutter"
-            style={{ width, minWidth: width, maxWidth: width }}
-          >
-            {TimeGutterHeader && <TimeGutterHeader gutter={gutter}/>}
-          </div>)
-        }
+        {extraGutter &&
+          extraGutter.map((gutter, idx) => (
+            <div
+              key={idx}
+              className="rbc-label rbc-time-header-gutter"
+              style={{ width, minWidth: width, maxWidth: width }}
+            >
+              {TimeGutterHeader && <TimeGutterHeader gutter={gutter} />}
+            </div>
+          ))}
         <div
           className="rbc-label rbc-time-header-gutter"
           style={{ width, minWidth: width, maxWidth: width }}
@@ -185,14 +187,13 @@ class TimeGridHeader extends React.Component {
                 </div>
               </div>
             )}
-            {/* For rendering only one day no need to show the headers */}
             <div
-               className={`rbc-row rbc-time-header-cell${
-                 range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
-               }`}
-             >
+              className={`rbc-row rbc-time-header-cell${
+                range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
+              }`}
+            >
               {this.renderHeaderCells(range)}
-           </div>
+            </div>
             <DateContentRow
               isAllDay
               rtl={rtl}

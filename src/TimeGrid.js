@@ -49,6 +49,7 @@ export default class TimeGrid extends Component {
     onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
+    extraGutter: PropTypes.array,
   }
 
   static defaultProps = {
@@ -254,21 +255,22 @@ export default class TimeGrid extends Component {
           className="rbc-time-content"
           onScroll={this.handleScroll}
         >
-          {extraGutter && extraGutter.map( (gutter, idx) =>
-            <TimeGutter
-              key={idx}
-              date={start}
-              ref={this.gutterRef}
-              localizer={localizer}
-              min={gutter.min}
-              max={gutter.max}
-              step={this.props.step}
-              getNow={this.props.getNow}
-              timeslots={this.props.timeslots}
-              components={components}
-              className="rbc-time-gutter"
-            />)
-          }
+          {extraGutter &&
+            extraGutter.map((gutter, idx) => (
+              <TimeGutter
+                key={idx}
+                date={start}
+                ref={this.gutterRef}
+                localizer={localizer}
+                min={gutter.min}
+                max={gutter.max}
+                step={this.props.step}
+                getNow={this.props.getNow}
+                timeslots={this.props.timeslots}
+                components={components}
+                className="rbc-time-gutter"
+              />
+            ))}
           <TimeGutter
             date={start}
             ref={this.gutterRef}

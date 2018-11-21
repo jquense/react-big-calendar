@@ -19,8 +19,10 @@ import DateHeader from './DateHeader'
 
 import { inRange, sortEvents } from './utils/eventLevels'
 
-let eventsForWeek = (evts, start, end, accessors) =>
-  evts.filter(e => inRange(e, start, end, accessors))
+let eventsForWeek = (evts, start, end, accessors) => {
+  const dayAfterEnd = dates.dayAfter(end)
+  return evts.filter(e => inRange(e, start, dayAfterEnd, accessors))
+}
 
 let propTypes = {
   events: PropTypes.array.isRequired,

@@ -55,17 +55,28 @@ export function eventLevels(rowSegments, limit = Infinity) {
   return { levels, extra }
 }
 
-export function inRange(e, start, end, accessors) {
-  let eStart = dates.startOf(accessors.start(e), 'day')
-  let eEnd = accessors.end(e)
+// Returns true if an event overlaps the range [lowerBound, upperBound[
+//
+// lowerBound is inclusive and upperBound exclusive, allowing to filter for a whole
+// day by passing zeroed dates, e.g. for every events on Jan 01 2018, passing
+// [ 2018-01-01T00:00:00, 2018-01-02T00:00:00 ]
+//
+// This is a high performance implementation that is an order of magnitude faster
+// than date-arithmetic, but the caller needs to be mindful of the time passed for
+// lowerBound and upperBound, as the bounds are not zeroed.
 
-  let startsBeforeEnd = dates.lte(eStart, end, 'day')
-  // when the event is zero duration we need to handle a bit differently
-  let endsAfterStart = !dates.eq(eStart, eEnd, 'minutes')
-    ? dates.gt(eEnd, start, 'minutes')
-    : dates.gte(eEnd, start, 'minutes')
+export function inRange(e, lowerBound, upperBound, accessors) {
+  const start = accessors.start(e)
+  const end = accessors.end(e)
 
-  return startsBeforeEnd && endsAfterStart
+  if (end < lowerBound) return false
+  if (start > upperBound) return false
+  if (start.getTime() === upperBound.getTime()) {
+    // start can only overlap upperBound if the event duration is zero
+    return start.getTime() === end.getTime()
+  }
+
+  return true
 }
 
 export function segsOverlap(seg, otherSegs) {

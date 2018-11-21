@@ -42,7 +42,9 @@ class Agenda extends React.Component {
 
     let range = dates.range(date, end, 'day')
 
-    events = events.filter(event => inRange(event, date, end, accessors))
+    const dayAfter = dates.dayAfter(end)
+
+    events = events.filter(event => inRange(event, date, dayAfter, accessors))
 
     events.sort((a, b) => +accessors.start(a) - +accessors.start(b))
 
@@ -87,9 +89,10 @@ class Agenda extends React.Component {
       components: { event: Event, date: AgendaDate },
     } = this.props
 
-    events = events.filter(e =>
-      inRange(e, dates.startOf(day, 'day'), dates.endOf(day, 'day'), accessors)
-    )
+    const startOfDay = dates.startOf(day, 'day')
+    const endOfDay = dates.endOf(day, 'day')
+
+    events = events.filter(e => inRange(e, startOfDay, endOfDay, accessors))
 
     return events.map((event, idx) => {
       let title = accessors.title(event)

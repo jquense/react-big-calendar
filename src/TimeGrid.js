@@ -29,6 +29,7 @@ export default class TimeGrid extends Component {
 
     scrollToTime: PropTypes.instanceOf(Date),
     showMultiDayTimes: PropTypes.bool,
+    autoDetectAllDayEvents: PropTypes.bool,
 
     rtl: PropTypes.bool,
     width: PropTypes.number,
@@ -94,7 +95,7 @@ export default class TimeGrid extends Component {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
 
@@ -145,7 +146,7 @@ export default class TimeGrid extends Component {
     let { min, max, components, accessors, localizer } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
-    const groupedEvents = resources.groupEvents(events) 
+    const groupedEvents = resources.groupEvents(events)
 
     return resources.map(([id, resource], i) =>
       range.map((date, jj) => {
@@ -191,6 +192,7 @@ export default class TimeGrid extends Component {
       min,
       max,
       showMultiDayTimes,
+      autoDetectAllDayEvents,
       longPressThreshold,
     } = this.props
 
@@ -204,15 +206,18 @@ export default class TimeGrid extends Component {
     let allDayEvents = [],
       rangeEvents = []
 
+    const dayAfterEnd = dates.dayAfter(end)
+
     events.forEach(event => {
-      if (inRange(event, start, end, accessors)) {
+      if (inRange(event, start, dayAfterEnd, accessors)) {
         let eStart = accessors.start(event),
           eEnd = accessors.end(event)
-
         if (
           accessors.allDay(event) ||
-          (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
-          (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
+          (autoDetectAllDayEvents &&
+            dates.isJustDate(eStart) &&
+            dates.isJustDate(eEnd)) ||
+          (!showMultiDayTimes && !dates.eqDate(eStart, eEnd))
         ) {
           allDayEvents.push(event)
         } else {
@@ -316,5 +321,7 @@ export default class TimeGrid extends Component {
     }
   }
 
-  memoizedResources = memoize((resources, accessors) => Resources(resources, accessors))
+  memoizedResources = memoize((resources, accessors) =>
+    Resources(resources, accessors)
+  )
 }

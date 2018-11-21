@@ -31,6 +31,7 @@ class DayColumn extends React.Component {
     localizer: PropTypes.object.isRequired,
 
     showMultiDayTimes: PropTypes.bool,
+    autoDetectAllDayEvents: PropTypes.bool,
     culture: PropTypes.string,
     timeslots: PropTypes.number,
 

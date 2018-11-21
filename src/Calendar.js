@@ -507,6 +507,15 @@ class Calendar extends React.Component {
     showMultiDayTimes: PropTypes.bool,
 
     /**
+     * When enabled, events where both start and end don't have a time (eg: 00:00:00)
+     * are considered all-day events even if the allDay accessor returns false.
+     *
+     * **Note: Disabling this can lead to significant performance improvements when dealing
+     * with many events
+     */
+    autoDetectAllDayEvents: PropTypes.bool,
+
+    /**
      * Constrains the minimum _time_ of the Day and Week views.
      */
     min: PropTypes.instanceOf(Date),
@@ -736,6 +745,8 @@ class Calendar extends React.Component {
 
     longPressThreshold: 250,
     getNow: () => new Date(),
+
+    autoDetectAllDayEvents: true,
   }
 
   constructor(...args) {
@@ -847,6 +858,7 @@ class Calendar extends React.Component {
       getNow,
       length,
       showMultiDayTimes,
+      autoDetectAllDayEvents,
       components: _0,
       formats: _1,
       messages: _2,
@@ -897,6 +909,7 @@ class Calendar extends React.Component {
           components={components}
           accessors={accessors}
           showMultiDayTimes={showMultiDayTimes}
+          autoDetectAllDayEvents={autoDetectAllDayEvents}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}

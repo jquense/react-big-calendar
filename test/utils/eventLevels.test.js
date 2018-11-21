@@ -261,107 +261,71 @@ describe('inRange', () => {
         expect(inRange(event, rangeStart, rangeEnd, accessors)).toBe(result)
       })
     }
-    const weekOfThe5th = [d(5), d(11)]
-    const weekOfThe12th = [d(12), d(18)]
-    ;[
-      [
-        'single day with time, 1 day range',
-        { start: d(11, 5), end: d(11, 6) },
-        [d(11), d(11)],
-        true,
-      ],
-      [
-        'multiday w/ time, 1 day range',
-        { start: d(10, 5), end: d(11, 6) },
-        [d(11), d(11)],
-        true,
-      ],
-      [
-        'single day event, end of the week',
-        { start: d(11), end: d(12) },
-        weekOfThe5th,
-        true,
-      ],
-      [
-        'single day event, middle of the week',
-        { start: d(10), end: d(11) },
-        weekOfThe5th,
-        true,
-      ],
-      [
-        'single day event, end of the week',
-        { start: d(11), end: d(12) },
-        weekOfThe12th,
-        false,
-      ],
 
+    const sample = [
       [
-        'no duration, first of the week',
-        { start: d(12), end: d(12) },
-        weekOfThe12th,
+        'whole day, event contained',
+        { start: d(11, 5), end: d(11, 6) },
+        [d(11), d(12)],
         true,
       ],
       [
-        'no duration, end of the week',
+        'whole day, event crosses start',
+        { start: d(10, 5), end: d(11, 5) },
+        [d(11), d(12)],
+        true,
+      ],
+      [
+        'whole day, event crosses end',
+        { start: d(11, 5), end: d(12, 5) },
+        [d(11), d(12)],
+        true,
+      ],
+      [
+        'whole day, event overlaps start',
+        { start: d(10), end: d(11) },
+        [d(11), d(12)],
+        true,
+      ],
+      [
+        'whole day, event overlaps end',
+        { start: d(12), end: d(12, 5) },
+        [d(11), d(12)],
+        false,
+      ],
+      [
+        'whole day, event with zero duration overlaps start',
         { start: d(11), end: d(11) },
-        weekOfThe5th,
+        [d(11), d(12)],
         true,
       ],
       [
-        'no duration, first of the next week',
+        'whole day, event with zero duration overlaps end',
         { start: d(12), end: d(12) },
-        weekOfThe5th,
-        false,
-      ],
-      [
-        'no duration, middle of the week',
-        { start: d(14), end: d(14) },
-        weekOfThe12th,
+        [d(11), d(12)],
         true,
       ],
       [
-        'single day w/ time event, end of the week',
-        { start: d(11, 10), end: d(11, 12) },
-        weekOfThe5th,
+        'whole day, event with same duration',
+        { start: d(11), end: d(12) },
+        [d(11), d(12)],
         true,
       ],
       [
-        'single day w/ time event, end of the week',
-        { start: d(11, 10), end: d(11, 12) },
-        weekOfThe12th,
-        false,
-      ],
-      [
-        'multi day w/ time event, end of the week',
-        { start: d(11, 10), end: d(13, 12) },
-        weekOfThe12th,
+        'whole day, event longer than range',
+        { start: d(10), end: d(13) },
+        [d(11), d(12)],
         true,
       ],
       [
-        'single day w/ time event, middle of the week',
-        { start: d(10, 10), end: d(10, 12) },
-        weekOfThe5th,
+        'whole day, event longer than range',
+        { start: d(10), end: d(13) },
+        [d(11), d(12)],
         true,
       ],
-      [
-        'multi day event, first of the week',
-        { start: d(11), end: d(13) },
-        weekOfThe5th,
-        true,
-      ],
-      [
-        'multi day event, midnight of next the week',
-        { start: d(11), end: d(13) },
-        weekOfThe12th,
-        true,
-      ],
-      [
-        'multi day event w/ time, first of next the week',
-        { start: d(11, 5), end: d(13, 5) },
-        weekOfThe12th,
-        true,
-      ],
-    ].forEach(g => compare(...g))
+    ]
+
+    sample.forEach(g => compare(...g))
   })
 
   test('it returns true when event starts before the range end and ends after the range start', () => {
@@ -390,17 +354,6 @@ describe('inRange', () => {
 
   test('it returns true when event spans the whole range', () => {
     const event = { start: new Date(2017, 4, 1), end: new Date(2017, 5, 1) }
-
-    const result = inRange(event, rangeStart, rangeEnd, accessors)
-
-    expect(result).toBeTruthy()
-  })
-
-  test('it uses the start of the day for the event start date', () => {
-    const event = {
-      start: new Date(2017, 4, 1, 12),
-      end: new Date(2017, 5, 1),
-    }
 
     const result = inRange(event, rangeStart, rangeEnd, accessors)
 

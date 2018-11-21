@@ -83,6 +83,14 @@ let dates = {
     )
   },
 
+  eqDate(date, otherDate) {
+    return (
+      date.getDate() === otherDate.getDate() &&
+      date.getMonth() === otherDate.getMonth() &&
+      date.getFullYear() === otherDate.getFullYear()
+    )
+  },
+
   isJustDate(date) {
     return (
       dates.hours(date) === 0 &&
@@ -145,12 +153,18 @@ let dates = {
     return dates.startOf(new Date(), 'day')
   },
 
-  yesterday() {
-    return dates.add(dates.startOf(new Date(), 'day'), -1, 'day')
+  dayAfter(date) {
+    const dayAfter = new Date(date.getTime())
+    dayAfter.setDate(dayAfter.getDate() + 1)
+
+    return dayAfter
   },
 
-  tomorrow() {
-    return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
+  dayBefore(date) {
+    const dayBefore = new Date(date.getTime())
+    dayBefore.setDate(dayBefore.getDate() - 1)
+
+    return dayBefore
   },
 }
 

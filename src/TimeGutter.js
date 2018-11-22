@@ -60,6 +60,7 @@ export default class TimeGutter extends Component {
               resource={resource}
               components={components}
               renderSlot={this.renderSlot}
+              source={'gutter'}
             />
           )
         })}

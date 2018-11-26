@@ -5,6 +5,10 @@ import React, { Component } from 'react'
 import BackgroundWrapper from './BackgroundWrapper'
 
 export default class TimeSlotGroup extends Component {
+  /*
+    Source prop is not provided by RBC, we added this to identify which parent component is rendering 
+    TimeSlotGroups. i.e either TimeGutter or DayColumn.
+  */
   static propTypes = {
     renderSlot: PropTypes.func,
     group: PropTypes.array.isRequired,

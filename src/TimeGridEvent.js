@@ -1,5 +1,10 @@
+import get from 'lodash/get'
+
 import cn from 'classnames'
 import React from 'react'
+
+const getEventComponent = (componentsMap, type) =>
+  get(componentsMap, type, null)
 
 /* eslint-disable react/prop-types */
 function TimeGridEvent(props) {
@@ -7,6 +12,7 @@ function TimeGridEvent(props) {
     style,
     className,
     event,
+    event: { viewType: eventViewType },
     accessors,
     isRtl,
     selected,
@@ -16,8 +22,11 @@ function TimeGridEvent(props) {
     getters,
     onClick,
     onDoubleClick,
-    components: { event: Event, eventWrapper: EventWrapper },
+    components: { event: eventComponentsMap, eventWrapper: EventWrapper },
   } = props
+
+  const Event = getEventComponent(eventComponentsMap, eventViewType)
+
   let title = accessors.title(event)
   let tooltip = accessors.tooltip(event)
   let end = accessors.end(event)
@@ -52,11 +61,17 @@ function TimeGridEvent(props) {
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip
             : undefined
         }
-        className={cn('rbc-event', className, userProps.className, {
-          'rbc-selected': selected,
-          'rbc-event-continues-earlier': continuesEarlier,
-          'rbc-event-continues-later': continuesLater,
-        })}
+        className={cn(
+          'rbc-event',
+          `rbc-event-${eventViewType}`,
+          className,
+          userProps.className,
+          {
+            'rbc-selected': selected,
+            'rbc-event-continues-earlier': continuesEarlier,
+            'rbc-event-continues-later': continuesLater,
+          }
+        )}
       >
         {inner}
       </div>

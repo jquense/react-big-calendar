@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
@@ -114,6 +116,12 @@ export default function withDragAndDrop(Calendar) {
     }
 
     handleBeginAction = (event, action, direction) => {
+      const onEventBeginDrag = get(event, 'onEventBeginDrag', () => {})
+      if (action === 'move') onEventBeginDrag(event)
+
+      const { isDraggable = true } = event
+      if (!isDraggable) return
+
       this.setState({ event, action, direction })
     }
 
@@ -123,6 +131,9 @@ export default function withDragAndDrop(Calendar) {
 
     handleInteractionEnd = interactionInfo => {
       const { action, event } = this.state
+
+      const onEventEndDrag = get(event, 'onEventEndDrag', () => {})
+      if (action === 'move') onEventEndDrag(event)
 
       if (!action) return
 

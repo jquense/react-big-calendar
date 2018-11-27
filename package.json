@@ -57,8 +57,8 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^16.4.2",
-    "react-dom": "^15.3.0 || ^16.0.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "@4c/rollout": "^1.2.0",
@@ -91,10 +91,8 @@
     "moment": "^2.22.2",
     "mt-changelog": "^0.6.1",
     "prettier": "^1.15.1",
-    "react": "^16.6.1",
     "react-bootstrap": "^0.32.4",
     "react-docgen": "^3.0.0-rc.1",
-    "react-dom": "^16.6.1",
     "react-tackle-box": "^2.1.0",
     "rimraf": "^2.4.2",
     "webpack": "^4.25.1",

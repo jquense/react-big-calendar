@@ -15,8 +15,8 @@ element has a height, or the calendar won't be visible.
 
 ## Starters
 
-* [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
-* [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+- [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
+- [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
 
 ## Run examples locally
 
@@ -27,7 +27,7 @@ $ npm install
 $ npm run examples
 ```
 
-* Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
+- Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
 ### Localization and Date Formatting
 
@@ -42,7 +42,7 @@ Regardless of your choice, you **must** choose a localizer to use this library:
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 
-const localizer = BigCalendar.momentLocalizer(moment) 
+const localizer = BigCalendar.momentLocalizer(moment)
 
 const MyCalendar = props => (
   <div>
@@ -62,7 +62,7 @@ const MyCalendar = props => (
 import BigCalendar from 'react-big-calendar'
 import globalize from 'globalize'
 
-const localizer = BigCalendar.globalizeLocalizer(globalize) 
+const localizer = BigCalendar.globalizeLocalizer(globalize)
 
 const MyCalendar = props => (
   <div>
@@ -79,3 +79,9 @@ const MyCalendar = props => (
 ## Join us on Reactiflux Discord
 
 Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+
+##Updates
+
+- Added source prop to TimeSlotGroup to findout where it is being used.
+- Updated eventLevels.js to position events to top if any event has positionTop flag set to true.
+- Header was hidden by default in day view, updated it to be visible in day view.

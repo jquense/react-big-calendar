@@ -64,7 +64,7 @@ export default class TimeGrid extends Component {
 
     this.state = { gutterWidth: undefined, isOverflowing: null }
 
-    this.scrollRef = React.createRef()
+    this.scrollRef = null;
 
     this.resources = Resources(props.resources, props.accessors)
   }
@@ -175,6 +175,10 @@ export default class TimeGrid extends Component {
     )
   }
 
+  setScrollRef = (el) => {
+    this.scrollRef = el;
+  }
+
   render() {
     let {
       events,
@@ -238,7 +242,7 @@ export default class TimeGrid extends Component {
           accessors={accessors}
           getters={getters}
           components={components}
-          scrollRef={this.scrollRef}
+          scrollRef={this.setScrollRef}
           isOverflowing={this.state.isOverflowing}
           longPressThreshold={longPressThreshold}
           onSelectSlot={this.handleSelectAllDaySlot}

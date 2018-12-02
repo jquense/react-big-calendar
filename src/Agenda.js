@@ -49,7 +49,7 @@ class Agenda extends React.Component {
     return (
       <div className="rbc-agenda-view">
         {events.length !== 0 ? (
-          <React.Fragment>
+          <div>
             <table ref="header" className="rbc-agenda-table">
               <thead>
                 <tr>
@@ -70,7 +70,7 @@ class Agenda extends React.Component {
                 </tbody>
               </table>
             </div>
-          </React.Fragment>
+          </div>
         ) : (
           <span className="rbc-agenda-empty">{messages.noEventsInRange}</span>
         )}

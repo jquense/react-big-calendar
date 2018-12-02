@@ -208,7 +208,7 @@ class EventContainerWrapper extends React.Component {
 
     return React.cloneElement(children, {
       children: (
-        <React.Fragment>
+        <div>
           {events}
 
           {event && (
@@ -224,7 +224,7 @@ class EventContainerWrapper extends React.Component {
               continuesLater={startsAfterDay}
             />
           )}
-        </React.Fragment>
+        </div>
       ),
     })
   }

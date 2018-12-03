@@ -15,8 +15,6 @@ import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
 
-const memoizedResources = memoize(Resources);
-
 export default class TimeGrid extends Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
@@ -146,7 +144,7 @@ export default class TimeGrid extends Component {
   renderEvents(range, events, now) {
     let { min, max, components, accessors, localizer } = this.props
 
-    const resources = this.getResources()
+    const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events) 
 
     return resources.map(([id, resource], i) =>
@@ -236,7 +234,7 @@ export default class TimeGrid extends Component {
           getNow={getNow}
           localizer={localizer}
           selected={selected}
-          resources={this.getResources()}
+          resources={this.memoizedResources(resources, accessors)}
           selectable={this.props.selectable}
           accessors={accessors}
           getters={getters}
@@ -318,7 +316,5 @@ export default class TimeGrid extends Component {
     }
   }
 
-  getResources = () => {
-    return memoizedResources(this.props.resources, this.props.accessors)
-  }
+  memoizedResources = memoize((resources, accessors) => Resources(resources, accessors))
 }

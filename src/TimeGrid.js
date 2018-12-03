@@ -3,6 +3,7 @@ import cn from 'classnames'
 import raf from 'dom-helpers/util/requestAnimationFrame'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
+import memoize from 'memoize-one'
 
 import dates from './utils/dates'
 import DayColumn from './DayColumn'
@@ -13,6 +14,8 @@ import TimeGridHeader from './TimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
+
+const memoizedResources = memoize(Resources);
 
 export default class TimeGrid extends Component {
   static propTypes = {
@@ -65,8 +68,6 @@ export default class TimeGrid extends Component {
     this.state = { gutterWidth: undefined, isOverflowing: null }
 
     this.scrollRef = React.createRef()
-
-    this.resources = Resources(props.resources, props.accessors)
   }
 
   componentWillMount() {
@@ -95,6 +96,7 @@ export default class TimeGrid extends Component {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
   }
+  
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
 
@@ -144,9 +146,10 @@ export default class TimeGrid extends Component {
   renderEvents(range, events, now) {
     let { min, max, components, accessors, localizer } = this.props
 
-    const groupedEvents = this.resources.groupEvents(events)
+    const resources = this.getResources()
+    const groupedEvents = resources.groupEvents(events) 
 
-    return this.resources.map(([id, resource], i) =>
+    return resources.map(([id, resource], i) =>
       range.map((date, jj) => {
         let daysEvents = (groupedEvents.get(id) || []).filter(event =>
           dates.inRange(
@@ -233,7 +236,7 @@ export default class TimeGrid extends Component {
           getNow={getNow}
           localizer={localizer}
           selected={selected}
-          resources={this.resources}
+          resources={this.getResources()}
           selectable={this.props.selectable}
           accessors={accessors}
           getters={getters}
@@ -313,5 +316,9 @@ export default class TimeGrid extends Component {
         this._updatingOverflow = false
       })
     }
+  }
+
+  getResources = () => {
+    return memoizedResources(this.props.resources, this.props.accessors)
   }
 }

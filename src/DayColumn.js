@@ -55,7 +55,7 @@ class DayColumn extends React.Component {
     timeslots: 2,
   }
 
-  state = { selecting: false }
+  state = { selecting: false, timeIndicatorPosition: null }
 
   constructor(...args) {
     super(...args)
@@ -73,15 +73,14 @@ class DayColumn extends React.Component {
         ? components.preSelectIndicatorComponent
         : SelectIndicator
     if (isNow) {
-      this.positionTimeIndicator()
-      this.triggerTimeIndicatorUpdate()
+      this.setTimeIndicatorPositionUpdateInterval()
     }
   }
 
   componentWillUnmount() {
     this.preSelectionComponent = null
     this._teardownSelectable()
-    window.clearTimeout(this._timeIndicatorTimeout)
+    this.clearTimeIndicatorInterval()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,22 +91,49 @@ class DayColumn extends React.Component {
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
 
-  triggerTimeIndicatorUpdate() {
-    // Update the position of the time indicator every minute
-    this._timeIndicatorTimeout = window.setTimeout(() => {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.isNow !== this.props.isNow) {
+      this.clearTimeIndicatorInterval()
+
+      if (this.props.isNow) {
+        this.setTimeIndicatorPositionUpdateInterval(
+          prevState.timeIndicatorPosition === this.state.timeIndicatorPosition
+        )
+      }
+    }
+  }
+
+  intervalTriggered = false
+  /**
+   * @param tail {Boolean} - whether `positionTimeIndicator` call should be
+   *   deferred or called upon setting interval (`true` - if deferred);
+   */
+  setTimeIndicatorPositionUpdateInterval(tail = false) {
+    if (!this.intervalTriggered && !tail) {
       this.positionTimeIndicator()
-      this.triggerTimeIndicatorUpdate()
+    }
+
+    this._timeIndicatorTimeout = window.setTimeout(() => {
+      this.intervalTriggered = true
+      this.positionTimeIndicator()
+      this.setTimeIndicatorPositionUpdateInterval()
     }, 60000)
+  }
+
+  clearTimeIndicatorInterval() {
+    this.intervalTriggered = false
+    window.clearTimeout(this._timeIndicatorTimeout)
   }
 
   positionTimeIndicator() {
     const { min, max, getNow } = this.props
     const current = getNow()
-    const timeIndicator = this.refs.timeIndicator
 
     if (current >= min && current <= max) {
       const { top } = this.slotMetrics.getRange(current, current)
-      timeIndicator.style.top = `${top}%`
+      this.setState({ timeIndicatorPosition: top })
+    } else {
+      this.clearTimeIndicatorInterval()
     }
   }
 
@@ -190,7 +216,10 @@ class DayColumn extends React.Component {
 
         {this.renderSelection()}
         {isNow && (
-          <div ref="timeIndicator" className="rbc-current-time-indicator" />
+          <div
+            className="rbc-current-time-indicator"
+            style={{ top: `${this.state.timeIndicatorPosition}%` }}
+          />
         )}
       </div>
     )
@@ -350,6 +379,12 @@ class DayColumn extends React.Component {
     selector.on('select', bounds => {
       if (this.state.selecting) {
         this._selectSlot({ ...this.state, action: 'select', bounds })
+        this.setState({ selecting: false })
+      }
+    })
+
+    selector.on('reset', () => {
+      if (this.state.selecting) {
         this.setState({ selecting: false })
       }
     })

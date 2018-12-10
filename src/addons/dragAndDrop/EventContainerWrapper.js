@@ -151,6 +151,11 @@ class EventContainerWrapper extends React.Component {
     })
 
     selector.on('click', () => this.context.draggable.onEnd(null))
+
+    selector.on('reset', () => {
+      this.reset()
+      this.context.draggable.onEnd(null)
+    })
   }
 
   handleInteractionEnd = () => {

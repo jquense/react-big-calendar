@@ -11,6 +11,12 @@ export default function Resources(resources, accessors) {
 
     groupEvents(events) {
       const eventsByResource = new window.Map()
+
+      if (!resources) {
+        // Return all events if resources are not provided
+        eventsByResource.set(NONE, events)
+      }
+      
       events.forEach(event => {
         const id = accessors.resource(event) || NONE
         let resourceEvents = eventsByResource.get(id) || []

@@ -87,6 +87,19 @@ class Calendar extends React.Component {
     defaultView: PropTypes.string,
 
     /**
+     * Days to display in multi-days views.
+     *
+     * The values should indicate days of the week according to Date.prototype.getDay(),
+     * e.g. to show Tue - Fri, the array should be [2, 3, 4, 5].
+     *
+     * When navigating with next and previous, disabled days are skipped
+     *
+     * @type number[]
+     * @default null
+     */
+    enabledDays: PropTypes.arrayOf(PropTypes.number),
+
+    /**
      * An array of event objects to display on the calendar. Events objects
      * can be any shape, as long as the Calendar knows how to retrieve the
      * following details of the event:
@@ -952,7 +965,11 @@ class Calendar extends React.Component {
     }
 
     let views = this.getViews()
-    this.handleRangeChange(this.props.date || this.props.getNow(), views[view], view)
+    this.handleRangeChange(
+      this.props.date || this.props.getNow(),
+      views[view],
+      view
+    )
   }
 
   handleSelectEvent = (...args) => {

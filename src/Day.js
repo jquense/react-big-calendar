@@ -22,13 +22,45 @@ Day.range = date => {
   return [dates.startOf(date, 'day')]
 }
 
-Day.navigate = (date, action) => {
-  switch (action) {
-    case navigate.PREVIOUS:
-      return dates.add(date, -1, 'day')
+Day.navigate = (date, action, { enabledDays }) => {
+  // enabledDays being non-empty but containing invalid values would lead to
+  // an infinite loop, throw instead if the loop goes on for too long
+  let circuitBreaker = 0
 
-    case navigate.NEXT:
-      return dates.add(date, 1, 'day')
+  switch (action) {
+    case navigate.PREVIOUS: {
+      let previousDay = dates.add(date, -1, 'day')
+      if (enabledDays && enabledDays.length) {
+        while (!enabledDays.includes(previousDay.getDay())) {
+          if (circuitBreaker++ > 10) {
+            throw new Error(
+              'cannot find a suitable days to navigate to, most likely because enabledDays value is incorrect'
+            )
+          }
+
+          previousDay = dates.add(previousDay, -1, 'day')
+        }
+      }
+
+      return previousDay
+    }
+
+    case navigate.NEXT: {
+      let nextDay = dates.add(date, 1, 'day')
+      if (enabledDays && enabledDays.length) {
+        while (!enabledDays.includes(nextDay.getDay())) {
+          if (circuitBreaker++ > 10) {
+            throw new Error(
+              'cannot find a suitable days to navigate to, most likely because enabledDays value is incorrect'
+            )
+          }
+
+          nextDay = dates.add(nextDay, 1, 'day')
+        }
+      }
+
+      return nextDay
+    }
 
     default:
       return date

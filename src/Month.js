@@ -116,10 +116,18 @@ class MonthView extends React.Component {
     return findDOMNode(this)
   }
 
+  filterByWeekDay = date => {
+    const { enabledDays } = this.props
+
+    return enabledDays && enabledDays.length
+      ? enabledDays.includes(date.getDay())
+      : true
+  }
+
   render() {
     let { date, localizer, className } = this.props,
       month = dates.visibleDays(date, localizer),
-      weeks = chunk(month, 7)
+      weeks = chunk(month, 7).map(week => week.filter(this.filterByWeekDay))
 
     this._weekCount = weeks.length
 
@@ -214,11 +222,9 @@ class MonthView extends React.Component {
 
   renderHeaders(row) {
     let { localizer, components } = this.props
-    let first = row[0]
-    let last = row[row.length - 1]
     let HeaderComponent = components.header || Header
 
-    return dates.range(first, last, 'day').map((day, idx) => (
+    return row.map((day, idx) => (
       <div key={'header_' + idx} className="rbc-header">
         <HeaderComponent
           date={day}

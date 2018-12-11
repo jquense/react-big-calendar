@@ -1,8 +1,8 @@
-import { getStyledEvents } from '../../src/utils/DayEventLayout'
+import getPositionedEvents from '../../src/layouts/default'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import dates from '../../src/utils/dates'
 
-describe('getStyledEvents', () => {
+describe('getPositionedEvents', () => {
   const d = (...args) => new Date(2015, 3, 1, ...args)
   const min = dates.startOf(d(), 'day')
   const max = dates.endOf(d(), 'day')
@@ -12,7 +12,7 @@ describe('getStyledEvents', () => {
   describe('matrix', () => {
     function compare(title, events, expectedResults) {
       it(title, () => {
-        const styledEvents = getStyledEvents({
+        const styledEvents = getPositionedEvents({
           events,
           accessors,
           slotMetrics,

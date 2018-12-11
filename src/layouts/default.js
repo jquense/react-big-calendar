@@ -128,7 +128,7 @@ function sortByRender(events) {
   return sorted
 }
 
-function getStyledEvents({
+export default function getPositionedEvents({
   events,
   minimumStartDifference,
   slotMetrics,
@@ -196,5 +196,3 @@ function getStyledEvents({
     },
   }))
 }
-
-export { getStyledEvents }

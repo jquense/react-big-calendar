@@ -17,6 +17,7 @@ import { mergeWithDefaults } from './localizer'
 import message from './utils/messages'
 import moveDate from './utils/move'
 import VIEWS from './Views'
+import LAYOUTS from './Layouts'
 import Toolbar from './Toolbar'
 import NoopWrapper from './NoopWrapper'
 
@@ -498,6 +499,33 @@ class Calendar extends React.Component {
     dayPropGetter: PropTypes.func,
 
     /**
+     * Optionally provide a function that returns an array of events along with their position
+     * on the grid. `top`, `height`, `width` and `xOffset` are interpreted as a percentage of
+     * the total height and width of the DayColumn parent, e.g. 50 = half
+     *
+     * ```js
+     * ({
+     *   events: Events[]
+     *   slotMetrics: SlotMetrics
+     *   accessors: {
+     *       start: (Event) => Date
+     *       end: (Event) => Date
+     *   }
+     *   minimumStartDifference: number
+     * }) => {
+     *   event: Event
+     *   style: {
+     *     top: number
+     *     height: number,
+     *     width: number,
+     *     xOffset: number,
+     *   }
+     * }[]
+     * ```
+     */
+    positionedEventsGetter: PropTypes.func,
+
+    /**
      * Support to show multi-day events with specific start and end times in the
      * main time grid (rather than in the all day header).
      *
@@ -736,6 +764,8 @@ class Calendar extends React.Component {
 
     longPressThreshold: 250,
     getNow: () => new Date(),
+
+    positionedEventsGetter: LAYOUTS.DEFAULT,
   }
 
   constructor(...args) {
@@ -952,7 +982,11 @@ class Calendar extends React.Component {
     }
 
     let views = this.getViews()
-    this.handleRangeChange(this.props.date || this.props.getNow(), views[view], view)
+    this.handleRangeChange(
+      this.props.date || this.props.getNow(),
+      views[view],
+      view
+    )
   }
 
   handleSelectEvent = (...args) => {

@@ -50,6 +50,8 @@ export default class TimeGrid extends Component {
     onDoubleClickEvent: PropTypes.func,
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
+
+    positionedEventsGetter: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -94,7 +96,7 @@ export default class TimeGrid extends Component {
     raf.cancel(this.rafHandle)
     this.rafHandle = raf(this.checkOverflow)
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
 
@@ -145,7 +147,7 @@ export default class TimeGrid extends Component {
     let { min, max, components, accessors, localizer } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
-    const groupedEvents = resources.groupEvents(events) 
+    const groupedEvents = resources.groupEvents(events)
 
     return resources.map(([id, resource], i) =>
       range.map((date, jj) => {
@@ -316,5 +318,7 @@ export default class TimeGrid extends Component {
     }
   }
 
-  memoizedResources = memoize((resources, accessors) => Resources(resources, accessors))
+  memoizedResources = memoize((resources, accessors) =>
+    Resources(resources, accessors)
+  )
 }

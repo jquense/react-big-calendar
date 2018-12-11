@@ -9,7 +9,6 @@ import * as TimeSlotUtils from './utils/TimeSlots'
 import { isSelected } from './utils/selection'
 
 import { notify } from './utils/helpers'
-import * as DayEventLayout from './utils/DayEventLayout'
 import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 
@@ -47,6 +46,8 @@ class DayColumn extends React.Component {
     className: PropTypes.string,
     dragThroughEvents: PropTypes.bool,
     resource: PropTypes.any,
+
+    positionedEventsGetter: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -208,12 +209,13 @@ class DayColumn extends React.Component {
       components,
       step,
       timeslots,
+      positionedEventsGetter,
     } = this.props
 
     const { slotMetrics } = this
     const { messages } = localizer
 
-    let styledEvents = DayEventLayout.getStyledEvents({
+    let styledEvents = positionedEventsGetter({
       events,
       accessors,
       slotMetrics,

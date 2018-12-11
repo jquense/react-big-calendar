@@ -12,3 +12,8 @@ export let views = {
   DAY: 'day',
   AGENDA: 'agenda',
 }
+
+export const layouts = {
+  DEFAULT: 'DEFAULT',
+  PACKED: 'PACKED',
+}

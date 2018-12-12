@@ -12,7 +12,7 @@ function TimeGridEvent(props) {
     style,
     className,
     event,
-    event: { viewType: eventViewType },
+    event: { viewType: eventViewType, mainColor: eventMainColor },
     accessors,
     isRtl,
     selected,
@@ -64,6 +64,7 @@ function TimeGridEvent(props) {
         className={cn(
           'rbc-event',
           `rbc-event-${eventViewType}`,
+          eventMainColor && `rbc-event-main-color__${eventMainColor}`,
           className,
           userProps.className,
           {

@@ -1,6 +1,5 @@
 @import './variables.less';
 
-
 .rbc-time-column {
   display: flex;
   flex-direction: column;
@@ -10,7 +9,6 @@
     flex: 1;
   }
 }
-
 
 .rbc-timeslot-group {
   border-bottom: 1px solid @cell-border;
@@ -54,6 +52,20 @@
     align-items: flex-start;
     overflow: hidden;
     position: absolute;
+  }
+
+  .rbc-background-event {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: @event-padding;
+    background-color: @background-event-bg;
+    border-radius: 0;
+    color: @event-color;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    opacity: 0.8;
   }
 
   .rbc-event-label {
@@ -106,10 +118,10 @@
   }
 
   .rbc-header,
-  .rbc-day-bg, {
+  .rbc-day-bg {
     width: 140px;
     // min-width: 0;
-    flex:  1 1 0;
+    flex: 1 1 0;
     flex-basis: 0 px;
   }
 }

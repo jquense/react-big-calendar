@@ -51,7 +51,8 @@ export function mergeWithDefaults(
     ...localizer,
     messages,
     startOfWeek: () => localizer.startOfWeek(culture),
-    format: (value, format) =>
-      localizer.format(value, formats[format] || format, culture),
+    format: (value, format) => {
+      return localizer.format(value, formats[format] || format, culture)
+    },
   }
 }

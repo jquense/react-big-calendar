@@ -16,6 +16,7 @@ import './prism.less'
 import Card from './Card'
 import ExampleControlSlot from './ExampleControlSlot'
 import Basic from './demos/basic'
+import BackgroundEvents from './demos/backgroundEvents'
 import Selectable from './demos/selectable'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
@@ -35,6 +36,7 @@ let demoRoot =
 
 const EXAMPLES = {
   basic: 'Basic Calendar',
+  backgroundEvents: 'Background Events',
   selectable: 'Create events',
   cultures: 'Localization',
   popup: 'Show more via a popup',
@@ -69,6 +71,7 @@ class Example extends React.Component {
     let selected = this.state.selected
     let Current = {
       basic: Basic,
+      backgroundEvents: BackgroundEvents,
       selectable: Selectable,
       cultures: Cultures,
       popup: Popup,

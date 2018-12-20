@@ -1,3 +1,5 @@
+import find from 'lodash/find'
+
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
@@ -34,11 +36,24 @@ class TimeGridHeader extends React.Component {
     onDrillDown: PropTypes.func,
     getDrilldownView: PropTypes.func.isRequired,
     scrollRef: PropTypes.any,
+    holidays: PropTypes.array.isRequired,
   }
 
   handleHeaderClick = (date, view, e) => {
     e.preventDefault()
     notify(this.props.onDrillDown, [date, view])
+  }
+
+  renderHeader = ({
+    holiday,
+    components: {
+      header: HeaderComponent = Header,
+      holidayHeader: HolidayHeaderComponent,
+    },
+    ...rest
+  }) => {
+    if (holiday) return <HolidayHeaderComponent holiday={holiday} {...rest} />
+    return <HeaderComponent {...rest} />
   }
 
   renderHeaderCells(range) {
@@ -47,7 +62,8 @@ class TimeGridHeader extends React.Component {
       getDrilldownView,
       getNow,
       getters: { dayProp },
-      components: { header: HeaderComponent = Header },
+      components,
+      holidays,
     } = this.props
 
     const today = getNow()
@@ -58,9 +74,17 @@ class TimeGridHeader extends React.Component {
 
       const { className, style } = dayProp(date)
 
-      let header = (
-        <HeaderComponent date={date} label={label} localizer={localizer} />
+      const holiday = find(holidays, ({ start: holidayDate }) =>
+        dates.eq(dates.startOf(holidayDate, 'day'), date)
       )
+
+      const header = this.renderHeader({
+        components,
+        holiday,
+        date,
+        label,
+        localizer,
+      })
 
       return (
         <div
@@ -73,12 +97,13 @@ class TimeGridHeader extends React.Component {
           )}
         >
           {drilldownView ? (
-            <a
-              href="#"
+            <button
+              type="button"
+              className="rbc-header-button"
               onClick={e => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}
-            </a>
+            </button>
           ) : (
             <span>{header}</span>
           )}

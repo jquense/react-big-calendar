@@ -175,6 +175,10 @@ export default class TimeGrid extends Component {
     )
   }
 
+  getHolidays(events) {
+    return events.filter(({ viewType }) => viewType === 'bankHolidays')
+  }
+
   render() {
     let {
       events,
@@ -229,6 +233,7 @@ export default class TimeGrid extends Component {
         <TimeGridHeader
           range={range}
           events={allDayEvents}
+          holidays={this.getHolidays(events)}
           width={width}
           getNow={getNow}
           localizer={localizer}

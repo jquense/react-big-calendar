@@ -136,7 +136,7 @@ class WeekWrapper extends React.Component {
         return
       }
 
-      end = dates.max(end, dates.add(start, 1, 'day'))
+      end = dates.max(end, dates.add(start, 0, 'day'))
     } else if (direction === 'LEFT') {
       // inbetween Row
       if (cursorInRow) {
@@ -155,7 +155,7 @@ class WeekWrapper extends React.Component {
         return
       }
 
-      start = dates.min(dates.add(end, -1, 'day'), start)
+      start = dates.min(dates.add(end, 0, 'day'), start)
     }
 
     this.update(event, start, end)

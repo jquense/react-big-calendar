@@ -1,3 +1,10 @@
 {
-  "presets": ["jason"]
+  "presets": ["jason"],
+  "env": {
+    "esm": {
+      "presets": [
+        ["jason", { "modules": false }]
+      ]
+    }
+  }
 }

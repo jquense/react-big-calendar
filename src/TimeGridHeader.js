@@ -9,33 +9,6 @@ import Header from './Header'
 import { notify } from './utils/helpers'
 
 class TimeGridHeader extends React.Component {
-  static propTypes = {
-    range: PropTypes.array.isRequired,
-    events: PropTypes.array.isRequired,
-    resources: PropTypes.object,
-    getNow: PropTypes.func.isRequired,
-    isOverflowing: PropTypes.bool,
-
-    rtl: PropTypes.bool,
-    width: PropTypes.number,
-
-    localizer: PropTypes.object.isRequired,
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    longPressThreshold: PropTypes.number,
-
-    onSelectSlot: PropTypes.func,
-    onSelectEvent: PropTypes.func,
-    onDoubleClickEvent: PropTypes.func,
-    onDrillDown: PropTypes.func,
-    getDrilldownView: PropTypes.func.isRequired,
-    scrollRef: PropTypes.any,
-  }
-
   handleHeaderClick = (date, view, e) => {
     e.preventDefault()
     notify(this.props.onDrillDown, [date, view])
@@ -207,6 +180,33 @@ class TimeGridHeader extends React.Component {
       </div>
     )
   }
+}
+
+TimeGridHeader.propTypes = {
+  range: PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  resources: PropTypes.object,
+  getNow: PropTypes.func.isRequired,
+  isOverflowing: PropTypes.bool,
+
+  rtl: PropTypes.bool,
+  width: PropTypes.number,
+
+  localizer: PropTypes.object.isRequired,
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onSelectSlot: PropTypes.func,
+  onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
+  onDrillDown: PropTypes.func,
+  getDrilldownView: PropTypes.func.isRequired,
+  scrollRef: PropTypes.any,
 }
 
 export default TimeGridHeader

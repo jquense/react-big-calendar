@@ -9,27 +9,6 @@ import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 
 class BackgroundCells extends React.Component {
-  static propTypes = {
-    date: PropTypes.instanceOf(Date),
-    getNow: PropTypes.func.isRequired,
-
-    getters: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-
-    container: PropTypes.func,
-    dayPropGetter: PropTypes.func,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    longPressThreshold: PropTypes.number,
-
-    onSelectSlot: PropTypes.func.isRequired,
-    onSelectEnd: PropTypes.func,
-    onSelectStart: PropTypes.func,
-
-    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-    rtl: PropTypes.bool,
-    type: PropTypes.string,
-  }
-
   constructor(props, context) {
     super(props, context)
 
@@ -183,6 +162,27 @@ class BackgroundCells extends React.Component {
           box,
         })
   }
+}
+
+BackgroundCells.propTypes = {
+  date: PropTypes.instanceOf(Date),
+  getNow: PropTypes.func.isRequired,
+
+  getters: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+
+  container: PropTypes.func,
+  dayPropGetter: PropTypes.func,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onSelectSlot: PropTypes.func.isRequired,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
+
+  range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  rtl: PropTypes.bool,
+  type: PropTypes.string,
 }
 
 export default BackgroundCells

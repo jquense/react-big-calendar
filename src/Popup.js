@@ -8,28 +8,6 @@ import dates from './utils/dates'
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
-const propTypes = {
-  position: PropTypes.object,
-  popupOffset: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number,
-    }),
-  ]),
-  events: PropTypes.array,
-  selected: PropTypes.object,
-
-  accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
-  getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object.isRequired,
-  onSelect: PropTypes.func,
-  onDoubleClick: PropTypes.func,
-  slotStart: PropTypes.instanceOf(Date),
-  slotEnd: PropTypes.number,
-}
-
 class Popup extends React.Component {
   componentDidMount() {
     let { popupOffset = 5 } = this.props,
@@ -100,6 +78,26 @@ class Popup extends React.Component {
   }
 }
 
-Popup.propTypes = propTypes
+Popup.propTypes = {
+  position: PropTypes.object,
+  popupOffset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ]),
+  events: PropTypes.array,
+  selected: PropTypes.object,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+  slotStart: PropTypes.instanceOf(Date),
+  slotEnd: PropTypes.number,
+}
 
 export default Popup

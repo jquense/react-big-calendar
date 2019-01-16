@@ -14,46 +14,6 @@ import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 
 class DayColumn extends React.Component {
-  static propTypes = {
-    events: PropTypes.array.isRequired,
-    step: PropTypes.number.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
-    getNow: PropTypes.func.isRequired,
-    isNow: PropTypes.bool,
-
-    rtl: PropTypes.bool,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-
-    showMultiDayTimes: PropTypes.bool,
-    culture: PropTypes.string,
-    timeslots: PropTypes.number,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    eventOffset: PropTypes.number,
-    longPressThreshold: PropTypes.number,
-
-    onSelecting: PropTypes.func,
-    onSelectSlot: PropTypes.func.isRequired,
-    onSelectEvent: PropTypes.func.isRequired,
-    onDoubleClickEvent: PropTypes.func.isRequired,
-
-    className: PropTypes.string,
-    dragThroughEvents: PropTypes.bool,
-    resource: PropTypes.any,
-  }
-
-  static defaultProps = {
-    dragThroughEvents: true,
-    timeslots: 2,
-  }
-
   state = { selecting: false, timeIndicatorPosition: null }
 
   constructor(...args) {
@@ -388,6 +348,46 @@ class DayColumn extends React.Component {
   _doubleClick = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
   }
+}
+
+DayColumn.propTypes = {
+  events: PropTypes.array.isRequired,
+  step: PropTypes.number.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
+  getNow: PropTypes.func.isRequired,
+  isNow: PropTypes.bool,
+
+  rtl: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+
+  showMultiDayTimes: PropTypes.bool,
+  culture: PropTypes.string,
+  timeslots: PropTypes.number,
+
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  eventOffset: PropTypes.number,
+  longPressThreshold: PropTypes.number,
+
+  onSelecting: PropTypes.func,
+  onSelectSlot: PropTypes.func.isRequired,
+  onSelectEvent: PropTypes.func.isRequired,
+  onDoubleClickEvent: PropTypes.func.isRequired,
+
+  className: PropTypes.string,
+  dragThroughEvents: PropTypes.bool,
+  resource: PropTypes.any,
+}
+
+DayColumn.defaultProps = {
+  dragThroughEvents: true,
+  timeslots: 2,
 }
 
 export default DayColumn

@@ -11,46 +11,6 @@ import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
 import * as DateSlotMetrics from './utils/DateSlotMetrics'
 
-const propTypes = {
-  date: PropTypes.instanceOf(Date),
-  events: PropTypes.array.isRequired,
-  range: PropTypes.array.isRequired,
-
-  rtl: PropTypes.bool,
-  resourceId: PropTypes.any,
-  renderForMeasure: PropTypes.bool,
-  renderHeader: PropTypes.func,
-
-  container: PropTypes.func,
-  selected: PropTypes.object,
-  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-  longPressThreshold: PropTypes.number,
-
-  onShowMore: PropTypes.func,
-  onSelectSlot: PropTypes.func,
-  onSelect: PropTypes.func,
-  onSelectEnd: PropTypes.func,
-  onSelectStart: PropTypes.func,
-  onDoubleClick: PropTypes.func,
-  dayPropGetter: PropTypes.func,
-
-  getNow: PropTypes.func.isRequired,
-  isAllDay: PropTypes.bool,
-
-  accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
-  getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object.isRequired,
-
-  minRows: PropTypes.number.isRequired,
-  maxRows: PropTypes.number.isRequired,
-}
-
-const defaultProps = {
-  minRows: 0,
-  maxRows: Infinity,
-}
-
 class DateContentRow extends React.Component {
   constructor(...args) {
     super(...args)
@@ -218,7 +178,44 @@ class DateContentRow extends React.Component {
   }
 }
 
-DateContentRow.propTypes = propTypes
-DateContentRow.defaultProps = defaultProps
+DateContentRow.propTypes = {
+  date: PropTypes.instanceOf(Date),
+  events: PropTypes.array.isRequired,
+  range: PropTypes.array.isRequired,
+
+  rtl: PropTypes.bool,
+  resourceId: PropTypes.any,
+  renderForMeasure: PropTypes.bool,
+  renderHeader: PropTypes.func,
+
+  container: PropTypes.func,
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onShowMore: PropTypes.func,
+  onSelectSlot: PropTypes.func,
+  onSelect: PropTypes.func,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+  dayPropGetter: PropTypes.func,
+
+  getNow: PropTypes.func.isRequired,
+  isAllDay: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+
+  minRows: PropTypes.number.isRequired,
+  maxRows: PropTypes.number.isRequired,
+}
+
+DateContentRow.defaultProps = {
+  minRows: 0,
+  maxRows: Infinity,
+}
 
 export default DateContentRow

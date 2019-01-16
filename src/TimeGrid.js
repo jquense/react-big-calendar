@@ -99,6 +99,10 @@ export default class TimeGrid extends Component {
     window.removeEventListener('resize', this.handleResize)
 
     raf.cancel(this.rafHandle)
+
+    if (this.measureGutterAnimationFrameRequest) {
+      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
+    }
   }
 
   componentDidUpdate() {
@@ -145,7 +149,7 @@ export default class TimeGrid extends Component {
     let { min, max, components, accessors, localizer } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
-    const groupedEvents = resources.groupEvents(events) 
+    const groupedEvents = resources.groupEvents(events)
 
     return resources.map(([id, resource], i) =>
       range.map((date, jj) => {
@@ -277,11 +281,18 @@ export default class TimeGrid extends Component {
   }
 
   measureGutter() {
-    const width = getWidth(this.gutter)
-
-    if (width && this.state.gutterWidth !== width) {
-      this.setState({ gutterWidth: width })
+    if (this.measureGutterAnimationFrameRequest) {
+      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
     }
+    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
+      () => {
+        const width = getWidth(this.gutter)
+
+        if (width && this.state.gutterWidth !== width) {
+          this.setState({ gutterWidth: width })
+        }
+      }
+    )
   }
 
   applyScroll() {

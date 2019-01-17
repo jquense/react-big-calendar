@@ -497,6 +497,8 @@ class Calendar extends React.Component {
      */
     dayPropGetter: PropTypes.func,
 
+    headerPropGetter: PropTypes.func,
+
     /**
      * Support to show multi-day events with specific start and end times in the
      * main time grid (rather than in the all day header).
@@ -760,6 +762,7 @@ class Calendar extends React.Component {
     eventPropGetter,
     slotPropGetter,
     dayPropGetter,
+    headerPropGetter,
     view,
     views,
     localizer,
@@ -779,6 +782,8 @@ class Calendar extends React.Component {
         slotProp: (...args) =>
           (slotPropGetter && slotPropGetter(...args)) || {},
         dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
+        headerProp: (...args) =>
+          (headerPropGetter && headerPropGetter(...args)) || {},
       },
       components: defaults(components[view] || {}, omit(components, names), {
         eventWrapper: NoopWrapper,
@@ -952,7 +957,11 @@ class Calendar extends React.Component {
     }
 
     let views = this.getViews()
-    this.handleRangeChange(this.props.date || this.props.getNow(), views[view], view)
+    this.handleRangeChange(
+      this.props.date || this.props.getNow(),
+      views[view],
+      view
+    )
   }
 
   handleSelectEvent = (...args) => {

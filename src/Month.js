@@ -184,21 +184,24 @@ class MonthView extends React.Component {
   }
 
   readerDateHeading = ({ date, className, ...props }) => {
-    let { date: currentDate, getDrilldownView, localizer } = this.props
+    let { date: currentDate, getDrilldownView, localizer, getters } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
     let isCurrent = dates.eq(date, currentDate, 'day')
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, 'dateFormat')
+    let headerProps = getters.headerProp(date)
     let DateHeaderComponent = this.props.components.dateHeader || DateHeader
 
     return (
       <div
         {...props}
+        style={{ ...headerProps.style }}
         className={cn(
           className,
           isOffRange && 'rbc-off-range',
-          isCurrent && 'rbc-current'
+          isCurrent && 'rbc-current',
+          headerProps.className
         )}
       >
         <DateHeaderComponent

@@ -72,6 +72,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.22",
     "babel-preset-jason": "^6.0.1",
     "bootstrap": "^3.3.5",
     "component-metadata-loader": "^4.0.0",

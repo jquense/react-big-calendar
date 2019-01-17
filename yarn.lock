@@ -2571,6 +2571,11 @@ babel-plugin-transform-react-jsx@^6.24.1:
     babel-plugin-syntax-jsx "^6.8.0"
     babel-runtime "^6.22.0"
 
+babel-plugin-transform-react-remove-prop-types@^0.4.22:
+  version "0.4.22"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-remove-prop-types/-/babel-plugin-transform-react-remove-prop-types-0.4.22.tgz#209f08958e17a003f524298efeb39e7ed74c6070"
+  integrity sha512-X0qLmmQ0LKGTaBTEzQkCNYr6XbjiPgA+wWux4qo5fYi8+zhcyo552KOMy/UI8jA5M2u66HlLCQ7DRxhxl6YYZQ==
+
 babel-plugin-transform-regenerator@^6.22.0, babel-plugin-transform-regenerator@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.26.0.tgz#e0703696fbde27f0a3efcacf8b4dca2f7b3a8f2f"

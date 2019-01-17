@@ -10,23 +10,6 @@ import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
 class Agenda extends React.Component {
-  static propTypes = {
-    events: PropTypes.array,
-    date: PropTypes.instanceOf(Date),
-    length: PropTypes.number.isRequired,
-
-    selected: PropTypes.object,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    length: 30,
-  }
-
   componentDidMount() {
     this._adjustHeader()
   }
@@ -198,6 +181,23 @@ class Agenda extends React.Component {
       classes.removeClass(header, 'rbc-header-overflowing')
     }
   }
+}
+
+Agenda.propTypes = {
+  events: PropTypes.array,
+  date: PropTypes.instanceOf(Date),
+  length: PropTypes.number.isRequired,
+
+  selected: PropTypes.object,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+}
+
+Agenda.defaultProps = {
+  length: 30,
 }
 
 Agenda.range = (start, { length = Agenda.defaultProps.length }) => {

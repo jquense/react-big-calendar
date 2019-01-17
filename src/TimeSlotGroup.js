@@ -5,14 +5,6 @@ import React, { Component } from 'react'
 import BackgroundWrapper from './BackgroundWrapper'
 
 export default class TimeSlotGroup extends Component {
-  static propTypes = {
-    renderSlot: PropTypes.func,
-    group: PropTypes.array.isRequired,
-    resource: PropTypes.any,
-    components: PropTypes.object,
-    getters: PropTypes.object,
-  }
-
   render() {
     const {
       renderSlot,
@@ -40,4 +32,12 @@ export default class TimeSlotGroup extends Component {
       </div>
     )
   }
+}
+
+TimeSlotGroup.propTypes = {
+  renderSlot: PropTypes.func,
+  group: PropTypes.array.isRequired,
+  resource: PropTypes.any,
+  components: PropTypes.object,
+  getters: PropTypes.object,
 }

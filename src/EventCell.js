@@ -3,25 +3,6 @@ import React from 'react'
 import cn from 'classnames'
 import dates from './utils/dates'
 
-let propTypes = {
-  event: PropTypes.object.isRequired,
-  slotStart: PropTypes.instanceOf(Date),
-  slotEnd: PropTypes.instanceOf(Date),
-
-  selected: PropTypes.bool,
-  isAllDay: PropTypes.bool,
-  continuesPrior: PropTypes.bool,
-  continuesAfter: PropTypes.bool,
-
-  accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
-  getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object,
-
-  onSelect: PropTypes.func,
-  onDoubleClick: PropTypes.func,
-}
-
 class EventCell extends React.Component {
   render() {
     let {
@@ -89,6 +70,23 @@ class EventCell extends React.Component {
   }
 }
 
-EventCell.propTypes = propTypes
+EventCell.propTypes = {
+  event: PropTypes.object.isRequired,
+  slotStart: PropTypes.instanceOf(Date),
+  slotEnd: PropTypes.instanceOf(Date),
+
+  selected: PropTypes.bool,
+  isAllDay: PropTypes.bool,
+  continuesPrior: PropTypes.bool,
+  continuesAfter: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object,
+
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+}
 
 export default EventCell

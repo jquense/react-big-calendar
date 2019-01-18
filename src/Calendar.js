@@ -943,7 +943,7 @@ class Calendar extends React.Component {
     })
 
     onNavigate(date, view, action)
-    this.handleRangeChange(date, ViewComponent)
+    this.handleRangeChange(date, ViewComponent, view)
   }
 
   handleViewChange = view => {

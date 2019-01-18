@@ -497,6 +497,15 @@ class Calendar extends React.Component {
      */
     dayPropGetter: PropTypes.func,
 
+    /**
+     * Optionally provide a function that returns an object of className or style props
+     * to be applied to the number of day. Caution! Styles that change layout or
+     * position may break the calendar in unexpected ways.
+     *
+     * ```js
+     * (date: Date) => { className?: string, style?: Object }
+     * ```
+     */
     headerPropGetter: PropTypes.func,
 
     /**

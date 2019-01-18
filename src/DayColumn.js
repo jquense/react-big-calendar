@@ -206,7 +206,6 @@ class DayColumn extends React.Component {
           key={'evt_' + idx}
           getters={getters}
           isRtl={isRtl}
-          getters={getters}
           components={components}
           continuesEarlier={continuesEarlier}
           continuesLater={continuesLater}

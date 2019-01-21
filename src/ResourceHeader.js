@@ -14,7 +14,7 @@ const ResourceHeader = ({ label, index }) => {
 ResourceHeader.propTypes = {
   label: PropTypes.node,
   index: PropTypes.number,
-  resouce: PropTypes.object,
+  resource: PropTypes.object,
 }
 
 export default ResourceHeader

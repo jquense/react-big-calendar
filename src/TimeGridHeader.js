@@ -6,6 +6,7 @@ import React from 'react'
 import dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
+import ResourceHeader from './ResourceHeader'
 import { notify } from './utils/helpers'
 
 class TimeGridHeader extends React.Component {
@@ -116,7 +117,10 @@ class TimeGridHeader extends React.Component {
       scrollRef,
       localizer,
       isOverflowing,
-      components: { timeGutterHeader: TimeGutterHeader },
+      components: {
+        timeGutterHeader: TimeGutterHeader,
+        resourceHeader: ResourceHeaderComponent = ResourceHeader,
+      },
     } = this.props
 
     let style = {}
@@ -142,11 +146,11 @@ class TimeGridHeader extends React.Component {
         {resources.map(([id, resource], idx) => (
           <div className="rbc-time-header-content" key={id || idx}>
             {resource && (
-              <div className="rbc-row rbc-row-resource">
-                <div key={`resource_${idx}`} className="rbc-header">
-                  {accessors.resourceTitle(resource)}
-                </div>
-              </div>
+              <ResourceHeaderComponent
+                index={idx}
+                label={accessors.resourceTitle(resource)}
+                resource={resource}
+              />
             )}
             <div
               className={`rbc-row rbc-time-header-cell${

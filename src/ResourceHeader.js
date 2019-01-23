@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const ResourceHeader = ({ label }) => {
-  return <span>{label}</span>
+  return <React.Fragment>{label}</React.Fragment>
 }
 
 ResourceHeader.propTypes = {

@@ -6,6 +6,7 @@
   "repository": "intljusticemission/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
+  "module": "dist/react-big-calendar.esm.js",
   "style": "lib/css/react-big-calendar.css",
   "files": [
     "lib/",

@@ -165,8 +165,22 @@ let getYStyles = (idx, {
   let event = events[idx]
   let start = getSlot(event, startAccessor, min, totalMin)
   let end = Math.max(getSlot(event, endAccessor, min, totalMin, true), start + step)
-  let top = start / totalMin * 100
-  let bottom = end / totalMin * 100
+
+  /**
+   * Daylite savings
+   */
+  const startDayStart = dates.startOf(get(event, startAccessor), 'day');
+  const startDayEnd = dates.endOf(get(event, startAccessor), 'day');
+  const startDstOffset =
+    startDayStart.getTimezoneOffset() - startDayEnd.getTimezoneOffset();
+
+  const endDayStart = dates.startOf(get(event, startAccessor), 'day');
+  const endDayEnd = dates.endOf(get(event, startAccessor), 'day');
+  const endDstOffset =
+    endDayStart.getTimezoneOffset() - endDayEnd.getTimezoneOffset();
+
+  let top = ((start + startDstOffset) / totalMin) * 100;
+  let bottom = ((end + endDstOffset) / totalMin) * 100;
 
   return {
     top,

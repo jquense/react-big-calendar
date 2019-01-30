@@ -39,6 +39,8 @@ class EventCell extends React.Component {
         {Event ? (
           <Event
             event={event}
+            continuesPrior={continuesPrior}
+            continuesAfter={continuesAfter}
             title={title}
             isAllDay={allDay}
             localizer={localizer}

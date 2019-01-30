@@ -11,7 +11,7 @@ export default class TimeSlotGroup extends Component {
       resource,
       group,
       getters,
-      components: { dayWrapper: Wrapper = BackgroundWrapper } = {},
+      components: { timeSlotWrapper: Wrapper = BackgroundWrapper } = {},
     } = this.props
 
     return (

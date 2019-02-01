@@ -29,11 +29,25 @@ const events = [
     resourceId: 3,
   },
   {
+    id: 10,
+    title: 'Board meeting',
+    start: new Date(2018, 0, 30, 23, 0, 0),
+    end: new Date(2018, 0, 30, 23, 59, 0),
+    resourceId: 1,
+  },
+  {
     id: 11,
     title: 'Birthday Party',
     start: new Date(2018, 0, 30, 7, 0, 0),
     end: new Date(2018, 0, 30, 10, 30, 0),
     resourceId: 4,
+  },
+  {
+    id: 12,
+    title: 'Board meeting',
+    start: new Date(2018, 0, 29, 23, 59, 0),
+    end: new Date(2018, 0, 30, 13, 0, 0),
+    resourceId: 1,
   },
 ]
 
@@ -103,6 +117,7 @@ class Dnd extends React.Component {
         resourceTitleAccessor="resourceTitle"
         onEventResize={this.resizeEvent}
         defaultView="day"
+        showMultiDayTimes={true}
         defaultDate={new Date(2018, 0, 29)}
       />
     )

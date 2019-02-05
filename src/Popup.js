@@ -26,7 +26,7 @@ const propTypes = {
   localizer: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
-  slotStart: PropTypes.number,
+  slotStart: PropTypes.object, //date object
   slotEnd: PropTypes.number,
 }
 
@@ -93,6 +93,7 @@ class Popup extends React.Component {
             continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
             continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
             selected={isSelected(event, selected)}
+            localizer={localizer}
           />
         ))}
       </div>

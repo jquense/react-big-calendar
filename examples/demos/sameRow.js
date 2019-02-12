@@ -60,9 +60,7 @@ MyWeek.title = date => {
 let CustomView = ({ localizer }) => (
   <React.Fragment>
     <ExampleControlSlot.Entry waitForOutlet>
-      <strong>
-        <div>BIGLOL</div>
-      </strong>
+      <strong>The Calendar below implments a custom 3-day week view</strong>
     </ExampleControlSlot.Entry>
     <BigCalendar
       events={events}

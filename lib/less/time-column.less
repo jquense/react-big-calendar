@@ -1,0 +1,131 @@
+@import './variables.less';
+
+
+.rbc-time-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  .rbc-timeslot-group {
+    flex: 1;
+  }
+}
+
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid @cell-border;
+  min-height: 40px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.rbc-time-gutter,
+.rbc-header-gutter {
+  flex: none;
+}
+
+.rbc-label {
+  padding: 0 5px;
+}
+
+.rbc-day-slot {
+  position: relative;
+
+  .rbc-events-container {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+    top: 0;
+
+    &.rbc-is-rtl {
+      left: 10px;
+      right: 0;
+    }
+  }
+
+  .rbc-event {
+    border: 1px solid @event-border;
+    display: flex;
+    max-height: 100%;
+    min-height: 20px;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    overflow: hidden;
+    position: absolute;
+  }
+
+  .rbc-event-label {
+    flex: none;
+    padding-right: 5px;
+    width: auto;
+  }
+
+  .rbc-event-content {
+    width: 100%;
+    flex: 1 1 0;
+    word-wrap: break-word;
+    line-height: 1;
+    height: 100%;
+    min-height: 1em;
+  }
+
+  .rbc-time-slot {
+    border-top: 1px solid lighten(@cell-border, 10%);
+  }
+}
+
+.rbc-time-view-resources {
+  .rbc-time-gutter,
+  .rbc-time-header-gutter {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    border-right: 1px solid @cell-border;
+    z-index: 10;
+    margin-right: -1px;
+  }
+
+  .rbc-time-header {
+    overflow: hidden;
+  }
+
+  .rbc-time-header-content {
+    min-width: auto;
+    flex: 1 0 0;
+    flex-basis: 0px;
+  }
+
+  .rbc-time-header-cell-single-day {
+    display: none;
+  }
+
+  .rbc-day-slot {
+    min-width: 140px;
+  }
+
+  .rbc-header,
+  .rbc-day-bg, {
+    width: 140px;
+    // min-width: 0;
+    flex:  1 1 0;
+    flex-basis: 0 px;
+  }
+}
+
+.rbc-time-header-content + .rbc-time-header-content {
+  margin-left: -1px;
+}
+
+.rbc-time-slot {
+  flex: 1 0 0;
+
+  &.rbc-now {
+    font-weight: bold;
+  }
+}
+
+.rbc-day-header {
+  text-align: center;
+}

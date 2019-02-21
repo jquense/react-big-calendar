@@ -956,6 +956,14 @@ class Calendar extends React.Component {
     this.handleRangeChange(date, ViewComponent)
   }
 
+  componentWillMount() {
+    const viewComponent = this.getView()
+    this.handleRangeChange(
+      this.props.date || this.props.getNow(),
+      viewComponent
+    )
+  }
+
   handleViewChange = view => {
     if (view !== this.props.view && isValidView(view, this.props)) {
       this.props.onView(view)

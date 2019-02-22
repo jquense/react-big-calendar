@@ -7,6 +7,9 @@ import React from 'react'
 import BaseCalendar from '../../src'
 import momentLocalizer from '../../src/localizers/moment.js'
 
+// For Testing SASS styling
+// import '../../src/sass/styles.scss'
+// import '../../src/addons/dragAndDrop/styles.scss'
 import '../../src/less/styles.less'
 import '../../src/addons/dragAndDrop/styles.less'
 

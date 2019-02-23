@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 /* eslint-disable react/prop-types */
@@ -52,7 +52,7 @@ function TimeGridEvent(props) {
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip
             : undefined
         }
-        className={cn('rbc-event', className, userProps.className, {
+        className={clsx('rbc-event', className, userProps.className, {
           'rbc-selected': selected,
           'rbc-event-continues-earlier': continuesEarlier,
           'rbc-event-continues-later': continuesLater,

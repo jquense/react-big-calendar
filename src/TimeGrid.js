@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import cn from 'classnames'
+import clsx from 'clsx'
 import raf from 'dom-helpers/util/requestAnimationFrame'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
@@ -187,7 +187,10 @@ export default class TimeGrid extends Component {
 
     return (
       <div
-        className={cn('rbc-time-view', resources && 'rbc-time-view-resources')}
+        className={clsx(
+          'rbc-time-view',
+          resources && 'rbc-time-view-resources'
+        )}
       >
         <TimeGridHeader
           range={range}

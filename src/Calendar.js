@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { uncontrollable } from 'uncontrollable'
-import cn from 'classnames'
+import clsx from 'clsx'
 import {
   accessor,
   dateFormat,
@@ -878,7 +878,7 @@ class Calendar extends React.Component {
     return (
       <div
         {...elementProps}
-        className={cn(className, 'rbc-calendar', props.rtl && 'rbc-rtl')}
+        className={clsx(className, 'rbc-calendar', props.rtl && 'rbc-rtl')}
         style={style}
       >
         {toolbar && (

@@ -48,9 +48,12 @@ class DayColumn extends React.Component {
       this.clearTimeIndicatorInterval()
 
       if (this.props.isNow) {
-        this.setTimeIndicatorPositionUpdateInterval(
+        const tail =
+          this.props.getNow === this.props.getNow &&
+          dates.eq(prevProps.date, this.props.date, 'minutes') &&
           prevState.timeIndicatorPosition === this.state.timeIndicatorPosition
-        )
+
+        this.setTimeIndicatorPositionUpdateInterval(tail)
       }
     }
   }

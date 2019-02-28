@@ -120,9 +120,6 @@ class Calendar extends React.Component {
      *
      *  - start time
      *  - end time
-     *  - title
-     *  - whether its an "all day" event or not
-     *  - any resource the event may be related to
      *
      * Each of these properties can be customized or generated dynamically by
      * setting the various "accessor" props. Without any configuration the default
@@ -130,11 +127,8 @@ class Calendar extends React.Component {
      *
      * ```js
      * BackgroundEvent {
-     *   title: string,
      *   start: Date,
      *   end: Date,
-     *   allDay?: boolean
-     *   resource?: any,
      * }
      * ```
      */

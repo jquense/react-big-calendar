@@ -2,7 +2,7 @@ import cn from 'classnames'
 import React from 'react'
 
 /* eslint-disable react/prop-types */
-function TimeGridEvent(props) {
+function TimeGridBackgroundEvent(props) {
   const {
     style,
     className,
@@ -16,9 +16,7 @@ function TimeGridEvent(props) {
     getters,
     onClick,
     onDoubleClick,
-    components: {
-      backgroundEventWrapper: BackgroundEventWrapper,
-    },
+    components: { backgroundEventWrapper: BackgroundEventWrapper },
   } = props
   let tooltip = accessors.tooltip(event)
   let end = accessors.end(event)
@@ -56,10 +54,9 @@ function TimeGridEvent(props) {
             'rbc-event-continues-later': continuesLater,
           }
         )}
-      >
-      </div>
+      />
     </BackgroundEventWrapper>
   )
 }
 
-export default TimeGridEvent
+export default TimeGridBackgroundEvent

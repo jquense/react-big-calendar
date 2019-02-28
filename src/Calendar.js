@@ -114,7 +114,7 @@ class Calendar extends React.Component {
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
-     * An array of backgruond event objects to display on the calendar. Events objects
+     * An array of background event objects to display on the calendar. B events objects
      * can be any shape, as long as the Calendar knows how to retrieve the
      * following details of the event:
      *
@@ -130,14 +130,14 @@ class Calendar extends React.Component {
      *
      * ```js
      * BackgroundEvent {
-      *   title: string,
-      *   start: Date,
-      *   end: Date,
-      *   allDay?: boolean
-      *   resource?: any,
-      * }
-      * ```
-      */
+     *   title: string,
+     *   start: Date,
+     *   end: Date,
+     *   allDay?: boolean
+     *   resource?: any,
+     * }
+     * ```
+     */
     backgroundEvents: PropTypes.arrayOf(PropTypes.object),
 
     /**

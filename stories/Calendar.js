@@ -10,7 +10,7 @@ import demoEvents from '../examples/events'
 import createEvents from './helpers/createEvents'
 import customComponents from './helpers/customComponents'
 
-import { events, Calendar } from './helpers'
+import { events, backgroundEvents, Calendar } from './helpers'
 
 storiesOf('Big Calendar', module)
   .add('demo', () => (
@@ -207,6 +207,15 @@ storiesOf('Big Calendar', module)
         components={{
           timeSlotWrapper: customComponents.timeSlotWrapper,
         }}
+      />
+    )
+  })
+  .add('add background event', () => {
+    return (
+      <Calendar
+        defaultView={Calendar.Views.WEEK}
+        events={events}
+        backgroundEvents={backgroundEvents}
       />
     )
   })

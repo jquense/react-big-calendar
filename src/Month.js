@@ -273,6 +273,8 @@ class MonthView extends React.Component {
       start: slots[0],
       end: slots[slots.length - 1],
       action: slotInfo.action,
+      bounds: slotInfo.bounds,
+      box: slotInfo.box
     })
   }
 

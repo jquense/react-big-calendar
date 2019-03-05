@@ -1,8 +1,10 @@
 # <a id='intro' href='#intro'>Getting Started</a>
 
-You can install `react-big-calendar` via [npm](https://www.npmjs.com/):
+You can install `react-big-calendar` via [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com/):
 
-    npm i --save react-big-calendar
+_yarn:_ `yarn add react-big-calendar`
+
+_npm:_ `npm install --save react-big-calendar`
 
 Styles can be found at: `react-big-calendar/lib/css/react-big-calendar.css`, and should be included on the page
 with the calendar component. Also make sure that your calendar's container

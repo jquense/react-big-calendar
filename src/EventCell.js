@@ -4,6 +4,22 @@ import cn from 'classnames'
 import dates from './utils/dates'
 
 class EventCell extends React.Component {
+  handleClick = e => {
+    const { event, onSelect } = this.props
+
+    if (onSelect) {
+      onSelect(event, e)
+    }
+  }
+
+  handleDoubleClick = e => {
+    const { event, onDoubleClick } = this.props
+
+    if (onDoubleClick) {
+      onDoubleClick(event, e)
+    }
+  }
+
   render() {
     let {
       style,
@@ -11,8 +27,6 @@ class EventCell extends React.Component {
       event,
       selected,
       isAllDay,
-      onSelect,
-      onDoubleClick,
       localizer,
       continuesPrior,
       continuesAfter,
@@ -60,8 +74,8 @@ class EventCell extends React.Component {
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
-          onClick={e => onSelect && onSelect(event, e)}
-          onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
+          onClick={this.handleClick}
+          onDoubleClick={this.handleDoubleClick}
         >
           {typeof children === 'function' ? children(content) : content}
         </button>

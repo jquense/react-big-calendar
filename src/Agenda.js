@@ -129,7 +129,9 @@ class Agenda extends React.Component {
     let start = accessors.start(event)
 
     if (!accessors.allDay(event)) {
-      if (dates.eq(start, end, 'day')) {
+      if (dates.eq(start, end)) {
+        label = localizer.format(start, 'agendaTimeFormat')
+      } else if (dates.eq(start, end, 'day')) {
         label = localizer.format({ start, end }, 'agendaTimeRangeFormat')
       } else if (dates.eq(day, start, 'day')) {
         label = localizer.format(start, 'agendaTimeFormat')

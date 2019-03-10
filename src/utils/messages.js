@@ -1,27 +1,27 @@
-let defaultMessages = {
-  date: 'Date',
-  time: 'Time',
-  event: 'Event',
-  allDay: 'All Day',
-  week: 'Week',
-  work_week: 'Work Week',
-  day: 'Day',
-  month: 'Month',
-  previous: 'Back',
-  next: 'Next',
-  yesterday: 'Yesterday',
-  tomorrow: 'Tomorrow',
-  today: 'Today',
+let es_Messages = {
+  date: 'Fecha',
+  time: 'Hora',
+  event: 'Evento',
+  allDay: 'Todo el día',
+  week: 'Semana',
+  work_week: 'Semana laboral',
+  day: 'Día',
+  month: 'Mes',
+  previous: 'Atrás',
+  next: 'Siguiente',
+  yesterday: 'Ayer',
+  tomorrow: 'Mañana',
+  today: 'Hoy',
   agenda: 'Agenda',
 
-  noEventsInRange: 'There are no events in this range.',
+  noEventsInRange: 'No hay eventos en este rango',
 
-  showMore: total => `+${total} more`,
+  showMore: total => `+${total} más`,
 }
 
 export default function messages(msgs) {
   return {
-    ...defaultMessages,
+    ...es_Messages,
     ...msgs,
   }
 }

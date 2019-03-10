@@ -31,7 +31,7 @@
     "less-dnd": "npm run l src/addons/dragAndDrop/styles.less ./lib/addons/dragAndDrop/styles.css",
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
-    "build:umd": "BABEL_ENV=esm yarn rollup -c",
+    "build:umd": "set BABEL_ENV=esm yarn rollup -c",
     "build:cjs": "babel src --out-dir lib",
     "build": "yarn clean && yarn build:cjs && yarn build:umd && yarn assets && yarn less",
     "build:examples": "npm run clean:examples && webpack --config examples/webpack.config.js",
@@ -66,8 +66,8 @@
   },
   "devDependencies": {
     "@4c/rollout": "^1.2.0",
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.5",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
     "@storybook/addon-actions": "^4.1.7",
     "@storybook/react": "^4.1.7",
     "babel-core": "^7.0.0-bridge.0",
@@ -101,6 +101,7 @@
     "react-docgen": "^3.0.0-rc.1",
     "react-dom": "^16.6.1",
     "react-tackle-box": "^2.1.0",
+    "regenerator-runtime": "^0.13.1",
     "rimraf": "^2.4.2",
     "rollup": "^1.1.0",
     "rollup-plugin-babel": "^4.3.0",
@@ -119,6 +120,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "babel-cli": "^6.26.0",
     "classnames": "^2.2.6",
     "date-arithmetic": "^3.0.0",
     "dom-helpers": "^3.4.0",
@@ -129,7 +131,8 @@
     "prop-types-extra": "^1.1.0",
     "react-overlays": "^0.8.3",
     "uncontrollable": "^6.0.0",
-    "warning": "^4.0.2"
+    "warning": "^4.0.2",
+    "yarn": "^1.13.0"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"

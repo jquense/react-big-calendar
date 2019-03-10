@@ -3,6 +3,16 @@ import React from 'react'
 import cn from 'classnames'
 import { navigate } from './utils/constants'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChevronCircleRight,
+  faChevronCircleLeft,
+  faListAlt,
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faChevronCircleRight, faChevronCircleLeft, faListAlt)
+
 class Toolbar extends React.Component {
   render() {
     let {
@@ -22,14 +32,16 @@ class Toolbar extends React.Component {
           <button
             type="button"
             onClick={this.navigate.bind(null, navigate.PREVIOUS)}
+            alt={messages.previous}
           >
-            {messages.previous}
+            <FontAwesomeIcon icon="chevron-circle-left" />
           </button>
           <button
             type="button"
             onClick={this.navigate.bind(null, navigate.NEXT)}
+            alt={messages.next}
           >
-            {messages.next}
+            <FontAwesomeIcon icon="chevron-circle-right" />
           </button>
         </span>
 
@@ -53,16 +65,32 @@ class Toolbar extends React.Component {
     const view = this.props.view
 
     if (viewNames.length > 1) {
-      return viewNames.map(name => (
-        <button
-          type="button"
-          key={name}
-          className={cn({ 'rbc-active': view === name })}
-          onClick={this.view.bind(null, name)}
-        >
-          {messages[name]}
-        </button>
-      ))
+      return viewNames.map(name => {
+        if (messages[name] == 'Agenda') {
+          return (
+            <button
+              type="button"
+              key={name}
+              className={cn({ 'rbc-active': view === name })}
+              onClick={this.view.bind(null, name)}
+              alt={messages[name]}
+            >
+              <FontAwesomeIcon icon="list-alt" />
+            </button>
+          )
+        } else {
+          return (
+            <button
+              type="button"
+              key={name}
+              className={cn({ 'rbc-active': view === name })}
+              onClick={this.view.bind(null, name)}
+            >
+              {messages[name]}
+            </button>
+          )
+        }
+      })
     }
   }
 }

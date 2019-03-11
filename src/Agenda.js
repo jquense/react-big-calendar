@@ -5,7 +5,7 @@ import getWidth from 'dom-helpers/query/width'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
 import dates from './utils/dates'
-import { navigate } from './utils/constants'
+import { navigate, views } from './utils/constants'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
@@ -218,8 +218,16 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
   }
 }
 
-Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
+Agenda.title = (
+  start,
+  { getLabel, length = Agenda.defaultProps.length, localizer }
+) => {
+  if (getLabel) {
+    return getLabel(views.AGENDA, start, length)
+  }
+
   let end = dates.add(start, length, 'day')
+
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }
 

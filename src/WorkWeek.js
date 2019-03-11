@@ -3,6 +3,7 @@ import React from 'react'
 
 import Week from './Week'
 import TimeGrid from './TimeGrid'
+import { views } from './utils/constants'
 
 function workWeekRange(date, options) {
   return Week.range(date, options).filter(
@@ -29,7 +30,11 @@ WorkWeek.range = workWeekRange
 
 WorkWeek.navigate = Week.navigate
 
-WorkWeek.title = (date, { localizer }) => {
+WorkWeek.title = (date, { getLabel, length, localizer }) => {
+  if (getLabel) {
+    return getLabel(views.WORK_WEEK, date, length)
+  }
+
   let [start, ...rest] = workWeekRange(date, { localizer })
 
   return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')

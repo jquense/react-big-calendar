@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 import dates from './utils/dates'
-import { navigate } from './utils/constants'
+import { navigate, views } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
 class Day extends React.Component {
@@ -35,6 +35,12 @@ Day.navigate = (date, action) => {
   }
 }
 
-Day.title = (date, { localizer }) => localizer.format(date, 'dayHeaderFormat')
+Day.title = (date, { getLabel, length, localizer }) => {
+  if (getLabel) {
+    return getLabel(views.DAY, date, length)
+  }
+
+  return localizer.format(date, 'dayHeaderFormat')
+}
 
 export default Day

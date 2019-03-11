@@ -20,6 +20,7 @@ import Selectable from './demos/selectable'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
+import CustomHeader from './demos/customHeader'
 import CustomView from './demos/customView'
 import Resource from './demos/resource'
 import DndResource from './demos/dndresource'
@@ -40,6 +41,7 @@ const EXAMPLES = {
   popup: 'Show more via a popup',
   timeslots: 'Custom Time Grids',
   rendering: 'Customized Component Rendering',
+  customHeader: 'Custom Calendar Headers',
   customView: 'Custom Calendar Views',
   resource: 'Resource Scheduling',
   dnd: 'Addon: Drag and drop',
@@ -73,6 +75,7 @@ class Example extends React.Component {
       cultures: Cultures,
       popup: Popup,
       rendering: Rendering,
+      customHeader: CustomHeader,
       customView: CustomView,
       resource: Resource,
       timeslots: Timeslots,

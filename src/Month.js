@@ -274,7 +274,7 @@ class MonthView extends React.Component {
       end: slots[slots.length - 1],
       action: slotInfo.action,
       bounds: slotInfo.bounds,
-      box: slotInfo.box
+      box: slotInfo.box,
     })
   }
 
@@ -345,7 +345,12 @@ MonthView.navigate = (date, action) => {
   }
 }
 
-MonthView.title = (date, { localizer }) =>
-  localizer.format(date, 'monthHeaderFormat')
+MonthView.title = (date, { getLabel, length, localizer }) => {
+  if (getLabel) {
+    return getLabel(views.MONTH, date, length)
+  }
+
+  return localizer.format(date, 'monthHeaderFormat')
+}
 
 export default MonthView

@@ -186,7 +186,7 @@ class Calendar extends React.Component {
     /**
      * An array of resource objects that map events to a specific resource.
      * Resource objects, like events, can be any shape or have any properties,
-     * but should be uniquly identifiable via the `resourceIdAccessor`, as
+     * but should be uniquely identifiable via the `resourceIdAccessor`, as
      * well as a "title" or name as provided by the `resourceTitleAccessor` prop.
      */
     resources: PropTypes.arrayOf(PropTypes.object),
@@ -212,6 +212,18 @@ class Calendar extends React.Component {
      * @type {(func|string)}
      */
     resourceTitleAccessor: accessor,
+
+    /**
+     * Determines the label used in the toolbar. If this function is passed then
+     * the generated localizer (including any that used options from `formats`)
+     * will be given to the callback.
+     *
+     * @type {func}
+     * @param {'month'|'week'|'work_week'|'day'|'agenda'} view The current view
+     * @param {Date} date The current date/time
+     * @param {number} length The `length` prop
+     */
+    getLabel: PropTypes.func,
 
     /**
      * Determines the current date/time which is highlighted in the views.
@@ -753,6 +765,7 @@ class Calendar extends React.Component {
       context: this.getContext(this.props),
     }
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ context: this.getContext(nextProps) })
   }
@@ -853,6 +866,7 @@ class Calendar extends React.Component {
       className,
       elementProps,
       date: current,
+      getLabel,
       getNow,
       length,
       showMultiDayTimes,
@@ -876,7 +890,7 @@ class Calendar extends React.Component {
     } = this.state.context
 
     let CalToolbar = components.toolbar || Toolbar
-    const label = View.title(current, { localizer, length })
+    const label = View.title(current, { getLabel, localizer, length })
 
     return (
       <div

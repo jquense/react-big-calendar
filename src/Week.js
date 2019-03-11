@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import dates from './utils/dates'
-import { navigate } from './utils/constants'
+import { navigate, views } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
 class Week extends React.Component {
@@ -40,8 +40,13 @@ Week.range = (date, { localizer }) => {
   return dates.range(start, end)
 }
 
-Week.title = (date, { localizer }) => {
+Week.title = (date, { getLabel, length, localizer }) => {
+  if (getLabel) {
+    return getLabel(views.WEEK, date, length)
+  }
+
   let [start, ...rest] = Week.range(date, { localizer })
+
   return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')
 }
 

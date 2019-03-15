@@ -12,7 +12,7 @@ import getPosition from 'dom-helpers/query/position'
 import raf from 'dom-helpers/util/requestAnimationFrame'
 
 import Popup from './Popup'
-import Overlay from 'react-overlays/lib/Overlay'
+import Overlay from 'react-overlays/Overlay'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import DateHeader from './DateHeader'

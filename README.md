@@ -85,3 +85,8 @@ Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the 
 - Added source prop to TimeSlotGroup to findout where it is being used.
 - Updated eventLevels.js to position events to top if any event has positionTop flag set to true.
 - Header was hidden by default in day view, updated it to be visible in day view.
+- Popup.js; Updated proptype of slotStart to object from number, as it's expecting date object.; Added localizer prop to EventCell component used in Popup.
+
+- Updated overlay logic in month view to fix https://jira.directi.com/browse/CWDC-80 .
+  Adding a variable called `isDeleted` to each event and filtering overlay events based on that, as
+  it's not getting updated on just rerendering monthView.

@@ -106,6 +106,19 @@ class MonthView extends React.Component {
 
   componentDidUpdate() {
     if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+
+    //updating overlay updates are a hack fix for a bug https://jira.directi.com/browse/CWDC-80
+    //TODO: Need a proper fix for this.
+    const { overlay } = this.state
+    if (overlay && overlay.events) {
+      let events = overlay.events.filter(e => !e.isDeleted)
+
+      if (events.length !== overlay.events.length) {
+        this.setState({
+          overlay: { ...overlay, events },
+        })
+      }
+    }
   }
 
   componentWillUnmount() {

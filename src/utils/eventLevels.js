@@ -30,26 +30,28 @@ export function eventSegments(event, range, accessors) {
 }
 
 export function eventLevels(rowSegments, limit = Infinity) {
-  let i,
-    j,
+  let segmentIndex,
+    levelsIndex,
     seg,
     levels = [],
     extra = []
 
-  for (i = 0; i < rowSegments.length; i++) {
-    seg = rowSegments[i]
+  for (segmentIndex = 0; segmentIndex < rowSegments.length; segmentIndex++) {
+    seg = rowSegments[segmentIndex]
 
-    for (j = 0; j < levels.length; j++) if (!segsOverlap(seg, levels[j])) break
+    for (levelsIndex = 0; levelsIndex < levels.length; levelsIndex++) {
+      if (!segsOverlap(seg, levels[levelsIndex])) break
+    }
 
-    if (j >= limit) {
+    if (levelsIndex >= limit) {
       extra.push(seg)
     } else {
-      ;(levels[j] || (levels[j] = [])).push(seg)
+      ;(levels[levelsIndex] || (levels[levelsIndex] = [])).push(seg)
     }
   }
 
-  for (i = 0; i < levels.length; i++) {
-    levels[i].sort((a, b) => a.left - b.left) //eslint-disable-line
+  for (segmentIndex = 0; segmentIndex < levels.length; segmentIndex++) {
+    levels[segmentIndex].sort((a, b) => a.left - b.left) //eslint-disable-line
   }
 
   return { levels, extra }

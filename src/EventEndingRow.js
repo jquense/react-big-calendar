@@ -68,8 +68,9 @@ class EventEndingRow extends React.Component {
 
     return range(slot, slot + span).every(s => {
       let count = eventsInSlot(segments, s)
+      let roomForEvent = this.props.leftoverSpace > this.props.eventHeight
 
-      return count === 1
+      return count === 1 && roomForEvent
     })
   }
 
@@ -101,6 +102,8 @@ EventEndingRow.propTypes = {
   segments: PropTypes.array,
   slots: PropTypes.number,
   onShowMore: PropTypes.func,
+  leftoverSpace: PropTypes.number,
+  eventHeight: PropTypes.number,
   ...EventRowMixin.propTypes,
 }
 

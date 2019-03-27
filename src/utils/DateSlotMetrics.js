@@ -13,7 +13,7 @@ export function getSlotMetrics() {
 
     let segments = events.map(evt => eventSegments(evt, range, accessors))
 
-    let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1))
+    let { levels, extra } = eventLevels(segments, Math.max(maxRows, 1))
     while (levels.length < minRows) levels.push([])
 
     return {

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cn from 'classnames';
-import moment from 'moment-timezone';
 
 import dates from './utils/dates';
 import { elementType } from './utils/propTypes';

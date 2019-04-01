@@ -200,6 +200,8 @@ export default class MultiTimeGrid extends Component {
             <div className="rbc-mv-left-scroller" style={{ width }} ref={(div) => { this.leftScroller = div; }}>
               <TimeColumn
                 {...this.props}
+                min={dates.merge(date, this.props.min)}
+                max={dates.merge(date, this.props.max)}
                 showLabels
                 ref={gutterRef}
                 className='rbc-time-gutter'

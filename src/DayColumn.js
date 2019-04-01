@@ -11,6 +11,7 @@ import localizer from './localizer'
 import { notify } from './utils/helpers';
 import { accessor, elementType, dateFormat } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
+import { isDaylightSavingsSpring } from './utils/daylightSavings';
 
 import getStyledEvents, { positionFromDate, startsBefore } from './utils/dayViewLayout'
 
@@ -250,7 +251,16 @@ class DaySlot extends React.Component {
 
       let current = (y - top) / range;
 
-      current = snapToSlot(minToDate(mins * current, min), step)
+      current = snapToSlot(minutesToDate(mins * current, min), step);
+
+      // This is needed to account for the removed 2 AM hour during spring
+      // forward
+      if (
+        isDaylightSavingsSpring(min) &&
+        current.getTimezoneOffset() !== min.getTimezoneOffset()
+      ) {
+        current = dates.add(current, 60, 'minutes');
+      }
 
       if (!this.state.selecting)
         this._initialDateSlot = current
@@ -331,7 +341,7 @@ class DaySlot extends React.Component {
 }
 
 
-function minToDate(min, date){
+function minutesToDate(min, date){
   var dt = new Date(date)
     , totalMins = dates.diff(dates.startOf(date, 'day'), date, 'minutes');
 

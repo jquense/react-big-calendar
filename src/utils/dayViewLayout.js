@@ -43,6 +43,26 @@ let getSlot = (event, accessor, min, totalMin, isEndAccessor = false) => {
 
   let time = get(event, accessor);
 
+  // If start/end of the event is on the day that daylight savings FALLS BACK,
+  // then we need to adjust because the number of calendar slots doesn't match
+  // the number of hours in that day (we don't show two slots for the two 2AMs
+  // that exist). So, for example, 5 AM on this day is actually 6 hours after
+  // 12 AM, but we will use 4 AM to calculate the difference when comparing to
+  // 12 AM since we want to obtain a practical result of a 5 hour difference
+  // (and 4 AM is five hours after 1 AM on this day due to having two 2 AMs).
+  //
+  // We don't have to do this for SPRINGING FORWARD because the calendar hides
+  // the 2AM hour that gets skipped over, so the number of slots does match the
+  // number of hours in the day.
+  const dayStart = dates.startOf(time, 'day');
+  const dayEnd = dates.endOf(time, 'day');
+  const daylightSavingsShift =
+    dayStart.getTimezoneOffset() - dayEnd.getTimezoneOffset();
+  const isFallingBack = daylightSavingsShift < 0;
+  if (isFallingBack && time.getTimezoneOffset() !== dayStart.getTimezoneOffset()) {
+    time = dates.add(time, daylightSavingsShift, 'minutes');
+  }
+
   // Handling long range events. Though long range events have a condition that
   // start and end times are less than 24 hours apart, we don't perform that check
   // here. That should already be handled at the TimeGrid/MultiTimeGrid level, and
@@ -166,21 +186,8 @@ let getYStyles = (idx, {
   let start = getSlot(event, startAccessor, min, totalMin)
   let end = Math.max(getSlot(event, endAccessor, min, totalMin, true), start + step)
 
-  /**
-   * Daylite savings
-   */
-  const startDayStart = dates.startOf(get(event, startAccessor), 'day');
-  const startDayEnd = dates.endOf(get(event, startAccessor), 'day');
-  const startDstOffset =
-    startDayStart.getTimezoneOffset() - startDayEnd.getTimezoneOffset();
-
-  const endDayStart = dates.startOf(get(event, startAccessor), 'day');
-  const endDayEnd = dates.endOf(get(event, startAccessor), 'day');
-  const endDstOffset =
-    endDayStart.getTimezoneOffset() - endDayEnd.getTimezoneOffset();
-
-  let top = ((start + startDstOffset) / totalMin) * 100;
-  let bottom = ((end + endDstOffset) / totalMin) * 100;
+  let top = (start / totalMin) * 100;
+  let bottom = (end / totalMin) * 100;
 
   return {
     top,

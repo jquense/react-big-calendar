@@ -52,6 +52,120 @@ storiesOf('module.Calendar.week', module)
     )
   })
 
+  .add('daylight savings check: spring', () => {
+    return (
+      <div style={{height: 500 }}>
+        <Calendar
+          defaultView="day"
+          events={[
+            {
+              title: '(PRE-DST) 10:00AM Saturday 3/9',
+              start: new Date(2019, 2, 9, 10),
+              end: new Date(2019, 2, 9, 10, 30),
+              allDay: false
+            },
+            {
+              title: '(PRE-DST) 12:00AM Sunday 3/10',
+              start: new Date(2019, 2, 10, 0),
+              end: new Date(2019, 2, 10, 0, 30),
+              allDay: false
+            },
+            {
+              title: '(PRE-DST) 1:00AM Sunday 3/10',
+              start: new Date(2019, 2, 10, 1),
+              end: new Date(2019, 2, 10, 1, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 3:00AM Sunday 3/10',
+              start: new Date(2019, 2, 10, 3),
+              end: new Date(2019, 2, 10, 3, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 11:00PM Sunday 3/10',
+              start: new Date(2019, 2, 10, 23),
+              end: new Date(2019, 2, 10, 23, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 10:00AM Monday 3/11',
+              start: new Date(2019, 2, 11, 10),
+              end: new Date(2019, 2, 11, 10, 30),
+              allDay: false
+            },
+          ]}
+          defaultDate={new Date(2019, 2, 10)}
+          selectable
+          onSelectSlot={({ start }) => {
+            // eslint-disable-next-line no-console
+            console.log(start);
+          }}
+          />
+      </div>
+    )
+  })
+
+  .add('daylight savings check: fall', () => {
+    return (
+      <div style={{height: 500 }}>
+        <Calendar
+          defaultView="day"
+          events={[
+            {
+              title: '(PRE-DST) 10:00AM Saturday 11/2',
+              start: new Date(2019, 10, 2, 10),
+              end: new Date(2019, 10, 2, 10, 30),
+              allDay: false
+            },
+            {
+              title: '(PRE-DST) 12:00AM Sunday 11/3',
+              start: new Date(2019, 10, 3, 0),
+              end: new Date(2019, 10, 3, 0, 30),
+              allDay: false
+            },
+            {
+              title: '(PRE-DST) 1:00AM Sunday 11/3',
+              start: new Date(2019, 10, 3, 1),
+              end: new Date(2019, 10, 3, 1, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 2:00AM Sunday 11/3',
+              start: new Date(2019, 10, 3, 2),
+              end: new Date(2019, 10, 3, 2, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 3:00AM Sunday 11/3',
+              start: new Date(2019, 10, 3, 3),
+              end: new Date(2019, 10, 3, 3, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 11:00PM Sunday 11/3',
+              start: new Date(2019, 10, 3, 23),
+              end: new Date(2019, 10, 3, 23, 30),
+              allDay: false
+            },
+            {
+              title: '(POST-DST) 10:00AM Monday 11/4',
+              start: new Date(2019, 10, 4, 10),
+              end: new Date(2019, 10, 4, 10, 30),
+              allDay: false
+            },
+          ]}
+          defaultDate={new Date(2019, 10, 3)}
+          selectable
+          onSelectSlot={({ start }) => {
+            // eslint-disable-next-line no-console
+            console.log(start);
+          }}
+          />
+      </div>
+    )
+  })
+
   .add('default view', () => {
     return (
       <div style={{height: 600}}>

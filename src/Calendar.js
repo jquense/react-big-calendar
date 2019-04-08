@@ -631,6 +631,11 @@ class Calendar extends React.Component {
        * An optional event time range for events that continue from another day
        */
       eventTimeRangeEndFormat: dateFormat,
+
+      /**
+       * Determines if meetings should overlap
+       */
+      overlapMeetings: PropTypes.bool
     }),
 
     /**
@@ -746,6 +751,8 @@ class Calendar extends React.Component {
 
     longPressThreshold: 250,
     getNow: () => new Date(),
+
+    overlapMeetings: true
   }
 
   constructor(...args) {

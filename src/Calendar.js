@@ -887,6 +887,7 @@ class Calendar extends React.Component {
       >
         {toolbar && (
           <CalToolbar
+            {...props}
             date={current}
             view={view}
             views={viewNames}

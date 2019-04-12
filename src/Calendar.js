@@ -635,7 +635,7 @@ class Calendar extends React.Component {
       /**
        * Determines if meetings should overlap
        */
-      overlapMeetings: PropTypes.bool
+      overlapEvents: PropTypes.bool,
     }),
 
     /**
@@ -752,7 +752,7 @@ class Calendar extends React.Component {
     longPressThreshold: 250,
     getNow: () => new Date(),
 
-    overlapMeetings: true
+    overlapEvents: true,
   }
 
   constructor(...args) {

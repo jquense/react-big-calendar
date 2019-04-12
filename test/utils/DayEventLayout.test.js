@@ -17,7 +17,7 @@ describe('getStyledEvents', () => {
           accessors,
           slotMetrics,
           minimumStartDifference: 10,
-          overlapMeetings: true
+          overlapEvents: true,
         })
         const results = styledEvents.map(result => ({
           width: Math.floor(result.style.width),

@@ -36,5 +36,8 @@ module.exports = {
       },
     ],
   },
-  plugins: [plugins.html(), plugins.extractCss()],
+  plugins: [
+    plugins.html({ title: 'React Big Calendar' }),
+    plugins.extractCss(),
+  ],
 }

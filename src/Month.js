@@ -36,7 +36,7 @@ class MonthView extends React.Component {
 
   componentWillReceiveProps({ date }) {
     this.setState({
-      needLimitMeasure: !dates.eq(date, this.props.date),
+      needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
     })
   }
 
@@ -273,6 +273,8 @@ class MonthView extends React.Component {
       start: slots[0],
       end: slots[slots.length - 1],
       action: slotInfo.action,
+      bounds: slotInfo.bounds,
+      box: slotInfo.box,
     })
   }
 

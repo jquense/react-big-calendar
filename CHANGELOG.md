@@ -1,3 +1,27 @@
+## [0.20.4](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.3...v0.20.4) (2019-03-21)
+
+
+### Bug Fixes
+
+* allow override onShowMore callback ([#1214](https://github.com/intljusticemission/react-big-calendar/issues/1214)) ([8fefeee](https://github.com/intljusticemission/react-big-calendar/commit/8fefeee)), closes [/github.com/intljusticemission/react-big-calendar/blob/f9a873368a78f5ced81b799c4dffe1095b3ab712/src/Calendar.jsx#L280](https://github.com//github.com/intljusticemission/react-big-calendar/blob/f9a873368a78f5ced81b799c4dffe1095b3ab712/src/Calendar.jsx/issues/L280) [/github.com/intljusticemission/react-big-calendar/blob/1d62c432eaa183ed6b38f08cfcec5ee7edcbfe41/src/Month.js#L300-L307](https://github.com//github.com/intljusticemission/react-big-calendar/blob/1d62c432eaa183ed6b38f08cfcec5ee7edcbfe41/src/Month.js/issues/L300-L307) [#1147](https://github.com/intljusticemission/react-big-calendar/issues/1147)
+* firefox event click bug ([#1262](https://github.com/intljusticemission/react-big-calendar/issues/1262)) ([b526416](https://github.com/intljusticemission/react-big-calendar/commit/b526416)), closes [#1173](https://github.com/intljusticemission/react-big-calendar/issues/1173)
+* issue with gutter width initialization ([#1181](https://github.com/intljusticemission/react-big-calendar/issues/1181)) ([69b28af](https://github.com/intljusticemission/react-big-calendar/commit/69b28af))
+* misplacement of current time indicator ([#1239](https://github.com/intljusticemission/react-big-calendar/issues/1239)) ([2d6e99e](https://github.com/intljusticemission/react-big-calendar/commit/2d6e99e)), closes [#1054](https://github.com/intljusticemission/react-big-calendar/issues/1054)
+* remove duplicate getter prop ([#1185](https://github.com/intljusticemission/react-big-calendar/issues/1185)) ([6b90182](https://github.com/intljusticemission/react-big-calendar/commit/6b90182))
+* remove global window from Map() usage, update eslint rules for new es6 environment ([#1195](https://github.com/intljusticemission/react-big-calendar/issues/1195)) ([4768188](https://github.com/intljusticemission/react-big-calendar/commit/4768188))
+* selecting events in mobile browsers ([#1233](https://github.com/intljusticemission/react-big-calendar/issues/1233)) ([2bc9fee](https://github.com/intljusticemission/react-big-calendar/commit/2bc9fee))
+
+
+### Features
+
+* add ability to set custom resource headers ([#1187](https://github.com/intljusticemission/react-big-calendar/issues/1187)) ([6708a45](https://github.com/intljusticemission/react-big-calendar/commit/6708a45)), closes [#1174](https://github.com/intljusticemission/react-big-calendar/issues/1174)
+* adding bounds and box on slot select in Month view ([#1241](https://github.com/intljusticemission/react-big-calendar/issues/1241)) ([2a870b0](https://github.com/intljusticemission/react-big-calendar/commit/2a870b0))
+* remove propTypes in production ([#1180](https://github.com/intljusticemission/react-big-calendar/issues/1180)) ([ce0d56b](https://github.com/intljusticemission/react-big-calendar/commit/ce0d56b))
+
+
+
+
+
 ## [0.20.2](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.0...v0.20.2) (2018-11-07)
 
 

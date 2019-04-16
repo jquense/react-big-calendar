@@ -341,7 +341,7 @@ class Selection {
 
     // Prevent emitting selectStart event until mouse is moved.
     // in Chrome on Windows, mouseMove event may be fired just after mouseDown event.
-    if (!old && !(w || h)) {
+    if (this.isClick(pageX, pageY) && !old && !(w || h)) {
       return
     }
 

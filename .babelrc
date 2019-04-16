@@ -1,7 +1,7 @@
 {
   "presets": ["jason"],
-  plugins: [
-    ['transform-react-remove-prop-types', { mode: 'wrap' }],
+  "plugins": [
+    ["transform-react-remove-prop-types", { "mode": "wrap" }]
   ],
   "env": {
     "esm": {

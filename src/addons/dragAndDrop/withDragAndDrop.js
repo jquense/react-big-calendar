@@ -23,13 +23,15 @@ import { mergeComponents } from './common'
  *
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *
- * The HOC adds `onEventDrop`, `onEventResize`, `onDragStart` callback properties if the events are
- * moved or resized. They are called with these signatures:
+ * The HOC adds `onEventDrop`, `onEventResize`, `onDragStart`, callback properties if the events are
+ * moved or resized. An additional callback property enables dropping draggable items from outside the
+ * calendar onto the calendar. These callbacks are called with these signatures:
  *
  * ```js
  *    function onEventDrop({ event, start, end, allDay }) {...}
  *    function onEventResize(type, { event, start, end, allDay }) {...}  // type is always 'drop'
  *    function onDragStart({ event, action, direction }) {...}
+ *    function onDropFromOutside({ start, end, allDay }) {...}
  * ```
  *
  * Moving and resizing of events has some subtlety which one should be aware of.
@@ -82,6 +84,7 @@ export default function withDragAndDrop(Calendar) {
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
         onBeginAction: PropTypes.func,
+        onDropFromOutside: PropTypes.fun,
         draggableAccessor: accessor,
         resizableAccessor: accessor,
         dragAndDropAction: PropTypes.object,
@@ -108,11 +111,16 @@ export default function withDragAndDrop(Calendar) {
           onStart: this.handleInteractionStart,
           onEnd: this.handleInteractionEnd,
           onBeginAction: this.handleBeginAction,
+          onDropFromOutside: this.props.onDropFromOutside,
           draggableAccessor: this.props.draggableAccessor,
           resizableAccessor: this.props.resizableAccessor,
           dragAndDropAction: this.state,
         },
       }
+    }
+
+    handleDragOver = event => {
+      event.preventDefault()
     }
 
     handleBeginAction = (event, action, direction) => {
@@ -147,12 +155,19 @@ export default function withDragAndDrop(Calendar) {
     }
 
     render() {
-      const { selectable, ...props } = this.props
+      const { selectable, elementProps, ...props } = this.props
       const { interacting } = this.state
       delete props.onEventDrop
       delete props.onEventResize
 
       props.selectable = selectable ? 'ignoreEvents' : false
+
+      const elementPropsWithDropFromOutside = this.props.onDropFromOutside
+        ? {
+            ...elementProps,
+            onDragOver: this.handleDragOver,
+          }
+        : elementProps
 
       props.className = cn(
         props.className,
@@ -160,7 +175,13 @@ export default function withDragAndDrop(Calendar) {
         !!interacting && 'rbc-addons-dnd-is-dragging'
       )
 
-      return <Calendar {...props} components={this.components} />
+      return (
+        <Calendar
+          {...props}
+          elementProps={elementPropsWithDropFromOutside}
+          components={this.components}
+        />
+      )
     }
   }
 

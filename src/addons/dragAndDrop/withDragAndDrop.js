@@ -24,8 +24,7 @@ import { mergeComponents } from './common'
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *
  * The HOC adds `onEventDrop`, `onEventResize` callback properties if the events are
- * moved or resized. An additional callback property enables dropping draggable items from outside the
- * calendar onto the calendar. These callbacks are called with these signatures:
+ * moved or resized. These callbacks are called with these signatures:
  *
  * ```js
  *    function onEventDrop({ event, start, end, allDay }) {...}
@@ -47,11 +46,11 @@ import { mergeComponents } from './common'
  * If you care about these corner cases, you can examine the `allDay` param suppled
  * in the callback to determine how the user dropped or resized the event.
  *
- * Additionally, it adds the callback props `onDropFromOutside` and `onDragOver`. By default,
- * the calendar will not respond to outside draggable items being dropped onto it. However,
- * if `onDropFromOutside` callback is passed, then when draggable DOM elements are dropped
- * on the calendar, the callback will fire, receiving an object with start and end times,
- * and an allDay boolean.
+ * Additionally, this HOC adds the callback props `onDropFromOutside` and `onDragOver`.
+ * By default, the calendar will not respond to outside draggable items being dropped
+ * onto it. However, if `onDropFromOutside` callback is passed, then when draggable
+ * DOM elements are dropped on the calendar, the callback will fire, receiving an
+ * object with start and end times, and an allDay boolean.
  *
  * If `onDropFromOutside` is passed, but `onDragOver` is not, any draggable event will be
  * droppable  onto the calendar by default. On the other hand, if an `onDragOver` callback

@@ -23,7 +23,7 @@ import { mergeComponents } from './common'
  *
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *
- * The HOC adds `onEventDrop`, `onEventResize` callback properties if the events are
+ * The HOC adds `onEventDrop`, `onEventResize`, and `onDragStart` callback properties if the events are
  * moved or resized. These callbacks are called with these signatures:
  *
  * ```js

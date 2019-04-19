@@ -23,7 +23,7 @@ import { mergeComponents } from './common'
  *
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *
- * The HOC adds `onEventDrop`, `onEventResize`, `onDragStart`, callback properties if the events are
+ * The HOC adds `onEventDrop`, `onEventResize` callback properties if the events are
  * moved or resized. An additional callback property enables dropping draggable items from outside the
  * calendar onto the calendar. These callbacks are called with these signatures:
  *
@@ -31,7 +31,6 @@ import { mergeComponents } from './common'
  *    function onEventDrop({ event, start, end, allDay }) {...}
  *    function onEventResize(type, { event, start, end, allDay }) {...}  // type is always 'drop'
  *    function onDragStart({ event, action, direction }) {...}
- *    function onDropFromOutside({ start, end, allDay }) {...}
  * ```
  *
  * Moving and resizing of events has some subtlety which one should be aware of.
@@ -48,6 +47,23 @@ import { mergeComponents } from './common'
  * If you care about these corner cases, you can examine the `allDay` param suppled
  * in the callback to determine how the user dropped or resized the event.
  *
+ * Additionally, it adds the callback props `onDropFromOutside` and `onDragOver`. By default,
+ * the calendar will not respond to outside draggable items being dropped onto it. However,
+ * if `onDropFromOutside` callback is passed, then when draggable DOM elements are dropped
+ * on the calendar, the callback will fire, receiving an object with start and end times,
+ * and an allDay boolean.
+ *
+ * If `onDropFromOutside` is passed, but `onDragOver` is not, any draggable event will be
+ * droppable  onto the calendar by default. On the other hand, if an `onDragOver` callback
+ * *is* passed, then it can discriminate as to whether a draggable item is droppable on the
+ * calendar. To designate a draggable item as droppable, call `event.preventDefault`
+ * inside `onDragOver`. If `event.preventDefault` is not called in the `onDragOver`
+ * callback, then the draggable item will not be droppable on the calendar.
+ *
+ * * ```js
+ *    function onDropFromOutside({ start, end, allDay }) {...}
+ *    function onDragOver(DragEvent: event) {...}
+ * ```
  * @param {*} Calendar
  * @param {*} backend
  */
@@ -57,6 +73,7 @@ export default function withDragAndDrop(Calendar) {
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
       onDragStart: PropTypes.func,
+      onDragOver: PropTypes.func,
 
       draggableAccessor: accessor,
       resizableAccessor: accessor,
@@ -119,7 +136,7 @@ export default function withDragAndDrop(Calendar) {
       }
     }
 
-    handleDragOver = event => {
+    defaultOnDragOver = event => {
       event.preventDefault()
     }
 
@@ -165,7 +182,7 @@ export default function withDragAndDrop(Calendar) {
       const elementPropsWithDropFromOutside = this.props.onDropFromOutside
         ? {
             ...elementProps,
-            onDragOver: this.handleDragOver,
+            onDragOver: this.props.onDragOver || this.defaultOnDragOver,
           }
         : elementProps
 

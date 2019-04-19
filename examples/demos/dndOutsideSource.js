@@ -28,6 +28,18 @@ class Dnd extends React.Component {
     this.setState({ draggedEvent: name })
   }
 
+  customOnDragOver = event => {
+    // check for undroppable is specific to this example
+    // and not part of API. This just demonstrates that
+    // onDragOver can optionally be passed to conditionally
+    // allow draggable items to be dropped on cal, based on
+    // whether event.preventDefault is called
+    if (this.state.draggedEvent !== 'undroppable') {
+      console.log('preventDefault')
+      event.preventDefault()
+    }
+  }
+
   onDropFromOutside = ({ start, end, allDay }) => {
     const { draggedEvent, counters } = this.state
     const event = {
@@ -126,6 +138,19 @@ class Dnd extends React.Component {
               {formatName(name, count)}
             </div>
           ))}
+          <div
+            style={{
+              border: '2px solid gray',
+              borderRadius: '4px',
+              width: '100px',
+              margin: '10px',
+            }}
+            draggable="true"
+            key={name}
+            onDragStart={() => this.handleDragStart('undroppable')}
+          >
+            Draggable but not for calendar.
+          </div>
         </Card>
         <DragAndDropCalendar
           selectable
@@ -133,6 +158,7 @@ class Dnd extends React.Component {
           events={this.state.events}
           onEventDrop={this.moveEvent}
           onDropFromOutside={this.onDropFromOutside}
+          onDragOver={this.customOnDragOver}
           resizable
           onEventResize={this.resizeEvent}
           onSelectSlot={this.newEvent}

@@ -735,7 +735,7 @@ class Calendar extends React.Component {
     drilldownView: views.DAY,
 
     titleAccessor: 'title',
-    tooltipAccessor: 'title',
+    tooltipAccessor: 'tooltip',
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',

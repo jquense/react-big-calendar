@@ -31,6 +31,7 @@ class EventContainerWrapper extends React.Component {
     draggable: PropTypes.shape({
       onStart: PropTypes.func,
       onEnd: PropTypes.func,
+      onDropFromOutside: PropTypes.func,
       onBeginAction: PropTypes.func,
       dragAndDropAction: PropTypes.object,
     }),
@@ -113,6 +114,21 @@ class EventContainerWrapper extends React.Component {
     this.update(event, slotMetrics.getRange(start, end))
   }
 
+  handleDropFromOutside = (point, boundaryBox) => {
+    const { slotMetrics } = this.props
+
+    let start = slotMetrics.closestSlotFromPoint(
+      { y: point.y, x: point.x },
+      boundaryBox
+    )
+
+    this.context.draggable.onDropFromOutside({
+      start,
+      end: slotMetrics.nextSlot(start),
+      allDay: false,
+    })
+  }
+
   _selectable = () => {
     let node = findDOMNode(this)
     let selector = (this._selector = new Selection(() =>
@@ -139,6 +155,16 @@ class EventContainerWrapper extends React.Component {
 
       if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
       if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
+    })
+
+    selector.on('dropFromOutside', point => {
+      if (!this.context.draggable.onDropFromOutside) return
+
+      const bounds = getBoundsForNode(node)
+
+      if (!pointInColumn(bounds, point)) return
+
+      this.handleDropFromOutside(point, bounds)
     })
 
     selector.on('selectStart', () => this.context.draggable.onStart())

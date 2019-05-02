@@ -19,7 +19,7 @@ export const mergeComponents = (components = {}, addons) => {
   const result = { ...components }
 
   keys.forEach(key => {
-    result[key] = components[key] ? nest(addons[key]) : addons[key]
+    result[key] = components[key] ? nest(components[key], addons[key]) : addons[key]
   })
   return result
 }

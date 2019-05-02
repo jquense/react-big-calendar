@@ -14,7 +14,7 @@ return (
   <DraggableCalendar
     localizer={myLocalizer}
     events={events}
-    dragAccessor="isDraggable"
+    draggableAccessor={event => true}
   />
 )
 ```

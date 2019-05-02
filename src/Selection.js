@@ -54,16 +54,21 @@ class Selection {
     this._handleMoveEvent = this._handleMoveEvent.bind(this)
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
     this._keyListener = this._keyListener.bind(this)
+    this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this)
 
     // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
     // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
     this._onTouchMoveWindowListener = addEventListener(
       'touchmove',
-      () => {},
+      () => { },
       window
     )
     this._onKeyDownListener = addEventListener('keydown', this._keyListener)
     this._onKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._onDropFromOutsideListener = addEventListener(
+      'drop',
+      this._dropFromOutsideListener
+    )
     this._addInitialEventListener()
   }
 
@@ -94,6 +99,7 @@ class Selection {
     this._onTouchMoveWindowListener && this._onTouchMoveWindowListener.remove()
     this._onInitialEventListener && this._onInitialEventListener.remove()
     this._onEndListener && this._onEndListener.remove()
+    this._onEscListener && this._onEscListener.remove()
     this._onMoveListener && this._onMoveListener.remove()
     this._onKeyUpListener && this._onKeyUpListener.remove()
     this._onKeyDownListener && this._onKeyDownListener.remove()
@@ -186,6 +192,19 @@ class Selection {
     }
   }
 
+  _dropFromOutsideListener(e) {
+    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
+
+    this.emit('dropFromOutside', {
+      x: pageX,
+      y: pageY,
+      clientX: clientX,
+      clientY: clientY,
+    })
+
+    e.preventDefault()
+  }
+
   _handleInitialEvent(e) {
     const { clientX, clientY, pageX, pageY } = getEventCoordinates(e)
     let node = this.container(),
@@ -237,6 +256,10 @@ class Selection {
           'mouseup',
           this._handleTerminatingEvent
         )
+        this._onEscListener = addEventListener(
+          'keydown',
+          this._handleTerminatingEvent
+        )
         this._onMoveListener = addEventListener(
           'mousemove',
           this._handleMoveEvent
@@ -274,7 +297,11 @@ class Selection {
 
     this._initialEventData = null
 
-    if (click && !inRoot) {
+    if (e.key === 'Escape') {
+      return this.emit('reset')
+    }
+
+    if (!inRoot) {
       return this.emit('reset')
     }
 
@@ -317,9 +344,10 @@ class Selection {
   }
 
   _handleMoveEvent(e) {
-    if (!this._initialEventData) {
+    if (this._initialEventData === null) {
       return
     }
+
     let { x, y } = this._initialEventData
     const { pageX, pageY } = getEventCoordinates(e)
     let w = Math.abs(x - pageX)
@@ -331,7 +359,7 @@ class Selection {
 
     // Prevent emitting selectStart event until mouse is moved.
     // in Chrome on Windows, mouseMove event may be fired just after mouseDown event.
-    if (!old && !(w || h)) {
+    if (this.isClick(pageX, pageY) && !old && !(w || h)) {
       return
     }
 
@@ -406,15 +434,15 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
   } = getBoundsForNode(nodeB)
 
   return !// 'a' bottom doesn't touch 'b' top
-  (
-    aBottom - tolerance < bTop ||
-    // 'a' top doesn't touch 'b' bottom
-    aTop + tolerance > bBottom ||
-    // 'a' right doesn't touch 'b' left
-    aRight - tolerance < bLeft ||
-    // 'a' left doesn't touch 'b' right
-    aLeft + tolerance > bRight
-  )
+    (
+      aBottom - tolerance < bTop ||
+      // 'a' top doesn't touch 'b' bottom
+      aTop + tolerance > bBottom ||
+      // 'a' right doesn't touch 'b' left
+      aRight - tolerance < bLeft ||
+      // 'a' left doesn't touch 'b' right
+      aLeft + tolerance > bRight
+    )
 }
 
 /**

@@ -5,12 +5,6 @@ import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
 class Week extends React.Component {
-  static propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-  }
-
-  static defaultProps = TimeGrid.defaultProps
-
   render() {
     let { date, ...props } = this.props
     let range = Week.range(date, this.props)
@@ -18,6 +12,12 @@ class Week extends React.Component {
     return <TimeGrid {...props} range={range} eventOffset={15} />
   }
 }
+
+Week.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+}
+
+Week.defaultProps = TimeGrid.defaultProps
 
 Week.navigate = (date, action) => {
   switch (action) {

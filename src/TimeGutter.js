@@ -6,18 +6,6 @@ import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
 export default class TimeGutter extends Component {
-  static propTypes = {
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
-    timeslots: PropTypes.number.isRequired,
-    step: PropTypes.number.isRequired,
-    getNow: PropTypes.func.isRequired,
-    components: PropTypes.object.isRequired,
-
-    localizer: PropTypes.object.isRequired,
-    resource: PropTypes.string,
-  }
-
   constructor(...args) {
     super(...args)
 
@@ -66,4 +54,16 @@ export default class TimeGutter extends Component {
       </div>
     )
   }
+}
+
+TimeGutter.propTypes = {
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
+  timeslots: PropTypes.number.isRequired,
+  step: PropTypes.number.isRequired,
+  getNow: PropTypes.func.isRequired,
+  components: PropTypes.object.isRequired,
+
+  localizer: PropTypes.object.isRequired,
+  resource: PropTypes.string,
 }

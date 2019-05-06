@@ -47,11 +47,14 @@ class Popup extends React.Component {
       slotStart,
       slotEnd,
       localizer,
+      overlayProps,
     } = this.props
 
     let { left, width, top } = this.props.position,
       topOffset = (this.state || {}).topOffset || 0,
       leftOffset = (this.state || {}).leftOffset || 0
+
+    let { ref } = overlayProps
 
     let style = {
       top: Math.max(0, top - topOffset),
@@ -104,6 +107,7 @@ Popup.propTypes = {
   onDoubleClick: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
+  overlayProps: PropTypes.object,
 }
 
 export default Popup

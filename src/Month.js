@@ -200,7 +200,7 @@ class MonthView extends React.Component {
       >
         {({ props }) => (
           <Popup
-            overlayProps={props}
+            {...props}
             accessors={accessors}
             getters={getters}
             selected={selected}

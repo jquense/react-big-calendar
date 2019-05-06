@@ -16,8 +16,8 @@ class Popup extends React.Component {
   }
 
   componentDidMount() {
-    let { popupOffset = 5, overlayProps } = this.props,
-      { top, left, width, height } = getOffset(overlayProps.ref.current),
+    let { popupOffset = 5, popperRef } = this.props,
+      { top, left, width, height } = getOffset(popperRef.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -47,14 +47,12 @@ class Popup extends React.Component {
       slotStart,
       slotEnd,
       localizer,
-      overlayProps,
+      popperRef,
     } = this.props
 
     let { left, width, top } = this.props.position,
       topOffset = (this.state || {}).topOffset || 0,
       leftOffset = (this.state || {}).leftOffset || 0
-
-    let { ref } = overlayProps
 
     let style = {
       top: Math.max(0, top - topOffset),
@@ -63,7 +61,7 @@ class Popup extends React.Component {
     }
 
     return (
-      <div ref={this.rootRef} style={style} className="rbc-overlay">
+      <div style={style} className="rbc-overlay" ref={popperRef}>
         <div className="rbc-overlay-header">
           {localizer.format(slotStart, 'dayHeaderFormat')}
         </div>
@@ -107,7 +105,9 @@ Popup.propTypes = {
   onDoubleClick: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
-  overlayProps: PropTypes.object,
+  popperRef: PropTypes.any,
 }
 
-export default Popup
+export default React.forwardRef((props, ref) => (
+  <Popup popperRef={ref} {...props} />
+))

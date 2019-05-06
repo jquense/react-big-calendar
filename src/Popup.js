@@ -9,9 +9,10 @@ import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
 class Popup extends React.Component {
+
   componentDidMount() {
     let { popupOffset = 5 } = this.props,
-      { top, left, width, height } = getOffset(this.refs.root),
+      { top, left, width, height } = getOffset(this.rootRef.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -58,7 +59,6 @@ class Popup extends React.Component {
 
     return (
       <div
-        ref="root"
         key={style}
         style={style}
         className="rbc-overlay"

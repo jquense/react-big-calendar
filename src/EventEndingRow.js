@@ -93,7 +93,7 @@ class EventEndingRow extends React.Component {
 
   showMore(slot, e) {
     e.preventDefault()
-    this.props.onShowMore(slot)
+    this.props.onShowMore(slot, e.target)
   }
 }
 

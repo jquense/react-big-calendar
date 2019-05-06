@@ -124,7 +124,7 @@
     "memoize-one": "^4.0.3",
     "prop-types": "^15.6.2",
     "prop-types-extra": "^1.1.0",
-    "react-overlays": "^0.8.3",
+    "react-overlays": "^1.2.0",
     "uncontrollable": "^6.0.0",
     "warning": "^4.0.2"
   },

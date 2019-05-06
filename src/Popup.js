@@ -108,6 +108,10 @@ Popup.propTypes = {
   popperRef: PropTypes.any,
 }
 
+/**
+ * The Overlay component, of react-overlays, creates a ref that is passed to the Popup, and
+ * requires proper ref forwarding to be used without error
+ */
 export default React.forwardRef((props, ref) => (
   <Popup popperRef={ref} {...props} />
 ))

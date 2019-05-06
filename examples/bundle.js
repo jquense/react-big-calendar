@@ -19097,10 +19097,10 @@ object-assign
               t = (this.state && this.state.overlay) || {},
               n = this.props,
               o = n.accessors,
-              r = n.localizer,
-              a = n.components,
-              i = n.getters,
-              l = n.selected
+              a = n.localizer,
+              i = n.components,
+              l = n.getters,
+              c = n.selected
             return s.default.createElement(
               g.Overlay,
               {
@@ -19116,21 +19116,23 @@ object-assign
                 },
               },
               function(n) {
-                var c = n.props
-                return s.default.createElement(m.default, {
-                  overlayProps: c,
-                  accessors: o,
-                  getters: i,
-                  selected: l,
-                  components: a,
-                  localizer: r,
-                  position: t.position,
-                  events: t.events,
-                  slotStart: t.date,
-                  slotEnd: t.end,
-                  onSelect: e.handleSelectEvent,
-                  onDoubleClick: e.handleDoubleClickEvent,
-                })
+                var d = n.props
+                return s.default.createElement(
+                  m.default,
+                  (0, r.default)({}, d, {
+                    accessors: o,
+                    getters: l,
+                    selected: c,
+                    components: i,
+                    localizer: a,
+                    position: t.position,
+                    events: t.events,
+                    slotStart: t.date,
+                    slotEnd: t.end,
+                    onSelect: e.handleSelectEvent,
+                    onDoubleClick: e.handleDoubleClickEvent,
+                  })
+                )
               }
             )
           }),
@@ -19444,19 +19446,20 @@ object-assign
     'use strict'
     var o = n(2)
     ;(t.__esModule = !0), (t.default = void 0)
-    var r = o(n(5)),
-      a = (o(n(0)), o(n(1))),
-      i = o(n(26)),
-      l = o(n(90)),
-      s = o(n(162)),
-      c = o(n(9)),
-      d = o(n(163)),
-      f = n(44),
-      u = (function(e) {
+    var r = o(n(4)),
+      a = o(n(5)),
+      i = (o(n(0)), o(n(1))),
+      l = o(n(26)),
+      s = o(n(90)),
+      c = o(n(162)),
+      d = o(n(9)),
+      f = o(n(163)),
+      u = n(44),
+      A = (function(e) {
         function t() {
           return e.apply(this, arguments) || this
         }
-        ;(0, r.default)(t, e)
+        ;(0, a.default)(t, e)
         var n = t.prototype
         return (
           (n.componentDidMount = function() {
@@ -19465,14 +19468,14 @@ object-assign
               n = this.props,
               o = n.popupOffset,
               r = void 0 === o ? 5 : o,
-              a = n.overlayProps,
-              c = (0, i.default)(a.ref.current),
-              d = c.top,
-              f = c.left,
-              u = c.width,
-              A = c.height,
-              p = window.innerHeight + (0, l.default)(window),
-              b = window.innerWidth + (0, s.default)(window),
+              a = n.popperRef,
+              i = (0, l.default)(a.current),
+              d = i.top,
+              f = i.left,
+              u = i.width,
+              A = i.height,
+              p = window.innerHeight + (0, s.default)(window),
+              b = window.innerWidth + (0, c.default)(window),
               h = d + A,
               m = f + u
             ;(h > p || m > b) &&
@@ -19486,52 +19489,53 @@ object-assign
               n = e.selected,
               o = e.getters,
               r = e.accessors,
-              i = e.components,
+              a = e.components,
               l = e.onSelect,
               s = e.onDoubleClick,
-              u = e.slotStart,
+              c = e.slotStart,
               A = e.slotEnd,
               p = e.localizer,
-              b = e.overlayProps,
+              b = e.popperRef,
               h = this.props.position,
               m = h.left,
               g = h.width,
               C = h.top,
               v = (this.state || {}).topOffset || 0,
               B = (this.state || {}).leftOffset || 0,
-              y = b.ref,
-              w = { top: Math.max(0, C - v), left: m - B, minWidth: g + g / 2 }
-            return a.default.createElement(
+              y = { top: Math.max(0, C - v), left: m - B, minWidth: g + g / 2 }
+            return i.default.createElement(
               'div',
-              { style: w, className: 'rbc-overlay', ref: y },
-              a.default.createElement(
+              { style: y, className: 'rbc-overlay', ref: b },
+              i.default.createElement(
                 'div',
                 { className: 'rbc-overlay-header' },
-                p.format(u, 'dayHeaderFormat')
+                p.format(c, 'dayHeaderFormat')
               ),
               t.map(function(e, t) {
-                return a.default.createElement(d.default, {
+                return i.default.createElement(f.default, {
                   key: t,
                   type: 'popup',
                   event: e,
                   getters: o,
                   onSelect: l,
                   accessors: r,
-                  components: i,
+                  components: a,
                   onDoubleClick: s,
-                  continuesPrior: c.default.lt(r.end(e), u, 'day'),
-                  continuesAfter: c.default.gte(r.start(e), A, 'day'),
-                  selected: (0, f.isSelected)(e, n),
+                  continuesPrior: d.default.lt(r.end(e), c, 'day'),
+                  continuesAfter: d.default.gte(r.start(e), A, 'day'),
+                  selected: (0, u.isSelected)(e, n),
                 })
               })
             )
           }),
           t
         )
-      })(a.default.Component)
-    u.propTypes = {}
-    var A = u
-    ;(t.default = A), (e.exports = t.default)
+      })(i.default.Component)
+    A.propTypes = {}
+    var p = i.default.forwardRef(function(e, t) {
+      return i.default.createElement(A, (0, r.default)({ popperRef: t }, e))
+    })
+    ;(t.default = p), (e.exports = t.default)
   },
   function(e, t, n) {
     'use strict'

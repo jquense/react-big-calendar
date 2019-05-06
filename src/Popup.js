@@ -9,7 +9,6 @@ import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
 class Popup extends React.Component {
-
   componentDidMount() {
     let { popupOffset = 5 } = this.props,
       { top, left, width, height } = getOffset(this.rootRef.current),
@@ -58,12 +57,7 @@ class Popup extends React.Component {
     }
 
     return (
-      <div
-        key={style}
-        style={style}
-        className="rbc-overlay"
-        ref={ref}
-      >
+      <div style={style} className="rbc-overlay" ref={ref}>
         <div className="rbc-overlay-header">
           {localizer.format(slotStart, 'dayHeaderFormat')}
         </div>

@@ -3278,11 +3278,11 @@
             }),
             (n.checkOverflow = function() {
               if (!n._updatingOverflow) {
-                var e =
-                  n.refs.content.scrollHeight > n.refs.content.clientHeight
-                n.state.isOverflowing !== e &&
+                var e = n.contentRef.current,
+                  t = e.scrollHeight > e.clientHeight
+                n.state.isOverflowing !== t &&
                   ((n._updatingOverflow = !0),
-                  n.setState({ isOverflowing: e }, function() {
+                  n.setState({ isOverflowing: t }, function() {
                     n._updatingOverflow = !1
                   }))
               }
@@ -3292,6 +3292,7 @@
             })),
             (n.state = { gutterWidth: void 0, isOverflowing: null }),
             (n.scrollRef = c.default.createRef()),
+            (n.contentRef = c.default.createRef()),
             n
           )
         }
@@ -3429,7 +3430,7 @@
                 c.default.createElement(
                   'div',
                   {
-                    ref: 'content',
+                    ref: this.contentRef,
                     className: 'rbc-time-content',
                     onScroll: this.handleScroll,
                   },
@@ -3470,7 +3471,7 @@
           }),
           (n.applyScroll = function() {
             if (this._scrollRatio) {
-              var e = this.refs.content
+              var e = this.contentRef.current
               ;(e.scrollTop = e.scrollHeight * this._scrollRatio),
                 (this._scrollRatio = null)
             }
@@ -5029,7 +5030,7 @@
           n
         )
       }
-      function L() {
+      function R() {
         var e, t
         this.state.eventsEnabled &&
           (cancelAnimationFrame(this.scheduleUpdate),
@@ -5045,7 +5046,7 @@
           (t.eventsEnabled = !1),
           t)))
       }
-      function R(e) {
+      function L(e) {
         return '' !== e && !isNaN(parseFloat(e)) && isFinite(e)
       }
       function I(e, t) {
@@ -5053,7 +5054,7 @@
           var o = ''
           ;-1 !==
             ['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(n) &&
-            R(t[n]) &&
+            L(t[n]) &&
             (o = 'px'),
             (e.style[n] = t[n] + o)
         })
@@ -5185,7 +5186,7 @@
               })
           })).forEach(function(e, t) {
             e.forEach(function(n, o) {
-              R(n) && (r[t] += n * ('-' === e[o - 1] ? -1 : 1))
+              L(n) && (r[t] += n * ('-' === e[o - 1] ? -1 : 1))
             })
           }),
           r
@@ -5234,7 +5235,7 @@
                   l = o.split('-')[0],
                   s = void 0
                 return (
-                  (s = R(+n) ? [+n, 0] : $(n, a, i, l)),
+                  (s = L(+n) ? [+n, 0] : $(n, a, i, l)),
                   'left' === l
                     ? ((a.top += s[0]), (a.left -= s[1]))
                     : 'right' === l
@@ -5771,7 +5772,7 @@
               {
                 key: 'disableEventListeners',
                 value: function() {
-                  return L.call(this)
+                  return R.call(this)
                 },
               },
             ]),
@@ -8357,7 +8358,7 @@ object-assign
       var e = k.current
       return null === e && g('321'), e
     }
-    var L = {
+    var R = {
         Children: {
           map: function(e, t, n) {
             if (null == e) return e
@@ -8499,8 +8500,8 @@ object-assign
           assign: o,
         },
       },
-      R = { default: L },
-      I = (R && L) || R
+      L = { default: R },
+      I = (L && R) || L
     e.exports = I.default || I
   },
   function(e, t, n) {
@@ -11229,14 +11230,14 @@ object-assign
         ((n._dispatchListeners = k(n._dispatchListeners, t)),
         (n._dispatchInstances = k(n._dispatchInstances, e)))
     }
-    function L(e) {
+    function R(e) {
       if (e && e.dispatchConfig.phasedRegistrationNames) {
         for (var t = e._targetInst, n = []; t; ) n.push(t), (t = P(t))
         for (t = n.length; 0 < t--; ) U(n[t], 'captured', e)
         for (t = 0; t < n.length; t++) U(n[t], 'bubbled', e)
       }
     }
-    function R(e, t, n) {
+    function L(e, t, n) {
       e &&
         n &&
         n.dispatchConfig.registrationName &&
@@ -11245,10 +11246,10 @@ object-assign
         (n._dispatchInstances = k(n._dispatchInstances, e)))
     }
     function I(e) {
-      e && e.dispatchConfig.registrationName && R(e._targetInst, null, e)
+      e && e.dispatchConfig.registrationName && L(e._targetInst, null, e)
     }
     function H(e) {
-      E(e, L)
+      E(e, R)
     }
     var Y = !(
       'undefined' == typeof window ||
@@ -11638,7 +11639,7 @@ object-assign
         t
       )
     }
-    function Le(e) {
+    function Re(e) {
       var t = e.type
       return (
         (e = e.nodeName) &&
@@ -11646,10 +11647,10 @@ object-assign
         ('checkbox' === t || 'radio' === t)
       )
     }
-    function Re(e) {
+    function Le(e) {
       e._valueTracker ||
         (e._valueTracker = (function(e) {
-          var t = Le(e) ? 'checked' : 'value',
+          var t = Re(e) ? 'checked' : 'value',
             n = Object.getOwnPropertyDescriptor(e.constructor.prototype, t),
             o = '' + e[t]
           if (
@@ -11693,7 +11694,7 @@ object-assign
       var n = t.getValue(),
         o = ''
       return (
-        e && (o = Le(e) ? (e.checked ? 'true' : 'false') : e.value),
+        e && (o = Re(e) ? (e.checked ? 'true' : 'false') : e.value),
         (e = o) !== n && (t.setValue(e), !0)
       )
     }
@@ -12100,20 +12101,20 @@ object-assign
         },
       },
       Ut = se.extend({ view: null, detail: null }),
-      Lt = {
+      Rt = {
         Alt: 'altKey',
         Control: 'ctrlKey',
         Meta: 'metaKey',
         Shift: 'shiftKey',
       }
-    function Rt(e) {
+    function Lt(e) {
       var t = this.nativeEvent
       return t.getModifierState
         ? t.getModifierState(e)
-        : !!(e = Lt[e]) && !!t[e]
+        : !!(e = Rt[e]) && !!t[e]
     }
     function It() {
-      return Rt
+      return Lt
     }
     var Ht = 0,
       Yt = 0,
@@ -12257,8 +12258,8 @@ object-assign
 
           )
             a.push(o), (o = P(o))
-          for (o = 0; o < t.length; o++) R(t[o], 'bubbled', e)
-          for (o = a.length; 0 < o--; ) R(a[o], 'captured', n)
+          for (o = 0; o < t.length; o++) L(t[o], 'bubbled', e)
+          for (o = a.length; 0 < o--; ) L(a[o], 'captured', n)
           return [e, n]
         },
       }
@@ -12903,16 +12904,16 @@ object-assign
           ),
         },
       },
-      Ln = null,
       Rn = null,
+      Ln = null,
       In = null,
       Hn = !1
     function Yn(e, t) {
       var n =
         t.window === t ? t.document : 9 === t.nodeType ? t : t.ownerDocument
-      return Hn || null == Ln || Ln !== On(n)
+      return Hn || null == Rn || Rn !== On(n)
         ? null
-        : ('selectionStart' in (n = Ln) && Wn(n)
+        : ('selectionStart' in (n = Rn) && Wn(n)
             ? (n = { start: n.selectionStart, end: n.selectionEnd })
             : (n = {
                 anchorNode: (n = (
@@ -12926,8 +12927,8 @@ object-assign
           In && en(In, n)
             ? null
             : ((In = n),
-              ((e = se.getPooled(Un.select, Rn, e, t)).type = 'select'),
-              (e.target = Ln),
+              ((e = se.getPooled(Un.select, Ln, e, t)).type = 'select'),
+              (e.target = Rn),
               H(e),
               e))
     }
@@ -12955,10 +12956,10 @@ object-assign
         switch (((a = t ? W(t) : window), e)) {
           case 'focus':
             ;(Ne(a) || 'true' === a.contentEditable) &&
-              ((Ln = a), (Rn = t), (In = null))
+              ((Rn = a), (Ln = t), (In = null))
             break
           case 'blur':
-            In = Rn = Ln = null
+            In = Ln = Rn = null
             break
           case 'mousedown':
             Hn = !0
@@ -13355,7 +13356,7 @@ object-assign
         !0
       )
     }
-    function Lo(e, t, n) {
+    function Ro(e, t, n) {
       var o = e.stateNode
       o || i('169'),
         n
@@ -13367,7 +13368,7 @@ object-assign
           : So(To),
         Fo(To, n)
     }
-    var Ro = null,
+    var Lo = null,
       Io = null
     function Ho(e) {
       return function(t) {
@@ -13608,7 +13609,7 @@ object-assign
         a = t.contextType
       return (
         'object' == typeof a && null !== a
-          ? (a = Ra(a))
+          ? (a = La(a))
           : ((r = qo(t) ? Oo : _o.current),
             (a = (o = null != (o = t.contextTypes)) ? jo(e, r) : Mo)),
         (t = new t(n, a)),
@@ -13636,7 +13637,7 @@ object-assign
       ;(r.props = n), (r.state = e.memoizedState), (r.refs = ar)
       var a = t.contextType
       'object' == typeof a && null !== a
-        ? (r.context = Ra(a))
+        ? (r.context = La(a))
         : ((a = qo(t) ? Oo : _o.current), (r.context = jo(e, a))),
         null !== (a = e.updateQueue) &&
           (ni(e, a, n, r, o), (r.state = e.memoizedState)),
@@ -14045,8 +14046,8 @@ object-assign
       Nr = null,
       Pr = null,
       Ur = null,
-      Lr = null,
       Rr = null,
+      Lr = null,
       Ir = 0,
       Hr = null,
       Yr = 0,
@@ -14075,8 +14076,8 @@ object-assign
           ;(Vr = !1),
             (Gr += 1),
             (Pr = null !== e ? e.memoizedState : null),
-            (Rr = Ur),
-            (Hr = Lr = Nr = null),
+            (Lr = Ur),
+            (Hr = Rr = Nr = null),
             (qr.current = fa),
             (t = n(o, r))
         } while (Vr)
@@ -14090,7 +14091,7 @@ object-assign
         (e.effectTag |= Yr),
         (e = null !== Nr && null !== Nr.next),
         (zr = 0),
-        (Rr = Lr = Ur = Pr = Nr = Wr = null),
+        (Lr = Rr = Ur = Pr = Nr = Wr = null),
         (Ir = 0),
         (Hr = null),
         (Yr = 0),
@@ -14101,7 +14102,7 @@ object-assign
     function Jr() {
       ;(qr.current = ca),
         (zr = 0),
-        (Rr = Lr = Ur = Pr = Nr = Wr = null),
+        (Lr = Rr = Ur = Pr = Nr = Wr = null),
         (Ir = 0),
         (Hr = null),
         (Yr = 0),
@@ -14117,11 +14118,11 @@ object-assign
         baseUpdate: null,
         next: null,
       }
-      return null === Lr ? (Ur = Lr = e) : (Lr = Lr.next = e), Lr
+      return null === Rr ? (Ur = Rr = e) : (Rr = Rr.next = e), Rr
     }
     function ea() {
-      if (null !== Rr)
-        (Rr = (Lr = Rr).next), (Pr = null !== (Nr = Pr) ? Nr.next : null)
+      if (null !== Lr)
+        (Lr = (Rr = Lr).next), (Pr = null !== (Nr = Pr) ? Nr.next : null)
       else {
         null === Pr && i('310')
         var e = {
@@ -14131,9 +14132,9 @@ object-assign
           baseUpdate: Nr.baseUpdate,
           next: null,
         }
-        ;(Lr = null === Lr ? (Ur = e) : (Lr.next = e)), (Pr = Nr.next)
+        ;(Rr = null === Rr ? (Ur = e) : (Rr.next = e)), (Pr = Nr.next)
       }
-      return Lr
+      return Rr
     }
     function ta(e, t) {
       return 'function' == typeof t ? t(e) : t
@@ -14285,7 +14286,7 @@ object-assign
       }
     }
     var ca = {
-        readContext: Ra,
+        readContext: La,
         useCallback: Kr,
         useContext: Kr,
         useEffect: Kr,
@@ -14298,11 +14299,11 @@ object-assign
         useDebugValue: Kr,
       },
       da = {
-        readContext: Ra,
+        readContext: La,
         useCallback: function(e, t) {
           return (Zr().memoizedState = [e, void 0 === t ? null : t]), e
         },
-        useContext: Ra,
+        useContext: La,
         useEffect: function(e, t) {
           return ra(516, jr | Or, e, t)
         },
@@ -14358,7 +14359,7 @@ object-assign
         useDebugValue: la,
       },
       fa = {
-        readContext: Ra,
+        readContext: La,
         useCallback: function(e, t) {
           var n = ea()
           t = void 0 === t ? null : t
@@ -14367,7 +14368,7 @@ object-assign
             ? o[0]
             : ((n.memoizedState = [e, t]), e)
         },
-        useContext: Ra,
+        useContext: La,
         useEffect: function(e, t) {
           return aa(516, jr | Or, e, t)
         },
@@ -14479,7 +14480,7 @@ object-assign
       n = n.render
       var a = t.ref
       return (
-        La(t, r),
+        Ra(t, r),
         (o = Xr(e, t, n, o, a, r)),
         null === e || ya
           ? ((t.effectTag |= 1), wa(e, t, o, r), t.child)
@@ -14531,7 +14532,7 @@ object-assign
       var a = qo(n) ? Oo : _o.current
       return (
         (a = jo(t, a)),
-        La(t, r),
+        Ra(t, r),
         (n = Xr(e, t, n, o, a, r)),
         null === e || ya
           ? ((t.effectTag |= 1), wa(e, t, n, r), t.child)
@@ -14546,7 +14547,7 @@ object-assign
         var a = !0
         Uo(t)
       } else a = !1
-      if ((La(t, r), null === t.stateNode))
+      if ((Ra(t, r), null === t.stateNode))
         null !== e &&
           ((e.alternate = null), (t.alternate = null), (t.effectTag |= 2)),
           cr(t, n, o),
@@ -14559,7 +14560,7 @@ object-assign
         var s = i.context,
           c = n.contextType
         'object' == typeof c && null !== c
-          ? (c = Ra(c))
+          ? (c = La(c))
           : (c = jo(t, (c = qo(n) ? Oo : _o.current)))
         var d = n.getDerivedStateFromProps,
           f =
@@ -14603,7 +14604,7 @@ object-assign
           (i.props = t.type === t.elementType ? l : rr(t.type, l)),
           (s = i.context),
           'object' == typeof (c = n.contextType) && null !== c
-            ? (c = Ra(c))
+            ? (c = La(c))
             : (c = jo(t, (c = qo(n) ? Oo : _o.current))),
           (f =
             'function' == typeof (d = n.getDerivedStateFromProps) ||
@@ -14655,7 +14656,7 @@ object-assign
     function Ma(e, t, n, o, r, a) {
       Da(e, t)
       var i = 0 != (64 & t.effectTag)
-      if (!o && !i) return r && Lo(t, n, !1), Oa(e, t, a)
+      if (!o && !i) return r && Ro(t, n, !1), Oa(e, t, a)
       ;(o = t.stateNode), (Ba.current = t)
       var l =
         i && 'function' != typeof n.getDerivedStateFromError ? null : o.render()
@@ -14665,7 +14666,7 @@ object-assign
           ? ((t.child = hr(t, e.child, null, a)), (t.child = hr(t, null, l, a)))
           : wa(e, t, l, a),
         (t.memoizedState = o.state),
-        r && Lo(t, n, !0),
+        r && Ro(t, n, !0),
         t.child
       )
     }
@@ -14791,7 +14792,7 @@ object-assign
             (e = t.pendingProps)
           var r = jo(t, _o.current)
           if (
-            (La(t, n),
+            (Ra(t, n),
             (r = Xr(null, t, o, e, r, n)),
             (t.effectTag |= 1),
             'object' == typeof r &&
@@ -15028,8 +15029,8 @@ object-assign
           return (
             (r = t.type),
             (o = (a = t.pendingProps).children),
-            La(t, n),
-            (o = o((r = Ra(r, a.unstable_observedBits)))),
+            Ra(t, n),
+            (o = o((r = La(r, a.unstable_observedBits)))),
             (t.effectTag |= 1),
             wa(e, t, o, n),
             t.child
@@ -15050,7 +15051,7 @@ object-assign
               ((e.alternate = null), (t.alternate = null), (t.effectTag |= 2)),
             (t.tag = 1),
             qo(o) ? ((e = !0), Uo(t)) : (e = !1),
-            La(t, n),
+            Ra(t, n),
             cr(t, o, r),
             fr(t, o, r, n),
             Ma(null, t, o, !0, e, n)
@@ -15070,13 +15071,13 @@ object-assign
       var t = qa.current
       So(qa), (e.type._context._currentValue = t)
     }
-    function La(e, t) {
+    function Ra(e, t) {
       ;(za = e), (Na = Wa = null)
       var n = e.contextDependencies
       null !== n && n.expirationTime >= t && (ya = !0),
         (e.contextDependencies = null)
     }
-    function Ra(e, t) {
+    function La(e, t) {
       return (
         Na !== e &&
           !1 !== t &&
@@ -15855,7 +15856,7 @@ object-assign
         Oi = Oi.nextEffect
       }
     }
-    function Li() {
+    function Ri() {
       for (; null !== Oi; ) {
         if (256 & Oi.effectTag)
           e: {
@@ -15891,7 +15892,7 @@ object-assign
         Oi = Oi.nextEffect
       }
     }
-    function Ri(e, t) {
+    function Li(e, t) {
       for (; null !== Oi; ) {
         var n = Oi.effectTag
         if (36 & n) {
@@ -16070,7 +16071,7 @@ object-assign
         r = !1
         var l = void 0
         try {
-          Li()
+          Ri()
         } catch (e) {
           ;(r = !0), (l = e)
         }
@@ -16098,7 +16099,7 @@ object-assign
       ) {
         ;(r = !1), (l = void 0)
         try {
-          Ri(e, n)
+          Li(e, n)
         } catch (e) {
           ;(r = !0), (l = e)
         }
@@ -16139,7 +16140,7 @@ object-assign
           (Wi = s)
       }
       ;(Di = ji = !1),
-        'function' == typeof Ro && Ro(t.stateNode),
+        'function' == typeof Lo && Lo(t.stateNode),
         (n = t.expirationTime),
         0 === (t = (t = t.childExpirationTime) > n ? t : n) && (Ni = null),
         (function(e, t) {
@@ -16234,10 +16235,10 @@ object-assign
                           : C.hasOwnProperty(l) && null != d && po(A, l))
                     switch (c) {
                       case 'input':
-                        Re(a), wt(a, u, !0)
+                        Le(a), wt(a, u, !0)
                         break
                       case 'textarea':
-                        Re(a), Jn(a)
+                        Le(a), Jn(a)
                         break
                       case 'select':
                       case 'option':
@@ -16344,10 +16345,10 @@ object-assign
                       }
                     switch (f) {
                       case 'input':
-                        Re(A), wt(A, u, !1)
+                        Le(A), wt(A, u, !1)
                         break
                       case 'textarea':
-                        Re(A), Jn(A)
+                        Le(A), Jn(A)
                         break
                       case 'option':
                         null != u.value &&
@@ -17042,7 +17043,7 @@ object-assign
         (this._didCommit = !1),
         (this._onCommit = this._onCommit.bind(this))
     }
-    function Ll(e, t, n) {
+    function Rl(e, t, n) {
       ;(e = {
         current: (t = Vo(3, null, null, t ? 3 : 0)),
         containerInfo: e,
@@ -17067,7 +17068,7 @@ object-assign
       }),
         (this._internalRoot = t.stateNode = e)
     }
-    function Rl(e) {
+    function Ll(e) {
       return !(
         !e ||
         (1 !== e.nodeType &&
@@ -17106,7 +17107,7 @@ object-assign
               !t)
             )
               for (var n; (n = e.lastChild); ) e.removeChild(n)
-            return new Ll(e, !1, t)
+            return new Rl(e, !1, t)
           })(n, o)),
           'function' == typeof r)
         ) {
@@ -17128,7 +17129,7 @@ object-assign
       var n =
         2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : null
       return (
-        Rl(t) || i('200'),
+        Ll(t) || i('200'),
         (function(e, t, n) {
           var o =
             3 < arguments.length && void 0 !== arguments[3]
@@ -17235,7 +17236,7 @@ object-assign
             }
         }
       }),
-      (Ll.prototype.render = function(e, t) {
+      (Rl.prototype.render = function(e, t) {
         var n = this._internalRoot,
           o = new Ul()
         return (
@@ -17244,7 +17245,7 @@ object-assign
           o
         )
       }),
-      (Ll.prototype.unmount = function(e) {
+      (Rl.prototype.unmount = function(e) {
         var t = this._internalRoot,
           n = new Ul()
         return (
@@ -17253,7 +17254,7 @@ object-assign
           n
         )
       }),
-      (Ll.prototype.legacy_renderSubtreeIntoContainer = function(e, t, n) {
+      (Rl.prototype.legacy_renderSubtreeIntoContainer = function(e, t, n) {
         var o = this._internalRoot,
           r = new Ul()
         return (
@@ -17262,7 +17263,7 @@ object-assign
           r
         )
       }),
-      (Ll.prototype.createBatch = function() {
+      (Rl.prototype.createBatch = function() {
         var e = new Pl(this),
           t = e._expirationTime,
           n = this._internalRoot,
@@ -17295,21 +17296,21 @@ object-assign
         )
       },
       hydrate: function(e, t, n) {
-        return Rl(t) || i('200'), Il(null, e, t, !0, n)
+        return Ll(t) || i('200'), Il(null, e, t, !0, n)
       },
       render: function(e, t, n) {
-        return Rl(t) || i('200'), Il(null, e, t, !1, n)
+        return Ll(t) || i('200'), Il(null, e, t, !1, n)
       },
       unstable_renderSubtreeIntoContainer: function(e, t, n, o) {
         return (
-          Rl(n) || i('200'),
+          Ll(n) || i('200'),
           (null == e || void 0 === e._reactInternalFiber) && i('38'),
           Il(e, t, n, !1, o)
         )
       },
       unmountComponentAtNode: function(e) {
         return (
-          Rl(e) || i('40'),
+          Ll(e) || i('40'),
           !!e._reactRootContainer &&
             (jl(function() {
               Il(null, null, e, !1, function() {
@@ -17336,8 +17337,8 @@ object-assign
       },
       unstable_createRoot: function(e, t) {
         return (
-          Rl(e) || i('299', 'unstable_createRoot'),
-          new Ll(e, !0, null != t && !0 === t.hydrate)
+          Ll(e) || i('299', 'unstable_createRoot'),
+          new Rl(e, !0, null != t && !0 === t.hydrate)
         )
       },
       unstable_flushControlled: function(e) {
@@ -17375,7 +17376,7 @@ object-assign
         if (t.isDisabled || !t.supportsFiber) return !0
         try {
           var n = t.inject(e)
-          ;(Ro = Ho(function(e) {
+          ;(Lo = Ho(function(e) {
             return t.onCommitFiberRoot(n, e)
           })),
             (Io = Ho(function(e) {
@@ -18605,7 +18606,7 @@ object-assign
               }),
             l.default.createElement(
               g,
-              (0, r.default)({ ref: 'view' }, m, {
+              (0, r.default)({}, m, {
                 events: o,
                 date: f,
                 getNow: u,
@@ -18909,7 +18910,7 @@ object-assign
                 }),
                 s.default.createElement(C.default, {
                   key: n,
-                  ref: 0 === n ? 'slotRow' : void 0,
+                  ref: 0 === n ? t.slotRowRef : void 0,
                   container: t.getContainer,
                   className: 'rbc-month-row',
                   getNow: l,
@@ -19015,6 +19016,7 @@ object-assign
             }),
             (t._bgRows = []),
             (t._pendingSelection = []),
+            (t.slotRowRef = s.default.createRef()),
             (t.state = { rowLimit: 5, needLimitMeasure: !0 }),
             t
           )
@@ -19135,7 +19137,7 @@ object-assign
           (n.measureRowLimit = function() {
             this.setState({
               needLimitMeasure: !1,
-              rowLimit: this.refs.slotRow.getRowLimit(),
+              rowLimit: this.slotRowRef.current.getRowLimit(),
             })
           }),
           (n.selectDates = function(e) {
@@ -19442,39 +19444,40 @@ object-assign
     'use strict'
     var o = n(2)
     ;(t.__esModule = !0), (t.default = void 0)
-    var r = o(n(4)),
-      a = o(n(5)),
-      i = (o(n(0)), o(n(1))),
-      l = o(n(26)),
-      s = o(n(90)),
-      c = o(n(162)),
-      d = o(n(9)),
-      f = o(n(163)),
-      u = n(44),
-      A = (function(e) {
+    var r = o(n(5)),
+      a = (o(n(0)), o(n(1))),
+      i = o(n(26)),
+      l = o(n(90)),
+      s = o(n(162)),
+      c = o(n(9)),
+      d = o(n(163)),
+      f = n(44),
+      u = (function(e) {
         function t() {
           return e.apply(this, arguments) || this
         }
-        ;(0, a.default)(t, e)
+        ;(0, r.default)(t, e)
         var n = t.prototype
         return (
           (n.componentDidMount = function() {
             var e,
               t,
-              n = this.props.popupOffset,
-              o = void 0 === n ? 5 : n,
-              r = (0, l.default)(this.refs.root),
-              a = r.top,
-              i = r.left,
-              d = r.width,
-              f = r.height,
-              u = window.innerHeight + (0, s.default)(window),
-              A = window.innerWidth + (0, c.default)(window),
-              p = a + f,
-              b = i + d
-            ;(p > u || b > A) &&
-              (p > u && (e = p - u + (o.y || +o || 0)),
-              b > A && (t = b - A + (o.x || +o || 0)),
+              n = this.props,
+              o = n.popupOffset,
+              r = void 0 === o ? 5 : o,
+              a = n.overlayProps,
+              c = (0, i.default)(a.ref.current),
+              d = c.top,
+              f = c.left,
+              u = c.width,
+              A = c.height,
+              p = window.innerHeight + (0, l.default)(window),
+              b = window.innerWidth + (0, s.default)(window),
+              h = d + A,
+              m = f + u
+            ;(h > p || m > b) &&
+              (h > p && (e = h - p + (r.y || +r || 0)),
+              m > b && (t = m - b + (r.x || +r || 0)),
               this.setState({ topOffset: e, leftOffset: t }))
           }),
           (n.render = function() {
@@ -19482,59 +19485,53 @@ object-assign
               t = e.events,
               n = e.selected,
               o = e.getters,
-              a = e.accessors,
-              l = e.components,
-              s = e.onSelect,
-              c = e.onDoubleClick,
-              A = e.slotStart,
-              p = e.slotEnd,
-              b = e.localizer,
-              h = e.overlayProps,
-              m = this.props.position,
-              g = m.left,
-              C = m.width,
-              v = m.top,
-              B = (this.state || {}).topOffset || 0,
-              y = (this.state || {}).leftOffset || 0,
-              w = (0, r.default)({}, h.style, {
-                top: Math.max(0, v - B),
-                left: g - y,
-                minWidth: C + C / 2,
-              })
-            return i.default.createElement(
+              r = e.accessors,
+              i = e.components,
+              l = e.onSelect,
+              s = e.onDoubleClick,
+              u = e.slotStart,
+              A = e.slotEnd,
+              p = e.localizer,
+              b = e.overlayProps,
+              h = this.props.position,
+              m = h.left,
+              g = h.width,
+              C = h.top,
+              v = (this.state || {}).topOffset || 0,
+              B = (this.state || {}).leftOffset || 0,
+              y = b.ref,
+              w = { top: Math.max(0, C - v), left: m - B, minWidth: g + g / 2 }
+            return a.default.createElement(
               'div',
-              (0, r.default)(
-                { ref: 'root', style: w, className: 'rbc-overlay' },
-                h
-              ),
-              i.default.createElement(
+              { style: w, className: 'rbc-overlay', ref: y },
+              a.default.createElement(
                 'div',
                 { className: 'rbc-overlay-header' },
-                b.format(A, 'dayHeaderFormat')
+                p.format(u, 'dayHeaderFormat')
               ),
               t.map(function(e, t) {
-                return i.default.createElement(f.default, {
+                return a.default.createElement(d.default, {
                   key: t,
                   type: 'popup',
                   event: e,
                   getters: o,
-                  onSelect: s,
-                  accessors: a,
-                  components: l,
-                  onDoubleClick: c,
-                  continuesPrior: d.default.lt(a.end(e), A, 'day'),
-                  continuesAfter: d.default.gte(a.start(e), p, 'day'),
-                  selected: (0, u.isSelected)(e, n),
+                  onSelect: l,
+                  accessors: r,
+                  components: i,
+                  onDoubleClick: s,
+                  continuesPrior: c.default.lt(r.end(e), u, 'day'),
+                  continuesAfter: c.default.gte(r.start(e), A, 'day'),
+                  selected: (0, f.isSelected)(e, n),
                 })
               })
             )
           }),
           t
         )
-      })(i.default.Component)
-    A.propTypes = {}
-    var p = A
-    ;(t.default = p), (e.exports = t.default)
+      })(a.default.Component)
+    u.propTypes = {}
+    var A = u
+    ;(t.default = A), (e.exports = t.default)
   },
   function(e, t, n) {
     'use strict'
@@ -21388,17 +21385,11 @@ object-assign
       f = n(45),
       u = n(44),
       A = (function(e) {
-        function t() {
-          for (var t, n = arguments.length, o = new Array(n), r = 0; r < n; r++)
-            o[r] = arguments[r]
+        function t(t) {
+          var n
           return (
-            ((t =
-              e.call.apply(e, [this].concat(o)) || this).renderDay = function(
-              e,
-              n,
-              o
-            ) {
-              var r = t.props,
+            ((n = e.call(this, t) || this).renderDay = function(e, t, o) {
+              var r = n.props,
                 i = r.selected,
                 l = r.getters,
                 s = r.accessors,
@@ -21406,7 +21397,7 @@ object-assign
                 A = r.components,
                 p = A.event,
                 b = A.date
-              return (n = n.filter(function(t) {
+              return (t = t.filter(function(t) {
                 return (0,
                 f.inRange)(t, c.default.startOf(e, 'day'), c.default.endOf(e, 'day'), s)
               })).map(function(r, c) {
@@ -21419,7 +21410,7 @@ object-assign
                     0 === c &&
                     a.default.createElement(
                       'td',
-                      { rowSpan: n.length, className: 'rbc-agenda-date-cell' },
+                      { rowSpan: t.length, className: 'rbc-agenda-date-cell' },
                       b ? a.default.createElement(b, { day: e, label: g }) : g
                     )
                 return a.default.createElement(
@@ -21429,7 +21420,7 @@ object-assign
                   a.default.createElement(
                     'td',
                     { className: 'rbc-agenda-time-cell' },
-                    t.timeRangeLabel(e, r)
+                    n.timeRangeLabel(e, r)
                   ),
                   a.default.createElement(
                     'td',
@@ -21439,17 +21430,17 @@ object-assign
                 )
               }, [])
             }),
-            (t.timeRangeLabel = function(e, n) {
-              var o = t.props,
+            (n.timeRangeLabel = function(e, t) {
+              var o = n.props,
                 r = o.accessors,
                 i = o.localizer,
                 l = '',
                 s = o.components.time,
                 d = i.messages.allDay,
-                f = r.end(n),
-                u = r.start(n)
+                f = r.end(t),
+                u = r.start(t)
               return (
-                r.allDay(n) ||
+                r.allDay(t) ||
                   (c.default.eq(u, f)
                     ? (d = i.format(u, 'agendaTimeFormat'))
                     : c.default.eq(u, f, 'day')
@@ -21467,26 +21458,27 @@ object-assign
                   'span',
                   { className: l.trim() },
                   s
-                    ? a.default.createElement(s, { event: n, day: e, label: d })
+                    ? a.default.createElement(s, { event: t, day: e, label: d })
                     : d
                 )
               )
             }),
-            (t._adjustHeader = function() {
-              if (t.refs.tbody) {
-                var e = t.refs.header,
-                  n = t.refs.tbody.firstChild
-                if (n) {
+            (n._adjustHeader = function() {
+              if (n.tbodyRef.current) {
+                var e = n.headerRef.current,
+                  t = n.tbodyRef.current.firstChild
+                if (t) {
                   var o =
-                      t.refs.content.scrollHeight > t.refs.content.clientHeight,
-                    r = t._widths || []
-                  ;(t._widths = [
-                    (0, l.default)(n.children[0]),
-                    (0, l.default)(n.children[1]),
+                      n.contentRef.current.scrollHeight >
+                      n.contentRef.current.clientHeight,
+                    r = n._widths || []
+                  ;(n._widths = [
+                    (0, l.default)(t.children[0]),
+                    (0, l.default)(t.children[1]),
                   ]),
-                    (r[0] === t._widths[0] && r[1] === t._widths[1]) ||
-                      ((t.refs.dateCol.style.width = t._widths[0] + 'px'),
-                      (t.refs.timeCol.style.width = t._widths[1] + 'px')),
+                    (r[0] === n._widths[0] && r[1] === n._widths[1]) ||
+                      ((n.dateColRef.current.style.width = n._widths[0] + 'px'),
+                      (n.timeColRef.current.style.width = n._widths[1] + 'px')),
                     o
                       ? (i.default.addClass(e, 'rbc-header-overflowing'),
                         (e.style.marginRight = (0, s.default)() + 'px'))
@@ -21494,7 +21486,12 @@ object-assign
                 }
               }
             }),
-            t
+            (n.headerRef = a.default.createRef()),
+            (n.dateColRef = a.default.createRef()),
+            (n.timeColRef = a.default.createRef()),
+            (n.contentRef = a.default.createRef()),
+            (n.tbodyRef = a.default.createRef()),
+            n
           )
         }
         ;(0, r.default)(t, e)
@@ -21531,7 +21528,7 @@ object-assign
                       null,
                       a.default.createElement(
                         'table',
-                        { ref: 'header', className: 'rbc-agenda-table' },
+                        { ref: this.headerRef, className: 'rbc-agenda-table' },
                         a.default.createElement(
                           'thead',
                           null,
@@ -21540,12 +21537,12 @@ object-assign
                             null,
                             a.default.createElement(
                               'th',
-                              { className: 'rbc-header', ref: 'dateCol' },
+                              { className: 'rbc-header', ref: this.dateColRef },
                               l.date
                             ),
                             a.default.createElement(
                               'th',
-                              { className: 'rbc-header', ref: 'timeCol' },
+                              { className: 'rbc-header', ref: this.timeColRef },
                               l.time
                             ),
                             a.default.createElement(
@@ -21558,13 +21555,16 @@ object-assign
                       ),
                       a.default.createElement(
                         'div',
-                        { className: 'rbc-agenda-content', ref: 'content' },
+                        {
+                          className: 'rbc-agenda-content',
+                          ref: this.contentRef,
+                        },
                         a.default.createElement(
                           'table',
                           { className: 'rbc-agenda-table' },
                           a.default.createElement(
                             'tbody',
-                            { ref: 'tbody' },
+                            { ref: this.tbodyRef },
                             d.map(function(t, n) {
                               return e.renderDay(t, r, n)
                             })
@@ -21790,15 +21790,15 @@ object-assign
         if (U) {
           if (((z = b(t)), !W)) return c(t, z)
         } else {
-          var L = p(t),
-            R = L == S || L == F
+          var R = p(t),
+            L = R == S || R == F
           if (C(t)) return s(t, W)
-          if (L == M || L == D || (R && !j)) {
-            if (((z = N || R ? {} : m(t)), !W))
+          if (R == M || R == D || (L && !j)) {
+            if (((z = N || L ? {} : m(t)), !W))
               return N ? f(t, l(z, t)) : d(t, i(z, t))
           } else {
-            if (!_[L]) return j ? t : {}
-            z = h(t, L, W)
+            if (!_[R]) return j ? t : {}
+            z = h(t, R, W)
           }
         }
         q || (q = new o())
@@ -26520,9 +26520,9 @@ object-assign
     ;(U.displayName = 'AutoAffix'),
       (U.propTypes = P),
       (U.defaultProps = { viewportOffsetTop: 0, autoWidth: !0 })
-    var L = U,
-      R = n(61),
-      I = n.n(R),
+    var R = U,
+      L = n(61),
+      I = n.n(L),
       H = n(21),
       Y = n.n(H),
       V = n(14),
@@ -27217,14 +27217,14 @@ object-assign
           return e.apply(void 0, n)
         }
       },
-      Le = {
+      Re = {
         position: 'absolute',
         top: 0,
         left: 0,
         opacity: 0,
         pointerEvents: 'none',
       },
-      Re = {},
+      Le = {},
       Ie = (function(e) {
         function t() {
           for (var t, n = arguments.length, o = new Array(n), r = 0; r < n; r++)
@@ -27275,13 +27275,13 @@ object-assign
                     { position: t.state.data.offsets.popper.position },
                     t.state.data.styles
                   )
-                : Le
+                : Re
             }),
             je()(Te()(Te()(t)), 'getPopperPlacement', function() {
               return t.state.data ? t.state.placement : void 0
             }),
             je()(Te()(Te()(t)), 'getArrowStyle', function() {
-              return t.arrowNode && t.state.data ? t.state.data.arrowStyles : Re
+              return t.arrowNode && t.state.data ? t.state.data.arrowStyles : Le
             }),
             je()(Te()(Te()(t)), 'getOutOfBoundariesState', function() {
               return t.state.data ? t.state.data.hide : void 0
@@ -27908,7 +27908,7 @@ object-assign
       return O
     }),
       n.d(t, 'AutoAffix', function() {
-        return L
+        return R
       }),
       n.d(t, 'Dropdown', function() {
         return vt

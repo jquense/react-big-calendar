@@ -16,8 +16,8 @@ class Popup extends React.Component {
   }
 
   componentDidMount() {
-    let { popupOffset = 5 } = this.props,
-      { top, left, width, height } = getOffset(this.rootRef.current),
+    let { popupOffset = 5, overlayProps } = this.props,
+      { top, left, width, height } = getOffset(overlayProps.ref.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,

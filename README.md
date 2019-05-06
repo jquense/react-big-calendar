@@ -8,26 +8,26 @@ Inspired by [Full Calendar](http://fullcalendar.io/).
 
 ## Use and Setup
 
-`npm install react-big-calendar --save`
+`yarn add react-big-calendar` or `npm install --save react-big-calendar`
 
 Include `react-big-calendar/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
 element has a height, or the calendar won't be visible.
 
 ## Starters
 
-* [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
-* [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+- [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
+- [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
 
 ## Run examples locally
 
-```
+```sh
 $ git clone git@github.com:intljusticemission/react-big-calendar.git
 $ cd react-big-calendar
-$ npm install
-$ npm run examples
+$ yarn
+$ yarn examples
 ```
 
-* Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
+- Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
 ### Localization and Date Formatting
 
@@ -42,7 +42,7 @@ Regardless of your choice, you **must** choose a localizer to use this library:
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 
-const localizer = BigCalendar.momentLocalizer(moment) 
+const localizer = BigCalendar.momentLocalizer(moment)
 
 const MyCalendar = props => (
   <div>
@@ -62,7 +62,7 @@ const MyCalendar = props => (
 import BigCalendar from 'react-big-calendar'
 import globalize from 'globalize'
 
-const localizer = BigCalendar.globalizeLocalizer(globalize) 
+const localizer = BigCalendar.globalizeLocalizer(globalize)
 
 const MyCalendar = props => (
   <div>

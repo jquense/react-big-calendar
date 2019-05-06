@@ -44,13 +44,22 @@ class DayColumn extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.isNow !== this.props.isNow) {
+    const getNowChanged = !dates.eq(
+      prevProps.getNow(),
+      this.props.getNow(),
+      'minutes'
+    )
+
+    if (prevProps.isNow !== this.props.isNow || getNowChanged) {
       this.clearTimeIndicatorInterval()
 
       if (this.props.isNow) {
-        this.setTimeIndicatorPositionUpdateInterval(
+        const tail =
+          !getNowChanged &&
+          dates.eq(prevProps.date, this.props.date, 'minutes') &&
           prevState.timeIndicatorPosition === this.state.timeIndicatorPosition
-        )
+
+        this.setTimeIndicatorPositionUpdateInterval(tail)
       }
     }
   }

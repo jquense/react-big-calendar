@@ -37,6 +37,7 @@ class WeekWrapper extends React.Component {
       onStart: PropTypes.func,
       onEnd: PropTypes.func,
       dragAndDropAction: PropTypes.object,
+      onDropFromOutside: PropTypes.func,
       onBeginAction: PropTypes.func,
     }),
   }
@@ -104,6 +105,21 @@ class WeekWrapper extends React.Component {
     )
 
     this.update(event, start, end)
+  }
+
+  handleDropFromOutside = (point, rowBox) => {
+    if (!this.context.draggable.onDropFromOutside) return
+    const { slotMetrics: metrics } = this.props
+
+    let start = metrics.getDateForSlot(
+      getSlotAtX(rowBox, point.x, false, metrics.slots)
+    )
+
+    this.context.draggable.onDropFromOutside({
+      start,
+      end: dates.add(start, 1, 'day'),
+      allDay: false,
+    })
   }
 
   handleResize(point, node) {
@@ -193,6 +209,17 @@ class WeekWrapper extends React.Component {
       if (!this.state.segment || !pointInBox(bounds, point)) return
       this.handleInteractionEnd()
     })
+
+    selector.on('dropFromOutside', point => {
+      if (!this.context.draggable.onDropFromOutside) return
+
+      const bounds = getBoundsForNode(node)
+
+      if (!pointInBox(bounds, point)) return
+
+      this.handleDropFromOutside(point, bounds)
+    })
+
     selector.on('click', () => this.context.draggable.onEnd(null))
   }
 

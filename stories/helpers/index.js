@@ -12,7 +12,7 @@ import '../../src/addons/dragAndDrop/styles.less'
 
 import withDragAndDrop from '../../src/addons/dragAndDrop'
 
-addDecorator(function WithHeigt(fn) {
+addDecorator(function WithHeight(fn) {
   return <div style={{ height: 600 }}>{fn()}</div>
 })
 

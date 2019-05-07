@@ -9,12 +9,6 @@ import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
 class Popup extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.rootRef = React.createRef()
-  }
-
   componentDidMount() {
     let { popupOffset = 5, popperRef } = this.props,
       { top, left, width, height } = getOffset(popperRef.current),

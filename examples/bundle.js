@@ -19330,11 +19330,8 @@ object-assign
       f = r(n(154)),
       u = n(38),
       p = (function(e) {
-        function t(t) {
-          var n
-          return (
-            ((n = e.call(this, t) || this).rootRef = l.default.createRef()), n
-          )
+        function t() {
+          return e.apply(this, arguments) || this
         }
         ;(0, i.default)(t, e)
         var n = t.prototype

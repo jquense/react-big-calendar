@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { Calendar, DragableCalendar } from './helpers'
 
-storiesOf('Event Durations')
+storiesOf('Event Durations', module)
   .add('Daylight savings starts', () => {
     return (
       <DragableCalendar

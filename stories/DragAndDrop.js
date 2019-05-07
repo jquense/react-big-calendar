@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions'
 import { events, Calendar, DragAndDropCalendar } from './helpers'
 import customComponents from './helpers/customComponents'
 
-storiesOf('Drag and Drop')
+storiesOf('Drag and Drop', module)
   .add('draggable and resizable', () => {
     return (
       <DragAndDropCalendar

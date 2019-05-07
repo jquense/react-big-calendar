@@ -28,6 +28,7 @@ class MonthView extends React.Component {
 
     this._bgRows = []
     this._pendingSelection = []
+    this.slotRowRef = React.createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
@@ -112,7 +113,7 @@ class MonthView extends React.Component {
     return (
       <DateContentRow
         key={weekIdx}
-        ref={weekIdx === 0 ? 'slotRow' : undefined}
+        ref={weekIdx === 0 ? this.slotRowRef : undefined}
         container={this.getContainer}
         className="rbc-month-row"
         getNow={getNow}
@@ -216,7 +217,7 @@ class MonthView extends React.Component {
   measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
-      rowLimit: this.refs.slotRow.getRowLimit(),
+      rowLimit: this.slotRowRef.current.getRowLimit(),
     })
   }
 

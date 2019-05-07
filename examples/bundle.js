@@ -6709,52 +6709,54 @@ object-assign
           l = t.step,
           s = t.timeslots
         var c = i(n, o, l, s)
-        var d = 1 + r.default.diff(n, o, 'minutes') + a(n, o)
-        var A = r.default.diff(r.default.startOf(n, 'day'), n, 'minutes')
-        var f = Math.ceil(d / (l * s))
-        var u = f * s
-        var p = new Array(f)
-        var b = new Array(u)
-        for (var m = 0; m < f; m++) {
-          p[m] = new Array(s)
-          for (var g = 0; g < s; g++) {
-            var h = m * s + g,
-              C = h * l
-            b[h] = p[m][g] = new Date(
+        var d = r.default.startOf(n, 'day')
+        var A = a(d, n)
+        var f = 1 + r.default.diff(n, o, 'minutes') + a(n, o)
+        var u = r.default.diff(d, n, 'minutes') + A
+        var p = Math.ceil(f / (l * s))
+        var b = p * s
+        var m = new Array(p)
+        var g = new Array(b)
+        for (var h = 0; h < p; h++) {
+          m[h] = new Array(s)
+          for (var C = 0; C < s; C++) {
+            var v = h * s + C,
+              B = v * l
+            g[v] = m[h][C] = new Date(
               n.getFullYear(),
               n.getMonth(),
               n.getDate(),
               0,
-              A + C,
+              u + B,
               0,
               0
             )
           }
         }
-        var v = b.length * l
-        b.push(
-          new Date(n.getFullYear(), n.getMonth(), n.getDate(), 0, A + v, 0, 0)
+        var y = g.length * l
+        g.push(
+          new Date(n.getFullYear(), n.getMonth(), n.getDate(), 0, u + y, 0, 0)
         )
-        function B(e) {
+        function w(e) {
           var t = r.default.diff(n, e, 'minutes') + a(n, e)
-          return Math.min(t, d)
+          return Math.min(t, f)
         }
         return {
-          groups: p,
+          groups: m,
           update: function(t) {
             return i(t) !== c ? e(t) : this
           },
           dateIsInGroup: function(e, t) {
-            var n = p[t + 1]
-            return r.default.inRange(e, p[t][0], n ? n[0] : o, 'minutes')
+            var n = m[t + 1]
+            return r.default.inRange(e, m[t][0], n ? n[0] : o, 'minutes')
           },
           nextSlot: function(e) {
-            var t = b[Math.min(b.indexOf(e) + 1, b.length - 1)]
+            var t = g[Math.min(g.indexOf(e) + 1, g.length - 1)]
             return t === e && (t = r.default.add(e, l, 'minutes')), t
           },
           closestSlotToPosition: function(e) {
-            var t = Math.min(b.length - 1, Math.max(0, Math.floor(e * u)))
-            return b[t]
+            var t = Math.min(g.length - 1, Math.max(0, Math.floor(e * b)))
+            return g[t]
           },
           closestSlotFromPoint: function(e, t) {
             var n = Math.abs(t.top - t.bottom)
@@ -6762,9 +6764,9 @@ object-assign
           },
           closestSlotFromDate: function(e, t) {
             if ((void 0 === t && (t = 0), r.default.lt(e, n, 'minutes')))
-              return b[0]
+              return g[0]
             var o = r.default.diff(n, e, 'minutes')
-            return b[(o - (o % l)) / l + t]
+            return g[(o - (o % l)) / l + t]
           },
           startsBeforeDay: function(e) {
             return r.default.lt(e, n, 'day')
@@ -6781,15 +6783,15 @@ object-assign
           getRange: function(e, t) {
             ;(e = r.default.min(o, r.default.max(n, e))),
               (t = r.default.min(o, r.default.max(n, t)))
-            var a = B(e),
-              i = B(t),
-              s = (a / (l * u)) * 100
+            var a = w(e),
+              i = w(t),
+              s = (a / (l * b)) * 100
             return {
               top: s,
-              height: (i / (l * u)) * 100 - s,
-              start: B(e),
+              height: (i / (l * b)) * 100 - s,
+              start: w(e),
               startDate: e,
-              end: B(t),
+              end: w(t),
               endDate: t,
             }
           },

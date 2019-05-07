@@ -83,7 +83,6 @@ export default function withDragAndDrop(Calendar) {
       components: PropTypes.object,
       elementProps: PropTypes.object,
       step: PropTypes.number,
-      elementProps: PropTypes.object,
     }
 
     static defaultProps = {

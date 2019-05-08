@@ -7,16 +7,22 @@ module.exports = {
   devtool: 'source-map',
   entry: path.join(__dirname, '../examples/App.js'),
   output: {
-    path: path.join(__dirname, '../examples/'),
+    path: path.join(__dirname, '../examples/static'),
     filename: 'bundle.js',
-    publicPath: '/examples',
   },
   stats: stats.minimal,
   devServer: {
     port: 3000,
     stats: stats.minimal,
+    contentBase: path.join(__dirname, '../examples/static'),
+    open: true,
   },
-
+  optimization: {
+    minimize: false,
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
   resolve: {
     alias: {
       'react-big-calendar$': path.resolve(__dirname + '/../src/index.js'),
@@ -26,8 +32,8 @@ module.exports = {
   module: {
     rules: [
       rules.js({}),
-      rules.images(),
-      rules.fonts(),
+      rules.images({ outputPath: 'static/' }),
+      rules.fonts({ outputPath: 'static/' }),
       { oneOf: [rules.css.modules(), rules.css()] },
       rules.less({ browsers }),
       {
@@ -38,6 +44,8 @@ module.exports = {
   },
   plugins: [
     plugins.html({ title: 'React Big Calendar' }),
-    plugins.extractCss(),
+    plugins.extractCss({
+      filename: 'static/[name].[hash].css',
+    }),
   ],
 }

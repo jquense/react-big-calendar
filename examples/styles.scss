@@ -1,7 +1,8 @@
-@import '~bootstrap/less/variables.less';
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/' !default;
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
-@blue: #3174ad;
-@pink: #ad3173;
+$blue: #3174ad;
+$pink: #ad3173;
 
 html {
   font-size: 10px;
@@ -31,7 +32,7 @@ a {
 }
 
 .jumbotron {
-  background-color: @blue;
+  background-color: $blue;
   color: white;
 
   a {
@@ -49,7 +50,7 @@ a {
 }
 
 .docs {
-  background-color: @blue;
+  background-color: $blue;
   margin-top: 20px;
   padding: 30px;
 }
@@ -63,9 +64,9 @@ a {
 .example {
   font-size: 14px;
   padding: 0 40px;
-  min-height: ~'calc(100vh - 100px)';
+  min-height: calc(100vh - 100px);
   min-height: max-content;
-  height: ~'calc(100vh - 100px)';
+  height: calc(100vh - 100px);
   width: 100%;
   margin: auto;
 
@@ -109,7 +110,7 @@ a {
     }
 
     &:hover:after {
-      background-color: @blue;
+      background-color: $blue;
     }
   }
 }
@@ -123,7 +124,7 @@ aside {
 
 h3 > a > code,
 h4 > a > code {
-  color: @blue;
+  color: $blue;
   background: none;
   padding: 0;
 }
@@ -146,15 +147,15 @@ h4 > a > code {
   &:hover,
   &:focus,
   &:active {
-    color: @pink;
+    color: $pink;
     text-decoration: none;
   }
 
   &:hover,
   &:focus,
   &:active {
-    color: darken(@pink, 5%);
-    border: 1px solid @pink;
+    color: darken($pink, 5%);
+    border: 1px solid $pink;
     text-decoration: none;
   }
 }
@@ -164,9 +165,9 @@ h4 > a > code {
 }
 
 .callout {
-  border-left: 4px solid @blue;
+  border-left: 4px solid $blue;
   padding: 10px;
-  color: darken(@blue, 10%);
+  color: darken($blue, 10%);
   font-size: 20px;
   margin-bottom: 15px;
   margin-top: 0;

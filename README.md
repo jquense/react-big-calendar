@@ -79,19 +79,14 @@ const MyCalendar = props => (
 ## Custom Styling
 
 Out of the box you can include the compiled css files and be up and running. But, sometimes, you may want to style
-Big Calendar to match your application styling. For this reason LESS and SASS files are included with Big Calendar.
+Big Calendar to match your application styling. For this reason SASS files are included with Big Calendar.
 
 ```
-  // For LESS
-  @import 'react-big-calendar/lib/less/styles.less';
-  @import 'react-big-calendar/addons/dragAndDrop/styles.less';
-
-  // For SASS
   @import 'react-big-calendar/lib/sass/styles';
-  @import 'react-big-calendar/addons/dragAndDrop/styles';
+  @import 'react-big-calendar/addons/dragAndDrop/styles'; // if using DnD
 ```
 
-Both LESS and SASS implementations provide a `variables` file containing color and sizing variables that you can
+SASS implementation provides a `variables` file containing color and sizing variables that you can
 update to fit your application. _Note:_ Changing and/or overriding styles can cause rendering issues with your
 Big Calendar. Carefully test each change accordingly.
 

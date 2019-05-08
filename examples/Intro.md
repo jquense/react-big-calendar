@@ -7,7 +7,9 @@ _yarn:_ `yarn add react-big-calendar`
 _npm:_ `npm install --save react-big-calendar`
 
 Styles can be found at: `react-big-calendar/lib/css/react-big-calendar.css`, and should be included on the page
-with the calendar component. Also make sure that your calendar's container
+with the calendar component. Alternatively, you can include the styles directly in your SASS build. See the [Custom Styling](https://github.com/intljusticemission/react-big-calendar/blob/master/README.md#custom-styling) section of the README file for more details.
+
+Also make sure that your calendar's container
 element has a height, or the calendar won't be visible (see why below).
 
 Date internationalization and localization is **hard** and `react-big-calendar` doesn't even attempt to

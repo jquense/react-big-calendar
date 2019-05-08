@@ -4,7 +4,6 @@ import { action } from '@storybook/addon-actions'
 import moment from 'moment'
 import React from 'react'
 
-// For Testing SASS styling
 import '../src/sass/styles.scss'
 import '../src/addons/dragAndDrop/styles.scss'
 import demoEvents from '../examples/events'

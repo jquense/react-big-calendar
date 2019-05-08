@@ -1,4 +1,4 @@
-const { rules } = require('webpack-atoms')
+const { rules, loaders, plugins, stats } = require('webpack-atoms')
 
 const browsers = ['last 2 versions', 'ie >= 10']
 

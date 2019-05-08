@@ -81,8 +81,8 @@ export default function withDragAndDrop(Calendar) {
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
       components: PropTypes.object,
-      step: PropTypes.number,
       elementProps: PropTypes.object,
+      step: PropTypes.number,
     }
 
     static defaultProps = {

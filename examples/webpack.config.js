@@ -7,14 +7,14 @@ module.exports = {
   devtool: 'source-map',
   entry: path.join(__dirname, '../examples/App.js'),
   output: {
-    path: path.join(__dirname, '../examples/static'),
+    path: path.join(__dirname, '../docs'),
     filename: 'bundle.js',
   },
   stats: stats.minimal,
   devServer: {
     port: 3000,
     stats: stats.minimal,
-    contentBase: path.join(__dirname, '../examples/static'),
+    contentBase: path.join(__dirname, '../docs'),
     open: true,
   },
   optimization: {

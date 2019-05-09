@@ -25,7 +25,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib",
-    "clean:examples": "rimraf examples/static",
+    "clean:examples": "rimraf docs",
     "s": "node-sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
     "sass": "npm run s  && npm run sass-dnd",
     "sass-dnd": "node-sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",

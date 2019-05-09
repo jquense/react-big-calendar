@@ -32,8 +32,8 @@ module.exports = {
   module: {
     rules: [
       rules.js({}),
-      rules.images({ outputPath: 'static/' }),
-      rules.fonts({ outputPath: 'static/' }),
+      rules.images(),
+      rules.fonts(),
       { oneOf: [rules.css.modules(), rules.css()] },
       rules.less({ browsers }),
       {
@@ -44,8 +44,6 @@ module.exports = {
   },
   plugins: [
     plugins.html({ title: 'React Big Calendar' }),
-    plugins.extractCss({
-      filename: 'static/[name].[hash].css',
-    }),
+    plugins.extractCss(),
   ],
 }

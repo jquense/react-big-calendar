@@ -63,8 +63,8 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1"
   },
   "devDependencies": {
     "@4c/rollout": "^1.2.0",
@@ -72,6 +72,7 @@
     "@babel/core": "^7.1.5",
     "@storybook/addon-actions": "^5.0.11",
     "@storybook/react": "^5.0.11",
+    "autoprefixer": "^9.5.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -96,6 +97,8 @@
     "moment": "^2.22.2",
     "mt-changelog": "^0.6.1",
     "node-sass": "4.12.0",
+    "postcss": "^7.0.16",
+    "postcss-cli": "^6.1.2",
     "prettier": "^1.15.1",
     "react": "^16.6.1",
     "react-bootstrap": "^0.32.4",
@@ -117,7 +120,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
-    "autoprefixer": "^9.5.1",
     "bootstrap-sass": "^3.4.1",
     "classnames": "^2.2.6",
     "date-arithmetic": "^3.0.0",
@@ -125,8 +127,6 @@
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
     "memoize-one": "^4.0.3",
-    "postcss": "^7.0.16",
-    "postcss-cli": "^6.1.2",
     "prop-types": "^15.6.2",
     "prop-types-extra": "^1.1.0",
     "react-overlays": "^1.2.0",

@@ -10624,7 +10624,21 @@ object-assign
             null,
             'react-big-calendar/lib/css/react-big-calendar.css'
           ),
-          ", and should be included on the page with the calendar component. Also make sure that your calendar's container element has a height, or the calendar won't be visible (see why below)."
+          ', and should be included on the page with the calendar component. Alternatively, you can include the styles directly in your SASS build. See the ',
+          o.createElement(
+            'a',
+            {
+              href:
+                'https://github.com/intljusticemission/react-big-calendar/blob/master/README.md#custom-styling',
+            },
+            'Custom Styling'
+          ),
+          ' section of the README file for more details.'
+        ),
+        o.createElement(
+          'p',
+          null,
+          "Also make sure that your calendar's container element has a height, or the calendar won't be visible (see why below)."
         ),
         o.createElement(
           'p',

@@ -31,7 +31,7 @@ module.exports = {
   },
   module: {
     rules: [
-      rules.js({}),
+      rules.js(),
       rules.images(),
       rules.fonts(),
       { oneOf: [rules.css.modules(), rules.css()] },

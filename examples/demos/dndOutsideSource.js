@@ -5,7 +5,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import Layout from 'react-tackle-box/Layout'
 import Card from '../Card'
 
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.less'
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar)
 

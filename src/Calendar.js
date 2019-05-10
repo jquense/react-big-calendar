@@ -897,7 +897,6 @@ class Calendar extends React.Component {
           />
         )}
         <View
-          ref="view"
           {...props}
           events={events}
           date={current}

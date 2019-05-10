@@ -73,6 +73,7 @@ export default function withDragAndDrop(Calendar) {
       onEventResize: PropTypes.func,
       onDragStart: PropTypes.func,
       onDragOver: PropTypes.func,
+      onDropFromOutside: PropTypes.func,
 
       draggableAccessor: accessor,
       resizableAccessor: accessor,
@@ -80,6 +81,7 @@ export default function withDragAndDrop(Calendar) {
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
       components: PropTypes.object,
+      elementProps: PropTypes.object,
       step: PropTypes.number,
     }
 

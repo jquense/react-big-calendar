@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { Element } from 'react'
 import getOffset from 'dom-helpers/query/offset'
 import getScrollTop from 'dom-helpers/query/scrollTop'
 import getScrollLeft from 'dom-helpers/query/scrollLeft'
@@ -10,8 +10,8 @@ import { isSelected } from './utils/selection'
 
 class Popup extends React.Component {
   componentDidMount() {
-    let { popupOffset = 5 } = this.props,
-      { top, left, width, height } = getOffset(this.refs.root),
+    let { popupOffset = 5, popperRef } = this.props,
+      { top, left, width, height } = getOffset(popperRef.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -41,6 +41,7 @@ class Popup extends React.Component {
       slotStart,
       slotEnd,
       localizer,
+      popperRef,
     } = this.props
 
     let { left, width, top } = this.props.position,
@@ -54,7 +55,7 @@ class Popup extends React.Component {
     }
 
     return (
-      <div ref="root" style={style} className="rbc-overlay">
+      <div style={style} className="rbc-overlay" ref={popperRef}>
         <div className="rbc-overlay-header">
           {localizer.format(slotStart, 'dayHeaderFormat')}
         </div>
@@ -98,6 +99,16 @@ Popup.propTypes = {
   onDoubleClick: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
+  popperRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
 }
 
-export default Popup
+/**
+ * The Overlay component, of react-overlays, creates a ref that is passed to the Popup, and
+ * requires proper ref forwarding to be used without error
+ */
+export default React.forwardRef((props, ref) => (
+  <Popup popperRef={ref} {...props} />
+))

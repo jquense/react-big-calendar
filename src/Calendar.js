@@ -568,7 +568,19 @@ class Calendar extends React.Component {
      day: PropTypes.node,
      agenda: PropTypes.node,
      showMore: PropTypes.func
-   })
+   }),
+
+   /**
+    * Ref for the calendar's root div. Can be either the old ref style (function/string)
+    * or the new ref style (React.createRef).
+    */
+   ref: PropTypes.oneOfType([
+     PropTypes.func,
+     PropTypes.string,
+     PropTypes.shape({
+       current: PropTypes.any,
+     })
+   ])
  };
 
  static defaultProps = {
@@ -646,6 +658,7 @@ class Calendar extends React.Component {
      , className
      , elementProps
      , date: current
+     , ref
      , ...props } = this.props;
 
    const viewName = view;
@@ -676,6 +689,7 @@ class Calendar extends React.Component {
        className={cn('rbc-calendar', className, {
          'rbc-rtl': props.rtl
        })}
+       ref={ref}
        style={style}
      >
        {toolbar &&

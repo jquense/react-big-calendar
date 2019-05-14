@@ -152,6 +152,7 @@ class DaySlot extends React.Component {
       , rtl: isRtl
       , step
       , rightOffset
+      , componentProps
       , startAccessor, endAccessor, titleAccessor, entityKeyAccessor } = this.props;
 
     let EventComponent = eventComponent
@@ -159,6 +160,8 @@ class DaySlot extends React.Component {
     let styledEvents = getStyledEvents({
       events, entityKeyAccessor, startAccessor, endAccessor, min, totalMin: this._totalMin, step, rightOffset
     })
+
+    const eventProps = componentProps.event || {};
 
     return styledEvents.map(({ event, style }, idx) => {
       let start = get(event, startAccessor)
@@ -197,7 +200,7 @@ class DaySlot extends React.Component {
           >
             <div className='rbc-event-content'>
               { EventComponent
-                ? <EventComponent event={event} title={title}/>
+                ? <EventComponent event={event} title={title} {...eventProps} />
                 : title
               }
             </div>

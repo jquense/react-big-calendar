@@ -525,34 +525,11 @@ class Calendar extends React.Component {
     * <Calendar componentProps={componentProps} />
     * ```
     *
-    * Note: only implemented for toolbar at the moment.
+    * Note: only implemented for event and toolbar at the moment.
     */
    componentProps: PropTypes.shape({
      event: PropTypes.object,
-     eventWrapper: PropTypes.object,
-     dayWrapper: PropTypes.object,
-     dateCellWrapper: PropTypes.object,
-
      toolbar: PropTypes.object,
-
-     agenda: PropTypes.shape({
-       date: PropTypes.object,
-       time: PropTypes.object,
-       event: PropTypes.object
-     }),
-
-     day: PropTypes.shape({
-       header: PropTypes.object,
-       event: PropTypes.object
-     }),
-     week: PropTypes.shape({
-       header: PropTypes.object,
-       event: PropTypes.object
-     }),
-     month: PropTypes.shape({
-       header: PropTypes.object,
-       event: PropTypes.object
-     })
    }),
 
    /**
@@ -710,6 +687,7 @@ class Calendar extends React.Component {
          view={view}
          {...props}
          {...formats}
+         componentProps={componentProps}
          culture={culture}
          formats={undefined}
          events={events}

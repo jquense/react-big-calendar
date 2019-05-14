@@ -1,3 +1,31 @@
+# [0.21.0](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.4...v0.21.0) (2019-05-14)
+
+
+### Bug Fixes
+
+* prevent un/mounting of date components ([#1276](https://github.com/intljusticemission/react-big-calendar/issues/1276)) ([3c25009](https://github.com/intljusticemission/react-big-calendar/commit/3c25009)), closes [/github.com/intljusticemission/react-big-calendar/blob/master/src/DateContentRow.js#L121](https://github.com//github.com/intljusticemission/react-big-calendar/blob/master/src/DateContentRow.js/issues/L121)
+* support point-in-time events in the Agenda view ([#1246](https://github.com/intljusticemission/react-big-calendar/issues/1246)) ([58c39c3](https://github.com/intljusticemission/react-big-calendar/commit/58c39c3))
+* TimeGrid display on DST change days when min is after the transition ([#1303](https://github.com/intljusticemission/react-big-calendar/issues/1303)) ([b436017](https://github.com/intljusticemission/react-big-calendar/commit/b436017)), closes [#1098](https://github.com/intljusticemission/react-big-calendar/issues/1098) [#1273](https://github.com/intljusticemission/react-big-calendar/issues/1273)
+* update time indicator position if min prop changes ([#1311](https://github.com/intljusticemission/react-big-calendar/issues/1311)) ([97ea841](https://github.com/intljusticemission/react-big-calendar/commit/97ea841))
+* use React.createRef instead of string refs ([#1282](https://github.com/intljusticemission/react-big-calendar/issues/1282)) ([239f0a3](https://github.com/intljusticemission/react-big-calendar/commit/239f0a3))
+
+
+### Features
+
+* **dnd:** add onDropFromOutside prop for Dnd Cal ([#1290](https://github.com/intljusticemission/react-big-calendar/issues/1290)) ([b9fdce4](https://github.com/intljusticemission/react-big-calendar/commit/b9fdce4)), closes [#1090](https://github.com/intljusticemission/react-big-calendar/issues/1090)
+* **dnd:** implement callback on initializing drag or resize action ([#1206](https://github.com/intljusticemission/react-big-calendar/issues/1206)) ([0fa2c30](https://github.com/intljusticemission/react-big-calendar/commit/0fa2c30)), closes [#1205](https://github.com/intljusticemission/react-big-calendar/issues/1205)
+* add resource to handleDropFromOutside ([#1319](https://github.com/intljusticemission/react-big-calendar/issues/1319)) ([2b7ad2a](https://github.com/intljusticemission/react-big-calendar/commit/2b7ad2a))
+* switch to Sass for styles ([884bece](https://github.com/intljusticemission/react-big-calendar/commit/884bece))
+
+
+### BREAKING CHANGES
+
+* Less files have been replaced with Sass versions
+
+
+
+
+
 ## [0.20.4](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.3...v0.20.4) (2019-03-21)
 
 

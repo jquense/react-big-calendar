@@ -551,7 +551,7 @@ class Calendar extends React.Component {
     * Ref for the calendar's root div. Can be either the old ref style (function/string)
     * or the new ref style (React.createRef).
     */
-   ref: PropTypes.oneOfType([
+   containerRef: PropTypes.oneOfType([
      PropTypes.func,
      PropTypes.string,
      PropTypes.shape({
@@ -635,7 +635,7 @@ class Calendar extends React.Component {
      , className
      , elementProps
      , date: current
-     , ref
+     , containerRef
      , ...props } = this.props;
 
    const viewName = view;
@@ -666,7 +666,7 @@ class Calendar extends React.Component {
        className={cn('rbc-calendar', className, {
          'rbc-rtl': props.rtl
        })}
-       ref={ref}
+       ref={containerRef}
        style={style}
      >
        {toolbar &&

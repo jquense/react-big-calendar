@@ -101,6 +101,11 @@ class EventContainerWrapper extends React.Component {
     const { accessors, slotMetrics } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
 
+    if (!pointInColumn(boundaryBox, point)) {
+      this.handleInteractionEnd()
+      return
+    }
+
     let currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
     if (direction === 'UP') {
       end = accessors.end(event)

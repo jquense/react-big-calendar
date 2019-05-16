@@ -57,13 +57,17 @@ export default {
     )
   },
 
-  renderSpan(slots, len, key, content = ' ') {
-    let per = Math.abs(len) / slots * 100 + '%'
+  renderSpan(slots, len, key, content = ' ', customizeClass = '') {
+    let className = 'rbc-row-segment '
+    if (customizeClass && content) {
+      className += customizeClass
+    }
+    let per = (Math.abs(len) / slots) * 100 + '%'
 
     return (
       <div
         key={key}
-        className="rbc-row-segment"
+        className={className}
         // IE10/11 need max-width. flex-basis doesn't respect box-sizing
         style={{ WebkitFlexBasis: per, flexBasis: per, maxWidth: per }}
       >

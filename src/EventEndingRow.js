@@ -40,7 +40,15 @@ class EventEndingRow extends React.Component {
           row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))
         }
 
-        row.push(EventRowMixin.renderSpan(slots, span, key, content))
+        row.push(
+          EventRowMixin.renderSpan(
+            slots,
+            span,
+            key,
+            content,
+            event.customizeClass
+          )
+        )
 
         lastEnd = current = right + 1
       } else {
@@ -53,7 +61,8 @@ class EventEndingRow extends React.Component {
             slots,
             1,
             key,
-            this.renderShowMore(segments, current)
+            this.renderShowMore(segments, current),
+            event.customizeClass
           )
         )
         lastEnd = current = current + 1

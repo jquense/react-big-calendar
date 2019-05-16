@@ -111,4 +111,11 @@ export default [
     start: now,
     end: now,
   },
+  {
+    id: 16,
+    title: 'Red-level Event',
+    customizeClass: 'red-level',
+    start: new Date(2015, 3, 19, 9, 30, 0),
+    end: new Date(2015, 3, 19, 12, 30, 0),
+  },
 ]

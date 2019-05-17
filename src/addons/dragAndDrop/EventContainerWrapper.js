@@ -115,7 +115,7 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleDropFromOutside = (point, boundaryBox) => {
-    const { slotMetrics, resource } = this.props
+    const { slotMetrics, resource, style } = this.props
 
     let start = slotMetrics.closestSlotFromPoint(
       { y: point.y, x: point.x },
@@ -127,6 +127,7 @@ class EventContainerWrapper extends React.Component {
       end: slotMetrics.nextSlot(start),
       allDay: false,
       resource,
+      style,
     })
   }
 

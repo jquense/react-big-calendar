@@ -17,9 +17,6 @@ import { mergeComponents } from './common'
  *    import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
  *    export default withDragAndDrop(Calendar)
  * ```
- * (you can optionally pass any dnd backend as an optional second argument to `withDragAndDrop`.
- * It defaults to `react-dnd-html5-backend` which you should probably include in
- * your project if using this default).
  *
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *

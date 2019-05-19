@@ -126,6 +126,18 @@ class Calendar extends React.Component {
     titleAccessor: accessor,
 
     /**
+     * Accessor for the event background color, used to display event background color.
+     * Value should be in color code. '#eeeeee'
+     *
+     * ```js
+     * string | (resource: Object) => string
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    bgColorAccessor: accessor,
+
+    /**
      * Accessor for the event tooltip. Should
      * resolve to a `renderable` value. Removes the tooltip if null.
      *
@@ -740,6 +752,7 @@ class Calendar extends React.Component {
     startAccessor: 'start',
     endAccessor: 'end',
     resourceAccessor: 'resourceId',
+    bgColorAccessor: 'bgColor',
 
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
@@ -777,6 +790,7 @@ class Calendar extends React.Component {
     messages = {},
     components = {},
     formats = {},
+    bgColorAccessor,
   }) {
     let names = viewNames(views)
     const msgs = message(messages)
@@ -807,6 +821,7 @@ class Calendar extends React.Component {
         resource: wrapAccessor(resourceAccessor),
         resourceId: wrapAccessor(resourceIdAccessor),
         resourceTitle: wrapAccessor(resourceTitleAccessor),
+        bgColor: wrapAccessor(bgColorAccessor),
       },
     }
   }

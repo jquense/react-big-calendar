@@ -28,6 +28,7 @@ class EventCell extends React.Component {
     let end = accessors.end(event)
     let start = accessors.start(event)
     let allDay = accessors.allDay(event)
+    let bgColor = accessors.bgColor(event);
 
     let showAsAllDay =
       isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
@@ -54,7 +55,7 @@ class EventCell extends React.Component {
         <div
           {...props}
           tabIndex={0}
-          style={{ ...userProps.style, ...style }}
+          style={{ ...userProps.style, ...style, 'backgroundColor': bgColor }}
           className={cn('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
             'rbc-event-allday': showAsAllDay,

@@ -7,6 +7,7 @@ export default [
     allDay: true,
     start: new Date(2015, 3, 0),
     end: new Date(2015, 3, 1),
+    bgColor: '#4ef12d'
   },
   {
     id: 1,
@@ -98,6 +99,7 @@ export default [
     title: 'Multi-day Event',
     start: new Date(2015, 3, 20, 19, 30, 0),
     end: new Date(2015, 3, 22, 2, 0, 0),
+    bgColor: '#42dff4'
   },
   {
     id: 14,

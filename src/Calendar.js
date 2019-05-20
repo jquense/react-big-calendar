@@ -516,6 +516,11 @@ class Calendar extends React.Component {
     showMultiDayTimes: PropTypes.bool,
 
     /**
+     * Determines which day of the week to start Grid in week view
+     */
+    firstOfWeek: PropTypes.number,
+
+    /**
      * Constrains the minimum _time_ of the Day and Week views.
      */
     min: PropTypes.instanceOf(Date),
@@ -857,6 +862,7 @@ class Calendar extends React.Component {
       getNow,
       length,
       showMultiDayTimes,
+      firstOfWeek,
       onShowMore,
       components: _0,
       formats: _1,
@@ -906,6 +912,7 @@ class Calendar extends React.Component {
           getters={getters}
           components={components}
           accessors={accessors}
+          firstOfWeek={firstOfWeek}
           showMultiDayTimes={showMultiDayTimes}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}

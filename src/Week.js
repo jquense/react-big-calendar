@@ -6,15 +6,15 @@ import TimeGrid from './TimeGrid'
 
 class Week extends React.Component {
   render() {
-    let { date, ...props } = this.props
-    let range = Week.range(date, this.props)
-
+    let { date, firstOfWeek, ...props } = this.props
+    let range = Week.range(date, this.props, firstOfWeek)
     return <TimeGrid {...props} range={range} eventOffset={15} />
   }
 }
 
 Week.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
+  firstOfWeek: PropTypes.number,
 }
 
 Week.defaultProps = TimeGrid.defaultProps
@@ -32,16 +32,14 @@ Week.navigate = (date, action) => {
   }
 }
 
-Week.range = (date, { localizer }) => {
-  let firstOfWeek = localizer.startOfWeek()
+Week.range = (date, { localizer }, firstOfWeek = localizer.startOfWeek()) => {
   let start = dates.startOf(date, 'week', firstOfWeek)
   let end = dates.endOf(date, 'week', firstOfWeek)
-
   return dates.range(start, end)
 }
 
-Week.title = (date, { localizer }) => {
-  let [start, ...rest] = Week.range(date, { localizer })
+Week.title = (date, { localizer }, firstOfWeek) => {
+  let [start, ...rest] = Week.range(date, { localizer }, firstOfWeek)
   return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')
 }
 

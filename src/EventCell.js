@@ -51,8 +51,9 @@ class EventCell extends React.Component {
 
     return (
       <EventWrapper {...this.props} type="date">
-        <div
+        <button
           {...props}
+          type="button"
           tabIndex={0}
           style={{ ...userProps.style, ...style }}
           className={cn('rbc-event', className, userProps.className, {
@@ -65,7 +66,7 @@ class EventCell extends React.Component {
           onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
         >
           {typeof children === 'function' ? children(content) : content}
-        </div>
+        </button>
       </EventWrapper>
     )
   }

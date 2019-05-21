@@ -43,17 +43,23 @@ const clickTolerance = 5
 const clickInterval = 250
 
 class Selection {
-  constructor(node, { global = false, longPressThreshold = 250 } = {}) {
+  constructor(
+    node,
+    { global = false, longPressThreshold = 250, resourceId = null } = {}
+  ) {
     this.container = node
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
+    this.resourceId = resourceId
+    this.activeResource = null
 
     this._listeners = Object.create(null)
 
     this._handleInitialEvent = this._handleInitialEvent.bind(this)
     this._handleMoveEvent = this._handleMoveEvent.bind(this)
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
-    this._keyListener = this._keyListener.bind(this)
+    this._keyDownListener = this._keyDownListener.bind(this)
+    this._keyUpListener = this._keyUpListener.bind(this)
     this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this)
 
     // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
@@ -63,13 +69,15 @@ class Selection {
       () => {},
       window
     )
-    this._onKeyDownListener = addEventListener('keydown', this._keyListener)
-    this._onKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._onKeyDownListener = addEventListener('keydown', this._keyDownListener)
+    this._onKeyUpListener = addEventListener('keyup', this._keyUpListener)
     this._onDropFromOutsideListener = addEventListener(
       'drop',
       this._dropFromOutsideListener
     )
     this._addInitialEventListener()
+
+    this.activeSlots = [-1]
   }
 
   on(type, handler) {
@@ -103,6 +111,7 @@ class Selection {
     this._onMoveListener && this._onMoveListener.remove()
     this._onKeyUpListener && this._onKeyUpListener.remove()
     this._onKeyDownListener && this._onKeyDownListener.remove()
+    this.clearActiveSlots()
   }
 
   isSelected(node) {
@@ -248,6 +257,8 @@ class Selection {
       })
     )
 
+    this.clearActiveSlots()
+
     if (result === false) return
 
     switch (e.type) {
@@ -382,10 +393,6 @@ class Selection {
     e.preventDefault()
   }
 
-  _keyListener(e) {
-    this.ctrl = e.metaKey || e.ctrlKey
-  }
-
   isClick(pageX, pageY) {
     let { x, y, isTouch } = this._initialEventData
     return (
@@ -394,8 +401,189 @@ class Selection {
         Math.abs(pageY - y) <= clickTolerance)
     )
   }
-}
 
+  triggerMouseEvent(node, eventType) {
+    var clickEvent = document.createEvent('MouseEvents')
+    clickEvent.initEvent(eventType, true, true)
+    node.dispatchEvent(clickEvent)
+  }
+
+  _keyDownListener(e) {
+    if (e.keyCode == '40' /** down arrow */) {
+      this.moveDown(e)
+    } else if (e.keyCode == '38' /** up arrow */) {
+      this.moveUp(e)
+    }
+
+    this._keyListener(e)
+  }
+
+  _keyUpListener(e) {
+    if (e.keyCode == '27' || e.keyCode == '9') {
+      this.clearActiveSlots()
+    } else if (e.keyCode == '13' || e.keyCode == '32') {
+      const events = this.activeEventSlots()
+      this.emit('keyboardSelect', {
+        events,
+      })
+      this.clearActiveSlots()
+    }
+  }
+
+  activeEventSlots() {
+    if (this.activeSlots == null || this.activeSlots.length === 0) {
+      return null
+    }
+
+    const sortedEventSlots = this.activeSlots
+      .filter(as => as != -1)
+      .sort((a, b) => {
+        return +a - +b
+      })
+
+    const slotElement = this.getSlotById(sortedEventSlots[0])
+
+    if (slotElement != null) {
+      const startTime = slotElement.dataset.time
+
+      return {
+        startDate: new Date(startTime),
+        numberOfSlots: sortedEventSlots.length,
+      }
+    }
+
+    return null
+  }
+
+  _keyListener(e) {
+    this.ctrl = e.metaKey || e.ctrlKey
+  }
+
+  clearActiveSlots() {
+    const activeSlotElements = document.querySelectorAll('.active-slot')
+
+    activeSlotElements.forEach(as => {
+      as.classList.remove('active-slot')
+    })
+
+    this.activeSlots = [-1]
+  }
+
+  moveDown(e) {
+    e.preventDefault()
+
+    const activeElement = document.activeElement
+    const dataTimeHeaderId = activeElement.dataset.timeHeaderId
+    const dataResourceId = activeElement.dataset.resourceId
+
+    if (
+      dataTimeHeaderId != this.resourceId &&
+      dataResourceId != this.resourceId
+    ) {
+      return
+    }
+
+    // if moving off of an event handle and bypass the regular navigation
+    const eventId = activeElement.dataset.eventId
+    if (eventId != null) {
+      this.activateSlotByTime(activeElement.dataset.nextSlotTime)
+      return
+    }
+
+    const lastSlot = this.activeSlots[this.activeSlots.length - 1]
+    const newSlot = lastSlot + 1
+    let lastElement = this.getSlotById(lastSlot)
+    let newElement = this.getSlotById(newSlot)
+
+    if (newElement != null) {
+      if (e.shiftKey) {
+        if (newElement.classList.contains('active-slot')) {
+          this.activeSlots.pop()
+          lastElement.classList.remove('active-slot')
+          newElement.focus()
+        } else {
+          this.activeSlots.push(newSlot)
+          newElement.classList.add('active-slot')
+          newElement.focus()
+        }
+      } else {
+        this.clearActiveSlots()
+        this.activeSlots = [newSlot]
+        newElement.classList.add('active-slot')
+        newElement.focus()
+      }
+    }
+  }
+
+  moveUp(e) {
+    e.preventDefault()
+
+    const activeElement = document.activeElement
+    const dataTimeHeaderId = activeElement.dataset.timeHeaderId
+    const dataResourceId = activeElement.dataset.resourceId
+
+    if (
+      dataTimeHeaderId != this.resourceId &&
+      dataResourceId != this.resourceId
+    ) {
+      return
+    }
+
+    // if moving off of an event handle and bypass the regular navigation
+    const eventId = activeElement.dataset.eventId
+    if (eventId != null) {
+      this.activateSlotByTime(activeElement.dataset.previousSlotTime)
+      return
+    }
+
+    const lastSlot = this.activeSlots[this.activeSlots.length - 1]
+    const newSlot = lastSlot - 1
+    let lastElement = this.getSlotById(lastSlot)
+    let newElement = this.getSlotById(newSlot)
+
+    if (newElement != null) {
+      if (e.shiftKey) {
+        if (newElement.classList.contains('active-slot')) {
+          lastElement.classList.remove('active-slot')
+          this.activeSlots.pop()
+          newElement.focus()
+        } else {
+          newElement.classList.add('active-slot')
+          this.activeSlots.push(newSlot)
+          newElement.focus()
+        }
+      } else {
+        this.clearActiveSlots()
+        this.activeSlots = [newSlot]
+        newElement.classList.add('active-slot')
+        newElement.focus()
+      }
+    }
+  }
+
+  activateSlotByTime(eventTime) {
+    const slotElement = document.querySelector(
+      `[data-resource-id='${this.resourceId}'][data-time='${eventTime}']`
+    )
+
+    if (slotElement != null) {
+      this.clearActiveSlots()
+      this.activeSlots.push(+slotElement.dataset.timeslotId)
+      slotElement.classList.add('active-slot')
+      slotElement.focus()
+    }
+  }
+
+  getSlotById(slotId) {
+    try {
+      return document.querySelector(
+        `[data-resource-id='${this.resourceId}'][data-timeslot-id='${slotId}']`
+      )
+    } catch {
+      return null
+    }
+  }
+}
 /**
  * Resolve the disance prop from either an Int or an Object
  * @return {Object}

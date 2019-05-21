@@ -1,13 +1,16 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.21.0",
+  "name": "rbc-with-a11y",
+  "version": "1.21.25",
   "description": "Calendar! with events",
-  "author": "Jason Quense <monastic.panic@gmail.com>",
+  "author": "Ali Gencay <gencay.ali@hotmail.com>",
   "repository": "intljusticemission/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "dist/react-big-calendar.esm.js",
   "style": "lib/css/react-big-calendar.css",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "files": [
     "lib/",
     "dist/",

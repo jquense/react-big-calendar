@@ -99,6 +99,14 @@
       border-bottom: 1px solid $cell-border;
       flex-shrink: 0;
   }
+
+  &:focus {
+    outline: none;
+
+    .rbc-header {
+      border: 1px solid #000;
+    }
+  }
 }
 
 .rbc-time-content {

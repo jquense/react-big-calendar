@@ -111,6 +111,7 @@ class DayColumn extends React.Component {
       resource,
       accessors,
       localizer,
+      step,
       getters: { dayProp, ...getters },
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
@@ -125,6 +126,7 @@ class DayColumn extends React.Component {
     return (
       <div
         style={style}
+        data-dayslot-resource-id={this.props.resource || ''}
         className={cn(
           className,
           'rbc-day-slot',
@@ -138,6 +140,8 @@ class DayColumn extends React.Component {
           <TimeSlotGroup
             key={idx}
             group={grp}
+            step={step}
+            groupId={idx}
             resource={resource}
             getters={getters}
             components={components}
@@ -194,7 +198,12 @@ class DayColumn extends React.Component {
       minimumStartDifference: Math.ceil((step * timeslots) / 2),
     })
 
-    return styledEvents.map(({ event, style }, idx) => {
+    // TODO sort this on getStyledEvents instead
+    const sortedStyledEvents = styledEvents.sort((a, b) => {
+      return new Date(a.event.start) - new Date(b.event.start)
+    })
+
+    return sortedStyledEvents.map(({ event, style }, idx) => {
       let end = accessors.end(event)
       let start = accessors.start(event)
       let format = 'eventTimeRangeFormat'
@@ -218,6 +227,7 @@ class DayColumn extends React.Component {
           event={event}
           label={label}
           key={'evt_' + idx}
+          step={step}
           getters={getters}
           isRtl={isRtl}
           components={components}
@@ -236,6 +246,7 @@ class DayColumn extends React.Component {
     let node = findDOMNode(this)
     let selector = (this._selector = new Selection(() => findDOMNode(this), {
       longPressThreshold: this.props.longPressThreshold,
+      resourceId: this.props.resource,
     }))
 
     let maybeSelect = box => {
@@ -321,6 +332,25 @@ class DayColumn extends React.Component {
       }
     })
 
+    selector.on('keyboardSelect', obj => {
+      if (obj && obj.events) {
+        const startDate = obj.events.startDate
+        const endDate = dates.add(
+          obj.events.startDate,
+          this.props.step * obj.events.numberOfSlots,
+          'minutes'
+        )
+
+        this._selectSlot({
+          startDate,
+          endDate,
+          action: 'select',
+          bounds: {},
+          box: {},
+        })
+      }
+    })
+
     selector.on('reset', () => {
       if (this.state.selecting) {
         this.setState({ selecting: false })
@@ -387,6 +417,7 @@ DayColumn.propTypes = {
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
   eventOffset: PropTypes.number,
   longPressThreshold: PropTypes.number,
+  resourceId: PropTypes.string,
 
   onSelecting: PropTypes.func,
   onSelectSlot: PropTypes.func.isRequired,

@@ -54,7 +54,7 @@
   font-weight: bold;
   font-size: 90%;
   min-height: 0;
-  border-bottom: 1px solid $cell-border;
+  border: 1px solid transparent;
 
   & + & {
     border-left: 1px solid $cell-border;

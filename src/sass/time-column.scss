@@ -72,6 +72,14 @@
 
   .rbc-time-slot {
     border-top: 1px solid lighten($cell-border, 10%);
+
+    &.active-slot {
+      background-color: #c8c6c480 !important;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
@@ -105,7 +113,7 @@
   }
 
   .rbc-header,
-  .rbc-day-bg, {
+  .rbc-day-bg {
     width: 140px;
     // min-width: 0;
     flex:  1 1 0;
@@ -122,6 +130,10 @@
 
   &.rbc-now {
     font-weight: bold;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 

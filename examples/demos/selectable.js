@@ -13,7 +13,7 @@ class Selectable extends React.Component {
   }
 
   handleSelect = ({ start, end }) => {
-    const title = window.prompt('New Event name')
+    const title = window.prompt(`Create event for between ${start} and ${end}`)
     if (title)
       this.setState({
         events: [
@@ -41,7 +41,7 @@ class Selectable extends React.Component {
           selectable
           localizer={localizer}
           events={this.state.events}
-          defaultView={BigCalendar.Views.WEEK}
+          defaultView={BigCalendar.Views.DAY}
           scrollToTime={new Date(1970, 1, 1, 6)}
           defaultDate={new Date(2015, 3, 12)}
           onSelectEvent={event => alert(event.title)}

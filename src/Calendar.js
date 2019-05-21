@@ -138,6 +138,18 @@ class Calendar extends React.Component {
     tooltipAccessor: accessor,
 
     /**
+     * Accessor for the event aria-label. Should
+     * resolve to a `renderable` value.
+     *
+     * ```js
+     * string | (event: Object) => string
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    ariaLabelAccessor: accessor,
+
+    /**
      * Determines whether the event should be considered an "all day" event and ignore time.
      * Must resolve to a `boolean` value.
      *
@@ -740,6 +752,7 @@ class Calendar extends React.Component {
     startAccessor: 'start',
     endAccessor: 'end',
     resourceAccessor: 'resourceId',
+    ariaLabelAccessor: 'ariaLabel',
 
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
@@ -763,6 +776,7 @@ class Calendar extends React.Component {
     endAccessor,
     allDayAccessor,
     tooltipAccessor,
+    ariaLabelAccessor,
     titleAccessor,
     resourceAccessor,
     resourceIdAccessor,
@@ -803,6 +817,7 @@ class Calendar extends React.Component {
         end: wrapAccessor(endAccessor),
         allDay: wrapAccessor(allDayAccessor),
         tooltip: wrapAccessor(tooltipAccessor),
+        ariaLabel: wrapAccessor(ariaLabelAccessor),
         title: wrapAccessor(titleAccessor),
         resource: wrapAccessor(resourceAccessor),
         resourceId: wrapAccessor(resourceIdAccessor),

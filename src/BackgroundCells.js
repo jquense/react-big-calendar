@@ -18,7 +18,7 @@ class BackgroundCells extends React.Component {
   }
 
   componentDidMount() {
-    this.props.selectable && this._selectable()
+    // this.props.selectable && this._selectable()
   }
 
   componentWillUnmount() {

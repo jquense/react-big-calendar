@@ -29,12 +29,15 @@ module.exports = {
       rules.images(),
       rules.fonts(),
       { oneOf: [rules.css.modules(), rules.css()] },
-      rules.less({ browsers }),
+      rules.sass({ browsers }),
       {
         test: /\.md/,
         use: [loaders.js(), 'markdown-jsx-loader'],
       },
     ],
   },
-  plugins: [plugins.html(), plugins.extractCss()],
+  plugins: [
+    plugins.html({ title: 'React Big Calendar' }),
+    plugins.extractCss(),
+  ],
 }

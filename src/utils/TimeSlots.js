@@ -11,14 +11,14 @@ const getKey = (min, max, step, slots) =>
 export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   const key = getKey(start, end, step, timeslots)
 
+  // if the start is on a DST-changing day but *after* the moment of DST
+  // transition we need to add those extra minutes to our minutesFromMidnight
+  const daystart = dates.startOf(start, 'day')
+  const daystartdstoffset = getDstOffset(daystart, start)
   const totalMin =
     1 + dates.diff(start, end, 'minutes') + getDstOffset(start, end)
-  const minutesFromMidnight = dates.diff(
-    dates.startOf(start, 'day'),
-    start,
-    'minutes'
-  )
-
+  const minutesFromMidnight =
+    dates.diff(daystart, start, 'minutes') + daystartdstoffset
   const numGroups = Math.ceil(totalMin / (step * timeslots))
   const numSlots = numGroups * timeslots
 

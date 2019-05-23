@@ -2,7 +2,7 @@ import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.less'
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar)
 

@@ -7,12 +7,13 @@ import React from 'react'
 import BaseCalendar from '../../src'
 import momentLocalizer from '../../src/localizers/moment.js'
 
-import '../../src/less/styles.less'
-import '../../src/addons/dragAndDrop/styles.less'
+// For Testing SASS styling
+import '../../src/sass/styles.scss'
+import '../../src/addons/dragAndDrop/styles.scss'
 
 import withDragAndDrop from '../../src/addons/dragAndDrop'
 
-addDecorator(function WithHeigt(fn) {
+addDecorator(function WithHeight(fn) {
   return <div style={{ height: 600 }}>{fn()}</div>
 })
 

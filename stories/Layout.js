@@ -5,7 +5,7 @@ import moment from 'moment'
 import { events, Calendar, DragAndDropCalendar } from './helpers'
 import createEvents from './helpers/createEvents'
 
-storiesOf('Layout Issues')
+storiesOf('Layout Issues', module)
   .add('event layout', () => {
     return (
       <Calendar

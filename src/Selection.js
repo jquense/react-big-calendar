@@ -54,6 +54,7 @@ class Selection {
     this._handleMoveEvent = this._handleMoveEvent.bind(this)
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
     this._keyListener = this._keyListener.bind(this)
+    this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this)
 
     // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
     // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
@@ -64,6 +65,10 @@ class Selection {
     )
     this._onKeyDownListener = addEventListener('keydown', this._keyListener)
     this._onKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._onDropFromOutsideListener = addEventListener(
+      'drop',
+      this._dropFromOutsideListener
+    )
     this._addInitialEventListener()
   }
 
@@ -185,6 +190,19 @@ class Selection {
         touchStartListener.remove()
       },
     }
+  }
+
+  _dropFromOutsideListener(e) {
+    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
+
+    this.emit('dropFromOutside', {
+      x: pageX,
+      y: pageY,
+      clientX: clientX,
+      clientY: clientY,
+    })
+
+    e.preventDefault()
   }
 
   _handleInitialEvent(e) {
@@ -341,7 +359,7 @@ class Selection {
 
     // Prevent emitting selectStart event until mouse is moved.
     // in Chrome on Windows, mouseMove event may be fired just after mouseDown event.
-    if (!old && !(w || h)) {
+    if (this.isClick(pageX, pageY) && !old && !(w || h)) {
       return
     }
 

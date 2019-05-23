@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import replace from 'rollup-plugin-replace'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import { terser } from 'rollup-plugin-terser'
+import pkg from './package.json'
 
 const input = './src/index.js'
 const name = 'ReactBigCalendar'
@@ -57,5 +58,13 @@ export default [
       sizeSnapshot(),
       terser(),
     ],
+  },
+
+  {
+    input,
+    output: { file: pkg.module, format: 'esm' },
+    // prevent bundling all dependencies
+    external: id => !id.startsWith('.') && !id.startsWith('/'),
+    plugins: [babel(babelOptions), sizeSnapshot()],
   },
 ]

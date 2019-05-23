@@ -10,7 +10,7 @@ export default function Resources(resources, accessors) {
     },
 
     groupEvents(events) {
-      const eventsByResource = new window.Map()
+      const eventsByResource = new Map()
 
       if (!resources) {
         // Return all events if resources are not provided

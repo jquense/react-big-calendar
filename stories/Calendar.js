@@ -165,13 +165,13 @@ storiesOf('Big Calendar', module)
       />
     )
   })
-  .add('add custom dayWrapper', () => {
+  .add('add custom timeSlotWrapper', () => {
     return (
       <Calendar
         defaultView={Calendar.Views.DAY}
         events={events}
         components={{
-          dayWrapper: customComponents.dayWrapper,
+          timeSlotWrapper: customComponents.timeSlotWrapper,
         }}
       />
     )

@@ -44,6 +44,7 @@ const EXAMPLES = {
   customView: 'Custom Calendar Views',
   resource: 'Resource Scheduling',
   dnd: 'Addon: Drag and drop',
+  dndresource: 'Resource Drag and drop',
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
 }
 

@@ -643,7 +643,6 @@ class Calendar extends React.Component {
      *   event: MyEvent, // used by each view (Month, Day, Week)
      *   eventWrapper: MyEventWrapper,
      *   eventContainerWrapper: MyEventContainerWrapper,
-     *   dayWrapper: MyDayWrapper,
      *   dateCellWrapper: MyDateCellWrapper,
      *   timeSlotWrapper: MyTimeSlotWrapper,
      *   timeGutterHeader: MyTimeGutterWrapper,
@@ -674,7 +673,6 @@ class Calendar extends React.Component {
       event: elementType,
       eventWrapper: elementType,
       eventContainerWrapper: elementType,
-      dayWrapper: elementType,
       dateCellWrapper: elementType,
       timeSlotWrapper: elementType,
       timeGutterHeader: elementType,
@@ -793,7 +791,6 @@ class Calendar extends React.Component {
       components: defaults(components[view] || {}, omit(components, names), {
         eventWrapper: NoopWrapper,
         eventContainerWrapper: NoopWrapper,
-        dayWrapper: NoopWrapper,
         dateCellWrapper: NoopWrapper,
         weekWrapper: NoopWrapper,
         timeSlotWrapper: NoopWrapper,

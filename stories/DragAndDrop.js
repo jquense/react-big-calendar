@@ -61,11 +61,11 @@ storiesOf('Drag and Drop', module)
       />
     )
   })
-  .add('draggable and resizable with custom dayWrapper', () => {
+  .add('draggable and resizable with custom timeSlotWrapper', () => {
     return (
       <DragAndDropCalendar
         components={{
-          dayWrapper: customComponents.dayWrapper,
+          timeSlotWrapper: customComponents.timeSlotWrapper,
         }}
         defaultDate={new Date()}
         defaultView={Calendar.Views.WEEK}

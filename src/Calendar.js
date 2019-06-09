@@ -4,7 +4,6 @@ import uncontrollable from 'uncontrollable'
 import cn from 'classnames'
 import {
   accessor,
-  elementType,
   dateFormat,
   dateRangeFormat,
   views as componentViews,
@@ -670,34 +669,34 @@ class Calendar extends React.Component {
      * ```
      */
     components: PropTypes.shape({
-      event: elementType,
-      eventWrapper: elementType,
-      eventContainerWrapper: elementType,
-      dateCellWrapper: elementType,
-      timeSlotWrapper: elementType,
-      timeGutterHeader: elementType,
-      resourceHeader: elementType,
+      event: PropTypes.elementType,
+      eventWrapper: PropTypes.elementType,
+      eventContainerWrapper: PropTypes.elementType,
+      dateCellWrapper: PropTypes.elementType,
+      timeSlotWrapper: PropTypes.elementType,
+      timeGutterHeader: PropTypes.elementType,
+      resourceHeader: PropTypes.elementType,
 
-      toolbar: elementType,
+      toolbar: PropTypes.elementType,
 
       agenda: PropTypes.shape({
-        date: elementType,
-        time: elementType,
-        event: elementType,
+        date: PropTypes.elementType,
+        time: PropTypes.elementType,
+        event: PropTypes.elementType,
       }),
 
       day: PropTypes.shape({
-        header: elementType,
-        event: elementType,
+        header: PropTypes.elementType,
+        event: PropTypes.elementType,
       }),
       week: PropTypes.shape({
-        header: elementType,
-        event: elementType,
+        header: PropTypes.elementType,
+        event: PropTypes.elementType,
       }),
       month: PropTypes.shape({
-        header: elementType,
-        dateHeader: elementType,
-        event: elementType,
+        header: PropTypes.elementType,
+        dateHeader: PropTypes.elementType,
+        event: PropTypes.elementType,
       }),
     }),
 

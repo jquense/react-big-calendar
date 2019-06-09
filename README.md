@@ -39,14 +39,14 @@ Regardless of your choice, you **must** choose a localizer to use this library:
 #### Moment.js
 
 ```js
-import BigCalendar from 'react-big-calendar'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
-const localizer = BigCalendar.momentLocalizer(moment)
+const localizer = momentLocalizer(moment)
 
 const MyCalendar = props => (
   <div>
-    <BigCalendar
+    <Calendar
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"
@@ -59,14 +59,14 @@ const MyCalendar = props => (
 #### Globalize.js v0.1.1
 
 ```js
-import BigCalendar from 'react-big-calendar'
+import { Calendar, globalizeLocalizer } from 'react-big-calendar'
 import globalize from 'globalize'
 
-const localizer = BigCalendar.globalizeLocalizer(globalize)
+const localizer = globalizeLocalizer(globalize)
 
 const MyCalendar = props => (
   <div>
-    <BigCalendar
+    <Calendar
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"

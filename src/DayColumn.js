@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import { isSelected } from './utils/selection'
 

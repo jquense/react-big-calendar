@@ -1,5 +1,5 @@
 import memoize from 'memoize-one'
-import dates from './dates'
+import * as dates from './dates'
 import { eventSegments, endOfRange, eventLevels } from './eventLevels'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot

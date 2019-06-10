@@ -1,4 +1,4 @@
-import dates from './dates'
+import * as dates from './dates'
 
 const getDstOffset = (start, end) =>
   start.getTimezoneOffset() - end.getTimezoneOffset()

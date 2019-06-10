@@ -3,7 +3,7 @@ import cn from 'classnames'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 import React from 'react'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import ResourceHeader from './ResourceHeader'

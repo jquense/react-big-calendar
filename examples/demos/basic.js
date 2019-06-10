@@ -1,9 +1,9 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import events from '../events'
 import dates from '../../src/utils/dates'
 
-let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
+let allViews = Object.keys(Views).map(k => Views[k])
 
 const ColoredDateCellWrapper = ({ children }) =>
   React.cloneElement(React.Children.only(children), {
@@ -13,7 +13,7 @@ const ColoredDateCellWrapper = ({ children }) =>
   })
 
 let Basic = ({ localizer }) => (
-  <BigCalendar
+  <Calendar
     events={events}
     views={allViews}
     step={60}

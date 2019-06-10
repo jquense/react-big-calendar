@@ -363,7 +363,7 @@ class Calendar extends React.Component {
      * }
      * ```
      *
-     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @type Views ('month'|'week'|'work_week'|'day'|'agenda')
      * @View
      ['month', 'week', 'day', 'agenda']
      */
@@ -377,7 +377,7 @@ class Calendar extends React.Component {
      * Set to `null` to disable drill-down actions.
      *
      * ```js
-     * <BigCalendar
+     * <Calendar
      *   drilldownView="agenda"
      * />
      * ```
@@ -392,7 +392,7 @@ class Calendar extends React.Component {
      * Return `null` to disable drill-down actions.
      *
      * ```js
-     * <BigCalendar
+     * <Calendar
      *   getDrilldownView={(targetDate, currentViewName, configuredViewNames) =>
      *     if (currentViewName === 'month' && configuredViewNames.includes('week'))
      *       return 'week'
@@ -424,8 +424,8 @@ class Calendar extends React.Component {
      * Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
      *
      * ```jsx
-     * <BigCalendar popupOffset={30}/>
-     * <BigCalendar popupOffset={{x: 30, y: 20}}/>
+     * <Calendar popupOffset={30}/>
+     * <Calendar popupOffset={{x: 30, y: 20}}/>
      * ```
      */
     popupOffset: PropTypes.oneOfType([

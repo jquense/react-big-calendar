@@ -7,6 +7,11 @@
     "esm": {
       "presets": [
         ["jason", { "modules": false }]
+      ],
+      "plugins": [
+        ["babel-plugin-transform-rename-import", {
+          replacements: [{ original: "lodash", replacement: "lodash-es" }]
+        }]
       ]
     }
   }

@@ -363,7 +363,7 @@ class Calendar extends React.Component {
      * }
      * ```
      *
-     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @type Views ('month'|'week'|'work_week'|'day'|'agenda')
      * @View
      ['month', 'week', 'day', 'agenda']
      */

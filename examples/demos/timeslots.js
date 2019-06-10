@@ -8,7 +8,7 @@ let Timeslots = ({ localizer }) => (
     step={15}
     timeslots={8}
     localizer={localizer}
-    defaultView={Calendar.Views.WEEK}
+    defaultView={Views.WEEK}
     defaultDate={new Date(2015, 3, 12)}
   />
 )

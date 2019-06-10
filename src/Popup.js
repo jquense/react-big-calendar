@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Element } from 'react'
+import React from 'react'
 import getOffset from 'dom-helpers/query/offset'
 import getScrollTop from 'dom-helpers/query/scrollTop'
 import getScrollLeft from 'dom-helpers/query/scrollLeft'
@@ -101,7 +101,7 @@ Popup.propTypes = {
   slotEnd: PropTypes.number,
   popperRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    PropTypes.shape({ current: PropTypes.Element }),
   ]),
 }
 

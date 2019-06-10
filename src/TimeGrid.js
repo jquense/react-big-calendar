@@ -142,6 +142,7 @@ export default class TimeGrid extends Component {
       events,
       range,
       width,
+      rtl,
       selected,
       getNow,
       resources,
@@ -192,6 +193,7 @@ export default class TimeGrid extends Component {
           range={range}
           events={allDayEvents}
           width={width}
+          rtl={rtl}
           getNow={getNow}
           localizer={localizer}
           selected={selected}

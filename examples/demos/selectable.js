@@ -1,5 +1,5 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import events from '../events'
 import ExampleControlSlot from '../ExampleControlSlot'
 
@@ -37,11 +37,11 @@ class Selectable extends React.Component {
             to select a date/time range.
           </strong>
         </ExampleControlSlot.Entry>
-        <BigCalendar
+        <Calendar
           selectable
           localizer={localizer}
           events={this.state.events}
-          defaultView={BigCalendar.Views.WEEK}
+          defaultView={Views.WEEK}
           scrollToTime={new Date(1970, 1, 1, 6)}
           defaultDate={new Date(2015, 3, 12)}
           onSelectEvent={event => alert(event.title)}

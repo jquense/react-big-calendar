@@ -2,7 +2,7 @@ import React from 'react'
 
 import dates from 'date-arithmetic'
 import events from '../events'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views, Navigate } from 'react-big-calendar'
 import TimeGrid from 'react-big-calendar/lib/TimeGrid'
 import ExampleControlSlot from '../ExampleControlSlot'
 
@@ -32,10 +32,10 @@ MyWeek.range = date => {
 
 MyWeek.navigate = (date, action) => {
   switch (action) {
-    case BigCalendar.Navigate.PREVIOUS:
+    case Navigate.PREVIOUS:
       return dates.add(date, -3, 'day')
 
-    case BigCalendar.Navigate.NEXT:
+    case Navigate.NEXT:
       return dates.add(date, 3, 'day')
 
     default:
@@ -52,10 +52,10 @@ let CustomView = ({ localizer }) => (
     <ExampleControlSlot.Entry waitForOutlet>
       <strong>The Calendar below implments a custom 3-day week view</strong>
     </ExampleControlSlot.Entry>
-    <BigCalendar
+    <Calendar
       events={events}
       localizer={localizer}
-      defaultView={BigCalendar.Views.WEEK}
+      defaultView={Views.WEEK}
       defaultDate={new Date(2015, 3, 1)}
       views={{ month: true, week: MyWeek }}
     />

@@ -383,6 +383,9 @@ class Selection {
   }
 
   _keyListener(e) {
+    if (e.key === 'Shift') {
+      this.shifting = e.type !== 'keyup'
+    }
     this.ctrl = e.metaKey || e.ctrlKey
   }
 

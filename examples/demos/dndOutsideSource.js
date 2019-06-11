@@ -1,13 +1,13 @@
 import React from 'react'
 import events from '../events'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import Layout from 'react-tackle-box/Layout'
 import Card from '../Card'
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 
-const DragAndDropCalendar = withDragAndDrop(BigCalendar)
+const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 const formatName = (name, count) => `${name} ID ${count}`
 
@@ -163,7 +163,7 @@ class Dnd extends React.Component {
           onEventResize={this.resizeEvent}
           onSelectSlot={this.newEvent}
           onD
-          defaultView={BigCalendar.Views.MONTH}
+          defaultView={Views.MONTH}
           defaultDate={new Date(2015, 3, 12)}
         />
       </div>

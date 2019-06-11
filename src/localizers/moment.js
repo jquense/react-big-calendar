@@ -1,4 +1,4 @@
-import dates from '../utils/dates'
+import * as dates from '../utils/dates'
 import { DateLocalizer } from '../localizer'
 
 let dateRangeFormat = ({ start, end }, culture, local) =>

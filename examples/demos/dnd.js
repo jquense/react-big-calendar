@@ -1,11 +1,11 @@
 import React from 'react'
 import events from '../events'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 
-const DragAndDropCalendar = withDragAndDrop(BigCalendar)
+const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 class Dnd extends React.Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class Dnd extends React.Component {
         onEventResize={this.resizeEvent}
         onSelectSlot={this.newEvent}
         onDragStart={console.log}
-        defaultView={BigCalendar.Views.MONTH}
+        defaultView={Views.MONTH}
         defaultDate={new Date(2015, 3, 12)}
       />
     )

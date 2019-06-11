@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 
 class EventCell extends React.Component {
   render() {

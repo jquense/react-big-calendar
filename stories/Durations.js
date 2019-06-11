@@ -2,13 +2,13 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import moment from 'moment'
 
-import { Calendar, DragableCalendar } from './helpers'
+import { Calendar, Views, DragableCalendar } from './helpers'
 
 storiesOf('Event Durations', module)
   .add('Daylight savings starts', () => {
     return (
       <DragableCalendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         min={moment('12:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={[
@@ -38,7 +38,7 @@ storiesOf('Event Durations', module)
   .add('Daylight savings ends', () => {
     return (
       <DragableCalendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         min={moment('12:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={[
@@ -68,7 +68,7 @@ storiesOf('Event Durations', module)
   .add('Daylight savings starts, after 2am', () => {
     return (
       <DragableCalendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         min={moment('3:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={[
@@ -86,7 +86,7 @@ storiesOf('Event Durations', module)
   .add('Daylight savings ends, after 2am', () => {
     return (
       <DragableCalendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         min={moment('3:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={[

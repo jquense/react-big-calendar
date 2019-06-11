@@ -1,5 +1,5 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar } from 'react-big-calendar'
 import events from '../events'
 import Layout from 'react-tackle-box/Layout'
 
@@ -37,7 +37,7 @@ class Cultures extends React.Component {
             </select>
           </Layout>
         </ExampleControlSlot.Entry>
-        <BigCalendar
+        <Calendar
           rtl={rtl}
           events={events}
           culture={this.state.culture}

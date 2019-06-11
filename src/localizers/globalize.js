@@ -1,4 +1,4 @@
-import dates from '../utils/dates'
+import * as dates from '../utils/dates'
 import oldGlobalize from './oldGlobalize'
 import { DateLocalizer } from '../localizer'
 import warning from 'warning'

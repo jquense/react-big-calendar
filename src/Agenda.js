@@ -4,7 +4,7 @@ import classes from 'dom-helpers/class'
 import getWidth from 'dom-helpers/query/width'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'

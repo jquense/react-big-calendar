@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import { isSelected } from './utils/selection'
 
@@ -174,7 +174,7 @@ class DayColumn extends React.Component {
   renderEvents = () => {
     let {
       events,
-      rtl: isRtl,
+      rtl,
       selected,
       accessors,
       localizer,
@@ -219,7 +219,7 @@ class DayColumn extends React.Component {
           label={label}
           key={'evt_' + idx}
           getters={getters}
-          isRtl={isRtl}
+          rtl={rtl}
           components={components}
           continuesEarlier={continuesEarlier}
           continuesLater={continuesLater}

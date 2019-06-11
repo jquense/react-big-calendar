@@ -284,7 +284,7 @@ class Selection {
   _handleTerminatingEvent(e) {
     const { pageX, pageY } = getEventCoordinates(e)
 
-    this.selecting = false
+    this.selecting = this.shifting ? this.shifting : false
 
     this._onEndListener && this._onEndListener.remove()
     this._onMoveListener && this._onMoveListener.remove()
@@ -310,10 +310,15 @@ class Selection {
     }
 
     // User drag-clicked in the Selectable area
-    if (!click) return this.emit('select', bounds)
+    if (!click) {
+      // console.log("_handleTerminatingEvent vai disparar o 'select'");
+      // console.log("bounds da parada", bounds);
+      return this.emit('select', [bounds], this.selecting)
+    }
   }
 
   _handleClickEvent(e) {
+    // console.log("handleClickEvent Da parada", e);
     const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
     const now = new Date().getTime()
 

@@ -314,11 +314,19 @@ class DayColumn extends React.Component {
 
     selector.on('doubleClick', box => selectorClicksHandler(box, 'doubleClick'))
 
-    selector.on('select', bounds => {
-      if (this.state.selecting) {
-        this._selectSlot({ ...this.state, action: 'select', bounds })
-        this.setState({ selecting: false })
-      }
+    selector.on('select', (bounds, selecting) => {
+      bounds.forEach((element, index) => {
+        this._selectSlot({ ...this.state, action: 'select', element })
+        // console.log("index", index);
+        // console.log("bounds.length", bounds.length);
+        if (index === bounds.length - 1) {
+          this.setState({ selecting: selecting })
+        }
+      })
+      // if (this.state.selecting) {
+      //   this._selectSlot({ ...this.state, action: 'select', bounds })
+      //   this.setState({ selecting: false })
+      // }
     })
 
     selector.on('reset', () => {
@@ -335,6 +343,7 @@ class DayColumn extends React.Component {
   }
 
   _selectSlot = ({ startDate, endDate, action, bounds, box }) => {
+    // console.log("_selectSlot");
     let current = startDate,
       slots = []
 
@@ -355,6 +364,7 @@ class DayColumn extends React.Component {
   }
 
   _select = (...args) => {
+    // console.log("ativado _select ", args);
     notify(this.props.onSelectEvent, args)
   }
 

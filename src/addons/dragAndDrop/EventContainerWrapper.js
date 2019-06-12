@@ -94,7 +94,7 @@ class EventContainerWrapper extends React.Component {
       'minutes'
     )
 
-    this.update(event, slotMetrics.getRange(currentSlot, end))
+    this.update(event, slotMetrics.getRange(currentSlot, end, false, true))
   }
 
   handleResize(point, boundaryBox) {

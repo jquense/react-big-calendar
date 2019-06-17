@@ -12660,10 +12660,10 @@ uncontrollable@^6.0.0:
   dependencies:
     invariant "^2.2.4"
 
-uncontrollable@^6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-6.2.1.tgz#0a0417c1db6279423ed99bed6ac20ba586305107"
-  integrity sha512-gVRLw3VKjc/y60mw+9TK0M4H3uHGUGoBQzeiosi8xQXn6wN2+iUdB/SKYZnNJO7bSHGr0zCUCOfhfJROMHyopQ==
+uncontrollable@^6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-6.2.3.tgz#e7dba0d746e075122ed178f27ad2354d343196c7"
+  integrity sha512-VgOAoBU2ptCL2bfTG2Mra0I8i1u6Aq84AFonD5tmCAYSfs3hWvr2Rlw0q2ntoxXTHjcQOmZOh3FKaN+UZVyREQ==
   dependencies:
     "@babel/runtime" "^7.4.5"
     invariant "^2.2.4"

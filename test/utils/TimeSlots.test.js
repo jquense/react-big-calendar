@@ -1,5 +1,5 @@
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
-import dates from '../../src/utils/dates'
+import * as dates from '../../src/utils/dates'
 
 describe('getSlotMetrics', () => {
   const min = dates.startOf(new Date(), 'day')

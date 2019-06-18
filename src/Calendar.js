@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import uncontrollable from 'uncontrollable'
+import { uncontrollable } from 'uncontrollable'
 import cn from 'classnames'
 import {
   accessor,

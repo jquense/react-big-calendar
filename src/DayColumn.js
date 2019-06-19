@@ -385,7 +385,6 @@ DayColumn.propTypes = {
 
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-  eventOffset: PropTypes.number,
   longPressThreshold: PropTypes.number,
 
   onSelecting: PropTypes.func,

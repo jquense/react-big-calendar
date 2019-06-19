@@ -11,7 +11,7 @@ class MyWeek extends React.Component {
     let { date } = this.props
     let range = MyWeek.range(date)
 
-    return <TimeGrid {...this.props} range={range} eventOffset={15} />
+    return <TimeGrid {...this.props} range={range} />
   }
 }
 

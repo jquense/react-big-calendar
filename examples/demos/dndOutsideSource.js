@@ -56,7 +56,7 @@ class Dnd extends React.Component {
     this.newEvent(event)
   }
 
-  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
+  moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
     const { events } = this.state
 
     const idx = events.indexOf(event)

@@ -96,7 +96,7 @@ class Dnd extends React.Component {
     //alert(`${event.title} was resized to ${start}-${end}`)
   }
 
-  newEvent(event) {
+  newEvent = event => {
     let idList = this.state.events.map(a => a.id)
     let newId = Math.max(...idList) + 1
     let hour = {

@@ -101,7 +101,7 @@ class Dnd extends React.Component {
     let newId = Math.max(...idList) + 1
     let hour = {
       id: newId,
-      title: event.title,
+      title: event.title || window.prompt('New Event name'),
       allDay: event.isAllDay,
       start: event.start,
       end: event.end,

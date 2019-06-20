@@ -2,7 +2,6 @@ import React from 'react'
 import events from '../events'
 import { Calendar, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-import Layout from 'react-tackle-box/Layout'
 import Card from '../Card'
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'

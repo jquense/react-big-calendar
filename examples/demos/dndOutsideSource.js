@@ -162,7 +162,6 @@ class Dnd extends React.Component {
           resizable
           onEventResize={this.resizeEvent}
           onSelectSlot={this.newEvent}
-          onD
           defaultView={Views.MONTH}
           defaultDate={new Date(2015, 3, 12)}
         />

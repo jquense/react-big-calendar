@@ -847,7 +847,8 @@ class Calendar extends React.Component {
       viewNames,
     } = this.state.context
 
-    let CalToolbar = components.toolbar || Toolbar
+    const { Toolbar:ComponentsToolbar, ...components } = components
+    const CalToolbar = ComponentsToolbar || Toolbar
     const label = View.title(current, { localizer, length })
 
     return (
@@ -858,6 +859,7 @@ class Calendar extends React.Component {
       >
         {toolbar && (
           <CalToolbar
+	    components={components}	
             date={current}
             view={view}
             views={viewNames}

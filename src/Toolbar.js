@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
+import {
+  NextButton,
+  PreviousButton,
+  TodayButton
+} from './NavigationButtons'
 import { navigate } from './utils/constants'
 
 class Toolbar extends React.Component {
@@ -11,37 +16,47 @@ class Toolbar extends React.Component {
     localizer: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
     onView: PropTypes.func.isRequired,
+    components: PropTypes.object.isRequired,
   }
 
+  navigateToday = navigate => this.navigate(navigate.TODAY)
+
+  navigateNext = navigate => this.navigate(navigate.NEXT)
+
+  navigatePrevious = navigate => this.navigate(navigate.PREVIOUS)
+
   render() {
-    let {
+    const {
+      components: {
+        NextButton: ComponentsNext,
+        PreviousButton: ComponentsPrevious,
+        TodayButton: ComponentsToday,
+        extraButtons = [],
+      },
       localizer: { messages },
       label,
     } = this.props
 
+    const NextButtonComponent = ComponentsNext || NextButton
+    const PreviousButtonComponent = ComponentsPrevious || PreviousButton
+    const TodayButtonComponent = ComponentsToday || TodayButton
+
     return (
       <div className="rbc-toolbar">
         <span className="rbc-btn-group">
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.TODAY)}
-          >
-            {messages.today}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
-          >
-            {messages.previous}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.NEXT)}
-          >
-            {messages.next}
-          </button>
+          {extraButtons.map(({component: Button, onClick, ...props}) => (
+            <Button {...props} localizer={localizer} onClick={onClick}/>
+          ))}
+          <TodayButtonComponent
+            localizer={localizer}
+            onClick={this.navigateToday} />
+          <PreviousButtonComponent
+            localizer={localizer}
+            onClick={this.navigatePrevious} />
+          <NextButtonComponent
+            localizer={localizer}
+            onClick={this.navigateNext} />
         </span>
-
         <span className="rbc-toolbar-label">{label}</span>
 
         <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>

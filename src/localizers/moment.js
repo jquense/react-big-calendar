@@ -1,4 +1,4 @@
-import dates from '../utils/dates'
+import * as dates from '../utils/dates'
 import { DateLocalizer } from '../localizer'
 
 let dateRangeFormat = ({ start, end }, culture, local) =>
@@ -7,10 +7,10 @@ let dateRangeFormat = ({ start, end }, culture, local) =>
 let timeRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'LT', culture) + ' — ' + local.format(end, 'LT', culture)
 
-let timeRangeStartFormat = ({ start, end }, culture, local) =>
+let timeRangeStartFormat = ({ start }, culture, local) =>
   local.format(start, 'LT', culture) + ' — '
 
-let timeRangeEndFormat = ({ start, end }, culture, local) =>
+let timeRangeEndFormat = ({ end }, culture, local) =>
   ' — ' + local.format(end, 'LT', culture)
 
 let weekRangeFormat = ({ start, end }, culture, local) =>

@@ -1,24 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
-import {
-  NextButton,
-  PreviousButton,
-  TodayButton
-} from './NavigationButtons'
-import { navigate } from './utils/constants'
+import { NextButton, PreviousButton, TodayButton } from './NavigationButtons'
 
 class Toolbar extends React.Component {
-  static propTypes = {
-    view: PropTypes.string.isRequired,
-    views: PropTypes.arrayOf(PropTypes.string).isRequired,
-    label: PropTypes.node.isRequired,
-    localizer: PropTypes.object,
-    onNavigate: PropTypes.func.isRequired,
-    onView: PropTypes.func.isRequired,
-    components: PropTypes.object.isRequired,
-  }
-
   navigateToday = navigate => this.navigate(navigate.TODAY)
 
   navigateNext = navigate => this.navigate(navigate.NEXT)
@@ -27,36 +12,38 @@ class Toolbar extends React.Component {
 
   render() {
     const {
-      components: {
-        NextButton: ComponentsNext,
-        PreviousButton: ComponentsPrevious,
-        TodayButton: ComponentsToday,
-        extraButtons = [],
+      props: {
+        label,
+        components: {
+          nextButton,
+          previousButton,
+          todayButton,
+          extraButtons = [],
+        },
+        localizer: {
+          messages: { today, next, previous, ...messages },
+        },
       },
-      localizer: { messages },
-      label,
-    } = this.props
+    } = this
 
-    const NextButtonComponent = ComponentsNext || NextButton
-    const PreviousButtonComponent = ComponentsPrevious || PreviousButton
-    const TodayButtonComponent = ComponentsToday || TodayButton
+    const NextButtonComponent = nextButton || NextButton
+    const PreviousButtonComponent = previousButton || PreviousButton
+    const TodayButtonComponent = todayButton || TodayButton
 
     return (
       <div className="rbc-toolbar">
         <span className="rbc-btn-group">
-          {extraButtons.map(({component: Button, onClick, ...props}) => (
-            <Button {...props} localizer={localizer} onClick={onClick}/>
+          {extraButtons.map(({ component: Button, onClick, ...props }) => (
+            <Button {...props} onClick={onClick} />
           ))}
-          <TodayButtonComponent
-            localizer={localizer}
-            onClick={this.navigateToday} />
+          <TodayButtonComponent message={today} onClick={this.navigateToday} />
           <PreviousButtonComponent
-            localizer={localizer}
-            onClick={this.navigatePrevious} />
-          <NextButtonComponent
-            localizer={localizer}
-            onClick={this.navigateNext} />
+            message={previous}
+            onClick={this.navigatePrevious}
+          />
+          <NextButtonComponent message={next} onClick={this.navigateNext} />
         </span>
+
         <span className="rbc-toolbar-label">{label}</span>
 
         <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
@@ -89,6 +76,16 @@ class Toolbar extends React.Component {
       ))
     }
   }
+}
+
+Toolbar.propTypes = {
+  view: PropTypes.string.isRequired,
+  views: PropTypes.arrayOf(PropTypes.string).isRequired,
+  label: PropTypes.node.isRequired,
+  localizer: PropTypes.object,
+  onNavigate: PropTypes.func.isRequired,
+  onView: PropTypes.func.isRequired,
+  components: PropTypes.object.isRequired,
 }
 
 export default Toolbar

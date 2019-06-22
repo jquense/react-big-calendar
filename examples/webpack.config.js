@@ -1,4 +1,4 @@
-var path = require('path')
+const path = require('path')
 const { rules, loaders, plugins, stats } = require('webpack-atoms')
 
 const browsers = ['last 2 versions', 'ie >= 10', 'not android <= 4.4.3']
@@ -28,13 +28,16 @@ module.exports = {
       rules.js({}),
       rules.images(),
       rules.fonts(),
-      rules.css(),
-      rules.less({ browsers }),
+      { oneOf: [rules.css.modules(), rules.css()] },
+      rules.sass({ browsers }),
       {
         test: /\.md/,
         use: [loaders.js(), 'markdown-jsx-loader'],
       },
     ],
   },
-  plugins: [plugins.html(), plugins.extractText()],
+  plugins: [
+    plugins.html({ title: 'React Big Calendar' }),
+    plugins.extractCss(),
+  ],
 }

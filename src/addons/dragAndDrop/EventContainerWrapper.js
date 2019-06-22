@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import dates from '../../utils/dates'
+import * as dates from '../../utils/dates'
 import { findDOMNode } from 'react-dom'
 
 import Selection, {
@@ -11,9 +11,9 @@ import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors } from './common'
 import NoopWrapper from '../../NoopWrapper'
 
-const pointerInColumn = (node, x, y) => {
-  const { left, right, top } = getBoundsForNode(node)
-  return x < right + 10 && x > left && (y == null || y > top)
+const pointInColumn = (bounds, { x, y }) => {
+  const { left, right, top } = bounds
+  return x < right + 10 && x > left && y > top
 }
 const propTypes = {}
 
@@ -28,11 +28,13 @@ class EventContainerWrapper extends React.Component {
   }
 
   static contextTypes = {
-    onEventDrop: PropTypes.func,
-    onEventResize: PropTypes.func,
-    dragAndDropAction: PropTypes.object,
-    onMove: PropTypes.func,
-    onResize: PropTypes.func,
+    draggable: PropTypes.shape({
+      onStart: PropTypes.func,
+      onEnd: PropTypes.func,
+      onDropFromOutside: PropTypes.func,
+      onBeginAction: PropTypes.func,
+      dragAndDropAction: PropTypes.object,
+    }),
   }
 
   constructor(...args) {
@@ -54,8 +56,6 @@ class EventContainerWrapper extends React.Component {
   }
 
   update(event, { startDate, endDate, top, height }) {
-    this.setState()
-
     const { event: lastEvent } = this.state
     if (
       lastEvent &&
@@ -72,34 +72,37 @@ class EventContainerWrapper extends React.Component {
     })
   }
 
-  handleMove = ({ event }, point, node) => {
-    const { slotMetrics } = this.props
+  handleMove = (point, boundaryBox) => {
+    const { event } = this.context.draggable.dragAndDropAction
+    const { accessors, slotMetrics } = this.props
 
-    if (!pointerInColumn(node, point.x, point.y)) {
+    if (!pointInColumn(boundaryBox, point)) {
       this.reset()
       return
     }
 
     let currentSlot = slotMetrics.closestSlotFromPoint(
       { y: point.y - this.eventOffsetTop, x: point.x },
-      getBoundsForNode(node)
+      boundaryBox
     )
 
+    let eventStart = accessors.start(event)
+    let eventEnd = accessors.end(event)
     let end = dates.add(
       currentSlot,
-      dates.diff(event.start, event.end, 'minutes'),
+      dates.diff(eventStart, eventEnd, 'minutes'),
       'minutes'
     )
 
-    this.update(event, slotMetrics.getRange(currentSlot, end))
+    this.update(event, slotMetrics.getRange(currentSlot, end, false, true))
   }
 
-  handleResize({ event, direction }, point, node) {
+  handleResize(point, boundaryBox) {
     let start, end
     const { accessors, slotMetrics } = this.props
-    const bounds = getBoundsForNode(node)
+    const { event, direction } = this.context.draggable.dragAndDropAction
 
-    let currentSlot = slotMetrics.closestSlotFromPoint(point, bounds)
+    let currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
     if (direction === 'UP') {
       end = accessors.end(event)
       start = dates.min(currentSlot, slotMetrics.closestSlotFromDate(end, -1))
@@ -111,6 +114,22 @@ class EventContainerWrapper extends React.Component {
     this.update(event, slotMetrics.getRange(start, end))
   }
 
+  handleDropFromOutside = (point, boundaryBox) => {
+    const { slotMetrics, resource } = this.props
+
+    let start = slotMetrics.closestSlotFromPoint(
+      { y: point.y, x: point.x },
+      boundaryBox
+    )
+
+    this.context.draggable.onDropFromOutside({
+      start,
+      end: slotMetrics.nextSlot(start),
+      allDay: false,
+      resource,
+    })
+  }
+
   _selectable = () => {
     let node = findDOMNode(this)
     let selector = (this._selector = new Selection(() =>
@@ -118,86 +137,64 @@ class EventContainerWrapper extends React.Component {
     ))
 
     selector.on('beforeSelect', point => {
-      const { action } = this.context.dragAndDropAction
+      const { dragAndDropAction } = this.context.draggable
+
+      if (!dragAndDropAction.action) return false
+      if (dragAndDropAction.action === 'resize') {
+        return pointInColumn(getBoundsForNode(node), point)
+      }
+
       const eventNode = getEventNodeFromPoint(node, point)
-
       if (!eventNode) return false
+
       this.eventOffsetTop = point.y - getBoundsForNode(eventNode).top
-
-      return (
-        action === 'move' ||
-        (action === 'resize' && pointerInColumn(node, point.x, point.y))
-      )
     })
 
-    let handler = box => {
-      const { dragAndDropAction } = this.context
+    selector.on('selecting', box => {
+      const bounds = getBoundsForNode(node)
+      const { dragAndDropAction } = this.context.draggable
 
-      switch (dragAndDropAction.action) {
-        case 'move':
-          this.handleMove(dragAndDropAction, box, node)
-          break
-        case 'resize':
-          this.handleResize(dragAndDropAction, box, node)
-          break
-      }
-    }
-
-    selector.on('selecting', handler)
-
-    selector.on('select', () => {
-      const { dragAndDropAction } = this.context
-
-      switch (dragAndDropAction.action) {
-        case 'move':
-          this.handleEventDrop()
-          break
-        case 'resize':
-          this.handleEventResize()
-          break
-      }
-
-      this._isInitialContainer = false
+      if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
+      if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
     })
 
-    selector.on('click', () => {
-      this._isInitialContainer = false
-      this.context.onMove(null)
+    selector.on('dropFromOutside', point => {
+      if (!this.context.draggable.onDropFromOutside) return
+
+      const bounds = getBoundsForNode(node)
+
+      if (!pointInColumn(bounds, point)) return
+
+      this.handleDropFromOutside(point, bounds)
+    })
+
+    selector.on('selectStart', () => this.context.draggable.onStart())
+
+    selector.on('select', point => {
+      const bounds = getBoundsForNode(node)
+
+      if (!this.state.event || !pointInColumn(bounds, point)) return
+      this.handleInteractionEnd()
+    })
+
+    selector.on('click', () => this.context.draggable.onEnd(null))
+
+    selector.on('reset', () => {
+      this.reset()
+      this.context.draggable.onEnd(null)
     })
   }
 
-  handleEventDrop = () => {
-    if (!this.state.event) return
-
+  handleInteractionEnd = () => {
     const { resource } = this.props
-    const { start, end } = this.state.event
-    const { dragAndDropAction, onMove, onEventDrop } = this.context
-
-    this.reset()
-
-    onMove(null)
-
-    onEventDrop({
-      end,
-      start,
-      event: dragAndDropAction.event,
-      resourceId: resource,
-    })
-  }
-
-  handleEventResize = () => {
     const { event } = this.state
 
-    const { dragAndDropAction, onResize, onEventResize } = this.context
-
     this.reset()
 
-    onResize(null)
-
-    onEventResize({
-      event: dragAndDropAction.event,
+    this.context.draggable.onEnd({
       start: event.start,
       end: event.end,
+      resourceId: resource,
     })
   }
 

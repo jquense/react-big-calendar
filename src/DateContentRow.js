@@ -5,51 +5,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
 import * as DateSlotMetrics from './utils/DateSlotMetrics'
-
-const propTypes = {
-  date: PropTypes.instanceOf(Date),
-  events: PropTypes.array.isRequired,
-  range: PropTypes.array.isRequired,
-
-  rtl: PropTypes.bool,
-  resourceId: PropTypes.any,
-  renderForMeasure: PropTypes.bool,
-  renderHeader: PropTypes.func,
-
-  container: PropTypes.func,
-  selected: PropTypes.object,
-  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-  longPressThreshold: PropTypes.number,
-
-  onShowMore: PropTypes.func,
-  onSelectSlot: PropTypes.func,
-  onSelect: PropTypes.func,
-  onSelectEnd: PropTypes.func,
-  onSelectStart: PropTypes.func,
-  onDoubleClick: PropTypes.func,
-  dayPropGetter: PropTypes.func,
-
-  getNow: PropTypes.func.isRequired,
-  isAllDay: PropTypes.bool,
-
-  accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
-  getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object.isRequired,
-
-  minRows: PropTypes.number.isRequired,
-  maxRows: PropTypes.number.isRequired,
-}
-
-const defaultProps = {
-  minRows: 0,
-  maxRows: Infinity,
-}
 
 class DateContentRow extends React.Component {
   constructor(...args) {
@@ -64,7 +24,7 @@ class DateContentRow extends React.Component {
     onSelectSlot(range.slice(slot.start, slot.end + 1), slot)
   }
 
-  handleShowMore = slot => {
+  handleShowMore = (slot, target) => {
     const { range, onShowMore } = this.props
     let metrics = this.slotMetrics(this.props)
     let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
@@ -73,7 +33,7 @@ class DateContentRow extends React.Component {
     if (row) cell = row.children[slot - 1]
 
     let events = metrics.getEventsForSlot(slot)
-    onShowMore(events, range[slot - 1], cell, slot)
+    onShowMore(events, range[slot - 1], cell, slot, target)
   }
 
   createHeadingRef = r => {
@@ -218,7 +178,44 @@ class DateContentRow extends React.Component {
   }
 }
 
-DateContentRow.propTypes = propTypes
-DateContentRow.defaultProps = defaultProps
+DateContentRow.propTypes = {
+  date: PropTypes.instanceOf(Date),
+  events: PropTypes.array.isRequired,
+  range: PropTypes.array.isRequired,
+
+  rtl: PropTypes.bool,
+  resourceId: PropTypes.any,
+  renderForMeasure: PropTypes.bool,
+  renderHeader: PropTypes.func,
+
+  container: PropTypes.func,
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onShowMore: PropTypes.func,
+  onSelectSlot: PropTypes.func,
+  onSelect: PropTypes.func,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+  dayPropGetter: PropTypes.func,
+
+  getNow: PropTypes.func.isRequired,
+  isAllDay: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+
+  minRows: PropTypes.number.isRequired,
+  maxRows: PropTypes.number.isRequired,
+}
+
+DateContentRow.defaultProps = {
+  minRows: 0,
+  maxRows: Infinity,
+}
 
 export default DateContentRow

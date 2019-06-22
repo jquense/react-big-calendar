@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import { isSelected } from './utils/selection'
 
@@ -14,46 +14,7 @@ import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 
 class DayColumn extends React.Component {
-  static propTypes = {
-    events: PropTypes.array.isRequired,
-    step: PropTypes.number.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
-    getNow: PropTypes.func.isRequired,
-
-    rtl: PropTypes.bool,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-
-    showMultiDayTimes: PropTypes.bool,
-    culture: PropTypes.string,
-    timeslots: PropTypes.number,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    eventOffset: PropTypes.number,
-    longPressThreshold: PropTypes.number,
-
-    onSelecting: PropTypes.func,
-    onSelectSlot: PropTypes.func.isRequired,
-    onSelectEvent: PropTypes.func.isRequired,
-    onDoubleClickEvent: PropTypes.func.isRequired,
-
-    className: PropTypes.string,
-    dragThroughEvents: PropTypes.bool,
-    resource: PropTypes.any,
-  }
-
-  static defaultProps = {
-    dragThroughEvents: true,
-    timeslots: 2,
-  }
-
-  state = { selecting: false }
+  state = { selecting: false, timeIndicatorPosition: null }
 
   constructor(...args) {
     super(...args)
@@ -63,10 +24,15 @@ class DayColumn extends React.Component {
 
   componentDidMount() {
     this.props.selectable && this._selectable()
+
+    if (this.props.isNow) {
+      this.setTimeIndicatorPositionUpdateInterval()
+    }
   }
 
   componentWillUnmount() {
     this._teardownSelectable()
+    this.clearTimeIndicatorInterval()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,12 +43,71 @@ class DayColumn extends React.Component {
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const getNowChanged = !dates.eq(
+      prevProps.getNow(),
+      this.props.getNow(),
+      'minutes'
+    )
+
+    if (prevProps.isNow !== this.props.isNow || getNowChanged) {
+      this.clearTimeIndicatorInterval()
+
+      if (this.props.isNow) {
+        const tail =
+          !getNowChanged &&
+          dates.eq(prevProps.date, this.props.date, 'minutes') &&
+          prevState.timeIndicatorPosition === this.state.timeIndicatorPosition
+
+        this.setTimeIndicatorPositionUpdateInterval(tail)
+      }
+    } else if (
+      this.props.isNow &&
+      !dates.eq(prevProps.min, this.props.min, 'minutes')
+    ) {
+      this.positionTimeIndicator()
+    }
+  }
+
+  intervalTriggered = false
+  /**
+   * @param tail {Boolean} - whether `positionTimeIndicator` call should be
+   *   deferred or called upon setting interval (`true` - if deferred);
+   */
+  setTimeIndicatorPositionUpdateInterval(tail = false) {
+    if (!this.intervalTriggered && !tail) {
+      this.positionTimeIndicator()
+    }
+
+    this._timeIndicatorTimeout = window.setTimeout(() => {
+      this.intervalTriggered = true
+      this.positionTimeIndicator()
+      this.setTimeIndicatorPositionUpdateInterval()
+    }, 60000)
+  }
+
+  clearTimeIndicatorInterval() {
+    this.intervalTriggered = false
+    window.clearTimeout(this._timeIndicatorTimeout)
+  }
+
+  positionTimeIndicator() {
+    const { min, max, getNow } = this.props
+    const current = getNow()
+
+    if (current >= min && current <= max) {
+      const { top } = this.slotMetrics.getRange(current, current)
+      this.setState({ timeIndicatorPosition: top })
+    } else {
+      this.clearTimeIndicatorInterval()
+    }
+  }
+
   render() {
     const {
       max,
       rtl,
-      date,
-      getNow,
+      isNow,
       resource,
       accessors,
       localizer,
@@ -96,7 +121,6 @@ class DayColumn extends React.Component {
     let selectDates = { start: startDate, end: endDate }
 
     const { className, style } = dayProp(max)
-    const current = getNow()
 
     return (
       <div
@@ -105,8 +129,9 @@ class DayColumn extends React.Component {
           className,
           'rbc-day-slot',
           'rbc-time-column',
-          selecting && 'rbc-slot-selecting',
-          dates.eq(date, current, 'day') && 'rbc-today'
+          isNow && 'rbc-now',
+          isNow && 'rbc-today', // WHY
+          selecting && 'rbc-slot-selecting'
         )}
       >
         {slotMetrics.groups.map((grp, idx) => (
@@ -136,6 +161,12 @@ class DayColumn extends React.Component {
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}
+        {isNow && (
+          <div
+            className="rbc-current-time-indicator"
+            style={{ top: `${this.state.timeIndicatorPosition}%` }}
+          />
+        )}
       </div>
     )
   }
@@ -143,7 +174,7 @@ class DayColumn extends React.Component {
   renderEvents = () => {
     let {
       events,
-      rtl: isRtl,
+      rtl,
       selected,
       accessors,
       localizer,
@@ -188,8 +219,7 @@ class DayColumn extends React.Component {
           label={label}
           key={'evt_' + idx}
           getters={getters}
-          isRtl={isRtl}
-          getters={getters}
+          rtl={rtl}
           components={components}
           continuesEarlier={continuesEarlier}
           continuesLater={continuesLater}
@@ -290,6 +320,12 @@ class DayColumn extends React.Component {
         this.setState({ selecting: false })
       }
     })
+
+    selector.on('reset', () => {
+      if (this.state.selecting) {
+        this.setState({ selecting: false })
+      }
+    })
   }
 
   _teardownSelectable = () => {
@@ -325,6 +361,46 @@ class DayColumn extends React.Component {
   _doubleClick = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
   }
+}
+
+DayColumn.propTypes = {
+  events: PropTypes.array.isRequired,
+  step: PropTypes.number.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
+  getNow: PropTypes.func.isRequired,
+  isNow: PropTypes.bool,
+
+  rtl: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+
+  showMultiDayTimes: PropTypes.bool,
+  culture: PropTypes.string,
+  timeslots: PropTypes.number,
+
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  eventOffset: PropTypes.number,
+  longPressThreshold: PropTypes.number,
+
+  onSelecting: PropTypes.func,
+  onSelectSlot: PropTypes.func.isRequired,
+  onSelectEvent: PropTypes.func.isRequired,
+  onDoubleClickEvent: PropTypes.func.isRequired,
+
+  className: PropTypes.string,
+  dragThroughEvents: PropTypes.bool,
+  resource: PropTypes.any,
+}
+
+DayColumn.defaultProps = {
+  dragThroughEvents: true,
+  timeslots: 2,
 }
 
 export default DayColumn

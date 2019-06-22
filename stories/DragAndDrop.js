@@ -1,15 +1,16 @@
 import React from 'react'
-import { storiesOf, action } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 
-import { events, Calendar, DragAndDropCalendar } from './helpers'
+import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
 import customComponents from './helpers/customComponents'
 
-storiesOf('Drag and Drop')
+storiesOf('Drag and Drop', module)
   .add('draggable and resizable', () => {
     return (
       <DragAndDropCalendar
         defaultDate={new Date()}
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         resizable
         onEventDrop={action('event dropped')}
@@ -21,7 +22,7 @@ storiesOf('Drag and Drop')
     return (
       <DragAndDropCalendar
         defaultDate={new Date()}
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         resizable
         step={15}
@@ -35,7 +36,7 @@ storiesOf('Drag and Drop')
     return (
       <DragAndDropCalendar
         defaultDate={new Date()}
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         resizable
         showMultiDayTimes
@@ -51,7 +52,7 @@ storiesOf('Drag and Drop')
           dateCellWrapper: customComponents.dateCellWrapper,
         }}
         defaultDate={new Date()}
-        defaultView={Calendar.Views.MONTH}
+        defaultView={Views.MONTH}
         events={events}
         resizable
         showMultiDayTimes
@@ -60,14 +61,14 @@ storiesOf('Drag and Drop')
       />
     )
   })
-  .add('draggable and resizable with custom dayWrapper', () => {
+  .add('draggable and resizable with custom timeSlotWrapper', () => {
     return (
       <DragAndDropCalendar
         components={{
-          dayWrapper: customComponents.dayWrapper,
+          timeSlotWrapper: customComponents.timeSlotWrapper,
         }}
         defaultDate={new Date()}
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         resizable
         showMultiDayTimes
@@ -83,7 +84,7 @@ storiesOf('Drag and Drop')
           eventWrapper: customComponents.eventWrapper,
         }}
         defaultDate={new Date()}
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         resizable
         showMultiDayTimes

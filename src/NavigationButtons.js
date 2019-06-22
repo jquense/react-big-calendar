@@ -3,16 +3,29 @@ import React from 'react'
 
 import NavigationButton from './NavigationButton'
 
-
-export const TodayButton = ({onClick, localizer: { messages: { today } }}) =>(
-  <NavigationButton onClick={onClick} message={today}/>
+export const TodayButton = ({ onClick, message: today }) => (
+  <NavigationButton onClick={onClick} message={today} />
 )
 
-export const NextButton = ({onClick, localizer: { messages: { next } }}) =>(
-  <NavigationButton onClick={onClick} message={next}/>
+TodayButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
+}
+
+export const NextButton = ({ onClick, message: next }) => (
+  <NavigationButton onClick={onClick} message={next} />
 )
 
-export const PreviousButton = ({onClick, localizer: { messages: { previous } }}) =>(
-  <NavigationButton onClick={onClick} message={previous}/>
+NextButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
+}
+
+export const PreviousButton = ({ onClick, message: previous }) => (
+  <NavigationButton onClick={onClick} message={previous} />
 )
 
+PreviousButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
+}

@@ -30,8 +30,8 @@
   .rbc-allday-cell {
     box-sizing: content-box;
     width: 100%;
+    height: 100%;
     position: relative;
-
   }
   .rbc-allday-cell + .rbc-allday-cell {
     border-left: 1px solid @cell-border;
@@ -48,7 +48,6 @@
   }
 }
 
-
 .rbc-time-header {
   display: flex;
   flex: 0 0 auto; // should not shrink below height
@@ -64,11 +63,11 @@
   }
 
   > .rbc-row:first-child {
-    border-bottom: 1px solid  @cell-border;
+    border-bottom: 1px solid @cell-border;
   }
 
   > .rbc-row.rbc-row-resource {
-    border-bottom: 1px solid  @cell-border;
+    border-bottom: 1px solid @cell-border;
   }
 
   // .rbc-gutter-cell {
@@ -80,15 +79,25 @@
   // }
 }
 
+.rbc-time-header-cell-single-day {
+  display: none;
+}
+
 .rbc-time-header-content {
   flex: 1;
+  display: flex;
   min-width: 0;
   flex-direction: column;
   border-left: 1px solid @cell-border;
 
-  .rbc-rtl &  {
+  .rbc-rtl & {
     border-left-width: 0;
     border-right: 1px solid @cell-border;
+  }
+
+  >.rbc-row.rbc-row-resource {
+      border-bottom: 1px solid @cell-border;
+      flex-shrink: 0;
   }
 }
 
@@ -124,6 +133,8 @@
 .rbc-current-time-indicator {
   position: absolute;
   z-index: 3;
+  left: 0;
+  right: 0;
   height: 1px;
 
   background-color: @current-time-color;

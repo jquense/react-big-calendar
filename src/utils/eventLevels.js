@@ -1,5 +1,5 @@
 import findIndex from 'lodash/findIndex'
-import dates from './dates'
+import * as dates from './dates'
 
 export function endOfRange(dateRange, unit = 'day') {
   return {

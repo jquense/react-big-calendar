@@ -3,62 +3,16 @@ import cn from 'classnames'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 import React from 'react'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
+import ResourceHeader from './ResourceHeader'
 import { notify } from './utils/helpers'
 
 class TimeGridHeader extends React.Component {
-  static propTypes = {
-    range: PropTypes.array.isRequired,
-    events: PropTypes.array.isRequired,
-    resources: PropTypes.array,
-    getNow: PropTypes.func.isRequired,
-    isOverflowing: PropTypes.bool,
-
-    rtl: PropTypes.bool,
-    width: PropTypes.number,
-
-    localizer: PropTypes.object.isRequired,
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-
-    selected: PropTypes.object,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    longPressThreshold: PropTypes.number,
-
-    onSelectSlot: PropTypes.func,
-    onSelectEvent: PropTypes.func,
-    onDoubleClickEvent: PropTypes.func,
-    onDrillDown: PropTypes.func,
-    getDrilldownView: PropTypes.func.isRequired,
-  }
-
   handleHeaderClick = (date, view, e) => {
     e.preventDefault()
     notify(this.props.onDrillDown, [date, view])
-  }
-
-  renderHeaderResources(range, resources) {
-    const { accessors, getNow } = this.props
-    const today = getNow()
-
-    return range.map((date, i) => {
-      return resources.map((resource, j) => {
-        return (
-          <div
-            key={`${i}-${j}`}
-            className={cn(
-              'rbc-header',
-              dates.eq(date, today, 'day') && 'rbc-today'
-            )}
-          >
-            {accessors.resourceTitle(resource)}
-          </div>
-        )
-      })
-    })
   }
 
   renderHeaderCells(range) {
@@ -154,8 +108,19 @@ class TimeGridHeader extends React.Component {
       rtl,
       resources,
       range,
+      events,
+      getNow,
+      accessors,
+      selectable,
+      components,
+      getters,
+      scrollRef,
+      localizer,
       isOverflowing,
-      components: { timeGutterHeader: TimeGutterHeader },
+      components: {
+        timeGutterHeader: TimeGutterHeader,
+        resourceHeader: ResourceHeaderComponent = ResourceHeader,
+      },
     } = this.props
 
     let style = {}
@@ -163,37 +128,93 @@ class TimeGridHeader extends React.Component {
       style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize()}px`
     }
 
+    const groupedEvents = resources.groupEvents(events)
+
     return (
       <div
-        ref="headerCell"
         style={style}
+        ref={scrollRef}
         className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        <div className="rbc-label rbc-time-header-gutter" style={{ width }}>
+        <div
+          className="rbc-label rbc-time-header-gutter"
+          style={{ width, minWidth: width, maxWidth: width }}
+        >
           {TimeGutterHeader && <TimeGutterHeader />}
         </div>
 
-        <div className="rbc-time-header-content">
-          <div className="rbc-row rbc-time-header-cell">
-            {this.renderHeaderCells(range)}
+        {resources.map(([id, resource], idx) => (
+          <div className="rbc-time-header-content" key={id || idx}>
+            {resource && (
+              <div className="rbc-row rbc-row-resource" key={`resource_${idx}`}>
+                <div className="rbc-header">
+                  <ResourceHeaderComponent
+                    index={idx}
+                    label={accessors.resourceTitle(resource)}
+                    resource={resource}
+                  />
+                </div>
+              </div>
+            )}
+            <div
+              className={`rbc-row rbc-time-header-cell${
+                range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
+              }`}
+            >
+              {this.renderHeaderCells(range)}
+            </div>
+            <DateContentRow
+              isAllDay
+              rtl={rtl}
+              getNow={getNow}
+              minRows={2}
+              range={range}
+              events={groupedEvents.get(id) || []}
+              resourceId={resource && id}
+              className="rbc-allday-cell"
+              selectable={selectable}
+              selected={this.props.selected}
+              components={components}
+              accessors={accessors}
+              getters={getters}
+              localizer={localizer}
+              onSelect={this.props.onSelectEvent}
+              onDoubleClick={this.props.onDoubleClickEvent}
+              onSelectSlot={this.props.onSelectSlot}
+              longPressThreshold={this.props.longPressThreshold}
+            />
           </div>
-          {resources && (
-            <div className="rbc-row rbc-row-resource">
-              {this.renderHeaderResources(range, resources)}
-            </div>
-          )}
-
-          {resources ? (
-            <div className="rbc-row rbc-row-resource">
-              {resources.map(resource => this.renderRow(resource))}
-            </div>
-          ) : (
-            this.renderRow()
-          )}
-        </div>
+        ))}
       </div>
     )
   }
+}
+
+TimeGridHeader.propTypes = {
+  range: PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  resources: PropTypes.object,
+  getNow: PropTypes.func.isRequired,
+  isOverflowing: PropTypes.bool,
+
+  rtl: PropTypes.bool,
+  width: PropTypes.number,
+
+  localizer: PropTypes.object.isRequired,
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onSelectSlot: PropTypes.func,
+  onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
+  onDrillDown: PropTypes.func,
+  getDrilldownView: PropTypes.func.isRequired,
+  scrollRef: PropTypes.any,
 }
 
 export default TimeGridHeader

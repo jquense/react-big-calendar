@@ -4,27 +4,19 @@ import classes from 'dom-helpers/class'
 import getWidth from 'dom-helpers/query/width'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
 class Agenda extends React.Component {
-  static propTypes = {
-    events: PropTypes.array,
-    date: PropTypes.instanceOf(Date),
-    length: PropTypes.number.isRequired,
-
-    selected: PropTypes.object,
-
-    accessors: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-    getters: PropTypes.object.isRequired,
-    localizer: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    length: 30,
+  constructor(props) {
+    super(props)
+    this.headerRef = React.createRef()
+    this.dateColRef = React.createRef()
+    this.timeColRef = React.createRef()
+    this.contentRef = React.createRef()
+    this.tbodyRef = React.createRef()
   }
 
   componentDidMount() {
@@ -50,22 +42,22 @@ class Agenda extends React.Component {
       <div className="rbc-agenda-view">
         {events.length !== 0 ? (
           <React.Fragment>
-            <table ref="header" className="rbc-agenda-table">
+            <table ref={this.headerRef} className="rbc-agenda-table">
               <thead>
                 <tr>
-                  <th className="rbc-header" ref="dateCol">
+                  <th className="rbc-header" ref={this.dateColRef}>
                     {messages.date}
                   </th>
-                  <th className="rbc-header" ref="timeCol">
+                  <th className="rbc-header" ref={this.timeColRef}>
                     {messages.time}
                   </th>
                   <th className="rbc-header">{messages.event}</th>
                 </tr>
               </thead>
             </table>
-            <div className="rbc-agenda-content" ref="content">
+            <div className="rbc-agenda-content" ref={this.contentRef}>
               <table className="rbc-agenda-table">
-                <tbody ref="tbody">
+                <tbody ref={this.tbodyRef}>
                   {range.map((day, idx) => this.renderDay(day, events, idx))}
                 </tbody>
               </table>
@@ -146,7 +138,9 @@ class Agenda extends React.Component {
     let start = accessors.start(event)
 
     if (!accessors.allDay(event)) {
-      if (dates.eq(start, end, 'day')) {
+      if (dates.eq(start, end)) {
+        label = localizer.format(start, 'agendaTimeFormat')
+      } else if (dates.eq(start, end, 'day')) {
         label = localizer.format({ start, end }, 'agendaTimeRangeFormat')
       } else if (dates.eq(day, start, 'day')) {
         label = localizer.format(start, 'agendaTimeFormat')
@@ -170,15 +164,16 @@ class Agenda extends React.Component {
   }
 
   _adjustHeader = () => {
-    if (!this.refs.tbody) return
+    if (!this.tbodyRef.current) return
 
-    let header = this.refs.header
-    let firstRow = this.refs.tbody.firstChild
+    let header = this.headerRef.current
+    let firstRow = this.tbodyRef.current.firstChild
 
     if (!firstRow) return
 
     let isOverflowing =
-      this.refs.content.scrollHeight > this.refs.content.clientHeight
+      this.contentRef.current.scrollHeight >
+      this.contentRef.current.clientHeight
     let widths = this._widths || []
 
     this._widths = [
@@ -187,8 +182,8 @@ class Agenda extends React.Component {
     ]
 
     if (widths[0] !== this._widths[0] || widths[1] !== this._widths[1]) {
-      this.refs.dateCol.style.width = this._widths[0] + 'px'
-      this.refs.timeCol.style.width = this._widths[1] + 'px'
+      this.dateColRef.current.style.width = this._widths[0] + 'px'
+      this.timeColRef.current.style.width = this._widths[1] + 'px'
     }
 
     if (isOverflowing) {
@@ -198,6 +193,23 @@ class Agenda extends React.Component {
       classes.removeClass(header, 'rbc-header-overflowing')
     }
   }
+}
+
+Agenda.propTypes = {
+  events: PropTypes.array,
+  date: PropTypes.instanceOf(Date),
+  length: PropTypes.number.isRequired,
+
+  selected: PropTypes.object,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object.isRequired,
+}
+
+Agenda.defaultProps = {
+  length: 30,
 }
 
 Agenda.range = (start, { length = Agenda.defaultProps.length }) => {

@@ -11,11 +11,6 @@
     right: 0;
   }
 
-  .rbc-addons-dnd-dragging {
-    opacity: .25;
-    touch-action: manipulation;
-  }
-
 
   .rbc-addons-dnd-over {
     background-color: rgba(
@@ -34,7 +29,11 @@
     }
   }
 
-  &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragging):not(.rbc-addons-dnd-drag-preview) {
+  .rbc-addons-dnd-dragged-event {
+    opacity: 0;
+  }
+
+  &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
     opacity: .50;
   }
 

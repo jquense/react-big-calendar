@@ -6,7 +6,6 @@
   border-radius: @event-border-radius;
   color: @event-color;
   cursor: pointer;
-
   .rbc-slot-selecting & {
     cursor: inherit;
     pointer-events: none;
@@ -14,6 +13,10 @@
 
   &.rbc-selected {
     background-color: darken(@event-bg, 10%);
+  }
+
+  &:focus {
+    outline: 5px auto @event-outline;
   }
 }
 
@@ -44,4 +47,3 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-

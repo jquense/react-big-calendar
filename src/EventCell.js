@@ -1,26 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
-import dates from './utils/dates'
-
-let propTypes = {
-  event: PropTypes.object.isRequired,
-  slotStart: PropTypes.instanceOf(Date),
-  slotEnd: PropTypes.instanceOf(Date),
-
-  selected: PropTypes.bool,
-  isAllDay: PropTypes.bool,
-  continuesPrior: PropTypes.bool,
-  continuesAfter: PropTypes.bool,
-
-  accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
-  getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object.isRequired,
-
-  onSelect: PropTypes.func,
-  onDoubleClick: PropTypes.func,
-}
+import * as dates from './utils/dates'
 
 class EventCell extends React.Component {
   render() {
@@ -72,6 +53,7 @@ class EventCell extends React.Component {
       <EventWrapper {...this.props} type="date">
         <div
           {...props}
+          tabIndex={0}
           style={{ ...userProps.style, ...style }}
           className={cn('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
@@ -89,6 +71,23 @@ class EventCell extends React.Component {
   }
 }
 
-EventCell.propTypes = propTypes
+EventCell.propTypes = {
+  event: PropTypes.object.isRequired,
+  slotStart: PropTypes.instanceOf(Date),
+  slotEnd: PropTypes.instanceOf(Date),
+
+  selected: PropTypes.bool,
+  isAllDay: PropTypes.bool,
+  continuesPrior: PropTypes.bool,
+  continuesAfter: PropTypes.bool,
+
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  localizer: PropTypes.object,
+
+  onSelect: PropTypes.func,
+  onDoubleClick: PropTypes.func,
+}
 
 export default EventCell

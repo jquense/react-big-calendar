@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
 class Day extends React.Component {
-  static propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-  }
-
   render() {
     let { date, ...props } = this.props
     let range = Day.range(date)
 
     return <TimeGrid {...props} range={range} eventOffset={10} />
   }
+}
+
+Day.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
 }
 
 Day.range = date => {

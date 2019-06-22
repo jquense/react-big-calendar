@@ -4,13 +4,6 @@ import React from 'react'
 import EventRowMixin from './EventRowMixin'
 
 class EventRow extends React.Component {
-  static propTypes = {
-    segments: PropTypes.array,
-    ...EventRowMixin.propTypes,
-  }
-  static defaultProps = {
-    ...EventRowMixin.defaultProps,
-  }
   render() {
     let {
       segments,
@@ -39,6 +32,15 @@ class EventRow extends React.Component {
       </div>
     )
   }
+}
+
+EventRow.propTypes = {
+  segments: PropTypes.array,
+  ...EventRowMixin.propTypes,
+}
+
+EventRow.defaultProps = {
+  ...EventRowMixin.defaultProps,
 }
 
 export default EventRow

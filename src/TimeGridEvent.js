@@ -8,12 +8,14 @@ function TimeGridEvent(props) {
     className,
     event,
     accessors,
-    isRtl,
+    rtl,
     selected,
     label,
     continuesEarlier,
     continuesLater,
     getters,
+    onClick,
+    onDoubleClick,
     components: { event: Event, eventWrapper: EventWrapper },
   } = props
   let title = accessors.title(event)
@@ -36,11 +38,13 @@ function TimeGridEvent(props) {
   return (
     <EventWrapper type="time" {...props}>
       <div
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
         style={{
           ...userProps.style,
           top: `${top}%`,
           height: `${height}%`,
-          [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
+          [rtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
           width: `${width}%`,
         }}
         title={

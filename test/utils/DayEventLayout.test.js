@@ -1,6 +1,6 @@
 import { getStyledEvents } from '../../src/utils/DayEventLayout'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
-import dates from '../../src/utils/dates'
+import * as dates from '../../src/utils/dates'
 
 describe('getStyledEvents', () => {
   const d = (...args) => new Date(2015, 3, 1, ...args)

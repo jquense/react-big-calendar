@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import cn from 'classnames'
+import { navigate } from './utils/constants'
 import { NextButton, PreviousButton, TodayButton } from './NavigationButtons'
 
-class Toolbar extends React.Component {
-  navigateToday = navigate => this.navigate(navigate.TODAY)
+export default class Toolbar extends React.Component {
+  navigateToday = () => this.navigate(navigate.TODAY)
 
-  navigateNext = navigate => this.navigate(navigate.NEXT)
+  navigateNext = () => this.navigate(navigate.NEXT)
 
-  navigatePrevious = navigate => this.navigate(navigate.PREVIOUS)
+  navigatePrevious = () => this.navigate(navigate.PREVIOUS)
 
   render() {
     const {
@@ -87,5 +88,3 @@ Toolbar.propTypes = {
   onView: PropTypes.func.isRequired,
   components: PropTypes.object.isRequired,
 }
-
-export default Toolbar

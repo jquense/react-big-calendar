@@ -4346,10 +4346,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-arithmetic@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/date-arithmetic/-/date-arithmetic-4.0.0.tgz#20514510adc5cbfc507151d5f133333ba95c891e"
-  integrity sha512-dIeY8FEapS0T0VK0YaHH+69ouYR429Xb9pXugBLAEAs4WfRYOVCyPE5EF7gpILFnA2M8U9WfF5WPS/hHvCg7qg==
+date-arithmetic@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/date-arithmetic/-/date-arithmetic-4.0.1.tgz#e7f94da8a14ebf4d2bbe4fb66598532c25dc1fb5"
+  integrity sha512-fawhJU3ajJud093das8L3PSXqDb+LjclKhRTIbVX1xC+QeHtL/30kNTkS8s/lOiKMGMngxKvwEzQhBEmK/KQnQ==
 
 date-fns@^1.27.2:
   version "1.30.1"

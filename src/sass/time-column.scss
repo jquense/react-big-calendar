@@ -63,7 +63,7 @@
 
   .rbc-event-content {
     width: 100%;
-    flex: 1 1 0;
+    flex: 1 1 0%;
     word-wrap: break-word;
     line-height: 1;
     height: 100%;
@@ -92,7 +92,7 @@
 
   .rbc-time-header-content {
     min-width: auto;
-    flex: 1 0 0;
+    flex: 1 0 0%;
     flex-basis: 0px;
   }
 
@@ -105,10 +105,10 @@
   }
 
   .rbc-header,
-  .rbc-day-bg, {
+  .rbc-day-bg {
     width: 140px;
     // min-width: 0;
-    flex:  1 1 0;
+    flex:  1 1 0px;
     flex-basis: 0 px;
   }
 }
@@ -118,7 +118,7 @@
 }
 
 .rbc-time-slot {
-  flex: 1 0 0;
+  flex: 1 0 0%;
 
   &.rbc-now {
     font-weight: bold;

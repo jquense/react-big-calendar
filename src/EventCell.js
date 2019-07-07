@@ -20,6 +20,8 @@ class EventCell extends React.Component {
       getters,
       children,
       components: { event: Event, eventWrapper: EventWrapper },
+      slotStart,
+      slotEnd,
       ...props
     } = this.props
 
@@ -39,9 +41,13 @@ class EventCell extends React.Component {
         {Event ? (
           <Event
             event={event}
+            continuesPrior={continuesPrior}
+            continuesAfter={continuesAfter}
             title={title}
             isAllDay={allDay}
             localizer={localizer}
+            slotStart={slotStart}
+            slotEnd={slotEnd}
           />
         ) : (
           title

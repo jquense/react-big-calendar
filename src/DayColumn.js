@@ -63,7 +63,8 @@ class DayColumn extends React.Component {
       }
     } else if (
       this.props.isNow &&
-      !dates.eq(prevProps.min, this.props.min, 'minutes')
+      (!dates.eq(prevProps.min, this.props.min, 'minutes') ||
+        !dates.eq(prevProps.max, this.props.max, 'minutes'))
     ) {
       this.positionTimeIndicator()
     }

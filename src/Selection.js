@@ -31,7 +31,7 @@ function getEventCoordinates(e) {
     target = e.touches[0]
   }
   
-  var zoom = parseFloat(window.getComputedStyle(document.body).zoom);
+  var zoom = parseFloat(window.getComputedStyle(document.body).zoom) || 1;
 
   return {
     clientX: target.clientX,

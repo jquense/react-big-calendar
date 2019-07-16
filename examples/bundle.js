@@ -5682,7 +5682,7 @@ object-assign
           r = e.end
         return (
           t.format(o, { time: 'short' }, n) +
-          ' — ' +
+          ' – ' +
           t.format(r, { time: 'short' }, n)
         )
       }),
@@ -5694,11 +5694,11 @@ object-assign
         eventTimeRangeFormat: l,
         eventTimeRangeStartFormat: function(e, n, t) {
           var o = e.start
-          return t.format(o, { time: 'short' }, n) + ' — '
+          return t.format(o, { time: 'short' }, n) + ' – '
         },
         eventTimeRangeEndFormat: function(e, n, t) {
           var o = e.end
-          return ' — ' + t.format(o, { time: 'short' }, n)
+          return ' – ' + t.format(o, { time: 'short' }, n)
         },
         timeGutterFormat: { time: 'short' },
         monthHeaderFormat: 'MMMM yyyy',
@@ -5708,7 +5708,7 @@ object-assign
             a = e.end
           return (
             t.format(o, 'MMM dd', n) +
-            ' — ' +
+            ' – ' +
             t.format(a, r.default.eq(o, a, 'month') ? 'dd' : 'MMM dd', n)
           )
         },
@@ -5717,7 +5717,7 @@ object-assign
             r = e.end
           return (
             t.format(o, { date: 'short' }, n) +
-            ' — ' +
+            ' – ' +
             t.format(r, { date: 'short' }, n)
           )
         },
@@ -9989,18 +9989,18 @@ object-assign
                     name: 'custom',
                     raw: 'dateRangeFormat',
                     description:
-                      'Toolbar header format for the Week views, e.g. "Mar 29 - Apr 04"',
+                      'Toolbar header format for the Week views, e.g. "Mar 29 – Apr 04"',
                     required: !1,
                   },
                   description:
-                    'Toolbar header format for the Week views, e.g. "Mar 29 - Apr 04"',
+                    'Toolbar header format for the Week views, e.g. "Mar 29 – Apr 04"',
                   required: !1,
                   name: 'dayRangeHeaderFormat',
                   docblock:
-                    'Toolbar header format for the Week views, e.g. "Mar 29 - Apr 04"',
+                    'Toolbar header format for the Week views, e.g. "Mar 29 – Apr 04"',
                   doclets: {},
                   descriptionHtml:
-                    '<p>Toolbar header format for the Week views, e.g. &quot;Mar 29 - Apr 04&quot;</p>\n',
+                    '<p>Toolbar header format for the Week views, e.g. &quot;Mar 29 – Apr 04&quot;</p>\n',
                 },
                 dayHeaderFormat: {
                   type: {
@@ -10025,36 +10025,36 @@ object-assign
                     name: 'custom',
                     raw: 'dateRangeFormat',
                     description:
-                      'Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"',
+                      'Toolbar header format for the Agenda view, e.g. "4/1/2015 – 5/1/2015"',
                     required: !1,
                   },
                   description:
-                    'Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"',
+                    'Toolbar header format for the Agenda view, e.g. "4/1/2015 – 5/1/2015"',
                   required: !1,
                   name: 'agendaHeaderFormat',
                   docblock:
-                    'Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"',
+                    'Toolbar header format for the Agenda view, e.g. "4/1/2015 – 5/1/2015"',
                   doclets: {},
                   descriptionHtml:
-                    '<p>Toolbar header format for the Agenda view, e.g. &quot;4/1/2015 — 5/1/2015&quot;</p>\n',
+                    '<p>Toolbar header format for the Agenda view, e.g. &quot;4/1/2015 – 5/1/2015&quot;</p>\n',
                 },
                 selectRangeFormat: {
                   type: {
                     name: 'custom',
                     raw: 'dateRangeFormat',
                     description:
-                      'A time range format for selecting time slots, e.g "8:00am — 2:00pm"',
+                      'A time range format for selecting time slots, e.g "8:00am – 2:00pm"',
                     required: !1,
                   },
                   description:
-                    'A time range format for selecting time slots, e.g "8:00am — 2:00pm"',
+                    'A time range format for selecting time slots, e.g "8:00am – 2:00pm"',
                   required: !1,
                   name: 'selectRangeFormat',
                   docblock:
-                    'A time range format for selecting time slots, e.g "8:00am — 2:00pm"',
+                    'A time range format for selecting time slots, e.g "8:00am – 2:00pm"',
                   doclets: {},
                   descriptionHtml:
-                    '<p>A time range format for selecting time slots, e.g &quot;8:00am — 2:00pm&quot;</p>\n',
+                    '<p>A time range format for selecting time slots, e.g &quot;8:00am – 2:00pm&quot;</p>\n',
                 },
                 agendaDateFormat: {
                   type: { name: 'custom', raw: 'dateFormat', required: !1 },
@@ -10141,13 +10141,13 @@ object-assign
             },
             required: !1,
             description:
-              "Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, , localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>\n    localizer.format(start, { date: 'short' }, culture) + ' — ' +\n    localizer.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`",
+              "Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, , localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>\n    localizer.format(start, { date: 'short' }, culture) + ' – ' +\n    localizer.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`",
             name: 'formats',
             docblock:
-              "Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, , localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>\n    localizer.format(start, { date: 'short' }, culture) + ' — ' +\n    localizer.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`",
+              "Localizer specific formats, tell the Calendar how to format and display dates.\n\n`format` types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.\n\n```jsx\nlet formats = {\n  dateFormat: 'dd',\n\n  dayFormat: (date, , localizer) =>\n    localizer.format(date, 'DDD', culture),\n\n  dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>\n    localizer.format(start, { date: 'short' }, culture) + ' – ' +\n    localizer.format(end, { date: 'short' }, culture)\n}\n\n<Calendar formats={formats} />\n```\n\nAll localizers accept a function of\nthe form `(date: Date, culture: ?string, localizer: Localizer) -> string`",
             doclets: {},
             descriptionHtml:
-              '<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n<p><code>format</code> types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: <code>&#39;DD mm yyyy&#39;</code>.</p>\n<pre><code class="lang-jsx"><span class="token keyword">let</span> formats <span class="token operator">=</span> <span class="token punctuation">{</span>\n  dateFormat<span class="token punctuation">:</span> <span class="token string">\'dd\'</span><span class="token punctuation">,</span>\n\n  <span class="token function-variable function">dayFormat</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token parameter">date<span class="token punctuation">,</span> <span class="token punctuation">,</span> localizer</span><span class="token punctuation">)</span> <span class="token operator">=></span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> <span class="token string">\'DDD\'</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span><span class="token punctuation">,</span>\n\n  <span class="token function-variable function">dayRangeHeaderFormat</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> start<span class="token punctuation">,</span> end <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">,</span> localizer</span><span class="token punctuation">)</span> <span class="token operator">=></span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">\' — \'</span> <span class="token operator">+</span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>end<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span>\n<span class="token punctuation">}</span>\n\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Calendar</span> <span class="token attr-name">formats</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>formats<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>\n</code></pre>\n<p>All localizers accept a function of\nthe form <code>(date: Date, culture: ?string, localizer: Localizer) -&gt; string</code></p>\n',
+              '<p>Localizer specific formats, tell the Calendar how to format and display dates.</p>\n<p><code>format</code> types are dependent on the configured localizer; both Moment and Globalize\naccept strings of tokens according to their own specification, such as: <code>&#39;DD mm yyyy&#39;</code>.</p>\n<pre><code class="lang-jsx"><span class="token keyword">let</span> formats <span class="token operator">=</span> <span class="token punctuation">{</span>\n  dateFormat<span class="token punctuation">:</span> <span class="token string">\'dd\'</span><span class="token punctuation">,</span>\n\n  <span class="token function-variable function">dayFormat</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token parameter">date<span class="token punctuation">,</span> <span class="token punctuation">,</span> localizer</span><span class="token punctuation">)</span> <span class="token operator">=></span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> <span class="token string">\'DDD\'</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span><span class="token punctuation">,</span>\n\n  <span class="token function-variable function">dayRangeHeaderFormat</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> start<span class="token punctuation">,</span> end <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">,</span> localizer</span><span class="token punctuation">)</span> <span class="token operator">=></span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">\' – \'</span> <span class="token operator">+</span>\n    localizer<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>end<span class="token punctuation">,</span> <span class="token punctuation">{</span> date<span class="token punctuation">:</span> <span class="token string">\'short\'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> culture<span class="token punctuation">)</span>\n<span class="token punctuation">}</span>\n\n<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Calendar</span> <span class="token attr-name">formats</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>formats<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>\n</code></pre>\n<p>All localizers accept a function of\nthe form <code>(date: Date, culture: ?string, localizer: Localizer) -&gt; string</code></p>\n',
           },
           components: {
             type: {
@@ -17724,7 +17724,7 @@ object-assign
       i = function(e, n, t) {
         var o = e.start,
           r = e.end
-        return t.format(o, 't', n) + ' — ' + t.format(r, 't', n)
+        return t.format(o, 't', n) + ' – ' + t.format(r, 't', n)
       },
       l = {
         dateFormat: 'dd',
@@ -17734,11 +17734,11 @@ object-assign
         eventTimeRangeFormat: i,
         eventTimeRangeStartFormat: function(e, n, t) {
           var o = e.start
-          return t.format(o, 't', n) + ' — '
+          return t.format(o, 't', n) + ' – '
         },
         eventTimeRangeEndFormat: function(e, n, t) {
           var o = e.end
-          return ' — ' + t.format(o, 't', n)
+          return ' – ' + t.format(o, 't', n)
         },
         timeGutterFormat: 't',
         monthHeaderFormat: 'Y',
@@ -17748,14 +17748,14 @@ object-assign
             a = e.end
           return (
             t.format(o, 'MMM dd', n) +
-            ' - ' +
+            ' – ' +
             t.format(a, r.default.eq(o, a, 'month') ? 'dd' : 'MMM dd', n)
           )
         },
         agendaHeaderFormat: function(e, n, t) {
           var o = e.start,
             r = e.end
-          return t.format(o, 'd', n) + ' — ' + t.format(r, 'd', n)
+          return t.format(o, 'd', n) + ' – ' + t.format(r, 'd', n)
         },
         agendaDateFormat: 'ddd MMM dd',
         agendaTimeFormat: 't',
@@ -22593,7 +22593,7 @@ object-assign
       i = function(e, n, t) {
         var o = e.start,
           r = e.end
-        return t.format(o, 'LT', n) + ' — ' + t.format(r, 'LT', n)
+        return t.format(o, 'LT', n) + ' – ' + t.format(r, 'LT', n)
       },
       l = {
         dateFormat: 'DD',
@@ -22603,11 +22603,11 @@ object-assign
         eventTimeRangeFormat: i,
         eventTimeRangeStartFormat: function(e, n, t) {
           var o = e.start
-          return t.format(o, 'LT', n) + ' — '
+          return t.format(o, 'LT', n) + ' – '
         },
         eventTimeRangeEndFormat: function(e, n, t) {
           var o = e.end
-          return ' — ' + t.format(o, 'LT', n)
+          return ' – ' + t.format(o, 'LT', n)
         },
         timeGutterFormat: 'LT',
         monthHeaderFormat: 'MMMM YYYY',
@@ -22617,14 +22617,14 @@ object-assign
             a = e.end
           return (
             t.format(o, 'MMMM DD', n) +
-            ' - ' +
+            ' – ' +
             t.format(a, r.default.eq(o, a, 'month') ? 'DD' : 'MMMM DD', n)
           )
         },
         agendaHeaderFormat: function(e, n, t) {
           var o = e.start,
             r = e.end
-          return t.format(o, 'L', n) + ' — ' + t.format(r, 'L', n)
+          return t.format(o, 'L', n) + ' – ' + t.format(r, 'L', n)
         },
         agendaDateFormat: 'ddd MMM DD',
         agendaTimeFormat: 'LT',

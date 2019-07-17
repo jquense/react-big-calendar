@@ -54,7 +54,7 @@ class Event {
    */
   get width() {
     const noOverlap = this._width
-    const overlap = Math.min(100, this._width * 1.7)
+    const overlap = Math.min(100, this._width)
 
     // Containers can always grow.
     if (this.rows) {

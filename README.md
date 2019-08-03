@@ -83,7 +83,7 @@ Big Calendar to match your application styling. For this reason SASS files are i
 
 ```
   @import 'react-big-calendar/lib/sass/styles';
-  @import 'react-big-calendar/addons/dragAndDrop/styles'; // if using DnD
+  @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 ```
 
 SASS implementation provides a `variables` file containing color and sizing variables that you can

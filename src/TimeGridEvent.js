@@ -22,6 +22,7 @@ function TimeGridEvent(props) {
   let tooltip = accessors.tooltip(event)
   let end = accessors.end(event)
   let start = accessors.start(event)
+  let body = accessors.body(event)
 
   let userProps = getters.eventProp(event, start, end, selected)
 
@@ -32,6 +33,9 @@ function TimeGridEvent(props) {
     </div>,
     <div key="2" className="rbc-event-content">
       {Event ? <Event event={event} title={title} /> : title}
+    </div>,
+    <div key="3" className="rbc-eventBody-content">
+      {body}
     </div>,
   ]
 

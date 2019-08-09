@@ -122,7 +122,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
-    "clsx": "^1.0.3",
+    "clsx": "^1.0.4",
     "date-arithmetic": "^4.0.1",
     "dom-helpers": "^3.4.0",
     "invariant": "^2.2.4",

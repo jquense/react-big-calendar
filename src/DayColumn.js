@@ -249,7 +249,7 @@ class DayColumn extends React.Component {
         if (
           (dates.eq(current.startDate, start, 'minutes') &&
             dates.eq(current.endDate, end, 'minutes')) ||
-          onSelecting({ start, end }) === false
+          onSelecting({ start, end, resourceId: this.props.resource }) === false
         )
           return
       }

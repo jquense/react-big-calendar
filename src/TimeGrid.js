@@ -154,6 +154,7 @@ export default class TimeGrid extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      onNavigate,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -210,6 +211,7 @@ export default class TimeGrid extends Component {
           onDoubleClickEvent={this.props.onDoubleClickEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
+          onNavigate={onNavigate}
         />
         <div
           ref={this.contentRef}

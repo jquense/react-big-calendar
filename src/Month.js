@@ -193,7 +193,6 @@ class MonthView extends React.Component {
       <Overlay
         rootClose
         placement="bottom"
-        container={this}
         show={!!overlay.position}
         onHide={() => this.setState({ overlay: null })}
         target={() => overlay.target}

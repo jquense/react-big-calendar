@@ -117,12 +117,18 @@ class DayColumn extends React.Component {
     } = this.props
 
     let { slotMetrics } = this
-    let { selecting, top, height, startDate, endDate } = this.state
+    let {
+      selecting,
+      top,
+      height,
+      startDate,
+      endDate,
+      timeIndicatorPosition,
+    } = this.state
 
     let selectDates = { start: startDate, end: endDate }
 
     const { className, style } = dayProp(max)
-
     return (
       <div
         style={style}
@@ -162,10 +168,10 @@ class DayColumn extends React.Component {
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}
-        {isNow && (
+        {isNow && timeIndicatorPosition && (
           <div
             className="rbc-current-time-indicator"
-            style={{ top: `${this.state.timeIndicatorPosition}%` }}
+            style={{ top: `${timeIndicatorPosition}%` }}
           />
         )}
       </div>

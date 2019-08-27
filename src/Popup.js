@@ -44,18 +44,22 @@ class Popup extends React.Component {
       popperRef,
     } = this.props
 
-    let { left, width, top } = this.props.position,
+    let { width } = this.props.position,
       topOffset = (this.state || {}).topOffset || 0,
       leftOffset = (this.state || {}).leftOffset || 0
 
     let style = {
-      top: Math.max(0, top - topOffset),
-      left: left - leftOffset,
+      top: -topOffset,
+      left: -leftOffset,
       minWidth: width + width / 2,
     }
 
     return (
-      <div style={style} className="rbc-overlay" ref={popperRef}>
+      <div
+        style={{ ...this.props.style, ...style }}
+        className="rbc-overlay"
+        ref={popperRef}
+      >
         <div className="rbc-overlay-header">
           {localizer.format(slotStart, 'dayHeaderFormat')}
         </div>

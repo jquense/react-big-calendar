@@ -539,10 +539,16 @@ class Selection {
     const lastSlot = this.activeSlots[this.activeSlots.length - 1]
     const newSlot = lastSlot - 1
     let lastElement = this.getSlotById(lastSlot)
-    let newElement = this.getSlotById(newSlot)
+    let newElement =
+      newSlot !== -1
+        ? this.getSlotById(newSlot)
+        : this.getTimeHeaderById(dataResourceId)
 
     if (newElement != null) {
-      if (e.shiftKey) {
+      if (newSlot === -1) {
+        this.clearActiveSlots()
+        newElement.focus()
+      } else if (e.shiftKey) {
         if (newElement.classList.contains('active-slot')) {
           lastElement.classList.remove('active-slot')
           this.activeSlots.pop()
@@ -583,7 +589,16 @@ class Selection {
       return null
     }
   }
+
+  getTimeHeaderById(headerId) {
+    try {
+      return document.querySelector(`[data-time-header-id='${headerId}']`)
+    } catch {
+      return null
+    }
+  }
 }
+
 /**
  * Resolve the disance prop from either an Int or an Object
  * @return {Object}

@@ -494,16 +494,18 @@ class Selection {
     let newSlot
     let newElement
     let lastElement
-    if (lastSlot == -1) {
+    //if this the move down from the resource row
+    if (lastSlot === -1) {
+      //get the first slot with business hour
       newElement = document.querySelector(
         `.business-slot[data-resource-id='${this.resourceId}']`
       )
-      const defaultDataTimeslotId = parseInt(
+      const defaultDataTimeSlotId = parseInt(
         newElement.getAttribute('data-timeslot-id'),
         10
       )
-      lastElement = this.getSlotById(defaultDataTimeslotId - 1)
-      newSlot = defaultDataTimeslotId
+      lastElement = this.getSlotById(defaultDataTimeSlotId - 1)
+      newSlot = defaultDataTimeSlotId
     } else {
       newSlot = lastSlot + 1
       newElement = this.getSlotById(newSlot)
@@ -578,7 +580,6 @@ class Selection {
         `[data-resource-id='${dataResourceId}']`
       )
       this.clearActiveSlots()
-      lastElement.classList.remove('active-slot')
       newElement.focus()
     }
   }

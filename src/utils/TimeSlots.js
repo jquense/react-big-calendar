@@ -145,10 +145,7 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       }
     },
 
-    getCurrentTimePosition(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
-      if (!ignoreMin) rangeStart = dates.min(end, dates.max(start, rangeStart))
-      if (!ignoreMax) rangeEnd = dates.min(end, dates.max(start, rangeEnd))
-
+    getCurrentTimePosition(rangeStart) {
       const rangeStartMin = positionFromDate(rangeStart)
       const top = (rangeStartMin / (step * numSlots)) * 100
 

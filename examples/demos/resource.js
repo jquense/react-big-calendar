@@ -41,10 +41,30 @@ const resourceMap = [
   { resourceId: 4, resourceTitle: 'Meeting room 2' },
 ]
 
+const slotPropGetter = date => {
+  const hour = date.getHours()
+
+  if (hour < 8 || hour > 17) {
+    // if slot is before/after business hours then gray out the slot
+    return {
+      style: {
+        background: '#f3f2f1',
+        height: '4.3rem',
+      },
+    }
+  } else {
+    return {
+      className: 'business-slot',
+    }
+  }
+}
+
 let Resource = ({ localizer }) => (
   <>
     <BigCalendar
+      selectable={true}
       events={events}
+      slotPropGetter={slotPropGetter}
       localizer={localizer}
       defaultView={BigCalendar.Views.DAY}
       views={['day', 'work_week']}

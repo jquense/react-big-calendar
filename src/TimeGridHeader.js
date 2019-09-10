@@ -15,6 +15,22 @@ class TimeGridHeader extends React.Component {
     notify(this.props.onDrillDown, [date, view])
   }
 
+  handleKeyDownOnResource = (event, resourceId) => {
+    if (event.keyCode === 39) {
+      let newResourceId = resourceId + 1
+      let newResourceElement = document.querySelector(
+        `[data-resource-id='${newResourceId}']`
+      )
+      if (newResourceElement) newResourceElement.focus()
+    } else if (event.keyCode === 37) {
+      let newResourceId = resourceId - 1
+      let newResourceElement = document.querySelector(
+        `[data-resource-id='${newResourceId}']`
+      )
+      if (newResourceElement) newResourceElement.focus()
+    }
+  }
+
   renderHeaderCells(range) {
     let {
       localizer,
@@ -150,7 +166,13 @@ class TimeGridHeader extends React.Component {
           <div
             className="rbc-time-header-content"
             data-time-header-id={id || idx}
+            data-resource-id={resource ? resource.resourceId : ''}
             tabIndex={0}
+            onKeyDown={e => {
+              if (resource && resource.resourceId) {
+                this.handleKeyDownOnResource(e, resource.resourceId)
+              }
+            }}
             key={id || idx}
           >
             {resource && (

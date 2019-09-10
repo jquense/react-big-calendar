@@ -491,9 +491,26 @@ class Selection {
     }
 
     const lastSlot = this.activeSlots[this.activeSlots.length - 1]
-    const newSlot = lastSlot + 1
-    let lastElement = this.getSlotById(lastSlot)
-    let newElement = this.getSlotById(newSlot)
+    let newSlot
+    let newElement
+    let lastElement
+    //if this the move down from the resource row
+    if (lastSlot === -1) {
+      //get the first slot with business hour
+      newElement = document.querySelector(
+        `.business-slot[data-resource-id='${this.resourceId}']`
+      )
+      const defaultDataTimeSlotId = parseInt(
+        newElement.getAttribute('data-timeslot-id'),
+        10
+      )
+      lastElement = this.getSlotById(defaultDataTimeSlotId - 1)
+      newSlot = defaultDataTimeSlotId
+    } else {
+      newSlot = lastSlot + 1
+      newElement = this.getSlotById(newSlot)
+      lastElement = this.getSlotById(lastSlot)
+    }
 
     if (newElement != null) {
       if (e.shiftKey) {
@@ -558,6 +575,12 @@ class Selection {
         newElement.classList.add('active-slot')
         newElement.focus()
       }
+    } else {
+      let newElement = document.querySelector(
+        `[data-resource-id='${dataResourceId}']`
+      )
+      this.clearActiveSlots()
+      newElement.focus()
     }
   }
 

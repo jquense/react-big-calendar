@@ -90,37 +90,37 @@ class EventWrapper extends React.Component {
     }
 
     /*
- * The resizability of events depends on whether they are
- * allDay events and how they are displayed.
- *
- * 1. If the event is being shown in an event row (because
- * it is an allDay event shown in the header row or because as
- * in month view the view is showing all events as rows) then we
- * allow east-west resizing.
- *
- * 2. Otherwise the event is being displayed
- * normally, we can drag it north-south to resize the times.
- *
- * See `DropWrappers` for handling of the drop of such events.
- *
- * Notwithstanding the above, we never show drag anchors for
- * events which continue beyond current component. This happens
- * in the middle of events when showMultiDay is true, and to
- * events at the edges of the calendar's min/max location.
- */
+     * The resizability of events depends on whether they are
+     * allDay events and how they are displayed.
+     *
+     * 1. If the event is being shown in an event row (because
+     * it is an allDay event shown in the header row or because as
+     * in month view the view is showing all events as rows) then we
+     * allow east-west resizing.
+     *
+     * 2. Otherwise the event is being displayed
+     * normally, we can drag it north-south to resize the times.
+     *
+     * See `DropWrappers` for handling of the drop of such events.
+     *
+     * Notwithstanding the above, we never show drag anchors for
+     * events which continue beyond current component. This happens
+     * in the middle of events when showMultiDay is true, and to
+     * events at the edges of the calendar's min/max location.
+     */
     const isResizable = resizableAccessor
       ? !!get(event, resizableAccessor)
       : true
 
     if (isResizable || isDraggable) {
       /*
-  * props.children is the singular <Event> component.
-  * BigCalendar positions the Event abolutely and we
-  * need the anchors to be part of that positioning.
-  * So we insert the anchors inside the Event's children
-  * rather than wrap the Event here as the latter approach
-  * would lose the positioning.
-  */
+       * props.children is the singular <Event> component.
+       * BigCalendar positions the Event abolutely and we
+       * need the anchors to be part of that positioning.
+       * So we insert the anchors inside the Event's children
+       * rather than wrap the Event here as the latter approach
+       * would lose the positioning.
+       */
       const newProps = {
         onMouseDown: this.handleStartDragging,
         onTouchStart: this.handleStartDragging,

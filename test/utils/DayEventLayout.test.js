@@ -43,12 +43,12 @@ describe('getStyledEvents', () => {
       [
         'two consecutive events too close together',
         [{ start: d(11), end: d(11, 5) }, { start: d(11, 5), end: d(11, 10) }],
-        [{ width: 85, xOffset: 0 }, { width: 50, xOffset: 50 }],
+        [{ width: 50, xOffset: 0 }, { width: 50, xOffset: 50 }],
       ],
       [
         'two overlapping events',
         [{ start: d(11), end: d(12) }, { start: d(11), end: d(12) }],
-        [{ width: 85, xOffset: 0 }, { width: 50, xOffset: 50 }],
+        [{ width: 50, xOffset: 0 }, { width: 50, xOffset: 50 }],
       ],
       [
         'three overlapping events',
@@ -58,8 +58,8 @@ describe('getStyledEvents', () => {
           { start: d(11), end: d(12) },
         ],
         [
-          { width: 56, xOffset: 0 },
-          { width: 56, xOffset: 33 },
+          { width: 33, xOffset: 0 },
+          { width: 33, xOffset: 33 },
           { width: 33, xOffset: 66 },
         ],
       ],
@@ -71,7 +71,7 @@ describe('getStyledEvents', () => {
           { start: d(11, 30), end: d(12) },
         ],
         [
-          { width: 85, xOffset: 0 },
+          { width: 50, xOffset: 0 },
           { width: 50, xOffset: 50 },
           { width: 50, xOffset: 50 },
         ],
@@ -84,8 +84,8 @@ describe('getStyledEvents', () => {
           { start: d(11, 5), end: d(11, 10) },
         ],
         [
-          { width: 56, xOffset: 0 },
-          { width: 56, xOffset: 33 },
+          { width: 33, xOffset: 0 },
+          { width: 33, xOffset: 33 },
           { width: 33, xOffset: 66 },
         ],
       ],

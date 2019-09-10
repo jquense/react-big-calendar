@@ -491,9 +491,24 @@ class Selection {
     }
 
     const lastSlot = this.activeSlots[this.activeSlots.length - 1]
-    const newSlot = lastSlot + 1
-    let lastElement = this.getSlotById(lastSlot)
-    let newElement = this.getSlotById(newSlot)
+    let newSlot
+    let newElement
+    let lastElement
+    if (lastSlot == -1) {
+      newElement = document.querySelector(
+        `.business-slot[data-resource-id='${this.resourceId}']`
+      )
+      const defaultDataTimeslotId = parseInt(
+        newElement.getAttribute('data-timeslot-id'),
+        10
+      )
+      lastElement = this.getSlotById(defaultDataTimeslotId - 1)
+      newSlot = defaultDataTimeslotId
+    } else {
+      newSlot = lastSlot + 1
+      newElement = this.getSlotById(newSlot)
+      lastElement = this.getSlotById(lastSlot)
+    }
 
     if (newElement != null) {
       if (e.shiftKey) {
@@ -558,6 +573,13 @@ class Selection {
         newElement.classList.add('active-slot')
         newElement.focus()
       }
+    } else {
+      let newElement = document.querySelector(
+        `[data-resource-id='${dataResourceId}']`
+      )
+      this.clearActiveSlots()
+      lastElement.classList.remove('active-slot')
+      newElement.focus()
     }
   }
 

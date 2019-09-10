@@ -97,7 +97,7 @@ class DayColumn extends React.Component {
     const current = getNow()
 
     if (current >= min && current <= max) {
-      const { top } = this.slotMetrics.getRange(current, current)
+      const top = this.slotMetrics.getCurrentTimePosition(current)
       this.setState({ timeIndicatorPosition: top })
     } else {
       this.clearTimeIndicatorInterval()

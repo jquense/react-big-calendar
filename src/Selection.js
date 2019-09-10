@@ -556,16 +556,10 @@ class Selection {
     const lastSlot = this.activeSlots[this.activeSlots.length - 1]
     const newSlot = lastSlot - 1
     let lastElement = this.getSlotById(lastSlot)
-    let newElement =
-      newSlot !== -1
-        ? this.getSlotById(newSlot)
-        : this.getTimeHeaderById(dataResourceId)
+    let newElement = this.getSlotById(newSlot)
 
     if (newElement != null) {
-      if (newSlot === -1) {
-        this.clearActiveSlots()
-        newElement.focus()
-      } else if (e.shiftKey) {
+      if (e.shiftKey) {
         if (newElement.classList.contains('active-slot')) {
           lastElement.classList.remove('active-slot')
           this.activeSlots.pop()
@@ -608,14 +602,6 @@ class Selection {
       return document.querySelector(
         `[data-resource-id='${this.resourceId}'][data-timeslot-id='${slotId}']`
       )
-    } catch {
-      return null
-    }
-  }
-
-  getTimeHeaderById(headerId) {
-    try {
-      return document.querySelector(`[data-time-header-id='${headerId}']`)
     } catch {
       return null
     }

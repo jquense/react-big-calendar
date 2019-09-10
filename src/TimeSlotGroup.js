@@ -24,6 +24,7 @@ export default class TimeSlotGroup extends Component {
             slotProps['data-time'] = value
             slotProps['data-resource-id'] = resource
             slotProps['data-timeslot-id'] = groupId * group.length + idx
+            slotProps['aria-label'] = value && value.toLocaleTimeString()
           }
 
           return (

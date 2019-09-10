@@ -607,6 +607,7 @@ class Selection {
     }
   }
 }
+
 /**
  * Resolve the disance prop from either an Int or an Object
  * @return {Object}

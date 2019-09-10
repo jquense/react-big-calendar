@@ -145,7 +145,7 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       }
     },
 
-    getCurrentTimeIndicatorRange(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
+    getCurrentTimePosition(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
       if (!ignoreMin) rangeStart = dates.min(end, dates.max(start, rangeStart))
       if (!ignoreMax) rangeEnd = dates.min(end, dates.max(start, rangeEnd))
 

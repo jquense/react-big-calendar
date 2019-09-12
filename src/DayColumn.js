@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import clsx from 'clsx'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 import * as dates from './utils/dates'
@@ -126,7 +126,7 @@ class DayColumn extends React.Component {
     return (
       <div
         style={style}
-        className={cn(
+        className={clsx(
           className,
           'rbc-day-slot',
           'rbc-time-column',
@@ -152,7 +152,7 @@ class DayColumn extends React.Component {
           components={components}
           slotMetrics={slotMetrics}
         >
-          <div className={cn('rbc-events-container', rtl && 'rtl')}>
+          <div className={clsx('rbc-events-container', rtl && 'rtl')}>
             {this.renderEvents()}
           </div>
         </EventContainer>

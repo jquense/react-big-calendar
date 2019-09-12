@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import cn from 'classnames'
+import clsx from 'clsx'
 import * as dates from './utils/dates'
 
 class EventCell extends React.Component {
@@ -61,7 +61,7 @@ class EventCell extends React.Component {
           {...props}
           tabIndex={0}
           style={{ ...userProps.style, ...style }}
-          className={cn('rbc-event', className, userProps.className, {
+          className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
             'rbc-event-allday': showAsAllDay,
             'rbc-event-continues-prior': continuesPrior,

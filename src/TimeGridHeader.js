@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import cn from 'classnames'
+import clsx from 'clsx'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 import React from 'react'
 
@@ -40,7 +40,7 @@ class TimeGridHeader extends React.Component {
         <div
           key={i}
           style={style}
-          className={cn(
+          className={clsx(
             'rbc-header',
             className,
             dates.eq(date, today, 'day') && 'rbc-today'
@@ -134,7 +134,7 @@ class TimeGridHeader extends React.Component {
       <div
         style={style}
         ref={scrollRef}
-        className={cn('rbc-time-header', isOverflowing && 'rbc-overflowing')}
+        className={clsx('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
         <div
           className="rbc-label rbc-time-header-gutter"

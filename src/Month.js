@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import clsx from 'clsx'
 
 import * as dates from './utils/dates'
 import chunk from 'lodash/chunk'
@@ -80,7 +80,7 @@ class MonthView extends React.Component {
     this._weekCount = weeks.length
 
     return (
-      <div className={cn('rbc-month-view', className)}>
+      <div className={clsx('rbc-month-view', className)}>
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0])}
         </div>
@@ -151,7 +151,7 @@ class MonthView extends React.Component {
     return (
       <div
         {...props}
-        className={cn(
+        className={clsx(
           className,
           isOffRange && 'rbc-off-range',
           isCurrent && 'rbc-current'

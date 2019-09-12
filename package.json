@@ -124,7 +124,7 @@
     "@babel/runtime": "^7.1.5",
     "clsx": "^1.0.4",
     "date-arithmetic": "^4.0.1",
-    "dom-helpers": "^3.4.0",
+    "dom-helpers": "^5.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import getHeight from 'dom-helpers/query/height'
-import qsa from 'dom-helpers/query/querySelectorAll'
+import getHeight from 'dom-helpers/height'
+import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'

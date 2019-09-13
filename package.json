@@ -1,9 +1,15 @@
 {
   "name": "react-big-calendar",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "description": "Calendar! with events",
-  "author": "Jason Quense <monastic.panic@gmail.com>",
-  "repository": "intljusticemission/react-big-calendar",
+  "author": {
+    "name": "Jason Quense",
+    "email": "monastic.panic@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intljusticemission/react-big-calendar.git"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "module": "dist/react-big-calendar.esm.js",
@@ -136,5 +142,11 @@
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/intljusticemission/react-big-calendar/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "homepage": "https://github.com/intljusticemission/react-big-calendar#readme",
+  "_id": "react-big-calendar@0.22.0"
 }

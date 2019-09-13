@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import getOffset from 'dom-helpers/query/offset'
-import getScrollTop from 'dom-helpers/query/scrollTop'
-import getScrollLeft from 'dom-helpers/query/scrollLeft'
+import getOffset from 'dom-helpers/offset'
+import getScrollTop from 'dom-helpers/scrollTop'
+import getScrollLeft from 'dom-helpers/scrollLeft'
 import * as dates from './utils/dates'
 
 import EventCell from './EventCell'

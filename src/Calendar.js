@@ -8,7 +8,6 @@ import {
   dateRangeFormat,
   views as componentViews,
 } from './utils/propTypes'
-import warning from 'warning'
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
@@ -931,7 +930,9 @@ class Calendar extends React.Component {
       if (viewComponent.range) {
         onRangeChange(viewComponent.range(date, { localizer }), view)
       } else {
-        warning(true, 'onRangeChange prop not supported for this view')
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('onRangeChange prop not supported for this view')
+        }
       }
     }
   }

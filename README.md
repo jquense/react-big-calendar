@@ -13,6 +13,10 @@ Inspired by [Full Calendar](http://fullcalendar.io/).
 Include `react-big-calendar/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
 element has a height, or the calendar won't be visible. To provide your own custom styling, see the [Custom Styling](#custom-styling) topic.
 
+If the CSS include does not work, try importing globally:
+`import '!style-loader!css-loader!react-big-calendar/lib/css/react-big-calendar.css'`
+
+
 ## Starters
 
 - [react-big-calendar](https://github.com/arecvlohe/rbc-starter)

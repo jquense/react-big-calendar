@@ -32,6 +32,7 @@ class Agenda extends React.Component {
     let { length, date, events, accessors, localizer } = this.props
     let { messages } = localizer
     let end = dates.add(date, length, 'day')
+    end = dates.add(end, -1, milliseconds)
 
     let range = dates.range(date, end, 'day')
 
@@ -215,6 +216,7 @@ Agenda.defaultProps = {
 
 Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
   let end = dates.add(start, length, 'day')
+  end = dates.add(end, -1, 'milliseconds' )
   return { start, end }
 }
 
@@ -233,6 +235,7 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 
 Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
   let end = dates.add(start, length, 'day')
+  end = dates.add(end,-1,'milliseconds')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }
 

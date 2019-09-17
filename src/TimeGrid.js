@@ -264,10 +264,12 @@ export default class TimeGrid extends Component {
   calculateScroll(props = this.props) {
     const { min, max, scrollToTime } = props
 
-    const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
-    const totalMillis = dates.diff(max, min)
+    if (scrollToTime) {
+      const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
+      const totalMillis = dates.diff(max, min)
 
-    this._scrollRatio = diffMillis / totalMillis
+      this._scrollRatio = diffMillis / totalMillis
+    }
   }
 
   checkOverflow = () => {

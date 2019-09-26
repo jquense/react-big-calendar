@@ -96,5 +96,6 @@ Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the 
 
 ## new attributes
 
-`nextButtonContent` - content for _Next button_
-`prevButtonContent` - content for _Back button_
+`nextButtonContent` - content for **Next button**
+
+`prevButtonContent` - content for **Back button**

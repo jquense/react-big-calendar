@@ -60,6 +60,16 @@ class Calendar extends React.Component {
      *
      */
     elementProps: PropTypes.object,
+    /**
+     * Props passed to next Button
+     *
+     */
+    nextButtonContent: PropTypes.string | PropTypes.element,
+    /**
+     * Props passed to prev Button
+     *
+     */
+    prevButtonContent: PropTypes.string | PropTypes.element,
 
     /**
      * The current date value of the calendar. Determines the visible view range.
@@ -102,7 +112,7 @@ class Calendar extends React.Component {
      *
      * ```js
      * Event {
-     *   title: string,
+     *   title: string | Element,
      *   start: Date,
      *   end: Date,
      *   allDay?: boolean
@@ -854,6 +864,8 @@ class Calendar extends React.Component {
       length,
       showMultiDayTimes,
       onShowMore,
+      nextButtonContent,
+      prevButtonContent,
       components: _0,
       formats: _1,
       messages: _2,
@@ -886,6 +898,8 @@ class Calendar extends React.Component {
             date={current}
             view={view}
             views={viewNames}
+            nextButtonContent={nextButtonContent}
+            prevButtonContent={prevButtonContent}
             label={label}
             onView={this.handleViewChange}
             onNavigate={this.handleNavigate}

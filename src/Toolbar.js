@@ -10,7 +10,22 @@ class Toolbar extends React.Component {
       label,
     } = this.props
 
-    return (
+    return this.props.views.length == 1 && this.props.views[0] == 'month' ? (
+      <div className="rbc-toolbar">
+        <button
+          type="button"
+          onClick={this.navigate.bind(null, navigate.PREVIOUS)}
+        >
+          {this.props.prevButtonContent || messages.previous}
+        </button>
+
+        <span className="rbc-toolbar-label">{label}</span>
+
+        <button type="button" onClick={this.navigate.bind(null, navigate.NEXT)}>
+          {this.props.nextButtonContent || messages.next}
+        </button>
+      </div>
+    ) : (
       <div className="rbc-toolbar">
         <span className="rbc-btn-group">
           <button
@@ -23,13 +38,13 @@ class Toolbar extends React.Component {
             type="button"
             onClick={this.navigate.bind(null, navigate.PREVIOUS)}
           >
-            {messages.previous}
+            {this.props.prevButtonContent || messages.previous}
           </button>
           <button
             type="button"
             onClick={this.navigate.bind(null, navigate.NEXT)}
           >
-            {messages.next}
+            {this.props.nextButtonContent || messages.next}
           </button>
         </span>
 
@@ -72,6 +87,8 @@ Toolbar.propTypes = {
   views: PropTypes.arrayOf(PropTypes.string).isRequired,
   label: PropTypes.node.isRequired,
   localizer: PropTypes.object,
+  nextButtonContent: PropTypes.element,
+  prevButtonContent: PropTypes.element,
   onNavigate: PropTypes.func.isRequired,
   onView: PropTypes.func.isRequired,
 }

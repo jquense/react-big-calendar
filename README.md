@@ -93,3 +93,8 @@ Big Calendar. Carefully test each change accordingly.
 ## Join us on Reactiflux Discord
 
 Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+
+## new attributes
+
+`nextButtonContent` - content for _Next button_
+`prevButtonContent` - content for _Back button_

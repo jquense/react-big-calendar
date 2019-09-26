@@ -1,51 +1,51 @@
 import React from 'react'
 
-import * as dates from 'date-arithmetic'
+// import * as dates from 'date-arithmetic'
 import events from '../events'
 import { Calendar, Views, Navigate } from 'react-big-calendar'
-import TimeGrid from 'react-big-calendar/lib/TimeGrid'
+// import TimeGrid from 'react-big-calendar/lib/TimeGrid'
 import ExampleControlSlot from '../ExampleControlSlot'
 
-class MyWeek extends React.Component {
-  render() {
-    let { date } = this.props
-    let range = MyWeek.range(date)
+// class MyWeek extends React.Component {
+//   render() {
+//     let { date } = this.props
+//     let range = MyWeek.range(date)
 
-    return <TimeGrid {...this.props} range={range} eventOffset={15} />
-  }
-}
+//     return <TimeGrid {...this.props} range={range} eventOffset={15} />
+//   }
+// }
 
-MyWeek.range = date => {
-  let start = date
-  let end = dates.add(start, 2, 'day')
+// MyWeek.range = date => {
+//   let start = date
+//   let end = dates.add(start, 2, 'day')
 
-  let current = start
-  let range = []
+//   let current = start
+//   let range = []
 
-  while (dates.lte(current, end, 'day')) {
-    range.push(current)
-    current = dates.add(current, 1, 'day')
-  }
+//   while (dates.lte(current, end, 'day')) {
+//     range.push(current)
+//     current = dates.add(current, 1, 'day')
+//   }
 
-  return range
-}
+//   return range
+// }
 
-MyWeek.navigate = (date, action) => {
-  switch (action) {
-    case Navigate.PREVIOUS:
-      return dates.add(date, -3, 'day')
+// MyWeek.navigate = (date, action) => {
+//   switch (action) {
+//     case Navigate.PREVIOUS:
+//       return dates.add(date, -3, 'day')
 
-    case Navigate.NEXT:
-      return dates.add(date, 3, 'day')
+//     case Navigate.NEXT:
+//       return dates.add(date, 3, 'day')
 
-    default:
-      return date
-  }
-}
+//     default:
+//       return date
+//   }
+// }
 
-MyWeek.title = date => {
-  return `My awesome week: ${date.toLocaleDateString()}`
-}
+// MyWeek.title = date => {
+//   return `My awesome week: ${date.toLocaleDateString()}`
+// }
 
 let CustomView = ({ localizer }) => (
   <React.Fragment>
@@ -55,9 +55,11 @@ let CustomView = ({ localizer }) => (
     <Calendar
       events={events}
       localizer={localizer}
-      defaultView={Views.WEEK}
+      nextButtonContent=">"
+      prevButtonContent="<"
+      defaultView={Views.MONTH}
       defaultDate={new Date(2015, 3, 1)}
-      views={{ month: true, week: MyWeek }}
+      views={{ month: true }}
     />
   </React.Fragment>
 )

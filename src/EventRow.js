@@ -19,6 +19,13 @@ class EventRow extends React.Component {
           let key = '_lvl_' + li
           let gap = left - lastEnd
 
+          // console.log('row', row)
+          // console.log('event', event)
+          // console.log('left', left)
+          // console.log('right', right)
+          // console.log('span', span)
+          // console.log('li', li)
+
           let content = EventRowMixin.renderEvent(this.props, event)
 
           if (gap) row.push(EventRowMixin.renderSpan(slots, gap, `${key}_gap`))

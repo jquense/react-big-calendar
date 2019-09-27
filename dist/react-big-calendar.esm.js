@@ -1477,7 +1477,16 @@ var EventRowMixin = {
       content = ' '
     }
 
-    var per = (Math.abs(len) / slots) * 100 + '%'
+    var per
+
+    if (content !== ' ') {
+      console.log('content')
+      per = (Math.abs(len) / slots) * 100 - 5 + '%'
+    } else {
+      console.log('no-content')
+      per = (Math.abs(len) / slots) * 100 + 5 + '%'
+    } // let per = (Math.abs(len) / slots) * 100 + '%'
+
     return React.createElement(
       'div',
       {
@@ -1525,6 +1534,12 @@ var EventRow =
             span = _ref.span
           var key = '_lvl_' + li
           var gap = left - lastEnd
+          console.log('row', row)
+          console.log('event', event)
+          console.log('left', left)
+          console.log('right', right)
+          console.log('span', span)
+          console.log('li', li)
           var content = EventRowMixin.renderEvent(_this.props, event)
           if (gap) row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))
           row.push(EventRowMixin.renderSpan(slots, span, key, content))
@@ -5481,6 +5496,8 @@ var Calendar =
         onShowMore = _this$props4.onShowMore,
         nextButtonContent = _this$props4.nextButtonContent,
         prevButtonContent = _this$props4.prevButtonContent,
+        disabledDates = _this$props4.disabledDates,
+        isBooking = _this$props4.isBooking,
         _0 = _this$props4.components,
         _1 = _this$props4.formats,
         _2 = _this$props4.messages,
@@ -5499,6 +5516,8 @@ var Calendar =
           'onShowMore',
           'nextButtonContent',
           'prevButtonContent',
+          'disabledDates',
+          'isBooking',
           'components',
           'formats',
           'messages',
@@ -5545,6 +5564,8 @@ var Calendar =
             length: length,
             localizer: localizer,
             getters: getters,
+            disabledDates: disabledDates,
+            isBooking: isBooking,
             components: components,
             accessors: accessors,
             showMultiDayTimes: showMultiDayTimes,
@@ -5608,14 +5629,16 @@ Calendar.propTypes =
         /**
          * Props passed to next Button
          *
+         * @type {(string|element)}
          */
-        nextButtonContent: PropTypes.string | PropTypes.element,
+        nextButtonContent: PropTypes.elementType,
 
         /**
          * Props passed to prev Button
          *
+         * @type {(string|element)}
          */
-        prevButtonContent: PropTypes.string | PropTypes.element,
+        prevButtonContent: PropTypes.elementType,
 
         /**
          * The current date value of the calendar. Determines the visible view range.
@@ -5667,6 +5690,18 @@ Calendar.propTypes =
          * ```
          */
         events: PropTypes.arrayOf(PropTypes.object),
+
+        /**
+         * For background cells
+         *
+         */
+        disabledDates: PropTypes.arrayOf(PropTypes.object),
+
+        /**
+         * Uses to transform ranges like bookings (include check-in/out time).
+         *
+         */
+        isBooking: PropTypes.bool,
 
         /**
          * Accessor for the event title, used to display event information. Should

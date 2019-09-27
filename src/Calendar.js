@@ -63,13 +63,15 @@ class Calendar extends React.Component {
     /**
      * Props passed to next Button
      *
+     * @type {(string|element)}
      */
-    nextButtonContent: PropTypes.string | PropTypes.element,
+    nextButtonContent: PropTypes.elementType,
     /**
      * Props passed to prev Button
      *
+     * @type {(string|element)}
      */
-    prevButtonContent: PropTypes.string | PropTypes.element,
+    prevButtonContent: PropTypes.elementType,
 
     /**
      * The current date value of the calendar. Determines the visible view range.
@@ -121,6 +123,18 @@ class Calendar extends React.Component {
      * ```
      */
     events: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * For background cells
+     *
+     */
+    disabledDates: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * Uses to transform ranges like bookings (include check-in/out time).
+     *
+     */
+    isBooking: PropTypes.bool,
 
     /**
      * Accessor for the event title, used to display event information. Should
@@ -866,6 +880,8 @@ class Calendar extends React.Component {
       onShowMore,
       nextButtonContent,
       prevButtonContent,
+      disabledDates,
+      isBooking,
       components: _0,
       formats: _1,
       messages: _2,
@@ -914,6 +930,8 @@ class Calendar extends React.Component {
           length={length}
           localizer={localizer}
           getters={getters}
+          disabledDates={disabledDates}
+          isBooking={isBooking}
           components={components}
           accessors={accessors}
           showMultiDayTimes={showMultiDayTimes}

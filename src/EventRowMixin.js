@@ -60,7 +60,15 @@ export default {
   },
 
   renderSpan(slots, len, key, content = ' ') {
-    let per = (Math.abs(len) / slots) * 100 + '%'
+    let per
+    if (content !== ' ') {
+      // console.log('content')
+      per = (Math.abs(len) / slots) * 100 - 10 + '%'
+    } else {
+      // console.log('no-content')
+      per = (Math.abs(len) / slots) * 100 + 5 + '%'
+    }
+    // let per = (Math.abs(len) / slots) * 100 + '%'
 
     return (
       <div

@@ -20,6 +20,7 @@ import Selectable from './demos/selectable'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
+import CustomBooking from './demos/customBooking'
 import CustomView from './demos/customView'
 import Resource from './demos/resource'
 import DndResource from './demos/dndresource'
@@ -43,6 +44,7 @@ const EXAMPLES = {
   rendering: 'Customized Component Rendering',
   customView: 'Custom Calendar Views',
   resource: 'Resource Scheduling',
+  booking: 'Booking',
   dnd: 'Addon: Drag and drop',
   dndresource: 'Resource Drag and drop',
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
@@ -79,6 +81,7 @@ class Example extends React.Component {
       customView: CustomView,
       resource: Resource,
       timeslots: Timeslots,
+      booking: CustomBooking,
       dnd: Dnd,
       dndresource: DndResource,
       dndOutsideSource: DndOutsideSource,

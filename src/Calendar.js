@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { uncontrollable } from 'uncontrollable'
-import cn from 'classnames'
+import clsx from 'clsx'
 import {
   accessor,
   dateFormat,
@@ -550,7 +550,7 @@ class Calendar extends React.Component {
      *     localizer.format(date, 'DDD', culture),
      *
      *   dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
-     *     localizer.format(start, { date: 'short' }, culture) + ' — ' +
+     *     localizer.format(start, { date: 'short' }, culture) + ' – ' +
      *     localizer.format(end, { date: 'short' }, culture)
      * }
      *
@@ -603,12 +603,12 @@ class Calendar extends React.Component {
       dayHeaderFormat: dateFormat,
 
       /**
-       * Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"
+       * Toolbar header format for the Agenda view, e.g. "4/1/2015 – 5/1/2015"
        */
       agendaHeaderFormat: dateRangeFormat,
 
       /**
-       * A time range format for selecting time slots, e.g "8:00am — 2:00pm"
+       * A time range format for selecting time slots, e.g "8:00am – 2:00pm"
        */
       selectRangeFormat: dateRangeFormat,
 
@@ -878,7 +878,7 @@ class Calendar extends React.Component {
     return (
       <div
         {...elementProps}
-        className={cn(className, 'rbc-calendar', props.rtl && 'rbc-rtl')}
+        className={clsx(className, 'rbc-calendar', props.rtl && 'rbc-rtl')}
         style={style}
       >
         {toolbar && (

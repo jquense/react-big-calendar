@@ -1,6 +1,6 @@
 import React from 'react'
 
-import dates from 'date-arithmetic'
+import * as dates from 'date-arithmetic'
 import events from '../events'
 import { Calendar, Views, Navigate } from 'react-big-calendar'
 import TimeGrid from 'react-big-calendar/lib/TimeGrid'

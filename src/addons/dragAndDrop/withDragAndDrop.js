@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import cn from 'classnames'
+import clsx from 'clsx'
 
 import { accessor } from '../../utils/propTypes'
 import EventWrapper from './EventWrapper'
@@ -72,6 +72,8 @@ export default function withDragAndDrop(Calendar) {
       onDragOver: PropTypes.func,
       onDropFromOutside: PropTypes.func,
 
+      dragFromOutsideItem: PropTypes.func,
+
       draggableAccessor: accessor,
       resizableAccessor: accessor,
 
@@ -99,7 +101,8 @@ export default function withDragAndDrop(Calendar) {
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
         onBeginAction: PropTypes.func,
-        onDropFromOutside: PropTypes.fun,
+        onDropFromOutside: PropTypes.func,
+        dragFromOutsideItem: PropTypes.func,
         draggableAccessor: accessor,
         resizableAccessor: accessor,
         dragAndDropAction: PropTypes.object,
@@ -127,6 +130,7 @@ export default function withDragAndDrop(Calendar) {
           onEnd: this.handleInteractionEnd,
           onBeginAction: this.handleBeginAction,
           onDropFromOutside: this.props.onDropFromOutside,
+          dragFromOutsideItem: this.props.dragFromOutsideItem,
           draggableAccessor: this.props.draggableAccessor,
           resizableAccessor: this.props.resizableAccessor,
           dragAndDropAction: this.state,
@@ -184,7 +188,7 @@ export default function withDragAndDrop(Calendar) {
           }
         : elementProps
 
-      props.className = cn(
+      props.className = clsx(
         props.className,
         'rbc-addons-dnd',
         !!interacting && 'rbc-addons-dnd-is-dragging'

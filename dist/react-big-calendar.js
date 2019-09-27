@@ -8206,10 +8206,10 @@
       var per
 
       if (content !== ' ') {
-        console.log('content')
-        per = (Math.abs(len) / slots) * 100 - 5 + '%'
+        // console.log('content')
+        per = (Math.abs(len) / slots) * 100 - 10 + '%'
       } else {
-        console.log('no-content')
+        // console.log('no-content')
         per = (Math.abs(len) / slots) * 100 + 5 + '%'
       } // let per = (Math.abs(len) / slots) * 100 + '%'
 
@@ -8260,12 +8260,12 @@
               span = _ref.span
             var key = '_lvl_' + li
             var gap = left - lastEnd
-            console.log('row', row)
-            console.log('event', event)
-            console.log('left', left)
-            console.log('right', right)
-            console.log('span', span)
-            console.log('li', li)
+            console.log('gap', gap) // console.log('event', event)
+            // console.log('left', left)
+            // console.log('right', right)
+            // console.log('span', span)
+            // console.log('li', li)
+
             var content = EventRowMixin.renderEvent(_this.props, event)
             if (gap)
               row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))

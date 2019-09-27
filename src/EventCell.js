@@ -11,6 +11,7 @@ class EventCell extends React.Component {
       event,
       selected,
       isAllDay,
+      isBooking,
       onSelect,
       onDoubleClick,
       localizer,
@@ -64,6 +65,7 @@ class EventCell extends React.Component {
           className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
             'rbc-event-allday': showAsAllDay,
+            'rbc-event-booking': isBooking,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
@@ -84,6 +86,7 @@ EventCell.propTypes = {
 
   selected: PropTypes.bool,
   isAllDay: PropTypes.bool,
+  isBooking: PropTypes.bool,
   continuesPrior: PropTypes.bool,
   continuesAfter: PropTypes.bool,
 

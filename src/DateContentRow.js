@@ -107,6 +107,7 @@ class DateContentRow extends React.Component {
       components,
 
       getNow,
+      disabledDates,
       renderHeader,
       onSelect,
       localizer,
@@ -116,6 +117,7 @@ class DateContentRow extends React.Component {
       resourceId,
       longPressThreshold,
       isAllDay,
+      isBooking,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -144,6 +146,7 @@ class DateContentRow extends React.Component {
           getNow={getNow}
           rtl={rtl}
           range={range}
+          disabledDates={disabledDates}
           selectable={selectable}
           container={this.getContainer}
           getters={getters}
@@ -162,7 +165,12 @@ class DateContentRow extends React.Component {
           )}
           <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
             {levels.map((segs, idx) => (
-              <EventRow key={idx} segments={segs} {...eventRowProps} />
+              <EventRow
+                key={idx}
+                segments={segs}
+                isBooking={isBooking}
+                {...eventRowProps}
+              />
             ))}
             {!!extra.length && (
               <EventEndingRow
@@ -181,6 +189,7 @@ class DateContentRow extends React.Component {
 DateContentRow.propTypes = {
   date: PropTypes.instanceOf(Date),
   events: PropTypes.array.isRequired,
+  disabledDates: PropTypes.array,
   range: PropTypes.array.isRequired,
 
   rtl: PropTypes.bool,
@@ -203,6 +212,7 @@ DateContentRow.propTypes = {
 
   getNow: PropTypes.func.isRequired,
   isAllDay: PropTypes.bool,
+  isBooking: PropTypes.bool,
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,

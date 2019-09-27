@@ -37,6 +37,7 @@ class BackgroundCells extends React.Component {
       range,
       getNow,
       getters,
+      disabledDates,
       date: currentDate,
       components: { dateCellWrapper: Wrapper },
     } = this.props
@@ -48,6 +49,9 @@ class BackgroundCells extends React.Component {
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
           const { className, style } = getters.dayProp(date)
+          let isDisabled = disabledDates.some(
+            el => new Date(el).getTime() == new Date(date).getTime()
+          )
 
           return (
             <Wrapper key={index} value={date} range={range}>
@@ -60,7 +64,8 @@ class BackgroundCells extends React.Component {
                   dates.eq(date, current, 'day') && 'rbc-today',
                   currentDate &&
                     dates.month(currentDate) !== dates.month(date) &&
-                    'rbc-off-range-bg'
+                    'rbc-off-range-bg',
+                  isDisabled && 'rbc-disabled'
                 )}
               />
             </Wrapper>
@@ -179,6 +184,8 @@ BackgroundCells.propTypes = {
   onSelectSlot: PropTypes.func.isRequired,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
+
+  disabledDates: PropTypes.arrayOf(PropTypes.object),
 
   range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   rtl: PropTypes.bool,

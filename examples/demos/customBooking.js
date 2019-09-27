@@ -55,7 +55,13 @@ let CustomBooking = ({ localizer }) => (
     <Calendar
       isBooking={true}
       events={events}
-      disabledDates={events}
+      disabledDates={[
+        new Date(2015, 3, 0),
+        new Date(2015, 3, 1),
+        new Date(2015, 3, 2),
+        new Date(2015, 3, 4),
+        new Date(2015, 3, 3),
+      ]}
       localizer={localizer}
       nextButtonContent={'>'}
       prevButtonContent={'<'}

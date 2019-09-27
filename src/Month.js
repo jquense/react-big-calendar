@@ -98,10 +98,12 @@ class MonthView extends React.Component {
       getNow,
       selected,
       date,
+      disabledDates,
       localizer,
       longPressThreshold,
       accessors,
       getters,
+      isBooking,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -120,6 +122,8 @@ class MonthView extends React.Component {
         date={date}
         range={week}
         events={events}
+        isBooking={isBooking}
+        disabledDates={disabledDates}
         maxRows={rowLimit}
         selected={selected}
         selectable={selectable}
@@ -298,6 +302,7 @@ class MonthView extends React.Component {
 
 MonthView.propTypes = {
   events: PropTypes.array.isRequired,
+  disabledDates: PropTypes.array,
   date: PropTypes.instanceOf(Date),
 
   min: PropTypes.instanceOf(Date),
@@ -327,6 +332,7 @@ MonthView.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 
+  isBooking: PropTypes.bool,
   popup: PropTypes.bool,
 
   popupOffset: PropTypes.oneOfType([

@@ -1,6 +1,6 @@
-import cn from 'classnames'
-import getHeight from 'dom-helpers/query/height'
-import qsa from 'dom-helpers/query/querySelectorAll'
+import clsx from 'clsx'
+import getHeight from 'dom-helpers/height'
+import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
@@ -63,7 +63,7 @@ class DateContentRow extends React.Component {
     return renderHeader({
       date,
       key: `header_${index}`,
-      className: cn(
+      className: clsx(
         'rbc-date-cell',
         dates.eq(date, getNow(), 'day') && 'rbc-now'
       ),

@@ -1,3 +1,26 @@
+## [0.22.1](https://github.com/intljusticemission/react-big-calendar/compare/v0.22.0...v0.22.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* add new method to get correct time indicator top position | fixes [#1396](https://github.com/intljusticemission/react-big-calendar/issues/1396) ([#1447](https://github.com/intljusticemission/react-big-calendar/issues/1447)) ([1cf0205](https://github.com/intljusticemission/react-big-calendar/commit/1cf0205))
+* drag cancelation for month view ([#1322](https://github.com/intljusticemission/react-big-calendar/issues/1322)) ([9c81e9e](https://github.com/intljusticemission/react-big-calendar/commit/9c81e9e))
+* invalid prop-types. ([#1435](https://github.com/intljusticemission/react-big-calendar/issues/1435)) ([61e1a1e](https://github.com/intljusticemission/react-big-calendar/commit/61e1a1e))
+* update time indicator position if max prop changes ([#1379](https://github.com/intljusticemission/react-big-calendar/issues/1379)) ([ac945b7](https://github.com/intljusticemission/react-big-calendar/commit/ac945b7))
+* use fixed date arithmetic lib and move bt-sass to devdepen… ([#1374](https://github.com/intljusticemission/react-big-calendar/issues/1374)) ([b223a61](https://github.com/intljusticemission/react-big-calendar/commit/b223a61))
+
+
+### Features
+
+* [#1390](https://github.com/intljusticemission/react-big-calendar/issues/1390) use en dashes in ranges ([#1391](https://github.com/intljusticemission/react-big-calendar/issues/1391)) ([7619e59](https://github.com/intljusticemission/react-big-calendar/commit/7619e59))
+* added continuesPrior and continuesAfter props to Event component ([#1201](https://github.com/intljusticemission/react-big-calendar/issues/1201)) ([74a2233](https://github.com/intljusticemission/react-big-calendar/commit/74a2233))
+* upgrade react-overlays ([#1421](https://github.com/intljusticemission/react-big-calendar/issues/1421)) ([9117549](https://github.com/intljusticemission/react-big-calendar/commit/9117549))
+* **dnd:** add preview of an item inside cell while dragging ([#1369](https://github.com/intljusticemission/react-big-calendar/issues/1369)) ([ac715f8](https://github.com/intljusticemission/react-big-calendar/commit/ac715f8))
+
+
+
+
+
 ## 0.22.0 (2019-06-18)
 
 - Chore: clean up prop-types (#1344) ([94e3679](https://github.com/intljusticemission/react-big-calendar/commit/94e3679)), closes [#1344](https://github.com/intljusticemission/react-big-calendar/issues/1344)

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import clsx from 'clsx'
 
 import * as dates from './utils/dates'
 import { notify } from './utils/helpers'
@@ -53,7 +53,7 @@ class BackgroundCells extends React.Component {
             <Wrapper key={index} value={date} range={range}>
               <div
                 style={style}
-                className={cn(
+                className={clsx(
                   'rbc-day-bg',
                   className,
                   selected && 'rbc-selected-cell',

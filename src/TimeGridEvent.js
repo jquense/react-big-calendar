@@ -25,7 +25,7 @@ function TimeGridEvent(props) {
 
   let userProps = getters.eventProp(event, start, end, selected)
 
-  let { height, top, width, xOffset } = style
+  let { height, top, width, left, xOffset, marginLeft } = style
   const inner = [
     <div key="1" className="rbc-event-label">
       {label}
@@ -43,9 +43,11 @@ function TimeGridEvent(props) {
         style={{
           ...userProps.style,
           top: `${top}%`,
-          height: `${height}%`,
           [rtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-          width: `${width}%`,
+          width: `${width}`,
+          height: `calc(${height}% - 2px)`,
+          left: `${left}%`,
+          marginLeft: `${marginLeft}px`,
         }}
         title={
           tooltip

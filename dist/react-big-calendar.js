@@ -3327,6 +3327,7 @@
           event = _this$props.event,
           selected = _this$props.selected,
           isAllDay = _this$props.isAllDay,
+          isBooking = _this$props.isBooking,
           onSelect = _this$props.onSelect,
           _onDoubleClick = _this$props.onDoubleClick,
           localizer = _this$props.localizer,
@@ -3346,6 +3347,7 @@
             'event',
             'selected',
             'isAllDay',
+            'isBooking',
             'onSelect',
             'onDoubleClick',
             'localizer',
@@ -3399,6 +3401,7 @@
               className: clsx('rbc-event', className, userProps.className, {
                 'rbc-selected': selected,
                 'rbc-event-allday': showAsAllDay,
+                'rbc-event-booking': isBooking,
                 'rbc-event-continues-prior': continuesPrior,
                 'rbc-event-continues-after': continuesAfter,
               }),
@@ -3423,6 +3426,7 @@
     slotEnd: propTypes.instanceOf(Date),
     selected: propTypes.bool,
     isAllDay: propTypes.bool,
+    isBooking: propTypes.bool,
     continuesPrior: propTypes.bool,
     continuesAfter: propTypes.bool,
     accessors: propTypes.object.isRequired,
@@ -7964,6 +7968,7 @@
           range = _this$props.range,
           getNow = _this$props.getNow,
           getters = _this$props.getters,
+          disabledDates = _this$props.disabledDates,
           currentDate = _this$props.date,
           Wrapper = _this$props.components.dateCellWrapper
         var _this$state = this.state,
@@ -7983,6 +7988,12 @@
               className = _getters$dayProp.className,
               style = _getters$dayProp.style
 
+            var isDisabled =
+              disabledDates &&
+              disabledDates.length &&
+              disabledDates.some(function(el) {
+                return new Date(el).getTime() == new Date(date).getTime()
+              })
             return React__default.createElement(
               Wrapper,
               {
@@ -7999,7 +8010,8 @@
                   eq(date, current, 'day') && 'rbc-today',
                   currentDate &&
                     month(currentDate) !== month(date) &&
-                    'rbc-off-range-bg'
+                    'rbc-off-range-bg',
+                  isDisabled && 'rbc-disabled'
                 ),
               })
             )
@@ -8148,6 +8160,7 @@
     onSelectSlot: propTypes.func.isRequired,
     onSelectEnd: propTypes.func,
     onSelectStart: propTypes.func,
+    disabledDates: propTypes.arrayOf(propTypes.object),
     range: propTypes.arrayOf(propTypes.instanceOf(Date)),
     rtl: propTypes.bool,
     type: propTypes.string,
@@ -8160,6 +8173,7 @@
       slotMetrics: propTypes.object.isRequired,
       selected: propTypes.object,
       isAllDay: propTypes.bool,
+      isBooking: propTypes.bool,
       accessors: propTypes.object.isRequired,
       localizer: propTypes.object.isRequired,
       components: propTypes.object.isRequired,
@@ -8180,7 +8194,8 @@
         onDoubleClick = props.onDoubleClick,
         localizer = props.localizer,
         slotMetrics = props.slotMetrics,
-        components = props.components
+        components = props.components,
+        isBooking = props.isBooking
       var continuesPrior = slotMetrics.continuesPrior(event)
       var continuesAfter = slotMetrics.continuesAfter(event)
       return React__default.createElement(EventCell, {
@@ -8188,6 +8203,7 @@
         getters: getters,
         localizer: localizer,
         accessors: accessors,
+        isBooking: isBooking,
         components: components,
         onSelect: onSelect,
         onDoubleClick: onDoubleClick,
@@ -8198,20 +8214,41 @@
         selected: isSelected(event, selected),
       })
     },
-    renderSpan: function renderSpan(slots, len, key, content) {
+    renderSpan: function renderSpan(
+      isBooking,
+      slots,
+      len,
+      left,
+      right,
+      key,
+      content
+    ) {
       if (content === void 0) {
         content = ' '
       }
 
-      var per
+      var per,
+        mar = 0
 
-      if (content !== ' ') {
-        // console.log('content')
-        per = (Math.abs(len) / slots) * 100 - 10 + '%'
+      if (isBooking) {
+        // if (content !== ' ') {
+        //   if (right == 7) {
+        //     per = (Math.abs(len) / slots) * 100 - 7 + '%'
+        //   } else if (left == 1) {
+        //     mar = 30
+        //   } else if (len == 1) {
+        //     per = (Math.abs(len) / slots) * 100 + '%'
+        //   } else {
+        //     per = (Math.abs(len) / slots) * 100 + 3 + '%'
+        //   }
+        // } else {
+        //   console.log('no-content', len)
+        //   per = (Math.abs(len) / slots) * 100 + 10 + '%'
+        // }
+        per = (Math.abs(len) / slots) * 100 + '%'
       } else {
-        // console.log('no-content')
-        per = (Math.abs(len) / slots) * 100 + 5 + '%'
-      } // let per = (Math.abs(len) / slots) * 100 + '%'
+        per = (Math.abs(len) / slots) * 100 + '%'
+      }
 
       return React__default.createElement(
         'div',
@@ -8222,6 +8259,7 @@
             WebkitFlexBasis: per,
             flexBasis: per,
             maxWidth: per,
+            marginLeft: mar,
           },
         },
         content
@@ -8246,7 +8284,8 @@
         var _this$props = this.props,
           segments = _this$props.segments,
           slots = _this$props.slotMetrics.slots,
-          className = _this$props.className
+          className = _this$props.className,
+          isBooking = _this$props.isBooking
         var lastEnd = 1
         return React__default.createElement(
           'div',
@@ -8259,17 +8298,37 @@
               right = _ref.right,
               span = _ref.span
             var key = '_lvl_' + li
-            var gap = left - lastEnd
-            console.log('gap', gap) // console.log('event', event)
+            var gap = left - lastEnd // console.log('gap', gap)
+            // console.log('event', event)
             // console.log('left', left)
             // console.log('right', right)
             // console.log('span', span)
             // console.log('li', li)
+            // console.log('isBooking', isBooking)
 
             var content = EventRowMixin.renderEvent(_this.props, event)
             if (gap)
-              row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))
-            row.push(EventRowMixin.renderSpan(slots, span, key, content))
+              row.push(
+                EventRowMixin.renderSpan(
+                  isBooking,
+                  slots,
+                  gap,
+                  left,
+                  right,
+                  key + '_gap'
+                )
+              )
+            row.push(
+              EventRowMixin.renderSpan(
+                isBooking,
+                slots,
+                span,
+                left,
+                right,
+                key,
+                content
+              )
+            )
             lastEnd = right + 1
             return row
           }, [])
@@ -11419,6 +11478,7 @@
           getters = _this$props5.getters,
           components = _this$props5.components,
           getNow = _this$props5.getNow,
+          disabledDates = _this$props5.disabledDates,
           renderHeader = _this$props5.renderHeader,
           onSelect = _this$props5.onSelect,
           localizer = _this$props5.localizer,
@@ -11427,7 +11487,8 @@
           onDoubleClick = _this$props5.onDoubleClick,
           resourceId = _this$props5.resourceId,
           longPressThreshold = _this$props5.longPressThreshold,
-          isAllDay = _this$props5.isAllDay
+          isAllDay = _this$props5.isAllDay,
+          isBooking = _this$props5.isBooking
         if (renderForMeasure) return this.renderDummy()
         var metrics = this.slotMetrics(this.props)
         var levels = metrics.levels,
@@ -11454,6 +11515,7 @@
             getNow: getNow,
             rtl: rtl,
             range: range,
+            disabledDates: disabledDates,
             selectable: selectable,
             container: this.getContainer,
             getters: getters,
@@ -11492,6 +11554,7 @@
                     {
                       key: idx,
                       segments: segs,
+                      isBooking: isBooking,
                     },
                     eventRowProps
                   )
@@ -11519,6 +11582,7 @@
   DateContentRow.propTypes = {
     date: propTypes.instanceOf(Date),
     events: propTypes.array.isRequired,
+    disabledDates: propTypes.array,
     range: propTypes.array.isRequired,
     rtl: propTypes.bool,
     resourceId: propTypes.any,
@@ -11537,6 +11601,7 @@
     dayPropGetter: propTypes.func,
     getNow: propTypes.func.isRequired,
     isAllDay: propTypes.bool,
+    isBooking: propTypes.bool,
     accessors: propTypes.object.isRequired,
     components: propTypes.object.isRequired,
     getters: propTypes.object.isRequired,
@@ -11623,10 +11688,12 @@
             getNow = _this$props.getNow,
             selected = _this$props.selected,
             date = _this$props.date,
+            disabledDates = _this$props.disabledDates,
             localizer = _this$props.localizer,
             longPressThreshold = _this$props.longPressThreshold,
             accessors = _this$props.accessors,
-            getters = _this$props.getters
+            getters = _this$props.getters,
+            isBooking = _this$props.isBooking
           var _this$state = _this.state,
             needLimitMeasure = _this$state.needLimitMeasure,
             rowLimit = _this$state.rowLimit
@@ -11648,6 +11715,8 @@
             date: date,
             range: week,
             events: events,
+            isBooking: isBooking,
+            disabledDates: disabledDates,
             maxRows: rowLimit,
             selected: selected,
             selectable: selectable,
@@ -11958,6 +12027,7 @@
 
   MonthView.propTypes = {
     events: propTypes.array.isRequired,
+    disabledDates: propTypes.array,
     date: propTypes.instanceOf(Date),
     min: propTypes.instanceOf(Date),
     max: propTypes.instanceOf(Date),
@@ -11980,6 +12050,7 @@
     onShowMore: propTypes.func,
     onDrillDown: propTypes.func,
     getDrilldownView: propTypes.func.isRequired,
+    isBooking: propTypes.bool,
     popup: propTypes.bool,
     popupOffset: propTypes.oneOfType([
       propTypes.number,

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // import * as dates from 'date-arithmetic'
-import events from '../events'
+import events from '../bookingEvents'
 import { Calendar, Views, Navigate } from 'react-big-calendar'
 // import TimeGrid from 'react-big-calendar/lib/TimeGrid'
 import ExampleControlSlot from '../ExampleControlSlot'

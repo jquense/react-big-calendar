@@ -247,6 +247,16 @@ button.rbc-input::-moz-focus-inner {
   border-bottom-right-radius: 0;
 }
 
+.rbc-event-booking {
+  transform: translateX(50px);
+}
+.rbc-event-booking.rbc-event-continues-prior {
+  transform: translateX(-50px);
+}
+.rbc-event-booking.rbc-event-continues-prior.rbc-event-continues-after {
+  transform: none;
+}
+
 .rbc-row {
   display: flex;
   flex-direction: row;

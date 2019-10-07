@@ -25,13 +25,6 @@ export default [
     end: new Date(2015, 3, 13),
   },
   {
-    id: 23,
-    title: <span>All Day Event very long title</span>,
-    allDay: true,
-    start: new Date(2015, 3, 4),
-    end: new Date(2015, 3, 13),
-  },
-  {
     id: 12,
     title: 'Late Night Event',
     start: new Date(2015, 3, 17, 0, 0, 0),

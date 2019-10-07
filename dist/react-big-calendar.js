@@ -3412,7 +3412,15 @@
                 return _onDoubleClick && _onDoubleClick(event, e)
               },
             }),
-            typeof children === 'function' ? children(content) : content
+            typeof children === 'function' ? children(content) : content,
+            isBooking &&
+              React__default.createElement(
+                'span',
+                {
+                  className: 'question-mark',
+                },
+                '?'
+              )
           )
         )
       }

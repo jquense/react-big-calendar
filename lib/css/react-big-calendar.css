@@ -197,6 +197,7 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-event {
   border: none;
+  box-sizing: border-box;
   box-shadow: none;
   margin: 0;
   padding: 2px 5px;

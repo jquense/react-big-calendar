@@ -4,7 +4,7 @@ import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { uncontrollable } from 'uncontrollable'
-import cn from 'classnames'
+import clsx from 'clsx'
 import warning from 'warning'
 import invariant from 'invariant'
 import _assertThisInitialized from '@babel/runtime/helpers/esm/assertThisInitialized'
@@ -28,25 +28,25 @@ import {
   inRange as inRange$1,
 } from 'date-arithmetic'
 import chunk from 'lodash-es/chunk'
-import getPosition from 'dom-helpers/query/position'
-import raf from 'dom-helpers/util/requestAnimationFrame'
-import getOffset from 'dom-helpers/query/offset'
-import getScrollTop from 'dom-helpers/query/scrollTop'
-import getScrollLeft from 'dom-helpers/query/scrollLeft'
+import getPosition from 'dom-helpers/position'
+import { request, cancel } from 'dom-helpers/animationFrame'
+import getOffset from 'dom-helpers/offset'
+import getScrollTop from 'dom-helpers/scrollTop'
+import getScrollLeft from 'dom-helpers/scrollLeft'
 import Overlay from 'react-overlays/Overlay'
-import getHeight from 'dom-helpers/query/height'
-import qsa from 'dom-helpers/query/querySelectorAll'
-import contains from 'dom-helpers/query/contains'
-import closest from 'dom-helpers/query/closest'
-import events from 'dom-helpers/events'
+import getHeight from 'dom-helpers/height'
+import qsa from 'dom-helpers/querySelectorAll'
+import contains from 'dom-helpers/contains'
+import closest from 'dom-helpers/closest'
+import listen from 'dom-helpers/listen'
 import findIndex from 'lodash-es/findIndex'
 import range$1 from 'lodash-es/range'
 import memoize from 'memoize-one'
-import _createClass from '@babel/runtime/helpers/esm/createClass'
 import sortBy from 'lodash-es/sortBy'
-import getWidth from 'dom-helpers/query/width'
-import scrollbarSize from 'dom-helpers/util/scrollbarSize'
-import classes from 'dom-helpers/class'
+import getWidth from 'dom-helpers/width'
+import scrollbarSize from 'dom-helpers/scrollbarSize'
+import addClass from 'dom-helpers/addClass'
+import removeClass from 'dom-helpers/removeClass'
 import omit from 'lodash-es/omit'
 import defaults from 'lodash-es/defaults'
 import transform from 'lodash-es/transform'
@@ -312,6 +312,8 @@ var EventCell =
         _this$props$component = _this$props.components,
         Event = _this$props$component.event,
         EventWrapper = _this$props$component.eventWrapper,
+        slotStart = _this$props.slotStart,
+        slotEnd = _this$props.slotEnd,
         props = _objectWithoutPropertiesLoose(_this$props, [
           'style',
           'className',
@@ -327,6 +329,8 @@ var EventCell =
           'getters',
           'children',
           'components',
+          'slotStart',
+          'slotEnd',
         ])
 
       var title = accessors.title(event)
@@ -346,9 +350,13 @@ var EventCell =
         Event
           ? React.createElement(Event, {
               event: event,
+              continuesPrior: continuesPrior,
+              continuesAfter: continuesAfter,
               title: title,
               isAllDay: allDay,
               localizer: localizer,
+              slotStart: slotStart,
+              slotEnd: slotEnd,
             })
           : title
       )
@@ -362,7 +370,7 @@ var EventCell =
           _extends({}, props, {
             tabIndex: 0,
             style: _extends({}, userProps.style, style),
-            className: cn('rbc-event', className, userProps.className, {
+            className: clsx('rbc-event', className, userProps.className, {
               'rbc-selected': selected,
               'rbc-event-allday': showAsAllDay,
               'rbc-event-continues-prior': continuesPrior,
@@ -531,21 +539,18 @@ var Popup =
         slotEnd = _this$props2.slotEnd,
         localizer = _this$props2.localizer,
         popperRef = _this$props2.popperRef
-      var _this$props$position = this.props.position,
-        left = _this$props$position.left,
-        width = _this$props$position.width,
-        top = _this$props$position.top,
+      var width = this.props.position.width,
         topOffset = (this.state || {}).topOffset || 0,
         leftOffset = (this.state || {}).leftOffset || 0
       var style = {
-        top: Math.max(0, top - topOffset),
-        left: left - leftOffset,
+        top: -topOffset,
+        left: -leftOffset,
         minWidth: width + width / 2,
       }
       return React.createElement(
         'div',
         {
-          style: style,
+          style: _extends({}, this.props.style, style),
           className: 'rbc-overlay',
           ref: popperRef,
         },
@@ -568,6 +573,8 @@ var Popup =
             onDoubleClick: onDoubleClick,
             continuesPrior: lt(accessors.end(event), slotStart, 'day'),
             continuesAfter: gte(accessors.start(event), slotEnd, 'day'),
+            slotStart: slotStart,
+            slotEnd: slotEnd,
             selected: isSelected(event, selected),
           })
         })
@@ -627,14 +634,9 @@ function addEventListener(type, handler, target) {
     target = document
   }
 
-  events.on(target, type, handler, {
+  return listen(target, type, handler, {
     passive: false,
   })
-  return {
-    remove: function remove() {
-      events.off(target, type, handler)
-    },
-  }
 }
 
 function isOverContainer(container, x, y) {
@@ -689,19 +691,29 @@ var Selection =
       this._handleMoveEvent = this._handleMoveEvent.bind(this)
       this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
       this._keyListener = this._keyListener.bind(this)
-      this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this) // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
+      this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this)
+      this._dragOverFromOutsideListener = this._dragOverFromOutsideListener.bind(
+        this
+      ) // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
       // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
 
-      this._onTouchMoveWindowListener = addEventListener(
+      this._removeTouchMoveWindowListener = addEventListener(
         'touchmove',
         function() {},
         window
       )
-      this._onKeyDownListener = addEventListener('keydown', this._keyListener)
-      this._onKeyUpListener = addEventListener('keyup', this._keyListener)
-      this._onDropFromOutsideListener = addEventListener(
+      this._removeKeyDownListener = addEventListener(
+        'keydown',
+        this._keyListener
+      )
+      this._removeKeyUpListener = addEventListener('keyup', this._keyListener)
+      this._removeDropFromOutsideListener = addEventListener(
         'drop',
         this._dropFromOutsideListener
+      )
+      this._onDragOverfromOutisde = addEventListener(
+        'dragover',
+        this._dragOverFromOutsideListener
       )
 
       this._addInitialEventListener()
@@ -742,14 +754,16 @@ var Selection =
     _proto.teardown = function teardown() {
       this.isDetached = true
       this.listeners = Object.create(null)
-      this._onTouchMoveWindowListener &&
-        this._onTouchMoveWindowListener.remove()
-      this._onInitialEventListener && this._onInitialEventListener.remove()
-      this._onEndListener && this._onEndListener.remove()
-      this._onEscListener && this._onEscListener.remove()
-      this._onMoveListener && this._onMoveListener.remove()
-      this._onKeyUpListener && this._onKeyUpListener.remove()
-      this._onKeyDownListener && this._onKeyDownListener.remove()
+      this._removeTouchMoveWindowListener &&
+        this._removeTouchMoveWindowListener()
+      this._removeInitialEventListener && this._removeInitialEventListener()
+      this._removeEndListener && this._removeEndListener()
+      this._onEscListener && this._onEscListener()
+      this._removeMoveListener && this._removeMoveListener()
+      this._removeKeyUpListener && this._removeKeyUpListener()
+      this._removeKeyDownListener && this._removeKeyDownListener()
+      this._removeDropFromOutsideListener &&
+        this._removeDropFromOutsideListener()
     }
 
     _proto.isSelected = function isSelected(node) {
@@ -773,51 +787,52 @@ var Selection =
       var _this = this
 
       var timer = null
-      var touchMoveListener = null
-      var touchEndListener = null
+      var removeTouchMoveListener = null
+      var removeTouchEndListener = null
 
       var handleTouchStart = function handleTouchStart(initialEvent) {
         timer = setTimeout(function() {
           cleanup()
           handler(initialEvent)
         }, _this.longPressThreshold)
-        touchMoveListener = addEventListener('touchmove', function() {
+        removeTouchMoveListener = addEventListener('touchmove', function() {
           return cleanup()
         })
-        touchEndListener = addEventListener('touchend', function() {
+        removeTouchEndListener = addEventListener('touchend', function() {
           return cleanup()
         })
       }
 
-      var touchStartListener = addEventListener('touchstart', handleTouchStart)
+      var removeTouchStartListener = addEventListener(
+        'touchstart',
+        handleTouchStart
+      )
 
       var cleanup = function cleanup() {
         if (timer) {
           clearTimeout(timer)
         }
 
-        if (touchMoveListener) {
-          touchMoveListener.remove()
+        if (removeTouchMoveListener) {
+          removeTouchMoveListener()
         }
 
-        if (touchEndListener) {
-          touchEndListener.remove()
+        if (removeTouchEndListener) {
+          removeTouchEndListener()
         }
 
         timer = null
-        touchMoveListener = null
-        touchEndListener = null
+        removeTouchMoveListener = null
+        removeTouchEndListener = null
       }
 
       if (initialEvent) {
         handleTouchStart(initialEvent)
       }
 
-      return {
-        remove: function remove() {
-          cleanup()
-          touchStartListener.remove()
-        },
+      return function() {
+        cleanup()
+        removeTouchStartListener()
       }
     } // Listen for mousedown and touchstart events. When one is received, disable the other and setup
     // future event handling based on the type of event.
@@ -825,29 +840,30 @@ var Selection =
     _proto._addInitialEventListener = function _addInitialEventListener() {
       var _this2 = this
 
-      var mouseDownListener = addEventListener('mousedown', function(e) {
-        _this2._onInitialEventListener.remove()
+      var removeMouseDownListener = addEventListener('mousedown', function(e) {
+        _this2._removeInitialEventListener()
 
         _this2._handleInitialEvent(e)
 
-        _this2._onInitialEventListener = addEventListener(
+        _this2._removeInitialEventListener = addEventListener(
           'mousedown',
           _this2._handleInitialEvent
         )
       })
-      var touchStartListener = addEventListener('touchstart', function(e) {
-        _this2._onInitialEventListener.remove()
+      var removeTouchStartListener = addEventListener('touchstart', function(
+        e
+      ) {
+        _this2._removeInitialEventListener()
 
-        _this2._onInitialEventListener = _this2._addLongPressListener(
+        _this2._removeInitialEventListener = _this2._addLongPressListener(
           _this2._handleInitialEvent,
           e
         )
       })
-      this._onInitialEventListener = {
-        remove: function remove() {
-          mouseDownListener.remove()
-          touchStartListener.remove()
-        },
+
+      this._removeInitialEventListener = function() {
+        removeMouseDownListener()
+        removeTouchStartListener()
       }
     }
 
@@ -867,16 +883,34 @@ var Selection =
       e.preventDefault()
     }
 
+    _proto._dragOverFromOutsideListener = function _dragOverFromOutsideListener(
+      e
+    ) {
+      var _getEventCoordinates2 = getEventCoordinates(e),
+        pageX = _getEventCoordinates2.pageX,
+        pageY = _getEventCoordinates2.pageY,
+        clientX = _getEventCoordinates2.clientX,
+        clientY = _getEventCoordinates2.clientY
+
+      this.emit('dragOverFromOutside', {
+        x: pageX,
+        y: pageY,
+        clientX: clientX,
+        clientY: clientY,
+      })
+      e.preventDefault()
+    }
+
     _proto._handleInitialEvent = function _handleInitialEvent(e) {
       if (this.isDetached) {
         return
       }
 
-      var _getEventCoordinates2 = getEventCoordinates(e),
-        clientX = _getEventCoordinates2.clientX,
-        clientY = _getEventCoordinates2.clientY,
-        pageX = _getEventCoordinates2.pageX,
-        pageY = _getEventCoordinates2.pageY
+      var _getEventCoordinates3 = getEventCoordinates(e),
+        clientX = _getEventCoordinates3.clientX,
+        clientY = _getEventCoordinates3.clientY,
+        pageX = _getEventCoordinates3.pageX,
+        pageY = _getEventCoordinates3.pageY
 
       var node = this.container(),
         collides,
@@ -926,7 +960,7 @@ var Selection =
 
       switch (e.type) {
         case 'mousedown':
-          this._onEndListener = addEventListener(
+          this._removeEndListener = addEventListener(
             'mouseup',
             this._handleTerminatingEvent
           )
@@ -934,7 +968,7 @@ var Selection =
             'keydown',
             this._handleTerminatingEvent
           )
-          this._onMoveListener = addEventListener(
+          this._removeMoveListener = addEventListener(
             'mousemove',
             this._handleMoveEvent
           )
@@ -943,11 +977,11 @@ var Selection =
         case 'touchstart':
           this._handleMoveEvent(e)
 
-          this._onEndListener = addEventListener(
+          this._removeEndListener = addEventListener(
             'touchend',
             this._handleTerminatingEvent
           )
-          this._onMoveListener = addEventListener(
+          this._removeMoveListener = addEventListener(
             'touchmove',
             this._handleMoveEvent
           )
@@ -959,13 +993,13 @@ var Selection =
     }
 
     _proto._handleTerminatingEvent = function _handleTerminatingEvent(e) {
-      var _getEventCoordinates3 = getEventCoordinates(e),
-        pageX = _getEventCoordinates3.pageX,
-        pageY = _getEventCoordinates3.pageY
+      var _getEventCoordinates4 = getEventCoordinates(e),
+        pageX = _getEventCoordinates4.pageX,
+        pageY = _getEventCoordinates4.pageY
 
       this.selecting = false
-      this._onEndListener && this._onEndListener.remove()
-      this._onMoveListener && this._onMoveListener.remove()
+      this._removeEndListener && this._removeEndListener()
+      this._removeMoveListener && this._removeMoveListener()
       if (!this._initialEventData) return
       var inRoot = !this.container || contains(this.container(), e.target)
       var bounds = this._selectRect
@@ -988,11 +1022,11 @@ var Selection =
     }
 
     _proto._handleClickEvent = function _handleClickEvent(e) {
-      var _getEventCoordinates4 = getEventCoordinates(e),
-        pageX = _getEventCoordinates4.pageX,
-        pageY = _getEventCoordinates4.pageY,
-        clientX = _getEventCoordinates4.clientX,
-        clientY = _getEventCoordinates4.clientY
+      var _getEventCoordinates5 = getEventCoordinates(e),
+        pageX = _getEventCoordinates5.pageX,
+        pageY = _getEventCoordinates5.pageY,
+        clientX = _getEventCoordinates5.clientX,
+        clientY = _getEventCoordinates5.clientY
 
       var now = new Date().getTime()
 
@@ -1030,9 +1064,9 @@ var Selection =
         x = _this$_initialEventDa.x,
         y = _this$_initialEventDa.y
 
-      var _getEventCoordinates5 = getEventCoordinates(e),
-        pageX = _getEventCoordinates5.pageX,
-        pageY = _getEventCoordinates5.pageY
+      var _getEventCoordinates6 = getEventCoordinates(e),
+        pageX = _getEventCoordinates6.pageX,
+        pageY = _getEventCoordinates6.pageY
 
       var w = Math.abs(x - pageX)
       var h = Math.abs(y - pageY)
@@ -1227,7 +1261,7 @@ var BackgroundCells =
             },
             React.createElement('div', {
               style: style,
-              className: cn(
+              className: clsx(
                 'rbc-day-bg',
                 className,
                 selected && 'rbc-selected-cell',
@@ -1431,6 +1465,8 @@ var EventRowMixin = {
       onDoubleClick: onDoubleClick,
       continuesPrior: continuesPrior,
       continuesAfter: continuesAfter,
+      slotStart: slotMetrics.first,
+      slotEnd: slotMetrics.last,
       selected: isSelected(event, selected),
     })
   },
@@ -1478,7 +1514,7 @@ var EventRow =
       return React.createElement(
         'div',
         {
-          className: cn(className, 'rbc-row'),
+          className: clsx(className, 'rbc-row'),
         },
         segments.reduce(function(row, _ref, li) {
           var event = _ref.event,
@@ -1888,7 +1924,7 @@ var DateContentRow =
         return renderHeader({
           date: date,
           key: 'header_' + index,
-          className: cn(
+          className: clsx(
             'rbc-date-cell',
             eq(date, getNow(), 'day') && 'rbc-now'
           ),
@@ -2249,7 +2285,7 @@ var MonthView =
         return React.createElement(
           'div',
           _extends({}, props, {
-            className: cn(
+            className: clsx(
               className,
               isOffRange && 'rbc-off-range',
               isCurrent && 'rbc-current'
@@ -2371,7 +2407,7 @@ var MonthView =
         'resize',
         (this._resizeListener = function() {
           if (!running) {
-            raf(function() {
+            request(function() {
               running = false
 
               _this2.setState({
@@ -2403,7 +2439,7 @@ var MonthView =
       return React.createElement(
         'div',
         {
-          className: cn('rbc-month-view', className),
+          className: clsx('rbc-month-view', className),
         },
         React.createElement(
           'div',
@@ -2449,13 +2485,13 @@ var MonthView =
         localizer = _this$props6.localizer,
         components = _this$props6.components,
         getters = _this$props6.getters,
-        selected = _this$props6.selected
+        selected = _this$props6.selected,
+        popupOffset = _this$props6.popupOffset
       return React.createElement(
         Overlay,
         {
           rootClose: true,
           placement: 'bottom',
-          container: this,
           show: !!overlay.position,
           onHide: function onHide() {
             return _this3.setState({
@@ -2471,6 +2507,7 @@ var MonthView =
           return React.createElement(
             Popup$1,
             _extends({}, props, {
+              popupOffset: popupOffset,
               accessors: accessors,
               getters: getters,
               selected: selected,
@@ -2712,7 +2749,7 @@ function getSlotMetrics$1(_ref) {
       var rangeStartMin = positionFromDate(rangeStart)
       var rangeEndMin = positionFromDate(rangeEnd)
       var top =
-        rangeEndMin - rangeStartMin < step
+        rangeEndMin - rangeStartMin < step && !eq(end, rangeEnd)
           ? ((rangeStartMin - step) / (step * numSlots)) * 100
           : (rangeStartMin / (step * numSlots)) * 100
       return {
@@ -2724,115 +2761,39 @@ function getSlotMetrics$1(_ref) {
         endDate: rangeEnd,
       }
     },
+    getCurrentTimePosition: function getCurrentTimePosition(rangeStart) {
+      var rangeStartMin = positionFromDate(rangeStart)
+      var top = (rangeStartMin / (step * numSlots)) * 100
+      return top
+    },
   }
 }
 
-var Event =
-  /*#__PURE__*/
-  (function() {
-    function Event(data, _ref) {
-      var accessors = _ref.accessors,
-        slotMetrics = _ref.slotMetrics
+var Event = function Event(data, _ref) {
+  var accessors = _ref.accessors,
+    slotMetrics = _ref.slotMetrics
 
-      var _slotMetrics$getRange = slotMetrics.getRange(
-          accessors.start(data),
-          accessors.end(data)
-        ),
-        start = _slotMetrics$getRange.start,
-        startDate = _slotMetrics$getRange.startDate,
-        end = _slotMetrics$getRange.end,
-        endDate = _slotMetrics$getRange.endDate,
-        top = _slotMetrics$getRange.top,
-        height = _slotMetrics$getRange.height
+  var _slotMetrics$getRange = slotMetrics.getRange(
+      accessors.start(data),
+      accessors.end(data)
+    ),
+    start = _slotMetrics$getRange.start,
+    startDate = _slotMetrics$getRange.startDate,
+    end = _slotMetrics$getRange.end,
+    endDate = _slotMetrics$getRange.endDate,
+    top = _slotMetrics$getRange.top,
+    height = _slotMetrics$getRange.height
 
-      this.start = start
-      this.end = end
-      this.startMs = +startDate
-      this.endMs = +endDate
-      this.top = top
-      this.height = height
-      this.data = data
-    }
-    /**
-     * The event's width without any overlap.
-     */
+  this.start = start
+  this.end = end
+  this.startMs = +startDate
+  this.endMs = +endDate
+  this.top = top
+  this.height = height
+  this.data = data
+}
 
-    _createClass(Event, [
-      {
-        key: '_width',
-        get: function get() {
-          // The container event's width is determined by the maximum number of
-          // events in any of its rows.
-          if (this.rows) {
-            var columns =
-              this.rows.reduce(
-                function(max, row) {
-                  return Math.max(max, row.leaves.length + 1)
-                }, // add itself
-                0
-              ) + 1 // add the container
-
-            return 100 / columns
-          }
-
-          var availableWidth = 100 - this.container._width // The row event's width is the space left by the container, divided
-          // among itself and its leaves.
-
-          if (this.leaves) {
-            return availableWidth / (this.leaves.length + 1)
-          } // The leaf event's width is determined by its row's width
-
-          return this.row._width
-        },
-        /**
-         * The event's calculated width, possibly with extra width added for
-         * overlapping effect.
-         */
-      },
-      {
-        key: 'width',
-        get: function get() {
-          var noOverlap = this._width
-          var overlap = Math.min(100, this._width * 1.7) // Containers can always grow.
-
-          if (this.rows) {
-            return overlap
-          } // Rows can grow if they have leaves.
-
-          if (this.leaves) {
-            return this.leaves.length > 0 ? overlap : noOverlap
-          } // Leaves can grow unless they're the last item in a row.
-
-          var leaves = this.row.leaves
-          var index = leaves.indexOf(this)
-          return index === leaves.length - 1 ? noOverlap : overlap
-        },
-      },
-      {
-        key: 'xOffset',
-        get: function get() {
-          // Containers have no offset.
-          if (this.rows) return 0 // Rows always start where their container ends.
-
-          if (this.leaves) return this.container._width // Leaves are spread out evenly on the space left by its row.
-
-          var _this$row = this.row,
-            leaves = _this$row.leaves,
-            xOffset = _this$row.xOffset,
-            _width = _this$row._width
-          var index = leaves.indexOf(this) + 1
-          return xOffset + index * _width
-        },
-      },
-    ])
-
-    return Event
-  })()
-/**
- * Return true if event a and b is considered to be on the same row.
- */
-
-function onSameRow(a, b, minimumStartDifference) {
+function areEventsTooCloseOrOverlapping(a, b, minimumStartDifference) {
   return (
     // Occupies the same start slot.
     Math.abs(b.start - a.start) < minimumStartDifference || // A's start slot overlaps with b's end slot.
@@ -2840,112 +2801,92 @@ function onSameRow(a, b, minimumStartDifference) {
   )
 }
 
-function sortByRender(events) {
-  var sortedByTime = sortBy(events, [
-    'startMs',
-    function(e) {
-      return -e.endMs
-    },
-  ])
-  var sorted = []
-
-  while (sortedByTime.length > 0) {
-    var event = sortedByTime.shift()
-    sorted.push(event)
-
-    for (var i = 0; i < sortedByTime.length; i++) {
-      var test = sortedByTime[i] // Still inside this event, look for next.
-
-      if (event.endMs > test.startMs) continue // We've found the first event of the next event group.
-      // If that event is not right next to our current event, we have to
-      // move it here.
-
-      if (i > 0) {
-        var _event = sortedByTime.splice(i, 1)[0]
-        sorted.push(_event)
-      } // We've already found the next event group, so stop looking.
-
-      break
-    }
-  }
-
-  return sorted
-}
-
 function getStyledEvents(_ref2) {
   var events = _ref2.events,
     minimumStartDifference = _ref2.minimumStartDifference,
     slotMetrics = _ref2.slotMetrics,
     accessors = _ref2.accessors
-  // Create proxy events and order them so that we don't have
-  // to fiddle with z-indexes.
+  if (events.length === 0) return []
   var proxies = events.map(function(event) {
     return new Event(event, {
       slotMetrics: slotMetrics,
       accessors: accessors,
     })
   })
-  var eventsInRenderOrder = sortByRender(proxies) // Group overlapping events, while keeping order.
-  // Every event is always one of: container, row or leaf.
-  // Containers can contain rows, and rows can contain leaves.
-
-  var containerEvents = []
-
-  var _loop = function _loop(i) {
-    var event = eventsInRenderOrder[i] // Check if this event can go into a container event.
-
-    var container = containerEvents.find(function(c) {
-      return (
-        c.end > event.start ||
-        Math.abs(event.start - c.start) < minimumStartDifference
+  var sortedByTime = sortBy(proxies, [
+    'startMs',
+    function(e) {
+      return -e.endMs
+    },
+  ])
+  var firstEvent = sortedByTime.shift()
+  var groups = [[[firstEvent]]]
+  var eventWithLatestEnd = firstEvent
+  sortedByTime.forEach(function(event) {
+    // If event is the first or doesn't collide with the latest group
+    // create a new group
+    if (
+      !areEventsTooCloseOrOverlapping(
+        eventWithLatestEnd,
+        event,
+        minimumStartDifference
       )
-    }) // Couldn't find a container — that means this event is a container.
+    ) {
+      groups.push([[event]])
+    } else {
+      var eventAdded = false
+      var latestGroup = groups[groups.length - 1]
 
-    if (!container) {
-      event.rows = []
-      containerEvents.push(event)
-      return 'continue'
-    } // Found a container for the event.
+      for (var i = 0; i < latestGroup.length; i++) {
+        var column = latestGroup[i]
+        var lastInColumn = column[column.length - 1] // If event doesn't collide with the latest event in the column
+        // append it to the column
 
-    event.container = container // Check if the event can be placed in an existing row.
-    // Start looking from behind.
+        if (
+          !areEventsTooCloseOrOverlapping(
+            lastInColumn,
+            event,
+            minimumStartDifference
+          )
+        ) {
+          column.push(event)
+          eventAdded = true
+          break
+        }
+      } // If event has not been appended, create a new column in this group
 
-    var row = null
-
-    for (var j = container.rows.length - 1; !row && j >= 0; j--) {
-      if (onSameRow(container.rows[j], event, minimumStartDifference)) {
-        row = container.rows[j]
+      if (!eventAdded) {
+        latestGroup.push([event])
       }
     }
 
-    if (row) {
-      // Found a row, so add it.
-      row.leaves.push(event)
-      event.row = row
-    } else {
-      // Couldn't find a row – that means this event is a row.
-      event.leaves = []
-      container.rows.push(event)
+    if (event.endMs > eventWithLatestEnd.endMs) {
+      eventWithLatestEnd = event
     }
-  }
+  }) // Flatten [groups > columns > events] structure and set css properties
 
-  for (var i = 0; i < eventsInRenderOrder.length; i++) {
-    var _ret = _loop(i)
-
-    if (_ret === 'continue') continue
-  } // Return the original events, along with their styles.
-
-  return eventsInRenderOrder.map(function(event) {
-    return {
-      event: event.data,
-      style: {
-        top: event.top,
-        height: event.height,
-        width: event.width,
-        xOffset: event.xOffset,
-      },
-    }
-  })
+  return groups.reduce(function(acc, group) {
+    return acc.concat(
+      group.reduce(function(_acc, column, columnIdx) {
+        return _acc.concat(
+          column.map(function(event) {
+            return {
+              event: event.data,
+              style: {
+                top: event.top,
+                height: event.height,
+                width:
+                  columnIdx === group.length - 1
+                    ? 100 / group.length
+                    : (100 / group.length) * 1.7,
+                xOffset: (100 / group.length) * columnIdx,
+              },
+            }
+          })
+        )
+      }, [])
+    )
+  }, [])
 }
 
 var TimeSlotGroup =
@@ -2990,7 +2931,7 @@ var TimeSlotGroup =
             React.createElement(
               'div',
               _extends({}, slotProps, {
-                className: cn('rbc-time-slot', slotProps.className),
+                className: clsx('rbc-time-slot', slotProps.className),
               }),
               renderSlot && renderSlot(value, idx)
             )
@@ -3091,7 +3032,7 @@ function TimeGridEvent(props) {
         title: tooltip
           ? (typeof label === 'string' ? label + ': ' : '') + tooltip
           : undefined,
-        className: cn('rbc-event', className, userProps.className, {
+        className: clsx('rbc-event', className, userProps.className, {
           'rbc-selected': selected,
           'rbc-event-continues-earlier': continuesEarlier,
           'rbc-event-continues-later': continuesLater,
@@ -3239,10 +3180,17 @@ var DayColumn =
             getBoundsForNode(node)
           )
 
-          if (!_this.state.selecting) _this._initialSlot = currentSlot
+          if (!_this.state.selecting) {
+            _this._initialSlot = currentSlot
+          }
+
           var initialSlot = _this._initialSlot
-          if (initialSlot === currentSlot)
-            currentSlot = _this.slotMetrics.nextSlot(initialSlot)
+
+          if (lte(initialSlot, currentSlot)) {
+            currentSlot = _this.slotMetrics.nextSlot(currentSlot)
+          } else if (gt(initialSlot, currentSlot)) {
+            initialSlot = _this.slotMetrics.nextSlot(initialSlot)
+          }
 
           var selectRange = _this.slotMetrics.getRange(
             min(initialSlot, currentSlot),
@@ -3421,7 +3369,8 @@ var DayColumn =
         }
       } else if (
         this.props.isNow &&
-        !eq(prevProps.min, this.props.min, 'minutes')
+        (!eq(prevProps.min, this.props.min, 'minutes') ||
+          !eq(prevProps.max, this.props.max, 'minutes'))
       ) {
         this.positionTimeIndicator()
       }
@@ -3466,9 +3415,7 @@ var DayColumn =
       var current = getNow()
 
       if (current >= min && current <= max) {
-        var _this$slotMetrics$get = this.slotMetrics.getRange(current, current),
-          top = _this$slotMetrics$get.top
-
+        var top = this.slotMetrics.getCurrentTimePosition(current)
         this.setState({
           timeIndicatorPosition: top,
         })
@@ -3516,7 +3463,7 @@ var DayColumn =
         'div',
         {
           style: style,
-          className: cn(
+          className: clsx(
             className,
             'rbc-day-slot',
             'rbc-time-column',
@@ -3547,7 +3494,7 @@ var DayColumn =
           React.createElement(
             'div',
             {
-              className: cn('rbc-events-container', rtl && 'rtl'),
+              className: clsx('rbc-events-container', rtl && 'rtl'),
             },
             this.renderEvents()
           )
@@ -3646,7 +3593,7 @@ var TimeGutter =
         return React.createElement(
           'span',
           {
-            className: cn('rbc-label', isNow && 'rbc-now'),
+            className: clsx('rbc-label', isNow && 'rbc-now'),
           },
           localizer.format(value, 'timeGutterFormat')
         )
@@ -3835,7 +3782,7 @@ var TimeGridHeader =
           {
             key: i,
             style: style,
-            className: cn(
+            className: clsx(
               'rbc-header',
               className,
               eq(date, today, 'day') && 'rbc-today'
@@ -3893,7 +3840,10 @@ var TimeGridHeader =
         {
           style: style,
           ref: scrollRef,
-          className: cn('rbc-time-header', isOverflowing && 'rbc-overflowing'),
+          className: clsx(
+            'rbc-time-header',
+            isOverflowing && 'rbc-overflowing'
+          ),
         },
         React.createElement(
           'div',
@@ -4046,8 +3996,8 @@ var TimeGrid =
       }
 
       _this.handleResize = function() {
-        raf.cancel(_this.rafHandle)
-        _this.rafHandle = raf(_this.checkOverflow)
+        cancel(_this.rafHandle)
+        _this.rafHandle = request(_this.checkOverflow)
       }
 
       _this.gutterRef = function(ref) {
@@ -4129,7 +4079,7 @@ var TimeGrid =
 
     _proto.componentWillUnmount = function componentWillUnmount() {
       window.removeEventListener('resize', this.handleResize)
-      raf.cancel(this.rafHandle)
+      cancel(this.rafHandle)
 
       if (this.measureGutterAnimationFrameRequest) {
         window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
@@ -4247,7 +4197,7 @@ var TimeGrid =
       return React.createElement(
         'div',
         {
-          className: cn(
+          className: clsx(
             'rbc-time-view',
             resources && 'rbc-time-view-resources'
           ),
@@ -4731,10 +4681,10 @@ var Agenda =
         }
 
         if (isOverflowing) {
-          classes.addClass(header, 'rbc-header-overflowing')
+          addClass(header, 'rbc-header-overflowing')
           header.style.marginRight = scrollbarSize() + 'px'
         } else {
-          classes.removeClass(header, 'rbc-header-overflowing')
+          removeClass(header, 'rbc-header-overflowing')
         }
       }
 
@@ -5057,7 +5007,7 @@ var Toolbar =
             {
               type: 'button',
               key: name,
-              className: cn({
+              className: clsx({
                 'rbc-active': view === name,
               }),
               onClick: _this2.view.bind(null, name),
@@ -5433,7 +5383,7 @@ var Calendar =
       return React.createElement(
         'div',
         _extends({}, elementProps, {
-          className: cn(className, 'rbc-calendar', props.rtl && 'rbc-rtl'),
+          className: clsx(className, 'rbc-calendar', props.rtl && 'rbc-rtl'),
           style: style,
         }),
         toolbar &&
@@ -6007,7 +5957,7 @@ Calendar.propTypes =
          *     localizer.format(date, 'DDD', culture),
          *
          *   dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
-         *     localizer.format(start, { date: 'short' }, culture) + ' — ' +
+         *     localizer.format(start, { date: 'short' }, culture) + ' – ' +
          *     localizer.format(end, { date: 'short' }, culture)
          * }
          *
@@ -6060,12 +6010,12 @@ Calendar.propTypes =
           dayHeaderFormat: dateFormat,
 
           /**
-           * Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"
+           * Toolbar header format for the Agenda view, e.g. "4/1/2015 – 5/1/2015"
            */
           agendaHeaderFormat: dateRangeFormat,
 
           /**
-           * A time range format for selecting time slots, e.g "8:00am — 2:00pm"
+           * A time range format for selecting time slots, e.g "8:00am – 2:00pm"
            */
           selectRangeFormat: dateRangeFormat,
           agendaDateFormat: dateFormat,
@@ -6183,7 +6133,7 @@ var dateRangeFormat$1 = function dateRangeFormat(_ref, culture, local) {
   var start = _ref.start,
     end = _ref.end
   return (
-    local.format(start, 'L', culture) + ' — ' + local.format(end, 'L', culture)
+    local.format(start, 'L', culture) + ' – ' + local.format(end, 'L', culture)
   )
 }
 
@@ -6192,7 +6142,7 @@ var timeRangeFormat = function timeRangeFormat(_ref2, culture, local) {
     end = _ref2.end
   return (
     local.format(start, 'LT', culture) +
-    ' — ' +
+    ' – ' +
     local.format(end, 'LT', culture)
   )
 }
@@ -6203,12 +6153,12 @@ var timeRangeStartFormat = function timeRangeStartFormat(
   local
 ) {
   var start = _ref3.start
-  return local.format(start, 'LT', culture) + ' — '
+  return local.format(start, 'LT', culture) + ' – '
 }
 
 var timeRangeEndFormat = function timeRangeEndFormat(_ref4, culture, local) {
   var end = _ref4.end
-  return ' — ' + local.format(end, 'LT', culture)
+  return ' – ' + local.format(end, 'LT', culture)
 }
 
 var weekRangeFormat = function weekRangeFormat(_ref5, culture, local) {
@@ -6216,7 +6166,7 @@ var weekRangeFormat = function weekRangeFormat(_ref5, culture, local) {
     end = _ref5.end
   return (
     local.format(start, 'MMMM DD', culture) +
-    ' - ' +
+    ' – ' +
     local.format(end, eq(start, end, 'month') ? 'DD' : 'MMMM DD', culture)
   )
 }
@@ -6259,7 +6209,7 @@ var dateRangeFormat$2 = function dateRangeFormat(_ref, culture, local) {
   var start = _ref.start,
     end = _ref.end
   return (
-    local.format(start, 'd', culture) + ' — ' + local.format(end, 'd', culture)
+    local.format(start, 'd', culture) + ' – ' + local.format(end, 'd', culture)
   )
 }
 
@@ -6267,7 +6217,7 @@ var timeRangeFormat$1 = function timeRangeFormat(_ref2, culture, local) {
   var start = _ref2.start,
     end = _ref2.end
   return (
-    local.format(start, 't', culture) + ' — ' + local.format(end, 't', culture)
+    local.format(start, 't', culture) + ' – ' + local.format(end, 't', culture)
   )
 }
 
@@ -6277,12 +6227,12 @@ var timeRangeStartFormat$1 = function timeRangeStartFormat(
   local
 ) {
   var start = _ref3.start
-  return local.format(start, 't', culture) + ' — '
+  return local.format(start, 't', culture) + ' – '
 }
 
 var timeRangeEndFormat$1 = function timeRangeEndFormat(_ref4, culture, local) {
   var end = _ref4.end
-  return ' — ' + local.format(end, 't', culture)
+  return ' – ' + local.format(end, 't', culture)
 }
 
 var weekRangeFormat$1 = function weekRangeFormat(_ref5, culture, local) {
@@ -6290,7 +6240,7 @@ var weekRangeFormat$1 = function weekRangeFormat(_ref5, culture, local) {
     end = _ref5.end
   return (
     local.format(start, 'MMM dd', culture) +
-    ' - ' +
+    ' – ' +
     local.format(end, eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
   )
 }
@@ -6342,7 +6292,7 @@ var dateRangeFormat$3 = function dateRangeFormat(_ref, culture, local) {
       },
       culture
     ) +
-    ' — ' +
+    ' – ' +
     local.format(
       end,
       {
@@ -6364,7 +6314,7 @@ var timeRangeFormat$2 = function timeRangeFormat(_ref2, culture, local) {
       },
       culture
     ) +
-    ' — ' +
+    ' – ' +
     local.format(
       end,
       {
@@ -6388,14 +6338,14 @@ var timeRangeStartFormat$2 = function timeRangeStartFormat(
         time: 'short',
       },
       culture
-    ) + ' — '
+    ) + ' – '
   )
 }
 
 var timeRangeEndFormat$2 = function timeRangeEndFormat(_ref4, culture, local) {
   var end = _ref4.end
   return (
-    ' — ' +
+    ' – ' +
     local.format(
       end,
       {
@@ -6411,7 +6361,7 @@ var weekRangeFormat$2 = function weekRangeFormat(_ref5, culture, local) {
     end = _ref5.end
   return (
     local.format(start, 'MMM dd', culture) +
-    ' — ' +
+    ' – ' +
     local.format(end, eq(start, end, 'month') ? 'dd' : 'MMM dd', culture)
   )
 }

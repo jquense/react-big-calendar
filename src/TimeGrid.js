@@ -14,6 +14,7 @@ import TimeGridHeader from './TimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
+import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 export default class TimeGrid extends Component {
   constructor(props) {
@@ -103,7 +104,14 @@ export default class TimeGrid extends Component {
   }
 
   renderEvents(range, events, now) {
-    let { min, max, components, accessors, localizer } = this.props
+    let {
+      min,
+      max,
+      components,
+      accessors,
+      localizer,
+      dayLayoutAlgorithm,
+    } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
@@ -131,6 +139,7 @@ export default class TimeGrid extends Component {
             key={i + '-' + jj}
             date={date}
             events={daysEvents}
+            dayLayoutAlgorithm={dayLayoutAlgorithm}
           />
         )
       })
@@ -328,6 +337,8 @@ TimeGrid.propTypes = {
   onDoubleClickEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
+
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 
 TimeGrid.defaultProps = {

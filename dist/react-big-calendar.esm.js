@@ -2878,7 +2878,7 @@ function getStyledEvents(_ref2) {
                 width:
                   columnIdx === group.length - 1
                     ? 100 / group.length
-                    : (100 / group.length) * 1.7,
+                    : (100 / group.length) * 1,
                 xOffset: (100 / group.length) * columnIdx,
               },
             }

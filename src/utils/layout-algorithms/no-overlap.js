@@ -84,25 +84,24 @@ export default function({
   }
 
   for (let i = 0; i < styledEvents.length; ++i) {
-    styledEvents[i].style.left = styledEvents[i].idx * styledEvents[i].size
+    const e = styledEvents[i]
+    e.style.left = e.idx * e.size
 
     // stretch to maximum
     let maxIdx = 0
-    for (let j = 0; j < styledEvents[i].friends.length; ++j) {
-      const idx = styledEvents[i].friends[j]
+    for (let j = 0; j < e.friends.length; ++j) {
+      const idx = e.friends[j]
       maxIdx = maxIdx > idx ? maxIdx : idx
     }
-    if (maxIdx <= styledEvents[i].idx)
-      styledEvents[i].size = 100 - styledEvents[i].idx * styledEvents[i].size
+    if (maxIdx <= e.idx) e.size = 100 - e.idx * e.size
 
     // padding between events
     // for this feature, `width` is not percentage based unit anymore
     // it will be used with calc()
-    const padding = styledEvents[i].idx === 0 ? 0 : 3
-    styledEvents[
-      i
-    ].style.width = `calc(${styledEvents[i].size}% - ${padding}px)`
-    styledEvents[i].style.marginLeft = padding
+    const padding = e.idx === 0 ? 0 : 3
+    e.style.width = `calc(${e.size}% - ${padding}px)`
+    e.style.height = `calc(${e.style.height}% - 2px)`
+    e.style.xOffset = `calc(${e.style.left}% + ${padding}px)`
   }
 
   return styledEvents

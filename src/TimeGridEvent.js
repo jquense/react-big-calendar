@@ -1,6 +1,10 @@
 import clsx from 'clsx'
 import React from 'react'
 
+function stringifyPercent(v) {
+  return typeof v === 'string' ? v : v + '%'
+}
+
 /* eslint-disable react/prop-types */
 function TimeGridEvent(props) {
   const {
@@ -25,7 +29,7 @@ function TimeGridEvent(props) {
 
   let userProps = getters.eventProp(event, start, end, selected)
 
-  let { height, top, width, left, xOffset, marginLeft } = style
+  let { height, top, width, xOffset } = style
   const inner = [
     <div key="1" className="rbc-event-label">
       {label}
@@ -42,12 +46,10 @@ function TimeGridEvent(props) {
         onDoubleClick={onDoubleClick}
         style={{
           ...userProps.style,
-          top: `${top}%`,
-          [rtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-          width: `${width}`,
-          height: `calc(${height}% - 2px)`,
-          left: `${left}%`,
-          marginLeft: `${marginLeft}px`,
+          top: stringifyPercent(top),
+          [rtl ? 'right' : 'left']: stringifyPercent(xOffset),
+          width: stringifyPercent(width),
+          height: stringifyPercent(height),
         }}
         title={
           tooltip

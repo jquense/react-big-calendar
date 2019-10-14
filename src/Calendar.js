@@ -269,6 +269,7 @@ class Calendar extends React.Component {
      *   slotInfo: {
      *     start: Date,
      *     end: Date,
+     *     resourceId:  (number|string),
      *     slots: Array<Date>,
      *     action: "select" | "click" | "doubleClick",
      *     bounds: ?{ // For "select" action
@@ -317,7 +318,7 @@ class Calendar extends React.Component {
      * Returning `false` from the handler will prevent a selection.
      *
      * ```js
-     * (range: { start: Date, end: Date }) => ?boolean
+     * (range: { start: Date, end: Date, resourceId: (number|string) }) => ?boolean
      * ```
      */
     onSelecting: PropTypes.func,

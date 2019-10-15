@@ -25,7 +25,7 @@ export default class TimeGrid extends Component {
     this.contentRef = React.createRef()
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.calculateScroll()
   }
 
@@ -71,7 +71,7 @@ export default class TimeGrid extends Component {
     //this.checkOverflow()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { range, scrollToTime } = this.props
     // When paginating, reset scroll
     if (

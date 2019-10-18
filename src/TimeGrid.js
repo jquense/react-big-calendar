@@ -268,7 +268,7 @@ export default class TimeGrid extends Component {
   }
 
   applyScroll() {
-    if (typeof this._scrollRatio === 'number') {
+    if (this._scrollRatio != null) {
       const content = this.contentRef.current
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once

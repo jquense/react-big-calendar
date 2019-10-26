@@ -35,10 +35,10 @@ const events = [
 ]
 
 const resourceMap = [
-  { resourceId: 1, resourceTitle: 'Board room' },
-  { resourceId: 2, resourceTitle: 'Training room' },
-  { resourceId: 3, resourceTitle: 'Meeting room 1' },
-  { resourceId: 4, resourceTitle: 'Meeting room 2' },
+  { resourceId: 1555, resourceTitle: 'Board room' },
+  { resourceId: 2222, resourceTitle: 'Training room' },
+  { resourceId: 3333, resourceTitle: 'Meeting room 1' },
+  { resourceId: 4444, resourceTitle: 'Meeting room 2' },
 ]
 
 const slotPropGetter = date => {
@@ -51,10 +51,12 @@ const slotPropGetter = date => {
         background: '#f3f2f1',
         height: '4.3rem',
       },
+      'aria-label': 'test',
     }
   } else {
     return {
       className: 'business-slot',
+      'aria-label': 'test',
     }
   }
 }

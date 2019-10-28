@@ -13,6 +13,8 @@ class EventCell extends React.Component {
       isAllDay,
       onSelect,
       onDoubleClick,
+      onMouseOver,
+      onMouseOut,
       localizer,
       continuesPrior,
       continuesAfter,
@@ -69,6 +71,8 @@ class EventCell extends React.Component {
           })}
           onClick={e => onSelect && onSelect(event, e)}
           onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
+          onMouseOver={e => onMouseOver && onMouseOver(event, e)}
+          onMouseOut={e => onMouseOut && onMouseOut(event, e)}
         >
           {typeof children === 'function' ? children(content) : content}
         </div>

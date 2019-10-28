@@ -98,6 +98,8 @@ EventCell.propTypes = {
 
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onMouseOver: PropTypes.func,
+  onMouseOut: PropTypes.func,
 }
 
 export default EventCell

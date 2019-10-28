@@ -240,6 +240,7 @@ export default class TimeGrid extends Component {
             timeslots={this.props.timeslots}
             components={components}
             className="rbc-time-gutter"
+            getters={getters}
           />
           {this.renderEvents(range, rangeEvents, getNow())}
         </div>

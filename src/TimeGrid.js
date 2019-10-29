@@ -27,10 +27,6 @@ export default class TimeGrid extends Component {
     this._scrollRatio = null
   }
 
-  componentWillMount() {
-    this.calculateScroll()
-  }
-
   componentDidMount() {
     this.checkOverflow()
 
@@ -64,24 +60,21 @@ export default class TimeGrid extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.width == null) {
       this.measureGutter()
     }
 
-    this.applyScroll()
-    //this.checkOverflow()
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { range, scrollToTime } = this.props
+    const { range, scrollToTime } = prevProps
     // When paginating, reset scroll
     if (
-      !dates.eq(nextProps.range[0], range[0], 'minute') ||
-      !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
+      !dates.eq(this.props.range[0], range[0], 'minute') ||
+      !dates.eq(this.props.scrollToTime, scrollToTime, 'minute')
     ) {
-      this.calculateScroll(nextProps)
+      const scroll = this.calculateScroll(this.props)
+      this.applyScroll(scroll)
     }
+    //this.checkOverflow()
   }
 
   gutterRef = ref => {
@@ -267,16 +260,12 @@ export default class TimeGrid extends Component {
     )
   }
 
-  applyScroll() {
-    if (this._scrollRatio != null) {
-      const content = this.contentRef.current
-      content.scrollTop = content.scrollHeight * this._scrollRatio
-      // Only do this once
-      this._scrollRatio = null
-    }
+  applyScroll(scrollRatio) {
+    const content = this.contentRef.current
+    content.scrollTop = content.scrollHeight * scrollRatio
   }
 
-  calculateScroll(props = this.props) {
+  calculateScroll(props) {
     const { min, max, scrollToTime } = props
 
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')

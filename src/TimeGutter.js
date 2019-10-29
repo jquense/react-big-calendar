@@ -18,8 +18,8 @@ export default class TimeGutter extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { min, max, timeslots, step } = nextProps
+  componentDidUpdate() {
+    const { min, max, timeslots, step } = this.props
     this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
   }
 

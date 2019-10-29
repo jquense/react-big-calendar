@@ -101,7 +101,7 @@
     "jest": "^23.6.0",
     "lint-staged": "^8.0.4",
     "markdown-jsx-loader": "^3.0.2",
-    "marked": "^0.5.1",
+    "marked": "^0.6.1",
     "moment": "^2.22.2",
     "mt-changelog": "^0.6.1",
     "node-sass": "4.12.0",

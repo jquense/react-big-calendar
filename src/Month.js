@@ -35,12 +35,6 @@ class MonthView extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ date }) {
-    this.setState({
-      needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
-    })
-  }
-
   componentDidMount() {
     let running
 
@@ -60,8 +54,14 @@ class MonthView extends React.Component {
     )
   }
 
-  componentDidUpdate() {
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+  componentDidUpdate(prevProps) {
+    if (!dates.eq(prevProps.date, this.props.date, 'month')) {
+      this.setState({
+        needLimitMeasure: true,
+      })
+    } else if (this.state.needLimitMeasure) {
+      this.measureRowLimit(this.props)
+    }
   }
 
   componentWillUnmount() {

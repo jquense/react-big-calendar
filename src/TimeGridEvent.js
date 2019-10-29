@@ -48,6 +48,11 @@ function TimeGridEvent(props) {
     Math.floor((end.getTime() - 1) / stepLengthInMs) * stepLengthInMs
   )
 
+  const heightOffset = userProps.heightOffset ? userProps.heightOffset : 0
+  height = height - heightOffset
+  const widthOffset = userProps.widthOffset ? userProps.widthOffset : 1
+  width = width - widthOffset
+
   return (
     <EventWrapper type="time" {...props}>
       <button
@@ -64,7 +69,7 @@ function TimeGridEvent(props) {
           top: `${top}%`,
           height: `${height}%`,
           [isRtl ? 'right' : 'left']: `${Math.max(1, xOffset + 1)}%`,
-          width: `${width - 1}%`,
+          width: `${width}%`,
         }}
         title={
           tooltip

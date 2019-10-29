@@ -756,16 +756,6 @@ class Calendar extends React.Component {
     dayLayoutAlgorithm: 'overlap',
   }
 
-  constructor(...args) {
-    super(...args)
-    this.state = {
-      context: this.getContext(this.props),
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ context: this.getContext(nextProps) })
-  }
-
   getContext({
     startAccessor,
     endAccessor,
@@ -881,7 +871,7 @@ class Calendar extends React.Component {
       getters,
       localizer,
       viewNames,
-    } = this.state.context
+    } = this.getContext(this.props)
 
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { localizer, length })

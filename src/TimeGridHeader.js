@@ -15,17 +15,17 @@ class TimeGridHeader extends React.Component {
     notify(this.props.onDrillDown, [date, view])
   }
 
-  handleKeyDownOnResource = (event, resourceId) => {
+  handleKeyDownOnResource = (event, seqId) => {
     if (event.keyCode === 39) {
-      let newResourceId = resourceId + 1
+      let newSeqId = seqId + 1
       let newResourceElement = document.querySelector(
-        `[data-resource-id='${newResourceId}']`
+        `.rbc-time-header-content[seq-id='${newSeqId}']`
       )
       if (newResourceElement) newResourceElement.focus()
     } else if (event.keyCode === 37) {
-      let newResourceId = resourceId - 1
+      let newSeqId = seqId - 1
       let newResourceElement = document.querySelector(
-        `[data-resource-id='${newResourceId}']`
+        `.rbc-time-header-content[seq-id='${newSeqId}']`
       )
       if (newResourceElement) newResourceElement.focus()
     }
@@ -169,10 +169,9 @@ class TimeGridHeader extends React.Component {
             data-resource-id={resource ? resource.resourceId : ''}
             tabIndex={0}
             onKeyDown={e => {
-              if (resource && resource.resourceId) {
-                this.handleKeyDownOnResource(e, resource.resourceId)
-              }
+              this.handleKeyDownOnResource(e, idx)
             }}
+            seq-id={idx}
             key={id || idx}
           >
             {resource && (

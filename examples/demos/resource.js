@@ -35,10 +35,10 @@ const events = [
 ]
 
 const resourceMap = [
-  { resourceId: 1555, resourceTitle: 'Board room' },
-  { resourceId: 2222, resourceTitle: 'Training room' },
-  { resourceId: 3333, resourceTitle: 'Meeting room 1' },
-  { resourceId: 4444, resourceTitle: 'Meeting room 2' },
+  { id: 1, title: 'Board room' },
+  { id: 2, title: 'Training room' },
+  { id: 3, title: 'Meeting room 1' },
+  { id: 4, title: 'Meeting room 2' },
 ]
 
 const slotPropGetter = date => {
@@ -73,8 +73,8 @@ let Resource = ({ localizer }) => (
       step={60}
       defaultDate={new Date(2018, 0, 29)}
       resources={resourceMap}
-      resourceIdAccessor="resourceId"
-      resourceTitleAccessor="resourceTitle"
+      resourceIdAccessor="id"
+      resourceTitleAccessor="title"
     />
   </>
 )

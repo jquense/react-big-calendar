@@ -166,7 +166,7 @@ class TimeGridHeader extends React.Component {
           <div
             className="rbc-time-header-content"
             data-time-header-id={id || idx}
-            data-resource-id={resource ? resource.resourceId : ''}
+            data-resource-id={resource ? accessors.resourceId(resource) : ''}
             tabIndex={0}
             onKeyDown={e => {
               this.handleKeyDownOnResource(e, idx)

@@ -10,25 +10,23 @@ jobs:
     name: release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repo
         uses: actions/checkout@v1
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-
-      - name: Install yarn
-        run: sudo apt update && sudo apt install yarn
-
       - name: Install Dependencies
-        run: yarn install
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
 
-      - name: Jest Unit Test & Linting
-        run: yarn test
+      - name: Test
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: test
 
       - name: Build
-        run: yarn build
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@master
@@ -40,5 +38,5 @@ jobs:
             @semantic-release/changelog
 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

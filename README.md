@@ -51,6 +51,7 @@ const MyCalendar = props => (
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
+      style={{height: 500}}
     />
   </div>
 )
@@ -71,6 +72,7 @@ const MyCalendar = props => (
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
+      style={{height: 500}}
     />
   </div>
 )

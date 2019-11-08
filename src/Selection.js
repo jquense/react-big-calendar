@@ -47,6 +47,7 @@ class Selection {
     node,
     { global = false, longPressThreshold = 250, resourceId = null } = {}
   ) {
+    this.isDetached = false
     this.container = node
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
@@ -103,6 +104,7 @@ class Selection {
   }
 
   teardown() {
+    this.isDetached = true
     this.listeners = Object.create(null)
     this._onTouchMoveWindowListener && this._onTouchMoveWindowListener.remove()
     this._onInitialEventListener && this._onInitialEventListener.remove()
@@ -215,6 +217,9 @@ class Selection {
   }
 
   _handleInitialEvent(e) {
+    if (this.isDetached) {
+      return
+    }
     const { clientX, clientY, pageX, pageY } = getEventCoordinates(e)
     let node = this.container(),
       collides,
@@ -277,6 +282,9 @@ class Selection {
         )
         break
       case 'touchstart':
+        if (this._initialEventData === null || this.isDetached) {
+          return
+        }
         this._handleMoveEvent(e)
         this._onEndListener = addEventListener(
           'touchend',
@@ -355,7 +363,7 @@ class Selection {
   }
 
   _handleMoveEvent(e) {
-    if (this._initialEventData === null) {
+    if (this._initialEventData === null || this.isDetached) {
       return
     }
 

@@ -1,6 +1,10 @@
 import cn from 'classnames'
 import React from 'react'
 
+function stringifyPercent(v) {
+  return typeof v === 'string' ? v : v + '%'
+}
+
 /* eslint-disable react/prop-types */
 function TimeGridEvent(props) {
   const {
@@ -66,10 +70,10 @@ function TimeGridEvent(props) {
         data-event-id={props.event && props.event.id}
         style={{
           ...userProps.style,
-          top: `${top}%`,
-          height: `${height}%`,
-          [isRtl ? 'right' : 'left']: `${Math.max(1, xOffset + 1)}%`,
-          width: `${width}%`,
+          top: stringifyPercent(top),
+          [isRtl ? 'right' : 'left']: stringifyPercent(xOffset),
+          width: stringifyPercent(width),
+          height: stringifyPercent(height),
         }}
         title={
           tooltip

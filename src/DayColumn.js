@@ -12,9 +12,11 @@ import { notify } from './utils/helpers'
 import * as DayEventLayout from './utils/DayEventLayout'
 import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
+import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
+  intervalTriggered = false
 
   constructor(...args) {
     super(...args)
@@ -69,7 +71,6 @@ class DayColumn extends React.Component {
     }
   }
 
-  intervalTriggered = false
   /**
    * @param tail {Boolean} - whether `positionTimeIndicator` call should be
    *   deferred or called upon setting interval (`true` - if deferred);
@@ -186,6 +187,7 @@ class DayColumn extends React.Component {
       components,
       step,
       timeslots,
+      dayLayoutAlgorithm,
     } = this.props
 
     const { slotMetrics } = this
@@ -196,6 +198,7 @@ class DayColumn extends React.Component {
       accessors,
       slotMetrics,
       minimumStartDifference: Math.ceil((step * timeslots) / 2),
+      dayLayoutAlgorithm,
     })
 
     // TODO sort this on getStyledEvents instead
@@ -427,6 +430,8 @@ DayColumn.propTypes = {
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,
   resource: PropTypes.any,
+
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 
 DayColumn.defaultProps = {

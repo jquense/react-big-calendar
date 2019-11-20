@@ -48,7 +48,7 @@ class TimeGridHeader extends React.Component {
         >
           {drilldownView ? (
             <a
-              href="#"
+              href="javascript:void(0)"
               onClick={e => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}

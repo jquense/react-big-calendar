@@ -168,3 +168,8 @@ export function yesterday() {
 export function tomorrow() {
   return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
 }
+
+export function isValidDateObject(date) {
+  return date instanceof Date && !isNaN(date);
+}
+

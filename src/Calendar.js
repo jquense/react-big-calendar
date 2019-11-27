@@ -24,6 +24,7 @@ import defaults from 'lodash/defaults'
 import transform from 'lodash/transform'
 import mapValues from 'lodash/mapValues'
 import { wrapAccessor } from './utils/accessors'
+import { isValidDateObject } from './utils/dates';
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -518,12 +519,22 @@ class Calendar extends React.Component {
     /**
      * Constrains the minimum _time_ of the Day and Week views.
      */
-    min: PropTypes.instanceOf(Date),
+    min: (props, propName, componentName) => {
+      const minValue = props[propName];
+      if (!isValidDateObject(minValue)) {
+        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Must be a valid instance of Date.`)
+      }
+    },
 
     /**
      * Constrains the maximum _time_ of the Day and Week views.
      */
-    max: PropTypes.instanceOf(Date),
+    max: (props, propName, componentName) => {
+      const maxValue = props[propName];
+      if (!isValidDateObject(maxValue)) {
+        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Must be a valid instance of Date.`)
+      }
+    },
 
     /**
      * Determines how far down the scroll pane is initially scrolled down.

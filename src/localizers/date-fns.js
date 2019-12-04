@@ -3,12 +3,12 @@ import { DateLocalizer } from '../localizer'
 
 let dateRangeFormat = ({ start, end }, culture, local) => {
   return (
-    local.format(start, 'L', culture) + ' — ' + local.format(end, 'L', culture)
+    local.format(start, 'P', culture) + ' — ' + local.format(end, 'P', culture)
   )
 }
 
 let timeRangeFormat = ({ start, end }, culture, local) =>
-  local.format(start, 'LT', culture) + ' — ' + local.format(end, 'LT', culture)
+  local.format(start, 'p', culture) + ' — ' + local.format(end, 'p', culture)
 
 let timeRangeStartFormat = ({ start }, culture, local) =>
   local.format(start, 'h:mma', culture) + ' — '
@@ -17,29 +17,29 @@ let timeRangeEndFormat = ({ end }, culture, local) =>
   ' — ' + local.format(end, 'h:mma', culture)
 
 let weekRangeFormat = ({ start, end }, culture, local) =>
-  local.format(start, 'MMMM DD', culture) +
+  local.format(start, 'MMMM dd', culture) +
   ' - ' +
-  local.format(end, dates.eq(start, end, 'month') ? 'DD' : 'MMMM DD', culture)
+  local.format(end, dates.eq(start, end, 'month') ? 'dd' : 'MMMM dd', culture)
 
 export let formats = {
-  dateFormat: 'DD',
-  dayFormat: 'DD ddd',
-  weekdayFormat: 'ddd',
+  dateFormat: 'dd',
+  dayFormat: 'dd ddd',
+  weekdayFormat: 'cccc',
 
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
   eventTimeRangeStartFormat: timeRangeStartFormat,
   eventTimeRangeEndFormat: timeRangeEndFormat,
 
-  timeGutterFormat: 'LT',
+  timeGutterFormat: 'p',
 
-  monthHeaderFormat: 'MMMM YYYY',
-  dayHeaderFormat: 'dddd MMM DD',
+  monthHeaderFormat: 'MMMM yyyy',
+  dayHeaderFormat: 'dddd MMM dd',
   dayRangeHeaderFormat: weekRangeFormat,
   agendaHeaderFormat: dateRangeFormat,
 
-  agendaDateFormat: 'ddd MMM DD',
-  agendaTimeFormat: 'LT',
+  agendaDateFormat: 'ddd MMM dd',
+  agendaTimeFormat: 'p',
   agendaTimeRangeFormat: timeRangeFormat,
 }
 

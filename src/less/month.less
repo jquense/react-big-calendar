@@ -15,11 +15,8 @@
 }
 
 .rbc-selected-cell {
-  background-color: @selection-bg-color;
-  color: @selection-color;
-  opacity: 0.05
+  background-color: @date-selection-bg-color;
 }
-
 
 
 .rbc-show-more {
@@ -30,7 +27,6 @@
   font-size: 85%;
   height: auto;
   line-height: normal;
-  white-space: nowrap;
 }
 
 .rbc-month-view {
@@ -40,21 +36,10 @@
   flex-direction: column;
   flex: 1 0 0;
   width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
 
   height: 100%; // ie-fix
-
-  .rbc-header {
-    border-bottom: 1px solid @cell-border;
-  }
-
-  .rbc-header + .rbc-header {
-    border-left: 1px solid @cell-border;
-  }
-
-  .rbc-rtl & .rbc-header + .rbc-header {
-    border-left-width: 0;
-    border-right: 1px solid @cell-border;
-  }
 }
 
 .rbc-month-header {
@@ -66,7 +51,8 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  flex: 1 0 0;
+  flex: 1 0 0; // postcss will remove the 0px here hence the duplication below
+  flex-basis: 0px;
   overflow: hidden;
 
   height: 100%; // ie-fix
@@ -77,6 +63,8 @@
 }
 
 .rbc-date-cell {
+  flex: 1 1 0;
+  min-width: 0;
   padding-right: 5px;
   text-align: right;
 
@@ -92,11 +80,6 @@
   }
 }
 
-.rbc-row-content {
-  position: relative;
-  z-index: 4;
-}
-
 .rbc-row-bg {
   &:extend(.rbc-abs-full);
   display: flex;
@@ -106,6 +89,8 @@
 }
 
 .rbc-day-bg {
+  flex: 1 0 0%;
+
   & + & {
     border-left: 1px solid @cell-border;
   }

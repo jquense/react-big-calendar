@@ -1,18 +1,15 @@
-import Calendar from './Calendar';
-import { set as setLocalizer } from './localizer';
-import momentLocalizer from './localizers/moment';
-import globalizeLocalizer from './localizers/globalize';
-import viewLabel from './utils/viewLabel';
-import move from './utils/move';
-import { views } from './utils/constants';
+import EventWrapper from './EventWrapper'
+import BackgroundWrapper from './BackgroundWrapper'
 
-Object.assign(Calendar, {
-  setLocalizer,
-  globalizeLocalizer,
-  momentLocalizer,
-  label: viewLabel,
-  views,
-  move
-})
+export const components = {
+  eventWrapper: EventWrapper,
+  timeSlotWrapper: BackgroundWrapper,
+  dateCellWrapper: BackgroundWrapper,
+}
 
-export default Calendar
+export { default as Calendar } from './Calendar'
+export { DateLocalizer } from './localizer'
+export { default as momentLocalizer } from './localizers/moment'
+export { default as globalizeLocalizer } from './localizers/globalize'
+export { default as move } from './utils/move'
+export { views as Views, navigate as Navigate } from './utils/constants'

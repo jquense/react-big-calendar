@@ -1,0 +1,322 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/' !default;
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+$blue: #3174ad;
+$pink: #ad3173;
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h4 {
+  margin-top: 20px;
+}
+
+a {
+  transition: all 200ms;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.jumbotron {
+  background-color: $blue;
+  color: white;
+
+  a {
+    font-size: 85%;
+    color: darken(white, 10%);
+  }
+}
+
+.contain {
+  background-color: white;
+  border-radius: 3px;
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.docs {
+  background-color: $blue;
+  margin-top: 20px;
+  padding: 30px;
+}
+
+.examples {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.example {
+  font-size: 14px;
+  padding: 0 40px;
+  min-height: calc(100vh - 100px);
+  min-height: max-content;
+  height: calc(100vh - 100px);
+  width: 100%;
+  margin: auto;
+
+  &,
+  & > * {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rbc-calendar {
+    flex: 1;
+    min-height: 580px;
+  }
+}
+
+.examples--list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  & > li {
+    text-align: center;
+  }
+
+  & a {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    padding: 1.4rem 1rem;
+    white-space: nowrap;
+    border-radius: 0.3rem;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+    }
+
+    &:hover:after {
+      background-color: $blue;
+    }
+  }
+}
+.section {
+  margin-bottom: 20px;
+}
+
+aside {
+  margin-bottom: 40px;
+}
+
+h3 > a > code,
+h4 > a > code {
+  color: $blue;
+  background: none;
+  padding: 0;
+}
+
+.examples--header {
+  margin: 0 40px;
+  text-align: center;
+}
+
+.examples--dropdown {
+}
+
+.dropdown--toggle {
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 3px;
+  transition: all 200ms;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    color: $pink;
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: darken($pink, 5%);
+    border: 1px solid $pink;
+    text-decoration: none;
+  }
+}
+
+.examples--view-source {
+  font-size: 80%;
+}
+
+.callout {
+  border-left: 4px solid $blue;
+  padding: 10px;
+  color: darken($blue, 10%);
+  font-size: 20px;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+pre {
+  border-radius: 8px;
+  border: none;
+}
+
+pre.shape-prop {
+  border: none;
+}
+
+code {
+  color: #555;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.playgroundStage,
+.cm-s-neo.CodeMirror {
+  background-color: #f4f4f4;
+  height: auto;
+  min-height: 75px;
+}
+
+.CodeMirror {
+  font-size: 12px;
+}
+
+.cm-s-neo div.CodeMirror-cursor {
+  border-left: 1px solid #9b9da2;
+}
+
+.cm-s-neo .CodeMirror-linenumber {
+  color: #ccc;
+}
+
+.cm-s-neo .cm-atom,
+.cm-s-neo .cm-number {
+  color: #905;
+}
+
+.prop-table {
+  font-size: 14 px;
+}
+
+.playgroundStage {
+  padding: 15px 0 15px 15px;
+  //border-bottom: 1px solid #ddd;
+}
+
+.playground.collapsableCode .playgroundCode {
+  height: 0;
+  overflow: hidden;
+}
+
+.playground.collapsableCode .playgroundCode.expandedCode {
+  height: auto;
+}
+
+.playgroundPreview {
+  position: relative;
+  padding: 40px 15px 15px 15px;
+}
+
+.playgroundPreview:before {
+  position: absolute;
+  top: 3px;
+  left: 7px;
+  color: #959595;
+  border-bottom: 1px solid #eee;
+  padding: 0 3px;
+  content: 'Result';
+}
+
+.playground {
+  position: relative;
+  margin: 0;
+  margin-bottom: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.playgroundCode,
+.playgroundPreview {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.playgroundToggleCodeBar {
+  padding: 1px;
+  border-top: 1px solid #ccc;
+}
+
+.playgroundToggleCodeLink {
+  color: #333;
+  background-color: #ccc;
+  margin-top: 1px;
+  margin-left: -1px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 3px 5px;
+
+  &:hover,
+  &:focus {
+    color: black;
+  }
+}
+
+.playgroundStage {
+}
+
+.anchor,
+.anchor:hover,
+.anchor:active,
+.anchor:focus {
+  color: black;
+  text-decoration: none;
+  position: relative;
+}
+.anchor-icon {
+  font-size: 90%;
+  padding-top: 0.1em;
+  position: absolute;
+  left: -0.8em;
+  opacity: 0;
+}
+
+h1:hover .anchor-icon,
+h1 a:focus .anchor-icon,
+h2:hover .anchor-icon,
+h2 a:focus .anchor-icon,
+h3:hover .anchor-icon,
+h3 a:focus .anchor-icon,
+h4:hover .anchor-icon,
+h4 a:focus .anchor-icon {
+  opacity: 0.5;
+}
+
+.special-day {
+  background-color: #fec;
+}
+
+.card {
+  background-color: white;
+  border: 0;
+  padding: 24px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}

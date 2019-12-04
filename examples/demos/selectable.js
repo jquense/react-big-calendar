@@ -1,29 +1,57 @@
-import React, { PropTypes } from 'react';
-import BigCalendar from 'react-big-calendar';
-import events from '../events';
+import React from 'react'
+import { Calendar, Views } from 'react-big-calendar'
+import events from '../events'
+import ExampleControlSlot from '../ExampleControlSlot'
 
-let Selectable = React.createClass({
-  render(){
+const propTypes = {}
+
+class Selectable extends React.Component {
+  constructor(...args) {
+    super(...args)
+
+    this.state = { events }
+  }
+
+  handleSelect = ({ start, end }) => {
+    const title = window.prompt('New Event name')
+    if (title)
+      this.setState({
+        events: [
+          ...this.state.events,
+          {
+            start,
+            end,
+            title,
+          },
+        ],
+      })
+  }
+
+  render() {
+    const { localizer } = this.props
     return (
-      <div>
-        <h3 className='text-info text-center demo-info'>
-          Click an event to see more info, or
-          drag the mouse over the calendar to select a date/time range.
-        </h3>
-        <BigCalendar
+      <>
+        <ExampleControlSlot.Entry waitForOutlet>
+          <strong>
+            Click an event to see more info, or drag the mouse over the calendar
+            to select a date/time range.
+          </strong>
+        </ExampleControlSlot.Entry>
+        <Calendar
           selectable
-          events={events}
-          defaultView='week'
-          defaultDate={new Date(2015, 3, 1)}
+          localizer={localizer}
+          events={this.state.events}
+          defaultView={Views.WEEK}
+          scrollToTime={new Date(1970, 1, 1, 6)}
+          defaultDate={new Date(2015, 3, 12)}
           onSelectEvent={event => alert(event.title)}
-          onSelectSlot={(slotInfo) => alert(
-            `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
-            `\nend: ${slotInfo.end.toLocaleString()}`
-          )}
+          onSelectSlot={this.handleSelect}
         />
-      </div>
+      </>
     )
   }
-})
+}
 
-export default Selectable;
+Selectable.propTypes = propTypes
+
+export default Selectable

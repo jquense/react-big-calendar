@@ -6,7 +6,10 @@ env:
   es6: true
 rules:
   global-require: off
-  no-unused-vars: [2, {
+  no-console: ['error', {
+    allow: ['warn', 'error', 'info']
+  }]
+  no-unused-vars: ['error', {
     vars: all,
     args: after-used,
     varsIgnorePattern: ^_,

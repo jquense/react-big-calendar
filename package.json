@@ -137,8 +137,7 @@
     "memoize-one": "^4.0.3",
     "prop-types": "^15.6.2",
     "react-overlays": "^2.0.0-0",
-    "uncontrollable": "^7.0.0",
-    "warning": "^4.0.2"
+    "uncontrollable": "^7.0.0"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"

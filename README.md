@@ -78,7 +78,7 @@ const MyCalendar = props => (
 )
 ```
 
-#### date-fns
+#### date-fns 2.0
 
 ```js
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'

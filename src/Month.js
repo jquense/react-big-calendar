@@ -214,11 +214,13 @@ class MonthView extends React.Component {
             components={components}
             localizer={localizer}
             position={overlay.position}
+            show={this.overlayDisplay}
             events={overlay.events}
             slotStart={overlay.date}
             slotEnd={overlay.end}
             onSelect={this.handleSelectEvent}
             onDoubleClick={this.handleDoubleClickEvent}
+            handleDragStart={this.props.handleDragStart}
           />
         )}
       </Overlay>
@@ -271,6 +273,12 @@ class MonthView extends React.Component {
     }
 
     notify(onShowMore, [events, date, slot])
+  }
+
+  overlayDisplay = () => {
+    this.setState({
+      overlay: null,
+    })
   }
 
   selectDates(slotInfo) {
@@ -328,6 +336,7 @@ MonthView.propTypes = {
   getDrilldownView: PropTypes.func.isRequired,
 
   popup: PropTypes.bool,
+  handleDragStart: PropTypes.func,
 
   popupOffset: PropTypes.oneOfType([
     PropTypes.number,

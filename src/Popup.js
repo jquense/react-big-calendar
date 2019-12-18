@@ -78,6 +78,9 @@ class Popup extends React.Component {
             slotStart={slotStart}
             slotEnd={slotEnd}
             selected={isSelected(event, selected)}
+            draggable={true}
+            onDragStart={() => this.props.handleDragStart(event)}
+            onDragEnd={() => this.props.show()}
           />
         ))}
       </div>
@@ -103,6 +106,8 @@ Popup.propTypes = {
   localizer: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  handleDragStart: PropTypes.func,
+  show: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
   popperRef: PropTypes.oneOfType([

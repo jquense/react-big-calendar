@@ -55,14 +55,11 @@ class Agenda extends React.Component {
                   <th className="rbc-header">{messages.event}</th>
                 </tr>
               </thead>
+              <tbody ref={this.tbodyRef}>
+                {range.map((day, idx) => this.renderDay(day, events, idx))}
+              </tbody>
             </table>
-            <div className="rbc-agenda-content" ref={this.contentRef}>
-              <table className="rbc-agenda-table">
-                <tbody ref={this.tbodyRef}>
-                  {range.map((day, idx) => this.renderDay(day, events, idx))}
-                </tbody>
-              </table>
-            </div>
+            <div className="rbc-agenda-content" ref={this.contentRef}></div>
           </React.Fragment>
         ) : (
           <span className="rbc-agenda-empty">{messages.noEventsInRange}</span>

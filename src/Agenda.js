@@ -4,6 +4,7 @@ import addClass from 'dom-helpers/addClass'
 import removeClass from 'dom-helpers/removeClass'
 import getWidth from 'dom-helpers/width'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
+import { notify } from './utils/helpers'
 
 import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
@@ -115,6 +116,8 @@ class Agenda extends React.Component {
           key={dayKey + '_' + idx}
           className={userProps.className}
           style={userProps.style}
+          onClick={e => this._select(event, e)}
+          onDoubleClick={e => this._doubleClick(event, e)}
         >
           {first}
           <td className="rbc-agenda-time-cell">
@@ -126,6 +129,14 @@ class Agenda extends React.Component {
         </tr>
       )
     }, [])
+  }
+
+  _select = (...args) => {
+    notify(this.props.onSelectEvent, args)
+  }
+
+  _doubleClick = (...args) => {
+    notify(this.props.onDoubleClickEvent, args)
   }
 
   timeRangeLabel = (day, event) => {
@@ -202,6 +213,9 @@ Agenda.propTypes = {
   length: PropTypes.number.isRequired,
 
   selected: PropTypes.object,
+
+  onSelectEvent: PropTypes.func.isRequired,
+  onDoubleClickEvent: PropTypes.func.isRequired,
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,

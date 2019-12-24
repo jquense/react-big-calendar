@@ -15018,6 +15018,12 @@
                 key: dayKey + '_' + idx,
                 className: userProps.className,
                 style: userProps.style,
+                onClick: function onClick(e) {
+                  return _this._select(event, e)
+                },
+                onDoubleClick: function onDoubleClick(e) {
+                  return _this._doubleClick(event, e)
+                },
               },
               first,
               React__default.createElement(
@@ -15041,6 +15047,30 @@
               )
             )
           }, [])
+        }
+
+        _this._select = function() {
+          for (
+            var _len = arguments.length, args = new Array(_len), _key = 0;
+            _key < _len;
+            _key++
+          ) {
+            args[_key] = arguments[_key]
+          }
+
+          notify(_this.props.onSelectEvent, args)
+        }
+
+        _this._doubleClick = function() {
+          for (
+            var _len2 = arguments.length, args = new Array(_len2), _key2 = 0;
+            _key2 < _len2;
+            _key2++
+          ) {
+            args[_key2] = arguments[_key2]
+          }
+
+          notify(_this.props.onDoubleClickEvent, args)
         }
 
         _this.timeRangeLabel = function(day, event) {
@@ -15243,6 +15273,8 @@
     date: propTypes.instanceOf(Date),
     length: propTypes.number.isRequired,
     selected: propTypes.object,
+    onSelectEvent: propTypes.func.isRequired,
+    onDoubleClickEvent: propTypes.func.isRequired,
     accessors: propTypes.object.isRequired,
     components: propTypes.object.isRequired,
     getters: propTypes.object.isRequired,

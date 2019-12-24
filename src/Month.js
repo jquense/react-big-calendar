@@ -30,7 +30,7 @@ class MonthView extends React.Component {
     this._pendingSelection = []
     this.slotRowRef = React.createRef()
     this.state = {
-      rowLimit: 5,
+      rowLimit: this.props.disableEventLimit ? Infinity : 5,
       needLimitMeasure: true,
     }
   }
@@ -225,10 +225,14 @@ class MonthView extends React.Component {
     )
   }
 
-  measureRowLimit() {
+  measureRowLimit = () => {
+    let { disableEventLimit } = this.props
+
     this.setState({
       needLimitMeasure: false,
-      rowLimit: this.slotRowRef.current.getRowLimit(),
+      rowLimit: disableEventLimit
+        ? Infinity
+        : this.slotRowRef.current.getRowLimit(),
     })
   }
 
@@ -326,6 +330,8 @@ MonthView.propTypes = {
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
+
+  disableEventLimit: PropTypes.bool,
 
   popup: PropTypes.bool,
 

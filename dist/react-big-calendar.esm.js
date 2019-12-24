@@ -2308,6 +2308,17 @@ var MonthView =
         )
       }
 
+      _this.measureRowLimit = function() {
+        var disableEventLimit = _this.props.disableEventLimit
+
+        _this.setState({
+          needLimitMeasure: false,
+          rowLimit: disableEventLimit
+            ? Infinity
+            : _this.slotRowRef.current.getRowLimit(),
+        })
+      }
+
       _this.handleSelectSlot = function(range, slotInfo) {
         _this._pendingSelection = _this._pendingSelection.concat(range)
         clearTimeout(_this._selectTimer)
@@ -2386,7 +2397,7 @@ var MonthView =
       _this._pendingSelection = []
       _this.slotRowRef = React.createRef()
       _this.state = {
-        rowLimit: 5,
+        rowLimit: _this.props.disableEventLimit ? Infinity : 5,
         needLimitMeasure: true,
       }
       return _this
@@ -2530,13 +2541,6 @@ var MonthView =
       )
     }
 
-    _proto.measureRowLimit = function measureRowLimit() {
-      this.setState({
-        needLimitMeasure: false,
-        rowLimit: this.slotRowRef.current.getRowLimit(),
-      })
-    }
-
     _proto.selectDates = function selectDates(slotInfo) {
       var slots = this._pendingSelection.slice()
 
@@ -2588,6 +2592,7 @@ MonthView.propTypes =
         onShowMore: PropTypes.func,
         onDrillDown: PropTypes.func,
         getDrilldownView: PropTypes.func.isRequired,
+        disableEventLimit: PropTypes.bool,
         popup: PropTypes.bool,
         popupOffset: PropTypes.oneOfType([
           PropTypes.number,

@@ -8390,6 +8390,11 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+luxon@^1.21.3:
+  version "1.21.3"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.21.3.tgz#f1d5c2a7e855d039836cf4954f883ecac8fc4727"
+  integrity sha512-lLRwNcNnkZLuv13A1FUuZRZmTWF7ro2ricYvb0L9cvBYHPvZhQdKwrYnZzi103D2XKmlVmxWpdn2wfIiOt2YEw==
+
 magic-string@^0.25.2:
   version "0.25.2"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.2.tgz#139c3a729515ec55e96e69e82a11fe890a293ad9"

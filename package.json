@@ -134,7 +134,6 @@
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",
-    "luxon": "^1.21.3",
     "memoize-one": "^4.0.3",
     "prop-types": "^15.6.2",
     "react-overlays": "^2.0.0-0",

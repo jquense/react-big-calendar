@@ -29,10 +29,9 @@ class BackgroundCells extends React.Component {
       this._teardownSelectable()
   }
 
-  // This will soon be removed aka deprecated code 
-  // componentWillUnmount() {
-  //   this._teardownSelectable()
-  // }
+  componentWillUnmount() {
+    this._teardownSelectable()
+  }
 
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.selectable && !this.props.selectable) this._selectable()

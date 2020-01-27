@@ -30,6 +30,8 @@ export default class TimeGrid extends Component {
   componentDidMount() {
     this.calculateScroll()
   }
+
+  // Deprecated
   // componentWillMount() {
   //   this.calculateScroll()
   // }
@@ -86,6 +88,8 @@ export default class TimeGrid extends Component {
       this.calculateScroll(nextProps)
     }
   }
+
+  //Deprecated
   // componentWillReceiveProps(nextProps) {
   //   const { range, scrollToTime } = this.props
   //   // When paginating, reset scroll

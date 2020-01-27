@@ -27,9 +27,12 @@ export default class TimeGrid extends Component {
     this._scrollRatio = null
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.calculateScroll()
   }
+  // componentWillMount() {
+  //   this.calculateScroll()
+  // }
 
   componentDidMount() {
     this.checkOverflow()
@@ -73,7 +76,7 @@ export default class TimeGrid extends Component {
     //this.checkOverflow()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     const { range, scrollToTime } = this.props
     // When paginating, reset scroll
     if (
@@ -83,6 +86,16 @@ export default class TimeGrid extends Component {
       this.calculateScroll(nextProps)
     }
   }
+  // componentWillReceiveProps(nextProps) {
+  //   const { range, scrollToTime } = this.props
+  //   // When paginating, reset scroll
+  //   if (
+  //     !dates.eq(nextProps.range[0], range[0], 'minute') ||
+  //     !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
+  //   ) {
+  //     this.calculateScroll(nextProps)
+  //   }
+  // }
 
   gutterRef = ref => {
     this.gutter = ref && findDOMNode(ref)

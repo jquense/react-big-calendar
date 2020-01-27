@@ -18,10 +18,16 @@ export default class TimeGutter extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     const { min, max, timeslots, step } = nextProps
     this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
   }
+
+  // Deprecated
+  // componentWillReceiveProps(nextProps) {
+  //   const { min, max, timeslots, step } = nextProps
+  //   this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
+  // }
 
   renderSlot = (value, idx) => {
     if (idx !== 0) return null

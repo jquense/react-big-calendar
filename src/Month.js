@@ -35,11 +35,18 @@ class MonthView extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ date }) {
+  componentDidUpdate({ date }) {
     this.setState({
       needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
     })
   }
+
+  // Deprecated will call 
+  // componentWillReceiveProps({ date }) {
+  //   this.setState({
+  //     needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
+  //   })
+  // }
 
   componentDidMount() {
     let running

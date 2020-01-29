@@ -25,7 +25,7 @@ class BackgroundCells extends React.Component {
     this._teardownSelectable()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable()
 
     if (!nextProps.selectable && this.props.selectable)

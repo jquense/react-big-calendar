@@ -35,7 +35,7 @@ class MonthView extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ date }) {
+  UNSAFE_componentWillReceiveProps({ date }) {
     this.setState({
       needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
     })

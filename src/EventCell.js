@@ -60,7 +60,7 @@ class EventCell extends React.Component {
         <div
           {...props}
           tabIndex={0}
-          style={{ ...userProps.style, ...style }}
+          style={{ ...userProps.style, ...style, ...event.style }}
           className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
             'rbc-event-allday': showAsAllDay,

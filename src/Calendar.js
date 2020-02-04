@@ -761,7 +761,7 @@ class Calendar extends React.Component {
       context: this.getContext(this.props),
     }
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({ context: this.getContext(nextProps) })
   }
 

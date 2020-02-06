@@ -1,6 +1,6 @@
 import { getStyledEvents } from '../../src/utils/DayEventLayout'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
-import dates from '../../src/utils/dates'
+import * as dates from '../../src/utils/dates'
 
 describe('getStyledEvents', () => {
   const d = (...args) => new Date(2015, 3, 1, ...args)
@@ -8,6 +8,7 @@ describe('getStyledEvents', () => {
   const max = dates.endOf(d(), 'day')
   const slotMetrics = getSlotMetrics({ min, max, step: 30, timeslots: 4 })
   const accessors = { start: e => e.start, end: e => e.end }
+  const dayLayoutAlgorithm = 'overlap'
 
   describe('matrix', () => {
     function compare(title, events, expectedResults) {
@@ -17,6 +18,7 @@ describe('getStyledEvents', () => {
           accessors,
           slotMetrics,
           minimumStartDifference: 10,
+          dayLayoutAlgorithm,
         })
         const results = styledEvents.map(result => ({
           width: Math.floor(result.style.width),

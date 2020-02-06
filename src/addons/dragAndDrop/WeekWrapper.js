@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import dates from '../../utils/dates'
+import * as dates from '../../utils/dates'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
 import { findDOMNode } from 'react-dom'
 
@@ -39,6 +39,7 @@ class WeekWrapper extends React.Component {
       dragAndDropAction: PropTypes.object,
       onDropFromOutside: PropTypes.func,
       onBeginAction: PropTypes.func,
+      dragFromOutsideItem: PropTypes.func,
     }),
   }
 
@@ -78,8 +79,8 @@ class WeekWrapper extends React.Component {
     this.setState({ segment })
   }
 
-  handleMove = ({ x, y }, node) => {
-    const { event } = this.context.draggable.dragAndDropAction
+  handleMove = ({ x, y }, node, draggedEvent) => {
+    const { event = draggedEvent } = this.context.draggable.dragAndDropAction
     const metrics = this.props.slotMetrics
     const { accessors } = this.props
 
@@ -120,6 +121,16 @@ class WeekWrapper extends React.Component {
       end: dates.add(start, 1, 'day'),
       allDay: false,
     })
+  }
+
+  handleDragOverFromOutside = ({ x, y }, node) => {
+    if (!this.context.draggable.dragFromOutsideItem) return
+
+    this.handleMove(
+      { x, y },
+      node,
+      this.context.draggable.dragFromOutsideItem()
+    )
   }
 
   handleResize(point, node) {
@@ -220,7 +231,20 @@ class WeekWrapper extends React.Component {
       this.handleDropFromOutside(point, bounds)
     })
 
+    selector.on('dragOverFromOutside', point => {
+      if (!this.context.draggable.dragFromOutsideItem) return
+
+      const bounds = getBoundsForNode(node)
+
+      this.handleDragOverFromOutside(point, bounds)
+    })
+
     selector.on('click', () => this.context.draggable.onEnd(null))
+
+    selector.on('reset', () => {
+      this.reset()
+      this.context.draggable.onEnd(null)
+    })
   }
 
   handleInteractionEnd = () => {

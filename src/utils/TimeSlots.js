@@ -1,4 +1,4 @@
-import dates from './dates'
+import * as dates from './dates'
 
 const getDstOffset = (start, end) =>
   start.getTimezoneOffset() - end.getTimezoneOffset()
@@ -124,13 +124,16 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       return dates.gt(dates.merge(end, date), end, 'minutes')
     },
 
-    getRange(rangeStart, rangeEnd) {
-      rangeStart = dates.min(end, dates.max(start, rangeStart))
-      rangeEnd = dates.min(end, dates.max(start, rangeEnd))
+    getRange(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
+      if (!ignoreMin) rangeStart = dates.min(end, dates.max(start, rangeStart))
+      if (!ignoreMax) rangeEnd = dates.min(end, dates.max(start, rangeEnd))
 
       const rangeStartMin = positionFromDate(rangeStart)
       const rangeEndMin = positionFromDate(rangeEnd)
-      const top = (rangeStartMin / (step * numSlots)) * 100
+      const top =
+        rangeEndMin - rangeStartMin < step && !dates.eq(end, rangeEnd)
+          ? ((rangeStartMin - step) / (step * numSlots)) * 100
+          : (rangeStartMin / (step * numSlots)) * 100
 
       return {
         top,
@@ -140,6 +143,13 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
         end: positionFromDate(rangeEnd),
         endDate: rangeEnd,
       }
+    },
+
+    getCurrentTimePosition(rangeStart) {
+      const rangeStartMin = positionFromDate(rangeStart)
+      const top = (rangeStartMin / (step * numSlots)) * 100
+
+      return top
     },
   }
 }

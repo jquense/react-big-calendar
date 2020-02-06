@@ -17,6 +17,7 @@ import Card from './Card'
 import ExampleControlSlot from './ExampleControlSlot'
 import Basic from './demos/basic'
 import Selectable from './demos/selectable'
+import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
@@ -37,6 +38,7 @@ let demoRoot =
 const EXAMPLES = {
   basic: 'Basic Calendar',
   selectable: 'Create events',
+  createEventWithNoOverlap: 'Create events with no-overlap algorithm',
   cultures: 'Localization',
   popup: 'Show more via a popup',
   timeslots: 'Custom Time Grids',
@@ -44,6 +46,7 @@ const EXAMPLES = {
   customView: 'Custom Calendar Views',
   resource: 'Resource Scheduling',
   dnd: 'Addon: Drag and drop',
+  dndresource: 'Resource Drag and drop',
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
 }
 
@@ -81,6 +84,7 @@ class Example extends React.Component {
       dnd: Dnd,
       dndresource: DndResource,
       dndOutsideSource: DndOutsideSource,
+      createEventWithNoOverlap: CreateEventWithNoOverlap,
     }[selected]
 
     return (

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import dates from '../../utils/dates'
+import * as dates from '../../utils/dates'
 import { findDOMNode } from 'react-dom'
 
 import Selection, {
@@ -34,6 +34,7 @@ class EventContainerWrapper extends React.Component {
       onDropFromOutside: PropTypes.func,
       onBeginAction: PropTypes.func,
       dragAndDropAction: PropTypes.object,
+      dragFromOutsideItem: PropTypes.func,
     }),
   }
 
@@ -94,7 +95,7 @@ class EventContainerWrapper extends React.Component {
       'minutes'
     )
 
-    this.update(event, slotMetrics.getRange(currentSlot, end))
+    this.update(event, slotMetrics.getRange(currentSlot, end, false, true))
   }
 
   handleResize(point, boundaryBox) {
@@ -115,7 +116,7 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleDropFromOutside = (point, boundaryBox) => {
-    const { slotMetrics } = this.props
+    const { slotMetrics, resource } = this.props
 
     let start = slotMetrics.closestSlotFromPoint(
       { y: point.y, x: point.x },
@@ -126,6 +127,7 @@ class EventContainerWrapper extends React.Component {
       start,
       end: slotMetrics.nextSlot(start),
       allDay: false,
+      resource,
     })
   }
 
@@ -163,6 +165,14 @@ class EventContainerWrapper extends React.Component {
       const bounds = getBoundsForNode(node)
 
       if (!pointInColumn(bounds, point)) return
+
+      this.handleDropFromOutside(point, bounds)
+    })
+
+    selector.on('dragOver', point => {
+      if (!this.context.draggable.dragFromOutsideItem) return
+
+      const bounds = getBoundsForNode(node)
 
       this.handleDropFromOutside(point, bounds)
     })

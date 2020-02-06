@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import clsx from 'clsx'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import chunk from 'lodash/chunk'
 
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
-import getPosition from 'dom-helpers/query/position'
-import raf from 'dom-helpers/util/requestAnimationFrame'
+import getPosition from 'dom-helpers/position'
+import * as animationFrame from 'dom-helpers/animationFrame'
 
 import Popup from './Popup'
 import Overlay from 'react-overlays/Overlay'
@@ -35,7 +35,7 @@ class MonthView extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ date }) {
+  UNSAFE_componentWillReceiveProps({ date }) {
     this.setState({
       needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
     })
@@ -50,7 +50,7 @@ class MonthView extends React.Component {
       'resize',
       (this._resizeListener = () => {
         if (!running) {
-          raf(() => {
+          animationFrame.request(() => {
             running = false
             this.setState({ needLimitMeasure: true }) //eslint-disable-line
           })
@@ -80,7 +80,7 @@ class MonthView extends React.Component {
     this._weekCount = weeks.length
 
     return (
-      <div className={cn('rbc-month-view', className)}>
+      <div className={clsx('rbc-month-view', className)}>
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0])}
         </div>
@@ -151,7 +151,7 @@ class MonthView extends React.Component {
     return (
       <div
         {...props}
-        className={cn(
+        className={clsx(
           className,
           isOffRange && 'rbc-off-range',
           isCurrent && 'rbc-current'
@@ -187,13 +187,19 @@ class MonthView extends React.Component {
 
   renderOverlay() {
     let overlay = (this.state && this.state.overlay) || {}
-    let { accessors, localizer, components, getters, selected } = this.props
+    let {
+      accessors,
+      localizer,
+      components,
+      getters,
+      selected,
+      popupOffset,
+    } = this.props
 
     return (
       <Overlay
         rootClose
         placement="bottom"
-        container={this}
         show={!!overlay.position}
         onHide={() => this.setState({ overlay: null })}
         target={() => overlay.target}
@@ -201,6 +207,7 @@ class MonthView extends React.Component {
         {({ props }) => (
           <Popup
             {...props}
+            popupOffset={popupOffset}
             accessors={accessors}
             getters={getters}
             selected={selected}

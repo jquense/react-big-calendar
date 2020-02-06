@@ -4,14 +4,15 @@ import { action } from '@storybook/addon-actions'
 import moment from 'moment'
 import React from 'react'
 
-import BaseCalendar from '../../src'
-import momentLocalizer from '../../src/localizers/moment.js'
+import { Calendar as BaseCalendar, momentLocalizer } from '../../src'
 
 // For Testing SASS styling
 import '../../src/sass/styles.scss'
 import '../../src/addons/dragAndDrop/styles.scss'
 
 import withDragAndDrop from '../../src/addons/dragAndDrop'
+
+export { Views } from '../../src'
 
 addDecorator(function WithHeight(fn) {
   return <div style={{ height: 600 }}>{fn()}</div>
@@ -26,8 +27,6 @@ export const date = (...args) => moment(...args).toDate()
 export const Calendar = props => (
   <BaseCalendar localizer={localizer} {...props} />
 )
-
-Object.assign(Calendar, BaseCalendar)
 
 export const DragAndDropCalendar = withDragAndDrop(Calendar)
 

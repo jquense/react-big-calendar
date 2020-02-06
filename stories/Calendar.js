@@ -10,12 +10,13 @@ import demoEvents from '../examples/events'
 import createEvents from './helpers/createEvents'
 import customComponents from './helpers/customComponents'
 
-import { events, Calendar } from './helpers'
+import { events, Views, Calendar } from './helpers'
 
 storiesOf('Big Calendar', module)
   .add('demo', () => (
     <Calendar
       popup
+      popupOffset={{ x: -10, y: -20 }}
       events={demoEvents}
       onSelectEvent={action('event selected')}
       defaultDate={new Date(2015, 3, 1)}
@@ -24,7 +25,7 @@ storiesOf('Big Calendar', module)
   .add('default view', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         min={moment('12:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={events}
@@ -38,7 +39,7 @@ storiesOf('Big Calendar', module)
     return (
       <Calendar
         selectable
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         min={moment('12:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={events}
@@ -51,7 +52,7 @@ storiesOf('Big Calendar', module)
   .add('add custom date header', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.MONTH}
+        defaultView={Views.MONTH}
         events={events}
         components={{
           month: {
@@ -67,7 +68,7 @@ storiesOf('Big Calendar', module)
     return (
       <Calendar
         defaultDate={new Date()}
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         events={createEvents(1)}
         step={30}
       />
@@ -111,11 +112,7 @@ storiesOf('Big Calendar', module)
   .add('agenda view - with length prop', () => {
     return (
       /* should display as title toolbar (from now to now + 14 days) */
-      <Calendar
-        defaultView={Calendar.Views.AGENDA}
-        events={events}
-        length={14}
-      />
+      <Calendar defaultView={Views.AGENDA} events={events} length={14} />
     )
   })
   .add('custom now is the first of the month', () => {
@@ -126,7 +123,7 @@ storiesOf('Big Calendar', module)
     }
     return (
       <Calendar
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         getNow={customNow}
         min={moment('12:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
@@ -157,7 +154,7 @@ storiesOf('Big Calendar', module)
   .add('add custom dateCellWrapper', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.MONTH}
+        defaultView={Views.MONTH}
         events={events}
         components={{
           dateCellWrapper: customComponents.dateCellWrapper,
@@ -165,13 +162,13 @@ storiesOf('Big Calendar', module)
       />
     )
   })
-  .add('add custom dayWrapper', () => {
+  .add('add custom timeSlotWrapper', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         events={events}
         components={{
-          dayWrapper: customComponents.dayWrapper,
+          timeSlotWrapper: customComponents.timeSlotWrapper,
         }}
       />
     )
@@ -179,7 +176,7 @@ storiesOf('Big Calendar', module)
   .add('add custom eventWrapper', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         events={events}
         components={{
           eventWrapper: customComponents.eventWrapper,
@@ -190,7 +187,7 @@ storiesOf('Big Calendar', module)
   .add('add custom no agenda events label', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.AGENDA}
+        defaultView={Views.AGENDA}
         events={events}
         messages={{
           noEventsInRange:
@@ -202,7 +199,7 @@ storiesOf('Big Calendar', module)
   .add('add custom timeSlotWrapper', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         components={{
           timeSlotWrapper: customComponents.timeSlotWrapper,

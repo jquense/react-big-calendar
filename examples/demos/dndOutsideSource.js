@@ -1,13 +1,13 @@
 import React from 'react'
 import events from '../events'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import Layout from 'react-tackle-box/Layout'
 import Card from '../Card'
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 
-const DragAndDropCalendar = withDragAndDrop(BigCalendar)
+const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 const formatName = (name, count) => `${name} ID ${count}`
 
@@ -21,11 +21,22 @@ class Dnd extends React.Component {
         item1: 0,
         item2: 0,
       },
+      displayDragItemInCell: true,
     }
   }
 
-  handleDragStart = name => {
-    this.setState({ draggedEvent: name })
+  handleDragStart = event => {
+    this.setState({ draggedEvent: event })
+  }
+
+  handleDisplayDragItemInCell = () => {
+    this.setState({
+      displayDragItemInCell: !this.state.displayDragItemInCell,
+    })
+  }
+
+  dragFromOutsideItem = () => {
+    return this.state.draggedEvent
   }
 
   customOnDragOver = event => {
@@ -43,14 +54,14 @@ class Dnd extends React.Component {
   onDropFromOutside = ({ start, end, allDay }) => {
     const { draggedEvent, counters } = this.state
     const event = {
-      title: formatName(draggedEvent, counters[draggedEvent]),
+      title: formatName(draggedEvent.name, counters[draggedEvent.name]),
       start,
       end,
       isAllDay: allDay,
     }
     const updatedCounters = {
       ...counters,
-      [draggedEvent]: counters[draggedEvent] + 1,
+      [draggedEvent.name]: counters[draggedEvent.name] + 1,
     }
     this.setState({ draggedEvent: null, counters: updatedCounters })
     this.newEvent(event)
@@ -114,16 +125,35 @@ class Dnd extends React.Component {
   render() {
     return (
       <div>
-        <Card
-          className="examples--header"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          <h4 style={{ color: 'gray', width: '100%' }}>Outside Drag Sources</h4>
-          {Object.entries(this.state.counters).map(([name, count]) => (
+        <Card className="examples--header" style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
+            <h4 style={{ color: 'gray', width: '100%' }}>
+              Outside Drag Sources
+            </h4>
+            {Object.entries(this.state.counters).map(([name, count]) => (
+              <div
+                style={{
+                  border: '2px solid gray',
+                  borderRadius: '4px',
+                  width: '100px',
+                  margin: '10px',
+                }}
+                draggable="true"
+                key={name}
+                onDragStart={() =>
+                  this.handleDragStart({ title: formatName(name, count), name })
+                }
+              >
+                {formatName(name, count)}
+              </div>
+            ))}
             <div
               style={{
                 border: '2px solid gray',
@@ -133,23 +163,22 @@ class Dnd extends React.Component {
               }}
               draggable="true"
               key={name}
-              onDragStart={() => this.handleDragStart(name)}
+              onDragStart={() => this.handleDragStart('undroppable')}
             >
-              {formatName(name, count)}
+              Draggable but not for calendar.
             </div>
-          ))}
-          <div
-            style={{
-              border: '2px solid gray',
-              borderRadius: '4px',
-              width: '100px',
-              margin: '10px',
-            }}
-            draggable="true"
-            key={name}
-            onDragStart={() => this.handleDragStart('undroppable')}
-          >
-            Draggable but not for calendar.
+          </div>
+
+          <div>
+            <label>
+              <input
+                style={{ marginRight: 5 }}
+                type="checkbox"
+                checked={this.state.displayDragItemInCell}
+                onChange={this.handleDisplayDragItemInCell}
+              />
+              Display dragged item in cell while dragging over
+            </label>
           </div>
         </Card>
         <DragAndDropCalendar
@@ -157,13 +186,16 @@ class Dnd extends React.Component {
           localizer={this.props.localizer}
           events={this.state.events}
           onEventDrop={this.moveEvent}
+          dragFromOutsideItem={
+            this.state.displayDragItemInCell ? this.dragFromOutsideItem : null
+          }
           onDropFromOutside={this.onDropFromOutside}
           onDragOver={this.customOnDragOver}
           resizable
           onEventResize={this.resizeEvent}
           onSelectSlot={this.newEvent}
           onD
-          defaultView={BigCalendar.Views.MONTH}
+          defaultView={Views.MONTH}
           defaultDate={new Date(2015, 3, 12)}
         />
       </div>

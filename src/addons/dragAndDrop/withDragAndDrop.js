@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import cn from 'classnames'
+import clsx from 'clsx'
 
 import { accessor } from '../../utils/propTypes'
 import EventWrapper from './EventWrapper'
@@ -17,9 +17,6 @@ import { mergeComponents } from './common'
  *    import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
  *    export default withDragAndDrop(Calendar)
  * ```
- * (you can optionally pass any dnd backend as an optional second argument to `withDragAndDrop`.
- * It defaults to `react-dnd-html5-backend` which you should probably include in
- * your project if using this default).
  *
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *
@@ -75,6 +72,8 @@ export default function withDragAndDrop(Calendar) {
       onDragOver: PropTypes.func,
       onDropFromOutside: PropTypes.func,
 
+      dragFromOutsideItem: PropTypes.func,
+
       draggableAccessor: accessor,
       resizableAccessor: accessor,
 
@@ -102,7 +101,8 @@ export default function withDragAndDrop(Calendar) {
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
         onBeginAction: PropTypes.func,
-        onDropFromOutside: PropTypes.fun,
+        onDropFromOutside: PropTypes.func,
+        dragFromOutsideItem: PropTypes.func,
         draggableAccessor: accessor,
         resizableAccessor: accessor,
         dragAndDropAction: PropTypes.object,
@@ -130,6 +130,7 @@ export default function withDragAndDrop(Calendar) {
           onEnd: this.handleInteractionEnd,
           onBeginAction: this.handleBeginAction,
           onDropFromOutside: this.props.onDropFromOutside,
+          dragFromOutsideItem: this.props.dragFromOutsideItem,
           draggableAccessor: this.props.draggableAccessor,
           resizableAccessor: this.props.resizableAccessor,
           dragAndDropAction: this.state,
@@ -187,7 +188,7 @@ export default function withDragAndDrop(Calendar) {
           }
         : elementProps
 
-      props.className = cn(
+      props.className = clsx(
         props.className,
         'rbc-addons-dnd',
         !!interacting && 'rbc-addons-dnd-is-dragging'

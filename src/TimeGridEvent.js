@@ -1,5 +1,9 @@
-import cn from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
+
+function stringifyPercent(v) {
+  return typeof v === 'string' ? v : v + '%'
+}
 
 /* eslint-disable react/prop-types */
 function TimeGridEvent(props) {
@@ -8,7 +12,7 @@ function TimeGridEvent(props) {
     className,
     event,
     accessors,
-    isRtl,
+    rtl,
     selected,
     label,
     continuesEarlier,
@@ -42,17 +46,17 @@ function TimeGridEvent(props) {
         onDoubleClick={onDoubleClick}
         style={{
           ...userProps.style,
-          top: `${top}%`,
-          height: `${height}%`,
-          [isRtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-          width: `${width}%`,
+          top: stringifyPercent(top),
+          [rtl ? 'right' : 'left']: stringifyPercent(xOffset),
+          width: stringifyPercent(width),
+          height: stringifyPercent(height),
         }}
         title={
           tooltip
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip
             : undefined
         }
-        className={cn('rbc-event', className, userProps.className, {
+        className={clsx('rbc-event', className, userProps.className, {
           'rbc-selected': selected,
           'rbc-event-continues-earlier': continuesEarlier,
           'rbc-event-continues-later': continuesLater,

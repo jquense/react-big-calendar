@@ -21,16 +21,16 @@ Choose the localizer that best suits your needs, or write your own. Whatever you
 before you can use the calendar (you only need to set it up once).
 
 ```jsx
-import BigCalendar from 'react-big-calendar'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
-const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
 const MyCalendar = props => (
   <div>
-    <BigCalendar
+    <Calendar
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"

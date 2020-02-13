@@ -2,7 +2,7 @@
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
-[**DEMO and Docs**](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](http://jquense.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 

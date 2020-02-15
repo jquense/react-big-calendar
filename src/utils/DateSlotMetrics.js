@@ -4,7 +4,14 @@ import { eventSegments, endOfRange, eventLevels } from './eventLevels'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 
-const isEqual = (a, b) => a.range === b.range && a.events === b.events
+const isEqual = (a, b) => {
+  const [obj1] = a
+  const [obj2] = b
+  return (
+    JSON.stringify(obj1.range) === JSON.stringify(obj2.range) &&
+    JSON.stringify(obj1.events) === JSON.stringify(obj2.events)
+  )
+}
 
 export function getSlotMetrics() {
   return memoize(options => {

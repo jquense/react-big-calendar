@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import Api from './Api'
 import Intro from './Intro.md'
 import { render } from 'react-dom'

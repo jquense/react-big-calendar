@@ -126,4 +126,4 @@ Big Calendar. Carefully test each change accordingly.
 
 ## Join us on Reactiflux Discord
 
-Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+Join us on [Reactiflux Discord](https://discord.gg/PPgj6tb) community under the channel #libraries if you have any questions.

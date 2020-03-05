@@ -1,5 +1,5 @@
 {
-  "name": "react-big-calendar",
+  "name": "@trackvia/react-big-calendar",
   "version": "0.14.4",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",

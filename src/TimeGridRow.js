@@ -7,7 +7,7 @@ import memoize from 'memoize-one'
 
 import * as dates from './utils/dates'
 import DayRow from './DayRow'
-import TimeGutter from './TimeGutter'
+import TimeGutterRow from './TimeGutterRow'
 
 import getWidth from 'dom-helpers/width'
 import TimeGridHeader from './TimeGridHeader'
@@ -219,7 +219,7 @@ export default class TimeGridRow extends Component {
           className="rbc-time-content"
           onScroll={this.handleScroll}
         >
-          <TimeGutter
+          <TimeGutterRow
             date={start}
             ref={this.gutterRef}
             localizer={localizer}

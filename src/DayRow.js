@@ -11,7 +11,7 @@ import { isSelected } from './utils/selection'
 import { notify } from './utils/helpers'
 import * as DayEventLayout from './utils/DayEventLayout'
 import TimeSlotGroup from './TimeSlotGroup'
-import TimeGridEvent from './TimeGridEvent'
+import TimeGridRowEvent from './TimeGridRowEvent'
 
 class DayRow extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
@@ -129,7 +129,7 @@ class DayRow extends React.Component {
         className={clsx(
           className,
           'rbc-day-slot',
-          'rbc-time-column',
+          'rbc-time-row',
           isNow && 'rbc-now',
           isNow && 'rbc-today', // WHY
           selecting && 'rbc-slot-selecting'
@@ -144,7 +144,7 @@ class DayRow extends React.Component {
             components={components}
           />
         ))}
-        {/* <EventContainer
+        <EventContainer
           localizer={localizer}
           resource={resource}
           accessors={accessors}
@@ -155,7 +155,7 @@ class DayRow extends React.Component {
           <div className={clsx('rbc-events-container', rtl && 'rtl')}>
             {this.renderEvents()}
           </div>
-        </EventContainer> */}
+        </EventContainer>
 
         {selecting && (
           <div className="rbc-slot-selection" style={{ top, height }}>
@@ -214,7 +214,7 @@ class DayRow extends React.Component {
       let continuesLater = startsAfterDay || slotMetrics.startsAfter(end)
 
       return (
-        <TimeGridEvent
+        <TimeGridRowEvent
           style={style}
           event={event}
           label={label}

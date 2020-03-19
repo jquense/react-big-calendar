@@ -3,13 +3,15 @@ import React from 'react'
 import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
+import TimeGridRow from './TimeGridRow'
 
 class Week extends React.Component {
   render() {
     let { date, ...props } = this.props
     let range = Week.range(date, this.props)
 
-    return <TimeGrid {...props} range={range} eventOffset={15} />
+    return <TimeGridRow {...props} range={range} eventOffset={15} />
+    // return <TimeGrid {...props} range={range} eventOffset={15} />
   }
 }
 

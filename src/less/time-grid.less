@@ -101,6 +101,41 @@
   }
 }
 
+.rbc-time-row-resource {
+  display: flex;
+  flex-direction: row;
+
+  > * > * {
+    border-left: 1px solid @cell-border;
+  }
+}
+
+.rbc-time-content-row {
+  display: flex;
+  flex: 1 0 0%;
+  align-items: flex-start;
+  width: 100%;
+  border-top: 2px solid @calendar-border;
+  overflow-y: auto;
+  position: relative;
+  flex-direction: column;
+
+  > * > * {
+    border-left: 1px solid @cell-border;
+  }
+
+  .rbc-rtl & > * + * > * {
+    border-left-width: 0;
+    border-right: 1px solid @cell-border;
+  }
+
+  > .rbc-day-slot {
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
 .rbc-time-content {
   display: flex;
   flex: 1 0 0%;

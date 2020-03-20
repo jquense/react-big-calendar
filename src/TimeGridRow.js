@@ -108,33 +108,21 @@ export default class TimeGridRow extends Component {
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
-    return resources.map(([id, resource], i) =>
-      range.map((date, jj) => {
-        let daysEvents = (groupedEvents.get(id) || []).filter(event =>
-          dates.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
+    return resources.map(([id, resource], i) =>{
+      return (<div
+          className="rbc-time-row-resource"
+        > 
+            {this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)}
+        </div>
+      )})
+      // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
+  }
 
-        return (
-          <DayRow
-            {...this.props}
-            localizer={localizer}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
-            resource={resource && id}
-            components={components}
-            isNow={dates.eq(date, now, 'day')}
-            key={i + '-' + jj}
-            date={date}
-            events={daysEvents}
-          />
-        )
-      })
-    )
+  renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i) {
+    return range.map((date, jj) => {
+      let daysEvents = (groupedEvents.get(id) || []).filter(event => dates.inRange(date, accessors.start(event), accessors.end(event), 'day'))
+      return (<DayRow {...this.props} localizer={localizer} min={dates.merge(date, min)} max={dates.merge(date, max)} resource={resource && id} components={components} isNow={dates.eq(date, now, 'day')} key={i + '-' + jj} date={date} events={daysEvents} />)
+    })
   }
 
   render() {
@@ -191,48 +179,14 @@ export default class TimeGridRow extends Component {
           'rbc-time-view',
           resources && 'rbc-time-view-resources'
         )}
-      >
-        <TimeGridHeader
-          range={range}
-          events={allDayEvents}
-          width={width}
-          rtl={rtl}
-          getNow={getNow}
-          localizer={localizer}
-          selected={selected}
-          resources={this.memoizedResources(resources, accessors)}
-          selectable={this.props.selectable}
-          accessors={accessors}
-          getters={getters}
-          components={components}
-          scrollRef={this.scrollRef}
-          isOverflowing={this.state.isOverflowing}
-          longPressThreshold={longPressThreshold}
-          onSelectSlot={this.handleSelectAllDaySlot}
-          onSelectEvent={this.handleSelectAlldayEvent}
-          onDoubleClickEvent={this.props.onDoubleClickEvent}
-          onDrillDown={this.props.onDrillDown}
-          getDrilldownView={this.props.getDrilldownView}
-        />
-        <div
+      >             
+      <div
           ref={this.contentRef}
-          className="rbc-time-content"
+          className="rbc-time-content-row"
           onScroll={this.handleScroll}
         >
-          <TimeGutterRow
-            date={start}
-            ref={this.gutterRef}
-            localizer={localizer}
-            min={dates.merge(start, min)}
-            max={dates.merge(start, max)}
-            step={this.props.step}
-            getNow={this.props.getNow}
-            timeslots={this.props.timeslots}
-            components={components}
-            className="rbc-time-gutter"
-          />
           {this.renderEvents(range, rangeEvents, getNow())}
-        </div>
+          </div>    
       </div>
     )
   }

@@ -330,6 +330,13 @@ button.rbc-input::-moz-focus-inner {
   .rbc-time-column .rbc-timeslot-group {
     flex: 1; }
 
+.rbc-time-header-row {
+  display: flex;
+  flex-direction: row;
+  min-height: 40px; }
+  .rbc-time-header-row .rbc-timeslot-group {
+    flex: 1; }
+
 .rbc-time-row {
   display: flex;
   flex-direction: row;
@@ -343,6 +350,13 @@ button.rbc-input::-moz-focus-inner {
   min-height: 40px;
   display: flex;
   flex-flow: column nowrap; }
+
+.rbc-timeslot-row-group {
+  border-bottom: 1px solid #DDD;
+  min-height: 20px;
+  display: flex;
+  flex-flow: row nowrap;
+  min-width: 80px; }
 
 .rbc-time-gutter,
 .rbc-header-gutter {

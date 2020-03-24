@@ -4125,7 +4125,9 @@ function (_React$Component) {
         getters = _objectWithoutPropertiesLoose(_this$props3$getters, ["dayProp"]),
         _this$props3$componen = _this$props3.components,
         EventContainer = _this$props3$componen.eventContainerWrapper,
-        components = _objectWithoutPropertiesLoose(_this$props3$componen, ["eventContainerWrapper"]);
+        _this$props3$componen2 = _this$props3$componen.timeSlotWrapper,
+        Wrapper = _this$props3$componen2 === void 0 ? NoopWrapper : _this$props3$componen2,
+        components = _objectWithoutPropertiesLoose(_this$props3$componen, ["eventContainerWrapper", "timeSlotWrapper"]);
 
     var slotMetrics = this.slotMetrics;
     var _this$state = this.state,
@@ -4148,13 +4150,19 @@ function (_React$Component) {
       className: clsx(className, 'rbc-day-slot', 'rbc-time-row', isNow && 'rbc-now', isNow && 'rbc-today', // WHY
       selecting && 'rbc-slot-selecting')
     }, slotMetrics.groups.map(function (grp, idx) {
-      return React.createElement(TimeSlotGroup, {
+      return React.createElement("div", {
         key: idx,
-        group: grp,
-        resource: resource,
-        getters: getters,
-        components: components
-      });
+        className: "rbc-timeslot-row-group"
+      }, grp.map(function (value, idx) {
+        var slotProps = getters ? getters.slotProp(value, resource) : {};
+        return React.createElement(Wrapper, {
+          key: idx,
+          value: value,
+          resource: resource
+        }, React.createElement("div", _extends({}, slotProps, {
+          className: clsx('rbc-time-slot', slotProps.className)
+        })));
+      }));
     }), React.createElement(EventContainer, {
       localizer: localizer,
       resource: resource,
@@ -4290,6 +4298,97 @@ TimeGutterRow.propTypes = process.env.NODE_ENV !== "production" ? {
   components: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
   resource: PropTypes.string
+} : {};
+
+var TimeGridRowHeader =
+/*#__PURE__*/
+function (_React$Component) {
+  _inheritsLoose(TimeGridRowHeader, _React$Component);
+
+  function TimeGridRowHeader() {
+    var _this;
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+    _this.slotMetrics = getSlotMetrics$1(_this.props);
+    return _this;
+  }
+
+  var _proto = TimeGridRowHeader.prototype;
+
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    this.slotMetrics = this.slotMetrics.update(nextProps);
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        max = _this$props.max,
+        rtl = _this$props.rtl,
+        isNow = _this$props.isNow,
+        resource = _this$props.resource,
+        accessors = _this$props.accessors,
+        localizer = _this$props.localizer,
+        _this$props$getters = _this$props.getters,
+        dayProp = _this$props$getters.dayProp,
+        getters = _objectWithoutPropertiesLoose(_this$props$getters, ["dayProp"]),
+        _this$props$component = _this$props.components,
+        EventContainer = _this$props$component.eventContainerWrapper,
+        _this$props$component2 = _this$props$component.timeSlotWrapper,
+        Wrapper = _this$props$component2 === void 0 ? NoopWrapper : _this$props$component2,
+        components = _objectWithoutPropertiesLoose(_this$props$component, ["eventContainerWrapper", "timeSlotWrapper"]);
+
+    var slotMetrics = this.slotMetrics;
+
+    var _dayProp = dayProp(max),
+        className = _dayProp.className,
+        style = _dayProp.style;
+
+    return React.createElement("div", {
+      style: style,
+      className: clsx(className, 'rbc-day-slot', 'rbc-time-header-row')
+    }, slotMetrics.groups.map(function (grp, idx) {
+      return React.createElement("div", {
+        className: "rbc-timeslot-row-group"
+      }, grp.map(function (value, idx) {
+        var slotProps = getters ? getters.slotProp(value, resource) : {};
+        return React.createElement(Wrapper, {
+          key: idx,
+          value: value,
+          resource: resource
+        }, React.createElement("div", _extends({}, slotProps, {
+          className: clsx('rbc-time-slot', slotProps.className)
+        }), idx === 0 && localizer.format(value, 'timeGutterFormat')));
+      }));
+    }));
+  };
+
+  return TimeGridRowHeader;
+}(React.Component);
+
+TimeGridRowHeader.propTypes = process.env.NODE_ENV !== "production" ? {
+  range: PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  resources: PropTypes.object,
+  getNow: PropTypes.func.isRequired,
+  isOverflowing: PropTypes.bool,
+  rtl: PropTypes.bool,
+  width: PropTypes.number,
+  localizer: PropTypes.object.isRequired,
+  accessors: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
+  selected: PropTypes.object,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+  onSelectSlot: PropTypes.func,
+  onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
+  onDrillDown: PropTypes.func,
+  getDrilldownView: PropTypes.func.isRequired,
+  scrollRef: PropTypes.any
 } : {};
 
 var TimeGridRow =
@@ -4452,6 +4551,8 @@ function (_Component) {
   };
 
   _proto.render = function render() {
+    var _this4 = this;
+
     var _this$props3 = this.props,
         events = _this$props3.events,
         range = _this$props3.range,
@@ -4495,7 +4596,20 @@ function (_Component) {
       ref: this.contentRef,
       className: "rbc-time-content-row",
       onScroll: this.handleScroll
-    }, this.renderEvents(range, rangeEvents, getNow())));
+    }, React.createElement("div", {
+      className: "rbc-time-row-resource"
+    }, range.map(function (date, jj) {
+      return React.createElement(TimeGridRowHeader, _extends({
+        key: jj
+      }, _this4.props, {
+        localizer: localizer,
+        min: merge(date, min),
+        max: merge(date, max),
+        components: components,
+        key: '-' + jj,
+        date: date
+      }));
+    })), this.renderEvents(range, rangeEvents, getNow())));
   };
 
   _proto.clearSelection = function clearSelection() {
@@ -4504,17 +4618,17 @@ function (_Component) {
   };
 
   _proto.measureGutter = function measureGutter() {
-    var _this4 = this;
+    var _this5 = this;
 
     if (this.measureGutterAnimationFrameRequest) {
       window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest);
     }
 
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(function () {
-      var width = getWidth(_this4.gutter);
+      var width = getWidth(_this5.gutter);
 
-      if (width && _this4.state.gutterWidth !== width) {
-        _this4.setState({
+      if (width && _this5.state.gutterWidth !== width) {
+        _this5.setState({
           gutterWidth: width
         });
       }

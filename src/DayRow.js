@@ -12,6 +12,7 @@ import { notify } from './utils/helpers'
 import * as DayEventLayout from './utils/DayEventLayout'
 import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridRowEvent from './TimeGridRowEvent'
+import BackgroundWrapper from './BackgroundWrapper'
 
 class DayRow extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
@@ -113,7 +114,7 @@ class DayRow extends React.Component {
       accessors,
       localizer,
       getters: { dayProp, ...getters },
-      components: { eventContainerWrapper: EventContainer, ...components },
+      components: { eventContainerWrapper: EventContainer, timeSlotWrapper: Wrapper = BackgroundWrapper, ...components },
     } = this.props
 
     let { slotMetrics } = this
@@ -136,13 +137,20 @@ class DayRow extends React.Component {
         )}
       >
         {slotMetrics.groups.map((grp, idx) => (
-          <TimeSlotGroup
-            key={idx}
-            group={grp}
-            resource={resource}
-            getters={getters}
-            components={components}
-          />
+          <div key={idx} className="rbc-timeslot-row-group">
+          {grp.map((value, idx) => {
+            const slotProps = getters ? getters.slotProp(value, resource) : {}
+            return (
+              <Wrapper key={idx} value={value} resource={resource}>
+                <div
+                  {...slotProps}
+                  className={clsx('rbc-time-slot', slotProps.className)}
+                >
+                </div>
+              </Wrapper>
+            )
+          })}
+        </div>          
         ))}
         <EventContainer
           localizer={localizer}

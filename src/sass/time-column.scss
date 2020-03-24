@@ -10,6 +10,16 @@
   }
 }
 
+.rbc-time-header-row {
+  display: flex;
+  flex-direction: row;
+  min-height: 40px;
+
+  .rbc-timeslot-group {
+    flex: 1;
+  }
+}
+
 .rbc-time-row {
   display: flex;
   flex-direction: row;
@@ -26,6 +36,14 @@
   min-height: 40px;
   display: flex;
   flex-flow: column nowrap;
+}
+
+.rbc-timeslot-row-group {
+  border-bottom: 1px solid $cell-border;
+  min-height: 20px;
+  display: flex;
+  flex-flow: row nowrap;
+  min-width: 80px;
 }
 
 .rbc-time-gutter,
@@ -115,10 +133,10 @@
   }
 
   .rbc-header,
-  .rbc-day-bg, {
+  .rbc-day-bg {
     width: 140px;
     // min-width: 0;
-    flex:  1 1 0;
+    flex: 1 1 0;
     flex-basis: 0 px;
   }
 }

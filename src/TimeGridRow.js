@@ -10,7 +10,7 @@ import DayRow from './DayRow'
 import TimeGutterRow from './TimeGutterRow'
 
 import getWidth from 'dom-helpers/width'
-import TimeGridHeader from './TimeGridHeader'
+import TimeGridRowHeader from './TimeGridRowHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
@@ -172,7 +172,6 @@ export default class TimeGridRow extends Component {
     })
 
     allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
-
     return (
       <div
         className={clsx(
@@ -180,11 +179,41 @@ export default class TimeGridRow extends Component {
           resources && 'rbc-time-view-resources'
         )}
       >             
+      {/* <TimeGridRowHeader
+          range={range}
+          events={allDayEvents}
+          width={width}
+          rtl={rtl}
+          getNow={getNow}
+          localizer={localizer}
+          selected={selected}
+          resources={this.memoizedResources(resources, accessors)}
+          selectable={this.props.selectable}
+          accessors={accessors}
+          getters={getters}
+          components={components}
+          scrollRef={this.scrollRef}
+          isOverflowing={this.state.isOverflowing}
+          longPressThreshold={longPressThreshold}
+          onSelectSlot={this.handleSelectAllDaySlot}
+          onSelectEvent={this.handleSelectAlldayEvent}
+          onDoubleClickEvent={this.props.onDoubleClickEvent}
+          onDrillDown={this.props.onDrillDown}
+          getDrilldownView={this.props.getDrilldownView}
+        />       */}
       <div
           ref={this.contentRef}
           className="rbc-time-content-row"
           onScroll={this.handleScroll}
         >
+
+        <div
+          className="rbc-time-row-resource">
+      {range.map((date, jj) => {
+        return (<TimeGridRowHeader key={jj} {...this.props} localizer={localizer} min={dates.merge(date, min)} max={dates.merge(date, max)} components={components} key={'-' + jj} date={date} />)
+      })}
+      </div>  
+
           {this.renderEvents(range, rangeEvents, getNow())}
           </div>    
       </div>

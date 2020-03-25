@@ -13447,8 +13447,8 @@
       var _this$props2 = this.props,
           min = _this$props2.min,
           max = _this$props2.max,
-          components = _this$props2.components,
           accessors = _this$props2.accessors,
+          components = _this$props2.components,
           localizer = _this$props2.localizer;
       var resources = this.memoizedResources(this.props.resources, accessors);
       var groupedEvents = resources.groupEvents(events);
@@ -13500,7 +13500,9 @@
           min = _this$props3.min,
           max = _this$props3.max,
           showMultiDayTimes = _this$props3.showMultiDayTimes,
-          longPressThreshold = _this$props3.longPressThreshold;
+          longPressThreshold = _this$props3.longPressThreshold,
+          _this$props3$componen = _this$props3.components.resourceHeader,
+          ResourceHeaderComponent = _this$props3$componen === void 0 ? ResourceHeader : _this$props3$componen;
       width = width || this.state.gutterWidth;
       var start = range[0],
           end = range[range.length - 1];
@@ -13523,13 +13525,28 @@
         return sortEvents(a, b, accessors);
       });
       return React__default.createElement("div", {
-        className: clsx('rbc-time-view', resources && 'rbc-time-view-resources')
+        className: clsx('rbc-time-view-row', 'rbc-time-row-resource', resources && 'rbc-time-view-resources')
       }, React__default.createElement("div", {
+        className: clsx('rbc-time-column', 'rbc-time-row-resource-column-xx')
+      }, this.memoizedResources(resources, accessors).map(function (_ref2, i) {
+        var id = _ref2[0],
+            resource = _ref2[1];
+        return resource && React__default.createElement("div", {
+          className: "rbc-row rbc-time-row",
+          key: "resource_" + id
+        }, React__default.createElement("div", {
+          className: "rbc-header"
+        }, React__default.createElement(ResourceHeaderComponent, {
+          index: id,
+          label: accessors.resourceTitle(resource),
+          resource: resource
+        })));
+      })), React__default.createElement("div", {
         ref: this.contentRef,
         className: "rbc-time-content-row",
         onScroll: this.handleScroll
       }, React__default.createElement("div", {
-        className: "rbc-time-row-resource"
+        className: "rbc-time-row-resource-header"
       }, range.map(function (date, jj) {
         return React__default.createElement(TimeGridRowHeader, _extends({
           key: jj

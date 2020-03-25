@@ -344,6 +344,8 @@ button.rbc-input::-moz-focus-inner {
   .rbc-time-row .rbc-timeslot-group {
     flex: 1;
     min-width: 40px; }
+  .rbc-time-row > * > * {
+    border-left: 1px solid #DDD; }
 
 .rbc-timeslot-group {
   border-bottom: 1px solid #DDD;
@@ -508,7 +510,14 @@ button.rbc-input::-moz-focus-inner {
 .rbc-time-row-resource {
   display: flex;
   flex-direction: row; }
-  .rbc-time-row-resource > * > * {
+
+.rbc-time-row-resource-column-xx {
+  margin-top: 42px; }
+
+.rbc-time-row-resource-header {
+  display: flex;
+  flex-direction: row; }
+  .rbc-time-row-resource-header > * > * {
     border-left: 1px solid #DDD; }
 
 .rbc-time-content-row {

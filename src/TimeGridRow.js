@@ -14,6 +14,7 @@ import TimeGridRowHeader from './TimeGridRowHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
+import ResourceHeader from './ResourceHeader'
 
 export default class TimeGridRow extends Component {
   constructor(props) {
@@ -103,25 +104,64 @@ export default class TimeGridRow extends Component {
   }
 
   renderEvents(range, events, now) {
-    let { min, max, components, accessors, localizer } = this.props
+    let { min, max, accessors, components, localizer } = this.props
 
-    const resources = this.memoizedResources(this.props.resources, accessors)
+        const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
-    return resources.map(([id, resource], i) =>{
-      return (<div
-          className="rbc-time-row-resource"
-        > 
-            {this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)}
+    return resources.map(([id, resource], i) => {
+      return (
+        <div className="rbc-time-row-resource">
+          {this.renderDay(
+            range,
+            groupedEvents,
+            id,
+            accessors,
+            localizer,
+            min,
+            max,
+            resource,
+            components,
+            now,
+            i
+          )}
         </div>
-      )})
-      // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
+      )
+    })
+    // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
   }
 
-  renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i) {
+  renderDay(
+    range,
+    groupedEvents,
+    id,
+    accessors,
+    localizer,
+    min,
+    max,
+    resource,
+    components,
+    now,
+    i
+  ) {
     return range.map((date, jj) => {
-      let daysEvents = (groupedEvents.get(id) || []).filter(event => dates.inRange(date, accessors.start(event), accessors.end(event), 'day'))
-      return (<DayRow {...this.props} localizer={localizer} min={dates.merge(date, min)} max={dates.merge(date, max)} resource={resource && id} components={components} isNow={dates.eq(date, now, 'day')} key={i + '-' + jj} date={date} events={daysEvents} />)
+      let daysEvents = (groupedEvents.get(id) || []).filter(event =>
+        dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
+      )
+      return (
+        <DayRow
+          {...this.props}
+          localizer={localizer}
+          min={dates.merge(date, min)}
+          max={dates.merge(date, max)}
+          resource={resource && id}
+          components={components}
+          isNow={dates.eq(date, now, 'day')}
+          key={i + '-' + jj}
+          date={date}
+          events={daysEvents}
+        />
+      )
     })
   }
 
@@ -142,6 +182,7 @@ export default class TimeGridRow extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      components: { resourceHeader: ResourceHeaderComponent = ResourceHeader },
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -175,47 +216,55 @@ export default class TimeGridRow extends Component {
     return (
       <div
         className={clsx(
-          'rbc-time-view',
+          'rbc-time-view-row',
+          'rbc-time-row-resource',
           resources && 'rbc-time-view-resources'
         )}
-      >             
-      {/* <TimeGridRowHeader
-          range={range}
-          events={allDayEvents}
-          width={width}
-          rtl={rtl}
-          getNow={getNow}
-          localizer={localizer}
-          selected={selected}
-          resources={this.memoizedResources(resources, accessors)}
-          selectable={this.props.selectable}
-          accessors={accessors}
-          getters={getters}
-          components={components}
-          scrollRef={this.scrollRef}
-          isOverflowing={this.state.isOverflowing}
-          longPressThreshold={longPressThreshold}
-          onSelectSlot={this.handleSelectAllDaySlot}
-          onSelectEvent={this.handleSelectAlldayEvent}
-          onDoubleClickEvent={this.props.onDoubleClickEvent}
-          onDrillDown={this.props.onDrillDown}
-          getDrilldownView={this.props.getDrilldownView}
-        />       */}
-      <div
+      >
+        <div className={clsx('rbc-time-column', 'rbc-time-row-resource-column-xx')}>
+          {this.memoizedResources(resources, accessors).map(
+            ([id, resource], i) => {
+              return (
+                resource && (
+                  <div className="rbc-row rbc-time-row" key={`resource_${id}`}>
+                    <div className="rbc-header">
+                      <ResourceHeaderComponent
+                        index={id}
+                        label={accessors.resourceTitle(resource)}
+                        resource={resource}
+                      />
+                    </div>
+                  </div>
+                )
+              )
+            }
+          )}
+        </div>
+
+        <div
           ref={this.contentRef}
           className="rbc-time-content-row"
           onScroll={this.handleScroll}
         >
-
-        <div
-          className="rbc-time-row-resource-header">
-      {range.map((date, jj) => {
-        return (<TimeGridRowHeader key={jj} {...this.props} localizer={localizer} min={dates.merge(date, min)} max={dates.merge(date, max)} components={components} key={'-' + jj} date={date} />)
-      })}
-      </div>  
+          <div className="rbc-time-row-resource-header">
+            {range.map((date, jj) => {
+              return (
+                <TimeGridRowHeader
+                  key={jj}
+                  {...this.props}
+                  localizer={localizer}
+                  min={dates.merge(date, min)}
+                  max={dates.merge(date, max)}
+                  components={components}
+                  key={'-' + jj}
+                  date={date}
+                />
+              )
+            })}
+          </div>
 
           {this.renderEvents(range, rangeEvents, getNow())}
-          </div>    
+        </div>
       </div>
     )
   }

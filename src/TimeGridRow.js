@@ -208,7 +208,7 @@ export default class TimeGridRow extends Component {
         >
 
         <div
-          className="rbc-time-row-resource">
+          className="rbc-time-row-resource-header">
       {range.map((date, jj) => {
         return (<TimeGridRowHeader key={jj} {...this.props} localizer={localizer} min={dates.merge(date, min)} max={dates.merge(date, max)} components={components} key={'-' + jj} date={date} />)
       })}

@@ -29,6 +29,10 @@
     flex: 1;
     min-width: 40px;
   }
+
+  > * > * {
+    border-left: 1px solid $cell-border;
+  }
 }
 
 .rbc-timeslot-group {

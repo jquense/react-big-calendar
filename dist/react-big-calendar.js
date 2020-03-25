@@ -13283,6 +13283,7 @@
         className: clsx(className, 'rbc-day-slot', 'rbc-time-header-row')
       }, slotMetrics.groups.map(function (grp, idx) {
         return React__default.createElement("div", {
+          key: idx,
           className: "rbc-timeslot-row-group"
         }, grp.map(function (value, idx) {
           var slotProps = getters ? getters.slotProp(value, resource) : {};
@@ -13303,7 +13304,6 @@
   TimeGridRowHeader.propTypes = {
     range: propTypes.array.isRequired,
     events: propTypes.array.isRequired,
-    resources: propTypes.object,
     getNow: propTypes.func.isRequired,
     isOverflowing: propTypes.bool,
     rtl: propTypes.bool,
@@ -13456,6 +13456,7 @@
         var id = _ref[0],
             resource = _ref[1];
         return React__default.createElement("div", {
+          key: "resource_" + i,
           className: "rbc-time-row-resource"
         }, _this2.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i));
       }); // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
@@ -13533,11 +13534,11 @@
             resource = _ref2[1];
         return resource && React__default.createElement("div", {
           className: "rbc-row rbc-time-row",
-          key: "resource_" + id
+          key: "resource_" + i
         }, React__default.createElement("div", {
           className: "rbc-header"
         }, React__default.createElement(ResourceHeaderComponent, {
-          index: id,
+          index: i,
           label: accessors.resourceTitle(resource),
           resource: resource
         })));
@@ -13566,22 +13567,17 @@
       this._pendingSelection = [];
     };
 
-    _proto.measureGutter = function measureGutter() {
-      var _this5 = this;
-
-      if (this.measureGutterAnimationFrameRequest) {
-        window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest);
-      }
-
-      this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(function () {
-        var width = getWidth(_this5.gutter);
-
-        if (width && _this5.state.gutterWidth !== width) {
-          _this5.setState({
-            gutterWidth: width
-          });
-        }
-      });
+    _proto.measureGutter = function measureGutter() {// if (this.measureGutterAnimationFrameRequest) {
+      //   window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
+      // }
+      // this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
+      //   () => {
+      //     const width = getWidth(this.gutter)
+      //     if (width && this.state.gutterWidth !== width) {
+      //       this.setState({ gutterWidth: width })
+      //     }
+      //   }
+      // )
     };
 
     _proto.applyScroll = function applyScroll() {

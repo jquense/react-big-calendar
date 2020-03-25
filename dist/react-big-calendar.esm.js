@@ -4351,6 +4351,7 @@ function (_React$Component) {
       className: clsx(className, 'rbc-day-slot', 'rbc-time-header-row')
     }, slotMetrics.groups.map(function (grp, idx) {
       return React.createElement("div", {
+        key: idx,
         className: "rbc-timeslot-row-group"
       }, grp.map(function (value, idx) {
         var slotProps = getters ? getters.slotProp(value, resource) : {};
@@ -4371,7 +4372,6 @@ function (_React$Component) {
 TimeGridRowHeader.propTypes = process.env.NODE_ENV !== "production" ? {
   range: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
-  resources: PropTypes.object,
   getNow: PropTypes.func.isRequired,
   isOverflowing: PropTypes.bool,
   rtl: PropTypes.bool,
@@ -4524,6 +4524,7 @@ function (_Component) {
       var id = _ref[0],
           resource = _ref[1];
       return React.createElement("div", {
+        key: "resource_" + i,
         className: "rbc-time-row-resource"
       }, _this2.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i));
     }); // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
@@ -4601,11 +4602,11 @@ function (_Component) {
           resource = _ref2[1];
       return resource && React.createElement("div", {
         className: "rbc-row rbc-time-row",
-        key: "resource_" + id
+        key: "resource_" + i
       }, React.createElement("div", {
         className: "rbc-header"
       }, React.createElement(ResourceHeaderComponent, {
-        index: id,
+        index: i,
         label: accessors.resourceTitle(resource),
         resource: resource
       })));
@@ -4634,22 +4635,17 @@ function (_Component) {
     this._pendingSelection = [];
   };
 
-  _proto.measureGutter = function measureGutter() {
-    var _this5 = this;
-
-    if (this.measureGutterAnimationFrameRequest) {
-      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest);
-    }
-
-    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(function () {
-      var width = getWidth(_this5.gutter);
-
-      if (width && _this5.state.gutterWidth !== width) {
-        _this5.setState({
-          gutterWidth: width
-        });
-      }
-    });
+  _proto.measureGutter = function measureGutter() {// if (this.measureGutterAnimationFrameRequest) {
+    //   window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
+    // }
+    // this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
+    //   () => {
+    //     const width = getWidth(this.gutter)
+    //     if (width && this.state.gutterWidth !== width) {
+    //       this.setState({ gutterWidth: width })
+    //     }
+    //   }
+    // )
   };
 
   _proto.applyScroll = function applyScroll() {

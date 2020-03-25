@@ -44,7 +44,7 @@ class TimeGridRowHeader extends React.Component {
         className={clsx(className, 'rbc-day-slot', 'rbc-time-header-row')}
       >
         {slotMetrics.groups.map((grp, idx) => (
-          <div className="rbc-timeslot-row-group">
+          <div key={idx} className="rbc-timeslot-row-group">
             {grp.map((value, idx) => {
               const slotProps = getters ? getters.slotProp(value, resource) : {}
               return (
@@ -68,7 +68,6 @@ class TimeGridRowHeader extends React.Component {
 TimeGridRowHeader.propTypes = {
   range: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
-  resources: PropTypes.object,
   getNow: PropTypes.func.isRequired,
   isOverflowing: PropTypes.bool,
 

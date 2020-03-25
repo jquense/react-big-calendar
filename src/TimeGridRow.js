@@ -111,7 +111,7 @@ export default class TimeGridRow extends Component {
 
     return resources.map(([id, resource], i) => {
       return (
-        <div className="rbc-time-row-resource">
+        <div key={`resource_${i}`} className="rbc-time-row-resource">
           {this.renderDay(
             range,
             groupedEvents,
@@ -226,10 +226,10 @@ export default class TimeGridRow extends Component {
             ([id, resource], i) => {
               return (
                 resource && (
-                  <div className="rbc-row rbc-time-row" key={`resource_${id}`}>
+                  <div className="rbc-row rbc-time-row" key={`resource_${i}`}>
                     <div className="rbc-header">
                       <ResourceHeaderComponent
-                        index={id}
+                        index={i}
                         label={accessors.resourceTitle(resource)}
                         resource={resource}
                       />
@@ -275,18 +275,18 @@ export default class TimeGridRow extends Component {
   }
 
   measureGutter() {
-    if (this.measureGutterAnimationFrameRequest) {
-      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    }
-    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
-      () => {
-        const width = getWidth(this.gutter)
+    // if (this.measureGutterAnimationFrameRequest) {
+    //   window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
+    // }
+    // this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
+    //   () => {
+    //     const width = getWidth(this.gutter)
 
-        if (width && this.state.gutterWidth !== width) {
-          this.setState({ gutterWidth: width })
-        }
-      }
-    )
+    //     if (width && this.state.gutterWidth !== width) {
+    //       this.setState({ gutterWidth: width })
+    //     }
+    //   }
+    // )
   }
 
   applyScroll() {

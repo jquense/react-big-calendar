@@ -106,8 +106,9 @@
   flex-direction: row;
 }
 
-.rbc-time-row-resource-column-xx {
-  margin-top: 42px;
+.rbc-time-column-resource-xx {
+  display: flex;
+  flex-direction: column;
 }
 
 .rbc-time-row-resource-header {
@@ -119,7 +120,7 @@
   }
 }
 
-.rbc-time-content-row {
+.rbc-time-content-row-xx {
   display: flex;
   flex: 1 0 0%;
   align-items: flex-start;
@@ -127,7 +128,7 @@
   border-top: 2px solid @calendar-border;
   overflow-y: auto;
   position: relative;
-  flex-direction: column;
+  flex-direction: row;
 
   > * > * {
     border-left: 1px solid @cell-border;

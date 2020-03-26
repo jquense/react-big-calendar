@@ -216,12 +216,38 @@ export default class TimeGridRow extends Component {
     return (
       <div
         className={clsx(
-          'rbc-time-view-row',
-          'rbc-time-row-resource',
-          resources && 'rbc-time-view-resources'
+          'rbc-time-view-row',          
+          'rbc-time-view-resources'
         )}
       >
-        <div className={clsx('rbc-time-column', 'rbc-time-row-resource-column-xx')}>
+
+<div
+        ref={this.scrollRef}
+        className={clsx('rbc-time-header')}
+      >
+            {range.map((date, jj) => {
+              return (
+                <TimeGridRowHeader
+                  key={jj}
+                  {...this.props}
+                  localizer={localizer}
+                  min={dates.merge(date, min)}
+                  max={dates.merge(date, max)}
+                  components={components}
+                  key={'-' + jj}
+                  date={date}
+                />
+              )
+            })}
+            </div>
+
+        <div
+          ref={this.contentRef}
+          className={clsx("rbc-time-content-row-xx")}
+          onScroll={this.handleScroll}
+        >
+
+<div className={clsx('rbc-time-column', 'rbc-time-gutter')}>
           {this.memoizedResources(resources, accessors).map(
             ([id, resource], i) => {
               return (
@@ -240,30 +266,10 @@ export default class TimeGridRow extends Component {
             }
           )}
         </div>
-
-        <div
-          ref={this.contentRef}
-          className="rbc-time-content-row"
-          onScroll={this.handleScroll}
-        >
-          <div className="rbc-time-row-resource-header">
-            {range.map((date, jj) => {
-              return (
-                <TimeGridRowHeader
-                  key={jj}
-                  {...this.props}
-                  localizer={localizer}
-                  min={dates.merge(date, min)}
-                  max={dates.merge(date, max)}
-                  components={components}
-                  key={'-' + jj}
-                  date={date}
-                />
-              )
-            })}
-          </div>
-
+          
+        <div className='rbc-time-column-resource-xx'>
           {this.renderEvents(range, rangeEvents, getNow())}
+          </div>
         </div>
       </div>
     )

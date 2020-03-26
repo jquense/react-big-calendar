@@ -19,6 +19,49 @@ class TimeGridRowHeader extends React.Component {
     this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
   }
 
+  renderHeaderCells(date) {
+    let {
+      localizer,
+      getDrilldownView,
+      getNow,
+      getters: { dayProp },
+      components: { header: HeaderComponent = Header },
+    } = this.props
+
+    const today = getNow()
+
+      let drilldownView = getDrilldownView(date)
+      let label = localizer.format(date, 'dayFormat')
+
+      const { className, style } = dayProp(date)
+
+      let header = (
+        <HeaderComponent date={date} label={label} localizer={localizer} />
+      )
+
+      return (
+        <div
+          style={style}
+          className={clsx(
+            'rbc-header',
+            className,
+            dates.eq(date, today, 'day') && 'rbc-today'
+          )}
+        >
+          {drilldownView ? (
+            <a
+              href="#"
+              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
+            >
+              {header}
+            </a>
+          ) : (
+            <span>{header}</span>
+          )}
+        </div>
+      )
+  }
+
   componentWillReceiveProps(nextProps) {
     this.slotMetrics = this.slotMetrics.update(nextProps)
   }
@@ -39,10 +82,17 @@ class TimeGridRowHeader extends React.Component {
     const { className, style } = dayProp(max)
 
     return (
+      <div className="rbc-time-header-content">
+        <div
+              className={`rbc-row rbc-time-header-cell`}
+            >
+              {this.renderHeaderCells(max)}
+            </div>
       <div
         style={style}
         className={clsx(className, 'rbc-day-slot', 'rbc-time-header-row')}
       >
+        
         {slotMetrics.groups.map((grp, idx) => (
           <div key={idx} className="rbc-timeslot-row-group">
             {grp.map((value, idx) => {
@@ -60,6 +110,7 @@ class TimeGridRowHeader extends React.Component {
             })}
           </div>
         ))}
+      </div>
       </div>
     )
   }

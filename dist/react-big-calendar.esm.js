@@ -4202,34 +4202,72 @@ function (_React$Component) {
 
   var _proto = TimeGridRowHeader.prototype;
 
+  _proto.renderHeaderCells = function renderHeaderCells(date) {
+    var _this2 = this;
+
+    var _this$props = this.props,
+        localizer = _this$props.localizer,
+        getDrilldownView = _this$props.getDrilldownView,
+        getNow = _this$props.getNow,
+        dayProp = _this$props.getters.dayProp,
+        _this$props$component = _this$props.components.header,
+        HeaderComponent = _this$props$component === void 0 ? Header : _this$props$component;
+    var today = getNow();
+    var drilldownView = getDrilldownView(date);
+    var label = localizer.format(date, 'dayFormat');
+
+    var _dayProp = dayProp(date),
+        className = _dayProp.className,
+        style = _dayProp.style;
+
+    var header = React.createElement(HeaderComponent, {
+      date: date,
+      label: label,
+      localizer: localizer
+    });
+    return React.createElement("div", {
+      style: style,
+      className: clsx('rbc-header', className, eq(date, today, 'day') && 'rbc-today')
+    }, drilldownView ? React.createElement("a", {
+      href: "#",
+      onClick: function onClick(e) {
+        return _this2.handleHeaderClick(date, drilldownView, e);
+      }
+    }, header) : React.createElement("span", null, header));
+  };
+
   _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
     this.slotMetrics = this.slotMetrics.update(nextProps);
   };
 
   _proto.render = function render() {
-    var _this$props = this.props,
-        max = _this$props.max,
-        rtl = _this$props.rtl,
-        isNow = _this$props.isNow,
-        resource = _this$props.resource,
-        accessors = _this$props.accessors,
-        localizer = _this$props.localizer,
-        _this$props$getters = _this$props.getters,
-        dayProp = _this$props$getters.dayProp,
-        getters = _objectWithoutPropertiesLoose(_this$props$getters, ["dayProp"]),
-        _this$props$component = _this$props.components,
-        EventContainer = _this$props$component.eventContainerWrapper,
-        _this$props$component2 = _this$props$component.timeSlotWrapper,
-        Wrapper = _this$props$component2 === void 0 ? NoopWrapper : _this$props$component2,
-        components = _objectWithoutPropertiesLoose(_this$props$component, ["eventContainerWrapper", "timeSlotWrapper"]);
+    var _this$props2 = this.props,
+        max = _this$props2.max,
+        rtl = _this$props2.rtl,
+        isNow = _this$props2.isNow,
+        resource = _this$props2.resource,
+        accessors = _this$props2.accessors,
+        localizer = _this$props2.localizer,
+        _this$props2$getters = _this$props2.getters,
+        dayProp = _this$props2$getters.dayProp,
+        getters = _objectWithoutPropertiesLoose(_this$props2$getters, ["dayProp"]),
+        _this$props2$componen = _this$props2.components,
+        EventContainer = _this$props2$componen.eventContainerWrapper,
+        _this$props2$componen2 = _this$props2$componen.timeSlotWrapper,
+        Wrapper = _this$props2$componen2 === void 0 ? NoopWrapper : _this$props2$componen2,
+        components = _objectWithoutPropertiesLoose(_this$props2$componen, ["eventContainerWrapper", "timeSlotWrapper"]);
 
     var slotMetrics = this.slotMetrics;
 
-    var _dayProp = dayProp(max),
-        className = _dayProp.className,
-        style = _dayProp.style;
+    var _dayProp2 = dayProp(max),
+        className = _dayProp2.className,
+        style = _dayProp2.style;
 
     return React.createElement("div", {
+      className: "rbc-time-header-content"
+    }, React.createElement("div", {
+      className: "rbc-row rbc-time-header-cell"
+    }, this.renderHeaderCells(max)), React.createElement("div", {
       style: style,
       className: clsx(className, 'rbc-day-slot', 'rbc-time-header-row')
     }, slotMetrics.groups.map(function (grp, idx) {
@@ -4246,7 +4284,7 @@ function (_React$Component) {
           className: clsx('rbc-time-slot', slotProps.className)
         }), idx === 0 && localizer.format(value, 'timeGutterFormat')));
       }));
-    }));
+    })));
   };
 
   return TimeGridRowHeader;

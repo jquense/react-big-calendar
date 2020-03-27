@@ -182,7 +182,7 @@ export default class TimeGridRow extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
-      components: { resourceHeader: ResourceHeaderComponent = ResourceHeader },
+      components: { timeGutterHeader: TimeGutterHeader, resourceHeader: ResourceHeaderComponent = ResourceHeader },
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -225,6 +225,12 @@ export default class TimeGridRow extends Component {
         ref={this.scrollRef}
         className={clsx('rbc-time-header')}
       >
+        <div
+          className="rbc-time-header-gutter"
+          style={{ width, minWidth: width, maxWidth: width }}
+        >
+          {TimeGutterHeader && <TimeGutterHeader />}
+        </div>
             {range.map((date, jj) => {
               return (
                 <TimeGridRowHeader
@@ -247,14 +253,14 @@ export default class TimeGridRow extends Component {
           onScroll={this.handleScroll}
         >
 
-<div className={clsx('rbc-time-column', 'rbc-time-gutter')}>
+{resources && <div className={clsx('rbc-time-column', 'rbc-time-gutter')} ref={this.gutterRef}>
           {this.memoizedResources(resources, accessors).map(
             ([id, resource], i) => {
               return (
                 resource && (
                   <div className="rbc-row rbc-time-row" key={`resource_${i}`}>
                     <div className="rbc-header">
-                      <ResourceHeaderComponent
+                      <ResourceHeaderComponent                        
                         index={i}
                         label={accessors.resourceTitle(resource)}
                         resource={resource}
@@ -265,7 +271,7 @@ export default class TimeGridRow extends Component {
               )
             }
           )}
-        </div>
+        </div>}
           
         <div className='rbc-time-column-resource-xx'>
           {this.renderEvents(range, rangeEvents, getNow())}
@@ -281,18 +287,18 @@ export default class TimeGridRow extends Component {
   }
 
   measureGutter() {
-    // if (this.measureGutterAnimationFrameRequest) {
-    //   window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    // }
-    // this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
-    //   () => {
-    //     const width = getWidth(this.gutter)
+    if (this.measureGutterAnimationFrameRequest) {
+      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
+    }
+    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
+      () => {
+        const width = getWidth(this.gutter)
 
-    //     if (width && this.state.gutterWidth !== width) {
-    //       this.setState({ gutterWidth: width })
-    //     }
-    //   }
-    // )
+        if (width && this.state.gutterWidth !== width) {
+          this.setState({ gutterWidth: width })
+        }
+      }
+    )
   }
 
   applyScroll() {

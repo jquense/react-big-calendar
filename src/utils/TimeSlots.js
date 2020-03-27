@@ -34,9 +34,9 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       const minFromStart = slotIdx * step
       // A date with total minutes calculated from the start of the day
       slots[slotIdx] = groups[grp][slot] = new Date(
-        start.getFullYear(),
-        start.getMonth(),
-        start.getDate(),
+        start.getUTCFullYear(),
+        start.getUTCMonth(),
+        start.getUTCDate(),
         0,
         minutesFromMidnight + minFromStart,
         0,
@@ -49,9 +49,9 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   const lastSlotMinFromStart = slots.length * step
   slots.push(
     new Date(
-      start.getFullYear(),
-      start.getMonth(),
-      start.getDate(),
+      start.getUTCFullYear(),
+      start.getUTCMonth(),
+      start.getUTCDate(),
       0,
       minutesFromMidnight + lastSlotMinFromStart,
       0,

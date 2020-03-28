@@ -511,8 +511,9 @@ button.rbc-input::-moz-focus-inner {
   display: flex;
   flex-direction: row; }
 
-.rbc-time-row-resource-column-xx {
-  margin-top: 42px; }
+.rbc-time-column-resource-xx {
+  display: flex;
+  flex-direction: column; }
 
 .rbc-time-row-resource-header {
   display: flex;
@@ -520,7 +521,7 @@ button.rbc-input::-moz-focus-inner {
   .rbc-time-row-resource-header > * > * {
     border-left: 1px solid #DDD; }
 
-.rbc-time-content-row {
+.rbc-time-content-row-xx {
   display: flex;
   flex: 1 0 0%;
   align-items: flex-start;
@@ -528,13 +529,13 @@ button.rbc-input::-moz-focus-inner {
   border-top: 2px solid #DDD;
   overflow-y: auto;
   position: relative;
-  flex-direction: column; }
-  .rbc-time-content-row > * > * {
+  flex-direction: row; }
+  .rbc-time-content-row-xx > * > * {
     border-left: 1px solid #DDD; }
-  .rbc-rtl .rbc-time-content-row > * + * > * {
+  .rbc-rtl .rbc-time-content-row-xx > * + * > * {
     border-left-width: 0;
     border-right: 1px solid #DDD; }
-  .rbc-time-content-row > .rbc-day-slot {
+  .rbc-time-content-row-xx > .rbc-day-slot {
     width: 100%;
     user-select: none;
     -webkit-user-select: none; }

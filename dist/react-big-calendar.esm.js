@@ -4491,8 +4491,10 @@ function (_Component) {
         max = _this$props3.max,
         showMultiDayTimes = _this$props3.showMultiDayTimes,
         longPressThreshold = _this$props3.longPressThreshold,
-        _this$props3$componen = _this$props3.components.resourceHeader,
-        ResourceHeaderComponent = _this$props3$componen === void 0 ? ResourceHeader : _this$props3$componen;
+        _this$props3$componen = _this$props3.components,
+        TimeGutterHeader = _this$props3$componen.timeGutterHeader,
+        _this$props3$componen2 = _this$props3$componen.resourceHeader,
+        ResourceHeaderComponent = _this$props3$componen2 === void 0 ? ResourceHeader : _this$props3$componen2;
     width = width || this.state.gutterWidth;
     var start = range[0],
         end = range[range.length - 1];
@@ -4515,9 +4517,35 @@ function (_Component) {
       return sortEvents(a, b, accessors);
     });
     return React.createElement("div", {
-      className: clsx('rbc-time-view-row', 'rbc-time-row-resource', resources && 'rbc-time-view-resources')
+      className: clsx('rbc-time-view-row', 'rbc-time-view-resources')
     }, React.createElement("div", {
-      className: clsx('rbc-time-column', 'rbc-time-row-resource-column-xx')
+      ref: this.scrollRef,
+      className: clsx('rbc-time-header')
+    }, React.createElement("div", {
+      className: "rbc-time-header-gutter",
+      style: {
+        width: width,
+        minWidth: width,
+        maxWidth: width
+      }
+    }, TimeGutterHeader && React.createElement(TimeGutterHeader, null)), range.map(function (date, jj) {
+      return React.createElement(TimeGridRowHeader, _extends({
+        key: jj
+      }, _this4.props, {
+        localizer: localizer,
+        min: merge(date, min),
+        max: merge(date, max),
+        components: components,
+        key: '-' + jj,
+        date: date
+      }));
+    })), React.createElement("div", {
+      ref: this.contentRef,
+      className: clsx("rbc-time-content-row-xx"),
+      onScroll: this.handleScroll
+    }, resources && React.createElement("div", {
+      className: clsx('rbc-time-column', 'rbc-time-gutter'),
+      ref: this.gutterRef
     }, this.memoizedResources(resources, accessors).map(function (_ref2, i) {
       var id = _ref2[0],
           resource = _ref2[1];
@@ -4532,23 +4560,8 @@ function (_Component) {
         resource: resource
       })));
     })), React.createElement("div", {
-      ref: this.contentRef,
-      className: "rbc-time-content-row",
-      onScroll: this.handleScroll
-    }, React.createElement("div", {
-      className: "rbc-time-row-resource-header"
-    }, range.map(function (date, jj) {
-      return React.createElement(TimeGridRowHeader, _extends({
-        key: jj
-      }, _this4.props, {
-        localizer: localizer,
-        min: merge(date, min),
-        max: merge(date, max),
-        components: components,
-        key: '-' + jj,
-        date: date
-      }));
-    })), this.renderEvents(range, rangeEvents, getNow())));
+      className: "rbc-time-column-resource-xx"
+    }, this.renderEvents(range, rangeEvents, getNow()))));
   };
 
   _proto.clearSelection = function clearSelection() {
@@ -4556,17 +4569,22 @@ function (_Component) {
     this._pendingSelection = [];
   };
 
-  _proto.measureGutter = function measureGutter() {// if (this.measureGutterAnimationFrameRequest) {
-    //   window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    // }
-    // this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
-    //   () => {
-    //     const width = getWidth(this.gutter)
-    //     if (width && this.state.gutterWidth !== width) {
-    //       this.setState({ gutterWidth: width })
-    //     }
-    //   }
-    // )
+  _proto.measureGutter = function measureGutter() {
+    var _this5 = this;
+
+    if (this.measureGutterAnimationFrameRequest) {
+      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest);
+    }
+
+    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(function () {
+      var width = getWidth(_this5.gutter);
+
+      if (width && _this5.state.gutterWidth !== width) {
+        _this5.setState({
+          gutterWidth: width
+        });
+      }
+    });
   };
 
   _proto.applyScroll = function applyScroll() {

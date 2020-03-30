@@ -153,6 +153,7 @@ class DayRow extends React.Component {
         </div>          
         ))}
         <EventContainer
+          onSchedulerView={true}
           localizer={localizer}
           resource={resource}
           accessors={accessors}

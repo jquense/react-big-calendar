@@ -36,7 +36,10 @@ function TimeGridRowEvent(props) {
   ]
 
   return (
-    <EventWrapper type="time" {...props}>
+    <EventWrapper 
+    type="time" 
+    onSchedulerView={true}
+    {...props}>
       <div
         onClick={onClick}
         onDoubleClick={onDoubleClick}

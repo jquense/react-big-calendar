@@ -101,6 +101,11 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       return this.closestSlotToPosition((point.y - boundaryRect.top) / range)
     },
 
+    closestSlotFromPointForRow(point, boundaryRect) {
+      let range = Math.abs(boundaryRect.right - boundaryRect.left)
+      return this.closestSlotToPosition((point.x - boundaryRect.left) / range)
+    },
+
     closestSlotFromDate(date, offset = 0) {
       if (dates.lt(date, start, 'minutes')) return slots[0]
 

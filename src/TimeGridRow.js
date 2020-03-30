@@ -292,11 +292,13 @@ export default class TimeGridRow extends Component {
     }
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
+        if (this.gutter) {
         const width = getWidth(this.gutter)
 
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })
         }
+      }
       }
     )
   }

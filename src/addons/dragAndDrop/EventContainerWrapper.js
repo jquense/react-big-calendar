@@ -7,6 +7,7 @@ import Selection, {
   getBoundsForNode,
   getEventNodeFromPoint,
 } from '../../Selection'
+import TimeGridRowEvent from '../../TimeGridRowEvent'
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors } from './common'
 import NoopWrapper from '../../NoopWrapper'
@@ -99,17 +100,26 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleResize(point, boundaryBox) {
-    let start, end
+    let start, end, currentSlot
     const { accessors, slotMetrics } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
-
-    let currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
+    
     if (direction === 'UP') {
+      currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
       end = accessors.end(event)
       start = dates.min(currentSlot, slotMetrics.closestSlotFromDate(end, -1))
     } else if (direction === 'DOWN') {
+      currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
       start = accessors.start(event)
       end = dates.max(currentSlot, slotMetrics.closestSlotFromDate(start))
+    } else if (direction === 'RIGHT') {
+      currentSlot = slotMetrics.closestSlotFromPointForRow(point, boundaryBox)
+      start = accessors.start(event)
+      end = dates.max(currentSlot, slotMetrics.closestSlotFromDate(start))
+    } else if (direction === 'LEFT') {
+      currentSlot = slotMetrics.closestSlotFromPointForRow(point, boundaryBox)
+      end = accessors.end(event)
+      start = dates.min(currentSlot, slotMetrics.closestSlotFromDate(end, -1))
     }
 
     this.update(event, slotMetrics.getRange(start, end))
@@ -221,6 +231,7 @@ class EventContainerWrapper extends React.Component {
       getters,
       slotMetrics,
       localizer,
+      onSchedulerView,
     } = this.props
 
     let { event, top, height } = this.state
@@ -247,7 +258,20 @@ class EventContainerWrapper extends React.Component {
         <React.Fragment>
           {events}
 
-          {event && (
+          {event && onSchedulerView && (            
+            <TimeGridRowEvent
+              event={event}
+              label={label}
+              className="rbc-addons-dnd-drag-preview"
+              style={{ top, height }}
+              getters={getters}
+              components={{ ...components, eventWrapper: NoopWrapper }}
+              accessors={{ ...accessors, ...dragAccessors }}
+              continuesEarlier={startsBeforeDay}
+              continuesLater={startsAfterDay}
+            />
+          )}
+          {event && !onSchedulerView && (            
             <TimeGridEvent
               event={event}
               label={label}

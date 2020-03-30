@@ -52,6 +52,7 @@ function TimeGridRowEvent(props) {
           left: `${top}%`,
           width: `${height}%`,
           height: `${width}%`,
+          top: `${xOffset}%`
         }}
         title={
           tooltip

@@ -272,7 +272,7 @@ class EventContainerWrapper extends React.Component {
               event={event}
               label={label}
               className="rbc-addons-dnd-drag-preview"
-              style={{ top, height }}
+              style={{ top, height, width: 100 }}
               getters={getters}
               components={{ ...components, eventWrapper: NoopWrapper }}
               accessors={{ ...accessors, ...dragAccessors }}

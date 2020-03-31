@@ -10664,6 +10664,10 @@
         var range = Math.abs(boundaryRect.top - boundaryRect.bottom);
         return this.closestSlotToPosition((point.y - boundaryRect.top) / range);
       },
+      closestSlotFromPointForRow: function closestSlotFromPointForRow(point, boundaryRect) {
+        var range = Math.abs(boundaryRect.right - boundaryRect.left);
+        return this.closestSlotToPosition((point.x - boundaryRect.left) / range);
+      },
       closestSlotFromDate: function closestSlotFromDate(date, offset) {
         if (offset === void 0) {
           offset = 0;
@@ -12569,7 +12573,8 @@
       title: title
     }) : title)];
     return React__default.createElement(EventWrapper, _extends({
-      type: "time"
+      type: "time",
+      onSchedulerView: true
     }, props), React__default.createElement("div", {
       onClick: onClick,
       onDoubleClick: onDoubleClick // style={{
@@ -12583,7 +12588,8 @@
       style: _extends({}, userProps.style, {
         left: top + "%",
         width: height + "%",
-        height: width + "%"
+        height: width + "%",
+        top: xOffset + "%"
       }),
       title: tooltip ? (typeof label === 'string' ? label + ': ' : '') + tooltip : undefined,
       className: clsx('rbc-event', className, userProps.className, {
@@ -12964,6 +12970,7 @@
           })));
         }));
       }), React__default.createElement(EventContainer, {
+        onSchedulerView: true,
         localizer: localizer,
         resource: resource,
         accessors: accessors,
@@ -13494,12 +13501,14 @@
       }
 
       this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(function () {
-        var width = getWidth(_this5.gutter);
+        if (_this5.gutter) {
+          var width = getWidth(_this5.gutter);
 
-        if (width && _this5.state.gutterWidth !== width) {
-          _this5.setState({
-            gutterWidth: width
-          });
+          if (width && _this5.state.gutterWidth !== width) {
+            _this5.setState({
+              gutterWidth: width
+            });
+          }
         }
       });
     };

@@ -2253,6 +2253,10 @@ function getSlotMetrics$1(_ref) {
       var range = Math.abs(boundaryRect.top - boundaryRect.bottom);
       return this.closestSlotToPosition((point.y - boundaryRect.top) / range);
     },
+    closestSlotFromPointForRow: function closestSlotFromPointForRow(point, boundaryRect) {
+      var range = Math.abs(boundaryRect.right - boundaryRect.left);
+      return this.closestSlotToPosition((point.x - boundaryRect.left) / range);
+    },
     closestSlotFromDate: function closestSlotFromDate(date, offset) {
       if (offset === void 0) {
         offset = 0;
@@ -3652,7 +3656,8 @@ function TimeGridRowEvent(props) {
     title: title
   }) : title)];
   return React.createElement(EventWrapper, _extends({
-    type: "time"
+    type: "time",
+    onSchedulerView: true
   }, props), React.createElement("div", {
     onClick: onClick,
     onDoubleClick: onDoubleClick // style={{
@@ -3666,7 +3671,8 @@ function TimeGridRowEvent(props) {
     style: _extends({}, userProps.style, {
       left: top + "%",
       width: height + "%",
-      height: width + "%"
+      height: width + "%",
+      top: xOffset + "%"
     }),
     title: tooltip ? (typeof label === 'string' ? label + ': ' : '') + tooltip : undefined,
     className: clsx('rbc-event', className, userProps.className, {
@@ -4047,6 +4053,7 @@ function (_React$Component) {
         })));
       }));
     }), React.createElement(EventContainer, {
+      onSchedulerView: true,
       localizer: localizer,
       resource: resource,
       accessors: accessors,
@@ -4577,12 +4584,14 @@ function (_Component) {
     }
 
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(function () {
-      var width = getWidth(_this5.gutter);
+      if (_this5.gutter) {
+        var width = getWidth(_this5.gutter);
 
-      if (width && _this5.state.gutterWidth !== width) {
-        _this5.setState({
-          gutterWidth: width
-        });
+        if (width && _this5.state.gutterWidth !== width) {
+          _this5.setState({
+            gutterWidth: width
+          });
+        }
       }
     });
   };

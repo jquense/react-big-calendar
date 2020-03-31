@@ -336,6 +336,8 @@ button.rbc-input::-moz-focus-inner {
   min-height: 40px; }
   .rbc-time-header-row .rbc-timeslot-group {
     flex: 1; }
+  .rbc-time-header-row > * + * > * {
+    border-left: 1px solid #DDD; }
 
 .rbc-time-row {
   display: flex;

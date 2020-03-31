@@ -76,17 +76,25 @@ class EventContainerWrapper extends React.Component {
 
   handleMove = (point, boundaryBox) => {
     const { event } = this.context.draggable.dragAndDropAction
-    const { accessors, slotMetrics } = this.props
+    const { accessors, slotMetrics, onSchedulerView } = this.props
 
     if (!pointInColumn(boundaryBox, point)) {
       this.reset()
       return
     }
 
-    let currentSlot = slotMetrics.closestSlotFromPoint(
-      { y: point.y - this.eventOffsetTop, x: point.x },
-      boundaryBox
-    )
+    let currentSlot
+    if (onSchedulerView) {
+      currentSlot = slotMetrics.closestSlotFromPointForRow(
+        { y: point.y, x: point.x  - this.eventOffsetLeft},
+        boundaryBox
+      )
+    } else {
+      currentSlot = slotMetrics.closestSlotFromPoint(
+        { y: point.y - this.eventOffsetTop, x: point.x },
+        boundaryBox
+      )
+    }
 
     let eventStart = accessors.start(event)
     let eventEnd = accessors.end(event)
@@ -101,7 +109,7 @@ class EventContainerWrapper extends React.Component {
 
   handleResize(point, boundaryBox) {
     let start, end, currentSlot
-    const { accessors, slotMetrics } = this.props
+    const { accessors, slotMetrics, onSchedulerView } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
     
     if (direction === 'UP') {
@@ -112,11 +120,11 @@ class EventContainerWrapper extends React.Component {
       currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
       start = accessors.start(event)
       end = dates.max(currentSlot, slotMetrics.closestSlotFromDate(start))
-    } else if (direction === 'RIGHT') {
+    } else if (direction === 'RIGHT' && onSchedulerView) {
       currentSlot = slotMetrics.closestSlotFromPointForRow(point, boundaryBox)
       start = accessors.start(event)
       end = dates.max(currentSlot, slotMetrics.closestSlotFromDate(start))
-    } else if (direction === 'LEFT') {
+    } else if (direction === 'LEFT' && onSchedulerView) {
       currentSlot = slotMetrics.closestSlotFromPointForRow(point, boundaryBox)
       end = accessors.end(event)
       start = dates.min(currentSlot, slotMetrics.closestSlotFromDate(end, -1))
@@ -159,6 +167,7 @@ class EventContainerWrapper extends React.Component {
       if (!eventNode) return false
 
       this.eventOffsetTop = point.y - getBoundsForNode(eventNode).top
+      this.eventOffsetLeft = point.x - getBoundsForNode(eventNode).left
     })
 
     selector.on('selecting', box => {

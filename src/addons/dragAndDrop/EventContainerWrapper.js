@@ -152,7 +152,7 @@ class EventContainerWrapper extends React.Component {
   _selectable = () => {
     let node = findDOMNode(this)
     let selector = (this._selector = new Selection(() =>
-      node.closest('.rbc-time-view')
+      node.closest('.rbc-time-view, .rbc-time-view-row')
     ))
 
     selector.on('beforeSelect', point => {

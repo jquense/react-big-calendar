@@ -1463,6 +1463,7 @@
   var views = {
     MONTH: 'month',
     WEEK: 'week',
+    SCHEDULER: 'scheduler',
     WORK_WEEK: 'work_week',
     DAY: 'day',
     AGENDA: 'agenda'
@@ -12535,6 +12536,376 @@
     return localizer.format(date, 'dayHeaderFormat');
   };
 
+  var Week =
+  /*#__PURE__*/
+  function (_React$Component) {
+    _inheritsLoose(Week, _React$Component);
+
+    function Week() {
+      return _React$Component.apply(this, arguments) || this;
+    }
+
+    var _proto = Week.prototype;
+
+    _proto.render = function render() {
+      var _this$props = this.props,
+          date = _this$props.date,
+          props = _objectWithoutPropertiesLoose(_this$props, ["date"]);
+
+      var range = Week.range(date, this.props);
+      return React__default.createElement(TimeGrid, _extends({}, props, {
+        range: range,
+        eventOffset: 15
+      }));
+    };
+
+    return Week;
+  }(React__default.Component);
+
+  Week.propTypes = {
+    date: propTypes.instanceOf(Date).isRequired
+  };
+  Week.defaultProps = TimeGrid.defaultProps;
+
+  Week.navigate = function (date, action) {
+    switch (action) {
+      case navigate.PREVIOUS:
+        return add(date, -1, 'week');
+
+      case navigate.NEXT:
+        return add(date, 1, 'week');
+
+      default:
+        return date;
+    }
+  };
+
+  Week.range = function (date, _ref) {
+    var localizer = _ref.localizer;
+    var firstOfWeek = localizer.startOfWeek();
+    var start = startOf(date, 'week', firstOfWeek);
+    var end = endOf(date, 'week', firstOfWeek);
+    return range(start, end);
+  };
+
+  Week.title = function (date, _ref2) {
+    var localizer = _ref2.localizer;
+
+    var _Week$range = Week.range(date, {
+      localizer: localizer
+    }),
+        start = _Week$range[0],
+        rest = _Week$range.slice(1);
+
+    return localizer.format({
+      start: start,
+      end: rest.pop()
+    }, 'dayRangeHeaderFormat');
+  };
+
+  function workWeekRange(date, options) {
+    return Week.range(date, options).filter(function (d) {
+      return [6, 0].indexOf(d.getDay()) === -1;
+    });
+  }
+
+  var WorkWeek =
+  /*#__PURE__*/
+  function (_React$Component) {
+    _inheritsLoose(WorkWeek, _React$Component);
+
+    function WorkWeek() {
+      return _React$Component.apply(this, arguments) || this;
+    }
+
+    var _proto = WorkWeek.prototype;
+
+    _proto.render = function render() {
+      var _this$props = this.props,
+          date = _this$props.date,
+          props = _objectWithoutPropertiesLoose(_this$props, ["date"]);
+
+      var range = workWeekRange(date, this.props);
+      return React__default.createElement(TimeGrid, _extends({}, props, {
+        range: range,
+        eventOffset: 15
+      }));
+    };
+
+    return WorkWeek;
+  }(React__default.Component);
+
+  WorkWeek.propTypes = {
+    date: propTypes.instanceOf(Date).isRequired
+  };
+  WorkWeek.defaultProps = TimeGrid.defaultProps;
+  WorkWeek.range = workWeekRange;
+  WorkWeek.navigate = Week.navigate;
+
+  WorkWeek.title = function (date, _ref) {
+    var localizer = _ref.localizer;
+
+    var _workWeekRange = workWeekRange(date, {
+      localizer: localizer
+    }),
+        start = _workWeekRange[0],
+        rest = _workWeekRange.slice(1);
+
+    return localizer.format({
+      start: start,
+      end: rest.pop()
+    }, 'dayRangeHeaderFormat');
+  };
+
+  function hasClass(element, className) {
+    if (element.classList) return !!className && element.classList.contains(className);
+    return (" " + (element.className.baseVal || element.className) + " ").indexOf(" " + className + " ") !== -1;
+  }
+
+  function addClass(element, className) {
+    if (element.classList) element.classList.add(className);else if (!hasClass(element, className)) if (typeof element.className === 'string') element.className = element.className + " " + className;else element.setAttribute('class', (element.className && element.className.baseVal || '') + " " + className);
+  }
+
+  function replaceClassName(origClass, classToRemove) {
+    return origClass.replace(new RegExp("(^|\\s)" + classToRemove + "(?:\\s|$)", 'g'), '$1').replace(/\s+/g, ' ').replace(/^\s*|\s*$/g, '');
+  }
+
+  function removeClass(element, className) {
+    if (element.classList) {
+      element.classList.remove(className);
+    } else if (typeof element.className === 'string') {
+      element.className = replaceClassName(element.className, className);
+    } else {
+      element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
+    }
+  }
+
+  var Agenda =
+  /*#__PURE__*/
+  function (_React$Component) {
+    _inheritsLoose(Agenda, _React$Component);
+
+    function Agenda(props) {
+      var _this;
+
+      _this = _React$Component.call(this, props) || this;
+
+      _this.renderDay = function (day, events, dayKey) {
+        var _this$props = _this.props,
+            selected = _this$props.selected,
+            getters = _this$props.getters,
+            accessors = _this$props.accessors,
+            localizer = _this$props.localizer,
+            _this$props$component = _this$props.components,
+            Event = _this$props$component.event,
+            AgendaDate = _this$props$component.date;
+        events = events.filter(function (e) {
+          return inRange$1(e, startOf(day, 'day'), endOf(day, 'day'), accessors);
+        });
+        return events.map(function (event, idx) {
+          var title = accessors.title(event);
+          var end = accessors.end(event);
+          var start = accessors.start(event);
+          var userProps = getters.eventProp(event, start, end, isSelected(event, selected));
+          var dateLabel = idx === 0 && localizer.format(day, 'agendaDateFormat');
+          var first = idx === 0 ? React__default.createElement("td", {
+            rowSpan: events.length,
+            className: "rbc-agenda-date-cell"
+          }, AgendaDate ? React__default.createElement(AgendaDate, {
+            day: day,
+            label: dateLabel
+          }) : dateLabel) : false;
+          return React__default.createElement("tr", {
+            key: dayKey + '_' + idx,
+            className: userProps.className,
+            style: userProps.style
+          }, first, React__default.createElement("td", {
+            className: "rbc-agenda-time-cell"
+          }, _this.timeRangeLabel(day, event)), React__default.createElement("td", {
+            className: "rbc-agenda-event-cell"
+          }, Event ? React__default.createElement(Event, {
+            event: event,
+            title: title
+          }) : title));
+        }, []);
+      };
+
+      _this.timeRangeLabel = function (day, event) {
+        var _this$props2 = _this.props,
+            accessors = _this$props2.accessors,
+            localizer = _this$props2.localizer,
+            components = _this$props2.components;
+        var labelClass = '',
+            TimeComponent = components.time,
+            label = localizer.messages.allDay;
+        var end = accessors.end(event);
+        var start = accessors.start(event);
+
+        if (!accessors.allDay(event)) {
+          if (eq(start, end)) {
+            label = localizer.format(start, 'agendaTimeFormat');
+          } else if (eq(start, end, 'day')) {
+            label = localizer.format({
+              start: start,
+              end: end
+            }, 'agendaTimeRangeFormat');
+          } else if (eq(day, start, 'day')) {
+            label = localizer.format(start, 'agendaTimeFormat');
+          } else if (eq(day, end, 'day')) {
+            label = localizer.format(end, 'agendaTimeFormat');
+          }
+        }
+
+        if (gt(day, start, 'day')) labelClass = 'rbc-continues-prior';
+        if (lt(day, end, 'day')) labelClass += ' rbc-continues-after';
+        return React__default.createElement("span", {
+          className: labelClass.trim()
+        }, TimeComponent ? React__default.createElement(TimeComponent, {
+          event: event,
+          day: day,
+          label: label
+        }) : label);
+      };
+
+      _this._adjustHeader = function () {
+        if (!_this.tbodyRef.current) return;
+        var header = _this.headerRef.current;
+        var firstRow = _this.tbodyRef.current.firstChild;
+        if (!firstRow) return;
+        var isOverflowing = _this.contentRef.current.scrollHeight > _this.contentRef.current.clientHeight;
+        var widths = _this._widths || [];
+        _this._widths = [getWidth(firstRow.children[0]), getWidth(firstRow.children[1])];
+
+        if (widths[0] !== _this._widths[0] || widths[1] !== _this._widths[1]) {
+          _this.dateColRef.current.style.width = _this._widths[0] + 'px';
+          _this.timeColRef.current.style.width = _this._widths[1] + 'px';
+        }
+
+        if (isOverflowing) {
+          addClass(header, 'rbc-header-overflowing');
+          header.style.marginRight = scrollbarSize() + 'px';
+        } else {
+          removeClass(header, 'rbc-header-overflowing');
+        }
+      };
+
+      _this.headerRef = React__default.createRef();
+      _this.dateColRef = React__default.createRef();
+      _this.timeColRef = React__default.createRef();
+      _this.contentRef = React__default.createRef();
+      _this.tbodyRef = React__default.createRef();
+      return _this;
+    }
+
+    var _proto = Agenda.prototype;
+
+    _proto.componentDidMount = function componentDidMount() {
+      this._adjustHeader();
+    };
+
+    _proto.componentDidUpdate = function componentDidUpdate() {
+      this._adjustHeader();
+    };
+
+    _proto.render = function render() {
+      var _this2 = this;
+
+      var _this$props3 = this.props,
+          length = _this$props3.length,
+          date = _this$props3.date,
+          events = _this$props3.events,
+          accessors = _this$props3.accessors,
+          localizer = _this$props3.localizer;
+      var messages = localizer.messages;
+      var end = add(date, length, 'day');
+      var range$1 = range(date, end, 'day');
+      events = events.filter(function (event) {
+        return inRange$1(event, date, end, accessors);
+      });
+      events.sort(function (a, b) {
+        return +accessors.start(a) - +accessors.start(b);
+      });
+      return React__default.createElement("div", {
+        className: "rbc-agenda-view"
+      }, events.length !== 0 ? React__default.createElement(React__default.Fragment, null, React__default.createElement("table", {
+        ref: this.headerRef,
+        className: "rbc-agenda-table"
+      }, React__default.createElement("thead", null, React__default.createElement("tr", null, React__default.createElement("th", {
+        className: "rbc-header",
+        ref: this.dateColRef
+      }, messages.date), React__default.createElement("th", {
+        className: "rbc-header",
+        ref: this.timeColRef
+      }, messages.time), React__default.createElement("th", {
+        className: "rbc-header"
+      }, messages.event)))), React__default.createElement("div", {
+        className: "rbc-agenda-content",
+        ref: this.contentRef
+      }, React__default.createElement("table", {
+        className: "rbc-agenda-table"
+      }, React__default.createElement("tbody", {
+        ref: this.tbodyRef
+      }, range$1.map(function (day, idx) {
+        return _this2.renderDay(day, events, idx);
+      }))))) : React__default.createElement("span", {
+        className: "rbc-agenda-empty"
+      }, messages.noEventsInRange));
+    };
+
+    return Agenda;
+  }(React__default.Component);
+
+  Agenda.propTypes = {
+    events: propTypes.array,
+    date: propTypes.instanceOf(Date),
+    length: propTypes.number.isRequired,
+    selected: propTypes.object,
+    accessors: propTypes.object.isRequired,
+    components: propTypes.object.isRequired,
+    getters: propTypes.object.isRequired,
+    localizer: propTypes.object.isRequired
+  };
+  Agenda.defaultProps = {
+    length: 30
+  };
+
+  Agenda.range = function (start, _ref) {
+    var _ref$length = _ref.length,
+        length = _ref$length === void 0 ? Agenda.defaultProps.length : _ref$length;
+    var end = add(start, length, 'day');
+    return {
+      start: start,
+      end: end
+    };
+  };
+
+  Agenda.navigate = function (date, action, _ref2) {
+    var _ref2$length = _ref2.length,
+        length = _ref2$length === void 0 ? Agenda.defaultProps.length : _ref2$length;
+
+    switch (action) {
+      case navigate.PREVIOUS:
+        return add(date, -length, 'day');
+
+      case navigate.NEXT:
+        return add(date, length, 'day');
+
+      default:
+        return date;
+    }
+  };
+
+  Agenda.title = function (start, _ref3) {
+    var _ref3$length = _ref3.length,
+        length = _ref3$length === void 0 ? Agenda.defaultProps.length : _ref3$length,
+        localizer = _ref3.localizer;
+    var end = add(start, length, 'day');
+    return localizer.format({
+      start: start,
+      end: end
+    }, 'agendaHeaderFormat');
+  };
+
   /* eslint-disable react/prop-types */
 
   function TimeGridRowEvent(props) {
@@ -13568,38 +13939,38 @@
     scrollToTime: startOf(new Date(), 'day')
   };
 
-  var Week =
+  var Scheduler =
   /*#__PURE__*/
   function (_React$Component) {
-    _inheritsLoose(Week, _React$Component);
+    _inheritsLoose(Scheduler, _React$Component);
 
-    function Week() {
+    function Scheduler() {
       return _React$Component.apply(this, arguments) || this;
     }
 
-    var _proto = Week.prototype;
+    var _proto = Scheduler.prototype;
 
     _proto.render = function render() {
       var _this$props = this.props,
           date = _this$props.date,
           props = _objectWithoutPropertiesLoose(_this$props, ["date"]);
 
-      var range = Week.range(date, this.props);
+      var range = Scheduler.range(date, this.props);
       return React__default.createElement(TimeGridRow, _extends({}, props, {
         range: range,
         eventOffset: 15
-      })); // return <TimeGrid {...props} range={range} eventOffset={15} />
+      }));
     };
 
-    return Week;
+    return Scheduler;
   }(React__default.Component);
 
-  Week.propTypes = {
+  Scheduler.propTypes = {
     date: propTypes.instanceOf(Date).isRequired
   };
-  Week.defaultProps = TimeGrid.defaultProps;
+  Scheduler.defaultProps = TimeGridRow.defaultProps;
 
-  Week.navigate = function (date, action) {
+  Scheduler.navigate = function (date, action) {
     switch (action) {
       case navigate.PREVIOUS:
         return add(date, -1, 'week');
@@ -13612,7 +13983,7 @@
     }
   };
 
-  Week.range = function (date, _ref) {
+  Scheduler.range = function (date, _ref) {
     var localizer = _ref.localizer;
     var firstOfWeek = localizer.startOfWeek();
     var start = startOf(date, 'week', firstOfWeek);
@@ -13620,326 +13991,23 @@
     return range(start, end);
   };
 
-  Week.title = function (date, _ref2) {
+  Scheduler.title = function (date, _ref2) {
     var localizer = _ref2.localizer;
 
-    var _Week$range = Week.range(date, {
+    var _Scheduler$range = Scheduler.range(date, {
       localizer: localizer
     }),
-        start = _Week$range[0],
-        rest = _Week$range.slice(1);
+        start = _Scheduler$range[0],
+        rest = _Scheduler$range.slice(1);
 
     return localizer.format({
       start: start,
       end: rest.pop()
     }, 'dayRangeHeaderFormat');
-  };
-
-  function workWeekRange(date, options) {
-    return Week.range(date, options).filter(function (d) {
-      return [6, 0].indexOf(d.getDay()) === -1;
-    });
-  }
-
-  var WorkWeek =
-  /*#__PURE__*/
-  function (_React$Component) {
-    _inheritsLoose(WorkWeek, _React$Component);
-
-    function WorkWeek() {
-      return _React$Component.apply(this, arguments) || this;
-    }
-
-    var _proto = WorkWeek.prototype;
-
-    _proto.render = function render() {
-      var _this$props = this.props,
-          date = _this$props.date,
-          props = _objectWithoutPropertiesLoose(_this$props, ["date"]);
-
-      var range = workWeekRange(date, this.props);
-      return React__default.createElement(TimeGrid, _extends({}, props, {
-        range: range,
-        eventOffset: 15
-      }));
-    };
-
-    return WorkWeek;
-  }(React__default.Component);
-
-  WorkWeek.propTypes = {
-    date: propTypes.instanceOf(Date).isRequired
-  };
-  WorkWeek.defaultProps = TimeGrid.defaultProps;
-  WorkWeek.range = workWeekRange;
-  WorkWeek.navigate = Week.navigate;
-
-  WorkWeek.title = function (date, _ref) {
-    var localizer = _ref.localizer;
-
-    var _workWeekRange = workWeekRange(date, {
-      localizer: localizer
-    }),
-        start = _workWeekRange[0],
-        rest = _workWeekRange.slice(1);
-
-    return localizer.format({
-      start: start,
-      end: rest.pop()
-    }, 'dayRangeHeaderFormat');
-  };
-
-  function hasClass(element, className) {
-    if (element.classList) return !!className && element.classList.contains(className);
-    return (" " + (element.className.baseVal || element.className) + " ").indexOf(" " + className + " ") !== -1;
-  }
-
-  function addClass(element, className) {
-    if (element.classList) element.classList.add(className);else if (!hasClass(element, className)) if (typeof element.className === 'string') element.className = element.className + " " + className;else element.setAttribute('class', (element.className && element.className.baseVal || '') + " " + className);
-  }
-
-  function replaceClassName(origClass, classToRemove) {
-    return origClass.replace(new RegExp("(^|\\s)" + classToRemove + "(?:\\s|$)", 'g'), '$1').replace(/\s+/g, ' ').replace(/^\s*|\s*$/g, '');
-  }
-
-  function removeClass(element, className) {
-    if (element.classList) {
-      element.classList.remove(className);
-    } else if (typeof element.className === 'string') {
-      element.className = replaceClassName(element.className, className);
-    } else {
-      element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
-    }
-  }
-
-  var Agenda =
-  /*#__PURE__*/
-  function (_React$Component) {
-    _inheritsLoose(Agenda, _React$Component);
-
-    function Agenda(props) {
-      var _this;
-
-      _this = _React$Component.call(this, props) || this;
-
-      _this.renderDay = function (day, events, dayKey) {
-        var _this$props = _this.props,
-            selected = _this$props.selected,
-            getters = _this$props.getters,
-            accessors = _this$props.accessors,
-            localizer = _this$props.localizer,
-            _this$props$component = _this$props.components,
-            Event = _this$props$component.event,
-            AgendaDate = _this$props$component.date;
-        events = events.filter(function (e) {
-          return inRange$1(e, startOf(day, 'day'), endOf(day, 'day'), accessors);
-        });
-        return events.map(function (event, idx) {
-          var title = accessors.title(event);
-          var end = accessors.end(event);
-          var start = accessors.start(event);
-          var userProps = getters.eventProp(event, start, end, isSelected(event, selected));
-          var dateLabel = idx === 0 && localizer.format(day, 'agendaDateFormat');
-          var first = idx === 0 ? React__default.createElement("td", {
-            rowSpan: events.length,
-            className: "rbc-agenda-date-cell"
-          }, AgendaDate ? React__default.createElement(AgendaDate, {
-            day: day,
-            label: dateLabel
-          }) : dateLabel) : false;
-          return React__default.createElement("tr", {
-            key: dayKey + '_' + idx,
-            className: userProps.className,
-            style: userProps.style
-          }, first, React__default.createElement("td", {
-            className: "rbc-agenda-time-cell"
-          }, _this.timeRangeLabel(day, event)), React__default.createElement("td", {
-            className: "rbc-agenda-event-cell"
-          }, Event ? React__default.createElement(Event, {
-            event: event,
-            title: title
-          }) : title));
-        }, []);
-      };
-
-      _this.timeRangeLabel = function (day, event) {
-        var _this$props2 = _this.props,
-            accessors = _this$props2.accessors,
-            localizer = _this$props2.localizer,
-            components = _this$props2.components;
-        var labelClass = '',
-            TimeComponent = components.time,
-            label = localizer.messages.allDay;
-        var end = accessors.end(event);
-        var start = accessors.start(event);
-
-        if (!accessors.allDay(event)) {
-          if (eq(start, end)) {
-            label = localizer.format(start, 'agendaTimeFormat');
-          } else if (eq(start, end, 'day')) {
-            label = localizer.format({
-              start: start,
-              end: end
-            }, 'agendaTimeRangeFormat');
-          } else if (eq(day, start, 'day')) {
-            label = localizer.format(start, 'agendaTimeFormat');
-          } else if (eq(day, end, 'day')) {
-            label = localizer.format(end, 'agendaTimeFormat');
-          }
-        }
-
-        if (gt(day, start, 'day')) labelClass = 'rbc-continues-prior';
-        if (lt(day, end, 'day')) labelClass += ' rbc-continues-after';
-        return React__default.createElement("span", {
-          className: labelClass.trim()
-        }, TimeComponent ? React__default.createElement(TimeComponent, {
-          event: event,
-          day: day,
-          label: label
-        }) : label);
-      };
-
-      _this._adjustHeader = function () {
-        if (!_this.tbodyRef.current) return;
-        var header = _this.headerRef.current;
-        var firstRow = _this.tbodyRef.current.firstChild;
-        if (!firstRow) return;
-        var isOverflowing = _this.contentRef.current.scrollHeight > _this.contentRef.current.clientHeight;
-        var widths = _this._widths || [];
-        _this._widths = [getWidth(firstRow.children[0]), getWidth(firstRow.children[1])];
-
-        if (widths[0] !== _this._widths[0] || widths[1] !== _this._widths[1]) {
-          _this.dateColRef.current.style.width = _this._widths[0] + 'px';
-          _this.timeColRef.current.style.width = _this._widths[1] + 'px';
-        }
-
-        if (isOverflowing) {
-          addClass(header, 'rbc-header-overflowing');
-          header.style.marginRight = scrollbarSize() + 'px';
-        } else {
-          removeClass(header, 'rbc-header-overflowing');
-        }
-      };
-
-      _this.headerRef = React__default.createRef();
-      _this.dateColRef = React__default.createRef();
-      _this.timeColRef = React__default.createRef();
-      _this.contentRef = React__default.createRef();
-      _this.tbodyRef = React__default.createRef();
-      return _this;
-    }
-
-    var _proto = Agenda.prototype;
-
-    _proto.componentDidMount = function componentDidMount() {
-      this._adjustHeader();
-    };
-
-    _proto.componentDidUpdate = function componentDidUpdate() {
-      this._adjustHeader();
-    };
-
-    _proto.render = function render() {
-      var _this2 = this;
-
-      var _this$props3 = this.props,
-          length = _this$props3.length,
-          date = _this$props3.date,
-          events = _this$props3.events,
-          accessors = _this$props3.accessors,
-          localizer = _this$props3.localizer;
-      var messages = localizer.messages;
-      var end = add(date, length, 'day');
-      var range$1 = range(date, end, 'day');
-      events = events.filter(function (event) {
-        return inRange$1(event, date, end, accessors);
-      });
-      events.sort(function (a, b) {
-        return +accessors.start(a) - +accessors.start(b);
-      });
-      return React__default.createElement("div", {
-        className: "rbc-agenda-view"
-      }, events.length !== 0 ? React__default.createElement(React__default.Fragment, null, React__default.createElement("table", {
-        ref: this.headerRef,
-        className: "rbc-agenda-table"
-      }, React__default.createElement("thead", null, React__default.createElement("tr", null, React__default.createElement("th", {
-        className: "rbc-header",
-        ref: this.dateColRef
-      }, messages.date), React__default.createElement("th", {
-        className: "rbc-header",
-        ref: this.timeColRef
-      }, messages.time), React__default.createElement("th", {
-        className: "rbc-header"
-      }, messages.event)))), React__default.createElement("div", {
-        className: "rbc-agenda-content",
-        ref: this.contentRef
-      }, React__default.createElement("table", {
-        className: "rbc-agenda-table"
-      }, React__default.createElement("tbody", {
-        ref: this.tbodyRef
-      }, range$1.map(function (day, idx) {
-        return _this2.renderDay(day, events, idx);
-      }))))) : React__default.createElement("span", {
-        className: "rbc-agenda-empty"
-      }, messages.noEventsInRange));
-    };
-
-    return Agenda;
-  }(React__default.Component);
-
-  Agenda.propTypes = {
-    events: propTypes.array,
-    date: propTypes.instanceOf(Date),
-    length: propTypes.number.isRequired,
-    selected: propTypes.object,
-    accessors: propTypes.object.isRequired,
-    components: propTypes.object.isRequired,
-    getters: propTypes.object.isRequired,
-    localizer: propTypes.object.isRequired
-  };
-  Agenda.defaultProps = {
-    length: 30
-  };
-
-  Agenda.range = function (start, _ref) {
-    var _ref$length = _ref.length,
-        length = _ref$length === void 0 ? Agenda.defaultProps.length : _ref$length;
-    var end = add(start, length, 'day');
-    return {
-      start: start,
-      end: end
-    };
-  };
-
-  Agenda.navigate = function (date, action, _ref2) {
-    var _ref2$length = _ref2.length,
-        length = _ref2$length === void 0 ? Agenda.defaultProps.length : _ref2$length;
-
-    switch (action) {
-      case navigate.PREVIOUS:
-        return add(date, -length, 'day');
-
-      case navigate.NEXT:
-        return add(date, length, 'day');
-
-      default:
-        return date;
-    }
-  };
-
-  Agenda.title = function (start, _ref3) {
-    var _ref3$length = _ref3.length,
-        length = _ref3$length === void 0 ? Agenda.defaultProps.length : _ref3$length,
-        localizer = _ref3.localizer;
-    var end = add(start, length, 'day');
-    return localizer.format({
-      start: start,
-      end: end
-    }, 'agendaHeaderFormat');
   };
 
   var _VIEWS;
-  var VIEWS = (_VIEWS = {}, _VIEWS[views.MONTH] = MonthView, _VIEWS[views.WEEK] = Week, _VIEWS[views.WORK_WEEK] = WorkWeek, _VIEWS[views.DAY] = Day, _VIEWS[views.AGENDA] = Agenda, _VIEWS);
+  var VIEWS = (_VIEWS = {}, _VIEWS[views.MONTH] = MonthView, _VIEWS[views.WEEK] = Week, _VIEWS[views.WORK_WEEK] = WorkWeek, _VIEWS[views.SCHEDULER] = Scheduler, _VIEWS[views.DAY] = Day, _VIEWS[views.AGENDA] = Agenda, _VIEWS);
 
   function moveDate(View, _ref) {
     var action = _ref.action,

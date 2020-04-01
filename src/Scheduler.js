@@ -2,24 +2,24 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
-import TimeGrid from './TimeGrid'
+import TimeGridRow from './TimeGridRow'
 
-class Week extends React.Component {
+class Scheduler extends React.Component {
   render() {
     let { date, ...props } = this.props
-    let range = Week.range(date, this.props)
+    let range = Scheduler.range(date, this.props)
 
-    return <TimeGrid {...props} range={range} eventOffset={15} />
+    return <TimeGridRow {...props} range={range} eventOffset={15} />
   }
 }
 
-Week.propTypes = {
+Scheduler.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
 }
 
-Week.defaultProps = TimeGrid.defaultProps
+Scheduler.defaultProps = TimeGridRow.defaultProps
 
-Week.navigate = (date, action) => {
+Scheduler.navigate = (date, action) => {
   switch (action) {
     case navigate.PREVIOUS:
       return dates.add(date, -1, 'week')
@@ -32,7 +32,7 @@ Week.navigate = (date, action) => {
   }
 }
 
-Week.range = (date, { localizer }) => {
+Scheduler.range = (date, { localizer }) => {
   let firstOfWeek = localizer.startOfWeek()
   let start = dates.startOf(date, 'week', firstOfWeek)
   let end = dates.endOf(date, 'week', firstOfWeek)
@@ -40,9 +40,9 @@ Week.range = (date, { localizer }) => {
   return dates.range(start, end)
 }
 
-Week.title = (date, { localizer }) => {
-  let [start, ...rest] = Week.range(date, { localizer })
+Scheduler.title = (date, { localizer }) => {
+  let [start, ...rest] = Scheduler.range(date, { localizer })
   return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')
 }
 
-export default Week
+export default Scheduler

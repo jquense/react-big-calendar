@@ -34,6 +34,19 @@ storiesOf('Big Calendar', module)
       />
     )
   })
+  .add('scheduler view', () => {
+    return (
+      <Calendar
+        views={["day", "week", "scheduler"]}
+        defaultView={Views.SCHEDULER}
+        min={moment('12:00am', 'h:mma').toDate()}
+        max={moment('11:59pm', 'h:mma').toDate()}
+        events={events}
+        onSelectEvent={action('event selected')}
+        defaultDate={new Date()}
+      />
+    )
+  })
 
   .add('selectable', () => {
     return (

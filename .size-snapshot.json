@@ -1,16 +1,16 @@
 {
   "./dist/react-big-calendar.js": {
-    "bundled": 534307,
+    "bundled": 534089,
     "minified": 162152,
     "gzipped": 45848
   },
   "./dist/react-big-calendar.min.js": {
-    "bundled": 466825,
+    "bundled": 466607,
     "minified": 140467,
     "gzipped": 41482
   },
   "dist/react-big-calendar.esm.js": {
-    "bundled": 200262,
+    "bundled": 200058,
     "minified": 97827,
     "gzipped": 21068,
     "treeshaked": {

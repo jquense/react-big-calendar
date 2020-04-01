@@ -3660,14 +3660,7 @@ function TimeGridRowEvent(props) {
     onSchedulerView: true
   }, props), React.createElement("div", {
     onClick: onClick,
-    onDoubleClick: onDoubleClick // style={{
-    //   ...userProps.style,
-    //   top: `${top}%`,
-    //   height: `${height}%`,
-    //   [rtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-    //   width: `${width}%`,
-    // }}
-    ,
+    onDoubleClick: onDoubleClick,
     style: _extends({}, userProps.style, {
       left: top + "%",
       width: height + "%",

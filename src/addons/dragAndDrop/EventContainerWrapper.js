@@ -16,6 +16,13 @@ const pointInColumn = (bounds, { x, y }) => {
   const { left, right, top } = bounds
   return x < right + 10 && x > left && y > top
 }
+
+const pointInRow = (bounds, point) => {
+  const { x, y } = point
+  const { left, right, top, bottom } = bounds
+  return y > top + 10 && y < bottom && x > left && x < right
+}
+
 const propTypes = {}
 
 class EventContainerWrapper extends React.Component {
@@ -78,7 +85,10 @@ class EventContainerWrapper extends React.Component {
     const { event } = this.context.draggable.dragAndDropAction
     const { accessors, slotMetrics, onSchedulerView } = this.props
 
-    if (!pointInColumn(boundaryBox, point)) {
+    if (!onSchedulerView && !pointInColumn(boundaryBox, point)) {
+      this.reset()
+      return
+    } else if (onSchedulerView && !pointInRow(boundaryBox, point)) {
       this.reset()
       return
     }
@@ -86,7 +96,7 @@ class EventContainerWrapper extends React.Component {
     let currentSlot
     if (onSchedulerView) {
       currentSlot = slotMetrics.closestSlotFromPointForRow(
-        { y: point.y, x: point.x  - this.eventOffsetLeft},
+        { y: point.y, x: point.x - this.eventOffsetLeft },
         boundaryBox
       )
     } else {

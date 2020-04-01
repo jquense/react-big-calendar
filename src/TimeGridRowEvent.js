@@ -43,13 +43,6 @@ function TimeGridRowEvent(props) {
       <div
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        // style={{
-        //   ...userProps.style,
-        //   top: `${top}%`,
-        //   height: `${height}%`,
-        //   [rtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-        //   width: `${width}%`,
-        // }}
         style={{
           ...userProps.style,
           left: `${top}%`,

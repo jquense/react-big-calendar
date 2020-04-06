@@ -4131,7 +4131,7 @@ function (_React$Component) {
       };
 
       var selectionState = function selectionState(point) {
-        var currentSlot = _this.slotMetrics.closestSlotFromPoint(point, getBoundsForNode(node));
+        var currentSlot = _this.slotMetrics.closestSlotFromPointForRow(point, getBoundsForNode(node));
 
         if (!_this.state.selecting) {
           _this._initialSlot = currentSlot;

@@ -273,7 +273,7 @@ class DayRow extends React.Component {
     }
 
     let selectionState = point => {
-      let currentSlot = this.slotMetrics.closestSlotFromPoint(
+      let currentSlot = this.slotMetrics.closestSlotFromPointForRow(
         point,
         getBoundsForNode(node)
       )

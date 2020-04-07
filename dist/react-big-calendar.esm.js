@@ -5017,7 +5017,8 @@ function (_React$Component) {
     var range = Scheduler.range(date, this.props);
     return React.createElement(TimeGridRow, _extends({}, props, {
       range: range,
-      eventOffset: 15
+      eventOffset: 15,
+      scrollToTime: date
     }));
   };
 

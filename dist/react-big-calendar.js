@@ -13828,6 +13828,7 @@
           date: date
         }));
       })), React__default.createElement("div", {
+        ref: this.contentRef,
         className: clsx("rbc-time-content-row-xx"),
         onScroll: this.handleScroll
       }, resources && React__default.createElement("div", {
@@ -13847,7 +13848,6 @@
           resource: resource
         })));
       })), React__default.createElement("div", {
-        ref: this.contentRef,
         className: "rbc-time-column-resource-xx"
       }, this.renderEvents(range, rangeEvents, getNow()))));
     };
@@ -13880,7 +13880,8 @@
     _proto.applyScroll = function applyScroll() {
       if (this._scrollRatio) {
         var content = this.contentRef.current;
-        content.scrollLeft = content.scrollWidth * this._scrollRatio; // Only do this once
+        var gutterWidth = this.props.width || this.state.gutterWidth;
+        content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio; // Only do this once
 
         this._scrollRatio = null;
       }

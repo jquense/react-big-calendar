@@ -316,9 +316,9 @@ export default class TimeGridRow extends Component {
     const { range, scrollToTime } = props
     
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'week')
-    const totalMillis = dates.diff(range.slice(-1)[0], range[0])
+    const totalMillis = dates.diff(dates.endOf(range.slice(-1)[0], 'day'), range[0])
     
-    this._scrollRatio = (totalMillis - diffMillis) / totalMillis
+    this._scrollRatio = diffMillis / totalMillis
   }
 
   checkOverflow = () => {

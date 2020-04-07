@@ -306,19 +306,19 @@ export default class TimeGridRow extends Component {
   applyScroll() {
     if (this._scrollRatio) {
       const content = this.contentRef.current
-      content.scrollTop = content.scrollHeight * this._scrollRatio
+      content.scrollLeft = content.scrollWidth * this._scrollRatio
       // Only do this once
       this._scrollRatio = null
     }
   }
 
   calculateScroll(props = this.props) {
-    const { min, max, scrollToTime } = props
-
-    const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
-    const totalMillis = dates.diff(max, min)
-
-    this._scrollRatio = diffMillis / totalMillis
+    const { range, scrollToTime } = props
+    
+    const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'week')
+    const totalMillis = dates.diff(range.slice(-1)[0], range[0])
+    
+    this._scrollRatio = (totalMillis - diffMillis) / totalMillis
   }
 
   checkOverflow = () => {

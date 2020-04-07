@@ -4888,7 +4888,6 @@ function (_Component) {
         date: date
       }));
     })), React.createElement("div", {
-      ref: this.contentRef,
       className: clsx("rbc-time-content-row-xx"),
       onScroll: this.handleScroll
     }, resources && React.createElement("div", {
@@ -4908,6 +4907,7 @@ function (_Component) {
         resource: resource
       })));
     })), React.createElement("div", {
+      ref: this.contentRef,
       className: "rbc-time-column-resource-xx"
     }, this.renderEvents(range, rangeEvents, getNow()))));
   };

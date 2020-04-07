@@ -13828,7 +13828,6 @@
           date: date
         }));
       })), React__default.createElement("div", {
-        ref: this.contentRef,
         className: clsx("rbc-time-content-row-xx"),
         onScroll: this.handleScroll
       }, resources && React__default.createElement("div", {
@@ -13848,6 +13847,7 @@
           resource: resource
         })));
       })), React__default.createElement("div", {
+        ref: this.contentRef,
         className: "rbc-time-column-resource-xx"
       }, this.renderEvents(range, rangeEvents, getNow()))));
     };

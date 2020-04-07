@@ -13895,9 +13895,10 @@
           min = _props.min,
           max = _props.max,
           scrollToTime = _props.scrollToTime;
+      var newMin = add(min, 30, 'minutes');
       var beginingOfWeek = startOf(scrollToTime, 'week');
       var scrollToWeekDay = diff(scrollToTime, beginingOfWeek, 'day');
-      var diffMillis = diff(max, min) * scrollToWeekDay;
+      var diffMillis = diff(max, newMin) * scrollToWeekDay;
       var totalMillis = diff(max, min) * 7;
       this._scrollRatio = diffMillis / totalMillis;
     };
@@ -13958,10 +13959,11 @@
           props = _objectWithoutPropertiesLoose(_this$props, ["date"]);
 
       var range = Scheduler.range(date, this.props);
-      return React__default.createElement(TimeGridRow, _extends({}, props, {
-        range: range,
-        eventOffset: 15,
+      return React__default.createElement(TimeGridRow, _extends({
         scrollToTime: date
+      }, props, {
+        range: range,
+        eventOffset: 15
       }));
     };
 

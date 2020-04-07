@@ -173,8 +173,8 @@ class DayRow extends React.Component {
         )}
         {isNow && (
           <div
-            className="rbc-current-time-indicator"
-            style={{ top: `${this.state.timeIndicatorPosition}%` }}
+            className="rbc-current-time-indicator-row-xx"
+            style={{ left: `${this.state.timeIndicatorPosition}%` }}
           />
         )}
       </div>

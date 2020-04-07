@@ -185,3 +185,14 @@
   background-color: $current-time-color;
   pointer-events: none;
 }
+
+.rbc-current-time-indicator-row-xx {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+
+  background-color: $current-time-color;
+  pointer-events: none;
+}

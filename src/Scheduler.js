@@ -9,7 +9,7 @@ class Scheduler extends React.Component {
     let { date, ...props } = this.props
     let range = Scheduler.range(date, this.props)
 
-    return <TimeGridRow {...props} range={range} eventOffset={15} />
+    return <TimeGridRow {...props} range={range} eventOffset={15} scrollToTime={date}/>
   }
 }
 

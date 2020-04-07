@@ -13892,10 +13892,13 @@
       }
 
       var _props = props,
-          range = _props.range,
+          min = _props.min,
+          max = _props.max,
           scrollToTime = _props.scrollToTime;
-      var diffMillis = scrollToTime - startOf(scrollToTime, 'week');
-      var totalMillis = diff(endOf(range.slice(-1)[0], 'day'), range[0]);
+      var beginingOfWeek = startOf(scrollToTime, 'week');
+      var scrollToWeekDay = diff(scrollToTime, beginingOfWeek, 'day');
+      var diffMillis = diff(max, min) * scrollToWeekDay;
+      var totalMillis = diff(max, min) * 7;
       this._scrollRatio = diffMillis / totalMillis;
     };
 

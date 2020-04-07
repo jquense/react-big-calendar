@@ -4955,10 +4955,9 @@ function (_Component) {
         min = _props.min,
         max = _props.max,
         scrollToTime = _props.scrollToTime;
-    var newMin = add(min, 30, 'minutes');
     var beginingOfWeek = startOf(scrollToTime, 'week');
     var scrollToWeekDay = diff(scrollToTime, beginingOfWeek, 'day');
-    var diffMillis = diff(max, newMin) * scrollToWeekDay;
+    var diffMillis = diff(max, min) * scrollToWeekDay;
     var totalMillis = diff(max, min) * 7;
     this._scrollRatio = diffMillis / totalMillis;
   };

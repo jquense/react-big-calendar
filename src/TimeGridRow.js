@@ -247,7 +247,8 @@ export default class TimeGridRow extends Component {
             })}
             </div>
 
-        <div          
+        <div  
+          ref={this.contentRef}         
           className={clsx("rbc-time-content-row-xx")}
           onScroll={this.handleScroll}
         >
@@ -272,7 +273,7 @@ export default class TimeGridRow extends Component {
           )}
         </div>}
           
-        <div ref={this.contentRef} className='rbc-time-column-resource-xx'>
+        <div className='rbc-time-column-resource-xx'>
           {this.renderEvents(range, rangeEvents, getNow())}
           </div>
         </div>
@@ -305,7 +306,8 @@ export default class TimeGridRow extends Component {
   applyScroll() {
     if (this._scrollRatio) {
       const content = this.contentRef.current
-      content.scrollLeft = content.scrollWidth * this._scrollRatio
+      const gutterWidth = this.props.width || this.state.gutterWidth
+      content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio
       // Only do this once
       this._scrollRatio = null
     }

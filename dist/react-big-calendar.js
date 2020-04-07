@@ -13895,8 +13895,8 @@
           range = _props.range,
           scrollToTime = _props.scrollToTime;
       var diffMillis = scrollToTime - startOf(scrollToTime, 'week');
-      var totalMillis = diff(range.slice(-1)[0], range[0]);
-      this._scrollRatio = (totalMillis - diffMillis) / totalMillis;
+      var totalMillis = diff(endOf(range.slice(-1)[0], 'day'), range[0]);
+      this._scrollRatio = diffMillis / totalMillis;
     };
 
     return TimeGridRow;

@@ -247,8 +247,7 @@ export default class TimeGridRow extends Component {
             })}
             </div>
 
-        <div
-          ref={this.contentRef}
+        <div          
           className={clsx("rbc-time-content-row-xx")}
           onScroll={this.handleScroll}
         >
@@ -273,7 +272,7 @@ export default class TimeGridRow extends Component {
           )}
         </div>}
           
-        <div className='rbc-time-column-resource-xx'>
+        <div ref={this.contentRef} className='rbc-time-column-resource-xx'>
           {this.renderEvents(range, rangeEvents, getNow())}
           </div>
         </div>

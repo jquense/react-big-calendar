@@ -13350,9 +13350,9 @@
           height: height
         }
       }, React__default.createElement("span", null, localizer.format(selectDates, 'selectRangeFormat'))), isNow && React__default.createElement("div", {
-        className: "rbc-current-time-indicator",
+        className: "rbc-current-time-indicator-row-xx",
         style: {
-          top: this.state.timeIndicatorPosition + "%"
+          left: this.state.timeIndicatorPosition + "%"
         }
       }));
     };
@@ -13880,7 +13880,7 @@
     _proto.applyScroll = function applyScroll() {
       if (this._scrollRatio) {
         var content = this.contentRef.current;
-        content.scrollTop = content.scrollHeight * this._scrollRatio; // Only do this once
+        content.scrollLeft = content.scrollWidth * this._scrollRatio; // Only do this once
 
         this._scrollRatio = null;
       }
@@ -13892,12 +13892,11 @@
       }
 
       var _props = props,
-          min = _props.min,
-          max = _props.max,
+          range = _props.range,
           scrollToTime = _props.scrollToTime;
-      var diffMillis = scrollToTime - startOf(scrollToTime, 'day');
-      var totalMillis = diff(max, min);
-      this._scrollRatio = diffMillis / totalMillis;
+      var diffMillis = scrollToTime - startOf(scrollToTime, 'week');
+      var totalMillis = diff(range.slice(-1)[0], range[0]);
+      this._scrollRatio = (totalMillis - diffMillis) / totalMillis;
     };
 
     return TimeGridRow;

@@ -570,3 +570,12 @@ button.rbc-input::-moz-focus-inner {
   height: 1px;
   background-color: #74ad31;
   pointer-events: none; }
+
+.rbc-current-time-indicator-row-xx {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #74ad31;
+  pointer-events: none; }

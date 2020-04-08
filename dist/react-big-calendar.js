@@ -13393,84 +13393,6 @@
     timeslots: 2
   };
 
-  var TimeGutterRow =
-  /*#__PURE__*/
-  function (_Component) {
-    _inheritsLoose(TimeGutterRow, _Component);
-
-    function TimeGutterRow() {
-      var _this;
-
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      _this = _Component.call.apply(_Component, [this].concat(args)) || this;
-
-      _this.renderSlot = function (value, idx) {
-        if (idx !== 0) return null;
-        var _this$props = _this.props,
-            localizer = _this$props.localizer,
-            getNow = _this$props.getNow;
-
-        var isNow = _this.slotMetrics.dateIsInGroup(getNow(), idx);
-
-        return React__default.createElement("span", {
-          className: clsx('rbc-label', isNow && 'rbc-now')
-        }, localizer.format(value, 'timeGutterFormat'));
-      };
-
-      var _this$props2 = _this.props,
-          min = _this$props2.min,
-          max = _this$props2.max,
-          timeslots = _this$props2.timeslots,
-          step = _this$props2.step;
-      _this.slotMetrics = getSlotMetrics$1({
-        min: min,
-        max: max,
-        timeslots: timeslots,
-        step: step
-      });
-      return _this;
-    }
-
-    var _proto = TimeGutterRow.prototype;
-
-    _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-      var min = nextProps.min,
-          max = nextProps.max,
-          timeslots = nextProps.timeslots,
-          step = nextProps.step;
-      this.slotMetrics = this.slotMetrics.update({
-        min: min,
-        max: max,
-        timeslots: timeslots,
-        step: step
-      });
-    };
-
-    _proto.render = function render() {
-      var _this$props3 = this.props,
-          resource = _this$props3.resource,
-          components = _this$props3.components;
-      return React__default.createElement("div", {
-        className: "rbc-time-gutter rbc-time-row"
-      });
-    };
-
-    return TimeGutterRow;
-  }(React.Component);
-  TimeGutterRow.propTypes = {
-    min: propTypes.instanceOf(Date).isRequired,
-    max: propTypes.instanceOf(Date).isRequired,
-    timeslots: propTypes.number.isRequired,
-    step: propTypes.number.isRequired,
-    getNow: propTypes.func.isRequired,
-    components: propTypes.object.isRequired,
-    localizer: propTypes.object.isRequired,
-    resource: propTypes.string
-  };
-
   var TimeGridRowHeader =
   /*#__PURE__*/
   function (_React$Component) {
@@ -13711,9 +13633,9 @@
     _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
       var _this$props = this.props,
           range = _this$props.range,
-          scrollToTime = _this$props.scrollToTime; // When paginating, reset scroll
+          scrollToDay = _this$props.scrollToDay; // When paginating, reset scroll
 
-      if (!eq(nextProps.range[0], range[0], 'minute') || !eq(nextProps.scrollToTime, scrollToTime, 'minute')) {
+      if (!eq(nextProps.range[0], range[0], 'minute') || !eq(nextProps.scrollToDay, scrollToDay, 'minute')) {
         this.calculateScroll(nextProps);
       }
     };
@@ -13872,6 +13794,8 @@
             _this5.setState({
               gutterWidth: width
             });
+
+            _this5.applyScroll();
           }
         }
       });
@@ -13881,9 +13805,13 @@
       if (this._scrollRatio) {
         var content = this.contentRef.current;
         var gutterWidth = this.props.width || this.state.gutterWidth;
-        content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio; // Only do this once
 
-        this._scrollRatio = null;
+        if (gutterWidth) {
+          content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio; // Only do this once
+
+          this._scrollRatio = null;
+          this.props.onScrolledToDay(this.props.scrollToDay);
+        }
       }
     };
 
@@ -13895,12 +13823,15 @@
       var _props = props,
           min = _props.min,
           max = _props.max,
-          scrollToTime = _props.scrollToTime;
-      var beginingOfWeek = startOf(scrollToTime, 'week');
-      var scrollToWeekDay = diff(scrollToTime, beginingOfWeek, 'day');
-      var diffMillis = diff(max, min) * scrollToWeekDay;
-      var totalMillis = diff(max, min) * 7;
-      this._scrollRatio = diffMillis / totalMillis;
+          scrollToDay = _props.scrollToDay;
+
+      if (scrollToDay) {
+        var beginingOfWeek = startOf(scrollToDay, 'week');
+        var scrollToWeekDay = diff(scrollToDay, beginingOfWeek, 'day');
+        var diffMillis = diff(max, min) * scrollToWeekDay;
+        var totalMillis = diff(max, min) * 7;
+        this._scrollRatio = diffMillis / totalMillis;
+      }
     };
 
     return TimeGridRow;
@@ -13915,6 +13846,7 @@
     max: propTypes.instanceOf(Date),
     getNow: propTypes.func.isRequired,
     scrollToTime: propTypes.instanceOf(Date),
+    scrollToDay: propTypes.instanceOf(Date),
     showMultiDayTimes: propTypes.bool,
     rtl: propTypes.bool,
     width: propTypes.number,
@@ -13932,6 +13864,7 @@
     onSelectEvent: propTypes.func,
     onDoubleClickEvent: propTypes.func,
     onDrillDown: propTypes.func,
+    onScrolledToDay: propTypes.func,
     getDrilldownView: propTypes.func.isRequired
   };
   TimeGridRow.defaultProps = {
@@ -13939,7 +13872,8 @@
     timeslots: 2,
     min: startOf(new Date(), 'day'),
     max: endOf(new Date(), 'day'),
-    scrollToTime: startOf(new Date(), 'day')
+    scrollToTime: startOf(new Date(), 'day'),
+    onScrolledToDay: function onScrolledToDay() {}
   };
 
   var Scheduler =
@@ -13956,11 +13890,12 @@
     _proto.render = function render() {
       var _this$props = this.props,
           date = _this$props.date,
-          props = _objectWithoutPropertiesLoose(_this$props, ["date"]);
+          scrollToDay = _this$props.scrollToDay,
+          props = _objectWithoutPropertiesLoose(_this$props, ["date", "scrollToDay"]);
 
       var range = Scheduler.range(date, this.props);
       return React__default.createElement(TimeGridRow, _extends({
-        scrollToTime: date
+        scrollToDay: scrollToDay
       }, props, {
         range: range,
         eventOffset: 15

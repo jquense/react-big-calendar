@@ -7,7 +7,6 @@ import memoize from 'memoize-one'
 
 import * as dates from './utils/dates'
 import DayRow from './DayRow'
-import TimeGutterRow from './TimeGutterRow'
 
 import getWidth from 'dom-helpers/width'
 import TimeGridRowHeader from './TimeGridRowHeader'
@@ -73,11 +72,11 @@ export default class TimeGridRow extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { range, scrollToTime } = this.props
+    const { range, scrollToDay } = this.props
     // When paginating, reset scroll
     if (
       !dates.eq(nextProps.range[0], range[0], 'minute') ||
-      !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
+      !dates.eq(nextProps.scrollToDay, scrollToDay, 'minute')
     ) {
       this.calculateScroll(nextProps)
     }
@@ -297,6 +296,7 @@ export default class TimeGridRow extends Component {
 
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })
+          this.applyScroll()
         }
       }
       }
@@ -307,21 +307,27 @@ export default class TimeGridRow extends Component {
     if (this._scrollRatio) {
       const content = this.contentRef.current
       const gutterWidth = this.props.width || this.state.gutterWidth
-      content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio
-      // Only do this once
-      this._scrollRatio = null
+      
+      if (gutterWidth) {
+        content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio
+        // Only do this once
+        this._scrollRatio = null
+        this.props.onScrolledToDay(this.props.scrollToDay)
+      }
     }
   }
 
   calculateScroll(props = this.props) {
-    const { min, max, scrollToTime } = props
+    const { min, max, scrollToDay } = props
 
-    const beginingOfWeek = dates.startOf(scrollToTime, 'week')
-    const scrollToWeekDay = dates.diff(scrollToTime, beginingOfWeek, 'day')
+    if (scrollToDay) {
+    const beginingOfWeek = dates.startOf(scrollToDay, 'week')
+    const scrollToWeekDay = dates.diff(scrollToDay, beginingOfWeek, 'day')
     const diffMillis = dates.diff(max, min) * scrollToWeekDay
     const totalMillis = dates.diff(max, min) * 7
 
     this._scrollRatio = diffMillis / totalMillis
+    }
   }
 
   checkOverflow = () => {
@@ -355,6 +361,7 @@ TimeGridRow.propTypes = {
   getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date),
+  scrollToDay: PropTypes.instanceOf(Date),
   showMultiDayTimes: PropTypes.bool,
 
   rtl: PropTypes.bool,
@@ -376,6 +383,7 @@ TimeGridRow.propTypes = {
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
+  onScrolledToDay: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 }
 
@@ -385,4 +393,5 @@ TimeGridRow.defaultProps = {
   min: dates.startOf(new Date(), 'day'),
   max: dates.endOf(new Date(), 'day'),
   scrollToTime: dates.startOf(new Date(), 'day'),
+  onScrolledToDay: () => {}
 }

@@ -6,10 +6,10 @@ import TimeGridRow from './TimeGridRow'
 
 class Scheduler extends React.Component {
   render() {
-    let { date, ...props } = this.props
+    let { date, scrollToDay, ...props } = this.props
     let range = Scheduler.range(date, this.props)
 
-    return <TimeGridRow  scrollToTime={date} {...props} range={range} eventOffset={15}/>
+    return <TimeGridRow scrollToDay={scrollToDay} {...props} range={range} eventOffset={15}/>
   }
 }
 

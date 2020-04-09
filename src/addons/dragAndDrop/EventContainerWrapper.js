@@ -144,12 +144,20 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleDropFromOutside = (point, boundaryBox) => {
-    const { slotMetrics, resource } = this.props
+    const { slotMetrics, resource, onSchedulerView } = this.props
 
-    let start = slotMetrics.closestSlotFromPoint(
+    let start
+    if (onSchedulerView) {
+      start = slotMetrics.closestSlotFromPointForRow(
+        { y: point.y, x: point.x },
+        boundaryBox
+      )
+    } else {
+    start = slotMetrics.closestSlotFromPoint(
       { y: point.y, x: point.x },
       boundaryBox
     )
+    }
 
     this.context.draggable.onDropFromOutside({
       start,
@@ -167,10 +175,14 @@ class EventContainerWrapper extends React.Component {
 
     selector.on('beforeSelect', point => {
       const { dragAndDropAction } = this.context.draggable
+      const { onSchedulerView } = this.props
 
       if (!dragAndDropAction.action) return false
-      if (dragAndDropAction.action === 'resize') {
+      if (!onSchedulerView && dragAndDropAction.action === 'resize') {
         return pointInColumn(getBoundsForNode(node), point)
+      }
+      if (onSchedulerView && dragAndDropAction.action === 'resize') {
+        return pointInRow(getBoundsForNode(node), point)
       }
 
       const eventNode = getEventNodeFromPoint(node, point)
@@ -191,9 +203,12 @@ class EventContainerWrapper extends React.Component {
     selector.on('dropFromOutside', point => {
       if (!this.context.draggable.onDropFromOutside) return
 
+      const { onSchedulerView } = this.props
+
       const bounds = getBoundsForNode(node)
 
-      if (!pointInColumn(bounds, point)) return
+      if (onSchedulerView && !pointInRow(bounds, point)) return
+      if (!onSchedulerView && !pointInColumn(bounds, point)) return
 
       this.handleDropFromOutside(point, bounds)
     })

@@ -2,7 +2,7 @@
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
-[**DEMO and Docs**](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](http://jquense.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 
@@ -51,6 +51,7 @@ const MyCalendar = props => (
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
+      style={{ height: 500 }}
     />
   </div>
 )
@@ -71,6 +72,39 @@ const MyCalendar = props => (
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
+#### date-fns 2.0
+
+```js
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
+import format from 'date-fns/format'
+import parse from 'date-fns/parse'
+import startOfWeek from 'date-fns/startOfWeek'
+import getDay from 'date-fns/getDay'
+const locales = {
+  'en-US': require('date-fns/locale/en-US'),
+}
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+})
+
+const MyCalendar = props => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
     />
   </div>
 )
@@ -92,4 +126,4 @@ Big Calendar. Carefully test each change accordingly.
 
 ## Join us on Reactiflux Discord
 
-Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+Join us on [Reactiflux Discord](https://discord.gg/PPgj6tb) community under the channel #libraries if you have any questions.

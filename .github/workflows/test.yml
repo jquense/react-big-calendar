@@ -1,0 +1,26 @@
+name: Test
+
+on: [pull_request]
+
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Unit Test & Linting
+        run: yarn test
+
+      - name: Build
+        run: yarn build

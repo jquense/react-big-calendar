@@ -14,6 +14,7 @@ import TimeGridHeader from './TimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
+import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 export default class TimeGrid extends Component {
   constructor(props) {
@@ -23,9 +24,10 @@ export default class TimeGrid extends Component {
 
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
+    this._scrollRatio = null
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.calculateScroll()
   }
 
@@ -71,7 +73,7 @@ export default class TimeGrid extends Component {
     //this.checkOverflow()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { range, scrollToTime } = this.props
     // When paginating, reset scroll
     if (
@@ -103,7 +105,14 @@ export default class TimeGrid extends Component {
   }
 
   renderEvents(range, events, now) {
-    let { min, max, components, accessors, localizer } = this.props
+    let {
+      min,
+      max,
+      components,
+      accessors,
+      localizer,
+      dayLayoutAlgorithm,
+    } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
@@ -131,6 +140,7 @@ export default class TimeGrid extends Component {
             key={i + '-' + jj}
             date={date}
             events={daysEvents}
+            dayLayoutAlgorithm={dayLayoutAlgorithm}
           />
         )
       })
@@ -230,6 +240,7 @@ export default class TimeGrid extends Component {
             timeslots={this.props.timeslots}
             components={components}
             className="rbc-time-gutter"
+            getters={getters}
           />
           {this.renderEvents(range, rangeEvents, getNow())}
         </div>
@@ -258,7 +269,7 @@ export default class TimeGrid extends Component {
   }
 
   applyScroll() {
-    if (this._scrollRatio) {
+    if (this._scrollRatio != null) {
       const content = this.contentRef.current
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once
@@ -328,6 +339,8 @@ TimeGrid.propTypes = {
   onDoubleClickEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
+
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 
 TimeGrid.defaultProps = {

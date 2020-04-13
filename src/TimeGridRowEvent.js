@@ -1,6 +1,10 @@
 import clsx from 'clsx'
 import React from 'react'
 
+function stringifyPercent(v) {
+  return typeof v === 'string' ? v : v + '%'
+}
+
 /* eslint-disable react/prop-types */
 function TimeGridRowEvent(props) {
   const {
@@ -45,10 +49,10 @@ function TimeGridRowEvent(props) {
         onDoubleClick={onDoubleClick}
         style={{
           ...userProps.style,
-          left: `${top}%`,
-          width: `${height}%`,
-          height: `${width}%`,
-          top: `${xOffset}%`
+          left: stringifyPercent(top),
+          width: stringifyPercent(height),
+          height: stringifyPercent(width),
+          top: stringifyPercent(xOffset),
         }}
         title={
           tooltip

@@ -14,6 +14,7 @@ import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
 import ResourceHeader from './ResourceHeader'
+import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 export default class TimeGridRow extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ export default class TimeGridRow extends Component {
   }
 
   renderEvents(range, events, now) {
-    let { min, max, accessors, components, localizer } = this.props
+    let { min, max, accessors, components, localizer, dayLayoutAlgorithm } = this.props
 
         const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
@@ -122,7 +123,8 @@ export default class TimeGridRow extends Component {
             resource,
             components,
             now,
-            i
+            i,
+            dayLayoutAlgorithm
           )}
         </div>
       )
@@ -141,7 +143,8 @@ export default class TimeGridRow extends Component {
     resource,
     components,
     now,
-    i
+    i,
+    dayLayoutAlgorithm
   ) {
     return range.map((date, jj) => {
       let daysEvents = (groupedEvents.get(id) || []).filter(event =>
@@ -159,6 +162,7 @@ export default class TimeGridRow extends Component {
           key={i + '-' + jj}
           date={date}
           events={daysEvents}
+          dayLayoutAlgorithm={dayLayoutAlgorithm}
         />
       )
     })
@@ -385,6 +389,8 @@ TimeGridRow.propTypes = {
   onDrillDown: PropTypes.func,
   onScrolledToDay: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
+
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 
 TimeGridRow.defaultProps = {

@@ -10,9 +10,9 @@ import { isSelected } from './utils/selection'
 
 import { notify } from './utils/helpers'
 import * as DayEventLayout from './utils/DayEventLayout'
-import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridRowEvent from './TimeGridRowEvent'
 import BackgroundWrapper from './BackgroundWrapper'
+import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 class DayRow extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
@@ -192,6 +192,7 @@ class DayRow extends React.Component {
       components,
       step,
       timeslots,
+      dayLayoutAlgorithm,
     } = this.props
 
     const { slotMetrics } = this
@@ -202,6 +203,7 @@ class DayRow extends React.Component {
       accessors,
       slotMetrics,
       minimumStartDifference: Math.ceil((step * timeslots) / 2),
+      dayLayoutAlgorithm,
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -221,7 +223,7 @@ class DayRow extends React.Component {
 
       let continuesEarlier = startsBeforeDay || slotMetrics.startsBefore(start)
       let continuesLater = startsAfterDay || slotMetrics.startsAfter(end)
-
+      
       return (
         <TimeGridRowEvent
           style={style}
@@ -411,6 +413,8 @@ DayRow.propTypes = {
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,
   resource: PropTypes.any,
+
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 
 DayRow.defaultProps = {

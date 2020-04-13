@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { uncontrollable } from 'uncontrollable';
 import clsx from 'clsx';
-import warning from 'warning';
 import invariant from 'invariant';
 import _assertThisInitialized from '@babel/runtime/helpers/esm/assertThisInitialized';
 import { findDOMNode } from 'react-dom';
@@ -25,6 +24,7 @@ import listen from 'dom-helpers/listen';
 import findIndex from 'lodash-es/findIndex';
 import range$1 from 'lodash-es/range';
 import memoize from 'memoize-one';
+import _createClass from '@babel/runtime/helpers/esm/createClass';
 import sortBy from 'lodash-es/sortBy';
 import getWidth from 'dom-helpers/width';
 import scrollbarSize from 'dom-helpers/scrollbarSize';
@@ -91,6 +91,7 @@ var views$1 = PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.oneOf(viewNames))
     return PropTypes.elementType.apply(PropTypes, [prop, key].concat(args));
   }
 })]);
+var DayLayoutAlgorithmPropType = PropTypes.oneOfType([PropTypes.oneOf(['overlap', 'no-overlap']), PropTypes.func]);
 
 function notify(handler, args) {
   handler && handler.apply(null, [].concat(args));
@@ -1027,7 +1028,7 @@ function (_React$Component) {
     this._teardownSelectable();
   };
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable();
     if (!nextProps.selectable && this.props.selectable) this._teardownSelectable();
   };
@@ -1511,7 +1512,7 @@ var isSegmentInSlot$1 = function isSegmentInSlot(seg, slot) {
 };
 
 var isEqual = function isEqual(a, b) {
-  return a.range === b.range && a.events === b.events;
+  return a[0].range === b[0].range && a[0].events === b[0].events;
 };
 
 function getSlotMetrics() {
@@ -1983,7 +1984,7 @@ function (_React$Component) {
 
   var _proto = MonthView.prototype;
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(_ref2) {
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(_ref2) {
     var date = _ref2.date;
     this.setState({
       needLimitMeasure: !eq(date, this.props.date, 'month')
@@ -2284,7 +2285,7 @@ function getSlotMetrics$1(_ref) {
       if (!ignoreMax) rangeEnd = min(end, max(start, rangeEnd));
       var rangeStartMin = positionFromDate(rangeStart);
       var rangeEndMin = positionFromDate(rangeEnd);
-      var top = rangeEndMin - rangeStartMin < step && !eq(end, rangeEnd) ? (rangeStartMin - step) / (step * numSlots) * 100 : rangeStartMin / (step * numSlots) * 100;
+      var top = rangeEndMin > step * (numSlots - 1) && !eq(end, rangeEnd) ? (rangeStartMin - step) / (step * numSlots) * 100 : rangeStartMin / (step * numSlots) * 100;
       return {
         top: top,
         height: rangeEndMin / (step * numSlots) * 100 - top,
@@ -2302,32 +2303,142 @@ function getSlotMetrics$1(_ref) {
   };
 }
 
-var Event = function Event(data, _ref) {
-  var accessors = _ref.accessors,
-      slotMetrics = _ref.slotMetrics;
+var Event =
+/*#__PURE__*/
+function () {
+  function Event(data, _ref) {
+    var accessors = _ref.accessors,
+        slotMetrics = _ref.slotMetrics;
 
-  var _slotMetrics$getRange = slotMetrics.getRange(accessors.start(data), accessors.end(data)),
-      start = _slotMetrics$getRange.start,
-      startDate = _slotMetrics$getRange.startDate,
-      end = _slotMetrics$getRange.end,
-      endDate = _slotMetrics$getRange.endDate,
-      top = _slotMetrics$getRange.top,
-      height = _slotMetrics$getRange.height;
+    var _slotMetrics$getRange = slotMetrics.getRange(accessors.start(data), accessors.end(data)),
+        start = _slotMetrics$getRange.start,
+        startDate = _slotMetrics$getRange.startDate,
+        end = _slotMetrics$getRange.end,
+        endDate = _slotMetrics$getRange.endDate,
+        top = _slotMetrics$getRange.top,
+        height = _slotMetrics$getRange.height;
 
-  this.start = start;
-  this.end = end;
-  this.startMs = +startDate;
-  this.endMs = +endDate;
-  this.top = top;
-  this.height = height;
-  this.data = data;
-};
+    this.start = start;
+    this.end = end;
+    this.startMs = +startDate;
+    this.endMs = +endDate;
+    this.top = top;
+    this.height = height;
+    this.data = data;
+  }
+  /**
+   * The event's width without any overlap.
+   */
 
-function areEventsTooCloseOrOverlapping(a, b, minimumStartDifference) {
+
+  _createClass(Event, [{
+    key: "_width",
+    get: function get() {
+      // The container event's width is determined by the maximum number of
+      // events in any of its rows.
+      if (this.rows) {
+        var columns = this.rows.reduce(function (max, row) {
+          return Math.max(max, row.leaves.length + 1);
+        }, // add itself
+        0) + 1; // add the container
+
+        return 100 / columns;
+      }
+
+      var availableWidth = 100 - this.container._width; // The row event's width is the space left by the container, divided
+      // among itself and its leaves.
+
+      if (this.leaves) {
+        return availableWidth / (this.leaves.length + 1);
+      } // The leaf event's width is determined by its row's width
+
+
+      return this.row._width;
+    }
+    /**
+     * The event's calculated width, possibly with extra width added for
+     * overlapping effect.
+     */
+
+  }, {
+    key: "width",
+    get: function get() {
+      var noOverlap = this._width;
+      var overlap = Math.min(100, this._width * 1.7); // Containers can always grow.
+
+      if (this.rows) {
+        return overlap;
+      } // Rows can grow if they have leaves.
+
+
+      if (this.leaves) {
+        return this.leaves.length > 0 ? overlap : noOverlap;
+      } // Leaves can grow unless they're the last item in a row.
+
+
+      var leaves = this.row.leaves;
+      var index = leaves.indexOf(this);
+      return index === leaves.length - 1 ? noOverlap : overlap;
+    }
+  }, {
+    key: "xOffset",
+    get: function get() {
+      // Containers have no offset.
+      if (this.rows) return 0; // Rows always start where their container ends.
+
+      if (this.leaves) return this.container._width; // Leaves are spread out evenly on the space left by its row.
+
+      var _this$row = this.row,
+          leaves = _this$row.leaves,
+          xOffset = _this$row.xOffset,
+          _width = _this$row._width;
+      var index = leaves.indexOf(this) + 1;
+      return xOffset + index * _width;
+    }
+  }]);
+
+  return Event;
+}();
+/**
+ * Return true if event a and b is considered to be on the same row.
+ */
+
+
+function onSameRow(a, b, minimumStartDifference) {
   return (// Occupies the same start slot.
     Math.abs(b.start - a.start) < minimumStartDifference || // A's start slot overlaps with b's end slot.
     b.start > a.start && b.start < a.end
   );
+}
+
+function sortByRender(events) {
+  var sortedByTime = sortBy(events, ['startMs', function (e) {
+    return -e.endMs;
+  }]);
+  var sorted = [];
+
+  while (sortedByTime.length > 0) {
+    var event = sortedByTime.shift();
+    sorted.push(event);
+
+    for (var i = 0; i < sortedByTime.length; i++) {
+      var test = sortedByTime[i]; // Still inside this event, look for next.
+
+      if (event.endMs > test.startMs) continue; // We've found the first event of the next event group.
+      // If that event is not right next to our current event, we have to
+      // move it here.
+
+      if (i > 0) {
+        var _event = sortedByTime.splice(i, 1)[0];
+        sorted.push(_event);
+      } // We've already found the next event group, so stop looking.
+
+
+      break;
+    }
+  }
+
+  return sorted;
 }
 
 function getStyledEvents(_ref2) {
@@ -2335,66 +2446,212 @@ function getStyledEvents(_ref2) {
       minimumStartDifference = _ref2.minimumStartDifference,
       slotMetrics = _ref2.slotMetrics,
       accessors = _ref2.accessors;
-  if (events.length === 0) return [];
+  // Create proxy events and order them so that we don't have
+  // to fiddle with z-indexes.
   var proxies = events.map(function (event) {
     return new Event(event, {
       slotMetrics: slotMetrics,
       accessors: accessors
     });
   });
-  var sortedByTime = sortBy(proxies, ['startMs', function (e) {
-    return -e.endMs;
-  }]);
-  var firstEvent = sortedByTime.shift();
-  var groups = [[[firstEvent]]];
-  var eventWithLatestEnd = firstEvent;
-  sortedByTime.forEach(function (event) {
-    // If event is the first or doesn't collide with the latest group
-    // create a new group
-    if (!areEventsTooCloseOrOverlapping(eventWithLatestEnd, event, minimumStartDifference)) {
-      groups.push([[event]]);
-    } else {
-      var eventAdded = false;
-      var latestGroup = groups[groups.length - 1];
+  var eventsInRenderOrder = sortByRender(proxies); // Group overlapping events, while keeping order.
+  // Every event is always one of: container, row or leaf.
+  // Containers can contain rows, and rows can contain leaves.
 
-      for (var i = 0; i < latestGroup.length; i++) {
-        var column = latestGroup[i];
-        var lastInColumn = column[column.length - 1]; // If event doesn't collide with the latest event in the column
-        // append it to the column
+  var containerEvents = [];
 
-        if (!areEventsTooCloseOrOverlapping(lastInColumn, event, minimumStartDifference)) {
-          column.push(event);
-          eventAdded = true;
-          break;
-        }
-      } // If event has not been appended, create a new column in this group
+  var _loop = function _loop(i) {
+    var event = eventsInRenderOrder[i]; // Check if this event can go into a container event.
+
+    var container = containerEvents.find(function (c) {
+      return c.end > event.start || Math.abs(event.start - c.start) < minimumStartDifference;
+    }); // Couldn't find a container — that means this event is a container.
+
+    if (!container) {
+      event.rows = [];
+      containerEvents.push(event);
+      return "continue";
+    } // Found a container for the event.
 
 
-      if (!eventAdded) {
-        latestGroup.push([event]);
+    event.container = container; // Check if the event can be placed in an existing row.
+    // Start looking from behind.
+
+    var row = null;
+
+    for (var j = container.rows.length - 1; !row && j >= 0; j--) {
+      if (onSameRow(container.rows[j], event, minimumStartDifference)) {
+        row = container.rows[j];
       }
     }
 
-    if (event.endMs > eventWithLatestEnd.endMs) {
-      eventWithLatestEnd = event;
+    if (row) {
+      // Found a row, so add it.
+      row.leaves.push(event);
+      event.row = row;
+    } else {
+      // Couldn't find a row – that means this event is a row.
+      event.leaves = [];
+      container.rows.push(event);
     }
-  }); // Flatten [groups > columns > events] structure and set css properties
+  };
 
-  return groups.reduce(function (acc, group) {
-    return acc.concat(group.reduce(function (_acc, column, columnIdx) {
-      return _acc.concat(column.map(function (event) {
-        return {
-          event: event.data,
-          style: {
-            top: event.top,
-            height: event.height,
-            width: columnIdx === group.length - 1 ? 100 / group.length : 100 / group.length * 1,
-            xOffset: 100 / group.length * columnIdx
-          }
-        };
-      }));
-    }, []));
-  }, []);
+  for (var i = 0; i < eventsInRenderOrder.length; i++) {
+    var _ret = _loop(i);
+
+    if (_ret === "continue") continue;
+  } // Return the original events, along with their styles.
+
+
+  return eventsInRenderOrder.map(function (event) {
+    return {
+      event: event.data,
+      style: {
+        top: event.top,
+        height: event.height,
+        width: event.width,
+        xOffset: Math.max(0, event.xOffset)
+      }
+    };
+  });
+}
+
+function getMaxIdxDFS(node, maxIdx, visited) {
+  for (var i = 0; i < node.friends.length; ++i) {
+    if (visited.indexOf(node.friends[i]) > -1) continue;
+    maxIdx = maxIdx > node.friends[i].idx ? maxIdx : node.friends[i].idx; // TODO : trace it by not object but kinda index or something for performance
+
+    visited.push(node.friends[i]);
+    var newIdx = getMaxIdxDFS(node.friends[i], maxIdx, visited);
+    maxIdx = maxIdx > newIdx ? maxIdx : newIdx;
+  }
+
+  return maxIdx;
+}
+
+function noOverlap (_ref) {
+  var events = _ref.events,
+      minimumStartDifference = _ref.minimumStartDifference,
+      slotMetrics = _ref.slotMetrics,
+      accessors = _ref.accessors;
+  var styledEvents = getStyledEvents({
+    events: events,
+    minimumStartDifference: minimumStartDifference,
+    slotMetrics: slotMetrics,
+    accessors: accessors
+  });
+  styledEvents.sort(function (a, b) {
+    a = a.style;
+    b = b.style;
+    if (a.top !== b.top) return a.top > b.top ? 1 : -1;else return a.top + a.height < b.top + b.height ? 1 : -1;
+  });
+
+  for (var i = 0; i < styledEvents.length; ++i) {
+    styledEvents[i].friends = [];
+    delete styledEvents[i].style.left;
+    delete styledEvents[i].style.left;
+    delete styledEvents[i].idx;
+    delete styledEvents[i].size;
+  }
+
+  for (var _i = 0; _i < styledEvents.length - 1; ++_i) {
+    var se1 = styledEvents[_i];
+    var y1 = se1.style.top;
+    var y2 = se1.style.top + se1.style.height;
+
+    for (var j = _i + 1; j < styledEvents.length; ++j) {
+      var se2 = styledEvents[j];
+      var y3 = se2.style.top;
+      var y4 = se2.style.top + se2.style.height; // be friends when overlapped
+
+      if (y3 <= y1 && y1 < y4 || y1 <= y3 && y3 < y2) {
+        // TODO : hashmap would be effective for performance
+        se1.friends.push(se2);
+        se2.friends.push(se1);
+      }
+    }
+  }
+
+  for (var _i2 = 0; _i2 < styledEvents.length; ++_i2) {
+    var se = styledEvents[_i2];
+    var bitmap = [];
+
+    for (var _j = 0; _j < 100; ++_j) {
+      bitmap.push(1);
+    } // 1 means available
+
+
+    for (var _j2 = 0; _j2 < se.friends.length; ++_j2) {
+      if (se.friends[_j2].idx !== undefined) bitmap[se.friends[_j2].idx] = 0;
+    } // 0 means reserved
+
+
+    se.idx = bitmap.indexOf(1);
+  }
+
+  for (var _i3 = 0; _i3 < styledEvents.length; ++_i3) {
+    var size = 0;
+    if (styledEvents[_i3].size) continue;
+    var allFriends = [];
+    var maxIdx = getMaxIdxDFS(styledEvents[_i3], 0, allFriends);
+    size = 100 / (maxIdx + 1);
+    styledEvents[_i3].size = size;
+
+    for (var _j3 = 0; _j3 < allFriends.length; ++_j3) {
+      allFriends[_j3].size = size;
+    }
+  }
+
+  for (var _i4 = 0; _i4 < styledEvents.length; ++_i4) {
+    var e = styledEvents[_i4];
+    e.style.left = e.idx * e.size; // stretch to maximum
+
+    var _maxIdx = 0;
+
+    for (var _j4 = 0; _j4 < e.friends.length; ++_j4) {
+      var idx = e.friends[_j4];
+      _maxIdx = _maxIdx > idx ? _maxIdx : idx;
+    }
+
+    if (_maxIdx <= e.idx) e.size = 100 - e.idx * e.size; // padding between events
+    // for this feature, `width` is not percentage based unit anymore
+    // it will be used with calc()
+
+    var padding = e.idx === 0 ? 0 : 3;
+    e.style.width = "calc(" + e.size + "% - " + padding + "px)";
+    e.style.height = "calc(" + e.style.height + "% - 2px)";
+    e.style.xOffset = "calc(" + e.style.left + "% + " + padding + "px)";
+  }
+
+  return styledEvents;
+}
+
+/*eslint no-unused-vars: "off"*/
+var DefaultAlgorithms = {
+  overlap: getStyledEvents,
+  'no-overlap': noOverlap
+};
+
+function isFunction(a) {
+  return !!(a && a.constructor && a.call && a.apply);
+} //
+
+
+function getStyledEvents$1(_ref) {
+  var events = _ref.events,
+      minimumStartDifference = _ref.minimumStartDifference,
+      slotMetrics = _ref.slotMetrics,
+      accessors = _ref.accessors,
+      dayLayoutAlgorithm = _ref.dayLayoutAlgorithm;
+  var algorithm = null;
+  if (dayLayoutAlgorithm in DefaultAlgorithms) algorithm = DefaultAlgorithms[dayLayoutAlgorithm];
+
+  if (!isFunction(algorithm)) {
+    // invalid algorithm
+    return [];
+  }
+
+  return algorithm.apply(this, arguments);
 }
 
 var TimeSlotGroup =
@@ -2418,9 +2675,10 @@ function (_Component) {
     _this$props$component = _this$props$component === void 0 ? {} : _this$props$component;
     var _this$props$component2 = _this$props$component.timeSlotWrapper,
         Wrapper = _this$props$component2 === void 0 ? NoopWrapper : _this$props$component2;
-    return React.createElement("div", {
+    var groupProps = getters ? getters.slotGroupProp() : {};
+    return React.createElement("div", _extends({
       className: "rbc-timeslot-group"
-    }, group.map(function (value, idx) {
+    }, groupProps), group.map(function (value, idx) {
       var slotProps = getters ? getters.slotProp(value, resource) : {};
       return React.createElement(Wrapper, {
         key: idx,
@@ -2442,7 +2700,11 @@ TimeSlotGroup.propTypes = process.env.NODE_ENV !== "production" ? {
   getters: PropTypes.object
 } : {};
 
+function stringifyPercent(v) {
+  return typeof v === 'string' ? v : v + '%';
+}
 /* eslint-disable react/prop-types */
+
 
 function TimeGridEvent(props) {
   var _extends2;
@@ -2487,9 +2749,8 @@ function TimeGridEvent(props) {
     onClick: onClick,
     onDoubleClick: onDoubleClick,
     style: _extends({}, userProps.style, (_extends2 = {
-      top: top + "%",
-      height: height + "%"
-    }, _extends2[rtl ? 'right' : 'left'] = Math.max(0, xOffset) + "%", _extends2.width = width + "%", _extends2)),
+      top: stringifyPercent(top)
+    }, _extends2[rtl ? 'right' : 'left'] = stringifyPercent(xOffset), _extends2.width = stringifyPercent(width), _extends2.height = stringifyPercent(height), _extends2)),
     title: tooltip ? (typeof label === 'string' ? label + ': ' : '') + tooltip : undefined,
     className: clsx('rbc-event', className, userProps.className, {
       'rbc-selected': selected,
@@ -2528,17 +2789,19 @@ function (_React$Component) {
           getters = _this$props.getters,
           components = _this$props.components,
           step = _this$props.step,
-          timeslots = _this$props.timeslots;
+          timeslots = _this$props.timeslots,
+          dayLayoutAlgorithm = _this$props.dayLayoutAlgorithm;
 
       var _assertThisInitialize = _assertThisInitialized(_this),
           slotMetrics = _assertThisInitialize.slotMetrics;
 
       var messages = localizer.messages;
-      var styledEvents = getStyledEvents({
+      var styledEvents = getStyledEvents$1({
         events: events,
         accessors: accessors,
         slotMetrics: slotMetrics,
-        minimumStartDifference: Math.ceil(step * timeslots / 2)
+        minimumStartDifference: Math.ceil(step * timeslots / 2),
+        dayLayoutAlgorithm: dayLayoutAlgorithm
       });
       return styledEvents.map(function (_ref, idx) {
         var event = _ref.event,
@@ -2596,7 +2859,8 @@ function (_React$Component) {
         if (onSelecting) {
           if (eq(current.startDate, start, 'minutes') && eq(current.endDate, end, 'minutes') || onSelecting({
             start: start,
-            end: end
+            end: end,
+            resourceId: _this.props.resource
           }) === false) return;
         }
 
@@ -2750,7 +3014,7 @@ function (_React$Component) {
     this.clearTimeIndicatorInterval();
   };
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable();
     if (!nextProps.selectable && this.props.selectable) this._teardownSelectable();
     this.slotMetrics = this.slotMetrics.update(nextProps);
@@ -2769,12 +3033,13 @@ function (_React$Component) {
     } else if (this.props.isNow && (!eq(prevProps.min, this.props.min, 'minutes') || !eq(prevProps.max, this.props.max, 'minutes'))) {
       this.positionTimeIndicator();
     }
-  };
-
+  }
   /**
    * @param tail {Boolean} - whether `positionTimeIndicator` call should be
    *   deferred or called upon setting interval (`true` - if deferred);
    */
+  ;
+
   _proto.setTimeIndicatorPositionUpdateInterval = function setTimeIndicatorPositionUpdateInterval(tail) {
     var _this2 = this;
 
@@ -2912,7 +3177,8 @@ DayColumn.propTypes = process.env.NODE_ENV !== "production" ? {
   onDoubleClickEvent: PropTypes.func.isRequired,
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,
-  resource: PropTypes.any
+  resource: PropTypes.any,
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType
 } : {};
 DayColumn.defaultProps = {
   dragThroughEvents: true,
@@ -2962,7 +3228,7 @@ function (_Component) {
 
   var _proto = TimeGutter.prototype;
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     var min = nextProps.min,
         max = nextProps.max,
         timeslots = nextProps.timeslots,
@@ -2980,7 +3246,8 @@ function (_Component) {
 
     var _this$props3 = this.props,
         resource = _this$props3.resource,
-        components = _this$props3.components;
+        components = _this$props3.components,
+        getters = _this$props3.getters;
     return React.createElement("div", {
       className: "rbc-time-gutter rbc-time-column"
     }, this.slotMetrics.groups.map(function (grp, idx) {
@@ -2989,7 +3256,8 @@ function (_Component) {
         group: grp,
         resource: resource,
         components: components,
-        renderSlot: _this2.renderSlot
+        renderSlot: _this2.renderSlot,
+        getters: getters
       });
     }));
   };
@@ -3003,6 +3271,7 @@ TimeGutter.propTypes = process.env.NODE_ENV !== "production" ? {
   step: PropTypes.number.isRequired,
   getNow: PropTypes.func.isRequired,
   components: PropTypes.object.isRequired,
+  getters: PropTypes.object,
   localizer: PropTypes.object.isRequired,
   resource: PropTypes.string
 } : {};
@@ -3323,12 +3592,13 @@ function (_Component) {
     };
     _this.scrollRef = React.createRef();
     _this.contentRef = React.createRef();
+    _this._scrollRatio = null;
     return _this;
   }
 
   var _proto = TimeGrid.prototype;
 
-  _proto.componentWillMount = function componentWillMount() {
+  _proto.UNSAFE_componentWillMount = function UNSAFE_componentWillMount() {
     this.calculateScroll();
   };
 
@@ -3360,7 +3630,7 @@ function (_Component) {
     this.applyScroll(); //this.checkOverflow()
   };
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     var _this$props = this.props,
         range = _this$props.range,
         scrollToTime = _this$props.scrollToTime; // When paginating, reset scroll
@@ -3378,7 +3648,8 @@ function (_Component) {
         max = _this$props2.max,
         components = _this$props2.components,
         accessors = _this$props2.accessors,
-        localizer = _this$props2.localizer;
+        localizer = _this$props2.localizer,
+        dayLayoutAlgorithm = _this$props2.dayLayoutAlgorithm;
     var resources = this.memoizedResources(this.props.resources, accessors);
     var groupedEvents = resources.groupEvents(events);
     return resources.map(function (_ref, i) {
@@ -3397,7 +3668,8 @@ function (_Component) {
           isNow: eq(date, now, 'day'),
           key: i + '-' + jj,
           date: date,
-          events: daysEvents
+          events: daysEvents,
+          dayLayoutAlgorithm: dayLayoutAlgorithm
         }));
       });
     });
@@ -3478,7 +3750,8 @@ function (_Component) {
       getNow: this.props.getNow,
       timeslots: this.props.timeslots,
       components: components,
-      className: "rbc-time-gutter"
+      className: "rbc-time-gutter",
+      getters: getters
     }), this.renderEvents(range, rangeEvents, getNow())));
   };
 
@@ -3506,7 +3779,7 @@ function (_Component) {
   };
 
   _proto.applyScroll = function applyScroll() {
-    if (this._scrollRatio) {
+    if (this._scrollRatio != null) {
       var content = this.contentRef.current;
       content.scrollTop = content.scrollHeight * this._scrollRatio; // Only do this once
 
@@ -3557,7 +3830,8 @@ TimeGrid.propTypes = process.env.NODE_ENV !== "production" ? {
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
-  getDrilldownView: PropTypes.func.isRequired
+  getDrilldownView: PropTypes.func.isRequired,
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType
 } : {};
 TimeGrid.defaultProps = {
   step: 30,
@@ -4059,7 +4333,7 @@ function (_React$Component) {
           slotMetrics = _assertThisInitialize.slotMetrics;
 
       var messages = localizer.messages;
-      var styledEvents = getStyledEvents({
+      var styledEvents = getStyledEvents$1({
         events: events,
         accessors: accessors,
         slotMetrics: slotMetrics,
@@ -5224,7 +5498,9 @@ function (_React$Component) {
             localizer: localizer
           }), view);
         } else {
-          process.env.NODE_ENV !== "production" ? warning(true, 'onRangeChange prop not supported for this view') : void 0;
+          if (process.env.NODE_ENV !== 'production') {
+            console.error('onRangeChange prop not supported for this view');
+          }
         }
       }
     };
@@ -5301,7 +5577,7 @@ function (_React$Component) {
 
   var _proto = Calendar.prototype;
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       context: this.getContext(nextProps)
     });
@@ -5318,6 +5594,7 @@ function (_React$Component) {
         resourceTitleAccessor = _ref2.resourceTitleAccessor,
         eventPropGetter = _ref2.eventPropGetter,
         slotPropGetter = _ref2.slotPropGetter,
+        slotGroupPropGetter = _ref2.slotGroupPropGetter,
         dayPropGetter = _ref2.dayPropGetter,
         view = _ref2.view,
         views = _ref2.views,
@@ -5340,6 +5617,9 @@ function (_React$Component) {
         },
         slotProp: function slotProp() {
           return slotPropGetter && slotPropGetter.apply(void 0, arguments) || {};
+        },
+        slotGroupProp: function slotGroupProp() {
+          return slotGroupPropGetter && slotGroupPropGetter.apply(void 0, arguments) || {};
         },
         dayProp: function dayProp() {
           return dayPropGetter && dayPropGetter.apply(void 0, arguments) || {};
@@ -5461,7 +5741,8 @@ Calendar.defaultProps = {
   longPressThreshold: 250,
   getNow: function getNow() {
     return new Date();
-  }
+  },
+  dayLayoutAlgorithm: 'overlap'
 };
 Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
   localizer: PropTypes.object.isRequired,
@@ -5680,6 +5961,7 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
    *   slotInfo: {
    *     start: Date,
    *     end: Date,
+   *     resourceId:  (number|string),
    *     slots: Array<Date>,
    *     action: "select" | "click" | "doubleClick",
    *     bounds: ?{ // For "select" action
@@ -5728,7 +6010,7 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
    * Returning `false` from the handler will prevent a selection.
    *
    * ```js
-   * (range: { start: Date, end: Date }) => ?boolean
+   * (range: { start: Date, end: Date, resourceId: (number|string) }) => ?boolean
    * ```
    */
   onSelecting: PropTypes.func,
@@ -5896,7 +6178,7 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
 
   /**
    * Optionally provide a function that returns an object of className or style props
-   * to be applied to the the time-slot node. Caution! Styles that change layout or
+   * to be applied to the time-slot node. Caution! Styles that change layout or
    * position may break the calendar in unexpected ways.
    *
    * ```js
@@ -5904,6 +6186,15 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
    * ```
    */
   slotPropGetter: PropTypes.func,
+
+  /**
+   * Optionally provide a function that returns an object of props to be applied 
+   * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
+   * ```js
+   * () => { style?: Object }
+   * ```
+   */
+  slotGroupPropGetter: PropTypes.func,
 
   /**
    * Optionally provide a function that returns an object of className or style props
@@ -6124,7 +6415,15 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
     event: PropTypes.node,
     noEventsInRange: PropTypes.node,
     showMore: PropTypes.func
-  })
+  }),
+
+  /**
+   * A day event layout(arrangement) algorithm.
+   * `overlap` allows events to be overlapped.
+   * `no-overlap` resizes events to avoid overlap.
+   * or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
+   */
+  dayLayoutAlgorithm: DayLayoutAlgorithmPropType
 } : {};
 var Calendar$1 = uncontrollable(Calendar, {
   view: 'onView',
@@ -6337,7 +6636,10 @@ function globalize (globalize) {
       var firstDay = weekData.firstDay[territory || '001'];
       return days.indexOf(firstDay);
     } catch (e) {
-      process.env.NODE_ENV !== "production" ? warning(true, "Failed to accurately determine first day of the week.\n            Is supplemental data loaded into CLDR?") : void 0; // maybe cldr supplemental is not loaded? revert to original method
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to accurately determine first day of the week.' + ' Is supplemental data loaded into CLDR?');
+      } // maybe cldr supplemental is not loaded? revert to original method
+
 
       var date = new Date(); //cldr-data doesn't seem to be zero based
 
@@ -6361,10 +6663,76 @@ function globalize (globalize) {
   });
 }
 
+var dateRangeFormat$4 = function dateRangeFormat(_ref, culture, local) {
+  var start = _ref.start,
+      end = _ref.end;
+  return local.format(start, 'P', culture) + " \u2013 " + local.format(end, 'P', culture);
+};
+
+var timeRangeFormat$3 = function timeRangeFormat(_ref2, culture, local) {
+  var start = _ref2.start,
+      end = _ref2.end;
+  return local.format(start, 'p', culture) + " \u2013 " + local.format(end, 'p', culture);
+};
+
+var timeRangeStartFormat$3 = function timeRangeStartFormat(_ref3, culture, local) {
+  var start = _ref3.start;
+  return local.format(start, 'h:mma', culture) + " \u2013 ";
+};
+
+var timeRangeEndFormat$3 = function timeRangeEndFormat(_ref4, culture, local) {
+  var end = _ref4.end;
+  return " \u2013 " + local.format(end, 'h:mma', culture);
+};
+
+var weekRangeFormat$3 = function weekRangeFormat(_ref5, culture, local) {
+  var start = _ref5.start,
+      end = _ref5.end;
+  return local.format(start, 'MMMM dd', culture) + " \u2013 " + local.format(end, eq(start, end, 'month') ? 'dd' : 'MMMM dd', culture);
+};
+
+var formats$3 = {
+  dateFormat: 'dd',
+  dayFormat: 'dd eee',
+  weekdayFormat: 'cccc',
+  selectRangeFormat: timeRangeFormat$3,
+  eventTimeRangeFormat: timeRangeFormat$3,
+  eventTimeRangeStartFormat: timeRangeStartFormat$3,
+  eventTimeRangeEndFormat: timeRangeEndFormat$3,
+  timeGutterFormat: 'p',
+  monthHeaderFormat: 'MMMM yyyy',
+  dayHeaderFormat: 'dddd MMM dd',
+  dayRangeHeaderFormat: weekRangeFormat$3,
+  agendaHeaderFormat: dateRangeFormat$4,
+  agendaDateFormat: 'ddd MMM dd',
+  agendaTimeFormat: 'p',
+  agendaTimeRangeFormat: timeRangeFormat$3
+};
+
+var dateFnsLocalizer = function dateFnsLocalizer(_ref6) {
+  var startOfWeek = _ref6.startOfWeek,
+      getDay = _ref6.getDay,
+      _format = _ref6.format,
+      locales = _ref6.locales;
+  return new DateLocalizer({
+    formats: formats$3,
+    firstOfWeek: function firstOfWeek(culture) {
+      return getDay(startOfWeek(new Date(), {
+        locale: locales[culture]
+      }));
+    },
+    format: function format(value, formatString, culture) {
+      return _format(new Date(value), formatString, {
+        locale: locales[culture]
+      });
+    }
+  });
+};
+
 var components = {
   eventWrapper: NoopWrapper,
   timeSlotWrapper: NoopWrapper,
   dateCellWrapper: NoopWrapper
 };
 
-export { Calendar$1 as Calendar, DateLocalizer, navigate as Navigate, views as Views, components, globalize as globalizeLocalizer, moment as momentLocalizer, moveDate as move };
+export { Calendar$1 as Calendar, DateLocalizer, navigate as Navigate, views as Views, components, dateFnsLocalizer, globalize as globalizeLocalizer, moment as momentLocalizer, moveDate as move };

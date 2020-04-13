@@ -13196,7 +13196,11 @@
     }, 'agendaHeaderFormat');
   };
 
+  function stringifyPercent$1(v) {
+    return typeof v === 'string' ? v : v + '%';
+  }
   /* eslint-disable react/prop-types */
+
 
   function TimeGridRowEvent(props) {
     var style = props.style,
@@ -13240,10 +13244,10 @@
       onClick: onClick,
       onDoubleClick: onDoubleClick,
       style: _extends({}, userProps.style, {
-        left: top + "%",
-        width: height + "%",
-        height: width + "%",
-        top: xOffset + "%"
+        left: stringifyPercent$1(top),
+        width: stringifyPercent$1(height),
+        height: stringifyPercent$1(width),
+        top: stringifyPercent$1(xOffset)
       }),
       title: tooltip ? (typeof label === 'string' ? label + ': ' : '') + tooltip : undefined,
       className: clsx('rbc-event', className, userProps.className, {
@@ -13283,7 +13287,8 @@
             getters = _this$props.getters,
             components = _this$props.components,
             step = _this$props.step,
-            timeslots = _this$props.timeslots;
+            timeslots = _this$props.timeslots,
+            dayLayoutAlgorithm = _this$props.dayLayoutAlgorithm;
 
         var _assertThisInitialize = _assertThisInitialized(_this),
             slotMetrics = _assertThisInitialize.slotMetrics;
@@ -13293,7 +13298,8 @@
           events: events,
           accessors: accessors,
           slotMetrics: slotMetrics,
-          minimumStartDifference: Math.ceil(step * timeslots / 2)
+          minimumStartDifference: Math.ceil(step * timeslots / 2),
+          dayLayoutAlgorithm: dayLayoutAlgorithm
         });
         return styledEvents.map(function (_ref, idx) {
           var event = _ref.event,
@@ -13676,7 +13682,8 @@
     onDoubleClickEvent: propTypes.func.isRequired,
     className: propTypes.string,
     dragThroughEvents: propTypes.bool,
-    resource: propTypes.any
+    resource: propTypes.any,
+    dayLayoutAlgorithm: DayLayoutAlgorithmPropType
   };
   DayRow.defaultProps = {
     dragThroughEvents: true,
@@ -13938,7 +13945,8 @@
           max = _this$props2.max,
           accessors = _this$props2.accessors,
           components = _this$props2.components,
-          localizer = _this$props2.localizer;
+          localizer = _this$props2.localizer,
+          dayLayoutAlgorithm = _this$props2.dayLayoutAlgorithm;
       var resources = this.memoizedResources(this.props.resources, accessors);
       var groupedEvents = resources.groupEvents(events);
       return resources.map(function (_ref, i) {
@@ -13947,11 +13955,11 @@
         return React__default.createElement("div", {
           key: "resource_" + i,
           className: "rbc-time-row-resource"
-        }, _this2.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i));
+        }, _this2.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i, dayLayoutAlgorithm));
       }); // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
     };
 
-    _proto.renderDay = function renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i) {
+    _proto.renderDay = function renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i, dayLayoutAlgorithm) {
       var _this3 = this;
 
       return range.map(function (date, jj) {
@@ -13967,7 +13975,8 @@
           isNow: eq(date, now, 'day'),
           key: i + '-' + jj,
           date: date,
-          events: daysEvents
+          events: daysEvents,
+          dayLayoutAlgorithm: dayLayoutAlgorithm
         }));
       });
     };
@@ -14155,7 +14164,8 @@
     onDoubleClickEvent: propTypes.func,
     onDrillDown: propTypes.func,
     onScrolledToDay: propTypes.func,
-    getDrilldownView: propTypes.func.isRequired
+    getDrilldownView: propTypes.func.isRequired,
+    dayLayoutAlgorithm: DayLayoutAlgorithmPropType
   };
   TimeGridRow.defaultProps = {
     step: 30,

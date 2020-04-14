@@ -4252,7 +4252,6 @@ function TimeGridEvent$1(props) {
       className = props.className,
       event = props.event,
       accessors = props.accessors,
-      rtl = props.rtl,
       selected = props.selected,
       label = props.label,
       continuesEarlier = props.continuesEarlier,
@@ -4735,12 +4734,12 @@ DayRow.defaultProps = {
   timeslots: 2
 };
 
-var TimeGridRowHeader =
+var TimeGridHeader$1 =
 /*#__PURE__*/
 function (_React$Component) {
-  _inheritsLoose(TimeGridRowHeader, _React$Component);
+  _inheritsLoose(TimeGridHeader, _React$Component);
 
-  function TimeGridRowHeader() {
+  function TimeGridHeader() {
     var _this;
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -4752,7 +4751,7 @@ function (_React$Component) {
     return _this;
   }
 
-  var _proto = TimeGridRowHeader.prototype;
+  var _proto = TimeGridHeader.prototype;
 
   _proto.renderHeaderCells = function renderHeaderCells(date) {
     var _this2 = this;
@@ -4795,10 +4794,7 @@ function (_React$Component) {
   _proto.render = function render() {
     var _this$props2 = this.props,
         max = _this$props2.max,
-        rtl = _this$props2.rtl,
-        isNow = _this$props2.isNow,
         resource = _this$props2.resource,
-        accessors = _this$props2.accessors,
         localizer = _this$props2.localizer,
         _this$props2$getters = _this$props2.getters,
         dayProp = _this$props2$getters.dayProp,
@@ -4806,8 +4802,7 @@ function (_React$Component) {
         _this$props2$componen = _this$props2.components,
         EventContainer = _this$props2$componen.eventContainerWrapper,
         _this$props2$componen2 = _this$props2$componen.timeSlotWrapper,
-        Wrapper = _this$props2$componen2 === void 0 ? NoopWrapper : _this$props2$componen2,
-        components = _objectWithoutPropertiesLoose(_this$props2$componen, ["eventContainerWrapper", "timeSlotWrapper"]);
+        Wrapper = _this$props2$componen2 === void 0 ? NoopWrapper : _this$props2$componen2;
 
     var slotMetrics = this.slotMetrics;
 
@@ -4839,14 +4834,17 @@ function (_React$Component) {
     })));
   };
 
-  return TimeGridRowHeader;
+  return TimeGridHeader;
 }(React.Component);
 
-TimeGridRowHeader.propTypes = process.env.NODE_ENV !== "production" ? {
+TimeGridHeader$1.propTypes = process.env.NODE_ENV !== "production" ? {
   range: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
+  resources: PropTypes.array,
   getNow: PropTypes.func.isRequired,
   isOverflowing: PropTypes.bool,
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
   rtl: PropTypes.bool,
   width: PropTypes.number,
   localizer: PropTypes.object.isRequired,
@@ -5033,18 +5031,14 @@ function (_Component) {
         events = _this$props3.events,
         range = _this$props3.range,
         width = _this$props3.width,
-        rtl = _this$props3.rtl,
-        selected = _this$props3.selected,
         getNow = _this$props3.getNow,
         resources = _this$props3.resources,
         components = _this$props3.components,
         accessors = _this$props3.accessors,
-        getters = _this$props3.getters,
         localizer = _this$props3.localizer,
         min = _this$props3.min,
         max = _this$props3.max,
         showMultiDayTimes = _this$props3.showMultiDayTimes,
-        longPressThreshold = _this$props3.longPressThreshold,
         _this$props3$componen = _this$props3.components,
         TimeGutterHeader = _this$props3$componen.timeGutterHeader,
         _this$props3$componen2 = _this$props3$componen.resourceHeader,
@@ -5083,7 +5077,7 @@ function (_Component) {
         maxWidth: width
       }
     }, TimeGutterHeader && React.createElement(TimeGutterHeader, null)), range.map(function (date, jj) {
-      return React.createElement(TimeGridRowHeader, _extends({
+      return React.createElement(TimeGridHeader$1, _extends({
         key: jj
       }, _this4.props, {
         localizer: localizer,
@@ -5105,7 +5099,7 @@ function (_Component) {
           resource = _ref2[1];
       return resource && React.createElement("div", {
         className: "rbc-row rbc-time-row",
-        key: "resource_" + i
+        key: "resource_" + i + "_" + id
       }, React.createElement("div", {
         className: "rbc-header"
       }, React.createElement(ResourceHeaderComponent, {
@@ -5251,7 +5245,8 @@ function (_React$Component) {
 }(React.Component);
 
 Scheduler.propTypes = process.env.NODE_ENV !== "production" ? {
-  date: PropTypes.instanceOf(Date).isRequired
+  date: PropTypes.instanceOf(Date).isRequired,
+  scrollToDay: PropTypes.instanceOf(Date)
 } : {};
 Scheduler.defaultProps = TimeGrid$1.defaultProps;
 

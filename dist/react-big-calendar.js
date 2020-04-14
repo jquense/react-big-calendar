@@ -13647,7 +13647,7 @@
           height: height
         }
       }, React__default.createElement("span", null, localizer.format(selectDates, 'selectRangeFormat'))), isNow && React__default.createElement("div", {
-        className: "rbc-current-time-indicator-row-xx",
+        className: "rbc-current-time-indicator-scheduler",
         style: {
           left: this.state.timeIndicatorPosition + "%"
         }
@@ -14051,7 +14051,7 @@
         }));
       })), React__default.createElement("div", {
         ref: this.contentRef,
-        className: clsx('rbc-time-content-row-xx'),
+        className: clsx('rbc-time-content-scheduler'),
         onScroll: this.handleScroll
       }, resources && React__default.createElement("div", {
         className: clsx('rbc-time-column', 'rbc-time-gutter'),
@@ -14070,7 +14070,7 @@
           resource: resource
         })));
       })), React__default.createElement("div", {
-        className: "rbc-time-column-resource-xx"
+        className: "rbc-time-column-resource"
       }, this.renderEvents(range, rangeEvents, getNow()))));
     };
 

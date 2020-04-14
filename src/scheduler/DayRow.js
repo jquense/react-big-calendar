@@ -3,16 +3,16 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
-import Selection, { getBoundsForNode, isEvent } from './Selection'
-import * as dates from './utils/dates'
-import * as TimeSlotUtils from './utils/TimeSlots'
-import { isSelected } from './utils/selection'
+import Selection, { getBoundsForNode, isEvent } from '../Selection'
+import * as dates from '../utils/dates'
+import * as TimeSlotUtils from '../utils/TimeSlots'
+import { isSelected } from '../utils/selection'
 
-import { notify } from './utils/helpers'
-import * as DayEventLayout from './utils/DayEventLayout'
-import TimeGridRowEvent from './TimeGridRowEvent'
-import BackgroundWrapper from './BackgroundWrapper'
-import { DayLayoutAlgorithmPropType } from './utils/propTypes'
+import { notify } from '../utils/helpers'
+import * as DayEventLayout from '../utils/DayEventLayout'
+import TimeGridEvent from './TimeGridEvent'
+import BackgroundWrapper from '../BackgroundWrapper'
+import { DayLayoutAlgorithmPropType } from '../utils/propTypes'
 
 class DayRow extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
@@ -114,7 +114,11 @@ class DayRow extends React.Component {
       accessors,
       localizer,
       getters: { dayProp, ...getters },
-      components: { eventContainerWrapper: EventContainer, timeSlotWrapper: Wrapper = BackgroundWrapper, ...components },
+      components: {
+        eventContainerWrapper: EventContainer,
+        timeSlotWrapper: Wrapper = BackgroundWrapper,
+        ...components
+      },
     } = this.props
 
     let { slotMetrics } = this
@@ -138,19 +142,18 @@ class DayRow extends React.Component {
       >
         {slotMetrics.groups.map((grp, idx) => (
           <div key={idx} className="rbc-timeslot-row-group">
-          {grp.map((value, idx) => {
-            const slotProps = getters ? getters.slotProp(value, resource) : {}
-            return (
-              <Wrapper key={idx} value={value} resource={resource}>
-                <div
-                  {...slotProps}
-                  className={clsx('rbc-time-slot', slotProps.className)}
-                >
-                </div>
-              </Wrapper>
-            )
-          })}
-        </div>          
+            {grp.map((value, idx) => {
+              const slotProps = getters ? getters.slotProp(value, resource) : {}
+              return (
+                <Wrapper key={idx} value={value} resource={resource}>
+                  <div
+                    {...slotProps}
+                    className={clsx('rbc-time-slot', slotProps.className)}
+                  />
+                </Wrapper>
+              )
+            })}
+          </div>
         ))}
         <EventContainer
           onSchedulerView={true}
@@ -223,9 +226,9 @@ class DayRow extends React.Component {
 
       let continuesEarlier = startsBeforeDay || slotMetrics.startsBefore(start)
       let continuesLater = startsAfterDay || slotMetrics.startsAfter(end)
-      
+
       return (
-        <TimeGridRowEvent
+        <TimeGridEvent
           style={style}
           event={event}
           label={label}

@@ -4,7 +4,7 @@ import Day from './Day'
 import Week from './Week'
 import WorkWeek from './WorkWeek'
 import Agenda from './Agenda'
-import Scheduler from './Scheduler'
+import Scheduler from './scheduler/Scheduler'
 
 const VIEWS = {
   [views.MONTH]: Month,

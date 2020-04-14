@@ -7,7 +7,7 @@ import Selection, {
   getBoundsForNode,
   getEventNodeFromPoint,
 } from '../../Selection'
-import TimeGridRowEvent from '../../TimeGridRowEvent'
+import SchedulerTimeGridEvent from '../../scheduler/TimeGridEvent'
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors } from './common'
 import NoopWrapper from '../../NoopWrapper'
@@ -300,7 +300,7 @@ class EventContainerWrapper extends React.Component {
           {events}
 
           {event && onSchedulerView && (            
-            <TimeGridRowEvent
+            <SchedulerTimeGridEvent
               event={event}
               label={label}
               className="rbc-addons-dnd-drag-preview"

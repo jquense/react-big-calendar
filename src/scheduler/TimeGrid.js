@@ -5,18 +5,18 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
-import * as dates from './utils/dates'
+import * as dates from '../utils/dates'
 import DayRow from './DayRow'
 
 import getWidth from 'dom-helpers/width'
-import TimeGridRowHeader from './TimeGridRowHeader'
-import { notify } from './utils/helpers'
-import { inRange, sortEvents } from './utils/eventLevels'
-import Resources from './utils/Resources'
-import ResourceHeader from './ResourceHeader'
-import { DayLayoutAlgorithmPropType } from './utils/propTypes'
+import TimeGridHeader from './TimeGridHeader'
+import { notify } from '../utils/helpers'
+import { inRange, sortEvents } from '../utils/eventLevels'
+import Resources from '../utils/Resources'
+import ResourceHeader from '../ResourceHeader'
+import { DayLayoutAlgorithmPropType } from '../utils/propTypes'
 
-export default class TimeGridRow extends Component {
+export default class TimeGrid extends Component {
   constructor(props) {
     super(props)
 
@@ -104,9 +104,16 @@ export default class TimeGridRow extends Component {
   }
 
   renderEvents(range, events, now) {
-    let { min, max, accessors, components, localizer, dayLayoutAlgorithm } = this.props
+    let {
+      min,
+      max,
+      accessors,
+      components,
+      localizer,
+      dayLayoutAlgorithm,
+    } = this.props
 
-        const resources = this.memoizedResources(this.props.resources, accessors)
+    const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
     return resources.map(([id, resource], i) => {
@@ -129,7 +136,6 @@ export default class TimeGridRow extends Component {
         </div>
       )
     })
-    // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
   }
 
   renderDay(
@@ -185,7 +191,10 @@ export default class TimeGridRow extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
-      components: { timeGutterHeader: TimeGutterHeader, resourceHeader: ResourceHeaderComponent = ResourceHeader },
+      components: {
+        timeGutterHeader: TimeGutterHeader,
+        resourceHeader: ResourceHeaderComponent = ResourceHeader,
+      },
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -217,67 +226,65 @@ export default class TimeGridRow extends Component {
 
     allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
     return (
-      <div
-        className={clsx(
-          'rbc-time-view-row',          
-          'rbc-time-view-resources'
-        )}
-      >
-
-<div
-        ref={this.scrollRef}
-        className={clsx('rbc-time-header')}
-      >
-        <div
-          className="rbc-time-header-gutter"
-          style={{ width, minWidth: width, maxWidth: width }}
-        >
-          {TimeGutterHeader && <TimeGutterHeader />}
+      <div className={clsx('rbc-time-view-row', 'rbc-time-view-resources')}>
+        <div ref={this.scrollRef} className={clsx('rbc-time-header')}>
+          <div
+            className="rbc-time-header-gutter"
+            style={{ width, minWidth: width, maxWidth: width }}
+          >
+            {TimeGutterHeader && <TimeGutterHeader />}
+          </div>
+          {range.map((date, jj) => {
+            return (
+              <TimeGridHeader
+                key={jj}
+                {...this.props}
+                localizer={localizer}
+                min={dates.merge(date, min)}
+                max={dates.merge(date, max)}
+                components={components}
+                key={'-' + jj}
+                date={date}
+              />
+            )
+          })}
         </div>
-            {range.map((date, jj) => {
-              return (
-                <TimeGridRowHeader
-                  key={jj}
-                  {...this.props}
-                  localizer={localizer}
-                  min={dates.merge(date, min)}
-                  max={dates.merge(date, max)}
-                  components={components}
-                  key={'-' + jj}
-                  date={date}
-                />
-              )
-            })}
-            </div>
 
-        <div  
-          ref={this.contentRef}         
-          className={clsx("rbc-time-content-row-xx")}
+        <div
+          ref={this.contentRef}
+          className={clsx('rbc-time-content-row-xx')}
           onScroll={this.handleScroll}
         >
-
-{resources && <div className={clsx('rbc-time-column', 'rbc-time-gutter')} ref={this.gutterRef}>
-          {this.memoizedResources(resources, accessors).map(
-            ([id, resource], i) => {
-              return (
-                resource && (
-                  <div className="rbc-row rbc-time-row" key={`resource_${i}`}>
-                    <div className="rbc-header">
-                      <ResourceHeaderComponent                        
-                        index={i}
-                        label={accessors.resourceTitle(resource)}
-                        resource={resource}
-                      />
-                    </div>
-                  </div>
-                )
-              )
-            }
+          {resources && (
+            <div
+              className={clsx('rbc-time-column', 'rbc-time-gutter')}
+              ref={this.gutterRef}
+            >
+              {this.memoizedResources(resources, accessors).map(
+                ([id, resource], i) => {
+                  return (
+                    resource && (
+                      <div
+                        className="rbc-row rbc-time-row"
+                        key={`resource_${i}`}
+                      >
+                        <div className="rbc-header">
+                          <ResourceHeaderComponent
+                            index={i}
+                            label={accessors.resourceTitle(resource)}
+                            resource={resource}
+                          />
+                        </div>
+                      </div>
+                    )
+                  )
+                }
+              )}
+            </div>
           )}
-        </div>}
-          
-        <div className='rbc-time-column-resource-xx'>
-          {this.renderEvents(range, rangeEvents, getNow())}
+
+          <div className="rbc-time-column-resource-xx">
+            {this.renderEvents(range, rangeEvents, getNow())}
           </div>
         </div>
       </div>
@@ -296,13 +303,13 @@ export default class TimeGridRow extends Component {
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
         if (this.gutter) {
-        const width = getWidth(this.gutter)
+          const width = getWidth(this.gutter)
 
-        if (width && this.state.gutterWidth !== width) {
-          this.setState({ gutterWidth: width })
-          this.applyScroll()
+          if (width && this.state.gutterWidth !== width) {
+            this.setState({ gutterWidth: width })
+            this.applyScroll()
+          }
         }
-      }
       }
     )
   }
@@ -311,9 +318,10 @@ export default class TimeGridRow extends Component {
     if (this._scrollRatio) {
       const content = this.contentRef.current
       const gutterWidth = this.props.width || this.state.gutterWidth
-      
+
       if (gutterWidth) {
-        content.scrollLeft = (content.scrollWidth - gutterWidth) * this._scrollRatio
+        content.scrollLeft =
+          (content.scrollWidth - gutterWidth) * this._scrollRatio
         // Only do this once
         this._scrollRatio = null
         this.props.onScrolledToDay(this.props.scrollToDay)
@@ -325,12 +333,12 @@ export default class TimeGridRow extends Component {
     const { min, max, scrollToDay } = props
 
     if (scrollToDay) {
-    const beginingOfWeek = dates.startOf(scrollToDay, 'week')
-    const scrollToWeekDay = dates.diff(scrollToDay, beginingOfWeek, 'day')
-    const diffMillis = dates.diff(max, min) * scrollToWeekDay
-    const totalMillis = dates.diff(max, min) * 7
+      const beginingOfWeek = dates.startOf(scrollToDay, 'week')
+      const scrollToWeekDay = dates.diff(scrollToDay, beginingOfWeek, 'day')
+      const diffMillis = dates.diff(max, min) * scrollToWeekDay
+      const totalMillis = dates.diff(max, min) * 7
 
-    this._scrollRatio = diffMillis / totalMillis
+      this._scrollRatio = diffMillis / totalMillis
     }
   }
 
@@ -353,7 +361,7 @@ export default class TimeGridRow extends Component {
   )
 }
 
-TimeGridRow.propTypes = {
+TimeGrid.propTypes = {
   events: PropTypes.array.isRequired,
   resources: PropTypes.array,
 
@@ -393,11 +401,11 @@ TimeGridRow.propTypes = {
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 
-TimeGridRow.defaultProps = {
+TimeGrid.defaultProps = {
   step: 30,
   timeslots: 2,
   min: dates.startOf(new Date(), 'day'),
   max: dates.endOf(new Date(), 'day'),
   scrollToTime: dates.startOf(new Date(), 'day'),
-  onScrolledToDay: () => {}
+  onScrolledToDay: () => {},
 }

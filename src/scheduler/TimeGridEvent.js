@@ -6,7 +6,7 @@ function stringifyPercent(v) {
 }
 
 /* eslint-disable react/prop-types */
-function TimeGridRowEvent(props) {
+function TimeGridEvent(props) {
   const {
     style,
     className,
@@ -40,10 +40,7 @@ function TimeGridRowEvent(props) {
   ]
 
   return (
-    <EventWrapper 
-    type="time" 
-    onSchedulerView={true}
-    {...props}>
+    <EventWrapper type="time" onSchedulerView={true} {...props}>
       <div
         onClick={onClick}
         onDoubleClick={onDoubleClick}
@@ -71,4 +68,4 @@ function TimeGridRowEvent(props) {
   )
 }
 
-export default TimeGridRowEvent
+export default TimeGridEvent

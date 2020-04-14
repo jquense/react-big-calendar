@@ -1,15 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import * as dates from './utils/dates'
-import { navigate } from './utils/constants'
-import TimeGridRow from './TimeGridRow'
+import * as dates from '../utils/dates'
+import { navigate } from '../utils/constants'
+import TimeGrid from '../scheduler/TimeGrid'
 
 class Scheduler extends React.Component {
   render() {
     let { date, scrollToDay, ...props } = this.props
     let range = Scheduler.range(date, this.props)
 
-    return <TimeGridRow scrollToDay={scrollToDay} {...props} range={range} eventOffset={15}/>
+    return (
+      <TimeGrid
+        scrollToDay={scrollToDay}
+        {...props}
+        range={range}
+        eventOffset={15}
+      />
+    )
   }
 }
 
@@ -17,7 +24,7 @@ Scheduler.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
 }
 
-Scheduler.defaultProps = TimeGridRow.defaultProps
+Scheduler.defaultProps = TimeGrid.defaultProps
 
 Scheduler.navigate = (date, action) => {
   switch (action) {

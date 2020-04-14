@@ -12,7 +12,6 @@ function TimeGridEvent(props) {
     className,
     event,
     accessors,
-    rtl,
     selected,
     label,
     continuesEarlier,

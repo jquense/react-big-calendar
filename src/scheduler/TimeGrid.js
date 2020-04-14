@@ -179,18 +179,14 @@ export default class TimeGrid extends Component {
       events,
       range,
       width,
-      rtl,
-      selected,
       getNow,
       resources,
       components,
       accessors,
-      getters,
       localizer,
       min,
       max,
       showMultiDayTimes,
-      longPressThreshold,
       components: {
         timeGutterHeader: TimeGutterHeader,
         resourceHeader: ResourceHeaderComponent = ResourceHeader,
@@ -266,7 +262,7 @@ export default class TimeGrid extends Component {
                     resource && (
                       <div
                         className="rbc-row rbc-time-row"
-                        key={`resource_${i}`}
+                        key={`resource_${i}_${id}`}
                       >
                         <div className="rbc-header">
                           <ResourceHeaderComponent

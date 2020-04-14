@@ -22,6 +22,7 @@ class Scheduler extends React.Component {
 
 Scheduler.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
+  scrollToDay: PropTypes.instanceOf(Date),
 }
 
 Scheduler.defaultProps = TimeGrid.defaultProps

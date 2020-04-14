@@ -7,7 +7,7 @@ import * as dates from '../utils/dates'
 import Header from '../Header'
 import BackgroundWrapper from '../BackgroundWrapper'
 
-class TimeGridRowHeader extends React.Component {
+class TimeGridHeader extends React.Component {
   constructor(...args) {
     super(...args)
 
@@ -63,16 +63,12 @@ class TimeGridRowHeader extends React.Component {
   render() {
     const {
       max,
-      rtl,
-      isNow,
       resource,
-      accessors,
       localizer,
       getters: { dayProp, ...getters },
       components: {
         eventContainerWrapper: EventContainer,
         timeSlotWrapper: Wrapper = BackgroundWrapper,
-        ...components
       },
     } = this.props
 
@@ -114,11 +110,14 @@ class TimeGridRowHeader extends React.Component {
   }
 }
 
-TimeGridRowHeader.propTypes = {
+TimeGridHeader.propTypes = {
   range: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
+  resources: PropTypes.array,
   getNow: PropTypes.func.isRequired,
   isOverflowing: PropTypes.bool,
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
 
   rtl: PropTypes.bool,
   width: PropTypes.number,
@@ -140,4 +139,4 @@ TimeGridRowHeader.propTypes = {
   scrollRef: PropTypes.any,
 }
 
-export default TimeGridRowHeader
+export default TimeGridHeader

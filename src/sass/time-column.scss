@@ -10,48 +10,11 @@
   }
 }
 
-.rbc-time-header-row {
-  display: flex;
-  flex-direction: row;
-  min-height: 40px;
-
-  .rbc-timeslot-group {
-    flex: 1;
-  }
-
-  > * + * > * {
-    border-left: 1px solid $cell-border;
-  }
-}
-
-.rbc-time-row {
-  display: flex;
-  flex-direction: row;
-  min-height: 120px;
-
-  .rbc-timeslot-group {
-    flex: 1;
-    min-width: 40px;
-  }
-
-  > * > * {
-    border-left: 1px solid $cell-border;
-  }
-}
-
 .rbc-timeslot-group {
   border-bottom: 1px solid $cell-border;
   min-height: 40px;
   display: flex;
   flex-flow: column nowrap;
-}
-
-.rbc-timeslot-row-group {
-  border-bottom: 1px solid $cell-border;
-  min-height: 20px;
-  display: flex;
-  flex-flow: row nowrap;
-  min-width: 40px;
 }
 
 .rbc-time-gutter,
@@ -163,4 +126,42 @@
 
 .rbc-day-header {
   text-align: center;
+}
+
+// Scheduler
+.rbc-time-row {
+  display: flex;
+  flex-direction: row;
+  min-height: 120px;
+
+  .rbc-timeslot-group {
+    flex: 1;
+    min-width: 40px;
+  }
+
+  > * > * {
+    border-left: 1px solid $cell-border;
+  }
+}
+
+.rbc-time-header-row {
+  display: flex;
+  flex-direction: row;
+  min-height: 40px;
+
+  .rbc-timeslot-group {
+    flex: 1;
+  }
+
+  > * + * > * {
+    border-left: 1px solid $cell-border;
+  }
+}
+
+.rbc-timeslot-row-group {
+  border-bottom: 1px solid $cell-border;
+  min-height: 20px;
+  display: flex;
+  flex-flow: row nowrap;
+  min-width: 40px;
 }

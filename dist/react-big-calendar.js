@@ -13755,10 +13755,8 @@
           _this$props2$getters = _this$props2.getters,
           dayProp = _this$props2$getters.dayProp,
           getters = _objectWithoutPropertiesLoose(_this$props2$getters, ["dayProp"]),
-          _this$props2$componen = _this$props2.components,
-          EventContainer = _this$props2$componen.eventContainerWrapper,
-          _this$props2$componen2 = _this$props2$componen.timeSlotWrapper,
-          Wrapper = _this$props2$componen2 === void 0 ? NoopWrapper : _this$props2$componen2;
+          _this$props2$componen = _this$props2.components.timeSlotWrapper,
+          Wrapper = _this$props2$componen === void 0 ? NoopWrapper : _this$props2$componen;
 
       var slotMetrics = this.slotMetrics;
 
@@ -13796,7 +13794,7 @@
   TimeGridHeader$1.propTypes = {
     range: propTypes.array.isRequired,
     events: propTypes.array.isRequired,
-    resources: propTypes.array,
+    resource: propTypes.object,
     getNow: propTypes.func.isRequired,
     isOverflowing: propTypes.bool,
     min: propTypes.instanceOf(Date),

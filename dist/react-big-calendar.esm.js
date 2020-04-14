@@ -151,6 +151,7 @@ var defaultMessages = {
   tomorrow: 'Tomorrow',
   today: 'Today',
   agenda: 'Agenda',
+  scheduler: 'Scheduler',
   noEventsInRange: 'There are no events in this range.',
   showMore: function showMore(total) {
     return "+" + total + " more";
@@ -4246,7 +4247,7 @@ function stringifyPercent$1(v) {
 /* eslint-disable react/prop-types */
 
 
-function TimeGridRowEvent(props) {
+function TimeGridEvent$1(props) {
   var style = props.style,
       className = props.className,
       event = props.event,
@@ -4361,7 +4362,7 @@ function (_React$Component) {
         }, format);
         var continuesEarlier = startsBeforeDay || slotMetrics.startsBefore(start);
         var continuesLater = startsAfterDay || slotMetrics.startsAfter(end);
-        return React.createElement(TimeGridRowEvent, {
+        return React.createElement(TimeGridEvent$1, {
           style: style,
           event: event,
           label: label,
@@ -4863,12 +4864,12 @@ TimeGridRowHeader.propTypes = process.env.NODE_ENV !== "production" ? {
   scrollRef: PropTypes.any
 } : {};
 
-var TimeGridRow =
+var TimeGrid$1 =
 /*#__PURE__*/
 function (_Component) {
-  _inheritsLoose(TimeGridRow, _Component);
+  _inheritsLoose(TimeGrid, _Component);
 
-  function TimeGridRow(props) {
+  function TimeGrid(props) {
     var _this;
 
     _this = _Component.call(this, props) || this;
@@ -4937,7 +4938,7 @@ function (_Component) {
     return _this;
   }
 
-  var _proto = TimeGridRow.prototype;
+  var _proto = TimeGrid.prototype;
 
   _proto.componentWillMount = function componentWillMount() {
     this.calculateScroll();
@@ -5000,7 +5001,7 @@ function (_Component) {
         key: "resource_" + i,
         className: "rbc-time-row-resource"
       }, _this2.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i, dayLayoutAlgorithm));
-    }); // return this.renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i)})
+    });
   };
 
   _proto.renderDay = function renderDay(range, groupedEvents, id, accessors, localizer, min, max, resource, components, now, i, dayLayoutAlgorithm) {
@@ -5094,7 +5095,7 @@ function (_Component) {
       }));
     })), React.createElement("div", {
       ref: this.contentRef,
-      className: clsx("rbc-time-content-row-xx"),
+      className: clsx('rbc-time-content-row-xx'),
       onScroll: this.handleScroll
     }, resources && React.createElement("div", {
       className: clsx('rbc-time-column', 'rbc-time-gutter'),
@@ -5177,9 +5178,9 @@ function (_Component) {
     }
   };
 
-  return TimeGridRow;
+  return TimeGrid;
 }(Component);
-TimeGridRow.propTypes = process.env.NODE_ENV !== "production" ? {
+TimeGrid$1.propTypes = process.env.NODE_ENV !== "production" ? {
   events: PropTypes.array.isRequired,
   resources: PropTypes.array,
   step: PropTypes.number,
@@ -5211,7 +5212,7 @@ TimeGridRow.propTypes = process.env.NODE_ENV !== "production" ? {
   getDrilldownView: PropTypes.func.isRequired,
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType
 } : {};
-TimeGridRow.defaultProps = {
+TimeGrid$1.defaultProps = {
   step: 30,
   timeslots: 2,
   min: startOf(new Date(), 'day'),
@@ -5238,7 +5239,7 @@ function (_React$Component) {
         props = _objectWithoutPropertiesLoose(_this$props, ["date", "scrollToDay"]);
 
     var range = Scheduler.range(date, this.props);
-    return React.createElement(TimeGridRow, _extends({
+    return React.createElement(TimeGrid$1, _extends({
       scrollToDay: scrollToDay
     }, props, {
       range: range,
@@ -5252,7 +5253,7 @@ function (_React$Component) {
 Scheduler.propTypes = process.env.NODE_ENV !== "production" ? {
   date: PropTypes.instanceOf(Date).isRequired
 } : {};
-Scheduler.defaultProps = TimeGridRow.defaultProps;
+Scheduler.defaultProps = TimeGrid$1.defaultProps;
 
 Scheduler.navigate = function (date, action) {
   switch (action) {

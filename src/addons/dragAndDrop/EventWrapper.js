@@ -12,8 +12,7 @@ class EventWrapper extends React.Component {
       onBeginAction: PropTypes.func,
       draggableAccessor: accessor,
       resizableAccessor: accessor,
-      dragAndDropAction: PropTypes.object,
-      onSchedulerView: PropTypes.bool,
+      dragAndDropAction: PropTypes.object,      
     }),
   }
 
@@ -28,6 +27,7 @@ class EventWrapper extends React.Component {
     continuesAfter: PropTypes.bool,
     isDragging: PropTypes.bool,
     isResizing: PropTypes.bool,
+    onSchedulerView: PropTypes.bool,
   }
 
   handleResizeUp = e => {

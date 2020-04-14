@@ -67,7 +67,6 @@ class TimeGridHeader extends React.Component {
       localizer,
       getters: { dayProp, ...getters },
       components: {
-        eventContainerWrapper: EventContainer,
         timeSlotWrapper: Wrapper = BackgroundWrapper,
       },
     } = this.props
@@ -113,7 +112,7 @@ class TimeGridHeader extends React.Component {
 TimeGridHeader.propTypes = {
   range: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
-  resources: PropTypes.array,
+  resource: PropTypes.object,
   getNow: PropTypes.func.isRequired,
   isOverflowing: PropTypes.bool,
   min: PropTypes.instanceOf(Date),

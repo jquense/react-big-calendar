@@ -23,8 +23,11 @@ export function getStyledEvents({
 }) {
   let algorithm = null
 
-  if (dayLayoutAlgorithm in DefaultAlgorithms)
+  if (dayLayoutAlgorithm in DefaultAlgorithms) {
     algorithm = DefaultAlgorithms[dayLayoutAlgorithm]
+  } else {
+    algorithm = dayLayoutAlgorithm
+  }
 
   if (!isFunction(algorithm)) {
     // invalid algorithm

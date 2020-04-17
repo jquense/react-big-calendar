@@ -21,7 +21,7 @@ export function getStyledEvents({
   dayLayoutAlgorithm, // one of DefaultAlgorithms keys
   // or custom function
 }) {
-  let algorithm = null
+  let algorithm = dayLayoutAlgorithm
 
   if (dayLayoutAlgorithm in DefaultAlgorithms)
     algorithm = DefaultAlgorithms[dayLayoutAlgorithm]

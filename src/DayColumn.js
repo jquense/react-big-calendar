@@ -349,7 +349,7 @@ class DayColumn extends React.Component {
 
     while (dates.lte(current, endDate)) {
       slots.push(current)
-      current = new Date(+current + this.props.step * 60 * 1000)
+      current = new Date(+current + this.props.step * 60 * 1000) // using Date ensures not to create an endless loop the day DST begins
     }
 
     notify(this.props.onSelectSlot, {

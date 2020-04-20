@@ -11,6 +11,7 @@ import createEvents from './helpers/createEvents'
 import customComponents from './helpers/customComponents'
 
 import { events, Views, Calendar } from './helpers'
+import resources from './helpers/resourceEvents'
 
 storiesOf('Big Calendar', module)
   .add('demo', () => (
@@ -29,6 +30,20 @@ storiesOf('Big Calendar', module)
         min={moment('12:00am', 'h:mma').toDate()}
         max={moment('11:59pm', 'h:mma').toDate()}
         events={events}
+        onSelectEvent={action('event selected')}
+        defaultDate={new Date()}
+      />
+    )
+  })
+  .add('scheduler view', () => {
+    return (
+      <Calendar
+        views={["day", "week", "scheduler"]}
+        defaultView={Views.SCHEDULER}
+        min={moment('12:00am', 'h:mma').toDate()}
+        max={moment('11:59pm', 'h:mma').toDate()}
+        events={resources.events} 
+        resources={resources.list}
         onSelectEvent={action('event selected')}
         defaultDate={new Date()}
       />

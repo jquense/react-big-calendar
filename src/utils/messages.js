@@ -13,6 +13,7 @@ let defaultMessages = {
   tomorrow: 'Tomorrow',
   today: 'Today',
   agenda: 'Agenda',
+  scheduler: 'Scheduler',
 
   noEventsInRange: 'There are no events in this range.',
 

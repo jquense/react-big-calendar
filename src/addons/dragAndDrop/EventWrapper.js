@@ -12,7 +12,7 @@ class EventWrapper extends React.Component {
       onBeginAction: PropTypes.func,
       draggableAccessor: accessor,
       resizableAccessor: accessor,
-      dragAndDropAction: PropTypes.object,
+      dragAndDropAction: PropTypes.object,      
     }),
   }
 
@@ -27,6 +27,7 @@ class EventWrapper extends React.Component {
     continuesAfter: PropTypes.bool,
     isDragging: PropTypes.bool,
     isResizing: PropTypes.bool,
+    onSchedulerView: PropTypes.bool,
   }
 
   handleResizeUp = e => {
@@ -68,8 +69,8 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    const { event, type, continuesPrior, continuesAfter } = this.props
-
+    const { event, type, continuesPrior, continuesAfter, onSchedulerView } = this.props
+   
     let { children } = this.props
 
     if (event.__isPreview)
@@ -134,7 +135,7 @@ class EventWrapper extends React.Component {
         let StartAnchor = null
         let EndAnchor = null
 
-        if (type === 'date') {
+        if (onSchedulerView || type === 'date') {
           StartAnchor = !continuesPrior && this.renderAnchor('Left')
           EndAnchor = !continuesAfter && this.renderAnchor('Right')
         } else {

@@ -7,6 +7,7 @@ import Selection, {
   getBoundsForNode,
   getEventNodeFromPoint,
 } from '../../Selection'
+import SchedulerTimeGridEvent from '../../scheduler/TimeGridEvent'
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors } from './common'
 import NoopWrapper from '../../NoopWrapper'
@@ -15,6 +16,13 @@ const pointInColumn = (bounds, { x, y }) => {
   const { left, right, top } = bounds
   return x < right + 10 && x > left && y > top
 }
+
+const pointInRow = (bounds, point) => {
+  const { x, y } = point
+  const { left, right, top, bottom } = bounds
+  return y > top + 10 && y < bottom && x > left && x < right
+}
+
 const propTypes = {}
 
 class EventContainerWrapper extends React.Component {
@@ -25,6 +33,7 @@ class EventContainerWrapper extends React.Component {
     localizer: PropTypes.object.isRequired,
     slotMetrics: PropTypes.object.isRequired,
     resource: PropTypes.any,
+    onSchedulerView: PropTypes.bool,
   }
 
   static contextTypes = {
@@ -75,17 +84,28 @@ class EventContainerWrapper extends React.Component {
 
   handleMove = (point, boundaryBox) => {
     const { event } = this.context.draggable.dragAndDropAction
-    const { accessors, slotMetrics } = this.props
+    const { accessors, slotMetrics, onSchedulerView } = this.props
 
-    if (!pointInColumn(boundaryBox, point)) {
+    if (!onSchedulerView && !pointInColumn(boundaryBox, point)) {
+      this.reset()
+      return
+    } else if (onSchedulerView && !pointInRow(boundaryBox, point)) {
       this.reset()
       return
     }
 
-    let currentSlot = slotMetrics.closestSlotFromPoint(
-      { y: point.y - this.eventOffsetTop, x: point.x },
-      boundaryBox
-    )
+    let currentSlot
+    if (onSchedulerView) {
+      currentSlot = slotMetrics.closestSlotFromPointForRow(
+        { y: point.y, x: point.x - this.eventOffsetLeft },
+        boundaryBox
+      )
+    } else {
+      currentSlot = slotMetrics.closestSlotFromPoint(
+        { y: point.y - this.eventOffsetTop, x: point.x },
+        boundaryBox
+      )
+    }
 
     let eventStart = accessors.start(event)
     let eventEnd = accessors.end(event)
@@ -99,29 +119,46 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleResize(point, boundaryBox) {
-    let start, end
-    const { accessors, slotMetrics } = this.props
+    let start, end, currentSlot
+    const { accessors, slotMetrics, onSchedulerView } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
-
-    let currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
+    
     if (direction === 'UP') {
+      currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
       end = accessors.end(event)
       start = dates.min(currentSlot, slotMetrics.closestSlotFromDate(end, -1))
     } else if (direction === 'DOWN') {
+      currentSlot = slotMetrics.closestSlotFromPoint(point, boundaryBox)
       start = accessors.start(event)
       end = dates.max(currentSlot, slotMetrics.closestSlotFromDate(start))
+    } else if (direction === 'RIGHT' && onSchedulerView) {
+      currentSlot = slotMetrics.closestSlotFromPointForRow(point, boundaryBox)
+      start = accessors.start(event)
+      end = dates.max(currentSlot, slotMetrics.closestSlotFromDate(start))
+    } else if (direction === 'LEFT' && onSchedulerView) {
+      currentSlot = slotMetrics.closestSlotFromPointForRow(point, boundaryBox)
+      end = accessors.end(event)
+      start = dates.min(currentSlot, slotMetrics.closestSlotFromDate(end, -1))
     }
 
     this.update(event, slotMetrics.getRange(start, end))
   }
 
   handleDropFromOutside = (point, boundaryBox) => {
-    const { slotMetrics, resource } = this.props
+    const { slotMetrics, resource, onSchedulerView } = this.props
 
-    let start = slotMetrics.closestSlotFromPoint(
+    let start
+    if (onSchedulerView) {
+      start = slotMetrics.closestSlotFromPointForRow(
+        { y: point.y, x: point.x },
+        boundaryBox
+      )
+    } else {
+    start = slotMetrics.closestSlotFromPoint(
       { y: point.y, x: point.x },
       boundaryBox
     )
+    }
 
     this.context.draggable.onDropFromOutside({
       start,
@@ -135,21 +172,26 @@ class EventContainerWrapper extends React.Component {
     let node = findDOMNode(this)
     let isBeingDragged = false
     let selector = (this._selector = new Selection(() =>
-      node.closest('.rbc-time-view')
+      node.closest('.rbc-time-view, .rbc-time-view-row')
     ))
 
     selector.on('beforeSelect', point => {
       const { dragAndDropAction } = this.context.draggable
+      const { onSchedulerView } = this.props
 
       if (!dragAndDropAction.action) return false
-      if (dragAndDropAction.action === 'resize') {
+      if (!onSchedulerView && dragAndDropAction.action === 'resize') {
         return pointInColumn(getBoundsForNode(node), point)
+      }
+      if (onSchedulerView && dragAndDropAction.action === 'resize') {
+        return pointInRow(getBoundsForNode(node), point)
       }
 
       const eventNode = getEventNodeFromPoint(node, point)
       if (!eventNode) return false
 
       this.eventOffsetTop = point.y - getBoundsForNode(eventNode).top
+      this.eventOffsetLeft = point.x - getBoundsForNode(eventNode).left
     })
 
     selector.on('selecting', box => {
@@ -163,9 +205,12 @@ class EventContainerWrapper extends React.Component {
     selector.on('dropFromOutside', point => {
       if (!this.context.draggable.onDropFromOutside) return
 
+      const { onSchedulerView } = this.props
+
       const bounds = getBoundsForNode(node)
 
-      if (!pointInColumn(bounds, point)) return
+      if (onSchedulerView && !pointInRow(bounds, point)) return
+      if (!onSchedulerView && !pointInColumn(bounds, point)) return
 
       this.handleDropFromOutside(point, bounds)
     })
@@ -228,6 +273,7 @@ class EventContainerWrapper extends React.Component {
       getters,
       slotMetrics,
       localizer,
+      onSchedulerView,
     } = this.props
 
     let { event, top, height } = this.state
@@ -254,7 +300,20 @@ class EventContainerWrapper extends React.Component {
         <React.Fragment>
           {events}
 
-          {event && (
+          {event && onSchedulerView && (            
+            <SchedulerTimeGridEvent
+              event={event}
+              label={label}
+              className="rbc-addons-dnd-drag-preview"
+              style={{ top, height, width: 100 }}
+              getters={getters}
+              components={{ ...components, eventWrapper: NoopWrapper }}
+              accessors={{ ...accessors, ...dragAccessors }}
+              continuesEarlier={startsBeforeDay}
+              continuesLater={startsAfterDay}
+            />
+          )}
+          {event && !onSchedulerView && (            
             <TimeGridEvent
               event={event}
               label={label}

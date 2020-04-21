@@ -9882,41 +9882,39 @@
   }, EventRowMixin.propTypes);
   EventEndingRow.defaultProps = _extends({}, EventRowMixin.defaultProps);
 
-  var simpleIsEqual = function simpleIsEqual(a, b) {
-    return a === b;
-  };
-
-  function index (resultFn, isEqual) {
-    if (isEqual === void 0) {
-      isEqual = simpleIsEqual;
-    }
-
-    var lastThis;
-    var lastArgs = [];
-    var lastResult;
-    var calledOnce = false;
-
-    var isNewArgEqualToLast = function isNewArgEqualToLast(newArg, index) {
-      return isEqual(newArg, lastArgs[index], index);
-    };
-
-    var result = function result() {
-      for (var _len = arguments.length, newArgs = new Array(_len), _key = 0; _key < _len; _key++) {
-        newArgs[_key] = arguments[_key];
+  function areInputsEqual(newInputs, lastInputs) {
+      if (newInputs.length !== lastInputs.length) {
+          return false;
       }
-
-      if (calledOnce && lastThis === this && newArgs.length === lastArgs.length && newArgs.every(isNewArgEqualToLast)) {
-        return lastResult;
+      for (var i = 0; i < newInputs.length; i++) {
+          if (newInputs[i] !== lastInputs[i]) {
+              return false;
+          }
       }
+      return true;
+  }
 
-      lastResult = resultFn.apply(this, newArgs);
-      calledOnce = true;
-      lastThis = this;
-      lastArgs = newArgs;
-      return lastResult;
-    };
-
-    return result;
+  function memoizeOne(resultFn, isEqual) {
+      if (isEqual === void 0) { isEqual = areInputsEqual; }
+      var lastThis;
+      var lastArgs = [];
+      var lastResult;
+      var calledOnce = false;
+      function memoized() {
+          var newArgs = [];
+          for (var _i = 0; _i < arguments.length; _i++) {
+              newArgs[_i] = arguments[_i];
+          }
+          if (calledOnce && lastThis === this && isEqual(newArgs, lastArgs)) {
+              return lastResult;
+          }
+          lastResult = resultFn.apply(this, newArgs);
+          calledOnce = true;
+          lastThis = this;
+          lastArgs = newArgs;
+          return lastResult;
+      }
+      return memoized;
   }
 
   var isSegmentInSlot$1 = function isSegmentInSlot(seg, slot) {
@@ -9928,7 +9926,7 @@
   };
 
   function getSlotMetrics() {
-    return index(function (options) {
+    return memoizeOne(function (options) {
       var range = options.range,
           events = options.events,
           maxRows = options.maxRows,
@@ -11529,7 +11527,7 @@
 
       var padding = e.idx === 0 ? 0 : 3;
       e.style.width = "calc(" + e.size + "% - " + padding + "px)";
-      e.style.height = "calc(" + e.style.height + "% - 2px)";
+      e.style.height = "calc(" + e.style.height + "%)";
       e.style.xOffset = "calc(" + e.style.left + "% + " + padding + "px)";
     }
 
@@ -12517,7 +12515,7 @@
         }
       };
 
-      _this.memoizedResources = index(function (resources, accessors) {
+      _this.memoizedResources = memoizeOne(function (resources, accessors) {
         return Resources(resources, accessors);
       });
       _this.state = {
@@ -13638,7 +13636,7 @@
         components: components,
         slotMetrics: slotMetrics
       }, React__default.createElement("div", {
-        className: clsx('rbc-events-container', rtl && 'rtl')
+        className: clsx('rbc-events-container-scheduler', rtl && 'rtl')
       }, this.renderEvents())), selecting && React__default.createElement("div", {
         className: "rbc-slot-selection",
         style: {
@@ -13878,7 +13876,7 @@
         }
       };
 
-      _this.memoizedResources = index(function (resources, accessors) {
+      _this.memoizedResources = memoizeOne(function (resources, accessors) {
         return Resources(resources, accessors);
       });
       _this.state = {

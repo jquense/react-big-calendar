@@ -358,7 +358,8 @@ button.rbc-input::-moz-focus-inner {
     left: 0;
     position: absolute;
     right: 0;
-    margin-right: 10px;
+    margin-left: 1px;
+    margin-right: 5px;
     top: 0; }
     .rbc-day-slot .rbc-events-container.rbc-rtl {
       left: 10px;
@@ -368,7 +369,8 @@ button.rbc-input::-moz-focus-inner {
     left: 0;
     position: absolute;
     right: 0;
-    margin-bottom: 10px;
+    margin-top: 1px;
+    margin-bottom: 5px;
     top: 0; }
   .rbc-day-slot .rbc-event {
     border: 1px solid #265985;

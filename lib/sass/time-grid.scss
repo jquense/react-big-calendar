@@ -11,6 +11,16 @@
   padding: 3px;
 }
 
+.rbc-slot-selection-row {
+  z-index: 10;
+  position: absolute;
+  background-color: $time-selection-bg-color;
+  color: $time-selection-color;
+  font-size: 75%;
+  height: 100%;
+  padding: 3px;
+}
+
 .rbc-slot-selecting {
   cursor: move;
 }

@@ -164,7 +164,7 @@ class DayRow extends React.Component {
           components={components}
           slotMetrics={slotMetrics}
         >
-          <div className={clsx('rbc-events-container', rtl && 'rtl')}>
+          <div className={clsx('rbc-events-container-scheduler', rtl && 'rtl')}>
             {this.renderEvents()}
           </div>
         </EventContainer>

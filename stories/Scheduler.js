@@ -24,6 +24,20 @@ storiesOf('Scheduler', module)
       />
     )
   })
+  .add('Multi day', () => {
+    return (
+      <Calendar
+        showMultiDayTimes={true}
+        dayLayoutAlgorithm={'no-overlap'}
+        views={['day', 'week', 'scheduler']}
+        defaultView={Views.SCHEDULER}
+        events={resources.events}
+        resources={resources.list}
+        onSelectEvent={action('event selected')}
+        defaultDate={new Date(2015, 3, 1)}
+      />
+    )
+  })
   .add('Overlap', () => {
     return (
       <Calendar

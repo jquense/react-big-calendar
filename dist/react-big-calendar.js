@@ -13252,7 +13252,7 @@
 
       var padding = e.idx === 0 ? 0 : 3
       e.style.width = 'calc(' + e.size + '% - ' + padding + 'px)'
-      e.style.height = 'calc(' + e.style.height + '% - 2px)'
+      e.style.height = 'calc(' + e.style.height + '%)'
       e.style.xOffset = 'calc(' + e.style.left + '% + ' + padding + 'px)'
     }
 
@@ -15911,7 +15911,7 @@
             React__default.createElement(
               'div',
               {
-                className: clsx('rbc-events-container', rtl && 'rtl'),
+                className: clsx('rbc-events-container-scheduler', rtl && 'rtl'),
               },
               this.renderEvents()
             )

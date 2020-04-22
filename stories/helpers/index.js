@@ -44,6 +44,15 @@ export const DragableCalendar = props => {
   )
 }
 
+export const customSlotPropGetter = date => {
+  const hour = date.getHours()
+  if (hour <= 7 || hour >= 15)
+    return {
+      className: 'business-hour',
+    }
+  else return {}
+}
+
 export const events = [
   {
     title: 'test',

@@ -170,7 +170,10 @@ class DayRow extends React.Component {
         </EventContainer>
 
         {selecting && (
-          <div className="rbc-slot-selection" style={{ top, height }}>
+          <div
+            className="rbc-slot-selection-row"
+            style={{ left: top, width: height }}
+          >
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}

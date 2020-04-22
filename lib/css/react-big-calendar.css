@@ -186,12 +186,20 @@ button.rbc-input::-moz-focus-inner {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0; }
 
-.rbc-event-continues-earlier {
+.rbc-time-column .rbc-event-continues-earlier {
   border-top-left-radius: 0;
   border-top-right-radius: 0; }
 
-.rbc-event-continues-later {
+.rbc-time-column .rbc-event-continues-later {
   border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.rbc-time-row-resource .rbc-event-continues-earlier {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
+
+.rbc-time-row-resource .rbc-event-continues-later {
+  border-top-right-radius: 0;
   border-bottom-right-radius: 0; }
 
 .rbc-row {
@@ -350,11 +358,20 @@ button.rbc-input::-moz-focus-inner {
     left: 0;
     position: absolute;
     right: 0;
-    margin-right: 10px;
+    margin-left: 1px;
+    margin-right: 5px;
     top: 0; }
     .rbc-day-slot .rbc-events-container.rbc-rtl {
       left: 10px;
       right: 0; }
+  .rbc-day-slot .rbc-events-container-scheduler {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    top: 0; }
   .rbc-day-slot .rbc-event {
     border: 1px solid #265985;
     display: flex;

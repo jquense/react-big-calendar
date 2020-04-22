@@ -8,7 +8,7 @@ export default {
     },
     {
       title: 'Another Meeting',
-      resourceId: ['b'],
+      resourceId: ['a'],
       start: new Date(2015, 3, 1, 2, 30, 0, 0),
       end: new Date(2015, 3, 1, 4, 30, 0, 0),
     },
@@ -29,6 +29,12 @@ export default {
       resourceId: ['c'],
       start: new Date(2015, 3, 4, 5, 30, 0, 0),
       end: new Date(2015, 3, 4, 10, 30, 0, 0),
+    },
+    {
+      title: 'Multi day',
+      resourceId: ['a'],
+      start: new Date(2015, 3, 1, 2, 30, 0, 0),
+      end: new Date(2015, 3, 2, 4, 30, 0, 0),
     },
   ],
 

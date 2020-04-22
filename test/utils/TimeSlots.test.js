@@ -2,8 +2,8 @@ import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import * as dates from '../../src/utils/dates'
 
 describe('getSlotMetrics', () => {
-  const min = dates.startOf(new Date(), 'day')
-  const max = dates.endOf(new Date(), 'day')
+  const min = dates.startOf(new Date(2018, 0, 29, 0, 0, 0), 'day')
+  const max = dates.endOf(new Date(2018, 0, 29, 59, 59, 59), 'day')
   const slotMetrics = getSlotMetrics({ min, max, step: 60, timeslots: 1 })
   test('getSlotMetrics.closestSlotToPosition: always returns timeslot if valid percentage is given', () => {
     expect(slotMetrics.closestSlotToPosition(0)).toBeDefined()
@@ -24,8 +24,8 @@ describe('getSlotMetrics', () => {
 })
 
 describe('getRange', () => {
-  const min = dates.startOf(new Date(), 'day')
-  const max = dates.endOf(new Date(), 'day')
+  const min = dates.startOf(new Date(2018, 0, 29, 0, 0, 0), 'day')
+  const max = dates.endOf(new Date(2018, 0, 29, 59, 59, 59), 'day')
   const slotMetrics = getSlotMetrics({ min, max, step: 60, timeslots: 1 })
 
   test('getRange: 15 minute start of day appointment stays within calendar', () => {

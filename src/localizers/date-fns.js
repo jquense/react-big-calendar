@@ -33,11 +33,11 @@ export let formats = {
   timeGutterFormat: 'p',
 
   monthHeaderFormat: 'MMMM yyyy',
-  dayHeaderFormat: 'dddd MMM dd',
+  dayHeaderFormat: 'cccc MMM dd',
   dayRangeHeaderFormat: weekRangeFormat,
   agendaHeaderFormat: dateRangeFormat,
 
-  agendaDateFormat: 'ddd MMM dd',
+  agendaDateFormat: 'ccc MMM dd',
   agendaTimeFormat: 'p',
   agendaTimeRangeFormat: timeRangeFormat,
 }

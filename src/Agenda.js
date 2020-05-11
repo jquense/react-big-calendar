@@ -113,14 +113,19 @@ class Agenda extends React.Component {
       return (
         <tr
           key={dayKey + '_' + idx}
-          className={userProps.className}
-          style={userProps.style}
+          className={userProps.className}          
         >
           {first}
-          <td className="rbc-agenda-time-cell">
+          <td 
+            className="rbc-agenda-time-cell"
+            style={userProps.style}
+          >
             {this.timeRangeLabel(day, event)}
           </td>
-          <td className="rbc-agenda-event-cell">
+          <td 
+            className="rbc-agenda-event-cell"
+            style={userProps.style}
+          >
             {Event ? <Event event={event} title={title} /> : title}
           </td>
         </tr>

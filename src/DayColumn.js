@@ -99,6 +99,7 @@ class DayColumn extends React.Component {
 
     if (current >= min && current <= max) {
       const top = this.slotMetrics.getCurrentTimePosition(current)
+      this.intervalTriggered = true
       this.setState({ timeIndicatorPosition: top })
     } else {
       this.clearTimeIndicatorInterval()
@@ -163,7 +164,7 @@ class DayColumn extends React.Component {
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}
-        {isNow && (
+        {isNow && this.intervalTriggered && (
           <div
             className="rbc-current-time-indicator"
             style={{ top: `${this.state.timeIndicatorPosition}%` }}

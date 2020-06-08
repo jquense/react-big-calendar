@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Calendar, Views } from 'react-big-calendar'
 import events from '../events'
 import * as dates from '../../src/utils/dates'

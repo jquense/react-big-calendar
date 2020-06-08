@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import events from '../events'
 import { Calendar, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'

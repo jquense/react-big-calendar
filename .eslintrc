@@ -2,7 +2,6 @@ parser: babel-eslint
 extends:
   - jason/react
   - prettier
-  - plugin:react-hooks/recommended
 plugins:
   - react-hooks
 env:

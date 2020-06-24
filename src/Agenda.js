@@ -10,7 +10,16 @@ import { navigate } from './utils/constants'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
-function Agenda(props) {
+function Agenda({
+  selected,
+  getters,
+  accessors,
+  localizer,
+  components,
+  length,
+  date,
+  events,
+}) {
   const headerRef = useRef(null)
   const dateColRef = useRef(null)
   const timeColRef = useRef(null)
@@ -22,13 +31,7 @@ function Agenda(props) {
   })
 
   const renderDay = (day, events, dayKey) => {
-    let {
-      selected,
-      getters,
-      accessors,
-      localizer,
-      components: { event: Event, date: AgendaDate },
-    } = props
+    const { event: Event, date: AgendaDate } = components
 
     events = events.filter(e =>
       inRange(e, dates.startOf(day, 'day'), dates.endOf(day, 'day'), accessors)
@@ -77,8 +80,6 @@ function Agenda(props) {
   }
 
   const timeRangeLabel = (day, event) => {
-    let { accessors, localizer, components } = props
-
     let labelClass = '',
       TimeComponent = components.time,
       label = localizer.messages.allDay
@@ -141,7 +142,6 @@ function Agenda(props) {
     }
   }
 
-  let { length, date, events, accessors, localizer } = props
   let { messages } = localizer
   let end = dates.add(date, length, 'day')
 

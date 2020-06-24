@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
@@ -16,7 +16,7 @@ const TimeGutter = ({
   step,
   timeslots,
 }) => {
-  const [slotMetrics, setSloMetrics] = useState(() =>
+  const slotMetrics = useRef(
     TimeSlotUtils.getSlotMetrics({
       min,
       max,
@@ -33,12 +33,12 @@ const TimeGutter = ({
       return
     }
 
-    setSloMetrics(() => slotMetrics.update({ min, max, timeslots, step }))
-  }, [slotMetrics, min, max, timeslots, step])
+    slotMetrics.current.update({ min, max, timeslots, step })
+  }, [min, max, timeslots, step])
 
   const renderSlot = (value, idx) => {
     if (idx !== 0) return null
-    const isNow = slotMetrics.dateIsInGroup(getNow(), idx)
+    const isNow = slotMetrics.current.dateIsInGroup(getNow(), idx)
     return (
       <span className={clsx('rbc-label', isNow && 'rbc-now')}>
         {localizer.format(value, 'timeGutterFormat')}
@@ -48,7 +48,7 @@ const TimeGutter = ({
 
   return (
     <div className="rbc-time-gutter rbc-time-column">
-      {slotMetrics.groups.map((grp, idx) => {
+      {slotMetrics.current.groups.map((grp, idx) => {
         return (
           <TimeSlotGroup
             key={idx}

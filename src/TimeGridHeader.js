@@ -15,47 +15,56 @@ class TimeGridHeader extends React.Component {
     notify(this.props.onDrillDown, [date, view])
   }
 
-  renderHeaderCells(range) {
+  renderHeaderCells(resources) {
     let {
-      localizer,
-      getDrilldownView,
+      events,
+      range,
+      rtl,
       getNow,
-      getters: { dayProp },
-      components: { header: HeaderComponent = Header },
+      accessors,
+      selectable,
+      components,
+      getters,
+      localizer,
+      components: { resourceHeader: ResourceHeaderComponent = ResourceHeader },
     } = this.props
 
-    const today = getNow()
+    const groupedEvents = resources.groupEvents(events)
 
-    return range.map((date, i) => {
-      let drilldownView = getDrilldownView(date)
-      let label = localizer.format(date, 'dayFormat')
-
-      const { className, style } = dayProp(date)
-
-      let header = (
-        <HeaderComponent date={date} label={label} localizer={localizer} />
-      )
-
+    return resources.map(([id, resource], idx) => {
       return (
-        <div
-          key={i}
-          style={style}
-          className={clsx(
-            'rbc-header',
-            className,
-            dates.eq(date, today, 'day') && 'rbc-today'
+        <div className="rbc-row-resources">
+          {resource && (
+            <div className="rbc-row rbc-row-resource" key={`resource_${idx}`}>
+              <div className="rbc-header">
+                <ResourceHeaderComponent
+                  index={idx}
+                  label={accessors.resourceTitle(resource)}
+                  resource={resource}
+                />
+              </div>
+            </div>
           )}
-        >
-          {drilldownView ? (
-            <a
-              href="#"
-              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
-            >
-              {header}
-            </a>
-          ) : (
-            <span>{header}</span>
-          )}
+          <DateContentRow
+            isAllDay
+            rtl={rtl}
+            getNow={getNow}
+            minRows={2}
+            range={range}
+            events={groupedEvents.get(id) || []}
+            resourceId={resource && id}
+            className="rbc-allday-cell"
+            selectable={selectable}
+            selected={this.props.selected}
+            components={components}
+            accessors={accessors}
+            getters={getters}
+            localizer={localizer}
+            onSelect={this.props.onSelectEvent}
+            onDoubleClick={this.props.onDoubleClickEvent}
+            onSelectSlot={this.props.onSelectSlot}
+            longPressThreshold={this.props.longPressThreshold}
+          />
         </div>
       )
     })
@@ -104,22 +113,18 @@ class TimeGridHeader extends React.Component {
 
   render() {
     let {
+      getNow,
+      localizer,
+      getDrilldownView,
+      resources,
       width,
       rtl,
-      resources,
       range,
-      events,
-      getNow,
-      accessors,
-      selectable,
-      components,
-      getters,
       scrollRef,
-      localizer,
       isOverflowing,
       components: {
+        header: HeaderComponent = Header,
         timeGutterHeader: TimeGutterHeader,
-        resourceHeader: ResourceHeaderComponent = ResourceHeader,
       },
     } = this.props
 
@@ -128,7 +133,7 @@ class TimeGridHeader extends React.Component {
       style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize()}px`
     }
 
-    const groupedEvents = resources.groupEvents(events)
+    const today = getNow()
 
     return (
       <div
@@ -143,48 +148,50 @@ class TimeGridHeader extends React.Component {
           {TimeGutterHeader && <TimeGutterHeader />}
         </div>
 
-        {resources.map(([id, resource], idx) => (
-          <div className="rbc-time-header-content" key={id || idx}>
-            {resource && (
-              <div className="rbc-row rbc-row-resource" key={`resource_${idx}`}>
-                <div className="rbc-header">
-                  <ResourceHeaderComponent
-                    index={idx}
-                    label={accessors.resourceTitle(resource)}
-                    resource={resource}
-                  />
+        {range.map((date, i) => {
+          let drilldownView = getDrilldownView(date)
+          let label = localizer.format(date, 'dayFormat')
+
+          let header = (
+            <HeaderComponent date={date} label={label} localizer={localizer} />
+          )
+
+          // const { className } = dayProp(date)
+          const { className } = 'generic-class-name'
+          return (
+            <div className="rbc-time-header-content" key={date || i}>
+              <div
+                className={`rbc-row rbc-time-header-cell${
+                  range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
+                }`}
+              >
+                <div
+                  key={i}
+                  style={style}
+                  className={clsx(
+                    'rbc-header',
+                    className,
+                    dates.eq(date, today, 'day') && 'rbc-today'
+                  )}
+                >
+                  {drilldownView ? (
+                    <a
+                      href="#"
+                      onClick={e =>
+                        this.handleHeaderClick(date, drilldownView, e)
+                      }
+                    >
+                      {header}
+                    </a>
+                  ) : (
+                    <span>{header}</span>
+                  )}
                 </div>
+                {this.renderHeaderCells(resources, date)}
               </div>
-            )}
-            <div
-              className={`rbc-row rbc-time-header-cell${
-                range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
-              }`}
-            >
-              {this.renderHeaderCells(range)}
             </div>
-            <DateContentRow
-              isAllDay
-              rtl={rtl}
-              getNow={getNow}
-              minRows={2}
-              range={range}
-              events={groupedEvents.get(id) || []}
-              resourceId={resource && id}
-              className="rbc-allday-cell"
-              selectable={selectable}
-              selected={this.props.selected}
-              components={components}
-              accessors={accessors}
-              getters={getters}
-              localizer={localizer}
-              onSelect={this.props.onSelectEvent}
-              onDoubleClick={this.props.onDoubleClickEvent}
-              onSelectSlot={this.props.onSelectSlot}
-              longPressThreshold={this.props.longPressThreshold}
-            />
-          </div>
-        ))}
+          )
+        })}
       </div>
     )
   }

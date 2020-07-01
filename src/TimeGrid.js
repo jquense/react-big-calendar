@@ -117,8 +117,10 @@ export default class TimeGrid extends Component {
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
-    return resources.map(([id, resource], i) =>
-      range.map((date, jj) => {
+    return range.map((date, jj) =>
+      resources.map(([id, resource], i) => {
+        // return resources.map(([id, resource], i) =>
+        //   range.map((date, jj) => {
         let daysEvents = (groupedEvents.get(id) || []).filter(event =>
           dates.inRange(
             date,

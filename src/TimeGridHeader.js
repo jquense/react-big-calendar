@@ -17,35 +17,31 @@ class TimeGridHeader extends React.Component {
 
   renderHeaderCells(resources) {
     let {
-      events,
-      range,
-      rtl,
-      getNow,
+      // events,
+      // range,
+      // rtl,
+      // getNow,
       accessors,
-      selectable,
-      components,
-      getters,
-      localizer,
+      // selectable,
+      // components,
+      // getters,
+      // localizer,
       components: { resourceHeader: ResourceHeaderComponent = ResourceHeader },
     } = this.props
 
-    const groupedEvents = resources.groupEvents(events)
+    // const groupedEvents = resources.groupEvents(events)
 
-    return resources.map(([id, resource], idx) => {
-      return (
-        <div className="rbc-row-resources">
-          {resource && (
-            <div className="rbc-row rbc-row-resource" key={`resource_${idx}`}>
-              <div className="rbc-header">
-                <ResourceHeaderComponent
-                  index={idx}
-                  label={accessors.resourceTitle(resource)}
-                  resource={resource}
-                />
-              </div>
-            </div>
-          )}
-          <DateContentRow
+    return (
+      <div className="rbc-header">
+        {resources.map(([resource], idx) => {
+          return (
+            <div className="rbc-row-resource" key={`resource_${idx}`}>
+              <ResourceHeaderComponent
+                index={idx}
+                label={accessors.resourceTitle(resource)}
+                resource={resource}
+              />
+              {/* <DateContentRow
             isAllDay
             rtl={rtl}
             getNow={getNow}
@@ -64,10 +60,12 @@ class TimeGridHeader extends React.Component {
             onDoubleClick={this.props.onDoubleClickEvent}
             onSelectSlot={this.props.onSelectSlot}
             longPressThreshold={this.props.longPressThreshold}
-          />
-        </div>
-      )
-    })
+          /> */}
+            </div>
+          )
+        })}
+      </div>
+    )
   }
   renderRow = resource => {
     let {
@@ -169,7 +167,7 @@ class TimeGridHeader extends React.Component {
                   key={i}
                   style={style}
                   className={clsx(
-                    'rbc-header',
+                    'rbc-header-date',
                     className,
                     dates.eq(date, today, 'day') && 'rbc-today'
                   )}

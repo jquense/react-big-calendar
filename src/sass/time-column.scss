@@ -85,12 +85,8 @@
     margin-right: -1px;
   }
 
-  .rbc-time-header {
-    overflow: hidden;
-  }
-
   .rbc-time-header-content {
-    min-width: auto;
+    min-width: 0;
     flex: 1 0 0;
     flex-basis: 0px;
   }
@@ -99,16 +95,17 @@
     display: none;
   }
 
-  .rbc-day-slot {
-    // min-width: 140px; // Allow for the entire week's display without scroll
-  }
+  // .rbc-day-slot {
+  //   min-width: 140px; // Allow for the entire week's display without scroll
+  // }
 
   .rbc-header,
   .rbc-day-bg {
-    width: 140px;
+    // width: 140px; // Allow for the entire week's display without scroll
     // min-width: 0;
     flex: 1 1 0;
     flex-basis: 0 px;
+    min-width: 0;
   }
 }
 

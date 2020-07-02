@@ -44,17 +44,21 @@
 }
 
 .rbc-header {
+  display: flex;
+  flex: 1 1;
+  flex-direction: row;
   overflow: hidden;
   flex: 1 0 0%;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0 3px;
+  padding: 0;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
   font-size: 90%;
   min-height: 0;
   border-bottom: 1px solid $cell-border;
+  width: 100%;
 
   & + & {
     border-left: 1px solid $cell-border;
@@ -66,7 +70,9 @@
   }
 
   & > a {
-    &, &:active, &:visited {
+    &,
+    &:active,
+    &:visited {
       color: inherit;
       text-decoration: none;
     }

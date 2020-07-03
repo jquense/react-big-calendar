@@ -15,52 +15,23 @@ class TimeGridHeader extends React.Component {
     notify(this.props.onDrillDown, [date, view])
   }
 
-  renderHeaderCells(resources) {
+  renderHeaderCells() {
     let {
-      // events,
-      // range,
-      // rtl,
-      // getNow,
+      resources,
       accessors,
-      // selectable,
-      // components,
-      // getters,
-      // localizer,
       components: { resourceHeader: ResourceHeaderComponent = ResourceHeader },
     } = this.props
 
-    // const groupedEvents = resources.groupEvents(events)
-
     return (
       <div className="rbc-header">
-        {resources.map(([resource], idx) => {
+        {resources.map(([id, resource], idx) => {
           return (
-            <div className="rbc-row-resource" key={`resource_${idx}`}>
+            <div className="rbc-row-resource" key={`resource_${id || idx}`}>
               <ResourceHeaderComponent
                 index={idx}
                 label={accessors.resourceTitle(resource)}
                 resource={resource}
               />
-              {/* <DateContentRow
-            isAllDay
-            rtl={rtl}
-            getNow={getNow}
-            minRows={2}
-            range={range}
-            events={groupedEvents.get(id) || []}
-            resourceId={resource && id}
-            className="rbc-allday-cell"
-            selectable={selectable}
-            selected={this.props.selected}
-            components={components}
-            accessors={accessors}
-            getters={getters}
-            localizer={localizer}
-            onSelect={this.props.onSelectEvent}
-            onDoubleClick={this.props.onDoubleClickEvent}
-            onSelectSlot={this.props.onSelectSlot}
-            longPressThreshold={this.props.longPressThreshold}
-          /> */}
             </div>
           )
         })}

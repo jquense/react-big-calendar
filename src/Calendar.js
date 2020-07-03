@@ -528,7 +528,7 @@ class Calendar extends React.Component {
      * Switch the iteration of dates and resources. If true, the resources are
      * iterated over for each date.
      */
-    invertResourceIteration: PropTypes.bool,
+    invertResourcesAndDates: PropTypes.bool,
 
     /**
      * Constrains the minimum _time_ of the Day and Week views.
@@ -750,7 +750,7 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-    invertResourceIteration: false,
+    invertResourcesAndDates: false,
     step: 30,
     length: 30,
 
@@ -882,7 +882,7 @@ class Calendar extends React.Component {
       getNow,
       length,
       showMultiDayTimes,
-      invertResourceIteration,
+      invertResourcesAndDates,
       onShowMore,
       components: _0,
       formats: _1,
@@ -933,7 +933,7 @@ class Calendar extends React.Component {
           components={components}
           accessors={accessors}
           showMultiDayTimes={showMultiDayTimes}
-          invertResourceIteration={invertResourceIteration}
+          invertResourcesAndDates={invertResourcesAndDates}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}

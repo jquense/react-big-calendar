@@ -117,10 +117,9 @@ export default class TimeGrid extends Component {
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
+    // Invert resources and range if the invertResourcesAndDates prop is 'true'
     return range.map((date, jj) =>
       resources.map(([id, resource], i) => {
-        // return resources.map(([id, resource], i) =>
-        //   range.map((date, jj) => {
         let daysEvents = (groupedEvents.get(id) || []).filter(event =>
           dates.inRange(
             date,

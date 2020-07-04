@@ -86,12 +86,16 @@
   }
 
   .rbc-time-header-content {
-    min-width: 0;
+    min-width: 0; // Prohibit long resource text from preventing timegrid alignment
     flex: 1 0 0;
     flex-basis: 0px;
   }
 
   .rbc-time-header-cell-single-day {
+    display: none;
+  }
+
+  .rbc-header-date-single-day {
     display: none;
   }
 

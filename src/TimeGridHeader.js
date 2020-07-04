@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
 import React from 'react'
-
 import * as dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
@@ -131,14 +130,18 @@ class TimeGridHeader extends React.Component {
             <div className="rbc-time-header-content" key={date || i}>
               <div
                 className={`rbc-row rbc-time-header-cell${
-                  range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
+                  range.length <= 1 && resources.length <= 1
+                    ? ' rbc-time-header-cell-single-day'
+                    : ''
                 }`}
               >
                 <div
                   key={i}
                   style={style}
                   className={clsx(
-                    'rbc-header-date',
+                    range.length <= 1 // Check for day view and hide the drilldown date if present
+                      ? 'rbc-header-date-single-day'
+                      : 'rbc-header-date',
                     className,
                     dates.eq(date, today, 'day') && 'rbc-today'
                   )}

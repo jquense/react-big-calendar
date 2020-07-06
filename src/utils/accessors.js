@@ -5,10 +5,9 @@
  *    accessor(data, func)    // => retrieves func(data)
  *    ... otherwise null
  */
-export function accessor(data, field) {
+export function accessor(data, field, extraArgs) {
   var value = null
-
-  if (typeof field === 'function') value = field(data)
+  if (typeof field === 'function') value = field(data, ...extraArgs)
   else if (
     typeof field === 'string' &&
     typeof data === 'object' &&
@@ -20,4 +19,5 @@ export function accessor(data, field) {
   return value
 }
 
-export const wrapAccessor = acc => data => accessor(data, acc)
+export const wrapAccessor = acc => (data, ...extraArgs) =>
+  accessor(data, acc, extraArgs)

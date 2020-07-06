@@ -61,8 +61,12 @@ class WeekWrapper extends React.Component {
   }
 
   update(event, start, end) {
+    const { accessors } = this.props
+    const updatedEvent = accessors.eventUpdater(event, { start, end })
+    updatedEvent.__isPreview = true
+
     const segment = eventSegments(
-      { ...event, end, start, __isPreview: true },
+      updatedEvent,
       this.props.slotMetrics.range,
       dragAccessors
     )
@@ -248,14 +252,14 @@ class WeekWrapper extends React.Component {
   }
 
   handleInteractionEnd = () => {
-    const { resourceId, isAllDay } = this.props
+    const { resourceId, isAllDay, accessors } = this.props
     const { event } = this.state.segment
 
     this.reset()
 
     this.context.draggable.onEnd({
-      start: event.start,
-      end: event.end,
+      start: accessors.start(event),
+      end: accessors.end(event),
       resourceId,
       isAllDay,
     })

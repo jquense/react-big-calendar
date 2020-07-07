@@ -11,6 +11,7 @@ import TimeGutter from './TimeGutter'
 
 import getWidth from 'dom-helpers/width'
 import TimeGridHeader from './TimeGridHeader'
+import InvertedTimeGridHeader from './InvertedTimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
@@ -173,6 +174,7 @@ export default class TimeGrid extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      invertResourcesAndDates,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -211,28 +213,53 @@ export default class TimeGrid extends Component {
           resources && 'rbc-time-view-resources'
         )}
       >
-        <TimeGridHeader
-          range={range}
-          events={allDayEvents}
-          width={width}
-          rtl={rtl}
-          getNow={getNow}
-          localizer={localizer}
-          selected={selected}
-          resources={this.memoizedResources(resources, accessors)}
-          selectable={this.props.selectable}
-          accessors={accessors}
-          getters={getters}
-          components={components}
-          scrollRef={this.scrollRef}
-          isOverflowing={this.state.isOverflowing}
-          longPressThreshold={longPressThreshold}
-          onSelectSlot={this.handleSelectAllDaySlot}
-          onSelectEvent={this.handleSelectAlldayEvent}
-          onDoubleClickEvent={this.props.onDoubleClickEvent}
-          onDrillDown={this.props.onDrillDown}
-          getDrilldownView={this.props.getDrilldownView}
-        />
+        {!invertResourcesAndDates ? (
+          <TimeGridHeader
+            range={range}
+            events={allDayEvents}
+            width={width}
+            rtl={rtl}
+            getNow={getNow}
+            localizer={localizer}
+            selected={selected}
+            resources={this.memoizedResources(resources, accessors)}
+            selectable={this.props.selectable}
+            accessors={accessors}
+            getters={getters}
+            components={components}
+            scrollRef={this.scrollRef}
+            isOverflowing={this.state.isOverflowing}
+            longPressThreshold={longPressThreshold}
+            onSelectSlot={this.handleSelectAllDaySlot}
+            onSelectEvent={this.handleSelectAlldayEvent}
+            onDoubleClickEvent={this.props.onDoubleClickEvent}
+            onDrillDown={this.props.onDrillDown}
+            getDrilldownView={this.props.getDrilldownView}
+          />
+        ) : (
+          <InvertedTimeGridHeader
+            range={range}
+            events={allDayEvents}
+            width={width}
+            rtl={rtl}
+            getNow={getNow}
+            localizer={localizer}
+            selected={selected}
+            resources={this.memoizedResources(resources, accessors)}
+            selectable={this.props.selectable}
+            accessors={accessors}
+            getters={getters}
+            components={components}
+            scrollRef={this.scrollRef}
+            isOverflowing={this.state.isOverflowing}
+            longPressThreshold={longPressThreshold}
+            onSelectSlot={this.handleSelectAllDaySlot}
+            onSelectEvent={this.handleSelectAlldayEvent}
+            onDoubleClickEvent={this.props.onDoubleClickEvent}
+            onDrillDown={this.props.onDrillDown}
+            getDrilldownView={this.props.getDrilldownView}
+          />
+        )}
         <div
           ref={this.contentRef}
           className="rbc-time-content"
@@ -323,7 +350,7 @@ TimeGrid.propTypes = {
   range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
-  invertResourcesAndDates: PropTypes.boolean,
+  invertResourcesAndDates: PropTypes.bool,
   getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date),

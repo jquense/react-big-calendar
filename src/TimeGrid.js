@@ -112,40 +112,48 @@ export default class TimeGrid extends Component {
       accessors,
       localizer,
       dayLayoutAlgorithm,
+      invertResourcesAndDates,
     } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
-    // Invert resources and range if the invertResourcesAndDates prop is 'true'
-    return range.map((date, jj) =>
-      resources.map(([id, resource], i) => {
-        let daysEvents = (groupedEvents.get(id) || []).filter(event =>
-          dates.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
+    const renderDatesAndResources = (now, date, jj, id, resource, i) => {
+      const daysEvents = (groupedEvents.get(id) || []).filter(event =>
+        dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
+      )
 
-        return (
-          <DayColumn
-            {...this.props}
-            localizer={localizer}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
-            resource={resource && id}
-            components={components}
-            isNow={dates.eq(date, now, 'day')}
-            key={i + '-' + jj}
-            date={date}
-            events={daysEvents}
-            dayLayoutAlgorithm={dayLayoutAlgorithm}
-          />
-        )
-      })
-    )
+      return (
+        <DayColumn
+          {...this.props}
+          localizer={localizer}
+          min={dates.merge(date, min)}
+          max={dates.merge(date, max)}
+          resource={resource && id}
+          components={components}
+          isNow={dates.eq(date, now, 'day')}
+          key={i + '-' + jj}
+          date={date}
+          events={daysEvents}
+          dayLayoutAlgorithm={dayLayoutAlgorithm}
+        />
+      )
+    }
+
+    // Invert resources and range if the invertResourcesAndDates prop is 'true'
+    if (invertResourcesAndDates) {
+      return range.map((date, jj) =>
+        resources.map(([id, resource], i) => {
+          return renderDatesAndResources(now, date, jj, id, resource, i)
+        })
+      )
+    } else {
+      return resources.map(([id, resource], i) =>
+        range.map((date, jj) => {
+          return renderDatesAndResources(now, date, jj, id, resource, i)
+        })
+      )
+    }
   }
 
   render() {
@@ -315,6 +323,7 @@ TimeGrid.propTypes = {
   range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
+  invertResourcesAndDates: PropTypes.boolean,
   getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date),

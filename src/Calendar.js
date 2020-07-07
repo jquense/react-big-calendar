@@ -692,6 +692,7 @@ class Calendar extends React.Component {
       timeSlotWrapper: PropTypes.elementType,
       timeGutterHeader: PropTypes.elementType,
       resourceHeader: PropTypes.elementType,
+      invertResourcesAndDates: PropTypes.elementType,
 
       toolbar: PropTypes.elementType,
 
@@ -727,6 +728,7 @@ class Calendar extends React.Component {
       month: PropTypes.node,
       week: PropTypes.node,
       day: PropTypes.node,
+      invertResourcesAndDates: PropTypes.node,
       agenda: PropTypes.node,
       date: PropTypes.node,
       time: PropTypes.node,
@@ -750,7 +752,7 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-    invertResourcesAndDates: false,
+    invertResourcesAndDates: true,
     step: 30,
     length: 30,
 
@@ -882,7 +884,6 @@ class Calendar extends React.Component {
       getNow,
       length,
       showMultiDayTimes,
-      invertResourcesAndDates,
       onShowMore,
       components: _0,
       formats: _1,
@@ -933,7 +934,6 @@ class Calendar extends React.Component {
           components={components}
           accessors={accessors}
           showMultiDayTimes={showMultiDayTimes}
-          invertResourcesAndDates={invertResourcesAndDates}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}

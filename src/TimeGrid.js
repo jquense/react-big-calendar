@@ -11,6 +11,7 @@ import TimeGutter from './TimeGutter'
 
 import getWidth from 'dom-helpers/width'
 import TimeGridHeader from './TimeGridHeader'
+import InvertedTimeGridHeader from './InvertedTimeGridHeader'
 import { notify } from './utils/helpers'
 import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
@@ -112,39 +113,48 @@ export default class TimeGrid extends Component {
       accessors,
       localizer,
       dayLayoutAlgorithm,
+      invertResourcesAndDates,
     } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
 
-    return resources.map(([id, resource], i) =>
-      range.map((date, jj) => {
-        let daysEvents = (groupedEvents.get(id) || []).filter(event =>
-          dates.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
+    const renderDatesAndResources = (now, date, jj, id, resource, i) => {
+      const daysEvents = (groupedEvents.get(id) || []).filter(event =>
+        dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
+      )
 
-        return (
-          <DayColumn
-            {...this.props}
-            localizer={localizer}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
-            resource={resource && id}
-            components={components}
-            isNow={dates.eq(date, now, 'day')}
-            key={i + '-' + jj}
-            date={date}
-            events={daysEvents}
-            dayLayoutAlgorithm={dayLayoutAlgorithm}
-          />
-        )
-      })
-    )
+      return (
+        <DayColumn
+          {...this.props}
+          localizer={localizer}
+          min={dates.merge(date, min)}
+          max={dates.merge(date, max)}
+          resource={resource && id}
+          components={components}
+          isNow={dates.eq(date, now, 'day')}
+          key={i + '-' + jj}
+          date={date}
+          events={daysEvents}
+          dayLayoutAlgorithm={dayLayoutAlgorithm}
+        />
+      )
+    }
+
+    // Invert resources and range if the invertResourcesAndDates prop is 'true'
+    if (invertResourcesAndDates) {
+      return range.map((date, jj) =>
+        resources.map(([id, resource], i) => {
+          return renderDatesAndResources(now, date, jj, id, resource, i)
+        })
+      )
+    } else {
+      return resources.map(([id, resource], i) =>
+        range.map((date, jj) => {
+          return renderDatesAndResources(now, date, jj, id, resource, i)
+        })
+      )
+    }
   }
 
   render() {
@@ -164,6 +174,7 @@ export default class TimeGrid extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      invertResourcesAndDates,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -202,28 +213,53 @@ export default class TimeGrid extends Component {
           resources && 'rbc-time-view-resources'
         )}
       >
-        <TimeGridHeader
-          range={range}
-          events={allDayEvents}
-          width={width}
-          rtl={rtl}
-          getNow={getNow}
-          localizer={localizer}
-          selected={selected}
-          resources={this.memoizedResources(resources, accessors)}
-          selectable={this.props.selectable}
-          accessors={accessors}
-          getters={getters}
-          components={components}
-          scrollRef={this.scrollRef}
-          isOverflowing={this.state.isOverflowing}
-          longPressThreshold={longPressThreshold}
-          onSelectSlot={this.handleSelectAllDaySlot}
-          onSelectEvent={this.handleSelectAlldayEvent}
-          onDoubleClickEvent={this.props.onDoubleClickEvent}
-          onDrillDown={this.props.onDrillDown}
-          getDrilldownView={this.props.getDrilldownView}
-        />
+        {!invertResourcesAndDates ? (
+          <TimeGridHeader
+            range={range}
+            events={allDayEvents}
+            width={width}
+            rtl={rtl}
+            getNow={getNow}
+            localizer={localizer}
+            selected={selected}
+            resources={this.memoizedResources(resources, accessors)}
+            selectable={this.props.selectable}
+            accessors={accessors}
+            getters={getters}
+            components={components}
+            scrollRef={this.scrollRef}
+            isOverflowing={this.state.isOverflowing}
+            longPressThreshold={longPressThreshold}
+            onSelectSlot={this.handleSelectAllDaySlot}
+            onSelectEvent={this.handleSelectAlldayEvent}
+            onDoubleClickEvent={this.props.onDoubleClickEvent}
+            onDrillDown={this.props.onDrillDown}
+            getDrilldownView={this.props.getDrilldownView}
+          />
+        ) : (
+          <InvertedTimeGridHeader
+            range={range}
+            events={allDayEvents}
+            width={width}
+            rtl={rtl}
+            getNow={getNow}
+            localizer={localizer}
+            selected={selected}
+            resources={this.memoizedResources(resources, accessors)}
+            selectable={this.props.selectable}
+            accessors={accessors}
+            getters={getters}
+            components={components}
+            scrollRef={this.scrollRef}
+            isOverflowing={this.state.isOverflowing}
+            longPressThreshold={longPressThreshold}
+            onSelectSlot={this.handleSelectAllDaySlot}
+            onSelectEvent={this.handleSelectAlldayEvent}
+            onDoubleClickEvent={this.props.onDoubleClickEvent}
+            onDrillDown={this.props.onDrillDown}
+            getDrilldownView={this.props.getDrilldownView}
+          />
+        )}
         <div
           ref={this.contentRef}
           className="rbc-time-content"
@@ -314,6 +350,7 @@ TimeGrid.propTypes = {
   range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
+  invertResourcesAndDates: PropTypes.bool,
   getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date),

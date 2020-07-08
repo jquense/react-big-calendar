@@ -10,7 +10,6 @@
   }
 }
 
-
 .rbc-timeslot-group {
   border-bottom: 1px solid $cell-border;
   min-height: 40px;
@@ -94,6 +93,10 @@
     min-width: auto;
     flex: 1 0 0;
     flex-basis: 0px;
+
+    &.inverted {
+      min-width: 0; // Prohibit long resource text from preventing timegrid alignment
+    }
   }
 
   .rbc-time-header-cell-single-day {
@@ -102,14 +105,27 @@
 
   .rbc-day-slot {
     min-width: 140px;
+    &.inverted {
+      min-width: 0;
+    }
+  }
+
+  .rbc-header-date-single-day {
+    &.inverted {
+      display: none;
+    }
   }
 
   .rbc-header,
-  .rbc-day-bg, {
+  .rbc-day-bg {
     width: 140px;
     // min-width: 0;
-    flex:  1 1 0;
+    flex: 1 1 0;
     flex-basis: 0 px;
+    &.inverted {
+      width: 100%;
+      min-width: 0; // Allow for the entire week's display without scroll
+    }
   }
 }
 

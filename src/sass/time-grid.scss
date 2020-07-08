@@ -52,6 +52,9 @@
   display: flex;
   flex: 0 0 auto; // should not shrink below height
   flex-direction: row;
+  &.inverted {
+    flex-direction: column;
+  }
 
   &.rbc-overflowing {
     border-right: 1px solid $cell-border;
@@ -79,8 +82,26 @@
   // }
 }
 
+.rbc-row-resource {
+  &.inverted {
+    overflow: hidden;
+    min-width: 0;
+    font-size: 0.7rem;
+    flex: 0 1 100%;
+    padding: 0 2px;
+  }
+}
+
 .rbc-time-header-cell-single-day {
   display: none;
+}
+
+.rbc-time-header-cell {
+  &.inverted {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .rbc-time-header-content {
@@ -89,15 +110,18 @@
   min-width: 0;
   flex-direction: column;
   border-left: 1px solid $cell-border;
+  &.inverted {
+    min-width: 0;
+  }
 
   .rbc-rtl & {
     border-left-width: 0;
     border-right: 1px solid $cell-border;
   }
 
-  >.rbc-row.rbc-row-resource {
-      border-bottom: 1px solid $cell-border;
-      flex-shrink: 0;
+  > .rbc-row.rbc-row-resource {
+    border-bottom: 1px solid $cell-border;
+    flex-shrink: 0;
   }
 }
 

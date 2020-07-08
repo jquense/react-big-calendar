@@ -22,10 +22,13 @@ class TimeGridHeader extends React.Component {
     } = this.props
 
     return (
-      <div className="rbc-header">
+      <div className="rbc-header inverted">
         {resources.map(([id, resource], idx) => {
           return (
-            <div className="rbc-row-resource" key={`resource_${id || idx}`}>
+            <div
+              className="rbc-row-resource inverted"
+              key={`resource_${id || idx}`}
+            >
               <ResourceHeaderComponent
                 index={idx}
                 label={accessors.resourceTitle(resource)}
@@ -127,9 +130,9 @@ class TimeGridHeader extends React.Component {
           )
 
           return (
-            <div className="rbc-time-header-content" key={date || i}>
+            <div className="rbc-time-header-content inverted" key={date || i}>
               <div
-                className={`rbc-row rbc-time-header-cell${
+                className={`rbc-row rbc-time-header-cell inverted${
                   range.length <= 1 && resources.length <= 1
                     ? ' rbc-time-header-cell-single-day'
                     : ''
@@ -140,7 +143,7 @@ class TimeGridHeader extends React.Component {
                   style={style}
                   className={clsx(
                     range.length <= 1 // Check for day view and hide the drilldown date if present
-                      ? 'rbc-header-date-single-day'
+                      ? 'rbc-header-date-single-day inverted'
                       : 'rbc-header-date',
                     className,
                     dates.eq(date, today, 'day') && 'rbc-today'

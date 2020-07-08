@@ -85,31 +85,47 @@
     margin-right: -1px;
   }
 
+  .rbc-time-header {
+    overflow: hidden;
+  }
+
   .rbc-time-header-content {
-    min-width: 0; // Prohibit long resource text from preventing timegrid alignment
+    min-width: auto;
     flex: 1 0 0;
     flex-basis: 0px;
+
+    &.inverted {
+      min-width: 0; // Prohibit long resource text from preventing timegrid alignment
+    }
   }
 
   .rbc-time-header-cell-single-day {
     display: none;
   }
 
-  .rbc-header-date-single-day {
-    display: none;
+  .rbc-day-slot {
+    min-width: 140px;
+    &.inverted {
+      min-width: 0;
+    }
   }
 
-  // .rbc-day-slot {
-  //   min-width: 140px; // Allow for the entire week's display without scroll
-  // }
+  .rbc-header-date-single-day {
+    &.inverted {
+      display: none;
+    }
+  }
 
   .rbc-header,
   .rbc-day-bg {
-    // width: 140px; // Allow for the entire week's display without scroll
+    width: 140px;
     // min-width: 0;
     flex: 1 1 0;
     flex-basis: 0 px;
-    min-width: 0;
+    &.inverted {
+      width: 100%;
+      min-width: 0; // Allow for the entire week's display without scroll
+    }
   }
 }
 

@@ -752,7 +752,6 @@ class Calendar extends React.Component {
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
-    invertResourcesAndDates: true,
     step: 30,
     length: 30,
 

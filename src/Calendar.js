@@ -454,7 +454,7 @@ class Calendar extends React.Component {
     longPressThreshold: PropTypes.number,
 
     /**
-     * Determines the selectable time increments in week and day views
+     * Determines the selectable time increments in week and day views, in minutes.
      */
     step: PropTypes.number,
 

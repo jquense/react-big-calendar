@@ -1,14 +1,14 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.23.0",
-  "description": "Calendar! with events",
+  "name": "react-big-calendar-rondak",
+  "version": "0.0.1",
+  "description": "Calendar based on react-big-calendar",
   "author": {
-    "name": "Jason Quense",
-    "email": "monastic.panic@gmail.com"
+    "name": "Demian Rosas",
+    "email": "dezky@hotmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/intljusticemission/react-big-calendar.git"
+    "url": "git+https://github.com/dezky/react-big-calendar.git"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -35,11 +35,11 @@
     "s": "node-sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
     "sass": "npm run s  && npm run sass-dnd",
     "sass-dnd": "node-sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
-    "autoprefixer": "postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/css/react-big/calendar.css | postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/addons/dragAndDrop/styles.css",
+    "autoprefixer": "postcss --use autoprefixer -b \"ie >= 10, safari >= 8, last 2 versions\" < ./lib/css/react-big/calendar.css | postcss --use autoprefixer -b \"ie >= 10, safari >= 8, last 2 versions\" < ./lib/addons/dragAndDrop/styles.css",
     "build:css": "npm run sass && npm run autoprefixer",
     "assets": "cpy src/sass/* lib/sass && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.scss ../lib/ --cwd=src --parents",
-    "build:umd": "BABEL_ENV=esm yarn rollup -c",
+    "build:umd": "cross-env BABEL_ENV=esm yarn rollup -c",
     "build:cjs": "babel src --out-dir lib",
     "build": "yarn clean && yarn build:cjs && yarn build:umd && yarn assets && yarn build:css",
     "build:examples": "npm run clean:examples && webpack --config examples/webpack.config.js",
@@ -89,6 +89,7 @@
     "bootstrap-sass": "^3.4.1",
     "component-metadata-loader": "^4.0.0",
     "cpy-cli": "^2.0.0",
+    "cross-env": "^7.0.2",
     "eslint": "^5.8.0",
     "eslint-config-jason": "^4.1.0",
     "eslint-config-prettier": "^3.1.0",

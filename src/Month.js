@@ -5,6 +5,7 @@ import clsx from 'clsx'
 
 import * as dates from './utils/dates'
 import chunk from 'lodash/chunk'
+import remove from 'lodash/remove'
 
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
@@ -76,6 +77,8 @@ class MonthView extends React.Component {
     let { date, localizer, className } = this.props,
       month = dates.visibleDays(date, localizer),
       weeks = chunk(month, 7)
+
+    remove(weeks, value => value.length !== 7)
 
     this._weekCount = weeks.length
 

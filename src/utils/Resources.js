@@ -9,7 +9,7 @@ export default function Resources(resources, accessors) {
       )
     },
 
-    groupEvents(events) {
+    groupEvents(events, partTimeResourceIds) {
       const eventsByResource = new Map()
 
       if (!resources) {
@@ -18,8 +18,18 @@ export default function Resources(resources, accessors) {
         return eventsByResource
       }
 
+      // events.forEach(event => {
+      //   const id = accessors.resource(event) || NONE
+      //   let resourceEvents = eventsByResource.get(id) || []
+      //   resourceEvents.push(event)
+      //   eventsByResource.set(id, resourceEvents)
+      // })
       events.forEach(event => {
-        const id = accessors.resource(event) || NONE
+        const resourceId = accessors.resource(event)
+        let id
+        partTimeResourceIds.includes(resourceId)
+          ? (id = 'other')
+          : (id = accessors.resource(event) || NONE)
         let resourceEvents = eventsByResource.get(id) || []
         resourceEvents.push(event)
         eventsByResource.set(id, resourceEvents)

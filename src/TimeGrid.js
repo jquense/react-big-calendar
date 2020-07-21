@@ -116,36 +116,99 @@ export default class TimeGrid extends Component {
       invertResourcesAndDates,
     } = this.props
 
+    // Separate part-time teachers from full-time ones
+    const partTimeResourceIds = []
+    const fullTimeResourceIds = []
+    this.props.resources.forEach(r =>
+      r.isPartTime
+        ? partTimeResourceIds.push(r.resourceId)
+        : fullTimeResourceIds.push(r.resourceId)
+    )
     const resources = this.memoizedResources(this.props.resources, accessors)
-    const groupedEvents = resources.groupEvents(events)
+    const groupedEvents = resources.groupEvents(events, partTimeResourceIds)
 
-    const renderDatesAndResources = (now, date, jj, id, resource, i) => {
+    const renderDatesAndResources = (
+      now,
+      date,
+      jj,
+      id,
+      resource,
+      i,
+      isLast
+    ) => {
+      // Get full-time teacher events
       const daysEvents = (groupedEvents.get(id) || []).filter(event =>
+        dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
+      )
+      // Get part-time teacher events
+      const otherDaysEvents = (groupedEvents.get('other') || []).filter(event =>
         dates.inRange(date, accessors.start(event), accessors.end(event), 'day')
       )
 
       return (
-        <DayColumn
-          {...this.props}
-          localizer={localizer}
-          min={dates.merge(date, min)}
-          max={dates.merge(date, max)}
-          resource={resource && id}
-          components={components}
-          isNow={dates.eq(date, now, 'day')}
-          key={i + '-' + jj}
-          date={date}
-          events={daysEvents}
-          dayLayoutAlgorithm={dayLayoutAlgorithm}
-        />
+        <>
+          <DayColumn
+            {...this.props}
+            localizer={localizer}
+            min={dates.merge(date, min)}
+            max={dates.merge(date, max)}
+            resource={resource && id}
+            components={components}
+            isNow={dates.eq(date, now, 'day')}
+            key={i + '-' + jj}
+            date={date}
+            events={daysEvents}
+            dayLayoutAlgorithm={dayLayoutAlgorithm}
+          />
+          {isLast && (
+            <DayColumn
+              {...this.props}
+              localizer={localizer}
+              min={dates.merge(date, min)}
+              max={dates.merge(date, max)}
+              resource={partTimeResourceIds}
+              components={components}
+              isNow={dates.eq(date, now, 'day')}
+              key={`other-${date}-${jj}`}
+              date={date}
+              events={otherDaysEvents}
+              dayLayoutAlgorithm={dayLayoutAlgorithm}
+            />
+          )}
+        </>
       )
     }
 
     // Invert resources and range if the invertResourcesAndDates prop is 'true'
     if (invertResourcesAndDates) {
+      const resourcesLen = fullTimeResourceIds.length
       return range.map((date, jj) =>
         resources.map(([id, resource], i) => {
-          return renderDatesAndResources(now, date, jj, id, resource, i)
+          // If it's the final iteration, add an additional "other" column for part-time teachers
+          if (!partTimeResourceIds.includes(id)) {
+            if (resourcesLen + 1 === i) {
+              return renderDatesAndResources(
+                now,
+                date,
+                jj,
+                id,
+                resource,
+                i,
+                true
+              )
+            } else {
+              return renderDatesAndResources(
+                now,
+                date,
+                jj,
+                id,
+                resource,
+                i,
+                false
+              )
+            }
+          }
+          return false
         })
       )
     } else {

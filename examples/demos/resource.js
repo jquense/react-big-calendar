@@ -35,10 +35,10 @@ const events = [
 ]
 
 const resourceMap = [
-  { resourceId: 1, resourceTitle: 'Board room' },
-  { resourceId: 2, resourceTitle: 'Training room' },
-  { resourceId: 3, resourceTitle: 'Meeting room 1' },
-  { resourceId: 4, resourceTitle: 'Meeting room 2' },
+  { resourceId: 1, resourceTitle: 'Board room', isPartTime: true },
+  { resourceId: 2, resourceTitle: 'Training room', isPartTime: true },
+  { resourceId: 3, resourceTitle: 'Meeting room 1', isPartTime: false },
+  { resourceId: 4, resourceTitle: 'Meeting room 2', isPartTime: false },
 ]
 
 let Resource = ({ localizer }) => (
@@ -51,6 +51,7 @@ let Resource = ({ localizer }) => (
       step={60}
       defaultDate={new Date(2018, 0, 29)}
       resources={resourceMap}
+      invertResourcesAndDates={true}
       resourceIdAccessor="resourceId"
       resourceTitleAccessor="resourceTitle"
     />

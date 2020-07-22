@@ -105,7 +105,7 @@ export default class TimeGrid extends Component {
     })
   }
 
-  renderEvents(range, events, now) {
+  renderEvents(range, events, now, fullTimeResourceIds, partTimeResourceIds) {
     let {
       min,
       max,
@@ -116,14 +116,6 @@ export default class TimeGrid extends Component {
       invertResourcesAndDates,
     } = this.props
 
-    // Separate part-time teachers from full-time ones
-    const partTimeResourceIds = []
-    const fullTimeResourceIds = []
-    this.props.resources.forEach(r =>
-      r.isPartTime
-        ? partTimeResourceIds.push(r.resourceId)
-        : fullTimeResourceIds.push(r.resourceId)
-    )
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events, partTimeResourceIds)
 
@@ -250,6 +242,15 @@ export default class TimeGrid extends Component {
     let allDayEvents = [],
       rangeEvents = []
 
+    // Separate part-time teachers from full-time ones
+    const fullTimeResourceIds = []
+    const partTimeResourceIds = []
+    this.props.resources.forEach(r =>
+      r.isPartTime
+        ? partTimeResourceIds.push(r.resourceId)
+        : fullTimeResourceIds.push(r.resourceId)
+    )
+
     events.forEach(event => {
       if (inRange(event, start, end, accessors)) {
         let eStart = accessors.start(event),
@@ -321,6 +322,7 @@ export default class TimeGrid extends Component {
             onDoubleClickEvent={this.props.onDoubleClickEvent}
             onDrillDown={this.props.onDrillDown}
             getDrilldownView={this.props.getDrilldownView}
+            partTimeResourceIds={partTimeResourceIds}
           />
         )}
         <div
@@ -341,7 +343,13 @@ export default class TimeGrid extends Component {
             className="rbc-time-gutter"
             getters={getters}
           />
-          {this.renderEvents(range, rangeEvents, getNow())}
+          {this.renderEvents(
+            range,
+            rangeEvents,
+            getNow(),
+            fullTimeResourceIds,
+            partTimeResourceIds
+          )}
         </div>
       </div>
     )

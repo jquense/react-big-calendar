@@ -178,7 +178,7 @@ export default class TimeGrid extends Component {
         resources.map(([id, resource], i) => {
           // If it's the final iteration, add an additional "other" column for part-time teachers
           if (!partTimeResourceIds.includes(id)) {
-            if (resourcesLen === i) {
+            if (resourcesLen === i + 1) {
               return renderDatesAndResources(
                 now,
                 date,

@@ -35,7 +35,7 @@
     "s": "node-sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
     "sass": "npm run s  && npm run sass-dnd",
     "sass-dnd": "node-sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
-    "autoprefixer": "postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/css/react-big/calendar.css | postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/addons/dragAndDrop/styles.css",
+    "autoprefixer": "postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/css/react-big-calendar.css | postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/addons/dragAndDrop/styles.css",
     "build:css": "npm run sass && npm run autoprefixer",
     "assets": "cpy src/sass/* lib/sass && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.scss ../lib/ --cwd=src --parents",

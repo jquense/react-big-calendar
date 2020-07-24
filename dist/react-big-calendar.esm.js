@@ -3906,15 +3906,44 @@ TimeGutter.propTypes =
       }
     : {}
 
+var containerStyles = {
+  display: 'flex',
+  flexDirection: 'column',
+}
+var textStyles = {
+  margin: 0,
+}
+
 var ResourceHeader = function ResourceHeader(_ref) {
-  var label = _ref.label
-  return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
+  var title = _ref.title,
+    mins = _ref.mins
+  return /*#__PURE__*/ React.createElement(
+    'div',
+    {
+      style: containerStyles,
+    },
+    /*#__PURE__*/ React.createElement(
+      'p',
+      {
+        style: textStyles,
+      },
+      title
+    ),
+    /*#__PURE__*/ React.createElement(
+      'p',
+      {
+        style: textStyles,
+      },
+      mins
+    )
+  )
 }
 
 ResourceHeader.propTypes =
   process.env.NODE_ENV !== 'production'
     ? {
-        label: PropTypes.node,
+        title: PropTypes.node,
+        mins: PropTypes.number,
         index: PropTypes.number,
         resource: PropTypes.object,
       }
@@ -4249,6 +4278,7 @@ var TimeGridHeader$1 = /*#__PURE__*/ (function(_React$Component) {
   _proto.renderHeaderCells = function renderHeaderCells() {
     var _this$props2 = this.props,
       resources = _this$props2.resources,
+      date = _this$props2.date,
       accessors = _this$props2.accessors,
       _this$props2$componen = _this$props2.components.resourceHeader,
       ResourceHeaderComponent =
@@ -4272,7 +4302,8 @@ var TimeGridHeader$1 = /*#__PURE__*/ (function(_React$Component) {
           },
           /*#__PURE__*/ React.createElement(ResourceHeaderComponent, {
             index: idx,
-            label: accessors.resourceTitle(resource),
+            title: accessors.resourceTitle(resource),
+            mins: resource.minsByDate[date],
             resource: resource,
           })
         )
@@ -4285,7 +4316,8 @@ var TimeGridHeader$1 = /*#__PURE__*/ (function(_React$Component) {
         },
         /*#__PURE__*/ React.createElement(ResourceHeaderComponent, {
           index: 1000,
-          label: 'other',
+          title: 'other',
+          mins: 0,
           resource: resources[0],
         })
       )
@@ -4410,6 +4442,7 @@ TimeGridHeader$1.propTypes =
         getNow: PropTypes.func.isRequired,
         isOverflowing: PropTypes.bool,
         invertResourcesAndDates: PropTypes.bool,
+        date: PropTypes.object,
         rtl: PropTypes.bool,
         width: PropTypes.number,
         localizer: PropTypes.object.isRequired,
@@ -4685,7 +4718,7 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
 
           // If it's the final iteration, add an additional "other" column for part-time teachers
           if (!partTimeResourceIds.includes(id)) {
-            if (resourcesLen + 1 === i) {
+            if (resourcesLen === i + 1) {
               return renderDatesAndResources(
                 now,
                 date,

@@ -13869,17 +13869,42 @@
     return size
   }
 
+  var containerStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+  }
+  var textStyles = {
+    margin: 0,
+  }
+
   var ResourceHeader = function ResourceHeader(_ref) {
-    var label = _ref.label
+    var title = _ref.title,
+      mins = _ref.mins
     return /*#__PURE__*/ React__default.createElement(
-      React__default.Fragment,
-      null,
-      label
+      'div',
+      {
+        style: containerStyles,
+      },
+      /*#__PURE__*/ React__default.createElement(
+        'p',
+        {
+          style: textStyles,
+        },
+        title
+      ),
+      /*#__PURE__*/ React__default.createElement(
+        'p',
+        {
+          style: textStyles,
+        },
+        mins
+      )
     )
   }
 
   ResourceHeader.propTypes = {
-    label: propTypes.node,
+    title: propTypes.node,
+    mins: propTypes.number,
     index: propTypes.number,
     resource: propTypes.object,
   }
@@ -14221,6 +14246,7 @@
     _proto.renderHeaderCells = function renderHeaderCells() {
       var _this$props2 = this.props,
         resources = _this$props2.resources,
+        date = _this$props2.date,
         accessors = _this$props2.accessors,
         _this$props2$componen = _this$props2.components.resourceHeader,
         ResourceHeaderComponent =
@@ -14246,7 +14272,8 @@
               ResourceHeaderComponent,
               {
                 index: idx,
-                label: accessors.resourceTitle(resource),
+                title: accessors.resourceTitle(resource),
+                mins: resource.minsByDate[date],
                 resource: resource,
               }
             )
@@ -14260,7 +14287,8 @@
           },
           /*#__PURE__*/ React__default.createElement(ResourceHeaderComponent, {
             index: 1000,
-            label: 'other',
+            title: 'other',
+            mins: 0,
             resource: resources[0],
           })
         )
@@ -14397,6 +14425,7 @@
     getNow: propTypes.func.isRequired,
     isOverflowing: propTypes.bool,
     invertResourcesAndDates: propTypes.bool,
+    date: propTypes.object,
     rtl: propTypes.bool,
     width: propTypes.number,
     localizer: propTypes.object.isRequired,
@@ -14671,7 +14700,7 @@
 
             // If it's the final iteration, add an additional "other" column for part-time teachers
             if (!partTimeResourceIds.includes(id)) {
-              if (resourcesLen + 1 === i) {
+              if (resourcesLen === i + 1) {
                 return renderDatesAndResources(
                   now,
                   date,

@@ -1,12 +1,21 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const ResourceHeader = ({ label }) => {
-  return <React.Fragment>{label}</React.Fragment>
+const containerStyles = { display: 'flex', flexDirection: 'column' }
+const textStyles = { margin: 0 }
+
+const ResourceHeader = ({ title, mins }) => {
+  return (
+    <div style={containerStyles}>
+      <p style={textStyles}>{title}</p>
+      <p style={textStyles}>{mins}</p>
+    </div>
+  )
 }
 
 ResourceHeader.propTypes = {
-  label: PropTypes.node,
+  title: PropTypes.node,
+  mins: PropTypes.number,
   index: PropTypes.number,
   resource: PropTypes.object,
 }

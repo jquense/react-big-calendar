@@ -17,6 +17,7 @@ class TimeGridHeader extends React.Component {
   renderHeaderCells() {
     let {
       resources,
+      date,
       accessors,
       components: { resourceHeader: ResourceHeaderComponent = ResourceHeader },
     } = this.props
@@ -32,7 +33,8 @@ class TimeGridHeader extends React.Component {
             >
               <ResourceHeaderComponent
                 index={idx}
-                label={accessors.resourceTitle(resource)}
+                title={accessors.resourceTitle(resource)}
+                mins={resource.minsByDate[date]}
                 resource={resource}
               />
             </div>
@@ -41,7 +43,8 @@ class TimeGridHeader extends React.Component {
         <div className="rbc-row-resource inverted" key={'resource_other'}>
           <ResourceHeaderComponent
             index={1000}
-            label={'other'}
+            title={'other'}
+            mins={0}
             resource={resources[0]}
           />
         </div>
@@ -187,6 +190,7 @@ TimeGridHeader.propTypes = {
   getNow: PropTypes.func.isRequired,
   isOverflowing: PropTypes.bool,
   invertResourcesAndDates: PropTypes.bool,
+  date: PropTypes.object,
 
   rtl: PropTypes.bool,
   width: PropTypes.number,

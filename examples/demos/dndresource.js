@@ -12,7 +12,7 @@ const events = [
     title: 'Board meeting',
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
-    resourceId: 1,
+    resourceId: [1, 2],
   },
   {
     id: 1,
@@ -77,13 +77,48 @@ class Dnd extends React.Component {
     super(props)
     this.state = {
       events: events,
+      isCopyingMode: true,
     }
 
     this.moveEvent = this.moveEvent.bind(this)
+    this.handleChangeMode = this.handleChangeMode.bind(this)
+  }
+
+  handleChangeMode(e) {
+    this.setState({
+      isCopyingMode: e.target.checked,
+    })
+  }
+
+  modifyResource(oldResourceId, newResourceId, isCopyingMode) {
+    console.log('oldResourceId', oldResourceId)
+    console.log('newResourceId', newResourceId)
+
+    let tempArr = [...oldResourceId]
+
+    if (isCopyingMode) {
+      tempArr.push(newResourceId)
+      console.log('tempArr', tempArr)
+    } else {
+      //TODO: Problem here no reource-source available
+      console.log('replace old with new')
+      const index = tempArr.indexOf(newResourceId) //here should be the old resourceId but no array.
+
+      if (index !== -1) {
+        tempArr[index] = newResourceId
+      }
+    }
+
+    let unique = Array.from(new Set(tempArr))
+    console.log('unique', unique)
+    return unique
   }
 
   moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
+    console.log('this.state.isCopyingMode', this.state.isCopyingMode)
     const { events } = this.state
+
+    console.log('event', event)
 
     const idx = events.indexOf(event)
     let allDay = event.allDay
@@ -94,7 +129,22 @@ class Dnd extends React.Component {
       allDay = false
     }
 
-    const updatedEvent = { ...event, start, end, resourceId, allDay }
+    const relatedEvent = events[idx]
+
+    const tempResId = this.modifyResource(
+      relatedEvent.resourceId,
+      resourceId,
+      this.state.isCopyingMode
+    )
+    const updatedEvent = {
+      ...event,
+      start,
+      end,
+      resourceId: tempResId,
+      allDay,
+    }
+
+    console.log('updatedEvent', updatedEvent)
 
     const nextEvents = [...events]
     nextEvents.splice(idx, 1, updatedEvent)
@@ -120,21 +170,29 @@ class Dnd extends React.Component {
 
   render() {
     return (
-      <DragAndDropCalendar
-        selectable
-        localizer={this.props.localizer}
-        events={this.state.events}
-        onEventDrop={this.moveEvent}
-        resizable
-        resources={resourceMap}
-        resourceIdAccessor="resourceId"
-        resourceTitleAccessor="resourceTitle"
-        onEventResize={this.resizeEvent}
-        defaultView="day"
-        step={15}
-        showMultiDayTimes={true}
-        defaultDate={new Date(2018, 0, 29)}
-      />
+      <>
+        <input
+          type="checkbox"
+          defaultChecked={this.state.isCopyingMode}
+          onChange={this.handleChangeMode}
+        />
+        <DragAndDropCalendar
+          selectable
+          localizer={this.props.localizer}
+          events={this.state.events}
+          onEventDrop={this.moveEvent}
+          onSelecting={e => console.log(e)}
+          resizable
+          resources={resourceMap}
+          resourceIdAccessor="resourceId"
+          resourceTitleAccessor="resourceTitle"
+          onEventResize={this.resizeEvent}
+          defaultView="day"
+          step={15}
+          showMultiDayTimes={true}
+          defaultDate={new Date(2018, 0, 29)}
+        />
+      </>
     )
   }
 }

@@ -230,8 +230,11 @@ class DayColumn extends React.Component {
           continuesEarlier={continuesEarlier}
           continuesLater={continuesLater}
           accessors={accessors}
+          resource={this.props.resource} //added to have the resource also in the TimeGrid
           selected={isSelected(event, selected)}
-          onClick={e => this._select(event, e)}
+          onClick={e =>
+            this._select({ ...event, sourceResource: this.props.resource }, e)
+          }
           onDoubleClick={e => this._doubleClick(event, e)}
           onKeyPress={e => this._keyPress(event, e)}
           resizable={resizable}

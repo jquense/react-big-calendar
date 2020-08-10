@@ -90,35 +90,31 @@ class Dnd extends React.Component {
     })
   }
 
-  modifyResource(oldResourceId, newResourceId, isCopyingMode) {
-    console.log('oldResourceId', oldResourceId)
-    console.log('newResourceId', newResourceId)
-
+  modifyResource(oldResourceId, sourceResource, newResourceId, isCopyingMode) {
+    //new array with all present Ids
     let tempArr = [...oldResourceId]
 
     if (isCopyingMode) {
+      //add the new Id to the array
       tempArr.push(newResourceId)
-      console.log('tempArr', tempArr)
     } else {
-      //TODO: Problem here no reource-source available
-      console.log('replace old with new')
-      const index = tempArr.indexOf(newResourceId) //here should be the old resourceId but no array.
+      if (sourceResource) {
+        //replace old with new
+        const index = tempArr.indexOf(sourceResource)
 
-      if (index !== -1) {
-        tempArr[index] = newResourceId
+        if (index !== -1) {
+          tempArr[index] = newResourceId
+        }
       }
     }
 
+    // delete duplicates in the array
     let unique = Array.from(new Set(tempArr))
-    console.log('unique', unique)
     return unique
   }
 
   moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
-    console.log('this.state.isCopyingMode', this.state.isCopyingMode)
     const { events } = this.state
-
-    console.log('event', event)
 
     const idx = events.indexOf(event)
     let allDay = event.allDay
@@ -131,8 +127,10 @@ class Dnd extends React.Component {
 
     const relatedEvent = events[idx]
 
+    //new event obj with updated resource
     const tempResId = this.modifyResource(
       relatedEvent.resourceId,
+      relatedEvent.sourceResource,
       resourceId,
       this.state.isCopyingMode
     )
@@ -143,8 +141,6 @@ class Dnd extends React.Component {
       resourceId: tempResId,
       allDay,
     }
-
-    console.log('updatedEvent', updatedEvent)
 
     const nextEvents = [...events]
     nextEvents.splice(idx, 1, updatedEvent)
@@ -171,17 +167,23 @@ class Dnd extends React.Component {
   render() {
     return (
       <>
-        <input
-          type="checkbox"
-          defaultChecked={this.state.isCopyingMode}
-          onChange={this.handleChangeMode}
-        />
+        <div style={{ padding: '40px', background: '#dbdbdb' }}>
+          <label>Copy Event?</label>
+          <input
+            type="checkbox"
+            id="copyMode"
+            defaultChecked={this.state.isCopyingMode}
+            onChange={this.handleChangeMode}
+          />
+          <p>active: {this.state.isCopyingMode ? 'CopyMode' : 'MoveMode'}</p>
+        </div>
         <DragAndDropCalendar
           selectable
           localizer={this.props.localizer}
           events={this.state.events}
           onEventDrop={this.moveEvent}
-          onSelecting={e => console.log(e)}
+          onDragStart={args => console.log('dragStart', args)}
+          onSelectEvent={args => console.log('select', args)}
           resizable
           resources={resourceMap}
           resourceIdAccessor="resourceId"

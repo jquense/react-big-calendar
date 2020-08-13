@@ -1,4 +1,4 @@
-import dates from './dates'
+import * as dates from './dates'
 
 const getDstOffset = (start, end) =>
   start.getTimezoneOffset() - end.getTimezoneOffset()
@@ -11,14 +11,14 @@ const getKey = (min, max, step, slots) =>
 export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   const key = getKey(start, end, step, timeslots)
 
+  // if the start is on a DST-changing day but *after* the moment of DST
+  // transition we need to add those extra minutes to our minutesFromMidnight
+  const daystart = dates.startOf(start, 'day')
+  const daystartdstoffset = getDstOffset(daystart, start)
   const totalMin =
     1 + dates.diff(start, end, 'minutes') + getDstOffset(start, end)
-  const minutesFromMidnight = dates.diff(
-    dates.startOf(start, 'day'),
-    start,
-    'minutes'
-  )
-
+  const minutesFromMidnight =
+    dates.diff(daystart, start, 'minutes') + daystartdstoffset
   const numGroups = Math.ceil(totalMin / (step * timeslots))
   const numSlots = numGroups * timeslots
 
@@ -124,13 +124,16 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       return dates.gt(dates.merge(end, date), end, 'minutes')
     },
 
-    getRange(rangeStart, rangeEnd) {
-      rangeStart = dates.min(end, dates.max(start, rangeStart))
-      rangeEnd = dates.min(end, dates.max(start, rangeEnd))
+    getRange(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
+      if (!ignoreMin) rangeStart = dates.min(end, dates.max(start, rangeStart))
+      if (!ignoreMax) rangeEnd = dates.min(end, dates.max(start, rangeEnd))
 
       const rangeStartMin = positionFromDate(rangeStart)
       const rangeEndMin = positionFromDate(rangeEnd)
-      const top = (rangeStartMin / (step * numSlots)) * 100
+      const top =
+        rangeEndMin > step * (numSlots - 1) && !dates.eq(end, rangeEnd)
+          ? ((rangeStartMin - step) / (step * numSlots)) * 100
+          : (rangeStartMin / (step * numSlots)) * 100
 
       return {
         top,
@@ -140,6 +143,13 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
         end: positionFromDate(rangeEnd),
         endDate: rangeEnd,
       }
+    },
+
+    getCurrentTimePosition(rangeStart) {
+      const rangeStartMin = positionFromDate(rangeStart)
+      const top = (rangeStartMin / (step * numSlots)) * 100
+
+      return top
     },
   }
 }

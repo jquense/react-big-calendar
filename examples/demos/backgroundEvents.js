@@ -1,19 +1,20 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import events from '../events'
 import backgroundEvents from '../backgroundEvents'
-import dates from '../../src/utils/dates'
+import * as dates from '../../src/utils/dates'
 
-let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
+let allViews = Object.keys(Views).map(k => Views[k])
 
 let Basic = ({ localizer }) => (
-  <BigCalendar
+  <Calendar
     events={events}
+    defaultView={Views.DAY}
     views={allViews}
     step={60}
     showMultiDayTimes
     max={dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours')}
-    defaultDate={new Date(2015, 3, 1)}
+    defaultDate={new Date(2015, 3, 13)}
     localizer={localizer}
     backgroundEvents={backgroundEvents}
   />

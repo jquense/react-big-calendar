@@ -1,0 +1,78 @@
+@import '../../sass/variables';
+
+.rbc-addons-dnd {
+  .rbc-addons-dnd-row-body {
+    position: relative;
+  }
+  .rbc-addons-dnd-drag-row {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+
+  .rbc-addons-dnd-over {
+    background-color: rgba(
+      red($date-selection-bg-color),
+      green($date-selection-bg-color),
+      blue($date-selection-bg-color),
+      .3
+    );
+  }
+
+  .rbc-event {
+    transition: opacity 150ms;
+
+    &:hover {
+      .rbc-addons-dnd-resize-ns-icon, .rbc-addons-dnd-resize-ew-icon { display: block; }
+    }
+  }
+
+  .rbc-addons-dnd-dragged-event {
+    opacity: 0;
+  }
+
+  &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
+    opacity: .50;
+  }
+
+  .rbc-addons-dnd-resizable {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .rbc-addons-dnd-resize-ns-anchor {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    &:first-child { top: 0; }
+    &:last-child { bottom: 0; }
+
+    .rbc-addons-dnd-resize-ns-icon {
+      display: none;
+      border-top: 3px double;
+      margin: 0 auto;
+      width: 10px;
+      cursor: ns-resize;
+    }
+  }
+
+  .rbc-addons-dnd-resize-ew-anchor {
+    position: absolute;
+    top: 4px;
+    bottom: 0;
+    &:first-child { left: 0; }
+    &:last-child { right: 0; }
+
+    .rbc-addons-dnd-resize-ew-icon {
+      display: none;
+      border-left: 3px double;
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 10px;
+      cursor: ew-resize;
+    }
+  }
+}

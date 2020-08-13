@@ -27,10 +27,10 @@ const customComponents = {
       </div>
     )
   },
-  dayWrapper: dayWrapperProps => {
+  timeSlotWrapper: timeSlotWrapperProps => {
     // Show different styles at arbitrary time
-    const hasCustomInfo = dayWrapperProps.value
-      ? dayWrapperProps.value.getHours() === 4
+    const hasCustomInfo = timeSlotWrapperProps.value
+      ? timeSlotWrapperProps.value.getHours() === 4
       : false
     const style = {
       display: 'flex',
@@ -40,7 +40,7 @@ const customComponents = {
     return (
       <div style={style}>
         {hasCustomInfo && 'Custom Day Wrapper'}
-        {dayWrapperProps.children}
+        {timeSlotWrapperProps.children}
       </div>
     )
   },

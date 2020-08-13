@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -18,7 +18,7 @@ export default class TimeGutter extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { min, max, timeslots, step } = nextProps
     this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
   }
@@ -29,14 +29,14 @@ export default class TimeGutter extends Component {
 
     const isNow = this.slotMetrics.dateIsInGroup(getNow(), idx)
     return (
-      <span className={cn('rbc-label', isNow && 'rbc-now')}>
+      <span className={clsx('rbc-label', isNow && 'rbc-now')}>
         {localizer.format(value, 'timeGutterFormat')}
       </span>
     )
   }
 
   render() {
-    const { resource, components } = this.props
+    const { resource, components, getters } = this.props
 
     return (
       <div className="rbc-time-gutter rbc-time-column">
@@ -48,6 +48,7 @@ export default class TimeGutter extends Component {
               resource={resource}
               components={components}
               renderSlot={this.renderSlot}
+              getters={getters}
             />
           )
         })}
@@ -63,6 +64,7 @@ TimeGutter.propTypes = {
   step: PropTypes.number.isRequired,
   getNow: PropTypes.func.isRequired,
   components: PropTypes.object.isRequired,
+  getters: PropTypes.object,
 
   localizer: PropTypes.object.isRequired,
   resource: PropTypes.string,

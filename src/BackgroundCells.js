@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import clsx from 'clsx'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
@@ -25,7 +25,7 @@ class BackgroundCells extends React.Component {
     this._teardownSelectable()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable()
 
     if (!nextProps.selectable && this.props.selectable)
@@ -53,7 +53,7 @@ class BackgroundCells extends React.Component {
             <Wrapper key={index} value={date} range={range}>
               <div
                 style={style}
-                className={cn(
+                className={clsx(
                   'rbc-day-bg',
                   className,
                   selected && 'rbc-selected-cell',

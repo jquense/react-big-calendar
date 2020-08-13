@@ -37,7 +37,7 @@
     margin-right: 10px;
     top: 0;
 
-    &.rbc-is-rtl {
+    &.rbc-rtl {
       left: 10px;
       right: 0;
     }
@@ -59,13 +59,14 @@
     box-shadow: none;
     margin: 0;
     padding: @event-padding;
-    background-color: @background-event-bg;
+		background-color: @background-event-bg;
+		background-color: red;
     border-radius: 0;
     color: @event-color;
     cursor: pointer;
     width: 100%;
     text-align: left;
-    opacity: 0.8;
+    opacity: 0.5;
   }
 
   .rbc-event-label {

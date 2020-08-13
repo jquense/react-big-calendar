@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import dates from '../../utils/dates'
+import * as dates from '../../utils/dates'
 import { findDOMNode } from 'react-dom'
 
 import Selection, {
@@ -31,8 +31,10 @@ class EventContainerWrapper extends React.Component {
     draggable: PropTypes.shape({
       onStart: PropTypes.func,
       onEnd: PropTypes.func,
+      onDropFromOutside: PropTypes.func,
       onBeginAction: PropTypes.func,
       dragAndDropAction: PropTypes.object,
+      dragFromOutsideItem: PropTypes.func,
     }),
   }
 
@@ -93,7 +95,7 @@ class EventContainerWrapper extends React.Component {
       'minutes'
     )
 
-    this.update(event, slotMetrics.getRange(currentSlot, end))
+    this.update(event, slotMetrics.getRange(currentSlot, end, false, true))
   }
 
   handleResize(point, boundaryBox) {
@@ -113,8 +115,25 @@ class EventContainerWrapper extends React.Component {
     this.update(event, slotMetrics.getRange(start, end))
   }
 
+  handleDropFromOutside = (point, boundaryBox) => {
+    const { slotMetrics, resource } = this.props
+
+    let start = slotMetrics.closestSlotFromPoint(
+      { y: point.y, x: point.x },
+      boundaryBox
+    )
+
+    this.context.draggable.onDropFromOutside({
+      start,
+      end: slotMetrics.nextSlot(start),
+      allDay: false,
+      resource,
+    })
+  }
+
   _selectable = () => {
     let node = findDOMNode(this)
+    let isBeingDragged = false
     let selector = (this._selector = new Selection(() =>
       node.closest('.rbc-time-view')
     ))
@@ -141,16 +160,40 @@ class EventContainerWrapper extends React.Component {
       if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
     })
 
-    selector.on('selectStart', () => this.context.draggable.onStart())
+    selector.on('dropFromOutside', point => {
+      if (!this.context.draggable.onDropFromOutside) return
+
+      const bounds = getBoundsForNode(node)
+
+      if (!pointInColumn(bounds, point)) return
+
+      this.handleDropFromOutside(point, bounds)
+    })
+
+    selector.on('dragOver', point => {
+      if (!this.context.draggable.dragFromOutsideItem) return
+
+      const bounds = getBoundsForNode(node)
+
+      this.handleDropFromOutside(point, bounds)
+    })
+
+    selector.on('selectStart', () => {
+      isBeingDragged = true
+      this.context.draggable.onStart()
+    })
 
     selector.on('select', point => {
       const bounds = getBoundsForNode(node)
-
+      isBeingDragged = false
       if (!this.state.event || !pointInColumn(bounds, point)) return
       this.handleInteractionEnd()
     })
 
-    selector.on('click', () => this.context.draggable.onEnd(null))
+    selector.on('click', () => {
+      if (isBeingDragged) this.reset()
+      this.context.draggable.onEnd(null)
+    })
 
     selector.on('reset', () => {
       this.reset()

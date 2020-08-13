@@ -52,13 +52,15 @@ export default {
         onDoubleClick={onDoubleClick}
         continuesPrior={continuesPrior}
         continuesAfter={continuesAfter}
+        slotStart={slotMetrics.first}
+        slotEnd={slotMetrics.last}
         selected={isSelected(event, selected)}
       />
     )
   },
 
   renderSpan(slots, len, key, content = ' ') {
-    let per = Math.abs(len) / slots * 100 + '%'
+    let per = (Math.abs(len) / slots) * 100 + '%'
 
     return (
       <div

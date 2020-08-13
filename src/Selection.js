@@ -1,14 +1,9 @@
-import contains from 'dom-helpers/query/contains'
-import closest from 'dom-helpers/query/closest'
-import events from 'dom-helpers/events'
+import contains from 'dom-helpers/contains'
+import closest from 'dom-helpers/closest'
+import listen from 'dom-helpers/listen'
 
 function addEventListener(type, handler, target = document) {
-  events.on(target, type, handler, { passive: false })
-  return {
-    remove() {
-      events.off(target, type, handler)
-    },
-  }
+  return listen(target, type, handler, { passive: false })
 }
 
 function isOverContainer(container, x, y) {
@@ -44,6 +39,7 @@ const clickInterval = 250
 
 class Selection {
   constructor(node, { global = false, longPressThreshold = 250 } = {}) {
+    this.isDetached = false
     this.container = node
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
@@ -54,16 +50,28 @@ class Selection {
     this._handleMoveEvent = this._handleMoveEvent.bind(this)
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
     this._keyListener = this._keyListener.bind(this)
+    this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this)
+    this._dragOverFromOutsideListener = this._dragOverFromOutsideListener.bind(
+      this
+    )
 
     // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
     // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
-    this._onTouchMoveWindowListener = addEventListener(
+    this._removeTouchMoveWindowListener = addEventListener(
       'touchmove',
       () => {},
       window
     )
-    this._onKeyDownListener = addEventListener('keydown', this._keyListener)
-    this._onKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._removeKeyDownListener = addEventListener('keydown', this._keyListener)
+    this._removeKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._removeDropFromOutsideListener = addEventListener(
+      'drop',
+      this._dropFromOutsideListener
+    )
+    this._onDragOverfromOutisde = addEventListener(
+      'dragover',
+      this._dragOverFromOutsideListener
+    )
     this._addInitialEventListener()
   }
 
@@ -90,14 +98,16 @@ class Selection {
   }
 
   teardown() {
+    this.isDetached = true
     this.listeners = Object.create(null)
-    this._onTouchMoveWindowListener && this._onTouchMoveWindowListener.remove()
-    this._onInitialEventListener && this._onInitialEventListener.remove()
-    this._onEndListener && this._onEndListener.remove()
-    this._onEscListener && this._onEscListener.remove()
-    this._onMoveListener && this._onMoveListener.remove()
-    this._onKeyUpListener && this._onKeyUpListener.remove()
-    this._onKeyDownListener && this._onKeyDownListener.remove()
+    this._removeTouchMoveWindowListener && this._removeTouchMoveWindowListener()
+    this._removeInitialEventListener && this._removeInitialEventListener()
+    this._removeEndListener && this._removeEndListener()
+    this._onEscListener && this._onEscListener()
+    this._removeMoveListener && this._removeMoveListener()
+    this._removeKeyUpListener && this._removeKeyUpListener()
+    this._removeKeyDownListener && this._removeKeyDownListener()
+    this._removeDropFromOutsideListener && this._removeDropFromOutsideListener()
   }
 
   isSelected(node) {
@@ -121,73 +131,102 @@ class Selection {
   // without moving their finger for 250ms.
   _addLongPressListener(handler, initialEvent) {
     let timer = null
-    let touchMoveListener = null
-    let touchEndListener = null
+    let removeTouchMoveListener = null
+    let removeTouchEndListener = null
     const handleTouchStart = initialEvent => {
       timer = setTimeout(() => {
         cleanup()
         handler(initialEvent)
       }, this.longPressThreshold)
-      touchMoveListener = addEventListener('touchmove', () => cleanup())
-      touchEndListener = addEventListener('touchend', () => cleanup())
+      removeTouchMoveListener = addEventListener('touchmove', () => cleanup())
+      removeTouchEndListener = addEventListener('touchend', () => cleanup())
     }
-    const touchStartListener = addEventListener('touchstart', handleTouchStart)
+    const removeTouchStartListener = addEventListener(
+      'touchstart',
+      handleTouchStart
+    )
     const cleanup = () => {
       if (timer) {
         clearTimeout(timer)
       }
-      if (touchMoveListener) {
-        touchMoveListener.remove()
+      if (removeTouchMoveListener) {
+        removeTouchMoveListener()
       }
-      if (touchEndListener) {
-        touchEndListener.remove()
+      if (removeTouchEndListener) {
+        removeTouchEndListener()
       }
 
       timer = null
-      touchMoveListener = null
-      touchEndListener = null
+      removeTouchMoveListener = null
+      removeTouchEndListener = null
     }
 
     if (initialEvent) {
       handleTouchStart(initialEvent)
     }
 
-    return {
-      remove() {
-        cleanup()
-        touchStartListener.remove()
-      },
+    return () => {
+      cleanup()
+      removeTouchStartListener()
     }
   }
 
   // Listen for mousedown and touchstart events. When one is received, disable the other and setup
   // future event handling based on the type of event.
   _addInitialEventListener() {
-    const mouseDownListener = addEventListener('mousedown', e => {
-      this._onInitialEventListener.remove()
+    const removeMouseDownListener = addEventListener('mousedown', e => {
+      this._removeInitialEventListener()
       this._handleInitialEvent(e)
-      this._onInitialEventListener = addEventListener(
+      this._removeInitialEventListener = addEventListener(
         'mousedown',
         this._handleInitialEvent
       )
     })
-    const touchStartListener = addEventListener('touchstart', e => {
-      this._onInitialEventListener.remove()
-      this._onInitialEventListener = this._addLongPressListener(
+    const removeTouchStartListener = addEventListener('touchstart', e => {
+      this._removeInitialEventListener()
+      this._removeInitialEventListener = this._addLongPressListener(
         this._handleInitialEvent,
         e
       )
     })
 
-    this._onInitialEventListener = {
-      remove() {
-        mouseDownListener.remove()
-        touchStartListener.remove()
-      },
+    this._removeInitialEventListener = () => {
+      removeMouseDownListener()
+      removeTouchStartListener()
     }
   }
 
+  _dropFromOutsideListener(e) {
+    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
+
+    this.emit('dropFromOutside', {
+      x: pageX,
+      y: pageY,
+      clientX: clientX,
+      clientY: clientY,
+    })
+
+    e.preventDefault()
+  }
+
+  _dragOverFromOutsideListener(e) {
+    const { pageX, pageY, clientX, clientY } = getEventCoordinates(e)
+
+    this.emit('dragOverFromOutside', {
+      x: pageX,
+      y: pageY,
+      clientX: clientX,
+      clientY: clientY,
+    })
+
+    e.preventDefault()
+  }
+
   _handleInitialEvent(e) {
+    if (this.isDetached) {
+      return
+    }
+
     const { clientX, clientY, pageX, pageY } = getEventCoordinates(e)
     let node = this.container(),
       collides,
@@ -234,7 +273,7 @@ class Selection {
 
     switch (e.type) {
       case 'mousedown':
-        this._onEndListener = addEventListener(
+        this._removeEndListener = addEventListener(
           'mouseup',
           this._handleTerminatingEvent
         )
@@ -242,18 +281,18 @@ class Selection {
           'keydown',
           this._handleTerminatingEvent
         )
-        this._onMoveListener = addEventListener(
+        this._removeMoveListener = addEventListener(
           'mousemove',
           this._handleMoveEvent
         )
         break
       case 'touchstart':
         this._handleMoveEvent(e)
-        this._onEndListener = addEventListener(
+        this._removeEndListener = addEventListener(
           'touchend',
           this._handleTerminatingEvent
         )
-        this._onMoveListener = addEventListener(
+        this._removeMoveListener = addEventListener(
           'touchmove',
           this._handleMoveEvent
         )
@@ -268,8 +307,8 @@ class Selection {
 
     this.selecting = false
 
-    this._onEndListener && this._onEndListener.remove()
-    this._onMoveListener && this._onMoveListener.remove()
+    this._removeEndListener && this._removeEndListener()
+    this._removeMoveListener && this._removeMoveListener()
 
     if (!this._initialEventData) return
 
@@ -326,7 +365,7 @@ class Selection {
   }
 
   _handleMoveEvent(e) {
-    if (this._initialEventData === null) {
+    if (this._initialEventData === null || this.isDetached) {
       return
     }
 

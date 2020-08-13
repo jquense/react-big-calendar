@@ -4,6 +4,6 @@ import { storiesOf } from '@storybook/react'
 import { DragableCalendar } from './helpers'
 import resources from './helpers/resourceEvents'
 
-storiesOf('Resources').add('demo', () => (
+storiesOf('Resources', module).add('demo', () => (
   <DragableCalendar events={resources.events} resources={resources.list} />
 ))

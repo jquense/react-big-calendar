@@ -1,11 +1,11 @@
-import cn from 'classnames'
-import getHeight from 'dom-helpers/query/height'
-import qsa from 'dom-helpers/query/querySelectorAll'
+import clsx from 'clsx'
+import getHeight from 'dom-helpers/height'
+import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-import dates from './utils/dates'
+import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
@@ -24,7 +24,7 @@ class DateContentRow extends React.Component {
     onSelectSlot(range.slice(slot.start, slot.end + 1), slot)
   }
 
-  handleShowMore = slot => {
+  handleShowMore = (slot, target) => {
     const { range, onShowMore } = this.props
     let metrics = this.slotMetrics(this.props)
     let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
@@ -33,7 +33,7 @@ class DateContentRow extends React.Component {
     if (row) cell = row.children[slot - 1]
 
     let events = metrics.getEventsForSlot(slot)
-    onShowMore(events, range[slot - 1], cell, slot)
+    onShowMore(events, range[slot - 1], cell, slot, target)
   }
 
   createHeadingRef = r => {
@@ -63,7 +63,7 @@ class DateContentRow extends React.Component {
     return renderHeader({
       date,
       key: `header_${index}`,
-      className: cn(
+      className: clsx(
         'rbc-date-cell',
         dates.eq(date, getNow(), 'day') && 'rbc-now'
       ),

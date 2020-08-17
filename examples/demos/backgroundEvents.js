@@ -17,6 +17,7 @@ let Basic = ({ localizer }) => (
     defaultDate={new Date(2015, 3, 13)}
     localizer={localizer}
     backgroundEvents={backgroundEvents}
+    dayLayoutAlgorithm={'no-overlap'}
   />
 )
 

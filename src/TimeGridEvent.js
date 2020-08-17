@@ -43,11 +43,10 @@ function TimeGridEvent(props) {
   const eventStyle = isBackgroundEvent
     ? {
         ...userProps.style,
-        top: `${top}%`,
+        top: stringifyPercent(top),
         height: stringifyPercent(height),
         width: `calc(${width}% + 10px)`,
-        [rtl ? 'right' : 'left']: `${Math.max(0, xOffset)}%`,
-        opacity: 0.75,
+        [rtl ? 'right' : 'left']: stringifyPercent(Math.max(0, xOffset)),
       }
     : {
         ...userProps.style,
@@ -68,12 +67,16 @@ function TimeGridEvent(props) {
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip
             : undefined
         }
-        className={clsx('rbc-event', className, userProps.className, {
-          'rbc-background-event': isBackgroundEvent,
-          'rbc-selected': selected,
-          'rbc-event-continues-earlier': continuesEarlier,
-          'rbc-event-continues-later': continuesLater,
-        })}
+        className={clsx(
+          isBackgroundEvent ? 'rbc-background-event' : 'rbc-event',
+          className,
+          userProps.className,
+          {
+            'rbc-selected': selected,
+            'rbc-event-continues-earlier': continuesEarlier,
+            'rbc-event-continues-later': continuesLater,
+          }
+        )}
       >
         {inner}
       </div>

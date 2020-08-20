@@ -493,16 +493,16 @@ class Calendar extends React.Component {
      * (date: Date, resourceId: (number|string)) => { className?: string, style?: Object }
      * ```
      */
-	slotPropGetter: PropTypes.func,
-	
-	/**
-	 * Optionally provide a function that returns an object of props to be applied 
-	 * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
-	 * ```js
-	 * () => { style?: Object }
-	 * ```
-	 */
-	slotGroupPropGetter: PropTypes.func,
+    slotPropGetter: PropTypes.func,
+
+    /**
+     * Optionally provide a function that returns an object of props to be applied
+     * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
+     * ```js
+     * () => { style?: Object }
+     * ```
+     */
+    slotGroupPropGetter: PropTypes.func,
 
     /**
      * Optionally provide a function that returns an object of className or style props
@@ -754,6 +754,7 @@ class Calendar extends React.Component {
     allDayAccessor: 'allDay',
     startAccessor: 'start',
     endAccessor: 'end',
+    eventUpdater: (event, eventUpdates) => ({ ...event, ...eventUpdates }),
     resourceAccessor: 'resourceId',
 
     resourceIdAccessor: 'id',
@@ -777,6 +778,7 @@ class Calendar extends React.Component {
   getContext({
     startAccessor,
     endAccessor,
+    eventUpdater,
     allDayAccessor,
     tooltipAccessor,
     titleAccessor,
@@ -784,8 +786,8 @@ class Calendar extends React.Component {
     resourceIdAccessor,
     resourceTitleAccessor,
     eventPropGetter,
-	slotPropGetter,
-	slotGroupPropGetter,
+    slotPropGetter,
+    slotGroupPropGetter,
     dayPropGetter,
     view,
     views,
@@ -804,9 +806,9 @@ class Calendar extends React.Component {
         eventProp: (...args) =>
           (eventPropGetter && eventPropGetter(...args)) || {},
         slotProp: (...args) =>
-		  (slotPropGetter && slotPropGetter(...args)) || {},
-		slotGroupProp: (...args) =>
-		  (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
+          (slotPropGetter && slotPropGetter(...args)) || {},
+        slotGroupProp: (...args) =>
+          (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
         dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
       },
       components: defaults(components[view] || {}, omit(components, names), {
@@ -819,6 +821,7 @@ class Calendar extends React.Component {
       accessors: {
         start: wrapAccessor(startAccessor),
         end: wrapAccessor(endAccessor),
+        eventUpdater: wrapAccessor(eventUpdater),
         allDay: wrapAccessor(allDayAccessor),
         tooltip: wrapAccessor(tooltipAccessor),
         title: wrapAccessor(titleAccessor),

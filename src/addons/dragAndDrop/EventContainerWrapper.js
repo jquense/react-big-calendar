@@ -58,18 +58,25 @@ class EventContainerWrapper extends React.Component {
 
   update(event, { startDate, endDate, top, height }) {
     const { event: lastEvent } = this.state
+    const { accessors } = this.props
+
     if (
       lastEvent &&
-      startDate === lastEvent.start &&
-      endDate === lastEvent.end
+      startDate === accessors.start(lastEvent) &&
+      endDate === accessors.end(lastEvent)
     ) {
       return
     }
 
+    const updatedEvent = accessors.eventUpdater(event, {
+      start: startDate,
+      end: endDate,
+    })
+
     this.setState({
       top,
       height,
-      event: { ...event, start: startDate, end: endDate },
+      event: updatedEvent,
     })
   }
 
@@ -202,14 +209,14 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleInteractionEnd = () => {
-    const { resource } = this.props
+    const { resource, accessors } = this.props
     const { event } = this.state
 
     this.reset()
 
     this.context.draggable.onEnd({
-      start: event.start,
-      end: event.end,
+      start: accessors.start(event),
+      end: accessors.end(event),
       resourceId: resource,
     })
   }
@@ -235,7 +242,8 @@ class EventContainerWrapper extends React.Component {
     if (!event) return children
 
     const events = children.props.children
-    const { start, end } = event
+    const start = accessors.start(event)
+    const end = accessors.end(event)
 
     let label
     let format = 'eventTimeRangeFormat'

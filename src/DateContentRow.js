@@ -152,6 +152,7 @@ class DateContentRow extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           components={components}
           longPressThreshold={longPressThreshold}
+          resourceId={resourceId}
         />
 
         <div className="rbc-row-content">

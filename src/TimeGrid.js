@@ -23,7 +23,6 @@ export default class TimeGrid extends Component {
 
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
-    this._scrollRatio = null
   }
 
   UNSAFE_componentWillMount() {
@@ -303,7 +302,7 @@ export default class TimeGrid extends Component {
   }
 
   applyScroll() {
-    if (this._scrollRatio != null) {
+    if (this._scrollRatio) {
       const content = this.contentRef.current
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once

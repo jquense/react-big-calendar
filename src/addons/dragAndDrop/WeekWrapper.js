@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import * as dates from '../../utils/dates'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
-import { findDOMNode } from 'react-dom'
 
 import { eventSegments } from '../../utils/eventLevels'
 import Selection, { getBoundsForNode } from '../../Selection'
@@ -46,6 +45,7 @@ class WeekWrapper extends React.Component {
   constructor(...args) {
     super(...args)
     this.state = {}
+    this.ref = React.createRef()
   }
 
   componentDidMount() {
@@ -189,7 +189,7 @@ class WeekWrapper extends React.Component {
   }
 
   _selectable = () => {
-    let node = findDOMNode(this).closest('.rbc-month-row, .rbc-allday-cell')
+    let node = this.ref.current.closest('.rbc-month-row, .rbc-allday-cell')
     let container = node.closest('.rbc-month-view, .rbc-time-view')
 
     let selector = (this._selector = new Selection(() => container))
@@ -273,7 +273,7 @@ class WeekWrapper extends React.Component {
     let { segment } = this.state
 
     return (
-      <div className="rbc-addons-dnd-row-body">
+      <div ref={this.ref} className="rbc-addons-dnd-row-body">
         {children}
 
         {segment && (

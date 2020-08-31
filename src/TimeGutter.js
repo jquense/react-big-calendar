@@ -16,11 +16,7 @@ export default class TimeGutter extends Component {
       timeslots,
       step,
     })
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { min, max, timeslots, step } = nextProps
-    this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
+    this.ref = React.createRef()
   }
 
   renderSlot = (value, idx) => {
@@ -36,10 +32,19 @@ export default class TimeGutter extends Component {
   }
 
   render() {
-    const { resource, components, getters } = this.props
+    const {
+      resource,
+      components,
+      getters,
+      min,
+      max,
+      timeslots,
+      step,
+    } = this.props
+    this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
 
     return (
-      <div className="rbc-time-gutter rbc-time-column">
+      <div ref={this.ref} className="rbc-time-gutter rbc-time-column">
         {this.slotMetrics.groups.map((grp, idx) => {
           return (
             <TimeSlotGroup

@@ -168,5 +168,10 @@ class Example extends React.Component {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  render(<Example />, document.getElementById('app'))
+  render(
+    <React.StrictMode>
+      <Example />
+    </React.StrictMode>,
+    document.getElementById('app')
+  )
 })

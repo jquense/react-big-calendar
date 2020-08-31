@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
@@ -22,6 +21,7 @@ class DayColumn extends React.Component {
     super(...args)
 
     this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
+    this.ref = React.createRef()
   }
 
   componentDidMount() {
@@ -37,15 +37,14 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.selectable && !this.props.selectable) this._selectable()
-    if (!nextProps.selectable && this.props.selectable)
-      this._teardownSelectable()
-
-    this.slotMetrics = this.slotMetrics.update(nextProps)
-  }
-
   componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.selectable && this.props.selectable) this._selectable()
+    if (prevProps.selectable && !this.props.selectable) {
+      this._teardownSelectable()
+    }
+
+    this.slotMetrics = this.slotMetrics.update(this.props)
+
     const getNowChanged = !dates.eq(
       prevProps.getNow(),
       this.props.getNow(),
@@ -127,6 +126,7 @@ class DayColumn extends React.Component {
 
     return (
       <div
+        ref={this.ref}
         style={style}
         className={clsx(
           className,
@@ -238,8 +238,8 @@ class DayColumn extends React.Component {
   }
 
   _selectable = () => {
-    let node = findDOMNode(this)
-    let selector = (this._selector = new Selection(() => findDOMNode(this), {
+    let node = this.ref.current
+    let selector = (this._selector = new Selection(() => this.ref.current, {
       longPressThreshold: this.props.longPressThreshold,
     }))
 
@@ -299,7 +299,7 @@ class DayColumn extends React.Component {
     }
 
     let selectorClicksHandler = (box, actionType) => {
-      if (!isEvent(findDOMNode(this), box)) {
+      if (!isEvent(this.ref.current, box)) {
         const { startDate, endDate } = selectionState(box)
         this._selectSlot({
           startDate,
@@ -317,7 +317,7 @@ class DayColumn extends React.Component {
     selector.on('beforeSelect', box => {
       if (this.props.selectable !== 'ignoreEvents') return
 
-      return !isEvent(findDOMNode(this), box)
+      return !isEvent(this.ref.current, box)
     })
 
     selector.on('click', box => selectorClicksHandler(box, 'click'))

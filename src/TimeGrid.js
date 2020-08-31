@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
 import * as dates from './utils/dates'
@@ -21,17 +20,14 @@ export default class TimeGrid extends Component {
     super(props)
 
     this.state = { gutterWidth: undefined, isOverflowing: null }
-
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
+    this.gutterRef = React.createRef()
     this._scrollRatio = null
   }
 
-  UNSAFE_componentWillMount() {
-    this.calculateScroll()
-  }
-
   componentDidMount() {
+    this.calculateScroll()
     this.checkOverflow()
 
     if (this.props.width == null) {
@@ -64,28 +60,22 @@ export default class TimeGrid extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const { range, scrollToTime } = this.props
+    // When paginating, reset scroll
+    if (
+      !dates.eq(prevProps.range[0], range[0], 'minute') ||
+      !dates.eq(prevProps.scrollToTime, scrollToTime, 'minute')
+    ) {
+      this.calculateScroll(this.props)
+    }
+
     if (this.props.width == null) {
       this.measureGutter()
     }
 
     this.applyScroll()
     //this.checkOverflow()
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { range, scrollToTime } = this.props
-    // When paginating, reset scroll
-    if (
-      !dates.eq(nextProps.range[0], range[0], 'minute') ||
-      !dates.eq(nextProps.scrollToTime, scrollToTime, 'minute')
-    ) {
-      this.calculateScroll(nextProps)
-    }
-  }
-
-  gutterRef = ref => {
-    this.gutter = ref && findDOMNode(ref)
   }
 
   handleSelectAlldayEvent = (...args) => {
@@ -260,7 +250,9 @@ export default class TimeGrid extends Component {
     }
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
-        const width = getWidth(this.gutter)
+        const width = this.gutterRef.current
+          ? getWidth(this.gutterRef.current.ref.current)
+          : 0
 
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })

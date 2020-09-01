@@ -8,6 +8,17 @@ import EventContainerWrapper from './EventContainerWrapper'
 import WeekWrapper from './WeekWrapper'
 import { mergeComponents } from './common'
 
+export const DragAndDropContext = React.createContext({
+  onStart: null,
+  onEnd: null,
+  onBeginAction: null,
+  onDropFromOutside: null,
+  dragFromOutsideItem: null,
+  draggableAccessor: null,
+  resizableAccessor: null,
+  dragAndDropAction: null,
+})
+
 /**
  * Creates a higher-order component (HOC) supporting drag & drop and optionally resizing
  * of events:
@@ -92,23 +103,6 @@ export default function withDragAndDrop(Calendar) {
       step: 30,
     }
 
-    static contextTypes = {
-      dragDropManager: PropTypes.object,
-    }
-
-    static childContextTypes = {
-      draggable: PropTypes.shape({
-        onStart: PropTypes.func,
-        onEnd: PropTypes.func,
-        onBeginAction: PropTypes.func,
-        onDropFromOutside: PropTypes.func,
-        dragFromOutsideItem: PropTypes.func,
-        draggableAccessor: accessor,
-        resizableAccessor: accessor,
-        dragAndDropAction: PropTypes.object,
-      }),
-    }
-
     constructor(...args) {
       super(...args)
 
@@ -123,7 +117,7 @@ export default function withDragAndDrop(Calendar) {
       this.state = { interacting: false }
     }
 
-    getChildContext() {
+    getDragAndDropContext() {
       return {
         draggable: {
           onStart: this.handleInteractionStart,
@@ -195,11 +189,13 @@ export default function withDragAndDrop(Calendar) {
       )
 
       return (
-        <Calendar
-          {...props}
-          elementProps={elementPropsWithDropFromOutside}
-          components={this.components}
-        />
+        <DragAndDropContext.Provider value={this.getDragAndDropContext()}>
+          <Calendar
+            {...props}
+            elementProps={elementPropsWithDropFromOutside}
+            components={this.components}
+          />
+        </DragAndDropContext.Provider>
       )
     }
   }

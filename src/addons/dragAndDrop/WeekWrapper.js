@@ -7,6 +7,7 @@ import { eventSegments } from '../../utils/eventLevels'
 import Selection, { getBoundsForNode } from '../../Selection'
 import EventRow from '../../EventRow'
 import { dragAccessors } from './common'
+import { DragAndDropContext } from './withDragAndDrop'
 
 const propTypes = {}
 
@@ -29,17 +30,6 @@ class WeekWrapper extends React.Component {
     getters: PropTypes.object.isRequired,
     components: PropTypes.object.isRequired,
     resourceId: PropTypes.any,
-  }
-
-  static contextTypes = {
-    draggable: PropTypes.shape({
-      onStart: PropTypes.func,
-      onEnd: PropTypes.func,
-      dragAndDropAction: PropTypes.object,
-      onDropFromOutside: PropTypes.func,
-      onBeginAction: PropTypes.func,
-      dragFromOutsideItem: PropTypes.func,
-    }),
   }
 
   constructor(...args) {
@@ -268,27 +258,34 @@ class WeekWrapper extends React.Component {
   }
 
   render() {
-    const { children, accessors } = this.props
-
-    let { segment } = this.state
-
     return (
-      <div ref={this.ref} className="rbc-addons-dnd-row-body">
-        {children}
+      <DragAndDropContext.Consumer>
+        {context => {
+          this.context = context
+          const { children, accessors } = this.props
 
-        {segment && (
-          <EventRow
-            {...this.props}
-            selected={null}
-            className="rbc-addons-dnd-drag-row"
-            segments={[segment]}
-            accessors={{
-              ...accessors,
-              ...dragAccessors,
-            }}
-          />
-        )}
-      </div>
+          let { segment } = this.state
+
+          return (
+            <div ref={this.ref} className="rbc-addons-dnd-row-body">
+              {children}
+
+              {segment && (
+                <EventRow
+                  {...this.props}
+                  selected={null}
+                  className="rbc-addons-dnd-drag-row"
+                  segments={[segment]}
+                  accessors={{
+                    ...accessors,
+                    ...dragAccessors,
+                  }}
+                />
+              )}
+            </div>
+          )
+        }}
+      </DragAndDropContext.Consumer>
     )
   }
 }

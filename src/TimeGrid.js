@@ -23,18 +23,17 @@ export default class TimeGrid extends Component {
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
     this.gutterRef = React.createRef()
-    this._scrollRatio = null
   }
 
   componentDidMount() {
-    this.calculateScroll()
+    const scrollRatio = this.calculateScroll()
     this.checkOverflow()
 
     if (this.props.width == null) {
       this.measureGutter()
     }
 
-    this.applyScroll()
+    this.applyScroll(scrollRatio)
 
     window.addEventListener('resize', this.handleResize)
   }
@@ -60,21 +59,28 @@ export default class TimeGrid extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  getSnapshotBeforeUpdate(prevProps) {
     const { range, scrollToTime } = this.props
     // When paginating, reset scroll
     if (
       !dates.eq(prevProps.range[0], range[0], 'minute') ||
       !dates.eq(prevProps.scrollToTime, scrollToTime, 'minute')
     ) {
-      this.calculateScroll(this.props)
+      return {
+        scrollRatio: this.calculateScroll(this.props),
+      }
     }
+    return null
+  }
 
+  componentDidUpdate(_prevProps, _prevState, snapshot) {
     if (this.props.width == null) {
       this.measureGutter()
     }
 
-    this.applyScroll()
+    if (snapshot && snapshot.scrollRatio !== undefined) {
+      this.applyScroll(snapshot.scrollRatio)
+    }
     //this.checkOverflow()
   }
 
@@ -261,13 +267,9 @@ export default class TimeGrid extends Component {
     )
   }
 
-  applyScroll() {
-    if (this._scrollRatio != null) {
-      const content = this.contentRef.current
-      content.scrollTop = content.scrollHeight * this._scrollRatio
-      // Only do this once
-      this._scrollRatio = null
-    }
+  applyScroll(scrollRatio) {
+    const content = this.contentRef.current
+    content.scrollTop = content.scrollHeight * scrollRatio
   }
 
   calculateScroll(props = this.props) {
@@ -276,7 +278,7 @@ export default class TimeGrid extends Component {
     const diffMillis = scrollToTime - dates.startOf(scrollToTime, 'day')
     const totalMillis = dates.diff(max, min)
 
-    this._scrollRatio = diffMillis / totalMillis
+    return diffMillis / totalMillis
   }
 
   checkOverflow = () => {

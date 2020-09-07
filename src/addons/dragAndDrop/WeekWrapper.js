@@ -7,7 +7,7 @@ import { eventSegments } from '../../utils/eventLevels'
 import Selection, { getBoundsForNode } from '../../Selection'
 import EventRow from '../../EventRow'
 import { dragAccessors } from './common'
-import { DragAndDropContext } from './withDragAndDrop'
+import DragAndDropContext from './DragAndDropContext'
 
 const propTypes = {}
 
@@ -258,38 +258,32 @@ class WeekWrapper extends React.Component {
   }
 
   render() {
+    const { children, accessors } = this.props
+
+    let { segment } = this.state
+
     return (
-      <DragAndDropContext.Consumer>
-        {context => {
-          this.context = context
-          const { children, accessors } = this.props
+      <div ref={this.ref} className="rbc-addons-dnd-row-body">
+        {children}
 
-          let { segment } = this.state
-
-          return (
-            <div ref={this.ref} className="rbc-addons-dnd-row-body">
-              {children}
-
-              {segment && (
-                <EventRow
-                  {...this.props}
-                  selected={null}
-                  className="rbc-addons-dnd-drag-row"
-                  segments={[segment]}
-                  accessors={{
-                    ...accessors,
-                    ...dragAccessors,
-                  }}
-                />
-              )}
-            </div>
-          )
-        }}
-      </DragAndDropContext.Consumer>
+        {segment && (
+          <EventRow
+            {...this.props}
+            selected={null}
+            className="rbc-addons-dnd-drag-row"
+            segments={[segment]}
+            accessors={{
+              ...accessors,
+              ...dragAccessors,
+            }}
+          />
+        )}
+      </div>
     )
   }
 }
 
 WeekWrapper.propTypes = propTypes
+WeekWrapper.contextType = DragAndDropContext
 
 export default WeekWrapper

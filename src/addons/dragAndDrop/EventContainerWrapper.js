@@ -10,7 +10,7 @@ import Selection, {
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors } from './common'
 import NoopWrapper from '../../NoopWrapper'
-import { DragAndDropContext } from './withDragAndDrop'
+import DragAndDropContext from './DragAndDropContext'
 
 const pointInColumn = (bounds, { x, y }) => {
   const { left, right, top } = bounds
@@ -211,66 +211,59 @@ class EventContainerWrapper extends React.Component {
   }
 
   render() {
-    return (
-      <DragAndDropContext.Consumer>
-        {context => {
-          this.context = context
-          const {
-            children,
-            accessors,
-            components,
-            getters,
-            slotMetrics,
-            localizer,
-          } = this.props
+    const {
+      children,
+      accessors,
+      components,
+      getters,
+      slotMetrics,
+      localizer,
+    } = this.props
 
-          let { event, top, height } = this.state
+    let { event, top, height } = this.state
 
-          if (!event) return children
+    if (!event) return children
 
-          const events = children.props.children
-          const { start, end } = event
+    const events = children.props.children
+    const { start, end } = event
 
-          let label
-          let format = 'eventTimeRangeFormat'
+    let label
+    let format = 'eventTimeRangeFormat'
 
-          const startsBeforeDay = slotMetrics.startsBeforeDay(start)
-          const startsAfterDay = slotMetrics.startsAfterDay(end)
+    const startsBeforeDay = slotMetrics.startsBeforeDay(start)
+    const startsAfterDay = slotMetrics.startsAfterDay(end)
 
-          if (startsBeforeDay) format = 'eventTimeRangeEndFormat'
-          else if (startsAfterDay) format = 'eventTimeRangeStartFormat'
+    if (startsBeforeDay) format = 'eventTimeRangeEndFormat'
+    else if (startsAfterDay) format = 'eventTimeRangeStartFormat'
 
-          if (startsBeforeDay && startsAfterDay)
-            label = localizer.messages.allDay
-          else label = localizer.format({ start, end }, format)
+    if (startsBeforeDay && startsAfterDay) label = localizer.messages.allDay
+    else label = localizer.format({ start, end }, format)
 
-          return React.cloneElement(children, {
-            children: (
-              <React.Fragment>
-                {events}
+    return React.cloneElement(children, {
+      children: (
+        <React.Fragment>
+          {events}
 
-                {event && (
-                  <TimeGridEvent
-                    event={event}
-                    label={label}
-                    className="rbc-addons-dnd-drag-preview"
-                    style={{ top, height, width: 100 }}
-                    getters={getters}
-                    components={{ ...components, eventWrapper: NoopWrapper }}
-                    accessors={{ ...accessors, ...dragAccessors }}
-                    continuesEarlier={startsBeforeDay}
-                    continuesLater={startsAfterDay}
-                  />
-                )}
-              </React.Fragment>
-            ),
-          })
-        }}
-      </DragAndDropContext.Consumer>
-    )
+          {event && (
+            <TimeGridEvent
+              event={event}
+              label={label}
+              className="rbc-addons-dnd-drag-preview"
+              style={{ top, height, width: 100 }}
+              getters={getters}
+              components={{ ...components, eventWrapper: NoopWrapper }}
+              accessors={{ ...accessors, ...dragAccessors }}
+              continuesEarlier={startsBeforeDay}
+              continuesLater={startsAfterDay}
+            />
+          )}
+        </React.Fragment>
+      ),
+    })
   }
 }
 
 EventContainerWrapper.propTypes = propTypes
+EventContainerWrapper.contextType = DragAndDropContext
 
 export default EventContainerWrapper

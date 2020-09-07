@@ -7,17 +7,7 @@ import EventWrapper from './EventWrapper'
 import EventContainerWrapper from './EventContainerWrapper'
 import WeekWrapper from './WeekWrapper'
 import { mergeComponents } from './common'
-
-export const DragAndDropContext = React.createContext({
-  onStart: null,
-  onEnd: null,
-  onBeginAction: null,
-  onDropFromOutside: null,
-  dragFromOutsideItem: null,
-  draggableAccessor: null,
-  resizableAccessor: null,
-  dragAndDropAction: null,
-})
+import DragAndDropContext from './DragAndDropContext'
 
 /**
  * Creates a higher-order component (HOC) supporting drag & drop and optionally resizing

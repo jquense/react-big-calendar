@@ -114,6 +114,7 @@ class DayColumn extends React.Component {
       resource,
       accessors,
       localizer,
+      invertResourcesAndDates,
       getters: { dayProp, ...getters },
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
@@ -132,6 +133,7 @@ class DayColumn extends React.Component {
           className,
           'rbc-day-slot',
           'rbc-time-column',
+          invertResourcesAndDates && 'inverted',
           isNow && 'rbc-now',
           isNow && 'rbc-today', // WHY
           selecting && 'rbc-slot-selecting'
@@ -390,6 +392,7 @@ DayColumn.propTypes = {
   localizer: PropTypes.object.isRequired,
 
   showMultiDayTimes: PropTypes.bool,
+  invertResourcesAndDates: PropTypes.bool,
   culture: PropTypes.string,
   timeslots: PropTypes.number,
 

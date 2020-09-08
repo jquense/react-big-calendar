@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import getOffset from 'dom-helpers/offset'
 import getScrollTop from 'dom-helpers/scrollTop'
 import getScrollLeft from 'dom-helpers/scrollLeft'
@@ -8,10 +8,29 @@ import * as dates from './utils/dates'
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
-class Popup extends React.Component {
-  componentDidMount() {
-    let { popupOffset = 5, popperRef } = this.props,
-      { top, left, width, height } = getOffset(popperRef.current),
+const Popup = ({
+  events,
+  getters,
+  accessors,
+  components,
+  handleDragStart,
+  localizer,
+  onSelect,
+  onDoubleClick,
+  position,
+  selected,
+  show,
+  slotStart,
+  slotEnd,
+  style,
+  popperRef,
+  popupOffset = 5,
+}) => {
+  const [topOffsetState, setTopOffset] = useState(0)
+  const [leftOffsetState, setLeftOffset] = useState(0)
+
+  useEffect(() => {
+    let { top, left, width, height } = getOffset(popperRef.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -25,67 +44,50 @@ class Popup extends React.Component {
       if (right > viewRight)
         leftOffset = right - viewRight + (popupOffset.x || +popupOffset || 0)
 
-      this.setState({ topOffset, leftOffset }) //eslint-disable-line
+      setTopOffset(topOffset)
+      setLeftOffset(leftOffset)
     }
+  }, [popupOffset, popperRef])
+
+  let { width } = position
+
+  let styles = {
+    top: -topOffsetState,
+    left: -leftOffsetState,
+    minWidth: width + width / 2,
   }
 
-  render() {
-    let {
-      events,
-      selected,
-      getters,
-      accessors,
-      components,
-      onSelect,
-      onDoubleClick,
-      slotStart,
-      slotEnd,
-      localizer,
-      popperRef,
-    } = this.props
-
-    let { width } = this.props.position,
-      topOffset = (this.state || {}).topOffset || 0,
-      leftOffset = (this.state || {}).leftOffset || 0
-
-    let style = {
-      top: -topOffset,
-      left: -leftOffset,
-      minWidth: width + width / 2,
-    }
-
-    return (
-      <div
-        style={{ ...this.props.style, ...style }}
-        className="rbc-overlay"
-        ref={popperRef}
-      >
-        <div className="rbc-overlay-header">
-          {localizer.format(slotStart, 'dayHeaderFormat')}
-        </div>
-        {events.map((event, idx) => (
-          <EventCell
-            key={idx}
-            type="popup"
-            event={event}
-            getters={getters}
-            onSelect={onSelect}
-            accessors={accessors}
-            components={components}
-            onDoubleClick={onDoubleClick}
-            continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
-            continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
-            slotStart={slotStart}
-            slotEnd={slotEnd}
-            selected={isSelected(event, selected)}
-            draggable={true}
-            onDragStart={() => this.props.handleDragStart(event)}
-            onDragEnd={() => this.props.show()}
-          />
-        ))}
+  return (
+    <div
+      style={{ ...style, ...styles }}
+      className="rbc-overlay"
+      ref={popperRef}
+    >
+      <div className="rbc-overlay-header">
+        {localizer.format(slotStart, 'dayHeaderFormat')}
       </div>
-    )
-  }
+      {events.map((event, idx) => (
+        <EventCell
+          key={idx}
+          type="popup"
+          event={event}
+          getters={getters}
+          onSelect={onSelect}
+          accessors={accessors}
+          components={components}
+          onDoubleClick={onDoubleClick}
+          continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
+          continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
+          slotStart={slotStart}
+          slotEnd={slotEnd}
+          selected={isSelected(event, selected)}
+          draggable={true}
+          onDragStart={() => handleDragStart(event)}
+          onDragEnd={() => show()}
+        />
+      ))}
+    </div>
+  )
 }
 
 Popup.propTypes = {

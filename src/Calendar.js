@@ -313,6 +313,15 @@ class Calendar extends React.Component {
     onDoubleClickEvent: PropTypes.func,
 
     /**
+     * Callback fired when a focused calendar event recieves a key press.
+     *
+     * ```js
+     * (event: Object, e: SyntheticEvent) => void
+     * ```
+     */
+    onKeyPressEvent: PropTypes.func,
+
+    /**
      * Callback fired when dragging a selection in the Time views.
      *
      * Returning `false` from the handler will prevent a selection.
@@ -493,16 +502,16 @@ class Calendar extends React.Component {
      * (date: Date, resourceId: (number|string)) => { className?: string, style?: Object }
      * ```
      */
-	slotPropGetter: PropTypes.func,
-	
-	/**
-	 * Optionally provide a function that returns an object of props to be applied 
-	 * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
-	 * ```js
-	 * () => { style?: Object }
-	 * ```
-	 */
-	slotGroupPropGetter: PropTypes.func,
+    slotPropGetter: PropTypes.func,
+
+    /**
+     * Optionally provide a function that returns an object of props to be applied
+     * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
+     * ```js
+     * () => { style?: Object }
+     * ```
+     */
+    slotGroupPropGetter: PropTypes.func,
 
     /**
      * Optionally provide a function that returns an object of className or style props
@@ -784,8 +793,8 @@ class Calendar extends React.Component {
     resourceIdAccessor,
     resourceTitleAccessor,
     eventPropGetter,
-	slotPropGetter,
-	slotGroupPropGetter,
+    slotPropGetter,
+    slotGroupPropGetter,
     dayPropGetter,
     view,
     views,
@@ -804,9 +813,9 @@ class Calendar extends React.Component {
         eventProp: (...args) =>
           (eventPropGetter && eventPropGetter(...args)) || {},
         slotProp: (...args) =>
-		  (slotPropGetter && slotPropGetter(...args)) || {},
-		slotGroupProp: (...args) =>
-		  (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
+          (slotPropGetter && slotPropGetter(...args)) || {},
+        slotGroupProp: (...args) =>
+          (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
         dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
       },
       components: defaults(components[view] || {}, omit(components, names), {
@@ -930,6 +939,7 @@ class Calendar extends React.Component {
           onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
           onDoubleClickEvent={this.handleDoubleClickEvent}
+          onKeyPressEvent={this.handleKeyPressEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={onShowMore}
         />
@@ -995,6 +1005,10 @@ class Calendar extends React.Component {
 
   handleDoubleClickEvent = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
+  }
+
+  handleKeyPressEvent = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
   }
 
   handleSelectSlot = slotInfo => {

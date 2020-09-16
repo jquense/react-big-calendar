@@ -13,6 +13,7 @@ class EventCell extends React.Component {
       isAllDay,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       localizer,
       continuesPrior,
       continuesAfter,
@@ -69,6 +70,7 @@ class EventCell extends React.Component {
           })}
           onClick={e => onSelect && onSelect(event, e)}
           onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
+          onKeyPress={e => onKeyPress && onKeyPress(event, e)}
         >
           {typeof children === 'function' ? children(content) : content}
         </div>
@@ -94,6 +96,7 @@ EventCell.propTypes = {
 
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onKeyPress: PropTypes.func,
 }
 
 export default EventCell

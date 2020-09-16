@@ -232,6 +232,7 @@ class DayColumn extends React.Component {
           selected={isSelected(event, selected)}
           onClick={e => this._select(event, e)}
           onDoubleClick={e => this._doubleClick(event, e)}
+          onKeyPress={e => this._keyPress(event, e)}
         />
       )
     })
@@ -371,6 +372,10 @@ class DayColumn extends React.Component {
   _doubleClick = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
   }
+
+  _keyPress = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
+  }
 }
 
 DayColumn.propTypes = {
@@ -402,6 +407,7 @@ DayColumn.propTypes = {
   onSelectSlot: PropTypes.func.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onDoubleClickEvent: PropTypes.func.isRequired,
+  onKeyPressEvent: PropTypes.func.isRequired,
 
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,

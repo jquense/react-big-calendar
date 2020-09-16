@@ -18,6 +18,7 @@ export default {
 
     onSelect: PropTypes.func,
     onDoubleClick: PropTypes.func,
+    onKeyPress: PropTypes.func,
   },
 
   defaultProps: {
@@ -33,6 +34,7 @@ export default {
       getters,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       localizer,
       slotMetrics,
       components,
@@ -50,6 +52,7 @@ export default {
         components={components}
         onSelect={onSelect}
         onDoubleClick={onDoubleClick}
+        onKeyPress={onKeyPress}
         continuesPrior={continuesPrior}
         continuesAfter={continuesAfter}
         slotStart={slotMetrics.first}

@@ -25,6 +25,9 @@
 
   .rbc-time-gutter {
     white-space: nowrap;
+    .rbc-timeslot-group {
+      text-align: right;
+    }
   }
 
   .rbc-allday-cell {
@@ -95,9 +98,9 @@
     border-right: 1px solid $cell-border;
   }
 
-  >.rbc-row.rbc-row-resource {
-      border-bottom: 1px solid $cell-border;
-      flex-shrink: 0;
+  > .rbc-row.rbc-row-resource {
+    border-bottom: 1px solid $cell-border;
+    flex-shrink: 0;
   }
 }
 

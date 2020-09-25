@@ -1,9 +1,7 @@
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
 
-const ResourceHeader = ({ label }) => {
-  return <React.Fragment>{label}</React.Fragment>
-}
+const ResourceHeader = ({ label }) => <Fragment>{label}</Fragment>
 
 ResourceHeader.propTypes = {
   label: PropTypes.node,

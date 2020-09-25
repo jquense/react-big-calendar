@@ -4,7 +4,6 @@ import getOffset from 'dom-helpers/offset'
 import getScrollTop from 'dom-helpers/scrollTop'
 import getScrollLeft from 'dom-helpers/scrollLeft'
 import * as dates from './utils/dates'
-import noop from './utils/noop'
 
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
@@ -24,7 +23,7 @@ const Popup = ({
   style,
   position: { width },
   show,
-  handleDragStart = noop,
+  handleDragStart,
   popupOffset = 5,
   popperRef,
 }) => {

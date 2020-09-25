@@ -6,6 +6,10 @@ const DateHeader = ({ label, drilldownView, onDrillDown }) => {
     return <span>{label}</span>
   }
 
+  /**
+   * TODO: replace href="#", as this will bork in many browsers now
+   * convert to button with styling as a link
+   */
   return (
     <a href="#" onClick={onDrillDown}>
       {label}

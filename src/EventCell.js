@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
 import * as dates from './utils/dates'
-import noop from './utils/noop'
 
 const EventCell = props => {
   const {
@@ -11,9 +10,9 @@ const EventCell = props => {
     event,
     selected,
     isAllDay,
-    onSelect = noop,
-    onDoubleClick = noop,
-    onKeyPress = noop,
+    onSelect,
+    onDoubleClick,
+    onKeyPress,
     localizer,
     continuesPrior,
     continuesAfter,

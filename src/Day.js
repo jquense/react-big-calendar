@@ -5,10 +5,9 @@ import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
-const Day = ({ date, ...props }) => {
-  const range = Day.range(date)
-  return <TimeGrid {...props} range={range} eventOffset={10} />
-}
+const Day = ({ date, ...props }) => (
+  <TimeGrid {...props} range={Day.range(date)} eventOffset={10} />
+)
 
 Day.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,

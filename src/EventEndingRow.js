@@ -8,12 +8,14 @@ let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 let eventsInSlot = (segments, slot) =>
   segments.filter(seg => isSegmentInSlot(seg, slot)).length
 
-const EventEndingRow = ({
-  localizer,
-  segments = [],
-  onShowMore,
-  slotMetrics: { slots },
-}) => {
+const EventEndingRow = props => {
+  const {
+    localizer,
+    segments = [],
+    onShowMore,
+    slotMetrics: { slots },
+  } = props
+
   const showMore = (slot, e) => {
     e.preventDefault()
     onShowMore(slot, e.target)
@@ -68,7 +70,7 @@ const EventEndingRow = ({
     const gap = Math.max(0, left - lastEnd)
 
     if (canRenderSlotEvent(left, span)) {
-      const content = EventRowMixin.renderEvent(this.props, event)
+      const content = EventRowMixin.renderEvent(props, event)
 
       if (gap) {
         row.push(EventRowMixin.renderSpan(slots, gap, `${key}_gap`))

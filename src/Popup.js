@@ -49,7 +49,7 @@ const Popup = ({
       setTopOffset(topOff)
       setLeftOffset(leftOff)
     }
-  })
+  }, [popperRef, popupOffset])
 
   return (
     <div

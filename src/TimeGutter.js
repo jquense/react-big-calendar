@@ -15,6 +15,7 @@ const TimeGutter = ({
   resource,
   components,
   getters,
+  gutterRef,
 }) => {
   const [slotMetrics, setSlotMetrics] = useState(
     TimeSlotUtils.getSlotMetrics({
@@ -54,7 +55,7 @@ const TimeGutter = ({
   }
 
   return (
-    <div className="rbc-time-gutter rbc-time-column">
+    <div className="rbc-time-gutter rbc-time-column" ref={gutterRef}>
       {slotMetrics.groups.map((grp, idx) => {
         return (
           <TimeSlotGroup
@@ -82,9 +83,12 @@ TimeGutter.propTypes = {
 
   localizer: PropTypes.object.isRequired,
   resource: PropTypes.string,
+  gutterRef: PropTypes.any,
 }
 
-export default TimeGutter
+export default React.forwardRef((props, ref) => (
+  <TimeGutter gutterRef={ref} {...props} />
+))
 
 /*export default class TimeGutter extends Component {
   constructor(...args) {

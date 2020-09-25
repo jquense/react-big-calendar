@@ -44,7 +44,7 @@ const TimeGutter = ({
   }, [min, max, timeslots, step])
 
   const renderSlot = (value, idx) => {
-    if (idx !== 0) return null
+    if (idx) return null // don't return the first (0) idx
 
     const isNow = slotMetrics.dateIsInGroup(getNow(), idx)
     return (

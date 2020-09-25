@@ -1,8 +1,9 @@
+import React from 'react'
 import clsx from 'clsx'
 import getHeight from 'dom-helpers/height'
 import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
-import React from 'react'
+
 import { findDOMNode } from 'react-dom'
 
 import * as dates from './utils/dates'

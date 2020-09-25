@@ -1,93 +1,94 @@
+import React, { useState, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
 import getOffset from 'dom-helpers/offset'
 import getScrollTop from 'dom-helpers/scrollTop'
 import getScrollLeft from 'dom-helpers/scrollLeft'
 import * as dates from './utils/dates'
+import noop from './utils/noop'
 
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
-class Popup extends React.Component {
-  componentDidMount() {
-    let { popupOffset = 5, popperRef } = this.props,
-      { top, left, width, height } = getOffset(popperRef.current),
-      viewBottom = window.innerHeight + getScrollTop(window),
-      viewRight = window.innerWidth + getScrollLeft(window),
-      bottom = top + height,
-      right = left + width
+const Popup = ({
+  events,
+  selected,
+  getters,
+  accessors,
+  components,
+  onSelect,
+  onDoubleClick,
+  onKeyPress,
+  slotStart,
+  slotEnd,
+  localizer,
+  style,
+  position: { width },
+  show,
+  handleDragStart = noop,
+  popupOffset = 5,
+  popperRef,
+}) => {
+  const [topOffset, setTopOffset] = useState(0)
+  const [leftOffset, setLeftOffset] = useState(0)
+
+  useLayoutEffect(() => {
+    const { top, left, width, height } = getOffset(popperRef.current)
+    const viewBottom = window.innerHeight + getScrollTop(window)
+    const viewRight = window.innerWidth + getScrollLeft(window)
+    const bottom = top + height
+    const right = left + width
 
     if (bottom > viewBottom || right > viewRight) {
-      let topOffset, leftOffset
+      let topOff
+      let leftOff
 
       if (bottom > viewBottom)
-        topOffset = bottom - viewBottom + (popupOffset.y || +popupOffset || 0)
+        topOff = bottom - viewBottom + (popupOffset.y || +popupOffset || 0)
       if (right > viewRight)
-        leftOffset = right - viewRight + (popupOffset.x || +popupOffset || 0)
+        leftOff = right - viewRight + (popupOffset.x || +popupOffset || 0)
 
-      this.setState({ topOffset, leftOffset }) //eslint-disable-line
+      setTopOffset(topOff)
+      setLeftOffset(leftOff)
     }
-  }
+  })
 
-  render() {
-    let {
-      events,
-      selected,
-      getters,
-      accessors,
-      components,
-      onSelect,
-      onDoubleClick,
-      onKeyPress,
-      slotStart,
-      slotEnd,
-      localizer,
-      popperRef,
-    } = this.props
-
-    let { width } = this.props.position,
-      topOffset = (this.state || {}).topOffset || 0,
-      leftOffset = (this.state || {}).leftOffset || 0
-
-    let style = {
-      top: -topOffset,
-      left: -leftOffset,
-      minWidth: width + width / 2,
-    }
-
-    return (
-      <div
-        style={{ ...this.props.style, ...style }}
-        className="rbc-overlay"
-        ref={popperRef}
-      >
-        <div className="rbc-overlay-header">
-          {localizer.format(slotStart, 'dayHeaderFormat')}
-        </div>
-        {events.map((event, idx) => (
-          <EventCell
-            key={idx}
-            type="popup"
-            event={event}
-            getters={getters}
-            onSelect={onSelect}
-            accessors={accessors}
-            components={components}
-            onDoubleClick={onDoubleClick}
-            onKeyPress={onKeyPress}
-            continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
-            continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
-            slotStart={slotStart}
-            slotEnd={slotEnd}
-            selected={isSelected(event, selected)}
-            draggable={true}
-            onDragStart={() => this.props.handleDragStart(event)}
-            onDragEnd={() => this.props.show()}
-          />
-        ))}
+  return (
+    <div
+      style={{
+        ...style,
+        top: -topOffset,
+        left: -leftOffset,
+        minWidth: width + width / 2,
+      }}
+      className="rbc-overlay"
+      ref={popperRef}
+    >
+      <div className="rbc-overlay-header">
+        {localizer.format(slotStart, 'dayHeaderFormat')}
       </div>
-    )
-  }
+      {events.map((event, idx) => (
+        <EventCell
+          key={idx}
+          type="popup"
+          event={event}
+          getters={getters}
+          onSelect={onSelect}
+          accessors={accessors}
+          components={components}
+          onDoubleClick={onDoubleClick}
+          onKeyPress={onKeyPress}
+          continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
+          continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
+          slotStart={slotStart}
+          slotEnd={slotEnd}
+          selected={isSelected(event, selected)}
+          draggable={true}
+          onDragStart={() => handleDragStart(event)}
+          onDragEnd={() => show()}
+        />
+      ))}
+    </div>
+  )
 }
 
 Popup.propTypes = {

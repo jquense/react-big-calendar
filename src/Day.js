@@ -13,9 +13,7 @@ Day.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
 }
 
-Day.range = date => {
-  return [dates.startOf(date, 'day')]
-}
+Day.range = date => [dates.startOf(date, 'day')]
 
 Day.navigate = (date, action) => {
   switch (action) {

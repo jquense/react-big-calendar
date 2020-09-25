@@ -53,7 +53,7 @@ const TimeGridHeader = ({
 
       const { className, style } = dayProp(date)
 
-      let header = (
+      const header = (
         <HeaderComponent date={date} label={label} localizer={localizer} />
       )
 

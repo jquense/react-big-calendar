@@ -27,13 +27,13 @@ class DateContentRow extends React.Component {
 
   handleShowMore = (slot, target) => {
     const { range, onShowMore } = this.props
-    let metrics = this.slotMetrics(this.props)
-    let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
+    const metrics = this.slotMetrics(this.props)
+    const row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
 
     let cell
     if (row) cell = row.children[slot - 1]
 
-    let events = metrics.getEventsForSlot(slot)
+    const events = metrics.getEventsForSlot(slot)
     onShowMore(events, range[slot - 1], cell, slot, target)
   }
 
@@ -51,15 +51,15 @@ class DateContentRow extends React.Component {
   }
 
   getRowLimit() {
-    let eventHeight = getHeight(this.eventRow)
-    let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
-    let eventSpace = getHeight(findDOMNode(this)) - headingHeight
+    const eventHeight = getHeight(this.eventRow)
+    const headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
+    const eventSpace = getHeight(findDOMNode(this)) - headingHeight
 
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
 
   renderHeadingCell = (date, index) => {
-    let { renderHeader, getNow } = this.props
+    const { renderHeader, getNow } = this.props
 
     return renderHeader({
       date,
@@ -72,7 +72,7 @@ class DateContentRow extends React.Component {
   }
 
   renderDummy = () => {
-    let { className, range, renderHeader } = this.props
+    const { className, range, renderHeader } = this.props
     return (
       <div className={className}>
         <div className="rbc-row-content">
@@ -122,10 +122,10 @@ class DateContentRow extends React.Component {
 
     if (renderForMeasure) return this.renderDummy()
 
-    let metrics = this.slotMetrics(this.props)
-    let { levels, extra } = metrics
+    const metrics = this.slotMetrics(this.props)
+    const { levels, extra } = metrics
 
-    let WeekWrapper = components.weekWrapper
+    const { weekWrapper: WeekWrapper } = components
 
     const eventRowProps = {
       selected,

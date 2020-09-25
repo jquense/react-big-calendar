@@ -201,7 +201,7 @@ Agenda.defaultProps = {
 }
 
 Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
-  let end = dates.add(start, length, 'day')
+  const end = dates.add(start, length, 'day')
   return { start, end }
 }
 
@@ -219,7 +219,7 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 }
 
 Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
-  let end = dates.add(start, length, 'day')
+  const end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }
 

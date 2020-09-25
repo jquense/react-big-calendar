@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const Header = ({ label }) => {
-  return <span>{label}</span>
-}
+const Header = ({ label }) => <span>{label}</span>
 
 Header.propTypes = {
   label: PropTypes.node,

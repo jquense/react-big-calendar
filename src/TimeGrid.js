@@ -101,6 +101,7 @@ export default class TimeGrid extends Component {
       start: slots[0],
       end: slots[slots.length - 1],
       action: slotInfo.action,
+      resourceId: slotInfo.resourceId,
     })
   }
 
@@ -221,6 +222,7 @@ export default class TimeGrid extends Component {
           onSelectSlot={this.handleSelectAllDaySlot}
           onSelectEvent={this.handleSelectAlldayEvent}
           onDoubleClickEvent={this.props.onDoubleClickEvent}
+          onKeyPressEvent={this.props.onKeyPressEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
         />
@@ -337,6 +339,7 @@ TimeGrid.propTypes = {
   onSelectStart: PropTypes.func,
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
+  onKeyPressEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 

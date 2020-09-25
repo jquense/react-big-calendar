@@ -38,6 +38,7 @@ class Popup extends React.Component {
       components,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       slotStart,
       slotEnd,
       localizer,
@@ -73,11 +74,15 @@ class Popup extends React.Component {
             accessors={accessors}
             components={components}
             onDoubleClick={onDoubleClick}
+            onKeyPress={onKeyPress}
             continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
             continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
             slotStart={slotStart}
             slotEnd={slotEnd}
             selected={isSelected(event, selected)}
+            draggable={true}
+            onDragStart={() => this.props.handleDragStart(event)}
+            onDragEnd={() => this.props.show()}
           />
         ))}
       </div>
@@ -103,6 +108,9 @@ Popup.propTypes = {
   localizer: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  handleDragStart: PropTypes.func,
+  show: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
   popperRef: PropTypes.oneOfType([

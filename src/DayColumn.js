@@ -99,6 +99,7 @@ class DayColumn extends React.Component {
 
     if (current >= min && current <= max) {
       const top = this.slotMetrics.getCurrentTimePosition(current)
+      this.intervalTriggered = true
       this.setState({ timeIndicatorPosition: top })
     } else {
       this.clearTimeIndicatorInterval()
@@ -163,7 +164,7 @@ class DayColumn extends React.Component {
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}
-        {isNow && (
+        {isNow && this.intervalTriggered && (
           <div
             className="rbc-current-time-indicator"
             style={{ top: `${this.state.timeIndicatorPosition}%` }}
@@ -231,6 +232,7 @@ class DayColumn extends React.Component {
           selected={isSelected(event, selected)}
           onClick={e => this._select(event, e)}
           onDoubleClick={e => this._doubleClick(event, e)}
+          onKeyPress={e => this._keyPress(event, e)}
         />
       )
     })
@@ -349,7 +351,7 @@ class DayColumn extends React.Component {
 
     while (dates.lte(current, endDate)) {
       slots.push(current)
-      current = dates.add(current, this.props.step, 'minutes')
+      current = new Date(+current + this.props.step * 60 * 1000) // using Date ensures not to create an endless loop the day DST begins
     }
 
     notify(this.props.onSelectSlot, {
@@ -369,6 +371,10 @@ class DayColumn extends React.Component {
 
   _doubleClick = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
+  }
+
+  _keyPress = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
   }
 }
 
@@ -401,6 +407,7 @@ DayColumn.propTypes = {
   onSelectSlot: PropTypes.func.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onDoubleClickEvent: PropTypes.func.isRequired,
+  onKeyPressEvent: PropTypes.func.isRequired,
 
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,

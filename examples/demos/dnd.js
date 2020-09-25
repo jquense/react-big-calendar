@@ -12,16 +12,39 @@ class Dnd extends React.Component {
     super(props)
     this.state = {
       events: events,
+      displayDragItemInCell: true,
     }
 
     this.moveEvent = this.moveEvent.bind(this)
     this.newEvent = this.newEvent.bind(this)
   }
 
-  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
+  handleDragStart = event => {
+    this.setState({ draggedEvent: event })
+  }
+
+  dragFromOutsideItem = () => {
+    return this.state.draggedEvent
+  }
+
+  onDropFromOutside = ({ start, end, allDay }) => {
+    const { draggedEvent } = this.state
+
+    const event = {
+      id: draggedEvent.id,
+      title: draggedEvent.title,
+      start,
+      end,
+      allDay: allDay,
+    }
+
+    this.setState({ draggedEvent: null })
+    this.moveEvent({ event, start, end })
+  }
+
+  moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
     const { events } = this.state
 
-    const idx = events.indexOf(event)
     let allDay = event.allDay
 
     if (!event.allDay && droppedOnAllDaySlot) {
@@ -30,10 +53,11 @@ class Dnd extends React.Component {
       allDay = false
     }
 
-    const updatedEvent = { ...event, start, end, allDay }
-
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, updatedEvent)
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
 
     this.setState({
       events: nextEvents,
@@ -86,6 +110,12 @@ class Dnd extends React.Component {
         onDragStart={console.log}
         defaultView={Views.MONTH}
         defaultDate={new Date(2015, 3, 12)}
+        popup={true}
+        dragFromOutsideItem={
+          this.state.displayDragItemInCell ? this.dragFromOutsideItem : null
+        }
+        onDropFromOutside={this.onDropFromOutside}
+        handleDragStart={this.handleDragStart}
       />
     )
   }

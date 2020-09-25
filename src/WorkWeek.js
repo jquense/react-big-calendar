@@ -10,14 +10,14 @@ function workWeekRange(date, options) {
   )
 }
 
-class WorkWeek extends React.Component {
-  render() {
-    let { date, ...props } = this.props
-    let range = workWeekRange(date, this.props)
-
-    return <TimeGrid {...props} range={range} eventOffset={15} />
-  }
-}
+const WorkWeek = ({ date, ...props }) => (
+  <TimeGrid
+    {...props}
+    date={date}
+    range={workWeekRange(date, props)}
+    eventOffset={15}
+  />
+)
 
 WorkWeek.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,

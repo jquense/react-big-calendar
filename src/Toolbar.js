@@ -1,70 +1,65 @@
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
 import clsx from 'clsx'
 import { navigate } from './utils/constants'
 
-class Toolbar extends React.Component {
-  render() {
-    let {
-      localizer: { messages },
-      label,
-    } = this.props
+const Toolbar = ({
+  localizer: { messages },
+  label,
+  views,
+  view,
+  onView,
+  onNavigate,
+}) => {
+  const nav = useMemo(
+    () => ({
+      view: newView => onView(newView),
+      next: () => onNavigate(navigate.NEXT),
+      previous: () => onNavigate(navigate.PREVIOUS),
+      today: () => onNavigate(navigate.TODAY),
+    }),
+    /**
+     * TODO: list onNavigate and onView in deps after
+     * they've been put in a useCallback
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
-    return (
-      <div className="rbc-toolbar">
-        <span className="rbc-btn-group">
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.TODAY)}
-          >
-            {messages.today}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
-          >
-            {messages.previous}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.NEXT)}
-          >
-            {messages.next}
-          </button>
-        </span>
-
-        <span className="rbc-toolbar-label">{label}</span>
-
-        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
-      </div>
-    )
-  }
-
-  navigate = action => {
-    this.props.onNavigate(action)
-  }
-
-  view = view => {
-    this.props.onView(view)
-  }
-
-  viewNamesGroup(messages) {
-    let viewNames = this.props.views
-    const view = this.props.view
-
-    if (viewNames.length > 1) {
-      return viewNames.map(name => (
+  const viewNamesGroup = function() {
+    if (views.length > 1) {
+      return views.map(name => (
         <button
           type="button"
           key={name}
           className={clsx({ 'rbc-active': view === name })}
-          onClick={this.view.bind(null, name)}
+          onClick={() => nav.view(name)}
         >
           {messages[name]}
         </button>
       ))
     }
   }
+
+  return (
+    <div className="rbc-toolbar">
+      <span className="rbc-btn-group">
+        <button type="button" onClick={nav.today}>
+          {messages.today}
+        </button>
+        <button type="button" onClick={nav.previous}>
+          {messages.previous}
+        </button>
+        <button type="button" onClick={nav.next}>
+          {messages.next}
+        </button>
+      </span>
+
+      <span className="rbc-toolbar-label">{label}</span>
+
+      <span className="rbc-btn-group">{viewNamesGroup()}</span>
+    </div>
+  )
 }
 
 Toolbar.propTypes = {

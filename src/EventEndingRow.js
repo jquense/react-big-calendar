@@ -32,6 +32,10 @@ const EventEndingRow = ({
 
     if (!count) return null
 
+    /**
+     * TODO: replace href="#", as this will bork in many browsers now
+     * convert to button with styling as a link
+     */
     return (
       <a
         key={`sm_${slot}`}

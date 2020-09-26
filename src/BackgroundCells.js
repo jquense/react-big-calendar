@@ -1,90 +1,62 @@
+import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
-import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
 import * as dates from './utils/dates'
+import noop from './utils/noop'
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 
-class BackgroundCells extends React.Component {
-  constructor(props, context) {
-    super(props, context)
+const BackgroundCells = ({
+  range,
+  rtl,
+  getNow,
+  getters,
+  date: currentDate,
+  components: { dateCellWrapper: Wrapper },
+  selectable,
+  container,
+  longPressThreshold,
+  onSelectSlot = noop,
+  onSelectStart,
+  onSelectEnd,
+}) => {
+  const [selecting, setSelecting] = useState(false)
+  const [selector, setSelector] = useState(null)
+  const [startIdx, setStartIdx] = useState()
+  const [endIdx, setEndIdx] = useState()
+  const rowRef = useRef(null)
 
-    this.state = {
-      selecting: false,
+  const current = getNow()
+
+  useEffect(() => {
+    if (selectable) {
+      setupSelectable()
+    } else {
+      teardownSelectable()
     }
-  }
+    return () => {
+      teardownSelectable()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectable])
 
-  componentDidMount() {
-    this.props.selectable && this._selectable()
-  }
+  const setupSelectable = () => {
+    const node = rowRef.current
+    const selector = new Selection(container, {
+      longPressThreshold,
+    })
+    let initial = {}
 
-  componentWillUnmount() {
-    this._teardownSelectable()
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.selectable && !this.props.selectable) this._selectable()
-
-    if (!nextProps.selectable && this.props.selectable)
-      this._teardownSelectable()
-  }
-
-  render() {
-    let {
-      range,
-      getNow,
-      getters,
-      date: currentDate,
-      components: { dateCellWrapper: Wrapper },
-    } = this.props
-    let { selecting, startIdx, endIdx } = this.state
-    let current = getNow()
-
-    return (
-      <div className="rbc-row-bg">
-        {range.map((date, index) => {
-          let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style } = getters.dayProp(date)
-
-          return (
-            <Wrapper key={index} value={date} range={range}>
-              <div
-                style={style}
-                className={clsx(
-                  'rbc-day-bg',
-                  className,
-                  selected && 'rbc-selected-cell',
-                  dates.eq(date, current, 'day') && 'rbc-today',
-                  currentDate &&
-                    dates.month(currentDate) !== dates.month(date) &&
-                    'rbc-off-range-bg'
-                )}
-              />
-            </Wrapper>
-          )
-        })}
-      </div>
-    )
-  }
-
-  _selectable() {
-    let node = findDOMNode(this)
-    let selector = (this._selector = new Selection(this.props.container, {
-      longPressThreshold: this.props.longPressThreshold,
-    }))
-
-    let selectorClicksHandler = (point, actionType) => {
-      if (!isEvent(findDOMNode(this), point)) {
-        let rowBox = getBoundsForNode(node)
-        let { range, rtl } = this.props
+    const selectorClicksHandler = (point, actionType) => {
+      if (!isEvent(node, point)) {
+        const rowBox = getBoundsForNode(node)
 
         if (pointInBox(rowBox, point)) {
-          let currentCell = getSlotAtX(rowBox, point.x, rtl, range.length)
+          const currentCell = getSlotAtX(rowBox, point.x, rtl, range.length)
 
-          this._selectSlot({
+          selectSlot({
             startIdx: currentCell,
             endIdx: currentCell,
             action: actionType,
@@ -93,42 +65,40 @@ class BackgroundCells extends React.Component {
         }
       }
 
-      this._initial = {}
-      this.setState({ selecting: false })
+      initial = {}
+      setSelecting(false)
     }
 
     selector.on('selecting', box => {
-      let { range, rtl } = this.props
+      let start = -1
+      let end = -1
 
-      let startIdx = -1
-      let endIdx = -1
-
-      if (!this.state.selecting) {
-        notify(this.props.onSelectStart, [box])
-        this._initial = { x: box.x, y: box.y }
+      if (!selecting) {
+        notify(onSelectStart, [box])
+        initial = { x: box.x, y: box.y }
       }
       if (selector.isSelected(node)) {
         let nodeBox = getBoundsForNode(node)
-        ;({ startIdx, endIdx } = dateCellSelection(
-          this._initial,
+        let { startIdx: newStart, endIdx: newEnd } = dateCellSelection(
+          initial,
           nodeBox,
           box,
           range.length,
           rtl
-        ))
+        )
+        start = newStart
+        end = newEnd
       }
 
-      this.setState({
-        selecting: true,
-        startIdx,
-        endIdx,
-      })
+      setSelecting(true)
+      setStartIdx(start)
+      setEndIdx(end)
     })
 
     selector.on('beforeSelect', box => {
-      if (this.props.selectable !== 'ignoreEvents') return
+      if (selectable !== 'ignoreEvents') return
 
-      return !isEvent(findDOMNode(this), box)
+      return !isEvent(node, box)
     })
 
     selector.on('click', point => selectorClicksHandler(point, 'click'))
@@ -138,31 +108,64 @@ class BackgroundCells extends React.Component {
     )
 
     selector.on('select', bounds => {
-      this._selectSlot({ ...this.state, action: 'select', bounds })
-      this._initial = {}
-      this.setState({ selecting: false })
-      notify(this.props.onSelectEnd, [this.state])
+      selectSlot({ selecting, startIdx, endIdx, action: 'select', bounds })
+      initial = {}
+      setSelecting(false)
+      notify(onSelectEnd, [{ selecting, startIdx, endIdx }])
     })
+    setSelector(selector)
   }
 
-  _teardownSelectable() {
-    if (!this._selector) return
-    this._selector.teardown()
-    this._selector = null
+  const teardownSelectable = () => {
+    if (!selector) return
+    selector.teardown()
+    setSelector(null)
   }
 
-  _selectSlot({ endIdx, startIdx, action, bounds, box }) {
-    if (endIdx !== -1 && startIdx !== -1)
-      this.props.onSelectSlot &&
-        this.props.onSelectSlot({
-          start: startIdx,
-          end: endIdx,
-          action,
-          bounds,
-          box,
-          resourceId: this.props.resourceId,
-        })
+  const selectSlot = ({
+    endIdx: end,
+    startIdx: start,
+    action,
+    bounds,
+    box,
+  }) => {
+    if (end !== -1 && start !== -1) {
+      onSelectSlot({
+        start,
+        end,
+        action,
+        bounds,
+        box,
+        resourceId: this.props.resourceId,
+      })
+    }
   }
+
+  return (
+    <div className="rbc-row-bg" ref={rowRef}>
+      {range.map((date, index) => {
+        let selected = selecting && index >= startIdx && index <= endIdx
+        const { className, style } = getters.dayProp(date)
+
+        return (
+          <Wrapper key={index} value={date} range={range}>
+            <div
+              style={style}
+              className={clsx(
+                'rbc-day-bg',
+                className,
+                selected && 'rbc-selected-cell',
+                dates.eq(date, current, 'day') && 'rbc-today',
+                currentDate &&
+                  dates.month(currentDate) !== dates.month(date) &&
+                  'rbc-off-range-bg'
+              )}
+            />
+          </Wrapper>
+        )
+      })}
+    </div>
+  )
 }
 
 BackgroundCells.propTypes = {

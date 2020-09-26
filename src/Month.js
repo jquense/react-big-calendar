@@ -1,6 +1,5 @@
 import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
 import * as dates from './utils/dates'
@@ -26,14 +25,15 @@ class MonthView extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this._bgRows = []
-    this._pendingSelection = []
-    this.containerRef = createRef()
-    this.slotRowRef = createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
     }
+    this.containerRef = createRef()
+    this.slotRowRef = createRef()
+
+    this._bgRows = []
+    this._pendingSelection = []
   }
 
   UNSAFE_componentWillReceiveProps({ date }) {
@@ -274,7 +274,7 @@ class MonthView extends React.Component {
     this.clearSelection()
 
     if (popup) {
-      let position = getPosition(cell, findDOMNode(this))
+      let position = getPosition(cell, this.containerRef.current)
 
       this.setState({
         overlay: { date, events, position, target },

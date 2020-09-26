@@ -1,5 +1,5 @@
+import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
 import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
@@ -28,7 +28,8 @@ class MonthView extends React.Component {
 
     this._bgRows = []
     this._pendingSelection = []
-    this.slotRowRef = React.createRef()
+    this.containerRef = createRef()
+    this.slotRowRef = createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
@@ -69,7 +70,7 @@ class MonthView extends React.Component {
   }
 
   getContainer = () => {
-    return findDOMNode(this)
+    return this.containerRef.current
   }
 
   render() {
@@ -80,7 +81,10 @@ class MonthView extends React.Component {
     this._weekCount = weeks.length
 
     return (
-      <div className={clsx('rbc-month-view', className)}>
+      <div
+        className={clsx('rbc-month-view', className)}
+        ref={this.containerRef}
+      >
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0])}
         </div>

@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React from 'react'
 import clsx from 'clsx'
 import getHeight from 'dom-helpers/height'
 import qsa from 'dom-helpers/querySelectorAll'
@@ -17,9 +17,6 @@ class DateContentRow extends React.Component {
     super(...args)
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
-    this.containerRef = createRef()
-    this.headingRow = createRef()
-    this.eventRow = createRef()
   }
 
   handleSelectSlot = slot => {
@@ -40,16 +37,22 @@ class DateContentRow extends React.Component {
     onShowMore(events, range[slot - 1], cell, slot, target)
   }
 
+  createHeadingRef = r => {
+    this.headingRow = r
+  }
+
+  createEventRef = r => {
+    this.eventRow = r
+  }
+
   getContainer = () => {
     const { container } = this.props
-    return container ? container() : this.containerRef.current
+    return container ? container() : findDOMNode(this)
   }
 
   getRowLimit() {
-    const eventHeight = getHeight(this.eventRow.current)
-    const headingHeight = this.headingRow
-      ? getHeight(this.headingRow.current)
-      : 0
+    const eventHeight = getHeight(this.eventRow)
+    const headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
     const eventSpace = getHeight(findDOMNode(this)) - headingHeight
 
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
@@ -71,14 +74,14 @@ class DateContentRow extends React.Component {
   renderDummy = () => {
     const { className, range, renderHeader } = this.props
     return (
-      <div className={className} ref={this.containerRef}>
+      <div className={className}>
         <div className="rbc-row-content">
           {renderHeader && (
-            <div className="rbc-row" ref={this.headingRow}>
+            <div className="rbc-row" ref={this.createHeadingRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          <div className="rbc-row" ref={this.eventRow}>
+          <div className="rbc-row" ref={this.createEventRef}>
             <div className="rbc-row-segment">
               <div className="rbc-event">
                 <div className="rbc-event-content">&nbsp;</div>
@@ -138,7 +141,7 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className} ref={this.containerRef}>
+      <div className={className}>
         <BackgroundCells
           date={date}
           getNow={getNow}

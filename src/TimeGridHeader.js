@@ -65,14 +65,13 @@ const TimeGridHeader = ({
             dates.eq(date, today, 'day') && 'rbc-today'
           )}
         >
-          {/* TODO: replace with button with 'as-anchor' type styling */}
           {drilldownView ? (
-            <a
-              href="#"
+            <button
+              className={'btn-as-anchor'}
               onClick={e => handleHeaderClick(date, drilldownView, e)}
             >
               {header}
-            </a>
+            </button>
           ) : (
             <span>{header}</span>
           )}

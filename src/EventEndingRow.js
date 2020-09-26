@@ -34,19 +34,14 @@ const EventEndingRow = props => {
 
     if (!count) return null
 
-    /**
-     * TODO: replace href="#", as this will bork in many browsers now
-     * convert to button with styling as a link
-     */
     return (
-      <a
+      <button
         key={`sm_${slot}`}
-        href="#"
-        className={'rbc-show-more'}
+        className={'btn-as-anchor rbc-show-more'}
         onClick={e => showMore(slot, e)}
       >
         {localizer.messages.showMore(count)}
-      </a>
+      </button>
     )
   }
 

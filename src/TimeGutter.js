@@ -5,6 +5,8 @@ import React, { Component } from 'react'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
+const FallbackWrapper = props => <div {...props} />
+
 export default class TimeGutter extends Component {
   constructor(...args) {
     super(...args)
@@ -37,9 +39,9 @@ export default class TimeGutter extends Component {
 
   render() {
     const { resource, components, getters } = this.props
-
+    const { timeGutterWrapper: Wrapper = FallbackWrapper } = components
     return (
-      <div className="rbc-time-gutter rbc-time-column">
+      <Wrapper className="rbc-time-gutter rbc-time-column">
         {this.slotMetrics.groups.map((grp, idx) => {
           return (
             <TimeSlotGroup
@@ -52,7 +54,7 @@ export default class TimeGutter extends Component {
             />
           )
         })}
-      </div>
+      </Wrapper>
     )
   }
 }

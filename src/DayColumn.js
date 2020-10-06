@@ -407,7 +407,7 @@ DayColumn.propTypes = {
   onSelectSlot: PropTypes.func.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onDoubleClickEvent: PropTypes.func.isRequired,
-  onKeyPressEvent: PropTypes.func.isRequired,
+  onKeyPressEvent: PropTypes.func,
 
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,

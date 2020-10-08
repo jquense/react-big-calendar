@@ -80,7 +80,7 @@ class WeekWrapper extends React.Component {
   }
 
   handleMove = ({ x, y }, node, draggedEvent) => {
-    const { event = draggedEvent } = this.context.draggable.dragAndDropAction
+    const event = this.context.draggable.dragAndDropAction.event || draggedEvent
     const metrics = this.props.slotMetrics
     const { accessors } = this.props
 

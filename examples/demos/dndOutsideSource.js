@@ -23,6 +23,8 @@ class Dnd extends React.Component {
       },
       displayDragItemInCell: true,
     }
+    this.moveEvent = this.moveEvent.bind(this)
+    this.newEvent = this.newEvent.bind(this)
   }
 
   handleDragStart = event => {

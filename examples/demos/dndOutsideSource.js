@@ -23,8 +23,6 @@ class Dnd extends React.Component {
       },
       displayDragItemInCell: true,
     }
-    this.moveEvent = this.moveEvent.bind(this)
-    this.newEvent = this.newEvent.bind(this)
   }
 
   handleDragStart = event => {
@@ -69,7 +67,7 @@ class Dnd extends React.Component {
     this.newEvent(event)
   }
 
-  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
+  moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
     const { events } = this.state
 
     const idx = events.indexOf(event)
@@ -109,7 +107,7 @@ class Dnd extends React.Component {
     //alert(`${event.title} was resized to ${start}-${end}`)
   }
 
-  newEvent(event) {
+  newEvent = event => {
     let idList = this.state.events.map(a => a.id)
     let newId = Math.max(...idList) + 1
     let hour = {

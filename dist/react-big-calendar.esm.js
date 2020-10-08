@@ -4304,15 +4304,15 @@ function Resources(resources, accessors) {
         var id = accessors.resource(event) || NONE
 
         if (Array.isArray(id)) {
-          var resourceEvents = eventsByResource.get(item) || []
-          resourceEvents.push(event)
-          eventsByResource.set(item, resourceEvents)
+          id.forEach(function(item) {
+            var resourceEvents = eventsByResource.get(item) || []
+            resourceEvents.push(event)
+            eventsByResource.set(item, resourceEvents)
+          })
         } else {
-          var _resourceEvents = eventsByResource.get(id) || []
-
-          _resourceEvents.push(event)
-
-          eventsByResource.set(id, _resourceEvents)
+          var resourceEvents = eventsByResource.get(id) || []
+          resourceEvents.push(event)
+          eventsByResource.set(id, resourceEvents)
         }
       })
       return eventsByResource

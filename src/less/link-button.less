@@ -1,0 +1,26 @@
+@import './variables.less';
+
+/* all of these !important s are to override bootstrap styling when necessary */
+.btn-as-anchor {
+  color: inherit !important;
+  box-shadow: none;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  outline: none;
+  font: inherit;
+  vertical-align: inherit;
+  &.rbc-show-more {
+    color: darken(@event-bg, 10%) !important;
+    &:focus,
+    &:active,
+    &:hover {
+      color: darken(@event-bg, 10%) !important;
+    }
+    &:hover {
+      filter: brightness(50%);
+      text-decoration: underline;
+    }
+  }
+}

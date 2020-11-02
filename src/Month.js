@@ -1,6 +1,5 @@
+import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
-import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
 import * as dates from './utils/dates'
@@ -26,13 +25,15 @@ class MonthView extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this._bgRows = []
-    this._pendingSelection = []
-    this.slotRowRef = React.createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
     }
+    this.containerRef = createRef()
+    this.slotRowRef = createRef()
+
+    this._bgRows = []
+    this._pendingSelection = []
   }
 
   UNSAFE_componentWillReceiveProps({ date }) {
@@ -69,7 +70,7 @@ class MonthView extends React.Component {
   }
 
   getContainer = () => {
-    return findDOMNode(this)
+    return this.containerRef.current
   }
 
   render() {
@@ -80,7 +81,10 @@ class MonthView extends React.Component {
     this._weekCount = weeks.length
 
     return (
-      <div className={clsx('rbc-month-view', className)}>
+      <div
+        className={clsx('rbc-month-view', className)}
+        ref={this.containerRef}
+      >
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0])}
         </div>
@@ -270,7 +274,7 @@ class MonthView extends React.Component {
     this.clearSelection()
 
     if (popup) {
-      let position = getPosition(cell, findDOMNode(this))
+      let position = getPosition(cell, this.containerRef.current)
 
       this.setState({
         overlay: { date, events, position, target },

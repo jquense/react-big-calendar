@@ -7,9 +7,9 @@ const DateHeader = ({ label, drilldownView, onDrillDown }) => {
   }
 
   return (
-    <a href="#" onClick={onDrillDown}>
+    <button className={'btn-as-anchor'} onClick={onDrillDown}>
       {label}
-    </a>
+    </button>
   )
 }
 

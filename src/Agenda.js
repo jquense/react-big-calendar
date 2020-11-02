@@ -38,9 +38,9 @@ function Agenda({
     )
 
     return events.map((event, idx) => {
-      let title = accessors.title(event)
-      let end = accessors.end(event)
-      let start = accessors.start(event)
+      const title = accessors.title(event)
+      const end = accessors.end(event)
+      const start = accessors.start(event)
 
       const userProps = getters.eventProp(
         event,
@@ -49,8 +49,8 @@ function Agenda({
         isSelected(event, selected)
       )
 
-      let dateLabel = idx === 0 && localizer.format(day, 'agendaDateFormat')
-      let first =
+      const dateLabel = idx === 0 && localizer.format(day, 'agendaDateFormat')
+      const first =
         idx === 0 ? (
           <td rowSpan={events.length} className="rbc-agenda-date-cell">
             {AgendaDate ? (
@@ -80,12 +80,12 @@ function Agenda({
   }
 
   const timeRangeLabel = (day, event) => {
-    let labelClass = '',
-      TimeComponent = components.time,
-      label = localizer.messages.allDay
+    let labelClass = ''
+    const TimeComponent = components.time
+    let label = localizer.messages.allDay
 
-    let end = accessors.end(event)
-    let start = accessors.start(event)
+    const end = accessors.end(event)
+    const start = accessors.start(event)
 
     if (!accessors.allDay(event)) {
       if (dates.eq(start, end)) {
@@ -116,12 +116,12 @@ function Agenda({
   const _adjustHeader = () => {
     if (!tbodyRef.current) return
 
-    let header = headerRef.current
-    let firstRow = tbodyRef.current.firstChild
+    const header = headerRef.current
+    const firstRow = tbodyRef.current.firstChild
 
     if (!firstRow) return
 
-    let isOverflowing =
+    const isOverflowing =
       contentRef.current.scrollHeight > contentRef.current.clientHeight
 
     let _widths = []
@@ -142,10 +142,10 @@ function Agenda({
     }
   }
 
-  let { messages } = localizer
-  let end = dates.add(date, length, 'day')
+  const { messages } = localizer
+  const end = dates.add(date, length, 'day')
 
-  let range = dates.range(date, end, 'day')
+  const range = dates.range(date, end, 'day')
 
   events = events.filter(event => inRange(event, date, end, accessors))
 
@@ -153,7 +153,7 @@ function Agenda({
 
   return (
     <div className="rbc-agenda-view">
-      {events.length !== 0 ? (
+      {events.length ? (
         <React.Fragment>
           <table ref={headerRef} className="rbc-agenda-table">
             <thead>
@@ -201,7 +201,7 @@ Agenda.defaultProps = {
 }
 
 Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
-  let end = dates.add(start, length, 'day')
+  const end = dates.add(start, length, 'day')
   return { start, end }
 }
 
@@ -219,7 +219,7 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 }
 
 Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
-  let end = dates.add(start, length, 'day')
+  const end = dates.add(start, length, 'day')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }
 

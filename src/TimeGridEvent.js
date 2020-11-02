@@ -23,14 +23,14 @@ function TimeGridEvent(props) {
     onKeyPress,
     components: { event: Event, eventWrapper: EventWrapper },
   } = props
-  let title = accessors.title(event)
-  let tooltip = accessors.tooltip(event)
-  let end = accessors.end(event)
-  let start = accessors.start(event)
+  const title = accessors.title(event)
+  const tooltip = accessors.tooltip(event)
+  const end = accessors.end(event)
+  const start = accessors.start(event)
 
-  let userProps = getters.eventProp(event, start, end, selected)
+  const userProps = getters.eventProp(event, start, end, selected)
 
-  let { height, top, width, xOffset } = style
+  const { height, top, width, xOffset } = style
   const inner = [
     <div key="1" className="rbc-event-label">
       {label}

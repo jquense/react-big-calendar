@@ -2,81 +2,85 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
 import * as dates from './utils/dates'
+import noop from './utils/noop'
 
-class EventCell extends React.Component {
-  render() {
-    let {
-      style,
-      className,
-      event,
-      selected,
-      isAllDay,
-      onSelect,
-      onDoubleClick,
-      onKeyPress,
-      localizer,
-      continuesPrior,
-      continuesAfter,
-      accessors,
-      getters,
-      children,
-      components: { event: Event, eventWrapper: EventWrapper },
-      slotStart,
-      slotEnd,
-      ...props
-    } = this.props
+const EventCell = props => {
+  const {
+    style,
+    className,
+    event,
+    selected,
+    isAllDay,
+    // default to noop's so we don't have to check if they're defined
+    onSelect = noop,
+    onDoubleClick = noop,
+    onKeyPress = noop,
+    localizer,
+    continuesPrior,
+    continuesAfter,
+    accessors,
+    getters,
+    children,
+    components: { event: Event, eventWrapper: EventWrapper },
+    slotStart,
+    slotEnd,
+    ...otherProps
+  } = props
+  const title = accessors.title(event)
+  const tooltip = accessors.tooltip(event)
+  const end = accessors.end(event)
+  const start = accessors.start(event)
+  const allDay = accessors.allDay(event)
 
-    let title = accessors.title(event)
-    let tooltip = accessors.tooltip(event)
-    let end = accessors.end(event)
-    let start = accessors.start(event)
-    let allDay = accessors.allDay(event)
+  const showAsAllDay =
+    isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
 
-    let showAsAllDay =
-      isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
+  const userProps = getters.eventProp(event, start, end, selected)
 
-    let userProps = getters.eventProp(event, start, end, selected)
+  const content = (
+    <div className="rbc-event-content" title={tooltip || undefined}>
+      {Event ? (
+        <Event
+          event={event}
+          continuesPrior={continuesPrior}
+          continuesAfter={continuesAfter}
+          title={title}
+          isAllDay={allDay}
+          localizer={localizer}
+          slotStart={slotStart}
+          slotEnd={slotEnd}
+        />
+      ) : (
+        title
+      )}
+    </div>
+  )
 
-    const content = (
-      <div className="rbc-event-content" title={tooltip || undefined}>
-        {Event ? (
-          <Event
-            event={event}
-            continuesPrior={continuesPrior}
-            continuesAfter={continuesAfter}
-            title={title}
-            isAllDay={allDay}
-            localizer={localizer}
-            slotStart={slotStart}
-            slotEnd={slotEnd}
-          />
-        ) : (
-          title
-        )}
+  // props defaulted to noop, so don't have to see if passed
+  const handleClick = e => onSelect(event, e)
+  const handleDoubleClick = e => onDoubleClick(event, e)
+  const handleKeyPress = e => onKeyPress(event, e)
+
+  return (
+    <EventWrapper {...props} type="date">
+      <div
+        {...otherProps}
+        tabIndex={0}
+        style={{ ...userProps.style, ...style }}
+        className={clsx('rbc-event', className, userProps.className, {
+          'rbc-selected': selected,
+          'rbc-event-allday': showAsAllDay,
+          'rbc-event-continues-prior': continuesPrior,
+          'rbc-event-continues-after': continuesAfter,
+        })}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+        onKeyPress={handleKeyPress}
+      >
+        {typeof children === 'function' ? children(content) : content}
       </div>
-    )
-
-    return (
-      <EventWrapper {...this.props} type="date">
-        <div
-          {...props}
-          tabIndex={0}
-          style={{ ...userProps.style, ...style }}
-          className={clsx('rbc-event', className, userProps.className, {
-            'rbc-selected': selected,
-            'rbc-event-allday': showAsAllDay,
-            'rbc-event-continues-prior': continuesPrior,
-            'rbc-event-continues-after': continuesAfter,
-          })}
-          onClick={e => onSelect && onSelect(event, e)}
-          onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
-          onKeyPress={e => onKeyPress && onKeyPress(event, e)}
-        >
-          {typeof children === 'function' ? children(content) : content}
-        </div>
-      </EventWrapper>
-    )
-  }
+    </EventWrapper>
+  )
 }
 
 EventCell.propTypes = {

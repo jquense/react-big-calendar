@@ -5,22 +5,15 @@ import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
 
-class Day extends React.Component {
-  render() {
-    let { date, ...props } = this.props
-    let range = Day.range(date)
-
-    return <TimeGrid {...props} range={range} eventOffset={10} />
-  }
-}
+const Day = ({ date, ...props }) => (
+  <TimeGrid {...props} range={Day.range(date)} eventOffset={10} />
+)
 
 Day.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
 }
 
-Day.range = date => {
-  return [dates.startOf(date, 'day')]
-}
+Day.range = date => [dates.startOf(date, 'day')]
 
 Day.navigate = (date, action) => {
   switch (action) {

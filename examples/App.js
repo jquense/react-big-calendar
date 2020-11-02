@@ -10,13 +10,14 @@ import globalize from 'globalize'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 
-import 'react-big-calendar/lib/less/styles.less'
-import './styles.less'
-import './prism.less'
+import 'react-big-calendar/lib/sass/styles.scss'
+import './styles.scss'
+import './prism.scss'
 import Card from './Card'
 import ExampleControlSlot from './ExampleControlSlot'
 import Basic from './demos/basic'
 import Selectable from './demos/selectable'
+import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
@@ -25,6 +26,7 @@ import Resource from './demos/resource'
 import DndResource from './demos/dndresource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
+import DndOutsideSource from './demos/dndOutsideSource'
 import Dropdown from 'react-bootstrap/lib/Dropdown'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
@@ -35,30 +37,39 @@ let demoRoot =
 
 const EXAMPLES = {
   basic: 'Basic Calendar',
-  selectable: 'Create events',
-  cultures: 'Localization',
-  popup: 'Show more via a popup',
-  timeslots: 'Custom Time Grids',
-  rendering: 'Customized Component Rendering',
-  customView: 'Custom Calendar Views',
-  resource: 'Resource Scheduling',
-  dnd: 'Addon: Drag and drop',
+  // selectable: 'Create events',
+  // createEventWithNoOverlap: 'Create events with no-overlap algorithm',
+  // cultures: 'Localization',
+  // popup: 'Show more via a popup',
+  // timeslots: 'Custom Time Grids',
+  // rendering: 'Customized Component Rendering',
+  // customView: 'Custom Calendar Views',
+  // resource: 'Resource Scheduling',
+  // dnd: 'Addon: Drag and drop',
+  // dndresource: 'Resource Drag and drop',
+  // dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
 }
+
+const DEFAULT_EXAMPLE = 'basic'
 
 class Example extends React.Component {
   constructor(...args) {
     super(...args)
 
-    const hash = (window.location.hash || '').slice(1)
-
     this.state = {
-      selected: EXAMPLES[hash] ? hash : 'basic',
+      selected: DEFAULT_EXAMPLE,
     }
   }
 
   select = selected => {
     this.setState({ selected })
   }
+
+  componentDidMount() {
+    const hash = (window.location.hash || '').slice(1)
+    this.select(hash || DEFAULT_EXAMPLE)
+  }
+
   render() {
     let selected = this.state.selected
     let Current = {
@@ -72,6 +83,8 @@ class Example extends React.Component {
       timeslots: Timeslots,
       dnd: Dnd,
       dndresource: DndResource,
+      dndOutsideSource: DndOutsideSource,
+      createEventWithNoOverlap: CreateEventWithNoOverlap,
     }[selected]
 
     return (
@@ -79,25 +92,10 @@ class Example extends React.Component {
         <div className="jumbotron">
           <div className="container">
             <h1>
-              Big Calendar <i className="fa fa-calendar" />
+              Cisco Calendar <i className="fa fa-calendar" />
             </h1>
-            <p>such enterprise, very business.</p>
-            <p>
-              <a href="#intro">
-                <i className="fa fa-play" /> Getting started
-              </a>
-              {' | '}
-              <a href="#api">
-                <i className="fa fa-book" /> API documentation
-              </a>
-              {' | '}
-              <a
-                target="_blank"
-                href="https://github.com/intljusticemission/react-big-calendar"
-              >
-                <i className="fa fa-github" /> github
-              </a>
-            </p>
+
+
           </div>
         </div>
         <div className="examples">
@@ -107,14 +105,7 @@ class Example extends React.Component {
               justify="space-between"
               style={{ marginBottom: 15 }}
             >
-              <div className="examples--view-source">
-                <a target="_blank" href={demoRoot + '/' + selected + '.js'}>
-                  <strong>
-                    <i className="fa fa-code" />
-                    {' View example source code'}
-                  </strong>
-                </a>
-              </div>
+
               <Dropdown
                 pullRight
                 id="examples-dropdown"
@@ -126,6 +117,7 @@ class Example extends React.Component {
                 <Dropdown.Menu>
                   {Object.entries(EXAMPLES).map(([key, title]) => (
                     <MenuItem
+                      active={this.state.selected === key}
                       key={key}
                       href={`#${key}`}
                       onClick={() => this.select(key)}
@@ -141,12 +133,6 @@ class Example extends React.Component {
           <div className="example">
             <Current localizer={globalizeLocalizer} />
           </div>
-        </div>
-        <div className="docs">
-          <div className="contain section">
-            <Intro />
-          </div>
-          <Api className="contain section" />
         </div>
       </div>
     )

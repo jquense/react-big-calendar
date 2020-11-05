@@ -25,6 +25,7 @@ class EventCell extends React.Component {
       slotEnd,
       ...props
     } = this.props
+    delete props.resizable
 
     let title = accessors.title(event)
     let tooltip = accessors.tooltip(event)
@@ -84,6 +85,7 @@ EventCell.propTypes = {
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.instanceOf(Date),
 
+  resizable: PropTypes.bool,
   selected: PropTypes.bool,
   isAllDay: PropTypes.bool,
   continuesPrior: PropTypes.bool,

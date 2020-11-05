@@ -165,6 +165,7 @@ export default class TimeGrid extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      resizable,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -225,6 +226,7 @@ export default class TimeGrid extends Component {
           onKeyPressEvent={this.props.onKeyPressEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
+          resizable={resizable}
         />
         <div
           ref={this.contentRef}
@@ -322,6 +324,7 @@ TimeGrid.propTypes = {
   showMultiDayTimes: PropTypes.bool,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   width: PropTypes.number,
 
   accessors: PropTypes.object.isRequired,

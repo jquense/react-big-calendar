@@ -117,6 +117,7 @@ class DateContentRow extends React.Component {
       resourceId,
       longPressThreshold,
       isAllDay,
+      resizable,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -137,6 +138,7 @@ class DateContentRow extends React.Component {
       onKeyPress,
       resourceId,
       slotMetrics: metrics,
+      resizable,
     }
 
     return (
@@ -187,6 +189,7 @@ DateContentRow.propTypes = {
   range: PropTypes.array.isRequired,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   resourceId: PropTypes.any,
   renderForMeasure: PropTypes.bool,
   renderHeader: PropTypes.func,

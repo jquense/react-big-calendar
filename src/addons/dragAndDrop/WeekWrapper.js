@@ -218,8 +218,13 @@ class WeekWrapper extends React.Component {
     selector.on('select', point => {
       const bounds = getBoundsForNode(node)
 
-      if (!this.state.segment || !pointInBox(bounds, point)) return
-      this.handleInteractionEnd()
+      if (!this.state.segment) return
+
+      if (!pointInBox(bounds, point)) {
+        this.reset()
+      } else {
+        this.handleInteractionEnd()
+      }
     })
 
     selector.on('dropFromOutside', point => {

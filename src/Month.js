@@ -136,6 +136,7 @@ class MonthView extends React.Component {
         onSelectSlot={this.handleSelectSlot}
         longPressThreshold={longPressThreshold}
         rtl={this.props.rtl}
+        resizable={this.props.resizable}
       />
     )
   }
@@ -323,6 +324,7 @@ MonthView.propTypes = {
 
   scrollToTime: PropTypes.instanceOf(Date),
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   width: PropTypes.number,
 
   accessors: PropTypes.object.isRequired,

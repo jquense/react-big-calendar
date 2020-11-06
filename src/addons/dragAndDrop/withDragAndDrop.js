@@ -18,7 +18,8 @@ import { mergeComponents } from './common'
  *    export default withDragAndDrop(Calendar)
  * ```
  *
- * Set `resizable` to true in your calendar if you want events to be resizable.
+ * Set `resizable` to false in your calendar if you don't want events to be resizable.
+ * `resizable` is set to true by default.
  *
  * The HOC adds `onEventDrop`, `onEventResize`, and `onDragStart` callback properties if the events are
  * moved or resized. These callbacks are called with these signatures:
@@ -89,6 +90,7 @@ export default function withDragAndDrop(Calendar) {
       components: {},
       draggableAccessor: null,
       resizableAccessor: null,
+      resizable: true,
       step: 30,
     }
 

@@ -38,6 +38,7 @@ export default {
       localizer,
       slotMetrics,
       components,
+      resizable,
     } = props
 
     let continuesPrior = slotMetrics.continuesPrior(event)
@@ -58,6 +59,7 @@ export default {
         slotStart={slotMetrics.first}
         slotEnd={slotMetrics.last}
         selected={isSelected(event, selected)}
+        resizable={resizable}
       />
     )
   },

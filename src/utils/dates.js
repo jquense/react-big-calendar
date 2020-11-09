@@ -63,7 +63,7 @@ export function visibleDays(date, localizer) {
 export function ceil(date, unit) {
   let floor = dates.startOf(date, unit)
 
-  return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
+  return dates.add(floor, 1, unit)
 }
 
 export function range(start, end, unit = 'day') {

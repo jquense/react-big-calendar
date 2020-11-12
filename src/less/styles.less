@@ -81,6 +81,16 @@
   z-index: 4;
 }
 
+.rbc-row-content-scrollable {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .rbc-row-content-scroll-container {
+    overflow-y: scroll;
+  }
+}
+
 .rbc-today {
   background-color: @today-highlight-bg;
 }

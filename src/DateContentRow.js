@@ -71,10 +71,15 @@ class DateContentRow extends React.Component {
   }
 
   renderDummy = () => {
-    let { className, range, renderHeader } = this.props
+    let { className, range, renderHeader, showAllEvents } = this.props
     return (
       <div className={className}>
-        <div className="rbc-row-content">
+        <div
+          className={clsx(
+            'rbc-row-content',
+            showAllEvents && 'rbc-row-content-scrollable'
+          )}
+        >
           {renderHeader && (
             <div className="rbc-row" ref={this.createHeadingRef}>
               {range.map(this.renderHeadingCell)}
@@ -118,6 +123,7 @@ class DateContentRow extends React.Component {
       longPressThreshold,
       isAllDay,
       resizable,
+      showAllEvents,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -159,24 +165,35 @@ class DateContentRow extends React.Component {
           resourceId={resourceId}
         />
 
-        <div className="rbc-row-content">
+        <div
+          className={clsx(
+            'rbc-row-content',
+            showAllEvents && 'rbc-row-content-scrollable'
+          )}
+        >
           {renderHeader && (
             <div className="rbc-row " ref={this.createHeadingRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
-            {levels.map((segs, idx) => (
-              <EventRow key={idx} segments={segs} {...eventRowProps} />
-            ))}
-            {!!extra.length && (
-              <EventEndingRow
-                segments={extra}
-                onShowMore={this.handleShowMore}
-                {...eventRowProps}
-              />
+          <div
+            className={clsx(
+              showAllEvents && 'rbc-row-content-scroll-container'
             )}
-          </WeekWrapper>
+          >
+            <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
+              {levels.map((segs, idx) => (
+                <EventRow key={idx} segments={segs} {...eventRowProps} />
+              ))}
+              {!!extra.length && (
+                <EventEndingRow
+                  segments={extra}
+                  onShowMore={this.handleShowMore}
+                  {...eventRowProps}
+                />
+              )}
+            </WeekWrapper>
+          </div>
         </div>
       </div>
     )
@@ -200,6 +217,7 @@ DateContentRow.propTypes = {
   longPressThreshold: PropTypes.number,
 
   onShowMore: PropTypes.func,
+  showAllEvents: PropTypes.bool,
   onSelectSlot: PropTypes.func,
   onSelect: PropTypes.func,
   onSelectEnd: PropTypes.func,

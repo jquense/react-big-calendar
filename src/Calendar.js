@@ -342,6 +342,14 @@ class Calendar extends React.Component {
     onShowMore: PropTypes.func,
 
     /**
+     * Displays all events on the month view instead of
+     * having some hidden behind +{count} more. This will
+     * cause the rows in the month view to be scrollable if
+     * the number of events exceed the height of the row.
+     */
+    showAllEvents: PropTypes.bool,
+
+    /**
      * The selected event, if any.
      */
     selected: PropTypes.object,

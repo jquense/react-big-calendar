@@ -102,6 +102,7 @@ class MonthView extends React.Component {
       longPressThreshold,
       accessors,
       getters,
+      showAllEvents,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -120,7 +121,7 @@ class MonthView extends React.Component {
         date={date}
         range={week}
         events={events}
-        maxRows={rowLimit}
+        maxRows={showAllEvents ? Infinity : rowLimit}
         selected={selected}
         selectable={selectable}
         components={components}
@@ -137,6 +138,7 @@ class MonthView extends React.Component {
         longPressThreshold={longPressThreshold}
         rtl={this.props.rtl}
         resizable={this.props.resizable}
+        showAllEvents={showAllEvents}
       />
     )
   }
@@ -342,6 +344,7 @@ MonthView.propTypes = {
   onDoubleClickEvent: PropTypes.func,
   onKeyPressEvent: PropTypes.func,
   onShowMore: PropTypes.func,
+  showAllEvents: PropTypes.bool,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 

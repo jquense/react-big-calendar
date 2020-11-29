@@ -8,6 +8,7 @@ import { eventSegments } from '../../utils/eventLevels'
 import Selection, { getBoundsForNode } from '../../Selection'
 import EventRow from '../../EventRow'
 import { dragAccessors } from './common'
+import { DnDContext } from './DnDContext'
 
 const propTypes = {}
 
@@ -32,16 +33,7 @@ class WeekWrapper extends React.Component {
     resourceId: PropTypes.any,
   }
 
-  static contextTypes = {
-    draggable: PropTypes.shape({
-      onStart: PropTypes.func,
-      onEnd: PropTypes.func,
-      dragAndDropAction: PropTypes.object,
-      onDropFromOutside: PropTypes.func,
-      onBeginAction: PropTypes.func,
-      dragFromOutsideItem: PropTypes.func,
-    }),
-  }
+  static contextType = DnDContext
 
   constructor(...args) {
     super(...args)

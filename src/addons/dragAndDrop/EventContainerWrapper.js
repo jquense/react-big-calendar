@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import * as dates from '../../utils/dates'
 import { findDOMNode } from 'react-dom'
+import { DnDContext } from './DnDContext'
 
 import Selection, {
   getBoundsForNode,
@@ -27,16 +28,7 @@ class EventContainerWrapper extends React.Component {
     resource: PropTypes.any,
   }
 
-  static contextTypes = {
-    draggable: PropTypes.shape({
-      onStart: PropTypes.func,
-      onEnd: PropTypes.func,
-      onDropFromOutside: PropTypes.func,
-      onBeginAction: PropTypes.func,
-      dragAndDropAction: PropTypes.object,
-      dragFromOutsideItem: PropTypes.func,
-    }),
-  }
+  static contextType = DnDContext
 
   constructor(...args) {
     super(...args)

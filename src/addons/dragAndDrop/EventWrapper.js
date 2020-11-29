@@ -1,20 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
-import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
+import { DnDContext } from './DnDContext'
 
 class EventWrapper extends React.Component {
-  static contextTypes = {
-    draggable: PropTypes.shape({
-      onStart: PropTypes.func,
-      onEnd: PropTypes.func,
-      onBeginAction: PropTypes.func,
-      draggableAccessor: accessor,
-      resizableAccessor: accessor,
-      dragAndDropAction: PropTypes.object,
-    }),
-  }
+  static contextType = DnDContext
 
   static propTypes = {
     type: PropTypes.oneOf(['date', 'time']),

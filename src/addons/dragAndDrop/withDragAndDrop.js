@@ -7,6 +7,7 @@ import EventWrapper from './EventWrapper'
 import EventContainerWrapper from './EventContainerWrapper'
 import WeekWrapper from './WeekWrapper'
 import { mergeComponents } from './common'
+import { DnDContext } from './DnDContext'
 
 /**
  * Creates a higher-order component (HOC) supporting drag & drop and optionally resizing
@@ -94,23 +95,6 @@ export default function withDragAndDrop(Calendar) {
       step: 30,
     }
 
-    static contextTypes = {
-      dragDropManager: PropTypes.object,
-    }
-
-    static childContextTypes = {
-      draggable: PropTypes.shape({
-        onStart: PropTypes.func,
-        onEnd: PropTypes.func,
-        onBeginAction: PropTypes.func,
-        onDropFromOutside: PropTypes.func,
-        dragFromOutsideItem: PropTypes.func,
-        draggableAccessor: accessor,
-        resizableAccessor: accessor,
-        dragAndDropAction: PropTypes.object,
-      }),
-    }
-
     constructor(...args) {
       super(...args)
 
@@ -125,7 +109,7 @@ export default function withDragAndDrop(Calendar) {
       this.state = { interacting: false }
     }
 
-    getChildContext() {
+    getDnDContextValue() {
       return {
         draggable: {
           onStart: this.handleInteractionStart,
@@ -197,11 +181,13 @@ export default function withDragAndDrop(Calendar) {
       )
 
       return (
-        <Calendar
-          {...props}
-          elementProps={elementPropsWithDropFromOutside}
-          components={this.components}
-        />
+        <DnDContext.Provider value={this.getDnDContextValue()}>
+          <Calendar
+            {...props}
+            elementProps={elementPropsWithDropFromOutside}
+            components={this.components}
+          />
+        </DnDContext.Provider>
       )
     }
   }

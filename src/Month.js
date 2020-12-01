@@ -73,19 +73,35 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { date, localizer, className } = this.props,
+    let { date, localizer, className, infiniteScroll } = this.props,
       month = dates.visibleDays(date, localizer),
       weeks = chunk(month, 7)
 
+    const scrollableMonth = infiniteScroll
     this._weekCount = weeks.length
 
     return (
-      <div className={clsx('rbc-month-view', className)}>
+      <div
+        className={clsx(
+          'rbc-month-view',
+          scrollableMonth && 'rbc-month-view-infinite'
+        )}
+      >
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0])}
         </div>
-        {weeks.map(this.renderWeek)}
-        {this.props.popup && this.renderOverlay()}
+        <div
+          className={clsx(
+            'rbc-month-rows-container',
+            className,
+            scrollableMonth && 'rbc-month-rows-container-infinite'
+          )}
+          onScroll={this.handleScroll}
+          ref={this.scrollContainer}
+        >
+          {weeks.map(this.renderWeek)}
+          {this.props.popup && this.renderOverlay()}
+        </div>
       </div>
     )
   }
@@ -103,7 +119,12 @@ class MonthView extends React.Component {
       accessors,
       getters,
       showAllEvents,
+      infiniteScroll,
     } = this.props
+
+    const flexibleRowHeight = infiniteScroll
+
+    const renderAllEvents = showAllEvents || flexibleRowHeight
 
     const { needLimitMeasure, rowLimit } = this.state
 
@@ -116,12 +137,15 @@ class MonthView extends React.Component {
         key={weekIdx}
         ref={weekIdx === 0 ? this.slotRowRef : undefined}
         container={this.getContainer}
-        className="rbc-month-row"
+        className={clsx(
+          'rbc-month-row',
+          flexibleRowHeight && 'rbc-month-row-infinite'
+        )}
         getNow={getNow}
         date={date}
         range={week}
         events={events}
-        maxRows={showAllEvents ? Infinity : rowLimit}
+        maxRows={renderAllEvents ? Infinity : rowLimit}
         selected={selected}
         selectable={selectable}
         components={components}
@@ -317,6 +341,7 @@ class MonthView extends React.Component {
 MonthView.propTypes = {
   events: PropTypes.array.isRequired,
   date: PropTypes.instanceOf(Date),
+  infiniteScroll: PropTypes.bool,
 
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),

@@ -79,14 +79,6 @@ class EventWrapper extends React.Component {
 
     let { children } = this.props
 
-    if (event.__isPreview)
-      return React.cloneElement(children, {
-        className: clsx(
-          children.props.className,
-          'rbc-addons-dnd-drag-preview'
-        ),
-      })
-
     const { draggable } = this.context
     const { draggableAccessor, resizableAccessor } = draggable
 
@@ -134,6 +126,12 @@ class EventWrapper extends React.Component {
         onMouseDown: this.handleStartDragging,
         onTouchStart: this.handleStartDragging,
       }
+      const previewProps = {
+        className: clsx(
+          children.props.className,
+          'rbc-addons-dnd-drag-preview'
+        ),
+      }
 
       if (isResizable) {
         // replace original event child with anchor-embellished child
@@ -148,14 +146,19 @@ class EventWrapper extends React.Component {
           EndAnchor = !continuesAfter && this.renderAnchor('Down')
         }
 
-        newProps.children = (
+        const newChildren = (
           <div className="rbc-addons-dnd-resizable">
             {StartAnchor}
             {children.props.children}
             {EndAnchor}
           </div>
         )
+
+        newProps.children = newChildren
+        previewProps.children = newChildren
       }
+
+      if (event.__isPreview) return React.cloneElement(children, previewProps)
 
       if (
         draggable.dragAndDropAction.interacting && // if an event is being dragged right now

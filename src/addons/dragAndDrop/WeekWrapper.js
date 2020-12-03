@@ -134,8 +134,6 @@ class WeekWrapper extends React.Component {
     const { accessors, slotMetrics: metrics } = this.props
 
     let { start, end } = eventTimes(event, accessors)
-    let originalStart = start
-    let originalEnd = end
 
     let rowBox = getBoundsForNode(node)
     let cursorInRow = pointInBox(rowBox, point)
@@ -157,7 +155,7 @@ class WeekWrapper extends React.Component {
       }
       end = dates.merge(end, accessors.end(event))
       if (dates.lt(end, start)) {
-        end = originalEnd
+        end = start
       }
     } else if (direction === 'LEFT') {
       // inbetween Row
@@ -178,7 +176,7 @@ class WeekWrapper extends React.Component {
       }
       start = dates.merge(start, accessors.start(event))
       if (dates.gt(start, end)) {
-        start = originalStart
+        start = end
       }
     }
 

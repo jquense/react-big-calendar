@@ -166,6 +166,7 @@ export default class TimeGrid extends Component {
       showMultiDayTimes,
       longPressThreshold,
       resizable,
+      customSorting,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -195,7 +196,7 @@ export default class TimeGrid extends Component {
       }
     })
 
-    allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
+    allDayEvents.sort((a, b) => sortEvents(a, b, accessors, customSorting))
 
     return (
       <div
@@ -347,6 +348,11 @@ TimeGrid.propTypes = {
   getDrilldownView: PropTypes.func.isRequired,
 
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
+
+  customSorting: PropTypes.shape({
+    sortPriority: PropTypes.arrayOf(PropTypes.string),
+    customComparators: PropTypes.object,
+  }),
 }
 
 TimeGrid.defaultProps = {

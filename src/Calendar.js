@@ -776,6 +776,20 @@ class Calendar extends React.Component {
      * or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
      */
     dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
+
+    /**
+     * Custom sorting options that can overwrite the default * algorithm for ordering events within a date cell.
+     * `sortPriority` defines a list of string keys that
+     * controls the sort order.
+     * `customComparators` define an object whose keys should
+     * match any non-default sorting functions. (By default,
+     * only `startDay', 'duration', 'allDay', and
+     * 'startTime' functions are provided).
+     */
+    customSorting: PropTypes.shape({
+      sortPriority: PropTypes.arrayOf(PropTypes.string),
+      customComparators: PropTypes.object,
+    }),
   }
 
   static defaultProps = {

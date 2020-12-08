@@ -120,6 +120,7 @@ class MonthView extends React.Component {
       showAllEvents,
       infiniteScroll,
       expandRow,
+      customSorting,
     } = this.props
 
     const flexibleRowHeight = infiniteScroll || expandRow
@@ -130,7 +131,7 @@ class MonthView extends React.Component {
 
     events = eventsForWeek(events, week[0], week[week.length - 1], accessors)
 
-    events.sort((a, b) => sortEvents(a, b, accessors))
+    events.sort((a, b) => sortEvents(a, b, accessors, customSorting))
 
     const rowContainer = (
       <DateContentRow
@@ -388,6 +389,11 @@ MonthView.propTypes = {
       y: PropTypes.number,
     }),
   ]),
+
+  customSorting: PropTypes.shape({
+    sortPriority: PropTypes.arrayOf(PropTypes.string),
+    customComparators: PropTypes.object,
+  }),
 }
 
 MonthView.range = (date, { localizer }) => {

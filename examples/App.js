@@ -20,6 +20,7 @@ import Selectable from './demos/selectable'
 import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
 import Popup from './demos/popup'
+import ExpandRow from './demos/expandRow'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
 import Resource from './demos/resource'
@@ -48,6 +49,7 @@ const EXAMPLES = {
   dnd: 'Addon: Drag and drop',
   dndresource: 'Resource Drag and drop',
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
+  expandRow: 'Show more via expanding the row',
 }
 
 const DEFAULT_EXAMPLE = 'basic'
@@ -77,6 +79,7 @@ class Example extends React.Component {
       selectable: Selectable,
       cultures: Cultures,
       popup: Popup,
+      expandRow: ExpandRow,
       rendering: Rendering,
       customView: CustomView,
       resource: Resource,

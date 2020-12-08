@@ -439,6 +439,11 @@ class Calendar extends React.Component {
     popup: PropTypes.bool,
 
     /**
+     * Show all events by expanding the week when you click on the "Show All" link.
+     */
+    expandRow: PropTypes.bool,
+
+    /**
      * Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
      *
      * ```jsx
@@ -776,6 +781,7 @@ class Calendar extends React.Component {
   static defaultProps = {
     elementProps: {},
     popup: false,
+    expandRow: false,
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],

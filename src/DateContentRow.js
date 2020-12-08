@@ -9,6 +9,8 @@ import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
+import NoopWrapper from './NoopWrapper'
+import ScrollableWeekWrapper from './ScrollableWeekWrapper'
 import * as DateSlotMetrics from './utils/DateSlotMetrics'
 
 class DateContentRow extends React.Component {
@@ -131,6 +133,9 @@ class DateContentRow extends React.Component {
     let metrics = this.slotMetrics(this.props)
     let { levels, extra } = metrics
 
+    let ScrollableWeekComponent = showAllEvents
+      ? ScrollableWeekWrapper
+      : NoopWrapper
     let WeekWrapper = components.weekWrapper
 
     const eventRowProps = {
@@ -176,11 +181,7 @@ class DateContentRow extends React.Component {
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          <div
-            className={clsx(
-              showAllEvents && 'rbc-row-content-scroll-container'
-            )}
-          >
+          <ScrollableWeekComponent>
             <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
               {levels.map((segs, idx) => (
                 <EventRow key={idx} segments={segs} {...eventRowProps} />
@@ -193,7 +194,7 @@ class DateContentRow extends React.Component {
                 />
               )}
             </WeekWrapper>
-          </div>
+          </ScrollableWeekComponent>
         </div>
       </div>
     )

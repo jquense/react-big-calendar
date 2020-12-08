@@ -19,3 +19,7 @@ export function isFirstFocusedRender(component) {
     (component.state.focused && (component._firstFocus = true))
   )
 }
+
+export function isFunction(a) {
+  return !!(a && a.constructor && a.call && a.apply)
+}

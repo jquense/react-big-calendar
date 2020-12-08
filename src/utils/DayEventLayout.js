@@ -2,14 +2,11 @@
 
 import overlap from './layout-algorithms/overlap'
 import noOverlap from './layout-algorithms/no-overlap'
+import { isFunction } from './helpers'
 
 const DefaultAlgorithms = {
   overlap: overlap,
   'no-overlap': noOverlap,
-}
-
-function isFunction(a) {
-  return !!(a && a.constructor && a.call && a.apply)
 }
 
 //

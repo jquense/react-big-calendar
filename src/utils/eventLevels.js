@@ -1,5 +1,6 @@
 import findIndex from 'lodash/findIndex'
 import * as dates from './dates'
+import { isFunction } from './helpers'
 
 export function endOfRange(dateRange, unit = 'day') {
   return {
@@ -74,7 +75,12 @@ export function segsOverlap(seg, otherSegs) {
   )
 }
 
-export function sortEvents(evtA, evtB, accessors) {
+export function sortEvents(evtA, evtB, accessors, customSorting = {}) {
+  const {
+    sortPriority = ['startDay', 'duration', 'allDay', 'startTime'],
+    customComparators = {},
+  } = customSorting
+
   let startSort =
     +dates.startOf(accessors.start(evtA), 'day') -
     +dates.startOf(accessors.start(evtB), 'day')
@@ -90,11 +96,27 @@ export function sortEvents(evtA, evtB, accessors) {
     dates.ceil(accessors.end(evtB), 'day'),
     'day'
   )
+  const sortComparisons = {
+    startDay: startSort,
+    duration: Math.max(durB, 1) - Math.max(durA, 1),
+    allDay: !!accessors.allDay(evtB) - !!accessors.allDay(evtA),
+    startTime: +accessors.start(evtA) - +accessors.start(evtB),
+  }
 
-  return (
-    startSort || // sort by start Day first
-    Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
-    !!accessors.allDay(evtB) - !!accessors.allDay(evtA) || // then allDay single day events
-    +accessors.start(evtA) - +accessors.start(evtB)
-  ) // then sort by start time
+  for (let i = 0; i < sortPriority.length; i++) {
+    const sortName = sortPriority[i]
+    let sortValue
+    if (customComparators.hasOwnProperty(sortName)) {
+      const sortValueFx = customComparators[sortName]
+      if (isFunction(sortValueFx)) {
+        sortValue = sortValueFx(evtA, evtB)
+      }
+    } else if (sortComparisons.hasOwnProperty(sortName)) {
+      sortValue = sortComparisons[sortName]
+    }
+    if (sortValue) {
+      return sortValue
+    }
+  }
+  return 0
 }

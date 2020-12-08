@@ -7,7 +7,7 @@ let ExpandRow = ({ localizer }) => (
   <React.Fragment>
     <ExampleControlSlot.Entry waitForOutlet>
       <strong>
-        Click on the "Show All" link to expand the row and show all events.
+        Click on the "Show More" link to expand the row and show all events.
       </strong>
     </ExampleControlSlot.Entry>
     <Calendar

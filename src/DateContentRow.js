@@ -71,9 +71,9 @@ class DateContentRow extends React.Component {
   }
 
   renderDummy = () => {
-    let { className, range, renderHeader, showAllEvents } = this.props
+    let { className, range, renderHeader, showAllEvents, style } = this.props
     return (
-      <div className={className}>
+      <div className={className} style={style}>
         <div
           className={clsx(
             'rbc-row-content',
@@ -124,6 +124,7 @@ class DateContentRow extends React.Component {
       isAllDay,
       resizable,
       showAllEvents,
+      style,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -148,7 +149,7 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className}>
+      <div className={className} style={style}>
         <BackgroundCells
           date={date}
           getNow={getNow}

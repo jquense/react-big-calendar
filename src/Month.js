@@ -84,10 +84,13 @@ class MonthView extends React.Component {
 
     const style = scrollableMonth
       ? {
-          'margin-right': `${scrollbarSize() - 1}px`,
-          'border-right': '1px solid #DDD',
+          marginRight: `${scrollbarSize() - 1}px`,
+          borderRight: '1px solid #DDD',
         }
       : {}
+
+    const renderWeekWithHeight = (week, weekIdx) =>
+      this.renderWeek(week, weekIdx, weeks.length)
 
     return (
       <div
@@ -103,17 +106,17 @@ class MonthView extends React.Component {
         <div
           className={clsx(
             'rbc-month-rows-container',
-            scrollableMonth && 'rbc-month-rows-container-infinite'
+            scrollableMonth && 'rbc-month-rows-container-scrollable'
           )}
         >
-          {weeks.map(this.renderWeek)}
+          {weeks.map(renderWeekWithHeight)}
           {this.props.popup && this.renderOverlay()}
         </div>
       </div>
     )
   }
 
-  renderWeek = (week, weekIdx) => {
+  renderWeek = (week, weekIdx, numOfWeeks = 5) => {
     let {
       events,
       components,
@@ -172,11 +175,18 @@ class MonthView extends React.Component {
         rtl={this.props.rtl}
         resizable={this.props.resizable}
         showAllEvents={showAllEvents}
+        style={{
+          minHeight: `${100 / numOfWeeks}%`,
+        }}
       />
     )
 
     if (expandRow) {
-      return <ExpandContentRow key={weekIdx}>{rowContainer}</ExpandContentRow>
+      return (
+        <ExpandContentRow key={date.toString() + weekIdx}>
+          {rowContainer}
+        </ExpandContentRow>
+      )
     } else return rowContainer
   }
 

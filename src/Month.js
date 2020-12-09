@@ -10,6 +10,7 @@ import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
 import getPosition from 'dom-helpers/position'
 import * as animationFrame from 'dom-helpers/animationFrame'
+import scrollbarSize from 'dom-helpers/scrollbarSize'
 
 import Popup from './Popup'
 import Overlay from 'react-overlays/Overlay'
@@ -81,6 +82,13 @@ class MonthView extends React.Component {
     const scrollableMonth = infiniteScroll || expandRow
     this._weekCount = weeks.length
 
+    const style = scrollableMonth
+      ? {
+          'margin-right': `${scrollbarSize() - 1}px`,
+          'border-right': '1px solid #DDD',
+        }
+      : {}
+
     return (
       <div
         className={clsx(
@@ -89,7 +97,7 @@ class MonthView extends React.Component {
           scrollableMonth && 'rbc-month-view-infinite'
         )}
       >
-        <div className="rbc-row rbc-month-header">
+        <div className="rbc-row rbc-month-header" style={style}>
           {this.renderHeaders(weeks[0])}
         </div>
         <div

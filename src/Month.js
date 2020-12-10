@@ -93,13 +93,7 @@ class MonthView extends React.Component {
       this.renderWeek(week, weekIdx, weeks.length)
 
     return (
-      <div
-        className={clsx(
-          'rbc-month-view',
-          className,
-          scrollableMonth && 'rbc-month-view-infinite'
-        )}
-      >
+      <div className={clsx('rbc-month-view', className)}>
         <div className="rbc-row rbc-month-header" style={style}>
           {this.renderHeaders(weeks[0])}
         </div>
@@ -151,7 +145,7 @@ class MonthView extends React.Component {
         container={this.getContainer}
         className={clsx(
           'rbc-month-row',
-          flexibleRowHeight && 'rbc-month-row-infinite'
+          flexibleRowHeight && 'rbc-month-row-full'
         )}
         getNow={getNow}
         date={date}

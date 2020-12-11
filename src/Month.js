@@ -82,12 +82,13 @@ class MonthView extends React.Component {
     const scrollableMonth = infiniteScroll || expandRow
     this._weekCount = weeks.length
 
-    const style = scrollableMonth
-      ? {
-          marginRight: `${scrollbarSize() - 1}px`,
-          borderRight: '1px solid #DDD',
-        }
-      : {}
+    const style =
+      scrollableMonth && scrollbarSize() > 0
+        ? {
+            marginRight: `${scrollbarSize() - 1}px`,
+            borderRight: '1px solid #DDD',
+          }
+        : {}
 
     const renderWeekWithHeight = (week, weekIdx) =>
       this.renderWeek(week, weekIdx, weeks.length)
@@ -137,6 +138,9 @@ class MonthView extends React.Component {
     events = eventsForWeek(events, week[0], week[week.length - 1], accessors)
 
     events.sort((a, b) => sortEvents(a, b, accessors, customSorting))
+    const style = {
+      minHeight: `${100 / numOfWeeks}%`,
+    }
 
     const rowContainer = (
       <DateContentRow
@@ -169,15 +173,13 @@ class MonthView extends React.Component {
         rtl={this.props.rtl}
         resizable={this.props.resizable}
         showAllEvents={showAllEvents}
-        style={{
-          minHeight: `${100 / numOfWeeks}%`,
-        }}
+        style={style}
       />
     )
 
     if (expandRow) {
       return (
-        <ExpandContentRow key={date.getTime() + weekIdx}>
+        <ExpandContentRow key={week[0].getTime() + weekIdx}>
           {rowContainer}
         </ExpandContentRow>
       )

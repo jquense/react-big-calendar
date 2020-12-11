@@ -16571,11 +16571,18 @@
           min = _props.min,
           max = _props.max,
           scrollToDay = _props.scrollToDay
+        var diffMillis
 
         if (scrollToDay) {
           var beginingOfWeek = startOf(scrollToDay, 'week')
           var scrollToWeekDay = diff(scrollToDay, beginingOfWeek, 'day')
-          var diffMillis = diff(max, min) * scrollToWeekDay
+
+          if (scrollToWeekDay === 0) {
+            diffMillis = 1
+          } else {
+            diffMillis = diff(max, min) * scrollToWeekDay
+          }
+
           var totalMillis = diff(max, min) * 7
           this._scrollRatio = diffMillis / totalMillis
         }

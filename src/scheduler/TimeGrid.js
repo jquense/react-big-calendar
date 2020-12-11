@@ -326,13 +326,17 @@ export default class TimeGrid extends Component {
 
   calculateScroll(props = this.props) {
     const { min, max, scrollToDay } = props
+    let diffMillis
 
     if (scrollToDay) {
       const beginingOfWeek = dates.startOf(scrollToDay, 'week')
       const scrollToWeekDay = dates.diff(scrollToDay, beginingOfWeek, 'day')
-      const diffMillis = dates.diff(max, min) * scrollToWeekDay
+      if (scrollToWeekDay === 0) {
+        diffMillis = 1
+      } else {
+        diffMillis = dates.diff(max, min) * scrollToWeekDay
+      }
       const totalMillis = dates.diff(max, min) * 7
-
       this._scrollRatio = diffMillis / totalMillis
     }
   }

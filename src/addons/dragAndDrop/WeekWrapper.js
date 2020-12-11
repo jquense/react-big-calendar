@@ -145,7 +145,14 @@ class WeekWrapper extends React.Component {
           getSlotAtX(rowBox, point.x, false, metrics.slots)
         )
       } else if (
-        dates.inRange(start, metrics.first, metrics.last) ||
+        // use metrics.last - 1 ms to fix bug where resizing
+        // an event that begins at the start of the week
+        // causes the prior week to create a segment
+        dates.inRange(
+          start,
+          metrics.first,
+          dates.add(metrics.last, -1, 'milliseconds')
+        ) ||
         (rowBox.bottom < point.y && +metrics.first > +start)
       ) {
         end = dates.add(metrics.last, 1, 'milliseconds')

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const ExpandContentRow = props => {
-  const [maxRows, setMaxRows] = useState(3)
+  const [maxRows, setMaxRows] = useState(6)
 
   const handleShowMore = () => {
     setMaxRows(Infinity)

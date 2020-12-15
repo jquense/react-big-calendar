@@ -5,6 +5,7 @@ import clsx from 'clsx'
 
 import * as dates from './utils/dates'
 import chunk from 'lodash/chunk'
+import debounce from 'lodash/debounce'
 
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
@@ -31,9 +32,11 @@ class MonthView extends React.Component {
     this._bgRows = []
     this._pendingSelection = []
     this.slotRowRef = React.createRef()
+    this.monthRef = React.createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
+      slideRight: true,
     }
   }
 
@@ -60,15 +63,55 @@ class MonthView extends React.Component {
       }),
       false
     )
+
+    this.monthRef.current.addEventListener(
+      'wheel',
+      (this._horizontalScrollListener = event => {
+        event.stopPropagation()
+
+        if (event.deltaX) {
+          event.preventDefault()
+
+          if (Math.abs(event.deltaX) > 5) {
+            this.handleHorizontalScroll(event.deltaX > 0)
+          }
+        }
+      }),
+      { passive: false }
+    )
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+
+    if (!dates.eq(this.props.date, prevProps.date, 'month')) {
+      this.setState({
+        slideRight: this.props.date > prevProps.date,
+      })
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._resizeListener, false)
+
+    this.monthRef.current.removeEventListener(
+      'wheel',
+      this._horizontalScrollListener,
+      { passive: false }
+    )
   }
+
+  handleHorizontalScroll = debounce(
+    scrollRight => {
+      if (scrollRight) {
+        this.props.onNavigate(navigate.NEXT)
+      } else {
+        this.props.onNavigate(navigate.PREVIOUS)
+      }
+    },
+    100,
+    { leading: true, trailing: false }
+  )
 
   getContainer = () => {
     return findDOMNode(this)
@@ -94,7 +137,7 @@ class MonthView extends React.Component {
       this.renderWeek(week, weekIdx, weeks.length)
 
     return (
-      <div className={clsx('rbc-month-view', className)}>
+      <div className={clsx('rbc-month-view', className)} ref={this.monthRef}>
         <div className="rbc-row rbc-month-header" style={style}>
           {this.renderHeaders(weeks[0])}
         </div>
@@ -133,7 +176,7 @@ class MonthView extends React.Component {
 
     const renderAllEvents = showAllEvents || flexibleRowHeight
 
-    const { needLimitMeasure, rowLimit } = this.state
+    const { needLimitMeasure, rowLimit, slideRight } = this.state
 
     events = eventsForWeek(events, week[0], week[week.length - 1], accessors)
 
@@ -174,6 +217,8 @@ class MonthView extends React.Component {
         resizable={this.props.resizable}
         showAllEvents={showAllEvents}
         style={style}
+        slideRight={slideRight}
+        animation={true}
       />
     )
 

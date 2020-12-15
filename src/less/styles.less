@@ -74,6 +74,25 @@
   }
 }
 
+.slide-appear {
+  opacity: 0;
+  transition-duration: 200ms;
+  transition-property: transform, opacity;
+}
+
+.slide-from-right {
+  transform: translateX(50px);
+}
+
+.slide-from-left {
+  transform: translateX(-50px);
+}
+
+.slide-appear-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 .rbc-row-content {
   position: relative;
   user-select: none;

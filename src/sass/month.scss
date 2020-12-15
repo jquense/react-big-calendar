@@ -37,6 +37,7 @@
   width: 100%;
   user-select: none;
   -webkit-user-select: none;
+  overflow-x: hidden;
 
   height: 100%; // ie-fix
 }

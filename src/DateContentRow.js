@@ -4,6 +4,7 @@ import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
+import { CSSTransition } from 'react-transition-group'
 
 import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
@@ -125,6 +126,8 @@ class DateContentRow extends React.Component {
       resizable,
       showAllEvents,
       style,
+      animation,
+      slideRight,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -149,54 +152,63 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className} style={style}>
-        <BackgroundCells
-          date={date}
-          getNow={getNow}
-          rtl={rtl}
-          range={range}
-          selectable={selectable}
-          container={this.getContainer}
-          getters={getters}
-          onSelectStart={onSelectStart}
-          onSelectEnd={onSelectEnd}
-          onSelectSlot={this.handleSelectSlot}
-          components={components}
-          longPressThreshold={longPressThreshold}
-          resourceId={resourceId}
-        />
-
-        <div
-          className={clsx(
-            'rbc-row-content',
-            showAllEvents && 'rbc-row-content-scrollable'
-          )}
-        >
-          {renderHeader && (
-            <div className="rbc-row " ref={this.createHeadingRef}>
-              {range.map(this.renderHeadingCell)}
-            </div>
-          )}
+      <CSSTransition
+        in={true}
+        timeout={200}
+        appear={animation}
+        classNames={{
+          appear: `slide-appear slide-from-${slideRight ? 'right' : 'left'}`,
+          appearActive: 'slide-appear-active',
+        }}
+      >
+        <div className={className} style={style}>
+          <BackgroundCells
+            date={date}
+            getNow={getNow}
+            rtl={rtl}
+            range={range}
+            selectable={selectable}
+            container={this.getContainer}
+            getters={getters}
+            onSelectStart={onSelectStart}
+            onSelectEnd={onSelectEnd}
+            onSelectSlot={this.handleSelectSlot}
+            components={components}
+            longPressThreshold={longPressThreshold}
+            resourceId={resourceId}
+          />
           <div
             className={clsx(
-              showAllEvents && 'rbc-row-content-scroll-container'
+              'rbc-row-content',
+              showAllEvents && 'rbc-row-content-scrollable'
             )}
           >
-            <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
-              {levels.map((segs, idx) => (
-                <EventRow key={idx} segments={segs} {...eventRowProps} />
-              ))}
-              {!!extra.length && (
-                <EventEndingRow
-                  segments={extra}
-                  onShowMore={this.handleShowMore}
-                  {...eventRowProps}
-                />
+            {renderHeader && (
+              <div className="rbc-row " ref={this.createHeadingRef}>
+                {range.map(this.renderHeadingCell)}
+              </div>
+            )}
+            <div
+              className={clsx(
+                showAllEvents && 'rbc-row-content-scroll-container'
               )}
-            </WeekWrapper>
+            >
+              <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
+                {levels.map((segs, idx) => (
+                  <EventRow key={idx} segments={segs} {...eventRowProps} />
+                ))}
+                {!!extra.length && (
+                  <EventEndingRow
+                    segments={extra}
+                    onShowMore={this.handleShowMore}
+                    {...eventRowProps}
+                  />
+                )}
+              </WeekWrapper>
+            </div>
           </div>
         </div>
-      </div>
+      </CSSTransition>
     )
   }
 }
@@ -237,6 +249,9 @@ DateContentRow.propTypes = {
 
   minRows: PropTypes.number.isRequired,
   maxRows: PropTypes.number.isRequired,
+
+  slideRight: PropTypes.bool,
+  animation: PropTypes.bool,
 }
 
 DateContentRow.defaultProps = {

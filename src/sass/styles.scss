@@ -74,7 +74,7 @@
 }
 
 .slide-in-appear {
-  opacity: 0;
+  opacity: 0.5;
   transition-duration: 200ms;
   transition-property: transform, opacity;
 }

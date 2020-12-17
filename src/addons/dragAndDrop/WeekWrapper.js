@@ -150,7 +150,7 @@ class WeekWrapper extends React.Component {
     const belowBottomOfRow = point.y > rowBox.bottom
     const belowTopOfRow = point.y >= rowBox.top
     const withinGridWidth = pointInColumn(rowBox, point.x)
-    const startIsAfterEndOfWeek = metrics.last <= start
+    const startIsAfterEndOfWeek = rangeEnd < start
     const endIsBeforeStartOfWeek = metrics.first > end
     const getNewDatePosition = () =>
       metrics.getDateForSlot(getSlotAtX(rowBox, point.x, false, metrics.slots))
@@ -219,7 +219,7 @@ class WeekWrapper extends React.Component {
         // preview segment to the initial event
         if (
           dates.inRange(end, metrics.first, rangeEnd) ||
-          dates.inRange(metrics.last, start, end)
+          dates.inRange(rangeEnd, start, end)
         ) {
           this.resetToInitialEvent()
           return

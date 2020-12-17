@@ -17,8 +17,16 @@ export function getSlotAtX(rowBox, x, rtl, slots) {
     : Math.floor((x - rowBox.left) / cellWidth)
 }
 
+export function pointInRow(box, y) {
+  return y >= box.top && y <= box.bottom
+}
+
+export function pointInColumn(box, x) {
+  return x >= box.left && x <= box.right
+}
+
 export function pointInBox(box, { x, y }) {
-  return y >= box.top && y <= box.bottom && (x >= box.left && x <= box.right)
+  return pointInRow(box, y) && pointInColumn(box, x)
 }
 
 export function dateCellSelection(start, rowBox, box, slots, rtl) {

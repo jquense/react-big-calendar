@@ -292,7 +292,7 @@ describe('inRange', () => {
         'single day event, end of the week',
         { start: d(11), end: d(12) },
         weekOfThe12th,
-        false,
+        true,
       ],
 
       [

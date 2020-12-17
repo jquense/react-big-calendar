@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import * as dates from '../../utils/dates'
-import { getSlotAtX, pointInBox } from '../../utils/selection'
+import { getSlotAtX, pointInBox, pointInColumn } from '../../utils/selection'
 import { findDOMNode } from 'react-dom'
 
 import { eventSegments } from '../../utils/eventLevels'
@@ -41,7 +41,8 @@ class WeekWrapper extends React.Component {
 
   constructor(...args) {
     super(...args)
-    this.state = {}
+    this.initialState = { segment: null }
+    this.state = this.initialState
   }
 
   componentDidMount() {
@@ -52,8 +53,12 @@ class WeekWrapper extends React.Component {
     this._teardownSelectable()
   }
 
-  reset() {
+  resetSegment() {
     if (this.state.segment) this.setState({ segment: null })
+  }
+
+  resetState() {
+    this.setState(this.initialState)
   }
 
   update(event, start, end) {
@@ -68,7 +73,9 @@ class WeekWrapper extends React.Component {
       lastSegment &&
       segment.span === lastSegment.span &&
       segment.left === lastSegment.left &&
-      segment.right === lastSegment.right
+      segment.right === lastSegment.right &&
+      dates.eq(lastSegment.event.start, segment.event.start) &&
+      dates.eq(lastSegment.event.end, segment.event.end)
     ) {
       return
     }
@@ -85,7 +92,7 @@ class WeekWrapper extends React.Component {
     let rowBox = getBoundsForNode(node)
 
     if (!pointInBox(rowBox, { x, y })) {
-      this.reset()
+      this.resetSegment()
       return
     }
 
@@ -136,58 +143,144 @@ class WeekWrapper extends React.Component {
     let { start, end } = eventTimes(event, accessors)
 
     let rowBox = getBoundsForNode(node)
-    let cursorInRow = pointInBox(rowBox, point)
 
+    const rangeEnd = dates.add(metrics.last, -1, 'milliseconds')
+    const aboveTopOfRow = point.y < rowBox.top
+    const aboveBottomOfRow = point.y <= rowBox.bottom
+    const belowBottomOfRow = point.y > rowBox.bottom
+    const belowTopOfRow = point.y >= rowBox.top
+    const withinGridWidth = pointInColumn(rowBox, point.x)
+    const startIsAfterEndOfWeek = metrics.last <= start
+    const endIsBeforeStartOfWeek = metrics.first > end
+    const getNewDatePosition = () =>
+      metrics.getDateForSlot(getSlotAtX(rowBox, point.x, false, metrics.slots))
+
+    // Check resize direction
     if (direction === 'RIGHT') {
-      if (cursorInRow) {
-        if (metrics.last < start) return this.reset()
-        end = metrics.getDateForSlot(
-          getSlotAtX(rowBox, point.x, false, metrics.slots)
-        )
-      } else if (
-        // use metrics.last - 1 ms to fix bug where resizing
-        // an event that begins at the start of the week
-        // causes the prior week to create a segment
-        dates.inRange(
-          start,
-          metrics.first,
-          dates.add(metrics.last, -1, 'milliseconds')
-        ) ||
-        (rowBox.bottom < point.y && +metrics.first > +start)
-      ) {
-        end = dates.add(metrics.last, 1, 'milliseconds')
+      // Check if we're resizing outside the X bounds
+      if (!withinGridWidth) {
+        // If the initial event spanned this week, set the
+        // preview segment to the initial event
+        if (
+          dates.inRange(start, metrics.first, rangeEnd) ||
+          dates.inRange(metrics.first, start, end)
+        ) {
+          this.resetToInitialEvent()
+          return
+          // Else, remove the segment
+        } else {
+          this.resetSegment()
+          return
+        }
+        // If we are resizing above the current row
+      } else if (aboveTopOfRow) {
+        // If the date started in this row, set the end to
+        // the start (0 duration event)
+        if (dates.inRange(start, metrics.first, rangeEnd)) {
+          end = start
+          // Else, remove the segment
+        } else {
+          this.resetSegment()
+          return
+        }
       } else {
-        this.setState({ segment: null })
-        return
-      }
-      end = dates.merge(end, accessors.end(event))
-      if (dates.lt(end, start)) {
-        end = start
+        // Check if we're resizing within this row
+        if (aboveBottomOfRow) {
+          // Check if we're trying to change the end date to
+          // before the start date by resizing up a week
+          if (startIsAfterEndOfWeek) {
+            return
+            // Otherwise, get the current slot's date
+          } else {
+            end = getNewDatePosition()
+          }
+          // Otherwise, we are resizing a week below
+        } else {
+          // Check if current start is after end of this week
+          // (should not render segment)
+          if (startIsAfterEndOfWeek) {
+            this.resetSegment()
+            return
+          } else {
+            end = dates.add(metrics.last, 1, 'milliseconds')
+          }
+        }
+        // Keep the original time
+        end = dates.merge(end, accessors.end(event))
+        // Ensure end date is not before start date
+        if (dates.lt(end, start)) {
+          end = start
+        }
       }
     } else if (direction === 'LEFT') {
-      // inbetween Row
-      if (cursorInRow) {
-        if (metrics.first > end) return this.reset()
-
-        start = metrics.getDateForSlot(
-          getSlotAtX(rowBox, point.x, false, metrics.slots)
-        )
-      } else if (
-        dates.inRange(end, metrics.first, metrics.last) ||
-        (rowBox.top > point.y && +metrics.last < +end)
-      ) {
-        start = dates.add(metrics.first, -1, 'milliseconds')
+      // Check if we're resizing outside the X bounds
+      if (!withinGridWidth) {
+        // If the initial event spanned this week, set the
+        // preview segment to the initial event
+        if (
+          dates.inRange(end, metrics.first, rangeEnd) ||
+          dates.inRange(metrics.last, start, end)
+        ) {
+          this.resetToInitialEvent()
+          return
+          // Else, remove the segment
+        } else {
+          this.resetSegment()
+          return
+        }
+        // If we are resizing below the current row
+      } else if (belowBottomOfRow) {
+        // If the date ended in this row, set the end to
+        // the start (0 duration event)
+        if (dates.inRange(end, metrics.first, rangeEnd)) {
+          start = end
+          // Else, remove the segment
+        } else {
+          this.resetSegment()
+          return
+        }
       } else {
-        this.reset()
-        return
-      }
-      start = dates.merge(start, accessors.start(event))
-      if (dates.gt(start, end)) {
-        start = end
+        // Check if we're resizing within this row
+        if (belowTopOfRow) {
+          // Check if we're trying to change the start date to
+          // after the end date by resizing down a week
+          if (endIsBeforeStartOfWeek) {
+            return
+            // Otherwise, get the current slot's date
+          } else {
+            start = getNewDatePosition()
+          }
+          // Otherwise, we are resizing a week above
+        } else {
+          // Check if current end is before start this week
+          // should not render segment
+          if (endIsBeforeStartOfWeek) {
+            this.resetSegment()
+            return
+          } else {
+            start = dates.add(metrics.first, -1, 'milliseconds')
+          }
+        }
+        // Keep the original time
+        start = dates.merge(start, accessors.start(event))
+        // Ensure start date is not after end date
+        if (dates.gt(start, end)) {
+          start = end
+        }
       }
     }
 
     this.update(event, start, end)
+  }
+
+  resetToInitialEvent() {
+    const segment = eventSegments(
+      { ...this.context.draggable.dragAndDropAction.event, __isPreview: true },
+      this.props.slotMetrics.range,
+      dragAccessors
+    )
+
+    this.setState({ segment: segment })
   }
 
   _selectable = () => {
@@ -219,10 +312,8 @@ class WeekWrapper extends React.Component {
     selector.on('select', point => {
       const bounds = getBoundsForNode(node)
 
-      if (!this.state.segment) return
-
       if (!pointInBox(bounds, point)) {
-        this.reset()
+        this.resetSegment()
       } else {
         this.handleInteractionEnd()
       }
@@ -249,23 +340,46 @@ class WeekWrapper extends React.Component {
     selector.on('click', () => this.context.draggable.onEnd(null))
 
     selector.on('reset', () => {
-      this.reset()
+      this.resetState()
       this.context.draggable.onEnd(null)
     })
   }
 
   handleInteractionEnd = () => {
     const { resourceId, isAllDay } = this.props
-    const { event } = this.state.segment
+    const { segment } = this.state
+    const {
+      event: initialEvent,
+      direction,
+    } = this.context.draggable.dragAndDropAction
 
-    this.reset()
-
-    this.context.draggable.onEnd({
-      start: event.start,
-      end: event.end,
-      resourceId,
-      isAllDay,
-    })
+    if (segment) {
+      this.context.draggable.onEnd({
+        start: segment.event.start,
+        end: segment.event.end,
+        resourceId,
+        isAllDay,
+      })
+    } else {
+      if (direction === 'RIGHT') {
+        this.context.draggable.onEnd({
+          start: initialEvent.start,
+          end: initialEvent.start,
+          resourceId,
+          isAllDay,
+        })
+      } else if (direction === 'LEFT') {
+        this.context.draggable.onEnd({
+          start: initialEvent.end,
+          end: initialEvent.end,
+          resourceId,
+          isAllDay,
+        })
+      } else {
+        this.context.draggable.onEnd(null)
+      }
+    }
+    this.resetState()
   }
 
   _teardownSelectable = () => {

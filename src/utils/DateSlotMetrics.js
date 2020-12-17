@@ -34,6 +34,9 @@ export function getSlotMetrics() {
       },
 
       getDateForSlot(slotNumber) {
+        if (slotNumber >= range.length) {
+          slotNumber = range.length - 1
+        }
         return range[slotNumber]
       },
 
@@ -52,16 +55,11 @@ export function getSlotMetrics() {
       },
 
       continuesAfter(event) {
-        const eventEnd = accessors.end(event)
-        const singleDayDuration = dates.eq(
-          accessors.start(event),
-          eventEnd,
-          'minutes'
+        return dates.gt(
+          accessors.end(event),
+          dates.add(last, -1, 'milliseconds'),
+          'day'
         )
-
-        return singleDayDuration
-          ? dates.gte(eventEnd, last, 'minutes')
-          : dates.gt(eventEnd, last, 'minutes')
       },
     }
   }, isEqual)

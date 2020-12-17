@@ -73,21 +73,21 @@
   }
 }
 
-.slide-appear {
+.slide-in-appear {
   opacity: 0;
   transition-duration: 200ms;
   transition-property: transform, opacity;
 }
 
-.slide-from-right {
+.slide-in-from-right {
   transform: translateX(50px);
 }
 
-.slide-from-left {
+.slide-in-from-left {
   transform: translateX(-50px);
 }
 
-.slide-appear-active {
+.slide-in-appear-active {
   transform: translateX(0);
   opacity: 1;
 }

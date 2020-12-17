@@ -157,8 +157,10 @@ class DateContentRow extends React.Component {
         timeout={200}
         appear={animation}
         classNames={{
-          appear: `slide-appear slide-from-${slideRight ? 'right' : 'left'}`,
-          appearActive: 'slide-appear-active',
+          appear: `slide-in-appear slide-in-from-${
+            slideRight ? 'right' : 'left'
+          }`,
+          appearActive: 'slide-in-appear-active',
         }}
       >
         <div className={className} style={style}>

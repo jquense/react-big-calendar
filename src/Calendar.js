@@ -342,6 +342,11 @@ class Calendar extends React.Component {
     onShowMore: PropTypes.func,
 
     /**
+     * Allow for date navigation using arrow keys
+     */
+    enableArrowNav: PropTypes.bool,
+
+    /**
      * Displays all events on the month view instead of
      * having some hidden behind +{count} more. This will
      * cause the rows in the month view to be scrollable if
@@ -920,6 +925,14 @@ class Calendar extends React.Component {
     return getDrilldownView(date, view, Object.keys(this.getViews()))
   }
 
+  handleKeyDown = e => {
+    if (e.keyCode === 37) {
+      this.handleNavigate(navigate.PREVIOUS)
+    } else if (e.keyCode === 39) {
+      this.handleNavigate(navigate.NEXT)
+    }
+  }
+
   render() {
     let {
       view,
@@ -933,6 +946,7 @@ class Calendar extends React.Component {
       length,
       showMultiDayTimes,
       onShowMore,
+      enableArrowNav,
       components: _0,
       formats: _1,
       messages: _2,
@@ -993,6 +1007,13 @@ class Calendar extends React.Component {
           onKeyPressEvent={this.handleKeyPressEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={onShowMore}
+          arrowNavProps={
+            enableArrowNav
+              ? {
+                  onKeyDown: this.handleKeyDown,
+                }
+              : {}
+          }
         />
       </div>
     )

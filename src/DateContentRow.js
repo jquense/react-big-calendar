@@ -51,6 +51,7 @@ class DateContentRow extends React.Component {
   }
 
   getRowLimit() {
+    if (this.props.renderAllEvents) return Infinity
     let eventHeight = getHeight(this.eventRow)
     let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
     let eventSpace = getHeight(findDOMNode(this)) - headingHeight
@@ -128,9 +129,10 @@ class DateContentRow extends React.Component {
       style,
       animation,
       slideRight,
+      renderAllEvents,
     } = this.props
 
-    if (renderForMeasure) return this.renderDummy()
+    if (renderForMeasure && !renderAllEvents) return this.renderDummy()
 
     let metrics = this.slotMetrics(this.props)
     let { levels, extra } = metrics
@@ -254,6 +256,7 @@ DateContentRow.propTypes = {
 
   slideRight: PropTypes.bool,
   animation: PropTypes.bool,
+  renderAllEvents: PropTypes.bool,
 }
 
 DateContentRow.defaultProps = {

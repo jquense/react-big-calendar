@@ -72,7 +72,7 @@ class MonthView extends React.Component {
         if (event.deltaX) {
           event.preventDefault()
 
-          if (Math.abs(event.deltaX) > 5) {
+          if (Math.abs(event.deltaX) > 10) {
             this.handleHorizontalScroll(event.deltaX > 0)
           }
         }
@@ -118,7 +118,14 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { date, localizer, className, infiniteScroll, expandRow } = this.props,
+    let {
+        date,
+        localizer,
+        className,
+        infiniteScroll,
+        expandRow,
+        arrowNavProps,
+      } = this.props,
       month = dates.visibleDays(date, localizer),
       weeks = chunk(month, 7)
 
@@ -137,7 +144,12 @@ class MonthView extends React.Component {
       this.renderWeek(week, weekIdx, weeks.length)
 
     return (
-      <div className={clsx('rbc-month-view', className)} ref={this.monthRef}>
+      <div
+        className={clsx('rbc-month-view', className)}
+        ref={this.monthRef}
+        {...arrowNavProps}
+        tabIndex={-1}
+      >
         <div className="rbc-row rbc-month-header" style={style}>
           {this.renderHeaders(weeks[0])}
         </div>
@@ -219,6 +231,7 @@ class MonthView extends React.Component {
         style={style}
         slideRight={slideRight}
         animation={true}
+        renderAllEvents={renderAllEvents}
       />
     )
 
@@ -452,6 +465,9 @@ MonthView.propTypes = {
   customSorting: PropTypes.shape({
     sortPriority: PropTypes.arrayOf(PropTypes.string),
     customComparators: PropTypes.object,
+  }),
+  arrowNavProps: PropTypes.shape({
+    onKeyDown: PropTypes.func,
   }),
 }
 

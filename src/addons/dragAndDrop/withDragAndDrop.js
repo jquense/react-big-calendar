@@ -177,7 +177,7 @@ export default function withDragAndDrop(Calendar) {
 
     render() {
       const { selectable, elementProps, ...props } = this.props
-      const { interacting } = this.state
+      const { action, interacting } = this.state
       delete props.onEventDrop
       delete props.onEventResize
 
@@ -193,7 +193,9 @@ export default function withDragAndDrop(Calendar) {
       props.className = clsx(
         props.className,
         'rbc-addons-dnd',
-        !!interacting && 'rbc-addons-dnd-is-dragging'
+        !!interacting && 'rbc-addons-dnd-is-dragging',
+        action === 'move' && 'rbc-addons-dnd-is-moving',
+        action === 'resize' && 'rbc-addons-dnd-is-resizing'
       )
 
       return (

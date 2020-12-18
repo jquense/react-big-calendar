@@ -40,6 +40,10 @@
   overflow-x: hidden;
 
   height: 100%; // ie-fix
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .rbc-month-rows-container {

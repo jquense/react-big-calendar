@@ -167,6 +167,7 @@ export default class TimeGrid extends Component {
       longPressThreshold,
       resizable,
       customSorting,
+      arrowNavProps,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -204,6 +205,8 @@ export default class TimeGrid extends Component {
           'rbc-time-view',
           resources && 'rbc-time-view-resources'
         )}
+        {...arrowNavProps}
+        tabIndex={-1}
       >
         <TimeGridHeader
           range={range}
@@ -352,6 +355,9 @@ TimeGrid.propTypes = {
   customSorting: PropTypes.shape({
     sortPriority: PropTypes.arrayOf(PropTypes.string),
     customComparators: PropTypes.object,
+  }),
+  arrowNavProps: PropTypes.shape({
+    onKeyDown: PropTypes.func,
   }),
 }
 

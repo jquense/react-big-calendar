@@ -116,6 +116,7 @@ class Dnd extends React.Component {
         }
         onDropFromOutside={this.onDropFromOutside}
         handleDragStart={this.handleDragStart}
+        enableArrowNav
       />
     )
   }

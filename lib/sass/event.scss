@@ -13,6 +13,10 @@
   width: 100%;
   text-align: left;
 
+  &--hr {
+    min-width: 100px;
+  }
+
   .rbc-slot-selecting & {
     cursor: inherit;
     pointer-events: none;

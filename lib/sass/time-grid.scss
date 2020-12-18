@@ -15,6 +15,18 @@
   cursor: move;
 }
 
+.rbc-time-grid--hr {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  border-top: 2px solid $cell-border;
+
+  .rbc-day-slot {
+    height: 100%;
+  }
+}
+
 .rbc-time-view {
   display: flex;
   flex-direction: column;
@@ -23,8 +35,44 @@
   border: 1px solid $calendar-border;
   min-height: 0;
 
+  &-resources--hr {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    grid-template-rows: 42px 1fr;
+
+    .rbc-timeslot-group {
+      flex-flow: row;
+      border-right: 1px solid $cell-border;
+
+      &:last-of-type {
+        border-right: none;
+      }
+    }
+  }
+
   .rbc-time-gutter {
     white-space: nowrap;
+
+    &--hr {
+      .rbc-timeslot-group {
+        border: none;
+        border-left: 1px solid $cell-border;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        width: 100%;
+        text-align: center;
+
+        .rbc-time-slot {
+          flex: none;
+        }
+
+        & .rbc-time-slot:last-child{
+          display: none;
+        }
+      }
+    }
   }
 
   .rbc-allday-cell {
@@ -52,6 +100,12 @@
   display: flex;
   flex: 0 0 auto; // should not shrink below height
   flex-direction: row;
+
+  &--hr {
+    grid-column: 1 / 2;
+    grid-row: 2 / -1; 
+    flex-direction: column;
+  }
 
   &.rbc-overflowing {
     border-right: 1px solid $cell-border;
@@ -90,6 +144,22 @@
   flex-direction: column;
   border-left: 1px solid $cell-border;
 
+  &--hr {
+    border: none;
+    border-bottom: 1px solid $cell-border;
+    justify-content: center;
+    &:first-child {
+      border-top: 2px solid $cell-border;
+    }
+    .rbc-resource {
+      border: none;
+      .rbc-header {
+        border: none;
+        padding: 1rem;
+      }
+    }
+  }
+
   .rbc-rtl & {
     border-left-width: 0;
     border-right: 1px solid $cell-border;
@@ -110,8 +180,23 @@
   overflow-y: auto;
   position: relative;
 
+  &--hr {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: 42px 1fr;
+    overflow: initial;
+    border-top: none;
+  }
+
   > .rbc-time-gutter {
     flex: none;
+
+    &--hr {
+      grid-row: 1 / 2;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   > * + * > * {

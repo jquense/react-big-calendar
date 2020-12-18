@@ -23,6 +23,7 @@ import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
 import Resource from './demos/resource'
+import ResourceHrLayout from './demos/resource-hr-layout'
 import DndResource from './demos/dndresource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
@@ -45,6 +46,7 @@ const EXAMPLES = {
   rendering: 'Customized Component Rendering',
   customView: 'Custom Calendar Views',
   resource: 'Resource Scheduling',
+  resourceHrLayout: 'Resource Scheduling horizontal layout',
   dnd: 'Addon: Drag and drop',
   dndresource: 'Resource Drag and drop',
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
@@ -80,6 +82,7 @@ class Example extends React.Component {
       rendering: Rendering,
       customView: CustomView,
       resource: Resource,
+      resourceHrLayout: ResourceHrLayout,
       timeslots: Timeslots,
       dnd: Dnd,
       dndresource: DndResource,

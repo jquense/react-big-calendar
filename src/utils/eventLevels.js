@@ -1,4 +1,5 @@
 import findIndex from 'lodash/findIndex'
+import get from 'lodash/get'
 import * as dates from './dates'
 import { isFunction } from './helpers'
 
@@ -40,7 +41,24 @@ export function eventLevels(rowSegments, limit = Infinity) {
   for (i = 0; i < rowSegments.length; i++) {
     seg = rowSegments[i]
 
-    for (j = 0; j < levels.length; j++) if (!segsOverlap(seg, levels[j])) break
+    for (j = 0; j < levels.length; j++) {
+      // Check to see if this event overlaps with any other event
+      // in this level
+      if (!segsOverlap(seg, levels[j])) {
+        // If this event doesn't overlap, we can render this event
+        // in the current level if:
+        // - `alwaysDisplayBelow` is not explicitly set OR
+        // - there are no other levels below this level OR
+        // - this event doesn't overlap with any event below this level
+        if (
+          !get(seg, 'event.alwaysDisplayBelow') ||
+          j === levels.length - 1 ||
+          levels.slice(j).every(level => !segsOverlap(seg, level))
+        ) {
+          break
+        }
+      }
+    }
 
     if (j >= limit) {
       extra.push(seg)

@@ -107,6 +107,7 @@ class Calendar extends React.Component {
      *   end: Date,
      *   allDay?: boolean
      *   resource?: any,
+     *   alwaysDisplayBelow?: any,
      * }
      * ```
      */

@@ -110,6 +110,25 @@ const MyCalendar = props => (
 )
 ```
 
+#### Luxon
+
+```js
+import { Calendar, luxonLocalizer } from 'react-big-calendar'
+import { DateTime } from 'luxon'
+const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 0 })
+const MyCalendar = props => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
 ## Custom Styling
 
 Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style

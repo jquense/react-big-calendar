@@ -196,7 +196,6 @@ class Agenda extends React.Component {
     let header = this.refs.header;
     if (!this.refs.tbody || !this.refs.tbody.firstChild)
       return
-    
     let firstRow = this.refs.tbody.firstChild
 
     let isOverflowing = this.refs.content.scrollHeight > this.refs.content.clientHeight;

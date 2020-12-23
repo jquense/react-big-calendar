@@ -3,6 +3,11 @@ import * as dates from 'date-arithmetic'
 import { Calendar, Views } from 'react-big-calendar'
 import TimeGrid from 'react-big-calendar/lib/TimeGridHr'
 import ExampleControlSlot from '../ExampleControlSlot'
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop/withDragAndDropHr'
+
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
+
+const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 const events = [
   {
@@ -10,6 +15,13 @@ const events = [
     title: 'Board meeting',
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
+    resourceId: 1,
+  },
+  {
+    id: 5,
+    title: 'Board meeting 2',
+    start: new Date(2018, 0, 29, 8, 0, 0),
+    end: new Date(2018, 0, 29, 10, 0, 0),
     resourceId: 1,
   },
   {
@@ -72,23 +84,69 @@ MyLayout.navigate = (date, action) => {
 MyLayout.title = date => {
   return `My awesome layout: ${date.toLocaleDateString()}`
 }
+class ResourceHrLayout extends React.Component {
+  constructor(props) {
+    super(props)
 
-let ResourceHrLayout = ({ localizer }) => (
-  <>
-    <Calendar
-      events={events}
-      localizer={localizer}
-      defaultView={Views.DAY}
-      views={{ day: MyLayout }}
-      min={new Date(0, 0, 0, 6, 0)}
-      max={new Date(0, 0, 0, 22, 0)}
-      step={60}
-      defaultDate={new Date(2018, 0, 29)}
-      resources={resourceMap}
-      resourceIdAccessor="resourceId"
-      resourceTitleAccessor="resourceTitle"
-    />
-  </>
-)
+    this.state = {
+      events: events,
+    }
+
+    this.moveEvent = this.moveEvent.bind(this)
+  }
+  moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
+    const { events } = this.state
+
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
+
+    this.setState({
+      events: nextEvents,
+    })
+
+    // alert(`${event.title} was dropped onto ${updatedEvent.start}`)
+  }
+
+  resizeEvent = ({ event, start, end }) => {
+    const { events } = this.state
+
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
+
+    this.setState({
+      events: nextEvents,
+    })
+
+    alert(`${event.title} was resized to ${start}-${end}`)
+  }
+
+  render() {
+    const { localizer } = this.props
+    const { events } = this.state
+    return (
+      <DragAndDropCalendar
+        events={events}
+        localizer={localizer}
+        defaultView={Views.DAY}
+        views={{ day: MyLayout }}
+        min={new Date(0, 0, 0, 6, 0)}
+        max={new Date(0, 0, 0, 22, 0)}
+        step={60}
+        defaultDate={new Date(2018, 0, 29)}
+        resources={resourceMap}
+        resourceIdAccessor="resourceId"
+        resourceTitleAccessor="resourceTitle"
+        onEventDrop={this.moveEvent}
+        onEventResize={this.resizeEvent}
+      />
+    )
+  }
+}
 
 export default ResourceHrLayout

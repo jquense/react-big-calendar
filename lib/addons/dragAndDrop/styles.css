@@ -68,6 +68,10 @@
 .rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor:last-child {
   right: 0;
 }
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor--hr {
+  top: 50%;
+  transform: translateY(-50%);
+}
 .rbc-addons-dnd
   .rbc-addons-dnd-resize-ew-anchor
   .rbc-addons-dnd-resize-ew-icon {

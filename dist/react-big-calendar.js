@@ -12383,6 +12383,13 @@
         var range = Math.abs(boundaryRect.top - boundaryRect.bottom)
         return this.closestSlotToPosition((point.y - boundaryRect.top) / range)
       },
+      closestSlotFromPointHr: function closestSlotFromPointHr(
+        point,
+        boundaryRect
+      ) {
+        var range = Math.abs(boundaryRect.left - boundaryRect.right)
+        return this.closestSlotToPosition((point.x - boundaryRect.left) / range)
+      },
       closestSlotFromDate: function closestSlotFromDate(date, offset) {
         if (offset === void 0) {
           offset = 0
@@ -12422,10 +12429,40 @@
           endDate: rangeEnd,
         }
       },
+      getRangeHr: function getRangeHr(
+        rangeStart,
+        rangeEnd,
+        ignoreMin,
+        ignoreMax
+      ) {
+        if (!ignoreMin) rangeStart = min(end, max(start, rangeStart))
+        if (!ignoreMax) rangeEnd = min(end, max(start, rangeEnd))
+        var rangeStartMin = positionFromDate(rangeStart)
+        var rangeEndMin = positionFromDate(rangeEnd)
+        var top =
+          rangeEndMin > step * numSlots && !eq(end, rangeEnd)
+            ? ((rangeStartMin - step) / (step * numSlots)) * 100
+            : (rangeStartMin / (step * numSlots)) * 100
+        return {
+          left: top,
+          top: top,
+          width: (rangeEndMin / (step * numSlots)) * 100 - top,
+          height: (rangeEndMin / (step * numSlots)) * 100 - top,
+          start: positionFromDate(rangeStart),
+          startDate: rangeStart,
+          end: positionFromDate(rangeEnd),
+          endDate: rangeEnd,
+        }
+      },
       getCurrentTimePosition: function getCurrentTimePosition(rangeStart) {
         var rangeStartMin = positionFromDate(rangeStart)
         var top = (rangeStartMin / (step * numSlots)) * 100
         return top
+      },
+      getCurrentTimePositionHr: function getCurrentTimePositionHr(rangeStart) {
+        var rangeStartMin = positionFromDate(rangeStart)
+        var left = (rangeStartMin / (step * numSlots)) * 100
+        return left
       },
     }
   }

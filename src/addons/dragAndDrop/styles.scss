@@ -66,6 +66,11 @@
     &:first-child { left: 0; }
     &:last-child { right: 0; }
 
+    &--hr {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
     .rbc-addons-dnd-resize-ew-icon {
       display: none;
       border-left: 3px double;

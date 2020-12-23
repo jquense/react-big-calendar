@@ -101,6 +101,11 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       return this.closestSlotToPosition((point.y - boundaryRect.top) / range)
     },
 
+    closestSlotFromPointHr(point, boundaryRect) {
+      let range = Math.abs(boundaryRect.left - boundaryRect.right)
+      return this.closestSlotToPosition((point.x - boundaryRect.left) / range)
+    },
+
     closestSlotFromDate(date, offset = 0) {
       if (dates.lt(date, start, 'minutes')) return slots[0]
 
@@ -145,11 +150,41 @@ export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
       }
     },
 
+    getRangeHr(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
+      if (!ignoreMin) rangeStart = dates.min(end, dates.max(start, rangeStart))
+      if (!ignoreMax) rangeEnd = dates.min(end, dates.max(start, rangeEnd))
+
+      const rangeStartMin = positionFromDate(rangeStart)
+      const rangeEndMin = positionFromDate(rangeEnd)
+      const top =
+        rangeEndMin > step * numSlots && !dates.eq(end, rangeEnd)
+          ? ((rangeStartMin - step) / (step * numSlots)) * 100
+          : (rangeStartMin / (step * numSlots)) * 100
+
+      return {
+        left: top,
+        top,
+        width: (rangeEndMin / (step * numSlots)) * 100 - top,
+        height: (rangeEndMin / (step * numSlots)) * 100 - top,
+        start: positionFromDate(rangeStart),
+        startDate: rangeStart,
+        end: positionFromDate(rangeEnd),
+        endDate: rangeEnd,
+      }
+    },
+
     getCurrentTimePosition(rangeStart) {
       const rangeStartMin = positionFromDate(rangeStart)
       const top = (rangeStartMin / (step * numSlots)) * 100
 
       return top
+    },
+
+    getCurrentTimePositionHr(rangeStart) {
+      const rangeStartMin = positionFromDate(rangeStart)
+      const left = (rangeStartMin / (step * numSlots)) * 100
+
+      return left
     },
   }
 }

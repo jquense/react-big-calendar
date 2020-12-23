@@ -1,5 +1,5 @@
 {
-  "name": "react-big-calendar-apm",
+  "name": "@appfolio/react-big-calendar-apm",
   "version": "0.20.1",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
@@ -7,6 +7,9 @@
   "license": "MIT",
   "main": "lib/index.js",
   "style": "lib/css/react-big-calendar.css",
+  "publishConfig": {
+    "registry": "https://nexus.dev.appf.io/repository/npm-hosted/"
+  },
   "files": [
     "lib/",
     "LICENSE",

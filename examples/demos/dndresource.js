@@ -183,6 +183,7 @@ class Dnd extends React.Component {
           events={this.state.events}
           onEventDrop={this.moveEvent}
           onDragStart={args => console.log('dragStart', args)}
+          onSelectSlot={args => console.log('onSelectSlot', args)}
           onSelectEvent={args => console.log('select', args)}
           resizable
           resources={resourceMap}

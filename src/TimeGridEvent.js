@@ -20,6 +20,7 @@ function TimeGridEvent(props) {
     getters,
     onClick,
     onDoubleClick,
+    onKeyPress,
     components: { event: Event, eventWrapper: EventWrapper },
   } = props
   let title = accessors.title(event)
@@ -44,6 +45,7 @@ function TimeGridEvent(props) {
       <div
         onClick={onClick}
         onDoubleClick={onDoubleClick}
+        onKeyPress={onKeyPress}
         style={{
           ...userProps.style,
           top: stringifyPercent(top),

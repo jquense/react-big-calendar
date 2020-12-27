@@ -28,6 +28,7 @@ class EventWrapper extends React.Component {
     isDragging: PropTypes.bool,
     isResizing: PropTypes.bool,
     resource: PropTypes.number,
+    resizable: PropTypes.bool,
   }
 
   handleResizeUp = e => {
@@ -71,7 +72,13 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    const { event, type, continuesPrior, continuesAfter } = this.props
+    const {
+      event,
+      type,
+      continuesPrior,
+      continuesAfter,
+      resizable,
+    } = this.props
 
     let { children } = this.props
 
@@ -114,9 +121,8 @@ class EventWrapper extends React.Component {
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
-    const isResizable = resizableAccessor
-      ? !!get(event, resizableAccessor)
-      : true
+    const isResizable =
+      resizable && (resizableAccessor ? !!get(event, resizableAccessor) : true)
 
     if (isResizable || isDraggable) {
       /*

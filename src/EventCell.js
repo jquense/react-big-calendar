@@ -13,6 +13,7 @@ class EventCell extends React.Component {
       isAllDay,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       localizer,
       continuesPrior,
       continuesAfter,
@@ -24,6 +25,7 @@ class EventCell extends React.Component {
       slotEnd,
       ...props
     } = this.props
+    delete props.resizable
 
     let title = accessors.title(event)
     let tooltip = accessors.tooltip(event)
@@ -69,6 +71,7 @@ class EventCell extends React.Component {
           })}
           onClick={e => onSelect && onSelect(event, e)}
           onDoubleClick={e => onDoubleClick && onDoubleClick(event, e)}
+          onKeyPress={e => onKeyPress && onKeyPress(event, e)}
         >
           {typeof children === 'function' ? children(content) : content}
         </div>
@@ -82,6 +85,7 @@ EventCell.propTypes = {
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.instanceOf(Date),
 
+  resizable: PropTypes.bool,
   selected: PropTypes.bool,
   isAllDay: PropTypes.bool,
   continuesPrior: PropTypes.bool,
@@ -94,6 +98,7 @@ EventCell.propTypes = {
 
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onKeyPress: PropTypes.func,
 }
 
 export default EventCell

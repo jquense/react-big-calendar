@@ -35,6 +35,7 @@ class EventContainerWrapper extends React.Component {
       onBeginAction: PropTypes.func,
       dragAndDropAction: PropTypes.object,
       dragFromOutsideItem: PropTypes.func,
+      onEventChange: PropTypes.func,
     }),
   }
 

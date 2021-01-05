@@ -13,6 +13,7 @@ class EventWrapper extends React.Component {
       draggableAccessor: accessor,
       resizableAccessor: accessor,
       dragAndDropAction: PropTypes.object,
+      onEventChange: PropTypes.func,
     }),
   }
 

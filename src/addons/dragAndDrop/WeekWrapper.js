@@ -130,7 +130,7 @@ class WeekWrapper extends React.Component {
     )
     let start = dates.add(
       currentSlotDate,
-      -dates.diff(accessors.start(event), actionOriginalDate, 'minutes'),
+      dates.relativeDiff(accessors.start(event), actionOriginalDate, 'minutes'),
       'minutes'
     )
 

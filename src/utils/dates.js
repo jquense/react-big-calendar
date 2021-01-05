@@ -130,6 +130,18 @@ export function diff(dateA, dateB, unit) {
   )
 }
 
+export function relativeDiff(dateA, dateB, unit) {
+  if (!unit || unit === 'milliseconds') return Math.abs(+dateA - +dateB)
+
+  // the .round() handles an edge case
+  // with DST where the total won't be exact
+  // since one day in the range may be shorter/longer by an hour
+  return Math.round(
+    +dates.startOf(dateA, unit) / MILLI[unit] -
+      +dates.startOf(dateB, unit) / MILLI[unit]
+  )
+}
+
 export function total(date, unit) {
   let ms = date.getTime(),
     div = 1

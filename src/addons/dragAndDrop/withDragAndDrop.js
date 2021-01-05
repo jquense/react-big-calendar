@@ -6,7 +6,7 @@ import { accessor } from '../../utils/propTypes'
 import EventWrapper from './EventWrapper'
 import EventContainerWrapper from './EventContainerWrapper'
 import WeekWrapper from './WeekWrapper'
-import DateCellWrapper from './DateCellWrapper'
+import HoveredDateWrapper from './HoveredDateWrapper'
 import { mergeComponents } from './common'
 
 /**
@@ -122,7 +122,8 @@ export default function withDragAndDrop(Calendar) {
         eventWrapper: EventWrapper,
         eventContainerWrapper: EventContainerWrapper,
         weekWrapper: WeekWrapper,
-        dateCellWrapper: DateCellWrapper,
+        dateCellWrapper: HoveredDateWrapper,
+        headerWrapper: HoveredDateWrapper,
       })
 
       this.initialState = {

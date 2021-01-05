@@ -21,7 +21,10 @@ class TimeGridHeader extends React.Component {
       getDrilldownView,
       getNow,
       getters: { dayProp },
-      components: { header: HeaderComponent = Header },
+      components: {
+        header: HeaderComponent = Header,
+        headerWrapper: HeaderWrapper,
+      },
     } = this.props
 
     const today = getNow()
@@ -37,26 +40,28 @@ class TimeGridHeader extends React.Component {
       )
 
       return (
-        <div
-          key={i}
-          style={style}
-          className={clsx(
-            'rbc-header',
-            className,
-            dates.eq(date, today, 'day') && 'rbc-today'
-          )}
-        >
-          {drilldownView ? (
-            <a
-              href="#"
-              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
-            >
-              {header}
-            </a>
-          ) : (
-            <span>{header}</span>
-          )}
-        </div>
+        <HeaderWrapper key={i} value={date}>
+          <div
+            key={i}
+            style={style}
+            className={clsx(
+              'rbc-header',
+              className,
+              dates.eq(date, today, 'day') && 'rbc-today'
+            )}
+          >
+            {drilldownView ? (
+              <a
+                href="#"
+                onClick={e => this.handleHeaderClick(date, drilldownView, e)}
+              >
+                {header}
+              </a>
+            ) : (
+              <span>{header}</span>
+            )}
+          </div>
+        </HeaderWrapper>
       )
     })
   }

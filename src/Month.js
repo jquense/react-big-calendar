@@ -274,19 +274,26 @@ class MonthView extends React.Component {
   }
 
   renderHeaders(row) {
-    let { localizer, components } = this.props
+    let {
+      localizer,
+      components: {
+        header: HeaderComponent = Header,
+        headerWrapper: HeaderWrapper,
+      },
+    } = this.props
     let first = row[0]
     let last = row[row.length - 1]
-    let HeaderComponent = components.header || Header
 
     return dates.range(first, last, 'day').map((day, idx) => (
-      <div key={'header_' + idx} className="rbc-header">
-        <HeaderComponent
-          date={day}
-          localizer={localizer}
-          label={localizer.format(day, 'weekdayFormat')}
-        />
-      </div>
+      <HeaderWrapper key={idx} value={day}>
+        <div key={'header_' + idx} className="rbc-header">
+          <HeaderComponent
+            date={day}
+            localizer={localizer}
+            label={localizer.format(day, 'weekdayFormat')}
+          />
+        </div>
+      </HeaderWrapper>
     ))
   }
 

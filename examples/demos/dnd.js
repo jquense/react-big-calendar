@@ -107,7 +107,6 @@ class Dnd extends React.Component {
         resizable
         onEventResize={this.resizeEvent}
         onSelectSlot={this.newEvent}
-        onDragStart={console.log}
         defaultView={Views.MONTH}
         defaultDate={new Date(2015, 3, 12)}
         popup={true}
@@ -117,6 +116,7 @@ class Dnd extends React.Component {
         onDropFromOutside={this.onDropFromOutside}
         handleDragStart={this.handleDragStart}
         enableArrowNav
+        expandRow
       />
     )
   }

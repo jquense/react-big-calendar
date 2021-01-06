@@ -29,7 +29,14 @@ module.exports = {
       rules.images(),
       rules.fonts(),
       { oneOf: [rules.css.modules(), rules.css()] },
-      rules.sass({ browsers }),
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' },
+        ],
+      },
       {
         test: /\.md/,
         use: [loaders.js(), 'markdown-jsx-loader'],

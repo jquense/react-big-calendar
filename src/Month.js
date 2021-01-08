@@ -140,10 +140,7 @@ class MonthView extends React.Component {
 
     const style =
       scrollableMonth && scrollbarSize() > 0
-        ? {
-            marginRight: `${scrollbarSize() - 1}px`,
-            borderRight: '1px solid #DDD',
-          }
+        ? { width: `calc(100% - ${scrollbarSize()}px)` }
         : {}
 
     const renderWeekWithHeight = (week, weekIdx) =>
@@ -171,7 +168,7 @@ class MonthView extends React.Component {
           )}
           onScroll={this.handleScroll}
         >
-          <div className="rbc-row rbc-month-header" style={style}>
+          <div className="rbc-row rbc-month-header">
             {this.renderHeaders(weeks[0])}
           </div>
           {weeks.map(renderWeekWithHeight)}

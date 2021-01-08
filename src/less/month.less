@@ -63,6 +63,21 @@
   flex-direction: row;
 }
 
+.rbc-fixed-header {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  background-color: #fff;
+  opacity: 0;
+  transform: translateY(-100%);
+
+  &.show-header {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-out, transform 0.3s ease-out;;
+  }
+}
+
 .rbc-month-row {
   display: flex;
   position: relative;

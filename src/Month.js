@@ -36,7 +36,7 @@ class MonthView extends React.Component {
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
-      slideRight: true,
+      showFixedHeaders: false,
     }
   }
 
@@ -81,14 +81,8 @@ class MonthView extends React.Component {
     )
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
-
-    if (!dates.eq(this.props.date, prevProps.date, 'month')) {
-      this.setState({
-        slideRight: this.props.date > prevProps.date,
-      })
-    }
   }
 
   componentWillUnmount() {
@@ -116,6 +110,21 @@ class MonthView extends React.Component {
   getContainer = () => {
     return findDOMNode(this)
   }
+
+  handleScroll = e => {
+    this.handleScrollDebounced(e.target.scrollTop)
+  }
+
+  handleScrollDebounced = debounce(scrollPosition => {
+    const { showFixedHeaders } = this.state
+
+    const scrollThreshold = 32
+    if (showFixedHeaders && scrollPosition < scrollThreshold) {
+      this.setState({ showFixedHeaders: false })
+    } else if (!showFixedHeaders && scrollPosition > scrollThreshold) {
+      this.setState({ showFixedHeaders: true })
+    }
+  }, 100)
 
   render() {
     let {
@@ -150,7 +159,12 @@ class MonthView extends React.Component {
         {...arrowNavProps}
         tabIndex={-1}
       >
-        <div className="rbc-row rbc-month-header" style={style}>
+        <div
+          className={clsx('rbc-row rbc-month-header rbc-fixed-header', {
+            'show-header': this.state.showFixedHeaders,
+          })}
+          style={style}
+        >
           {this.renderHeaders(weeks[0])}
         </div>
         <div
@@ -158,7 +172,11 @@ class MonthView extends React.Component {
             'rbc-month-rows-container',
             scrollableMonth && 'rbc-month-rows-container-scrollable'
           )}
+          onScroll={this.handleScroll}
         >
+          <div className="rbc-row rbc-month-header" style={style}>
+            {this.renderHeaders(weeks[0])}
+          </div>
           {weeks.map(renderWeekWithHeight)}
           {this.props.popup && this.renderOverlay()}
         </div>
@@ -188,7 +206,7 @@ class MonthView extends React.Component {
 
     const renderAllEvents = showAllEvents || flexibleRowHeight
 
-    const { needLimitMeasure, rowLimit, slideRight } = this.state
+    const { needLimitMeasure, rowLimit } = this.state
 
     events = eventsForWeek(events, week[0], week[week.length - 1], accessors)
 
@@ -229,8 +247,6 @@ class MonthView extends React.Component {
         resizable={this.props.resizable}
         showAllEvents={showAllEvents}
         style={style}
-        slideRight={slideRight}
-        animation={true}
         renderAllEvents={renderAllEvents}
       />
     )

@@ -9,7 +9,9 @@ import {
   DayLayoutAlgorithmPropType,
   views as componentViews,
 } from './utils/propTypes'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
+import * as dates from './utils/dates'
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
 import { mergeWithDefaults } from './localizer'
@@ -813,6 +815,7 @@ class Calendar extends React.Component {
     this.state = {
       context: this.getContext(this.props),
     }
+    this.slideRight = false
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ context: this.getContext(nextProps) })
@@ -968,33 +971,51 @@ class Calendar extends React.Component {
             localizer={localizer}
           />
         )}
-        <View
-          {...props}
-          events={events}
-          date={current}
-          getNow={getNow}
-          length={length}
-          localizer={localizer}
-          getters={getters}
-          components={components}
-          accessors={accessors}
-          showMultiDayTimes={showMultiDayTimes}
-          getDrilldownView={this.getDrilldownView}
-          onNavigate={this.handleNavigate}
-          onDrillDown={this.handleDrillDown}
-          onSelectEvent={this.handleSelectEvent}
-          onDoubleClickEvent={this.handleDoubleClickEvent}
-          onKeyPressEvent={this.handleKeyPressEvent}
-          onSelectSlot={this.handleSelectSlot}
-          onShowMore={onShowMore}
-          arrowNavProps={
-            enableArrowNav
-              ? {
-                  onKeyDown: this.handleKeyDown,
-                }
-              : {}
-          }
-        />
+        <TransitionGroup
+          className={clsx(
+            'rbc-view-container',
+            this.slideRight ? 'slide-right' : 'slide-left'
+          )}
+        >
+          <CSSTransition
+            key={dates.startOf(current, view).getTime()}
+            timeout={400}
+            classNames={{
+              enter: 'slide-in-enter',
+              enterActive: 'slide-in-enter-active',
+              exit: 'slide-out-exit',
+              exitActive: 'slide-out-exit-active',
+            }}
+          >
+            <View
+              {...props}
+              events={events}
+              date={current}
+              getNow={getNow}
+              length={length}
+              localizer={localizer}
+              getters={getters}
+              components={components}
+              accessors={accessors}
+              showMultiDayTimes={showMultiDayTimes}
+              getDrilldownView={this.getDrilldownView}
+              onNavigate={this.handleNavigate}
+              onDrillDown={this.handleDrillDown}
+              onSelectEvent={this.handleSelectEvent}
+              onDoubleClickEvent={this.handleDoubleClickEvent}
+              onKeyPressEvent={this.handleKeyPressEvent}
+              onSelectSlot={this.handleSelectSlot}
+              onShowMore={onShowMore}
+              arrowNavProps={
+                enableArrowNav
+                  ? {
+                      onKeyDown: this.handleKeyDown,
+                    }
+                  : {}
+              }
+            />
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     )
   }
@@ -1026,6 +1047,16 @@ class Calendar extends React.Component {
     let { view, date, getNow, onNavigate, ...props } = this.props
     let ViewComponent = this.getView()
     let today = getNow()
+
+    if (action) {
+      if (action === navigate.PREVIOUS) {
+        this.slideRight = true
+      } else if (action === navigate.NEXT) {
+        this.slideRight = false
+      } else if (action === navigate.TODAY) {
+        this.slideRight = today < date
+      }
+    }
 
     date = moveDate(ViewComponent, {
       ...props,

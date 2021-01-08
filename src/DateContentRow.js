@@ -4,7 +4,6 @@ import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import { CSSTransition } from 'react-transition-group'
 
 import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
@@ -127,8 +126,6 @@ class DateContentRow extends React.Component {
       resizable,
       showAllEvents,
       style,
-      animation,
-      slideRight,
       renderAllEvents,
     } = this.props
 
@@ -154,65 +151,53 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <CSSTransition
-        in={true}
-        timeout={200}
-        appear={animation}
-        classNames={{
-          appear: `slide-in-appear slide-in-from-${
-            slideRight ? 'right' : 'left'
-          }`,
-          appearActive: 'slide-in-appear-active',
-        }}
-      >
-        <div className={className} style={style}>
-          <BackgroundCells
-            date={date}
-            getNow={getNow}
-            rtl={rtl}
-            range={range}
-            selectable={selectable}
-            container={this.getContainer}
-            getters={getters}
-            onSelectStart={onSelectStart}
-            onSelectEnd={onSelectEnd}
-            onSelectSlot={this.handleSelectSlot}
-            components={components}
-            longPressThreshold={longPressThreshold}
-            resourceId={resourceId}
-          />
+      <div className={className} style={style}>
+        <BackgroundCells
+          date={date}
+          getNow={getNow}
+          rtl={rtl}
+          range={range}
+          selectable={selectable}
+          container={this.getContainer}
+          getters={getters}
+          onSelectStart={onSelectStart}
+          onSelectEnd={onSelectEnd}
+          onSelectSlot={this.handleSelectSlot}
+          components={components}
+          longPressThreshold={longPressThreshold}
+          resourceId={resourceId}
+        />
+        <div
+          className={clsx(
+            'rbc-row-content',
+            showAllEvents && 'rbc-row-content-scrollable'
+          )}
+        >
+          {renderHeader && (
+            <div className="rbc-row " ref={this.createHeadingRef}>
+              {range.map(this.renderHeadingCell)}
+            </div>
+          )}
           <div
             className={clsx(
-              'rbc-row-content',
-              showAllEvents && 'rbc-row-content-scrollable'
+              showAllEvents && 'rbc-row-content-scroll-container'
             )}
           >
-            {renderHeader && (
-              <div className="rbc-row " ref={this.createHeadingRef}>
-                {range.map(this.renderHeadingCell)}
-              </div>
-            )}
-            <div
-              className={clsx(
-                showAllEvents && 'rbc-row-content-scroll-container'
+            <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
+              {levels.map((segs, idx) => (
+                <EventRow key={idx} segments={segs} {...eventRowProps} />
+              ))}
+              {!!extra.length && (
+                <EventEndingRow
+                  segments={extra}
+                  onShowMore={this.handleShowMore}
+                  {...eventRowProps}
+                />
               )}
-            >
-              <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
-                {levels.map((segs, idx) => (
-                  <EventRow key={idx} segments={segs} {...eventRowProps} />
-                ))}
-                {!!extra.length && (
-                  <EventEndingRow
-                    segments={extra}
-                    onShowMore={this.handleShowMore}
-                    {...eventRowProps}
-                  />
-                )}
-              </WeekWrapper>
-            </div>
+            </WeekWrapper>
           </div>
         </div>
-      </CSSTransition>
+      </div>
     )
   }
 }
@@ -254,8 +239,6 @@ DateContentRow.propTypes = {
   minRows: PropTypes.number.isRequired,
   maxRows: PropTypes.number.isRequired,
 
-  slideRight: PropTypes.bool,
-  animation: PropTypes.bool,
   renderAllEvents: PropTypes.bool,
 }
 

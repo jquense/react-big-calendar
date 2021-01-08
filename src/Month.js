@@ -112,11 +112,8 @@ class MonthView extends React.Component {
   }
 
   handleScroll = e => {
-    this.handleScrollDebounced(e.target.scrollTop)
-  }
-
-  handleScrollDebounced = debounce(scrollPosition => {
     const { showFixedHeaders } = this.state
+    const scrollPosition = e.target.scrollTop
 
     const scrollThreshold = 32
     if (showFixedHeaders && scrollPosition < scrollThreshold) {
@@ -124,7 +121,7 @@ class MonthView extends React.Component {
     } else if (!showFixedHeaders && scrollPosition > scrollThreshold) {
       this.setState({ showFixedHeaders: true })
     }
-  }, 100)
+  }
 
   render() {
     let {

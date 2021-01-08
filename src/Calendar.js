@@ -959,6 +959,8 @@ class Calendar extends React.Component {
         {...elementProps}
         className={clsx(className, 'rbc-calendar', props.rtl && 'rbc-rtl')}
         style={style}
+        onKeyDown={enableArrowNav ? this.handleKeyDown : null}
+        tabIndex={-1}
       >
         {toolbar && (
           <CalToolbar
@@ -1006,13 +1008,6 @@ class Calendar extends React.Component {
               onKeyPressEvent={this.handleKeyPressEvent}
               onSelectSlot={this.handleSelectSlot}
               onShowMore={onShowMore}
-              arrowNavProps={
-                enableArrowNav
-                  ? {
-                      onKeyDown: this.handleKeyDown,
-                    }
-                  : {}
-              }
             />
           </CSSTransition>
         </TransitionGroup>

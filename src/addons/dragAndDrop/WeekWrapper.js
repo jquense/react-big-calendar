@@ -80,7 +80,7 @@ class WeekWrapper extends React.Component {
   }
 
   handleMove = ({ x, y }, node, draggedEvent) => {
-    const { event = draggedEvent } = this.context.draggable.dragAndDropAction
+    const event = this.context.draggable.dragAndDropAction.event || draggedEvent
     const metrics = this.props.slotMetrics
     const { accessors } = this.props
 
@@ -138,6 +138,8 @@ class WeekWrapper extends React.Component {
     const { accessors, slotMetrics: metrics } = this.props
 
     let { start, end } = eventTimes(event, accessors)
+    let originalStart = start
+    let originalEnd = end
 
     let rowBox = getBoundsForNode(node)
     let cursorInRow = pointInBox(rowBox, point)
@@ -145,13 +147,8 @@ class WeekWrapper extends React.Component {
     if (direction === 'RIGHT') {
       if (cursorInRow) {
         if (metrics.last < start) return this.reset()
-        // add min
-        end = dates.add(
-          metrics.getDateForSlot(
-            getSlotAtX(rowBox, point.x, false, metrics.slots)
-          ),
-          1,
-          'day'
+        end = metrics.getDateForSlot(
+          getSlotAtX(rowBox, point.x, false, metrics.slots)
         )
       } else if (
         dates.inRange(start, metrics.first, metrics.last) ||
@@ -162,8 +159,10 @@ class WeekWrapper extends React.Component {
         this.setState({ segment: null })
         return
       }
-
-      end = dates.max(end, dates.add(start, 1, 'day'))
+      end = dates.merge(end, accessors.end(event))
+      if (dates.lt(end, start)) {
+        end = originalEnd
+      }
     } else if (direction === 'LEFT') {
       // inbetween Row
       if (cursorInRow) {
@@ -181,8 +180,10 @@ class WeekWrapper extends React.Component {
         this.reset()
         return
       }
-
-      start = dates.min(dates.add(end, -1, 'day'), start)
+      start = dates.merge(start, accessors.start(event))
+      if (dates.gt(start, end)) {
+        start = originalStart
+      }
     }
 
     this.update(event, start, end)
@@ -217,8 +218,13 @@ class WeekWrapper extends React.Component {
     selector.on('select', point => {
       const bounds = getBoundsForNode(node)
 
-      if (!this.state.segment || !pointInBox(bounds, point)) return
-      this.handleInteractionEnd()
+      if (!this.state.segment) return
+
+      if (!pointInBox(bounds, point)) {
+        this.reset()
+      } else {
+        this.handleInteractionEnd()
+      }
     })
 
     selector.on('dropFromOutside', point => {

@@ -102,6 +102,7 @@ class MonthView extends React.Component {
       longPressThreshold,
       accessors,
       getters,
+      showAllEvents,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -120,7 +121,7 @@ class MonthView extends React.Component {
         date={date}
         range={week}
         events={events}
-        maxRows={rowLimit}
+        maxRows={showAllEvents ? Infinity : rowLimit}
         selected={selected}
         selectable={selectable}
         components={components}
@@ -132,9 +133,12 @@ class MonthView extends React.Component {
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
         onDoubleClick={this.handleDoubleClickEvent}
+        onKeyPress={this.handleKeyPressEvent}
         onSelectSlot={this.handleSelectSlot}
         longPressThreshold={longPressThreshold}
         rtl={this.props.rtl}
+        resizable={this.props.resizable}
+        showAllEvents={showAllEvents}
       />
     )
   }
@@ -220,6 +224,7 @@ class MonthView extends React.Component {
             slotEnd={overlay.end}
             onSelect={this.handleSelectEvent}
             onDoubleClick={this.handleDoubleClickEvent}
+            onKeyPress={this.handleKeyPressEvent}
             handleDragStart={this.props.handleDragStart}
           />
         )}
@@ -255,6 +260,11 @@ class MonthView extends React.Component {
   handleDoubleClickEvent = (...args) => {
     this.clearSelection()
     notify(this.props.onDoubleClickEvent, args)
+  }
+
+  handleKeyPressEvent = (...args) => {
+    this.clearSelection()
+    notify(this.props.onKeyPressEvent, args)
   }
 
   handleShowMore = (events, date, cell, slot, target) => {
@@ -316,6 +326,7 @@ MonthView.propTypes = {
 
   scrollToTime: PropTypes.instanceOf(Date),
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   width: PropTypes.number,
 
   accessors: PropTypes.object.isRequired,
@@ -331,7 +342,9 @@ MonthView.propTypes = {
   onSelectSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
+  onKeyPressEvent: PropTypes.func,
   onShowMore: PropTypes.func,
+  showAllEvents: PropTypes.bool,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 

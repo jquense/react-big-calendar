@@ -71,6 +71,7 @@ class TimeGridHeader extends React.Component {
       localizer,
       accessors,
       components,
+      resizable,
     } = this.props
 
     const resourceId = accessors.resourceId(resource)
@@ -96,8 +97,10 @@ class TimeGridHeader extends React.Component {
         localizer={localizer}
         onSelect={this.props.onSelectEvent}
         onDoubleClick={this.props.onDoubleClickEvent}
+        onKeyPress={this.props.onKeyPressEvent}
         onSelectSlot={this.props.onSelectSlot}
         longPressThreshold={this.props.longPressThreshold}
+        resizable={resizable}
       />
     )
   }
@@ -121,6 +124,7 @@ class TimeGridHeader extends React.Component {
         timeGutterHeader: TimeGutterHeader,
         resourceHeader: ResourceHeaderComponent = ResourceHeader,
       },
+      resizable,
     } = this.props
 
     let style = {}
@@ -180,8 +184,10 @@ class TimeGridHeader extends React.Component {
               localizer={localizer}
               onSelect={this.props.onSelectEvent}
               onDoubleClick={this.props.onDoubleClickEvent}
+              onKeyPress={this.props.onKeyPressEvent}
               onSelectSlot={this.props.onSelectSlot}
               longPressThreshold={this.props.longPressThreshold}
+              resizable={resizable}
             />
           </div>
         ))}
@@ -198,6 +204,7 @@ TimeGridHeader.propTypes = {
   isOverflowing: PropTypes.bool,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   width: PropTypes.number,
 
   localizer: PropTypes.object.isRequired,
@@ -212,6 +219,7 @@ TimeGridHeader.propTypes = {
   onSelectSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
+  onKeyPressEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,

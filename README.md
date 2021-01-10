@@ -115,7 +115,6 @@ const MyCalendar = props => (
 Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style
 Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
 
-
 ```
   @import 'react-big-calendar/lib/sass/styles';
   @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD

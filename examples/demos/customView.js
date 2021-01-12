@@ -56,7 +56,7 @@ let CustomView = ({ localizer }) => (
       events={events}
       localizer={localizer}
       defaultView={Views.WEEK}
-      defaultDate={new Date(2015, 3, 1)}
+      defaultDate={new Date(2021, 3, 1)}
       views={{ month: true, week: MyWeek }}
     />
   </React.Fragment>

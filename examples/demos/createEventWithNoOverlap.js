@@ -49,7 +49,7 @@ class CreateEventWithNoOverlap extends React.Component {
           events={this.state.events}
           defaultView={Views.WEEK}
           scrollToTime={new Date(1970, 1, 1, 6)}
-          defaultDate={new Date(2015, 3, 12)}
+          defaultDate={new Date(2021, 3, 12)}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.handleSelect}
           dayLayoutAlgorithm={this.state.dayLayoutAlgorithm}

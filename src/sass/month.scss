@@ -42,14 +42,13 @@
   height: 100%; // ie-fix
 }
 
-.rbc-month-rows-container {
+.rbc-month-grid-container {
   display: flex;
   flex-direction: column;
   flex: 1 0 0;
 }
 
-.rbc-month-rows-container-scrollable {
-  display: block;
+.rbc-month-grid-container-scrollable {
   overflow-y: scroll;
 }
 
@@ -71,6 +70,10 @@
     transform: translateY(0);
     transition: opacity 0.5s ease-out, transform 0.3s ease-out;;
   }
+}
+
+.rbc-month-rows-container {
+  flex-grow: 1;
 }
 
 .rbc-month-row {

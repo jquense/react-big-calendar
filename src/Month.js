@@ -151,15 +151,17 @@ class MonthView extends React.Component {
         </div>
         <div
           className={clsx(
-            'rbc-month-rows-container',
-            scrollableMonth && 'rbc-month-rows-container-scrollable'
+            'rbc-month-grid-container',
+            scrollableMonth && 'rbc-month-grid-container-scrollable'
           )}
           onScroll={this.handleScroll}
         >
           <div className="rbc-row rbc-month-header">
             {this.renderHeaders(weeks[0])}
           </div>
-          {weeks.map(renderWeekWithHeight)}
+          <div className="rbc-month-rows-container">
+            {weeks.map(renderWeekWithHeight)}
+          </div>
           {this.props.popup && this.renderOverlay()}
         </div>
       </div>

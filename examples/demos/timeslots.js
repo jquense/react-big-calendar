@@ -9,7 +9,7 @@ let Timeslots = ({ localizer }) => (
     timeslots={8}
     localizer={localizer}
     defaultView={Views.WEEK}
-    defaultDate={new Date(2015, 3, 12)}
+    defaultDate={new Date(2021, 3, 12)}
   />
 )
 

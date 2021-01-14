@@ -124,37 +124,37 @@ storiesOf('Layout Issues', module)
   .add('Single days should only span one slot, multi-days multiple', () => {
     return (
       <Calendar
-        defaultDate={new Date(2015, 3, 1)}
+        defaultDate={new Date(2021, 3, 1)}
         events={[
           {
             title: 'SingleDay 1',
-            start: new Date(2015, 3, 10),
-            end: new Date(2015, 3, 11),
+            start: new Date(2021, 3, 10),
+            end: new Date(2021, 3, 11),
           },
           {
             title: 'SingleDay 2',
-            start: new Date(2015, 3, 11),
-            end: new Date(2015, 3, 12),
+            start: new Date(2021, 3, 11),
+            end: new Date(2021, 3, 12),
           },
           {
             title: 'SingleDay 3',
-            start: new Date(2015, 3, 12),
-            end: new Date(2015, 3, 13),
+            start: new Date(2021, 3, 12),
+            end: new Date(2021, 3, 13),
           },
           {
             title: 'SingleDay 4',
-            start: new Date(2015, 3, 13),
-            end: new Date(2015, 3, 14),
+            start: new Date(2021, 3, 13),
+            end: new Date(2021, 3, 14),
           },
           {
             title: 'MultiDay 1',
-            start: new Date(2015, 3, 24),
-            end: new Date(2015, 3, 25, 1, 0, 0, 0),
+            start: new Date(2021, 3, 24),
+            end: new Date(2021, 3, 25, 1, 0, 0, 0),
           },
           {
             title: 'MultiDay 2',
-            start: new Date(2015, 3, 25),
-            end: new Date(2015, 3, 26, 1, 0, 0, 0),
+            start: new Date(2021, 3, 25),
+            end: new Date(2021, 3, 26, 1, 0, 0, 0),
           },
         ]}
       />
@@ -163,19 +163,19 @@ storiesOf('Layout Issues', module)
   .add('zero duration oddities', () => {
     return (
       <DragAndDropCalendar
-        defaultDate={new Date(2015, 3, 1)}
+        defaultDate={new Date(2021, 3, 1)}
         events={[
           {
             id: 4,
             title: '0 day duration',
-            start: new Date(2015, 3, 8, 0, 0, 0),
-            end: new Date(2015, 3, 8, 0, 0, 0),
+            start: new Date(2021, 3, 8, 0, 0, 0),
+            end: new Date(2021, 3, 8, 0, 0, 0),
           },
           {
             id: 4,
             title: '1 day duration',
-            start: new Date(2015, 3, 9, 0, 0, 0),
-            end: new Date(2015, 3, 10, 0, 0, 0),
+            start: new Date(2021, 3, 9, 0, 0, 0),
+            end: new Date(2021, 3, 10, 0, 0, 0),
           },
         ]}
       />

@@ -196,7 +196,7 @@ class Dnd extends React.Component {
           onSelectSlot={this.newEvent}
           onD
           defaultView={Views.MONTH}
-          defaultDate={new Date(2015, 3, 12)}
+          defaultDate={new Date(2021, 3, 12)}
         />
       </div>
     )

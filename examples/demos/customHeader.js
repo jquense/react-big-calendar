@@ -16,7 +16,7 @@ let CustomHeader = ({ localizer }) => (
   <Calendar
     events={events}
     localizer={localizer}
-    defaultDate={new Date(2015, 3, 1)}
+    defaultDate={new Date(2021, 3, 1)}
     components={{
       day: { header: MyCustomHeader },
       week: { header: MyCustomHeader },

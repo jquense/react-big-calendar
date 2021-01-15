@@ -9,7 +9,10 @@ const TimeCell = ({
   isToday,
   accessors,
   components: { event: Event },
+  getters,
 }) => {
+  const userComponentProps = getters.eventComponentProps()
+
   return (
     <Droppable droppableId={`time-cell-${timeSlot.getTime()}`}>
       {provided => {
@@ -37,7 +40,15 @@ const TimeCell = ({
                         {...provided.dragHandleProps}
                         className="rbc-event"
                       >
-                        {Event ? <Event event={event} title={title} /> : title}
+                        {Event ? (
+                          <Event
+                            event={event}
+                            title={title}
+                            {...userComponentProps}
+                          />
+                        ) : (
+                          title
+                        )}
                       </div>
                     )
                   }}
@@ -59,6 +70,7 @@ TimeCell.propTypes = {
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
 }
 
 export default TimeCell

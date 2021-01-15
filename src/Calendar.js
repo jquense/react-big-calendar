@@ -546,6 +546,24 @@ class Calendar extends React.Component {
     dayPropGetter: PropTypes.func,
 
     /**
+     * Optionally provide an object of props to supply to the event component.
+     *
+     * ```js
+     * { customProp1: someValue, customProp2: someValue }
+     * ```
+     */
+    eventComponentProps: PropTypes.object,
+
+    /**
+     * Optionally provide an object of props to supply to the toolbar component.
+     *
+     * ```js
+     * { customProp1: someValue, customProp2: someValue }
+     * ```
+     */
+    toolbarComponentProps: PropTypes.object,
+
+    /**
      * Support to show multi-day events with specific start and end times in the
      * main time grid (rather than in the all day header).
      *
@@ -834,6 +852,8 @@ class Calendar extends React.Component {
     slotPropGetter,
     slotGroupPropGetter,
     dayPropGetter,
+    eventComponentProps,
+    toolbarComponentProps,
     view,
     views,
     localizer,
@@ -855,6 +875,8 @@ class Calendar extends React.Component {
         slotGroupProp: (...args) =>
           (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
         dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
+        eventComponentProps: () => eventComponentProps || {},
+        toolbarComponentProps: () => toolbarComponentProps || {},
       },
       components: defaults(components[view] || {}, omit(components, names), {
         eventWrapper: NoopWrapper,
@@ -952,6 +974,7 @@ class Calendar extends React.Component {
     } = this.state.context
 
     let CalToolbar = components.toolbar || Toolbar
+    const userToolbarProps = getters.toolbarComponentProps()
     const label = View.title(current, { localizer, length })
 
     return (
@@ -971,6 +994,7 @@ class Calendar extends React.Component {
             onView={this.handleViewChange}
             onNavigate={this.handleNavigate}
             localizer={localizer}
+            {...userToolbarProps}
           />
         )}
         <TransitionGroup

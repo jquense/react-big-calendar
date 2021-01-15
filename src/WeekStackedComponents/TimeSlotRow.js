@@ -11,6 +11,7 @@ const TimeSlotRow = ({
   now,
   accessors,
   components,
+  getters,
   localizer,
 }) => {
   return (
@@ -23,6 +24,7 @@ const TimeSlotRow = ({
         now={now}
         accessors={accessors}
         components={components}
+        getters={getters}
       />
     </div>
   )
@@ -37,6 +39,7 @@ TimeSlotRow.propTypes = {
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
 }
 

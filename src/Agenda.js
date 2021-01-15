@@ -48,6 +48,7 @@ function Agenda({
         end,
         isSelected(event, selected)
       )
+      const userComponentProps = getters.eventComponentProps()
 
       let dateLabel = idx === 0 && localizer.format(day, 'agendaDateFormat')
       let first =
@@ -72,7 +73,11 @@ function Agenda({
           {first}
           <td className="rbc-agenda-time-cell">{timeRangeLabel(day, event)}</td>
           <td className="rbc-agenda-event-cell">
-            {Event ? <Event event={event} title={title} /> : title}
+            {Event ? (
+              <Event event={event} title={title} {...userComponentProps} />
+            ) : (
+              title
+            )}
           </td>
         </tr>
       )

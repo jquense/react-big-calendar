@@ -92,6 +92,7 @@ const TimeRowGrid = props => {
               now={now}
               accessors={accessors}
               components={components}
+              getters={getters}
               localizer={localizer}
             />
           ))}

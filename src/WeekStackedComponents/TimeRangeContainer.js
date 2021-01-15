@@ -11,6 +11,7 @@ const TimeRangeContainer = ({
   now,
   accessors,
   components,
+  getters,
 }) => {
   return (
     <div className="rbc-week-range-container">
@@ -27,6 +28,7 @@ const TimeRangeContainer = ({
             events={events}
             accessors={accessors}
             components={components}
+            getters={getters}
           />
         )
       })}
@@ -43,6 +45,7 @@ TimeRangeContainer.propTypes = {
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
+  getters: PropTypes.object.isRequired,
 }
 
 export default TimeRangeContainer

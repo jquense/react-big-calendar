@@ -136,7 +136,7 @@ class EventContainerWrapper extends React.Component {
     let node = findDOMNode(this)
     let isBeingDragged = false
     let selector = (this._selector = new Selection(() =>
-      node.closest('.rbc-time-view')
+      node.closest('.rbc-time-view, .rbc-week-stacked-view')
     ))
 
     selector.on('beforeSelect', point => {

@@ -28,6 +28,7 @@ import DndResource from './demos/dndresource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
 import DndOutsideSource from './demos/dndOutsideSource'
+import StackedWeek from './demos/stackedWeek'
 import Dropdown from 'react-bootstrap/lib/Dropdown'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
@@ -50,6 +51,8 @@ const EXAMPLES = {
   dndresource: 'Resource Drag and drop',
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
   expandRow: 'Show more via expanding the row',
+  stackedWeek:
+    'Custom week view that displays events stacked instead of overlapping',
 }
 
 const DEFAULT_EXAMPLE = 'basic'
@@ -87,6 +90,7 @@ class Example extends React.Component {
       dnd: Dnd,
       dndresource: DndResource,
       dndOutsideSource: DndOutsideSource,
+      stackedWeek: StackedWeek,
       createEventWithNoOverlap: CreateEventWithNoOverlap,
     }[selected]
 

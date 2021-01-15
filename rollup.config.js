@@ -20,6 +20,12 @@ const babelOptions = {
 
 const commonjsOptions = {
   include: /node_modules/,
+  namedExports: {
+    'node_modules/react-redux/node_modules/react-is/index.js': [
+      'isValidElementType',
+      'isContextConsumer',
+    ],
+  },
 }
 
 export default [

@@ -137,6 +137,7 @@
     "lodash-es": "^4.17.11",
     "memoize-one": "^5.1.1",
     "prop-types": "^15.7.2",
+    "react-beautiful-dnd": "^13.0.0",
     "react-overlays": "^2.0.0-0",
     "react-transition-group": "^4.4.1",
     "uncontrollable": "^7.0.0"

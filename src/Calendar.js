@@ -82,7 +82,7 @@ class Calendar extends React.Component {
 
     /**
      * The initial view set for the Calendar.
-     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @type Calendar.Views ('month'|'week'|'work_week'|'week_stacked'|'day'|'agenda')
      * @default 'month'
      */
     defaultView: PropTypes.string,
@@ -253,7 +253,7 @@ class Calendar extends React.Component {
     /**
      *
      * ```js
-     * (dates: Date[] | { start: Date; end: Date }, view: 'month'|'week'|'work_week'|'day'|'agenda'|undefined) => void
+     * (dates: Date[] | { start: Date; end: Date }, view: 'month'|'week'|'work_week'|'week_stacked'|'day'|'agenda'|undefined) => void
      * ```
      *
      * Callback fired when the visible date range changes. Returns an Array of dates
@@ -389,7 +389,7 @@ class Calendar extends React.Component {
      * }
      * ```
      *
-     * @type Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @type Views ('month'|'week'|'work_week'|'week_stacked'|'day'|'agenda')
      * @View
      ['month', 'week', 'day', 'agenda']
      */
@@ -1019,7 +1019,7 @@ class Calendar extends React.Component {
    *
    * @param date
    * @param viewComponent
-   * @param {'month'|'week'|'work_week'|'day'|'agenda'} [view] - optional
+   * @param {'month'|'week'|'work_week'|'week_stacked'|'day'|'agenda'} [view] - optional
    * parameter. It appears when range change on view changing. It could be handy
    * when you need to have both: range and view type at once, i.e. for manage rbc
    * state via url

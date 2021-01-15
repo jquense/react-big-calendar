@@ -130,6 +130,7 @@ class TimeGridHeader extends React.Component {
         resourceHeader: ResourceHeaderComponent = ResourceHeader,
       },
       resizable,
+      renderGutter,
     } = this.props
 
     let style = {}
@@ -145,12 +146,16 @@ class TimeGridHeader extends React.Component {
         ref={scrollRef}
         className={clsx('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        <div
-          className="rbc-label rbc-time-header-gutter"
-          style={{ width, minWidth: width, maxWidth: width }}
-        >
-          {TimeGutterHeader && <TimeGutterHeader />}
-        </div>
+        {renderGutter ? (
+          renderGutter()
+        ) : (
+          <div
+            className="rbc-label rbc-time-header-gutter"
+            style={{ width, minWidth: width, maxWidth: width }}
+          >
+            {TimeGutterHeader && <TimeGutterHeader />}
+          </div>
+        )}
 
         {resources.map(([id, resource], idx) => (
           <div className="rbc-time-header-content" key={id || idx}>
@@ -228,6 +233,7 @@ TimeGridHeader.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
+  renderGutter: PropTypes.func,
 }
 
 export default TimeGridHeader

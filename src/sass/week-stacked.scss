@@ -1,0 +1,63 @@
+@import './variables.scss';
+
+.rbc-week-stacked-view {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $calendar-border;
+  min-height: 0;
+
+  .rbc-allday-cell {
+    box-sizing: content-box;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .rbc-allday-cell + .rbc-allday-cell {
+    border-left: 1px solid $cell-border;
+  }
+
+  .rbc-row {
+    box-sizing: border-box;
+    min-height: 20px;
+  }
+}
+
+.rbc-time-row-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.rbc-time-slot-row {
+  min-height: 40px;
+  display: flex;
+  // TODO we might need?
+  // flex-flow: column nowrap;
+}
+
+.rbc-gutter {
+  // line-height should same as font-size;
+  line-height: 14px;
+  width: 75px;
+  align-self: flex-start;
+  text-align: right;
+  // margin-bottom should be half of font-size;
+  margin-top: -7px;
+}
+
+.rbc-week-range-container {
+  display: flex;
+  flex-grow: 1;
+  border-top: 1px solid #DDD;
+}
+
+.rbc-time-cell {
+  border-left: 1px solid #DDD;
+  flex: 1 0 0;
+}
+
+.rbc-time-cell {
+  .rbc-event {
+    margin-bottom: 1px;
+  }
+}

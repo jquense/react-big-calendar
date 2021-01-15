@@ -319,7 +319,9 @@ class WeekWrapper extends React.Component {
 
   _selectable = () => {
     let node = findDOMNode(this).closest('.rbc-month-row, .rbc-allday-cell')
-    let container = node.closest('.rbc-month-view, .rbc-time-view')
+    let container = node.closest(
+      '.rbc-month-view, .rbc-time-view, .rbc-week-stacked-view'
+    )
 
     let selector = (this._selector = new Selection(() => container))
 

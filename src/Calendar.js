@@ -822,6 +822,7 @@ class Calendar extends React.Component {
 
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
+    idAccessor: 'id',
 
     longPressThreshold: 250,
     getNow: () => new Date(),
@@ -848,6 +849,7 @@ class Calendar extends React.Component {
     resourceAccessor,
     resourceIdAccessor,
     resourceTitleAccessor,
+    idAccessor,
     eventPropGetter,
     slotPropGetter,
     slotGroupPropGetter,
@@ -895,6 +897,7 @@ class Calendar extends React.Component {
         resource: wrapAccessor(resourceAccessor),
         resourceId: wrapAccessor(resourceIdAccessor),
         resourceTitle: wrapAccessor(resourceTitleAccessor),
+        id: wrapAccessor(idAccessor),
       },
     }
   }

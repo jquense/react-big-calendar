@@ -9,6 +9,7 @@ class EventRow extends React.Component {
       segments,
       slotMetrics: { slots },
       className,
+      accessors,
     } = this.props
 
     let lastEnd = 1
@@ -16,7 +17,7 @@ class EventRow extends React.Component {
     return (
       <div className={clsx(className, 'rbc-row')}>
         {segments.reduce((row, { event, left, right, span }, li) => {
-          let key = '_lvl_' + li
+          let key = accessors.id(event) || '_lvl_' + li
           let gap = left - lastEnd
 
           let content = EventRowMixin.renderEvent(this.props, event)

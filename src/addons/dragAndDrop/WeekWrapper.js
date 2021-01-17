@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import * as dates from '../../utils/dates'
-import { getSlotAtX, pointInBox, pointInColumn } from '../../utils/selection'
+import { getSlotAtX, pointInBox } from '../../utils/selection'
 import { findDOMNode } from 'react-dom'
 
 import { eventSegments } from '../../utils/eventLevels'
@@ -26,6 +26,7 @@ class WeekWrapper extends React.Component {
     getters: PropTypes.object.isRequired,
     components: PropTypes.object.isRequired,
     resourceId: PropTypes.any,
+    dragContainerClass: PropTypes.string,
   }
 
   static contextTypes = {
@@ -90,7 +91,7 @@ class WeekWrapper extends React.Component {
     }
   }
 
-  handleMove = ({ x, y }, node, draggedEvent) => {
+  handleMove = ({ x, y }, node, draggedEvent, container) => {
     const { dragAndDropAction } = this.context.draggable
     const { actionOriginalDate } = dragAndDropAction
     const event = dragAndDropAction.event || draggedEvent
@@ -102,13 +103,11 @@ class WeekWrapper extends React.Component {
     let rowBox = getBoundsForNode(node)
 
     if (!pointInBox(rowBox, { x, y })) {
-      this.resetSegment()
-
       // If we are dragging off the calendar grid, set to the
       // original segment/initial event
-      const withinGridWidth = pointInColumn(rowBox, x)
+      const withinGridBox = pointInBox(getBoundsForNode(container), { x, y })
       if (
-        !withinGridWidth &&
+        !withinGridBox &&
         actionOriginalDate &&
         dates.inRange(
           actionOriginalDate,
@@ -117,6 +116,8 @@ class WeekWrapper extends React.Component {
         )
       ) {
         this.resetToInitialEvent()
+      } else {
+        this.resetSegment()
       }
       return
     }
@@ -168,29 +169,30 @@ class WeekWrapper extends React.Component {
     )
   }
 
-  handleResize(point, node) {
+  handleResize(point, node, container) {
     const { event, direction } = this.context.draggable.dragAndDropAction
     const { accessors, slotMetrics: metrics } = this.props
+    const { x, y } = point
 
     let { start, end } = eventTimes(event, accessors)
 
     let rowBox = getBoundsForNode(node)
 
     const rangeEnd = dates.add(metrics.last, -1, 'milliseconds')
-    const aboveTopOfRow = point.y < rowBox.top
-    const aboveBottomOfRow = point.y <= rowBox.bottom
-    const belowBottomOfRow = point.y > rowBox.bottom
-    const belowTopOfRow = point.y >= rowBox.top
-    const withinGridWidth = pointInColumn(rowBox, point.x)
+    const aboveTopOfRow = y < rowBox.top
+    const aboveBottomOfRow = y <= rowBox.bottom
+    const belowBottomOfRow = y > rowBox.bottom
+    const belowTopOfRow = y >= rowBox.top
+    const withinGrid = pointInBox(getBoundsForNode(container), { x, y })
     const startIsAfterEndOfWeek = rangeEnd < start
     const endIsBeforeStartOfWeek = metrics.first > end
     const getNewDatePosition = () =>
-      metrics.getDateForSlot(getSlotAtX(rowBox, point.x, false, metrics.slots))
+      metrics.getDateForSlot(getSlotAtX(rowBox, x, false, metrics.slots))
 
     // Check resize direction
     if (direction === 'RIGHT') {
       // Check if we're resizing outside the X bounds
-      if (!withinGridWidth) {
+      if (!withinGrid) {
         // If the initial event spanned this week, set the
         // preview segment to the initial event
         if (
@@ -246,7 +248,7 @@ class WeekWrapper extends React.Component {
       }
     } else if (direction === 'LEFT') {
       // Check if we're resizing outside the X bounds
-      if (!withinGridWidth) {
+      if (!withinGrid) {
         // If the initial event spanned this week, set the
         // preview segment to the initial event
         if (
@@ -320,7 +322,8 @@ class WeekWrapper extends React.Component {
   _selectable = () => {
     let node = findDOMNode(this).closest('.rbc-month-row, .rbc-allday-cell')
     let container = node.closest(
-      '.rbc-month-view, .rbc-time-view, .rbc-week-stacked-view'
+      `.rbc-month-rows-container, ${this.props.dragContainerClass ||
+        '.rbc-time-view'}, .rbc-week-stacked-view`
     )
 
     let selector = (this._selector = new Selection(() => container))
@@ -340,8 +343,10 @@ class WeekWrapper extends React.Component {
       const bounds = getBoundsForNode(node)
       const { dragAndDropAction } = this.context.draggable
 
-      if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
-      if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
+      if (dragAndDropAction.action === 'move')
+        this.handleMove(box, bounds, null, container)
+      if (dragAndDropAction.action === 'resize')
+        this.handleResize(box, bounds, container)
     })
 
     selector.on('selectStart', box => {

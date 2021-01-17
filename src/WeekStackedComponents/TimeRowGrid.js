@@ -18,6 +18,7 @@ const TimeRowGrid = props => {
     range,
     getNow,
     showMultiDayTimes,
+    resizable,
     accessors,
     components,
     getters,
@@ -81,6 +82,8 @@ const TimeRowGrid = props => {
           renderGutter={() => (
             <TimeRowGutter group={[]} localizer={localizer} />
           )}
+          dragContainerClass=".rbc-allday-cell"
+          resizable={resizable}
         />
         <div className="rbc-time-rows-container">
           {slotMetrics.groups.map((grp, index) => (
@@ -122,6 +125,8 @@ TimeRowGrid.propTypes = {
 
   scrollToTime: PropTypes.instanceOf(Date),
   showMultiDayTimes: PropTypes.bool,
+
+  resizable: PropTypes.bool,
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,

@@ -77,6 +77,7 @@ class TimeGridHeader extends React.Component {
       accessors,
       components,
       resizable,
+      dragContainerClass,
     } = this.props
 
     const resourceId = accessors.resourceId(resource)
@@ -106,6 +107,7 @@ class TimeGridHeader extends React.Component {
         onSelectSlot={this.props.onSelectSlot}
         longPressThreshold={this.props.longPressThreshold}
         resizable={resizable}
+        dragContainerClass={dragContainerClass}
       />
     )
   }
@@ -131,6 +133,7 @@ class TimeGridHeader extends React.Component {
       },
       resizable,
       renderGutter,
+      dragContainerClass,
     } = this.props
 
     let style = {}
@@ -198,6 +201,7 @@ class TimeGridHeader extends React.Component {
               onSelectSlot={this.props.onSelectSlot}
               longPressThreshold={this.props.longPressThreshold}
               resizable={resizable}
+              dragContainerClass={dragContainerClass}
             />
           </div>
         ))}
@@ -234,6 +238,7 @@ TimeGridHeader.propTypes = {
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
   renderGutter: PropTypes.func,
+  dragContainerClass: PropTypes.string,
 }
 
 export default TimeGridHeader

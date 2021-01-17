@@ -127,6 +127,7 @@ class DateContentRow extends React.Component {
       showAllEvents,
       style,
       renderAllEvents,
+      dragContainerClass,
     } = this.props
 
     if (renderForMeasure && !renderAllEvents) return this.renderDummy()
@@ -183,7 +184,11 @@ class DateContentRow extends React.Component {
               showAllEvents && 'rbc-row-content-scroll-container'
             )}
           >
-            <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
+            <WeekWrapper
+              isAllDay={isAllDay}
+              {...eventRowProps}
+              dragContainerClass={dragContainerClass}
+            >
               {levels.map((segs, idx) => (
                 <EventRow key={idx} segments={segs} {...eventRowProps} />
               ))}
@@ -240,6 +245,7 @@ DateContentRow.propTypes = {
   maxRows: PropTypes.number.isRequired,
 
   renderAllEvents: PropTypes.bool,
+  dragContainerClass: PropTypes.string,
 }
 
 DateContentRow.defaultProps = {

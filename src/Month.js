@@ -5,7 +5,6 @@ import clsx from 'clsx'
 
 import * as dates from './utils/dates'
 import chunk from 'lodash/chunk'
-import debounce from 'lodash/debounce'
 
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
@@ -32,7 +31,6 @@ class MonthView extends React.Component {
     this._bgRows = []
     this._pendingSelection = []
     this.slotRowRef = React.createRef()
-    this.monthRef = React.createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
@@ -63,22 +61,6 @@ class MonthView extends React.Component {
       }),
       false
     )
-
-    this.monthRef.current.addEventListener(
-      'wheel',
-      (this._horizontalScrollListener = event => {
-        event.stopPropagation()
-
-        if (event.deltaX) {
-          event.preventDefault()
-
-          if (Math.abs(event.deltaX) > 10) {
-            this.handleHorizontalScroll(event.deltaX > 0)
-          }
-        }
-      }),
-      { passive: false }
-    )
   }
 
   componentDidUpdate() {
@@ -87,25 +69,7 @@ class MonthView extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._resizeListener, false)
-
-    this.monthRef.current.removeEventListener(
-      'wheel',
-      this._horizontalScrollListener,
-      { passive: false }
-    )
   }
-
-  handleHorizontalScroll = debounce(
-    scrollRight => {
-      if (scrollRight) {
-        this.props.onNavigate(navigate.NEXT)
-      } else {
-        this.props.onNavigate(navigate.PREVIOUS)
-      }
-    },
-    100,
-    { leading: true, trailing: false }
-  )
 
   getContainer = () => {
     return findDOMNode(this)
@@ -140,7 +104,7 @@ class MonthView extends React.Component {
       this.renderWeek(week, weekIdx, weeks.length)
 
     return (
-      <div className={clsx('rbc-month-view', className)} ref={this.monthRef}>
+      <div className={clsx('rbc-month-view', className)}>
         <div
           className={clsx('rbc-row rbc-month-header rbc-fixed-header', {
             'show-header': this.state.showFixedHeaders,

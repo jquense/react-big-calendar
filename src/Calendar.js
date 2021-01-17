@@ -25,6 +25,7 @@ import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import transform from 'lodash/transform'
 import mapValues from 'lodash/mapValues'
+import debounce from 'lodash/debounce'
 import { wrapAccessor } from './utils/accessors'
 
 function viewNames(_views) {
@@ -831,6 +832,8 @@ class Calendar extends React.Component {
 
   constructor(...args) {
     super(...args)
+
+    this.calendarRef = React.createRef()
     this.state = {
       context: this.getContext(this.props),
     }
@@ -839,6 +842,49 @@ class Calendar extends React.Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ context: this.getContext(nextProps) })
   }
+
+  componentDidMount() {
+    this.calendarRef.current.addEventListener(
+      'wheel',
+      (this._horizontalScrollListener = event => {
+        event.stopPropagation()
+
+        if (event.deltaX) {
+          event.preventDefault()
+
+          if (
+            Math.abs(event.deltaX) > 10 &&
+            // Prevent horizontal scroll action if the
+            // primary scrolling is vertical
+            Math.abs(event.deltaY) <= Math.abs(event.deltaX)
+          ) {
+            this.handleHorizontalScroll(event.deltaX > 0)
+          }
+        }
+      }),
+      { passive: false }
+    )
+  }
+
+  componentWillUnmount() {
+    this.calendarRef.current.removeEventListener(
+      'wheel',
+      this._horizontalScrollListener,
+      { passive: false }
+    )
+  }
+
+  handleHorizontalScroll = debounce(
+    scrollRight => {
+      if (scrollRight) {
+        this.handleNavigate(navigate.NEXT)
+      } else {
+        this.handleNavigate(navigate.PREVIOUS)
+      }
+    },
+    100,
+    { leading: true, trailing: false }
+  )
 
   getContext({
     startAccessor,
@@ -987,6 +1033,7 @@ class Calendar extends React.Component {
         style={style}
         onKeyDown={enableArrowNav ? this.handleKeyDown : null}
         tabIndex={-1}
+        ref={this.calendarRef}
       >
         {toolbar && (
           <CalToolbar

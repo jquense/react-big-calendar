@@ -176,9 +176,9 @@ class WeekWrapper extends React.Component {
       // point here and do the placement computation in handleMove()...
       this.eventOffsetLeft = point.x - getBoundsForNode(eventNode).left
 
+      const isInBox = pointInBox(getBoundsForNode(node), point)
       return (
-        action === 'move' ||
-        (action === 'resize' && (!isAllDay || pointInBox(eventNode, point)))
+        action === 'move' || (action === 'resize' && (!isAllDay || isInBox))
       )
     })
 

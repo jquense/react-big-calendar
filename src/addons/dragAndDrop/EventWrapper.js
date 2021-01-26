@@ -23,28 +23,28 @@ class EventWrapper extends React.Component {
 
   handleResizeUp = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
   }
   handleResizeDown = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
   }
   handleResizeLeft = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'LEFT')
   }
   handleResizeRight = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'RIGHT')
   }
   handleStartDragging = e => {
-    if (e.button === 0) {
+    if (e.button !== 0) return
+    // hack: because of the way the anchors are arranged in the DOM, resize
+    // anchor events will bubble up to the move anchor listener. Don't start
+    // move operations when we're on a resize anchor.
+    const isResizeHandle = e.target.className.includes('rbc-addons-dnd-resize')
+    if (!isResizeHandle)
       this.context.draggable.onBeginAction(this.props.event, 'move')
-    }
   }
 
   renderAnchor(direction) {

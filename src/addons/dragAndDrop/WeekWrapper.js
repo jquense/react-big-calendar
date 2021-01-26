@@ -8,8 +8,20 @@ import Selection, {
 import * as dates from '../../utils/dates'
 import { eventSegments } from '../../utils/eventLevels'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
-import { dragAccessors, eventTimes } from './common'
+import { dragAccessors } from './common'
 import { DnDContext } from './DnDContext'
+
+const eventTimes = (event, accessors) => {
+  let start = accessors.start(event)
+  let end = accessors.end(event)
+
+  const isZeroDuration =
+    dates.eq(start, end, 'minutes') && start.getMinutes() === 0
+  // make zero duration midnight events at least one day long
+  if (isZeroDuration) end = dates.add(end, 1, 'day')
+  const duration = dates.diff(end, start, 'milliseconds')
+  return { start, end, duration }
+}
 
 class WeekWrapper extends React.Component {
   static propTypes = {
@@ -102,33 +114,30 @@ class WeekWrapper extends React.Component {
     this.handleMove(point, node, this.context.draggable.dragFromOutsideItem())
   }
 
-  // TODO: when resizing RIGHT, the mouse has to make it all the way to the
-  // very end of the slot before it jumps...
   handleResize(point, bounds) {
     const { event, direction } = this.context.draggable.dragAndDropAction
     const { accessors, slotMetrics, rtl } = this.props
 
-    let { start, end, allDay } = eventTimes(event, accessors)
-    let originalStart = start
-    let originalEnd = end
+    let { start, end } = eventTimes(event, accessors)
 
     const slot = getSlotAtX(bounds, point.x, rtl, slotMetrics.slots)
     const date = slotMetrics.getDateForSlot(slot)
-    let cursorInRow = pointInBox(bounds, point)
+    const cursorInRow = pointInBox(bounds, point)
 
     if (direction === 'RIGHT') {
       if (cursorInRow) {
         if (slotMetrics.last < start) return this.reset()
-        end = date
+        end = dates.add(date, 1, 'day')
       } else if (
         dates.inRange(start, slotMetrics.first, slotMetrics.last) ||
-        (bounds.bottom < point.y && dates.gt(slotMetrics.first, start))
+        (bounds.bottom < point.y && +slotMetrics.first > +start)
       ) {
         end = dates.add(slotMetrics.last, 1, 'milliseconds')
       } else {
         this.setState({ segment: null })
         return
       }
+      const originalEnd = accessors.end(event)
       end = dates.merge(end, originalEnd)
       if (dates.lt(end, start)) {
         end = originalEnd
@@ -146,20 +155,19 @@ class WeekWrapper extends React.Component {
         this.reset()
         return
       }
+      const originalStart = accessors.start(event)
       start = dates.merge(start, originalStart)
       if (dates.gt(start, end)) {
         start = originalStart
       }
     }
 
-    if (allDay) end = dates.add(end, 1, 'day')
     this.update(event, start, end)
   }
 
   _selectable = () => {
-    let wrapper = this.ref.current
-    let node = wrapper.closest('.rbc-month-row, .rbc-allday-cell')
-    let container = wrapper.closest('.rbc-month-view, .rbc-time-view')
+    let node = this.ref.current.closest('.rbc-month-row, .rbc-allday-cell')
+    let container = node.closest('.rbc-month-view, .rbc-time-view')
 
     let selector = (this._selector = new Selection(() => container))
 

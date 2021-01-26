@@ -8,20 +8,8 @@ import Selection, {
 import * as dates from '../../utils/dates'
 import { eventSegments } from '../../utils/eventLevels'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
-import { dragAccessors } from './common'
+import { dragAccessors, eventTimes } from './common'
 import { DnDContext } from './DnDContext'
-
-const eventTimes = (event, accessors) => {
-  let start = accessors.start(event)
-  let end = accessors.end(event)
-
-  const isZeroDuration =
-    dates.eq(start, end, 'minutes') && start.getMinutes() === 0
-  // make zero duration midnight events at least one day long
-  if (isZeroDuration) end = dates.add(end, 1, 'day')
-  const duration = dates.diff(end, start, 'milliseconds')
-  return { start, end, duration }
-}
 
 class WeekWrapper extends React.Component {
   static propTypes = {
@@ -91,7 +79,7 @@ class WeekWrapper extends React.Component {
     let { start, duration } = eventTimes(event, accessors)
     start = dates.merge(date, start)
     const end = dates.add(start, duration, 'milliseconds')
-    // TODO: when dragging a multi-row event, only the first row is animating
+    // LATER: when dragging a multi-row event, only the first row is animating
     this.update(event, start, end)
   }
 

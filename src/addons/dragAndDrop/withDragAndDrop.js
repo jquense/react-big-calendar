@@ -12,6 +12,8 @@ import { DnDContext } from './DnDContext'
 export default function withDragAndDrop(Calendar) {
   class DragAndDropCalendar extends React.Component {
     static propTypes = {
+      ...Calendar.propTypes,
+
       onEventDrop: PropTypes.func,
       onEventResize: PropTypes.func,
       onDragStart: PropTypes.func,
@@ -25,17 +27,13 @@ export default function withDragAndDrop(Calendar) {
 
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
-      components: PropTypes.object,
-      elementProps: PropTypes.object,
-      step: PropTypes.number,
     }
 
     static defaultProps = {
-      components: {},
+      ...Calendar.defaultProps,
       draggableAccessor: null,
       resizableAccessor: null,
       resizable: true,
-      step: 30,
     }
 
     constructor(...args) {
@@ -104,7 +102,6 @@ export default function withDragAndDrop(Calendar) {
       const { selectable, elementProps, ...props } = this.props
       const { interacting } = this.state
 
-      // TODO: use destructuring and ...rest here instead of deleting/overwriting
       delete props.onEventDrop
       delete props.onEventResize
       props.selectable = selectable ? 'ignoreEvents' : false
@@ -137,5 +134,3 @@ export default function withDragAndDrop(Calendar) {
 
   return DragAndDropCalendar
 }
-
-// TODO: propTypes & defaultProps should extend the base proptypes, not redeclare anew

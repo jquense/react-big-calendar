@@ -1,19 +1,25 @@
 ## [0.22.1](https://github.com/intljusticemission/react-big-calendar/compare/v0.22.0...v0.22.1) (2019-09-13)
 
+
 ### Bug Fixes
 
-- add new method to get correct time indicator top position | fixes [#1396](https://github.com/intljusticemission/react-big-calendar/issues/1396) ([#1447](https://github.com/intljusticemission/react-big-calendar/issues/1447)) ([1cf0205](https://github.com/intljusticemission/react-big-calendar/commit/1cf0205))
-- drag cancellation for month view ([#1322](https://github.com/intljusticemission/react-big-calendar/issues/1322)) ([9c81e9e](https://github.com/intljusticemission/react-big-calendar/commit/9c81e9e))
-- invalid prop-types. ([#1435](https://github.com/intljusticemission/react-big-calendar/issues/1435)) ([61e1a1e](https://github.com/intljusticemission/react-big-calendar/commit/61e1a1e))
-- update time indicator position if max prop changes ([#1379](https://github.com/intljusticemission/react-big-calendar/issues/1379)) ([ac945b7](https://github.com/intljusticemission/react-big-calendar/commit/ac945b7))
-- use fixed date arithmetic lib and move bt-sass to devdepen… ([#1374](https://github.com/intljusticemission/react-big-calendar/issues/1374)) ([b223a61](https://github.com/intljusticemission/react-big-calendar/commit/b223a61))
+* add new method to get correct time indicator top position | fixes [#1396](https://github.com/intljusticemission/react-big-calendar/issues/1396) ([#1447](https://github.com/intljusticemission/react-big-calendar/issues/1447)) ([1cf0205](https://github.com/intljusticemission/react-big-calendar/commit/1cf0205))
+* drag cancelation for month view ([#1322](https://github.com/intljusticemission/react-big-calendar/issues/1322)) ([9c81e9e](https://github.com/intljusticemission/react-big-calendar/commit/9c81e9e))
+* invalid prop-types. ([#1435](https://github.com/intljusticemission/react-big-calendar/issues/1435)) ([61e1a1e](https://github.com/intljusticemission/react-big-calendar/commit/61e1a1e))
+* update time indicator position if max prop changes ([#1379](https://github.com/intljusticemission/react-big-calendar/issues/1379)) ([ac945b7](https://github.com/intljusticemission/react-big-calendar/commit/ac945b7))
+* use fixed date arithmetic lib and move bt-sass to devdepen… ([#1374](https://github.com/intljusticemission/react-big-calendar/issues/1374)) ([b223a61](https://github.com/intljusticemission/react-big-calendar/commit/b223a61))
+
 
 ### Features
 
-- [#1390](https://github.com/intljusticemission/react-big-calendar/issues/1390) use en dashes in ranges ([#1391](https://github.com/intljusticemission/react-big-calendar/issues/1391)) ([7619e59](https://github.com/intljusticemission/react-big-calendar/commit/7619e59))
-- added continuesPrior and continuesAfter props to Event component ([#1201](https://github.com/intljusticemission/react-big-calendar/issues/1201)) ([74a2233](https://github.com/intljusticemission/react-big-calendar/commit/74a2233))
-- upgrade react-overlays ([#1421](https://github.com/intljusticemission/react-big-calendar/issues/1421)) ([9117549](https://github.com/intljusticemission/react-big-calendar/commit/9117549))
-- **dnd:** add preview of an item inside cell while dragging ([#1369](https://github.com/intljusticemission/react-big-calendar/issues/1369)) ([ac715f8](https://github.com/intljusticemission/react-big-calendar/commit/ac715f8))
+* [#1390](https://github.com/intljusticemission/react-big-calendar/issues/1390) use en dashes in ranges ([#1391](https://github.com/intljusticemission/react-big-calendar/issues/1391)) ([7619e59](https://github.com/intljusticemission/react-big-calendar/commit/7619e59))
+* added continuesPrior and continuesAfter props to Event component ([#1201](https://github.com/intljusticemission/react-big-calendar/issues/1201)) ([74a2233](https://github.com/intljusticemission/react-big-calendar/commit/74a2233))
+* upgrade react-overlays ([#1421](https://github.com/intljusticemission/react-big-calendar/issues/1421)) ([9117549](https://github.com/intljusticemission/react-big-calendar/commit/9117549))
+* **dnd:** add preview of an item inside cell while dragging ([#1369](https://github.com/intljusticemission/react-big-calendar/issues/1369)) ([ac715f8](https://github.com/intljusticemission/react-big-calendar/commit/ac715f8))
+
+
+
+
 
 ## 0.22.0 (2019-06-18)
 
@@ -34,7 +40,7 @@
 - docs: update docs and examples with named exports (#1352) ([f478be0](https://github.com/intljusticemission/react-big-calendar/commit/f478be0)), closes [#1352](https://github.com/intljusticemission/react-big-calendar/issues/1352)
 - docs(dnd): remove deprecated comment about `react-dnd` (#1323) ([4d933c1](https://github.com/intljusticemission/react-big-calendar/commit/4d933c1)), closes [#1323](https://github.com/intljusticemission/react-big-calendar/issues/1323)
 - feat: provide named exports api (#1348) ([4e09704](https://github.com/intljusticemission/react-big-calendar/commit/4e09704)), closes [#1348](https://github.com/intljusticemission/react-big-calendar/issues/1348)
-- feat: re-declared all sass variables as !default (#1321) ([c4f09cd](https://github.com/intljusticemission/react-big-calendar/commit/c4f09cd)), closes [#1321](https://github.com/intljusticemission/react-big-calendar/issues/1321)
+- feat: redeclared all sass variables as !default (#1321) ([c4f09cd](https://github.com/intljusticemission/react-big-calendar/commit/c4f09cd)), closes [#1321](https://github.com/intljusticemission/react-big-calendar/issues/1321)
 - feat: use lodash-es for esm bundle (#1350) ([fb0fe5e](https://github.com/intljusticemission/react-big-calendar/commit/fb0fe5e)), closes [#1350](https://github.com/intljusticemission/react-big-calendar/issues/1350)
 - Feat: expose date localizer (#1347) ([5d93c9d](https://github.com/intljusticemission/react-big-calendar/commit/5d93c9d)), closes [#1347](https://github.com/intljusticemission/react-big-calendar/issues/1347)
 

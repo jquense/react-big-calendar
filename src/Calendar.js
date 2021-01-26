@@ -530,6 +530,15 @@ class Calendar extends React.Component {
      * position may break the calendar in unexpected ways.
      *
      * ```js
+     * (date: Date, resourceId: (number|string)) => { className?: string, style?: Object }
+     * ```
+     */
+    slotPropGetter: PropTypes.func,
+
+    /**
+     * Optionally provide a function that returns an object of props to be applied
+     * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
+     * ```js
      * () => { style?: Object }
      * ```
      */

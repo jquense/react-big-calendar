@@ -21,6 +21,7 @@ function TimeGridEvent(props) {
     onClick,
     onDoubleClick,
     isBackgroundEvent,
+    onKeyPress,
     components: { event: Event, eventWrapper: EventWrapper },
   } = props
   let title = accessors.title(event)
@@ -62,6 +63,7 @@ function TimeGridEvent(props) {
         onClick={onClick}
         onDoubleClick={onDoubleClick}
         style={eventStyle}
+        onKeyPress={onKeyPress}
         title={
           tooltip
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip

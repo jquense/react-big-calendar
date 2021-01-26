@@ -189,6 +189,7 @@ class DayColumn extends React.Component {
       step,
       timeslots,
       dayLayoutAlgorithm,
+      resizable,
     } = this.props
 
     const { slotMetrics } = this
@@ -236,6 +237,8 @@ class DayColumn extends React.Component {
           onClick={e => this._select(event, e)}
           onDoubleClick={e => this._doubleClick(event, e)}
           isBackgroundEvent={isBackgroundEvent}
+          onKeyPress={e => this._keyPress(event, e)}
+          resizable={resizable}
         />
       )
     })
@@ -375,6 +378,10 @@ class DayColumn extends React.Component {
   _doubleClick = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
   }
+
+  _keyPress = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
+  }
 }
 
 DayColumn.propTypes = {
@@ -388,6 +395,7 @@ DayColumn.propTypes = {
   isNow: PropTypes.bool,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
@@ -407,6 +415,7 @@ DayColumn.propTypes = {
   onSelectSlot: PropTypes.func.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onDoubleClickEvent: PropTypes.func.isRequired,
+  onKeyPressEvent: PropTypes.func,
 
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,

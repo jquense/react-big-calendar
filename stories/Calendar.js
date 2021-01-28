@@ -210,7 +210,7 @@ storiesOf('Big Calendar', module)
   .add('add background event', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         events={events}
         backgroundEvents={backgroundEvents}
       />

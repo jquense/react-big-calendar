@@ -113,6 +113,29 @@ class Calendar extends React.Component {
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * An array of background event objects to display on the calendar. Background
+     * Events behave similarly to Events but are not factored into Event overlap logic,
+     * allowing them to sit behind any Events that may occur during the same period.
+     * Background Events objects can be any shape, as long as the Calendar knows how to
+     * retrieve the following details of the event:
+     *
+     *  - start time
+     *  - end time
+     *
+     * Each of these properties can be customized or generated dynamically by
+     * setting the various "accessor" props. Without any configuration the default
+     * event should look like:
+     *
+     * ```js
+     * BackgroundEvent {
+     *   start: Date,
+     *   end: Date,
+     * }
+     * ```
+     */
+    backgroundEvents: PropTypes.arrayOf(PropTypes.object),
+
+    /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
      *
@@ -783,6 +806,7 @@ class Calendar extends React.Component {
 
   constructor(...args) {
     super(...args)
+
     this.state = {
       context: this.getContext(this.props),
     }
@@ -801,6 +825,7 @@ class Calendar extends React.Component {
     resourceIdAccessor,
     resourceTitleAccessor,
     eventPropGetter,
+    backgroundEventPropGetter,
     slotPropGetter,
     slotGroupPropGetter,
     dayPropGetter,
@@ -820,6 +845,9 @@ class Calendar extends React.Component {
       getters: {
         eventProp: (...args) =>
           (eventPropGetter && eventPropGetter(...args)) || {},
+        backgroundEventProp: (...args) =>
+          (backgroundEventPropGetter && backgroundEventPropGetter(...args)) ||
+          {},
         slotProp: (...args) =>
           (slotPropGetter && slotPropGetter(...args)) || {},
         slotGroupProp: (...args) =>
@@ -828,6 +856,7 @@ class Calendar extends React.Component {
       },
       components: defaults(components[view] || {}, omit(components, names), {
         eventWrapper: NoopWrapper,
+        backgroundEventWrapper: NoopWrapper,
         eventContainerWrapper: NoopWrapper,
         dateCellWrapper: NoopWrapper,
         weekWrapper: NoopWrapper,
@@ -885,6 +914,7 @@ class Calendar extends React.Component {
       view,
       toolbar,
       events,
+      backgroundEvents = [],
       style,
       className,
       elementProps,
@@ -934,6 +964,7 @@ class Calendar extends React.Component {
         <View
           {...props}
           events={events}
+          backgroundEvents={backgroundEvents}
           date={current}
           getNow={getNow}
           length={length}

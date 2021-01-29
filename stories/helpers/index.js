@@ -113,3 +113,18 @@ export const events = [
     allDay: false,
   },
 ]
+
+export const backgroundEvents = [
+  {
+    title: 'test background event',
+    start: moment()
+      .startOf('day')
+      .add(2, 'hours')
+      .toDate(),
+    end: moment()
+      .startOf('day')
+      .add(12, 'hours')
+      .toDate(),
+    allDay: false,
+  },
+]

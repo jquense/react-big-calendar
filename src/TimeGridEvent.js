@@ -46,7 +46,8 @@ function TimeGridEvent(props) {
         ...userProps.style,
         top: stringifyPercent(top),
         height: stringifyPercent(height),
-        width: `calc(${width}% + 10px)`,
+        // Adding 10px to take events container right margin into account
+        width: `calc(${width} + 10px)`,
         [rtl ? 'right' : 'left']: stringifyPercent(Math.max(0, xOffset)),
       }
     : {

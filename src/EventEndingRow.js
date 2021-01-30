@@ -80,7 +80,7 @@ class EventEndingRow extends React.Component {
     return count ? (
       <a
         key={'sm_' + slot}
-        href="#"
+        href="javascript:void(0)"
         className={'rbc-show-more'}
         onClick={e => this.showMore(slot, e)}
       >

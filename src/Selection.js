@@ -2,8 +2,8 @@ import contains from 'dom-helpers/contains'
 import closest from 'dom-helpers/closest'
 import listen from 'dom-helpers/listen'
 
-function addEventListener(type, handler, target = document) {
-  return listen(target, type, handler, { passive: false })
+function addEventListener(type, handler, target = document, capture = false) {
+  return listen(target, type, handler, { passive: false, capture })
 }
 
 function isOverContainer(container, x, y) {
@@ -275,7 +275,9 @@ class Selection {
       case 'mousedown':
         this._removeEndListener = addEventListener(
           'mouseup',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          document,
+          true
         )
         this._onEscListener = addEventListener(
           'keydown',
@@ -411,8 +413,8 @@ class Selection {
     let { x, y, isTouch } = this._initialEventData
     return (
       !isTouch &&
-      (Math.abs(pageX - x) <= clickTolerance &&
-        Math.abs(pageY - y) <= clickTolerance)
+      Math.abs(pageX - x) <= clickTolerance &&
+        Math.abs(pageY - y) <= clickTolerance
     )
   }
 }
@@ -454,15 +456,17 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
     bottom: bBottom = bTop,
   } = getBoundsForNode(nodeB)
 
-  return !// 'a' bottom doesn't touch 'b' top
-  (
-    aBottom - tolerance < bTop ||
-    // 'a' top doesn't touch 'b' bottom
-    aTop + tolerance > bBottom ||
-    // 'a' right doesn't touch 'b' left
-    aRight - tolerance < bLeft ||
-    // 'a' left doesn't touch 'b' right
-    aLeft + tolerance > bRight
+  return !(
+    // 'a' bottom doesn't touch 'b' top
+    (
+      aBottom - tolerance < bTop ||
+      // 'a' top doesn't touch 'b' bottom
+      aTop + tolerance > bBottom ||
+      // 'a' right doesn't touch 'b' left
+      aRight - tolerance < bLeft ||
+      // 'a' left doesn't touch 'b' right
+      aLeft + tolerance > bRight
+    )
   )
 }
 

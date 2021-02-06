@@ -587,6 +587,11 @@ class Calendar extends React.Component {
     culture: PropTypes.string,
 
     /**
+     * Optionally provide an additional className to style the slot selection.
+     */
+    getSlotSelectionClassName: PropTypes.func,
+
+    /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
      *
      * `format` types are dependent on the configured localizer; both Moment and Globalize

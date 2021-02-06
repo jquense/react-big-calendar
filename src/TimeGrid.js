@@ -373,6 +373,8 @@ TimeGrid.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 
+  getSlotSelectionClassName: PropTypes.func,
+
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
 }
 

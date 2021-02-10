@@ -74,9 +74,9 @@ class EventEndingRow extends React.Component {
   }
 
   renderShowMore(segments, slot) {
-    let { localizer } = this.props
+    let { localizer, range } = this.props
     let count = eventsInSlot(segments, slot)
-
+    const date = range[slot - 1]
     return count ? (
       <a
         key={'sm_' + slot}
@@ -84,7 +84,7 @@ class EventEndingRow extends React.Component {
         className={'rbc-show-more'}
         onClick={e => this.showMore(slot, e)}
       >
-        {localizer.messages.showMore(count)}
+        {localizer.messages.showMore(count, date)}
       </a>
     ) : (
       false

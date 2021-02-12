@@ -80,8 +80,12 @@ class MonthView extends React.Component {
     this._weekCount = weeks.length
 
     return (
-      <div className={clsx('rbc-month-view', className)}>
-        <div className="rbc-row rbc-month-header">
+      <div
+        className={clsx('rbc-month-view', className)}
+        role="table"
+        aria-label="Month View"
+      >
+        <div className="rbc-row rbc-month-header" role="row">
           {this.renderHeaders(weeks[0])}
         </div>
         {weeks.map(this.renderWeek)}
@@ -160,6 +164,7 @@ class MonthView extends React.Component {
           isOffRange && 'rbc-off-range',
           isCurrent && 'rbc-current'
         )}
+        role="cell"
       >
         <DateHeaderComponent
           label={label}

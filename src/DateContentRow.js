@@ -153,7 +153,7 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className}>
+      <div className={className} role="rowgroup">
         <BackgroundCells
           date={date}
           getNow={getNow}
@@ -175,6 +175,7 @@ class DateContentRow extends React.Component {
             'rbc-row-content',
             showAllEvents && 'rbc-row-content-scrollable'
           )}
+          role="row"
         >
           {renderHeader && (
             <div className="rbc-row " ref={this.createHeadingRef}>

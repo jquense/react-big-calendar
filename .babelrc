@@ -9,6 +9,7 @@
         ["jason", { "modules": false }]
       ],
       "plugins": [
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
         ["babel-plugin-transform-rename-import", {
           replacements: [{ original: "lodash", replacement: "lodash-es" }]
         }]

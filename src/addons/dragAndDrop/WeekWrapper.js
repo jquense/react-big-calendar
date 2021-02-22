@@ -1,26 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import * as dates from '../../utils/dates'
-import { getSlotAtX, pointInBox } from '../../utils/selection'
-import { findDOMNode } from 'react-dom'
-
-import { eventSegments } from '../../utils/eventLevels'
-import Selection, { getBoundsForNode } from '../../Selection'
 import EventRow from '../../EventRow'
-import { dragAccessors } from './common'
-
-const propTypes = {}
-
-const eventTimes = (event, accessors) => {
-  let start = accessors.start(event)
-  let end = accessors.end(event)
-
-  const isZeroDuration =
-    dates.eq(start, end, 'minutes') && start.getMinutes() === 0
-  // make zero duration midnight events at least one day long
-  if (isZeroDuration) end = dates.add(end, 1, 'day')
-  return { start, end }
-}
+import Selection, {
+  getBoundsForNode,
+  getEventNodeFromPoint,
+} from '../../Selection'
+import * as dates from '../../utils/dates'
+import { eventSegments } from '../../utils/eventLevels'
+import { getSlotAtX, pointInBox } from '../../utils/selection'
+import { dragAccessors, eventTimes } from './common'
+import { DnDContext } from './DnDContext'
 
 class WeekWrapper extends React.Component {
   static propTypes = {
@@ -30,22 +19,15 @@ class WeekWrapper extends React.Component {
     getters: PropTypes.object.isRequired,
     components: PropTypes.object.isRequired,
     resourceId: PropTypes.any,
+    rtl: PropTypes.bool,
   }
 
-  static contextTypes = {
-    draggable: PropTypes.shape({
-      onStart: PropTypes.func,
-      onEnd: PropTypes.func,
-      dragAndDropAction: PropTypes.object,
-      onDropFromOutside: PropTypes.func,
-      onBeginAction: PropTypes.func,
-      dragFromOutsideItem: PropTypes.func,
-    }),
-  }
+  static contextType = DnDContext
 
   constructor(...args) {
     super(...args)
     this.state = {}
+    this.ref = React.createRef()
   }
 
   componentDidMount() {
@@ -79,42 +61,34 @@ class WeekWrapper extends React.Component {
     this.setState({ segment })
   }
 
-  handleMove = ({ x, y }, node, draggedEvent) => {
+  handleMove = (point, bounds, draggedEvent) => {
+    if (!pointInBox(bounds, point)) return this.reset()
     const event = this.context.draggable.dragAndDropAction.event || draggedEvent
-    const metrics = this.props.slotMetrics
-    const { accessors } = this.props
+    const { accessors, slotMetrics, rtl } = this.props
 
-    if (!event) return
-
-    let rowBox = getBoundsForNode(node)
-
-    if (!pointInBox(rowBox, { x, y })) {
-      this.reset()
-      return
-    }
-
-    // Make sure to maintain the time of the start date while moving it to the new slot
-    let start = dates.merge(
-      metrics.getDateForSlot(getSlotAtX(rowBox, x, false, metrics.slots)),
-      accessors.start(event)
+    const slot = getSlotAtX(
+      bounds,
+      point.x - this.eventOffsetLeft,
+      rtl,
+      slotMetrics.slots
     )
 
-    let end = dates.add(
-      start,
-      dates.diff(accessors.start(event), accessors.end(event), 'minutes'),
-      'minutes'
-    )
+    const date = slotMetrics.getDateForSlot(slot)
 
+    // Adjust the dates, but maintain the times when moving
+    let { start, duration } = eventTimes(event, accessors)
+    start = dates.merge(date, start)
+    const end = dates.add(start, duration, 'milliseconds')
+    // LATER: when dragging a multi-row event, only the first row is animating
     this.update(event, start, end)
   }
 
-  handleDropFromOutside = (point, rowBox) => {
+  handleDropFromOutside = (point, bounds) => {
     if (!this.context.draggable.onDropFromOutside) return
-    const { slotMetrics: metrics } = this.props
+    const { slotMetrics, rtl } = this.props
 
-    let start = metrics.getDateForSlot(
-      getSlotAtX(rowBox, point.x, false, metrics.slots)
-    )
+    const slot = getSlotAtX(bounds, point.x, rtl, slotMetrics.slots)
+    const start = slotMetrics.getDateForSlot(slot)
 
     this.context.draggable.onDropFromOutside({
       start,
@@ -123,64 +97,54 @@ class WeekWrapper extends React.Component {
     })
   }
 
-  handleDragOverFromOutside = ({ x, y }, node) => {
+  handleDragOverFromOutside = (point, node) => {
     if (!this.context.draggable.dragFromOutsideItem) return
-
-    this.handleMove(
-      { x, y },
-      node,
-      this.context.draggable.dragFromOutsideItem()
-    )
+    this.handleMove(point, node, this.context.draggable.dragFromOutsideItem())
   }
 
-  handleResize(point, node) {
+  handleResize(point, bounds) {
     const { event, direction } = this.context.draggable.dragAndDropAction
-    const { accessors, slotMetrics: metrics } = this.props
+    const { accessors, slotMetrics, rtl } = this.props
 
     let { start, end } = eventTimes(event, accessors)
-    let originalStart = start
-    let originalEnd = end
 
-    let rowBox = getBoundsForNode(node)
-    let cursorInRow = pointInBox(rowBox, point)
+    const slot = getSlotAtX(bounds, point.x, rtl, slotMetrics.slots)
+    const date = slotMetrics.getDateForSlot(slot)
+    const cursorInRow = pointInBox(bounds, point)
 
     if (direction === 'RIGHT') {
       if (cursorInRow) {
-        if (metrics.last < start) return this.reset()
-        end = metrics.getDateForSlot(
-          getSlotAtX(rowBox, point.x, false, metrics.slots)
-        )
+        if (slotMetrics.last < start) return this.reset()
+        end = dates.add(date, 1, 'day')
       } else if (
-        dates.inRange(start, metrics.first, metrics.last) ||
-        (rowBox.bottom < point.y && +metrics.first > +start)
+        dates.inRange(start, slotMetrics.first, slotMetrics.last) ||
+        (bounds.bottom < point.y && +slotMetrics.first > +start)
       ) {
-        end = dates.add(metrics.last, 1, 'milliseconds')
+        end = dates.add(slotMetrics.last, 1, 'milliseconds')
       } else {
         this.setState({ segment: null })
         return
       }
-      end = dates.merge(end, accessors.end(event))
+      const originalEnd = accessors.end(event)
+      end = dates.merge(end, originalEnd)
       if (dates.lt(end, start)) {
         end = originalEnd
       }
     } else if (direction === 'LEFT') {
-      // inbetween Row
       if (cursorInRow) {
-        if (metrics.first > end) return this.reset()
-
-        start = metrics.getDateForSlot(
-          getSlotAtX(rowBox, point.x, false, metrics.slots)
-        )
+        if (slotMetrics.first > end) return this.reset()
+        start = date
       } else if (
-        dates.inRange(end, metrics.first, metrics.last) ||
-        (rowBox.top > point.y && +metrics.last < +end)
+        dates.inRange(end, slotMetrics.first, slotMetrics.last) ||
+        (bounds.top > point.y && dates.lt(slotMetrics.last, end))
       ) {
-        start = dates.add(metrics.first, -1, 'milliseconds')
+        start = dates.add(slotMetrics.first, -1, 'milliseconds')
       } else {
         this.reset()
         return
       }
-      start = dates.merge(start, accessors.start(event))
+      const originalStart = accessors.start(event)
+      start = dates.merge(start, originalStart)
       if (dates.gt(start, end)) {
         start = originalStart
       }
@@ -190,7 +154,7 @@ class WeekWrapper extends React.Component {
   }
 
   _selectable = () => {
-    let node = findDOMNode(this).closest('.rbc-month-row, .rbc-allday-cell')
+    let node = this.ref.current.closest('.rbc-month-row, .rbc-allday-cell')
     let container = node.closest('.rbc-month-view, .rbc-time-view')
 
     let selector = (this._selector = new Selection(() => container))
@@ -198,28 +162,34 @@ class WeekWrapper extends React.Component {
     selector.on('beforeSelect', point => {
       const { isAllDay } = this.props
       const { action } = this.context.draggable.dragAndDropAction
+      const eventNode = getEventNodeFromPoint(node, point)
 
+      // eventOffsetLeft is distance from the left of the event to the initial
+      // mouseDown position. We need this later to compute the new top of the
+      // event during move operations, since the final location is really a
+      // delta from this point. note: if we want to DRY this with
+      // EventContainerWrapper, probably better just to capture the mouseDown
+      // point here and do the placement computation in handleMove()...
+      this.eventOffsetLeft = point.x - getBoundsForNode(eventNode).left
+
+      const isInBox = pointInBox(getBoundsForNode(node), point)
       return (
-        action === 'move' ||
-        (action === 'resize' &&
-          (!isAllDay || pointInBox(getBoundsForNode(node), point)))
+        action === 'move' || (action === 'resize' && (!isAllDay || isInBox))
       )
     })
 
     selector.on('selecting', box => {
       const bounds = getBoundsForNode(node)
       const { dragAndDropAction } = this.context.draggable
-
       if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
       if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
     })
 
     selector.on('selectStart', () => this.context.draggable.onStart())
+
     selector.on('select', point => {
       const bounds = getBoundsForNode(node)
-
       if (!this.state.segment) return
-
       if (!pointInBox(bounds, point)) {
         this.reset()
       } else {
@@ -229,17 +199,13 @@ class WeekWrapper extends React.Component {
 
     selector.on('dropFromOutside', point => {
       if (!this.context.draggable.onDropFromOutside) return
-
       const bounds = getBoundsForNode(node)
-
       if (!pointInBox(bounds, point)) return
-
       this.handleDropFromOutside(point, bounds)
     })
 
     selector.on('dragOverFromOutside', point => {
       if (!this.context.draggable.dragFromOutsideItem) return
-
       const bounds = getBoundsForNode(node)
 
       this.handleDragOverFromOutside(point, bounds)
@@ -279,7 +245,7 @@ class WeekWrapper extends React.Component {
     let { segment } = this.state
 
     return (
-      <div className="rbc-addons-dnd-row-body">
+      <div ref={this.ref} className="rbc-addons-dnd-row-body">
         {children}
 
         {segment && (
@@ -298,7 +264,5 @@ class WeekWrapper extends React.Component {
     )
   }
 }
-
-WeekWrapper.propTypes = propTypes
 
 export default WeekWrapper

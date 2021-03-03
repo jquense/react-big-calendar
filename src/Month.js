@@ -16,6 +16,7 @@ import Overlay from 'react-overlays/Overlay'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import DateHeader from './DateHeader'
+import DateFooter from './DateFooter'
 
 import { inRange, sortEvents } from './utils/eventLevels'
 
@@ -133,6 +134,7 @@ class MonthView extends React.Component {
         getters={getters}
         localizer={localizer}
         renderHeader={this.readerDateHeading}
+        renderFooter={this.renderDateFooter}
         renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
@@ -172,6 +174,33 @@ class MonthView extends React.Component {
           drilldownView={drilldownView}
           isOffRange={isOffRange}
           onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+        />
+      </div>
+    )
+  }
+
+  renderDateFooter = ({ date, className, ...props }) => {
+    let { date: currentDate, localizer } = this.props
+
+    let isOffRange = dates.month(date) !== dates.month(currentDate)
+    let isCurrent = dates.eq(date, currentDate, 'day')
+    let DateFooterComponent = this.props.components.dateFooter || DateFooter
+    let label = localizer.format(date, 'dateFormat')
+
+    return (
+      <div
+        {...props}
+        className={clsx(
+          className,
+          isOffRange && 'rbc-off-range',
+          isCurrent && 'rbc-current'
+        )}
+        role="cell"
+      >
+        <DateFooterComponent
+          label={label}
+          date={date}
+          isOffRange={isOffRange}
         />
       </div>
     )

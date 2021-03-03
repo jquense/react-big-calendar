@@ -747,6 +747,7 @@ class Calendar extends React.Component {
         header: PropTypes.elementType,
         dateHeader: PropTypes.elementType,
         event: PropTypes.elementType,
+        footer: PropTypes.elementType,
       }),
     }),
 

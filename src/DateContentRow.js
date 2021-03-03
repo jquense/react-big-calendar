@@ -56,7 +56,20 @@ class DateContentRow extends React.Component {
     let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
     let eventSpace = getHeight(findDOMNode(this)) - headingHeight
 
-    return Math.max(Math.floor(eventSpace / eventHeight), 1)
+    // This is 5 instead of 1 because there's a bug in this library :(
+    // For some reason, eventSpace == eventHeight == 18 on the first render, so it only shows 1 event.
+    // There might be a way to fix it by changing CSS but that's not an option right now
+    // Since responsive design is out of scope, this is actually a viable option
+    //
+    // When the vertical space is limited in the future, and the events row overflows the date,
+    // Consider parameterize it to control from the outside of this library
+    // or change CSS to make sure this calculation always work as expected
+    const MINIMUM_EVENTS_ROW = 5
+    const result = Math.max(
+      Math.floor(eventSpace / eventHeight),
+      MINIMUM_EVENTS_ROW
+    )
+    return result
   }
 
   renderHeadingCell = (date, index) => {
@@ -65,6 +78,19 @@ class DateContentRow extends React.Component {
     return renderHeader({
       date,
       key: `header_${index}`,
+      className: clsx(
+        'rbc-date-cell',
+        dates.eq(date, getNow(), 'day') && 'rbc-now'
+      ),
+    })
+  }
+
+  renderFooterCell = (date, index) => {
+    let { renderFooter, getNow } = this.props
+
+    return renderFooter({
+      date,
+      key: `footer_${index}`,
       className: clsx(
         'rbc-date-cell',
         dates.eq(date, getNow(), 'day') && 'rbc-now'
@@ -115,6 +141,7 @@ class DateContentRow extends React.Component {
 
       getNow,
       renderHeader,
+      renderFooter,
       onSelect,
       localizer,
       onSelectStart,
@@ -178,7 +205,7 @@ class DateContentRow extends React.Component {
           role="row"
         >
           {renderHeader && (
-            <div className="rbc-row " ref={this.createHeadingRef}>
+            <div className="rbc-row" ref={this.createHeadingRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}
@@ -197,6 +224,11 @@ class DateContentRow extends React.Component {
             </WeekWrapper>
           </ScrollableWeekComponent>
         </div>
+        {renderFooter && (
+          <div className="rbc-row rbc-row-footer" ref={this.createHeadingRef}>
+            {range.map(this.renderFooterCell)}
+          </div>
+        )}
       </div>
     )
   }
@@ -212,6 +244,7 @@ DateContentRow.propTypes = {
   resourceId: PropTypes.any,
   renderForMeasure: PropTypes.bool,
   renderHeader: PropTypes.func,
+  renderFooter: PropTypes.func,
 
   container: PropTypes.func,
   selected: PropTypes.object,

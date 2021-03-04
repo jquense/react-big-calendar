@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import EventRow from '../../EventRow'
-import Selection, {
-  getBoundsForNode,
-  getEventNodeFromPoint,
-} from '../../Selection'
+import Selection, { getBoundsForNode } from '../../Selection'
 import * as dates from '../../utils/dates'
 import { eventSegments } from '../../utils/eventLevels'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
@@ -162,7 +159,7 @@ class WeekWrapper extends React.Component {
     selector.on('beforeSelect', point => {
       const { isAllDay } = this.props
       const { action } = this.context.draggable.dragAndDropAction
-      const eventNode = getEventNodeFromPoint(node, point)
+      const bounds = getBoundsForNode(node)
 
       // eventOffsetLeft is distance from the left of the event to the initial
       // mouseDown position. We need this later to compute the new top of the
@@ -170,9 +167,9 @@ class WeekWrapper extends React.Component {
       // delta from this point. note: if we want to DRY this with
       // EventContainerWrapper, probably better just to capture the mouseDown
       // point here and do the placement computation in handleMove()...
-      this.eventOffsetLeft = point.x - getBoundsForNode(eventNode).left
+      this.eventOffsetLeft = point.x - bounds.left
 
-      const isInBox = pointInBox(getBoundsForNode(node), point)
+      const isInBox = pointInBox(bounds, point)
       return (
         action === 'move' || (action === 'resize' && (!isAllDay || isInBox))
       )

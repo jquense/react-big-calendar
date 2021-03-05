@@ -69,8 +69,8 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "react": "^16.6.1 || ^17",
+    "react-dom": "^16.6.1 || ^17"
   },
   "devDependencies": {
     "@4c/rollout": "^1.4.0",

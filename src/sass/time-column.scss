@@ -97,7 +97,7 @@
 
   .rbc-time-header-content {
     min-width: auto;
-    flex: 1 0 0;
+    flex: 1 0 0%;
     flex-basis: 0px;
   }
 
@@ -123,7 +123,7 @@
 }
 
 .rbc-time-slot {
-  flex: 1 0 0;
+  flex: 1 0 0%;
 
   &.rbc-now {
     font-weight: bold;

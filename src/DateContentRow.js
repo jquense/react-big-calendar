@@ -9,6 +9,8 @@ import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
+import NoopWrapper from './NoopWrapper'
+import ScrollableWeekWrapper from './ScrollableWeekWrapper'
 import * as DateSlotMetrics from './utils/DateSlotMetrics'
 
 class DateContentRow extends React.Component {
@@ -71,10 +73,15 @@ class DateContentRow extends React.Component {
   }
 
   renderDummy = () => {
-    let { className, range, renderHeader } = this.props
+    let { className, range, renderHeader, showAllEvents } = this.props
     return (
       <div className={className}>
-        <div className="rbc-row-content">
+        <div
+          className={clsx(
+            'rbc-row-content',
+            showAllEvents && 'rbc-row-content-scrollable'
+          )}
+        >
           {renderHeader && (
             <div className="rbc-row" ref={this.createHeadingRef}>
               {range.map(this.renderHeadingCell)}
@@ -113,9 +120,12 @@ class DateContentRow extends React.Component {
       onSelectStart,
       onSelectEnd,
       onDoubleClick,
+      onKeyPress,
       resourceId,
       longPressThreshold,
       isAllDay,
+      resizable,
+      showAllEvents,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -123,6 +133,9 @@ class DateContentRow extends React.Component {
     let metrics = this.slotMetrics(this.props)
     let { levels, extra } = metrics
 
+    let ScrollableWeekComponent = showAllEvents
+      ? ScrollableWeekWrapper
+      : NoopWrapper
     let WeekWrapper = components.weekWrapper
 
     const eventRowProps = {
@@ -133,12 +146,14 @@ class DateContentRow extends React.Component {
       components,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       resourceId,
       slotMetrics: metrics,
+      resizable,
     }
 
     return (
-      <div className={className}>
+      <div className={className} role="rowgroup">
         <BackgroundCells
           date={date}
           getNow={getNow}
@@ -155,24 +170,32 @@ class DateContentRow extends React.Component {
           resourceId={resourceId}
         />
 
-        <div className="rbc-row-content">
+        <div
+          className={clsx(
+            'rbc-row-content',
+            showAllEvents && 'rbc-row-content-scrollable'
+          )}
+          role="row"
+        >
           {renderHeader && (
             <div className="rbc-row " ref={this.createHeadingRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
-            {levels.map((segs, idx) => (
-              <EventRow key={idx} segments={segs} {...eventRowProps} />
-            ))}
-            {!!extra.length && (
-              <EventEndingRow
-                segments={extra}
-                onShowMore={this.handleShowMore}
-                {...eventRowProps}
-              />
-            )}
-          </WeekWrapper>
+          <ScrollableWeekComponent>
+            <WeekWrapper isAllDay={isAllDay} {...eventRowProps}>
+              {levels.map((segs, idx) => (
+                <EventRow key={idx} segments={segs} {...eventRowProps} />
+              ))}
+              {!!extra.length && (
+                <EventEndingRow
+                  segments={extra}
+                  onShowMore={this.handleShowMore}
+                  {...eventRowProps}
+                />
+              )}
+            </WeekWrapper>
+          </ScrollableWeekComponent>
         </div>
       </div>
     )
@@ -185,6 +208,7 @@ DateContentRow.propTypes = {
   range: PropTypes.array.isRequired,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   resourceId: PropTypes.any,
   renderForMeasure: PropTypes.bool,
   renderHeader: PropTypes.func,
@@ -195,11 +219,13 @@ DateContentRow.propTypes = {
   longPressThreshold: PropTypes.number,
 
   onShowMore: PropTypes.func,
+  showAllEvents: PropTypes.bool,
   onSelectSlot: PropTypes.func,
   onSelect: PropTypes.func,
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onKeyPress: PropTypes.func,
   dayPropGetter: PropTypes.func,
 
   getNow: PropTypes.func.isRequired,

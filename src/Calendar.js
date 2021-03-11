@@ -113,6 +113,29 @@ class Calendar extends React.Component {
     events: PropTypes.arrayOf(PropTypes.object),
 
     /**
+     * An array of background event objects to display on the calendar. Background
+     * Events behave similarly to Events but are not factored into Event overlap logic,
+     * allowing them to sit behind any Events that may occur during the same period.
+     * Background Events objects can be any shape, as long as the Calendar knows how to
+     * retrieve the following details of the event:
+     *
+     *  - start time
+     *  - end time
+     *
+     * Each of these properties can be customized or generated dynamically by
+     * setting the various "accessor" props. Without any configuration the default
+     * event should look like:
+     *
+     * ```js
+     * BackgroundEvent {
+     *   start: Date,
+     *   end: Date,
+     * }
+     * ```
+     */
+    backgroundEvents: PropTypes.arrayOf(PropTypes.object),
+
+    /**
      * Accessor for the event title, used to display event information. Should
      * resolve to a `renderable` value.
      *
@@ -313,6 +336,15 @@ class Calendar extends React.Component {
     onDoubleClickEvent: PropTypes.func,
 
     /**
+     * Callback fired when a focused calendar event recieves a key press.
+     *
+     * ```js
+     * (event: Object, e: SyntheticEvent) => void
+     * ```
+     */
+    onKeyPressEvent: PropTypes.func,
+
+    /**
      * Callback fired when dragging a selection in the Time views.
      *
      * Returning `false` from the handler will prevent a selection.
@@ -331,6 +363,14 @@ class Calendar extends React.Component {
      * ```
      */
     onShowMore: PropTypes.func,
+
+    /**
+     * Displays all events on the month view instead of
+     * having some hidden behind +{count} more. This will
+     * cause the rows in the month view to be scrollable if
+     * the number of events exceed the height of the row.
+     */
+    showAllEvents: PropTypes.bool,
 
     /**
      * The selected event, if any.
@@ -493,16 +533,16 @@ class Calendar extends React.Component {
      * (date: Date, resourceId: (number|string)) => { className?: string, style?: Object }
      * ```
      */
-	slotPropGetter: PropTypes.func,
-	
-	/**
-	 * Optionally provide a function that returns an object of props to be applied 
-	 * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
-	 * ```js
-	 * () => { style?: Object }
-	 * ```
-	 */
-	slotGroupPropGetter: PropTypes.func,
+    slotPropGetter: PropTypes.func,
+
+    /**
+     * Optionally provide a function that returns an object of props to be applied
+     * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
+     * ```js
+     * () => { style?: Object }
+     * ```
+     */
+    slotGroupPropGetter: PropTypes.func,
 
     /**
      * Optionally provide a function that returns an object of className or style props
@@ -766,6 +806,7 @@ class Calendar extends React.Component {
 
   constructor(...args) {
     super(...args)
+
     this.state = {
       context: this.getContext(this.props),
     }
@@ -784,8 +825,9 @@ class Calendar extends React.Component {
     resourceIdAccessor,
     resourceTitleAccessor,
     eventPropGetter,
-	slotPropGetter,
-	slotGroupPropGetter,
+    backgroundEventPropGetter,
+    slotPropGetter,
+    slotGroupPropGetter,
     dayPropGetter,
     view,
     views,
@@ -803,14 +845,18 @@ class Calendar extends React.Component {
       getters: {
         eventProp: (...args) =>
           (eventPropGetter && eventPropGetter(...args)) || {},
+        backgroundEventProp: (...args) =>
+          (backgroundEventPropGetter && backgroundEventPropGetter(...args)) ||
+          {},
         slotProp: (...args) =>
-		  (slotPropGetter && slotPropGetter(...args)) || {},
-		slotGroupProp: (...args) =>
-		  (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
+          (slotPropGetter && slotPropGetter(...args)) || {},
+        slotGroupProp: (...args) =>
+          (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
         dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
       },
       components: defaults(components[view] || {}, omit(components, names), {
         eventWrapper: NoopWrapper,
+        backgroundEventWrapper: NoopWrapper,
         eventContainerWrapper: NoopWrapper,
         dateCellWrapper: NoopWrapper,
         weekWrapper: NoopWrapper,
@@ -868,6 +914,7 @@ class Calendar extends React.Component {
       view,
       toolbar,
       events,
+      backgroundEvents = [],
       style,
       className,
       elementProps,
@@ -917,6 +964,7 @@ class Calendar extends React.Component {
         <View
           {...props}
           events={events}
+          backgroundEvents={backgroundEvents}
           date={current}
           getNow={getNow}
           length={length}
@@ -930,6 +978,7 @@ class Calendar extends React.Component {
           onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
           onDoubleClickEvent={this.handleDoubleClickEvent}
+          onKeyPressEvent={this.handleKeyPressEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={onShowMore}
         />
@@ -995,6 +1044,10 @@ class Calendar extends React.Component {
 
   handleDoubleClickEvent = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
+  }
+
+  handleKeyPressEvent = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
   }
 
   handleSelectSlot = slotInfo => {

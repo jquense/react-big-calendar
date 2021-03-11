@@ -18,6 +18,7 @@ export default {
 
     onSelect: PropTypes.func,
     onDoubleClick: PropTypes.func,
+    onKeyPress: PropTypes.func,
   },
 
   defaultProps: {
@@ -33,9 +34,11 @@ export default {
       getters,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       localizer,
       slotMetrics,
       components,
+      resizable,
     } = props
 
     let continuesPrior = slotMetrics.continuesPrior(event)
@@ -50,11 +53,13 @@ export default {
         components={components}
         onSelect={onSelect}
         onDoubleClick={onDoubleClick}
+        onKeyPress={onKeyPress}
         continuesPrior={continuesPrior}
         continuesAfter={continuesAfter}
         slotStart={slotMetrics.first}
         slotEnd={slotMetrics.last}
         selected={isSelected(event, selected)}
+        resizable={resizable}
       />
     )
   },

@@ -1,6 +1,6 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.23.0",
+  "name": "rbc-fork-react-big-calendar",
+  "version": "0.33.2",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",

@@ -153,8 +153,13 @@ class WeekWrapper extends React.Component {
   _selectable = () => {
     let node = this.ref.current.closest('.rbc-month-row, .rbc-allday-cell')
     let container = node.closest('.rbc-month-view, .rbc-time-view')
+    let allowedTargets = container.querySelectorAll(
+      '.rbc-day-slot, .rbc-allday-cell'
+    )
 
-    let selector = (this._selector = new Selection(() => container))
+    let selector = (this._selector = new Selection(() => container, {
+      allowedTargets: () => allowedTargets,
+    }))
 
     selector.on('beforeSelect', point => {
       const { isAllDay } = this.props

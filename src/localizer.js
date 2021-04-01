@@ -33,6 +33,7 @@ export class DateLocalizer {
     this.startOfWeek = spec.firstOfWeek
     this.formats = spec.formats
     this.format = (...args) => _format(this, spec.format, ...args)
+    this.localizedDateUtil = spec.localizedDateUtil || null
   }
 }
 

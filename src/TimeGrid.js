@@ -258,8 +258,8 @@ export default class TimeGrid extends Component {
             date={start}
             ref={this.gutterRef}
             localizer={localizer}
-            min={dates.merge(start, min)}
-            max={dates.merge(start, max)}
+            min={dates.merge(start, min, localizer)}
+            max={dates.merge(start, max, localizer)}
             step={this.props.step}
             getNow={this.props.getNow}
             timeslots={this.props.timeslots}

@@ -7,8 +7,6 @@ export {
   minutes,
   hours,
   month,
-  startOf,
-  endOf,
   add,
   eq,
   gte,
@@ -36,15 +34,15 @@ export function monthsInYear(year) {
 }
 
 export function firstVisibleDay(date, localizer) {
-  let firstOfMonth = dates.startOf(date, 'month')
+  let firstOfMonth = startOf(date, 'month', localizer)
 
-  return dates.startOf(firstOfMonth, 'week', localizer.startOfWeek())
+  return startOfWeek(firstOfMonth, localizer)
 }
 
 export function lastVisibleDay(date, localizer) {
-  let endOfMonth = dates.endOf(date, 'month')
+  let endOfMonth = endOf(date, 'month', localizer)
 
-  return dates.endOf(endOfMonth, 'week', localizer.startOfWeek())
+  return endOfWeek(endOfMonth, localizer)
 }
 
 export function visibleDays(date, localizer) {
@@ -61,7 +59,7 @@ export function visibleDays(date, localizer) {
 }
 
 export function ceil(date, unit) {
-  let floor = dates.startOf(date, unit)
+  let floor = startOf(date, unit)
 
   return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
 }
@@ -78,17 +76,38 @@ export function range(start, end, unit = 'day') {
   return days
 }
 
-export function merge(date, time) {
+export function merge(date, time, localizer = null) {
   if (time == null && date == null) return null
 
   if (time == null) time = new Date()
   if (date == null) date = new Date()
 
-  date = dates.startOf(date, 'day')
-  date = dates.hours(date, dates.hours(time))
-  date = dates.minutes(date, dates.minutes(time))
-  date = dates.seconds(date, dates.seconds(time))
-  return dates.milliseconds(date, dates.milliseconds(time))
+  date = startOf(date, 'day', localizer)
+  const { hours, minutes, seconds, milliseconds } = getTimeUnits(time)
+
+  if (localizer && localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.setTime(
+      date,
+      hours,
+      minutes,
+      seconds,
+      milliseconds
+    )
+  }
+
+  date = dates.hours(date, hours)
+  date = dates.minutes(date, minutes)
+  date = dates.seconds(date, seconds)
+  return dates.milliseconds(date, milliseconds)
+}
+
+export function getTimeUnits(time) {
+  return {
+    hours: dates.hours(time),
+    minutes: dates.minutes(time),
+    seconds: dates.seconds(time),
+    milliseconds: dates.milliseconds(time),
+  }
 }
 
 export function eqTime(dateA, dateB) {
@@ -124,8 +143,7 @@ export function diff(dateA, dateB, unit) {
   // since one day in the range may be shorter/longer by an hour
   return Math.round(
     Math.abs(
-      +dates.startOf(dateA, unit) / MILLI[unit] -
-        +dates.startOf(dateB, unit) / MILLI[unit]
+      +startOf(dateA, unit) / MILLI[unit] - +startOf(dateB, unit) / MILLI[unit]
     )
   )
 }
@@ -158,13 +176,47 @@ export function week(date) {
 }
 
 export function today() {
-  return dates.startOf(new Date(), 'day')
+  return startOf(new Date(), 'day')
 }
 
 export function yesterday() {
-  return dates.add(dates.startOf(new Date(), 'day'), -1, 'day')
+  return dates.add(startOf(new Date(), 'day'), -1, 'day')
 }
 
 export function tomorrow() {
-  return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
+  return dates.add(startOf(new Date(), 'day'), 1, 'day')
+}
+
+export function endOf(date, unit, localizer) {
+  if (unit === 'week') return endOfWeek(date, localizer)
+  if (localizer && localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.endOf(date, 'week')
+  }
+  return dates.endOf(date, unit)
+}
+
+export function endOfWeek(date, localizer) {
+  const firstOfWeek = localizer.startOfWeek()
+  if (localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.endOf(date, 'week')
+  }
+  return dates.endOf(date, 'week', firstOfWeek)
+}
+
+export function startOfWeek(date, localizer) {
+  const firstOfWeek = localizer.startOfWeek()
+  if (localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.startOf(date, 'week')
+  }
+  return dates.startOf(date, 'week', firstOfWeek)
+}
+
+export function startOf(date, unit, localizer) {
+  if (unit === 'week') {
+    return startOfWeek(date, localizer)
+  }
+  if (localizer && localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.startOf(date, unit)
+  }
+  return dates.startOf(date, unit)
 }

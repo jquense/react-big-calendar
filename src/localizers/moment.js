@@ -53,5 +53,27 @@ export default function(moment) {
     format(value, format, culture) {
       return locale(moment(value), culture).format(format)
     },
+
+    localizedDateUtil: {
+      m: moment,
+      startOf: function(date, unit) {
+        return moment(date)
+          .startOf(unit)
+          .toDate()
+      },
+      endOf: function(date, unit) {
+        return moment(date)
+          .endOf(unit)
+          .toDate()
+      },
+      setTime: function(date, h = 0, m = 0, s = 0, ms = 0) {
+        return moment(date)
+          .hours(h)
+          .minutes(m)
+          .seconds(s)
+          .milliseconds(ms)
+          .toDate()
+      },
+    },
   })
 }

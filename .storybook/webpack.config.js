@@ -1,38 +1,14 @@
-const path = require('path');
-const Autoprefixer = require('less-plugin-autoprefix');
-
+// you can use this file to add your custom webpack plugins, loaders and anything you like.
 module.exports = {
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
+  plugins: [
+    // your custom plugins
+  ],
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.css?$/,
-        loaders: [ 'style', 'raw' ],
-        include: [
-          path.resolve(__dirname, '../')
-        ]
-      },
-      {
-        test: /\.less?$/,
-        loader: 'style-loader!css-loader!less-loader',
-        include: [
-          path.resolve(__dirname, '../')
-        ]
-      },
-      {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
-      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
-      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'}
-    ]
-  },
-
-  lessLoader: {
-    lessPlugins: [
-      new Autoprefixer({
-        browsers: ['last 2 versions', 'ie >= 10']
-      })
+        test: /\.(sass|less|css)$/,
+        loaders: ['style-loader', 'css-loader', 'less-loader']
+      }
     ]
   }
 };

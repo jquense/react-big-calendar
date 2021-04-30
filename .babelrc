@@ -1,3 +1,26 @@
 {
-  "presets": ["jason"]
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "@babel/plugin-proposal-object-rest-spread",
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "@babel/plugin-transform-async-to-generator",
+    ["styled-jsx/babel", { "sourceMaps":  false }]
+  ],
+  "env": {
+    "storybook": {
+      "plugins": [
+        "@babel/plugin-transform-modules-commonjs",
+        "styled-jsx/babel"
+      ]
+    },
+    "test": {
+      "plugins": [
+        "@babel/plugin-transform-modules-commonjs"
+      ]
+    }
+  }
 }

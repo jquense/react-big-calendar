@@ -68,6 +68,7 @@ export default class TimeGrid extends Component {
 
     messages: PropTypes.object,
     components: PropTypes.object.isRequired,
+    onDayMore: PropTypes.func
   }
 
   static defaultProps = {
@@ -296,6 +297,7 @@ export default class TimeGrid extends Component {
             onSelect={this.handleSelectEvent}
             view={view}
             style={allDayRowStyle}
+            onDayMore={this.props.onDayMore}
           />
         </div>
       </div>

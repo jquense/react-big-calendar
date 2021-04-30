@@ -85,37 +85,44 @@ export default function createEvents(idx = 0, date = new Date()) {
       {
         'title': 'Event 9',
         'start': new Date(y, m, d, 9, 30, 0, 0),
-        'end': new Date(y, m, d, 10, 30, 0, 0)
+        'end': new Date(y, m, d, 10, 30, 0, 0),
+        'allDay': true
       },
       {
         'title': 'Event 10',
         'start': new Date(y, m, d, 10, 30, 0, 0),
-        'end': new Date(y, m, d, 12, 30, 0, 0)
+        'end': new Date(y, m, d, 12, 30, 0, 0),
+        'allDay': true
       },
       {
         'title': 'Event 11',
         'start': new Date(y, m, d, 12, 0, 0, 0),
-        'end': new Date(y, m, d, 13, 0, 0, 0)
+        'end': new Date(y, m, d, 13, 0, 0, 0),
+        'allDay': true
       },
       {
         'title': 'Event 12',
         'start': new Date(y, m, d, 12, 0, 0, 0),
-        'end': new Date(y, m, d, 13, 0, 0, 0)
+        'end': new Date(y, m, d, 13, 0, 0, 0),
+        'allDay': true
       },
       {
         'title': 'Event 13',
         'start': new Date(y, m, d, 12, 0, 0, 0),
-        'end': new Date(y, m, d, 13, 0, 0, 0)
+        'end': new Date(y, m, d, 13, 0, 0, 0),
+        'allDay': true
       },
       {
         'title': 'Event 14',
         'start': new Date(y, m, d, 12, 0, 0, 0),
-        'end': new Date(y, m, d, 13, 0, 0, 0)
+        'end': new Date(y, m, d, 13, 0, 0, 0),
+        'allDay': true
       },
       {
         'title': 'Event 15',
         'start': new Date(y, m, d, 6, 30, 0, 0),
-        'end': new Date(y, m, d, 8, 0, 0, 0)
+        'end': new Date(y, m, d, 8, 0, 0, 0),
+        'allDay': true
       },
     ],
     [

@@ -57,9 +57,11 @@ class DateContentRow extends React.Component {
     super(...args);
   }
 
-  handleSelectSlot = (slot) => {
+  handleSelectSlot = (slot, showingExtra) => {
     const { range, onSelectSlot } = this.props;
-
+    if(showingExtra) {
+      return false;
+    }
     onSelectSlot(
       range.slice(slot.start, slot.end + 1),
       slot,
@@ -67,8 +69,14 @@ class DateContentRow extends React.Component {
   }
 
   handleShowMore = (slot) => {
-    const { range, onShowMore } = this.props;
+    const { range, onShowMore, onDayMore, view } = this.props;
     let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
+
+    //If onDayMore passed, ignore handle show more
+    if(onDayMore && view == "day") {
+      onDayMore();
+      return false;
+    }
 
     let cell;
     if (row) cell = row.children[slot-1]
@@ -180,7 +188,7 @@ class DateContentRow extends React.Component {
           container={this.getContainer}
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
-          onSelectSlot={this.handleSelectSlot}
+          onSelectSlot={this.handleSelectSlot(this, extra.length)}
           cellWrapperComponent={dateCellWrapper}
         />
 

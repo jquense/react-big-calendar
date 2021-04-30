@@ -296,6 +296,7 @@ export default class TimeGrid extends Component {
             onSelect={this.handleSelectEvent}
             view={view}
             style={allDayRowStyle}
+            onDayMore={this.props.onDayMore}
           />
         </div>
       </div>

@@ -1,4 +1,5 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf, action } from '@storybook/react';
+import { boolean, object, select } from '@storybook/addon-knobs';
 import moment from 'moment';
 import React from 'react';
 
@@ -45,7 +46,7 @@ storiesOf('module.Calendar.week', module)
         <Calendar
           popup
           events={demoEvents}
-          onSelectEvent={action('event selected')}
+          onSelectEvent={() => console.log('On Select Event')}
           defaultDate={new Date(2015, 3, 1)}
         />
       </div>
@@ -60,7 +61,7 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
+          onSelectEvent={() => console.log('On Select Event')}
           defaultDate={new Date()}
         />
       </div>
@@ -74,6 +75,9 @@ storiesOf('module.Calendar.week', module)
           defaultView={Calendar.Views.DAY}
           defaultDate={new Date()}
           events={createEvents(1)}
+          selectable
+          onSelectSlot={() => console.log('On Select Slot')}
+          onDayMore={() => console.log('On Day More Click')}
         />
       </div>
     )
@@ -88,8 +92,8 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
+          onSelectEvent={() => console.log('On Select Event')}
+          onSelectSlot={() => console.log('On Select Slot')}
           defaultDate={new Date()}
         />
       </div>
@@ -107,8 +111,8 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
+          onSelectEvent={() => console.log('On Select Event')}
+          onSelectSlot={() => console.log('On Select Slot')}
           defaultDate={new Date()}
         />
       </div>
@@ -126,8 +130,8 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
+          onSelectEvent={() => console.log('On Select Event')}
+          onSelectSlot={() => console.log('On Select Slot')}
           defaultDate={new Date()}
         />
       </div>
@@ -145,8 +149,8 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
+          onSelectEvent={() => console.log('On Select Event')}
+          onSelectSlot={() => console.log('On Select Slot')}
           defaultDate={new Date()}
         />
       </div>
@@ -163,8 +167,8 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
+          onSelectEvent={() => console.log('On Select Event')}
+          onSelectSlot={() => console.log('On Select Slot')}
           defaultDate={new Date()}
         />
       </div>
@@ -182,8 +186,8 @@ storiesOf('module.Calendar.week', module)
           min={moment('12:00am', 'h:mma').toDate()}
           max={moment('11:59pm', 'h:mma').toDate()}
           events={events}
-          onSelectEvent={action('event selected')}
-          onSelectSlot={action('slot selected')}
+          onSelectEvent={() => console.log('On Select Event')}
+          onSelectSlot={() => console.log('On Select Slot')}
           defaultDate={new Date()}
         />
       </div>

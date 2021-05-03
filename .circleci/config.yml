@@ -30,7 +30,6 @@ jobs:
       - npm_install
       - run: npm run lint
       - run: npm test
-      - run: npm run test:circle
       - store_test_results:
           path: test_reports
 workflows:

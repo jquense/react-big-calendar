@@ -1,8 +1,11 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
       - image: circleci/node:10
+        auth:
+          username: "$DOCKERHUB_USER"
+          password: "$DOCKERHUB_PASSWORD"
 
     working_directory: ~/repo
 
@@ -25,3 +28,9 @@ jobs:
       - run:
           name: Run Tests
           command: npm test
+
+workflows:
+  rc:
+    jobs:
+      - build:
+          context: appfolio_test_context

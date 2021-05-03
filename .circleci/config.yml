@@ -1,0 +1,40 @@
+version: 2.1
+
+# executors:
+#   node:
+#     docker:
+#     - image: circleci/node:10.1.0
+#     working_directory: ~/repo
+
+commands:
+  npm_install:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-npm-install-{{ checksum "package-lock.json" }}
+            - v1-npm-install
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-npm-install-{{ checksum "package-lock.json" }}
+jobs:
+  test:
+    docker:
+      - image: circleci/node:10.23.0
+        auth:
+          username: '$DOCKERHUB_USER'
+          password: '$DOCKERHUB_PASSWORD'
+    steps:
+      - checkout
+      - npm_install
+      - run: npm run lint
+      - run: npm test
+      - store_test_results:
+          path: test_reports
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test:
+          context: appfolio_test_context

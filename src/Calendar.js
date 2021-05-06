@@ -336,7 +336,7 @@ class Calendar extends React.Component {
     onDoubleClickEvent: PropTypes.func,
 
     /**
-     * Callback fired when a focused calendar event recieves a key press.
+     * Callback fired when a focused calendar event receives a key press.
      *
      * ```js
      * (event: Object, e: SyntheticEvent) => void
@@ -484,7 +484,7 @@ class Calendar extends React.Component {
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
     /**
-     * Specifies the number of miliseconds the user must press and hold on the screen for a touch
+     * Specifies the number of milliseconds the user must press and hold on the screen for a touch
      * to be considered a "long press." Long presses are used for time slot selection on touch
      * devices.
      *

@@ -59,9 +59,11 @@ class DateContentRow extends React.Component {
     super(...args);
   }
 
-  handleSelectSlot = (slot) => {
+  handleSelectSlot = (slot, showingExtra) => {
     const { range, onSelectSlot } = this.props;
-
+    if(showingExtra) {
+      return false;
+    }
     onSelectSlot(
       range.slice(slot.start, slot.end + 1),
       slot,

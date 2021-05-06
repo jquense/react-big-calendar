@@ -12,7 +12,7 @@
   },
   "files": [
     "dist",
-    "src"
+    "lib"
   ],
   "keywords": [
     "scheduler",

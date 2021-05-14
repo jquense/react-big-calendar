@@ -78,23 +78,23 @@ const MyCalendar = props => (
 )
 ```
 
-#### date-fns 2.0
+#### date-fns v2
 
 ```js
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
+import { format, parse, startOfWeek, getDay } from 'date-fns'
+import { enUS } from 'date-fns/locale'
+
 const locales = {
-  'en-US': require('date-fns/locale/en-US'),
+  'en-US': enUS
 }
+
 const localizer = dateFnsLocalizer({
   format,
   parse,
   startOfWeek,
   getDay,
-  locales,
+  locales
 })
 
 const MyCalendar = props => (

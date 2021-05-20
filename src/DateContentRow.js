@@ -191,7 +191,7 @@ class DateContentRow extends React.Component {
           container={this.getContainer}
           onSelectStart={onSelectStart}
           onSelectEnd={onSelectEnd}
-          onSelectSlot={() => this.handleSelectSlot(this)}
+          onSelectSlot={this.handleSelectSlot}
           cellWrapperComponent={dateCellWrapper}
         />
 

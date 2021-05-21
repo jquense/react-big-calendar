@@ -36,7 +36,7 @@ Week.range = (date, { localizer }) => {
   let start = dates.startOfWeek(date, localizer)
   let end = dates.endOfWeek(date, localizer)
 
-  return dates.range(start, end)
+  return dates.range(start, end, 'day', localizer)
 }
 
 Week.title = (date, { localizer }) => {

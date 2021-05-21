@@ -126,7 +126,8 @@ export default class TimeGrid extends Component {
             date,
             accessors.start(event),
             accessors.end(event),
-            'day'
+            'day',
+            localizer
           )
         )
 
@@ -137,7 +138,8 @@ export default class TimeGrid extends Component {
             date,
             accessors.start(event),
             accessors.end(event),
-            'day'
+            'day',
+            localizer
           )
         )
 
@@ -145,8 +147,8 @@ export default class TimeGrid extends Component {
           <DayColumn
             {...this.props}
             localizer={localizer}
-            min={dates.merge(date, min)}
-            max={dates.merge(date, max)}
+            min={dates.merge(date, min, localizer)}
+            max={dates.merge(date, max, localizer)}
             resource={resource && id}
             components={components}
             isNow={dates.eq(date, now, 'day')}
@@ -194,7 +196,7 @@ export default class TimeGrid extends Component {
       rangeBackgroundEvents = []
 
     events.forEach(event => {
-      if (inRange(event, start, end, accessors)) {
+      if (inRange(event, start, end, accessors, localizer)) {
         let eStart = accessors.start(event),
           eEnd = accessors.end(event)
 
@@ -211,7 +213,7 @@ export default class TimeGrid extends Component {
     })
 
     backgroundEvents.forEach(event => {
-      if (inRange(event, start, end, accessors)) {
+      if (inRange(event, start, end, accessors, localizer)) {
         rangeBackgroundEvents.push(event)
       }
     })

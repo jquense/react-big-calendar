@@ -8,12 +8,6 @@ export {
   hours,
   month,
   add,
-  eq,
-  gte,
-  gt,
-  lte,
-  lt,
-  inRange,
   min,
   max,
 } from 'date-arithmetic'
@@ -50,7 +44,7 @@ export function visibleDays(date, localizer) {
     last = lastVisibleDay(date, localizer),
     days = []
 
-  while (dates.lte(current, last, 'day')) {
+  while (lte(current, last, 'day')) {
     days.push(current)
     current = dates.add(current, 1, 'day')
   }
@@ -61,14 +55,14 @@ export function visibleDays(date, localizer) {
 export function ceil(date, unit) {
   let floor = startOf(date, unit)
 
-  return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
+  return eq(floor, date) ? floor : dates.add(floor, 1, unit)
 }
 
-export function range(start, end, unit = 'day') {
+export function range(start, end, unit = 'day', localizer) {
   let current = start,
     days = []
 
-  while (dates.lte(current, end, unit)) {
+  while (lte(current, end, unit, localizer)) {
     days.push(current)
     current = dates.add(current, 1, unit)
   }
@@ -219,4 +213,34 @@ export function startOf(date, unit, localizer) {
     return localizer.localizedDateUtil.startOf(date, unit)
   }
   return dates.startOf(date, unit)
+}
+
+export var eq = createComparer(function(a, b) {
+  return a === b
+})
+export var gt = createComparer(function(a, b) {
+  return a > b
+})
+export var gte = createComparer(function(a, b) {
+  return a >= b
+})
+export var lt = createComparer(function(a, b) {
+  return a < b
+})
+export var lte = createComparer(function(a, b) {
+  return a <= b
+})
+export function inRange(day, min, max, unit, localizer) {
+  unit = unit || 'day'
+
+  return (
+    (!min || gte(day, min, unit, localizer)) &&
+    (!max || lte(day, max, unit, localizer))
+  )
+}
+
+function createComparer(operator) {
+  return function(a, b, unit, localizer) {
+    return operator(+startOf(a, unit, localizer), +startOf(b, unit, localizer))
+  }
 }

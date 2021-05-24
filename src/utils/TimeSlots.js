@@ -8,18 +8,12 @@ const getKey = (min, max, step, slots) =>
   `${+dates.startOf(max, 'minutes')}` +
   `${step}-${slots}`
 
-export function getSlotMetrics({
-  min: start,
-  max: end,
-  step,
-  timeslots,
-  localizer,
-}) {
+export function getSlotMetrics({ min: start, max: end, step, timeslots }) {
   const key = getKey(start, end, step, timeslots)
 
   // if the start is on a DST-changing day but *after* the moment of DST
   // transition we need to add those extra minutes to our minutesFromMidnight
-  const daystart = dates.startOf(start, 'day', localizer)
+  const daystart = dates.startOf(start, 'day')
   const daystartdstoffset = getDstOffset(daystart, start)
   const totalMin =
     1 + dates.diff(start, end, 'minutes') + getDstOffset(start, end)
@@ -130,12 +124,12 @@ export function getSlotMetrics({
       return dates.gt(dates.merge(end, date), end, 'minutes')
     },
 
-    getRange(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
+    getRange(rangeStart, rangeEnd, ignoreMin, ignoreMax, localizer) {
       if (!ignoreMin) rangeStart = dates.min(end, dates.max(start, rangeStart))
       if (!ignoreMax) rangeEnd = dates.min(end, dates.max(start, rangeEnd))
 
-      const rangeStartMin = positionFromDate(rangeStart)
-      const rangeEndMin = positionFromDate(rangeEnd)
+      const rangeStartMin = positionFromDate(rangeStart, localizer)
+      const rangeEndMin = positionFromDate(rangeEnd, localizer)
       const top =
         rangeEndMin > step * numSlots && !dates.eq(end, rangeEnd)
           ? ((rangeStartMin - step) / (step * numSlots)) * 100
@@ -144,9 +138,9 @@ export function getSlotMetrics({
       return {
         top,
         height: (rangeEndMin / (step * numSlots)) * 100 - top,
-        start: positionFromDate(rangeStart),
+        start: positionFromDate(rangeStart, localizer),
         startDate: rangeStart,
-        end: positionFromDate(rangeEnd),
+        end: positionFromDate(rangeEnd, localizer),
         endDate: rangeEnd,
       }
     },

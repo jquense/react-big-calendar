@@ -273,7 +273,13 @@ class MonthView extends React.Component {
   }
 
   handleShowMore = (events, date, cell, slot, target) => {
-    const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
+    const {
+      popup,
+      onDrillDown,
+      onShowMore,
+      getDrilldownView,
+      doShowMoreDrillDown,
+    } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
 
@@ -283,7 +289,7 @@ class MonthView extends React.Component {
       this.setState({
         overlay: { date, events, position, target },
       })
-    } else {
+    } else if (doShowMoreDrillDown) {
       notify(onDrillDown, [date, getDrilldownView(date) || views.DAY])
     }
 
@@ -354,6 +360,7 @@ MonthView.propTypes = {
   onKeyPressEvent: PropTypes.func,
   onShowMore: PropTypes.func,
   showAllEvents: PropTypes.bool,
+  doShowMoreDrillDown: PropTypes.bool,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 

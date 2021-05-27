@@ -303,10 +303,14 @@ class MonthView extends React.Component {
 
     slots.sort((a, b) => +a - +b)
 
+    const start = new Date(slots[0])
+    const end = new Date(slots[slots.length - 1])
+    end.setDate(slots[slots.length - 1].getDate() + 1)
+
     notify(this.props.onSelectSlot, {
       slots,
-      start: slots[0],
-      end: slots[slots.length - 1],
+      start,
+      end,
       action: slotInfo.action,
       bounds: slotInfo.bounds,
       box: slotInfo.box,

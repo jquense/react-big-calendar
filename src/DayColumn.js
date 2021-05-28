@@ -14,6 +14,8 @@ import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
+import DayColumnWrapper from './DayColumnWrapper'
+
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
   intervalTriggered = false
@@ -108,6 +110,7 @@ class DayColumn extends React.Component {
 
   render() {
     const {
+      date,
       max,
       rtl,
       isNow,
@@ -125,8 +128,12 @@ class DayColumn extends React.Component {
 
     const { className, style } = dayProp(max)
 
+    const DayColumnWrapperComponent =
+      components.dayColumnWrapper || DayColumnWrapper
+
     return (
-      <div
+      <DayColumnWrapperComponent
+        date={date}
         style={style}
         className={clsx(
           className,
@@ -174,7 +181,7 @@ class DayColumn extends React.Component {
             style={{ top: `${this.state.timeIndicatorPosition}%` }}
           />
         )}
-      </div>
+      </DayColumnWrapperComponent>
     )
   }
 

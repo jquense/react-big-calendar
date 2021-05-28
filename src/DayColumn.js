@@ -14,6 +14,8 @@ import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
+import DayColumnWrapper from './DayColumnWrapper'
+
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
   intervalTriggered = false
@@ -108,6 +110,7 @@ class DayColumn extends React.Component {
 
   render() {
     const {
+      date,
       max,
       rtl,
       isNow,
@@ -125,8 +128,12 @@ class DayColumn extends React.Component {
 
     const { className, style } = dayProp(max)
 
+    const DayColumnWrapperComponent =
+      components.dayColumnWrapper || DayColumnWrapper
+
     return (
-      <div
+      <DayColumnWrapperComponent
+        date={date}
         style={style}
         className={clsx(
           className,
@@ -174,7 +181,7 @@ class DayColumn extends React.Component {
             style={{ top: `${this.state.timeIndicatorPosition}%` }}
           />
         )}
-      </div>
+      </DayColumnWrapperComponent>
     )
   }
 
@@ -286,15 +293,18 @@ class DayColumn extends React.Component {
       }
 
       let initialSlot = this._initialSlot
-      if (dates.lte(initialSlot, currentSlot)) {
+      if (dates.lte(initialSlot, currentSlot, this.props.localizer)) {
         currentSlot = this.slotMetrics.nextSlot(currentSlot)
-      } else if (dates.gt(initialSlot, currentSlot)) {
+      } else if (dates.gt(initialSlot, currentSlot, this.props.localizer)) {
         initialSlot = this.slotMetrics.nextSlot(initialSlot)
       }
 
       const selectRange = this.slotMetrics.getRange(
         dates.min(initialSlot, currentSlot),
-        dates.max(initialSlot, currentSlot)
+        dates.max(initialSlot, currentSlot),
+        false,
+        false,
+        this.props.localizer
       )
 
       return {

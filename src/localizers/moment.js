@@ -63,6 +63,10 @@ export default function(moment, useLocalizerForDateMath) {
             .milliseconds(ms)
             .toDate()
         },
+        hours: buildAccessor(moment, 'hours'),
+        minutes: buildAccessor(moment, 'minutes'),
+        seconds: buildAccessor(moment, 'seconds'),
+        milliseconds: buildAccessor(moment, 'milliseconds'),
       }
     : null
 
@@ -79,4 +83,10 @@ export default function(moment, useLocalizerForDateMath) {
 
     localizedDateUtil,
   })
+}
+
+function buildAccessor(moment, key) {
+  return function(date) {
+    return moment(date)[key]()
+  }
 }

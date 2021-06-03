@@ -207,8 +207,9 @@ export default class TimeGrid extends Component {
 
         if (
           accessors.allDay(event) ||
-          (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
-          (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day'))
+          (dates.isJustDate(eStart, localizer) &&
+            dates.isJustDate(eEnd, localizer)) ||
+          (!showMultiDayTimes && !dates.eq(eStart, eEnd, 'day', localizer))
         ) {
           allDayEvents.push(event)
         } else {

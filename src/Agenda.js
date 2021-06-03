@@ -147,7 +147,14 @@ function Agenda({
 
   let range = dates.range(date, end, 'day')
 
-  events = events.filter(event => inRange(event, date, end, accessors))
+  events = events.filter(event =>
+    inRange(
+      event,
+      dates.startOf(date, 'day'),
+      dates.endOf(end, 'day'),
+      accessors
+    )
+  )
 
   events.sort((a, b) => +accessors.start(a) - +accessors.start(b))
 

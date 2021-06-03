@@ -52,10 +52,10 @@ export function visibleDays(date, localizer) {
   return days
 }
 
-export function ceil(date, unit) {
-  let floor = startOf(date, unit)
+export function ceil(date, unit, localizer) {
+  let floor = startOf(date, unit, localizer)
 
-  return eq(floor, date) ? floor : dates.add(floor, 1, unit)
+  return eq(floor, date, localizer) ? floor : dates.add(floor, 1, unit)
 }
 
 export function range(start, end, unit = 'day', localizer) {
@@ -112,11 +112,20 @@ export function eqTime(dateA, dateB) {
   )
 }
 
-export function isJustDate(date) {
+export function isJustDate(date, localizer) {
+  const utilSource =
+    localizer && localizer.localizedDateUtil
+      ? localizer.localizedDateUtil
+      : dates
+  const {
+    hours: getHours,
+    minutes: getMinutes,
+    seconds: getSeconds,
+  } = utilSource
   return (
-    dates.hours(date) === 0 &&
-    dates.minutes(date) === 0 &&
-    dates.seconds(date) === 0 &&
+    getHours(date) === 0 &&
+    getMinutes(date) === 0 &&
+    getSeconds(date) === 0 &&
     dates.milliseconds(date) === 0
   )
 }
@@ -129,7 +138,7 @@ export function duration(start, end, unit, firstOfWeek) {
   )
 }
 
-export function diff(dateA, dateB, unit) {
+export function diff(dateA, dateB, unit, localizer) {
   if (!unit || unit === 'milliseconds') return Math.abs(+dateA - +dateB)
 
   // the .round() handles an edge case
@@ -137,7 +146,8 @@ export function diff(dateA, dateB, unit) {
   // since one day in the range may be shorter/longer by an hour
   return Math.round(
     Math.abs(
-      +startOf(dateA, unit) / MILLI[unit] - +startOf(dateB, unit) / MILLI[unit]
+      +startOf(dateA, unit, localizer) / MILLI[unit] -
+        +startOf(dateB, unit, localizer) / MILLI[unit]
     )
   )
 }

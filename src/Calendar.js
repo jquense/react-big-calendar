@@ -411,6 +411,13 @@ class Calendar extends React.Component {
     views: componentViews,
 
     /**
+     * Determines whether the drill down should occur when clicking on the "+_x_ more" link.
+     * If `popup` is false, and `doShowMoreDrillDown` is true, the drill down will occur as usual.
+     * If `popup` is false, and `doShowMoreDrillDown` is false, the drill down will not occur and the `onShowMore` function will trigger.
+     */
+    doShowMoreDrillDown: PropTypes.bool,
+
+    /**
      * The string name of the destination view for drill-down actions, such
      * as clicking a date header, or the truncated events links. If
      * `getDrilldownView` is also specified it will be used instead.
@@ -723,6 +730,7 @@ class Calendar extends React.Component {
       eventWrapper: PropTypes.elementType,
       eventContainerWrapper: PropTypes.elementType,
       dateCellWrapper: PropTypes.elementType,
+      dayColumnWrapper: PropTypes.elementType,
       timeSlotWrapper: PropTypes.elementType,
       timeGutterHeader: PropTypes.elementType,
       resourceHeader: PropTypes.elementType,
@@ -787,6 +795,7 @@ class Calendar extends React.Component {
     step: 30,
     length: 30,
 
+    doShowMoreDrillDown: true,
     drilldownView: views.DAY,
 
     titleAccessor: 'title',
@@ -923,6 +932,7 @@ class Calendar extends React.Component {
       length,
       showMultiDayTimes,
       onShowMore,
+      doShowMoreDrillDown,
       components: _0,
       formats: _1,
       messages: _2,
@@ -981,6 +991,7 @@ class Calendar extends React.Component {
           onKeyPressEvent={this.handleKeyPressEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={onShowMore}
+          doShowMoreDrillDown={doShowMoreDrillDown}
         />
       </div>
     )

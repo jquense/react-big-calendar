@@ -105,7 +105,6 @@
     "marked": "^0.5.1",
     "moment": "^2.22.2",
     "mt-changelog": "^0.6.1",
-    "node-sass": "4.12.0",
     "postcss": "^7.0.16",
     "postcss-cli": "^6.1.2",
     "prettier": "^1.15.1",
@@ -136,6 +135,7 @@
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",
     "memoize-one": "^5.1.1",
+    "node-sass": "4.14.1",
     "prop-types": "^15.7.2",
     "react-overlays": "^4.1.1",
     "uncontrollable": "^7.0.0"

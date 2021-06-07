@@ -8,14 +8,19 @@ env:
   es6: true
 rules:
   global-require: off
-  no-console: ['error', {
-    allow: ['warn', 'error', 'info']
-  }]
-  no-unused-vars: ['error', {
+  no-console: ['error',
+  {
+    allow: ['log',warn', 'error', 'info'
+    ]
+  }
+]
+  no-unused-vars: ['error',
+  {
     vars: all,
     args: after-used,
     varsIgnorePattern: ^_,
     argsIgnorePattern: ^_,
-  }]
+  }
+]
   react-hooks/rules-of-hooks: error
   react-hooks/exhaustive-deps: warn

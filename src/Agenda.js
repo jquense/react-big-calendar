@@ -31,6 +31,7 @@ function Agenda({
   })
 
   const renderDay = (day, events, dayKey) => {
+    console.log('DinaWOrk')
     const { event: Event, date: AgendaDate } = components
 
     events = events.filter(e =>
@@ -147,7 +148,14 @@ function Agenda({
 
   let range = dates.range(date, end, 'day')
 
-  events = events.filter(event => inRange(event, dates.startOf(date, 'day'), dates.endOf(end, 'day'), accessors))
+  events = events.filter(event =>
+    inRange(
+      event,
+      dates.startOf(date, 'day'),
+      dates.endOf(end, 'day'),
+      accessors
+    )
+  )
 
   events.sort((a, b) => +accessors.start(a) - +accessors.start(b))
 

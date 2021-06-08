@@ -31,7 +31,7 @@ function Agenda({
   })
 
   const renderDay = (day, events, dayKey) => {
-    console.log('DinaWOrk')
+    console.log('today event:', day)
     const { event: Event, date: AgendaDate } = components
 
     events = events.filter(e =>
@@ -79,6 +79,7 @@ function Agenda({
       )
     }, [])
   }
+  console.log('Visited Agenda')
 
   const timeRangeLabel = (day, event) => {
     let labelClass = '',

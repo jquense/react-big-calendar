@@ -1,10 +1,10 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.23.0",
+  "name": "react-big-calendar-forked-atium",
+  "version": "0.22.5",
   "description": "Calendar! with events",
   "author": {
-    "name": "Jason Quense",
-    "email": "monastic.panic@gmail.com"
+    "name": "ATIUM",
+    "email": "info@scermlind.com"
   },
   "repository": {
     "type": "git",
@@ -69,15 +69,15 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^16.6.1 || ^17",
-    "react-dom": "^16.6.1 || ^17"
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1"
   },
   "devDependencies": {
     "@4c/rollout": "^1.4.0",
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.5",
-    "@storybook/addon-actions": "^6.1.15",
-    "@storybook/react": "^6.1.15",
+    "@storybook/addon-actions": "^5.0.11",
+    "@storybook/react": "^5.0.11",
     "autoprefixer": "^9.5.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
@@ -95,7 +95,7 @@
     "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-react": "^7.11.1",
-    "eslint-plugin-react-hooks": "^4.0.4",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "font-awesome": "^4.7.0",
     "globalize": "^0.1.1",
     "husky": "^0.14.3",
@@ -108,10 +108,10 @@
     "postcss": "^7.0.16",
     "postcss-cli": "^6.1.2",
     "prettier": "^1.15.1",
-    "react": "^16.13.1",
+    "react": "^16.6.1",
     "react-bootstrap": "^0.32.4",
     "react-docgen": "^3.0.0-rc.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.6.1",
     "react-tackle-box": "^2.1.0",
     "rimraf": "^2.4.2",
     "rollup": "^1.1.0",
@@ -129,24 +129,26 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "clsx": "^1.0.4",
-    "date-arithmetic": "^4.1.0",
+    "date-arithmetic": "^4.0.1",
     "dom-helpers": "^5.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",
-    "memoize-one": "^5.1.1",
+    "memoize-one": "^4.0.3",
+    "moment-jalaali": "^0.9.1",
     "node-sass": "4.14.1",
-    "prop-types": "^15.7.2",
-    "react-overlays": "^4.1.1",
-    "uncontrollable": "^7.0.0"
+    "prop-types": "^15.6.2",
+    "react-overlays": "^2.0.0-0",
+    "uncontrollable": "^7.0.0",
+    "warning": "^4.0.2"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
   },
   "bugs": {
-    "url": "https://github.com/jquense/react-big-calendar/issues"
+    "url": "https://github.com/neelkanthraju/react-big-calendar.git"
   },
   "readme": "ERROR: No README data found!",
-  "homepage": "https://github.com/jquense/react-big-calendar#readme",
-  "_id": "react-big-calendar@0.22.1"
+  "homepage": "https://github.com/neelkanthraju/react-big-calendar.git",
+  "_id": "react-big-calendar@0.22.0"
 }

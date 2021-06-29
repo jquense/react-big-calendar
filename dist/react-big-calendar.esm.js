@@ -287,6 +287,26 @@ function diff(dateA, dateB, unit) {
   )
 }
 
+var _excluded = [
+  'style',
+  'className',
+  'event',
+  'selected',
+  'isAllDay',
+  'onSelect',
+  'onDoubleClick',
+  'onKeyPress',
+  'localizer',
+  'continuesPrior',
+  'continuesAfter',
+  'accessors',
+  'getters',
+  'children',
+  'components',
+  'slotStart',
+  'slotEnd',
+]
+
 var EventCell = /*#__PURE__*/ (function(_React$Component) {
   _inheritsLoose(EventCell, _React$Component)
 
@@ -317,25 +337,7 @@ var EventCell = /*#__PURE__*/ (function(_React$Component) {
       EventWrapper = _this$props$component.eventWrapper,
       slotStart = _this$props.slotStart,
       slotEnd = _this$props.slotEnd,
-      props = _objectWithoutPropertiesLoose(_this$props, [
-        'style',
-        'className',
-        'event',
-        'selected',
-        'isAllDay',
-        'onSelect',
-        'onDoubleClick',
-        'onKeyPress',
-        'localizer',
-        'continuesPrior',
-        'continuesAfter',
-        'accessors',
-        'getters',
-        'children',
-        'components',
-        'slotStart',
-        'slotEnd',
-      ])
+      props = _objectWithoutPropertiesLoose(_this$props, _excluded)
 
     delete props.resizable
     var title = accessors.title(event)
@@ -1002,9 +1004,6 @@ var Selection = /*#__PURE__*/ (function() {
           this._handleMoveEvent
         )
         break
-
-      default:
-        break
     }
   }
 
@@ -1179,12 +1178,14 @@ function objectsCollide(nodeA, nodeB, tolerance) {
     _getBoundsForNode2$bo = _getBoundsForNode2.bottom,
     bBottom = _getBoundsForNode2$bo === void 0 ? bTop : _getBoundsForNode2$bo
 
-  return !// 'a' bottom doesn't touch 'b' top
-  (
-    aBottom - tolerance < bTop || // 'a' top doesn't touch 'b' bottom
-    aTop + tolerance > bBottom || // 'a' right doesn't touch 'b' left
-    aRight - tolerance < bLeft || // 'a' left doesn't touch 'b' right
-    aLeft + tolerance > bRight
+  return !(
+    // 'a' bottom doesn't touch 'b' top
+    (
+      aBottom - tolerance < bTop || // 'a' top doesn't touch 'b' bottom
+      aTop + tolerance > bBottom || // 'a' right doesn't touch 'b' left
+      aRight - tolerance < bLeft || // 'a' left doesn't touch 'b' right
+      aLeft + tolerance > bRight
+    )
   )
 }
 /**
@@ -2244,6 +2245,8 @@ DateHeader.propTypes =
       }
     : {}
 
+var _excluded$1 = ['date', 'className']
+
 var eventsForWeek = function eventsForWeek(evts, start, end, accessors) {
   return evts.filter(function(e) {
     return inRange(e, start, end, accessors)
@@ -2325,7 +2328,7 @@ var MonthView = /*#__PURE__*/ (function(_React$Component) {
     _this.readerDateHeading = function(_ref) {
       var date = _ref.date,
         className = _ref.className,
-        props = _objectWithoutPropertiesLoose(_ref, ['date', 'className'])
+        props = _objectWithoutPropertiesLoose(_ref, _excluded$1)
 
       var _this$props2 = _this.props,
         currentDate = _this$props2.date,
@@ -3410,6 +3413,9 @@ var DayColumnWrapper = function DayColumnWrapper(_ref) {
   )
 }
 
+var _excluded$2 = ['dayProp'],
+  _excluded2 = ['eventContainerWrapper']
+
 var DayColumn = /*#__PURE__*/ (function(_React$Component) {
   _inheritsLoose(DayColumn, _React$Component)
 
@@ -3819,14 +3825,16 @@ var DayColumn = /*#__PURE__*/ (function(_React$Component) {
       localizer = _this$props3.localizer,
       _this$props3$getters = _this$props3.getters,
       dayProp = _this$props3$getters.dayProp,
-      getters = _objectWithoutPropertiesLoose(_this$props3$getters, [
-        'dayProp',
-      ]),
+      getters = _objectWithoutPropertiesLoose(
+        _this$props3$getters,
+        _excluded$2
+      ),
       _this$props3$componen = _this$props3.components,
       EventContainer = _this$props3$componen.eventContainerWrapper,
-      components = _objectWithoutPropertiesLoose(_this$props3$componen, [
-        'eventContainerWrapper',
-      ])
+      components = _objectWithoutPropertiesLoose(
+        _this$props3$componen,
+        _excluded2
+      )
 
     var slotMetrics = this.slotMetrics
     var _this$state = this.state,
@@ -4774,6 +4782,8 @@ TimeGrid.defaultProps = {
   scrollToTime: startOf(new Date(), 'day'),
 }
 
+var _excluded$3 = ['date']
+
 var Day = /*#__PURE__*/ (function(_React$Component) {
   _inheritsLoose(Day, _React$Component)
 
@@ -4786,7 +4796,7 @@ var Day = /*#__PURE__*/ (function(_React$Component) {
   _proto.render = function render() {
     var _this$props = this.props,
       date = _this$props.date,
-      props = _objectWithoutPropertiesLoose(_this$props, ['date'])
+      props = _objectWithoutPropertiesLoose(_this$props, _excluded$3)
 
     var range = Day.range(date)
     return /*#__PURE__*/ React.createElement(
@@ -4830,6 +4840,8 @@ Day.title = function(date, _ref) {
   return localizer.format(date, 'dayHeaderFormat')
 }
 
+var _excluded$4 = ['date']
+
 var Week = /*#__PURE__*/ (function(_React$Component) {
   _inheritsLoose(Week, _React$Component)
 
@@ -4842,7 +4854,7 @@ var Week = /*#__PURE__*/ (function(_React$Component) {
   _proto.render = function render() {
     var _this$props = this.props,
       date = _this$props.date,
-      props = _objectWithoutPropertiesLoose(_this$props, ['date'])
+      props = _objectWithoutPropertiesLoose(_this$props, _excluded$4)
 
     var range = Week.range(date, this.props)
     return /*#__PURE__*/ React.createElement(
@@ -4904,6 +4916,8 @@ Week.title = function(date, _ref2) {
   )
 }
 
+var _excluded$5 = ['date']
+
 function workWeekRange(date, options) {
   return Week.range(date, options).filter(function(d) {
     return [6, 0].indexOf(d.getDay()) === -1
@@ -4922,7 +4936,7 @@ var WorkWeek = /*#__PURE__*/ (function(_React$Component) {
   _proto.render = function render() {
     var _this$props = this.props,
       date = _this$props.date,
-      props = _objectWithoutPropertiesLoose(_this$props, ['date'])
+      props = _objectWithoutPropertiesLoose(_this$props, _excluded$5)
 
     var range = workWeekRange(date, this.props)
     return /*#__PURE__*/ React.createElement(
@@ -5261,19 +5275,21 @@ Agenda.title = function(start, _ref4) {
 }
 
 var _VIEWS
-var VIEWS = ((_VIEWS = {}),
-(_VIEWS[views.MONTH] = MonthView),
-(_VIEWS[views.WEEK] = Week),
-(_VIEWS[views.WORK_WEEK] = WorkWeek),
-(_VIEWS[views.DAY] = Day),
-(_VIEWS[views.AGENDA] = Agenda),
-_VIEWS)
+var VIEWS =
+  ((_VIEWS = {}),
+  (_VIEWS[views.MONTH] = MonthView),
+  (_VIEWS[views.WEEK] = Week),
+  (_VIEWS[views.WORK_WEEK] = WorkWeek),
+  (_VIEWS[views.DAY] = Day),
+  (_VIEWS[views.AGENDA] = Agenda),
+  _VIEWS)
 
+var _excluded$6 = ['action', 'date', 'today']
 function moveDate(View, _ref) {
   var action = _ref.action,
     date = _ref.date,
     today = _ref.today,
-    props = _objectWithoutPropertiesLoose(_ref, ['action', 'date', 'today'])
+    props = _objectWithoutPropertiesLoose(_ref, _excluded$6)
 
   View = typeof View === 'string' ? VIEWS[View] : View
 
@@ -5450,6 +5466,27 @@ var wrapAccessor = function wrapAccessor(acc) {
   }
 }
 
+var _excluded$7 = ['view', 'date', 'getNow', 'onNavigate'],
+  _excluded2$1 = [
+    'view',
+    'toolbar',
+    'events',
+    'backgroundEvents',
+    'style',
+    'className',
+    'elementProps',
+    'date',
+    'getNow',
+    'length',
+    'showMultiDayTimes',
+    'onShowMore',
+    'doShowMoreDrillDown',
+    'components',
+    'formats',
+    'messages',
+    'culture',
+  ]
+
 function viewNames$1(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
 }
@@ -5563,12 +5600,7 @@ var Calendar = /*#__PURE__*/ (function(_React$Component) {
         date = _this$props3.date,
         getNow = _this$props3.getNow,
         onNavigate = _this$props3.onNavigate,
-        props = _objectWithoutPropertiesLoose(_this$props3, [
-          'view',
-          'date',
-          'getNow',
-          'onNavigate',
-        ])
+        props = _objectWithoutPropertiesLoose(_this$props3, _excluded$7)
 
       var ViewComponent = _this.getView()
 
@@ -5769,25 +5801,7 @@ var Calendar = /*#__PURE__*/ (function(_React$Component) {
       _1 = _this$props4.formats,
       _2 = _this$props4.messages,
       _3 = _this$props4.culture,
-      props = _objectWithoutPropertiesLoose(_this$props4, [
-        'view',
-        'toolbar',
-        'events',
-        'backgroundEvents',
-        'style',
-        'className',
-        'elementProps',
-        'date',
-        'getNow',
-        'length',
-        'showMultiDayTimes',
-        'onShowMore',
-        'doShowMoreDrillDown',
-        'components',
-        'formats',
-        'messages',
-        'culture',
-      ])
+      props = _objectWithoutPropertiesLoose(_this$props4, _excluded2$1)
 
     current = current || getNow()
     var View = this.getView()

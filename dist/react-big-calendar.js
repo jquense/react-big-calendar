@@ -50,18 +50,21 @@
     return target
   }
 
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf =
+      Object.setPrototypeOf ||
+      function _setPrototypeOf(o, p) {
+        o.__proto__ = p
+        return o
+      }
+
+    return _setPrototypeOf(o, p)
+  }
+
   function _inheritsLoose(subClass, superClass) {
     subClass.prototype = Object.create(superClass.prototype)
     subClass.prototype.constructor = subClass
-    subClass.__proto__ = superClass
-  }
-
-  function unwrapExports(x) {
-    return x &&
-      x.__esModule &&
-      Object.prototype.hasOwnProperty.call(x, 'default')
-      ? x['default']
-      : x
+    _setPrototypeOf(subClass, superClass)
   }
 
   function createCommonjsModule(fn, module) {
@@ -70,165 +73,12 @@
     )
   }
 
-  var reactIs_production_min = createCommonjsModule(function(module, exports) {
-    Object.defineProperty(exports, '__esModule', { value: !0 })
-    var b = 'function' === typeof Symbol && Symbol.for,
-      c = b ? Symbol.for('react.element') : 60103,
-      d = b ? Symbol.for('react.portal') : 60106,
-      e = b ? Symbol.for('react.fragment') : 60107,
-      f = b ? Symbol.for('react.strict_mode') : 60108,
-      g = b ? Symbol.for('react.profiler') : 60114,
-      h = b ? Symbol.for('react.provider') : 60109,
-      k = b ? Symbol.for('react.context') : 60110,
-      l = b ? Symbol.for('react.async_mode') : 60111,
-      m = b ? Symbol.for('react.concurrent_mode') : 60111,
-      n = b ? Symbol.for('react.forward_ref') : 60112,
-      p = b ? Symbol.for('react.suspense') : 60113,
-      q = b ? Symbol.for('react.memo') : 60115,
-      r = b ? Symbol.for('react.lazy') : 60116
-    function t(a) {
-      if ('object' === typeof a && null !== a) {
-        var u = a.$$typeof
-        switch (u) {
-          case c:
-            switch (((a = a.type), a)) {
-              case l:
-              case m:
-              case e:
-              case g:
-              case f:
-              case p:
-                return a
-              default:
-                switch (((a = a && a.$$typeof), a)) {
-                  case k:
-                  case n:
-                  case h:
-                    return a
-                  default:
-                    return u
-                }
-            }
-          case r:
-          case q:
-          case d:
-            return u
-        }
-      }
-    }
-    function v(a) {
-      return t(a) === m
-    }
-    exports.typeOf = t
-    exports.AsyncMode = l
-    exports.ConcurrentMode = m
-    exports.ContextConsumer = k
-    exports.ContextProvider = h
-    exports.Element = c
-    exports.ForwardRef = n
-    exports.Fragment = e
-    exports.Lazy = r
-    exports.Memo = q
-    exports.Portal = d
-    exports.Profiler = g
-    exports.StrictMode = f
-    exports.Suspense = p
-    exports.isValidElementType = function(a) {
-      return (
-        'string' === typeof a ||
-        'function' === typeof a ||
-        a === e ||
-        a === m ||
-        a === g ||
-        a === f ||
-        a === p ||
-        ('object' === typeof a &&
-          null !== a &&
-          (a.$$typeof === r ||
-            a.$$typeof === q ||
-            a.$$typeof === h ||
-            a.$$typeof === k ||
-            a.$$typeof === n))
-      )
-    }
-    exports.isAsyncMode = function(a) {
-      return v(a) || t(a) === l
-    }
-    exports.isConcurrentMode = v
-    exports.isContextConsumer = function(a) {
-      return t(a) === k
-    }
-    exports.isContextProvider = function(a) {
-      return t(a) === h
-    }
-    exports.isElement = function(a) {
-      return 'object' === typeof a && null !== a && a.$$typeof === c
-    }
-    exports.isForwardRef = function(a) {
-      return t(a) === n
-    }
-    exports.isFragment = function(a) {
-      return t(a) === e
-    }
-    exports.isLazy = function(a) {
-      return t(a) === r
-    }
-    exports.isMemo = function(a) {
-      return t(a) === q
-    }
-    exports.isPortal = function(a) {
-      return t(a) === d
-    }
-    exports.isProfiler = function(a) {
-      return t(a) === g
-    }
-    exports.isStrictMode = function(a) {
-      return t(a) === f
-    }
-    exports.isSuspense = function(a) {
-      return t(a) === p
-    }
-  })
-
-  unwrapExports(reactIs_production_min)
-  var reactIs_production_min_1 = reactIs_production_min.typeOf
-  var reactIs_production_min_2 = reactIs_production_min.AsyncMode
-  var reactIs_production_min_3 = reactIs_production_min.ConcurrentMode
-  var reactIs_production_min_4 = reactIs_production_min.ContextConsumer
-  var reactIs_production_min_5 = reactIs_production_min.ContextProvider
-  var reactIs_production_min_6 = reactIs_production_min.Element
-  var reactIs_production_min_7 = reactIs_production_min.ForwardRef
-  var reactIs_production_min_8 = reactIs_production_min.Fragment
-  var reactIs_production_min_9 = reactIs_production_min.Lazy
-  var reactIs_production_min_10 = reactIs_production_min.Memo
-  var reactIs_production_min_11 = reactIs_production_min.Portal
-  var reactIs_production_min_12 = reactIs_production_min.Profiler
-  var reactIs_production_min_13 = reactIs_production_min.StrictMode
-  var reactIs_production_min_14 = reactIs_production_min.Suspense
-  var reactIs_production_min_15 = reactIs_production_min.isValidElementType
-  var reactIs_production_min_16 = reactIs_production_min.isAsyncMode
-  var reactIs_production_min_17 = reactIs_production_min.isConcurrentMode
-  var reactIs_production_min_18 = reactIs_production_min.isContextConsumer
-  var reactIs_production_min_19 = reactIs_production_min.isContextProvider
-  var reactIs_production_min_20 = reactIs_production_min.isElement
-  var reactIs_production_min_21 = reactIs_production_min.isForwardRef
-  var reactIs_production_min_22 = reactIs_production_min.isFragment
-  var reactIs_production_min_23 = reactIs_production_min.isLazy
-  var reactIs_production_min_24 = reactIs_production_min.isMemo
-  var reactIs_production_min_25 = reactIs_production_min.isPortal
-  var reactIs_production_min_26 = reactIs_production_min.isProfiler
-  var reactIs_production_min_27 = reactIs_production_min.isStrictMode
-  var reactIs_production_min_28 = reactIs_production_min.isSuspense
-
   var reactIs_development = createCommonjsModule(function(module, exports) {
     {
       ;(function() {
-        Object.defineProperty(exports, '__esModule', { value: true })
-
         // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
         // nor polyfill, then a plain number is used for performance.
         var hasSymbol = typeof Symbol === 'function' && Symbol.for
-
         var REACT_ELEMENT_TYPE = hasSymbol
           ? Symbol.for('react.element')
           : 0xeac7
@@ -247,7 +97,9 @@
           : 0xeacd
         var REACT_CONTEXT_TYPE = hasSymbol
           ? Symbol.for('react.context')
-          : 0xeace
+          : 0xeace // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+        // (unstable) APIs that have been removed. Can we remove the symbols?
+
         var REACT_ASYNC_MODE_TYPE = hasSymbol
           ? Symbol.for('react.async_mode')
           : 0xeacf
@@ -260,102 +112,48 @@
         var REACT_SUSPENSE_TYPE = hasSymbol
           ? Symbol.for('react.suspense')
           : 0xead1
+        var REACT_SUSPENSE_LIST_TYPE = hasSymbol
+          ? Symbol.for('react.suspense_list')
+          : 0xead8
         var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3
         var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4
+        var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9
+        var REACT_FUNDAMENTAL_TYPE = hasSymbol
+          ? Symbol.for('react.fundamental')
+          : 0xead5
+        var REACT_RESPONDER_TYPE = hasSymbol
+          ? Symbol.for('react.responder')
+          : 0xead6
+        var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7
 
         function isValidElementType(type) {
           return (
             typeof type === 'string' ||
-            typeof type === 'function' ||
-            // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+            typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
             type === REACT_FRAGMENT_TYPE ||
             type === REACT_CONCURRENT_MODE_TYPE ||
             type === REACT_PROFILER_TYPE ||
             type === REACT_STRICT_MODE_TYPE ||
             type === REACT_SUSPENSE_TYPE ||
+            type === REACT_SUSPENSE_LIST_TYPE ||
             (typeof type === 'object' &&
               type !== null &&
               (type.$$typeof === REACT_LAZY_TYPE ||
                 type.$$typeof === REACT_MEMO_TYPE ||
                 type.$$typeof === REACT_PROVIDER_TYPE ||
                 type.$$typeof === REACT_CONTEXT_TYPE ||
-                type.$$typeof === REACT_FORWARD_REF_TYPE))
+                type.$$typeof === REACT_FORWARD_REF_TYPE ||
+                type.$$typeof === REACT_FUNDAMENTAL_TYPE ||
+                type.$$typeof === REACT_RESPONDER_TYPE ||
+                type.$$typeof === REACT_SCOPE_TYPE ||
+                type.$$typeof === REACT_BLOCK_TYPE))
           )
         }
-
-        /**
-         * Forked from fbjs/warning:
-         * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
-         *
-         * Only change is we use console.warn instead of console.error,
-         * and do nothing when 'console' is not supported.
-         * This really simplifies the code.
-         * ---
-         * Similar to invariant but only logs a warning if the condition is not met.
-         * This can be used to log issues in development environments in critical
-         * paths. Removing the logging code for production environments will keep the
-         * same logic and follow the same code paths.
-         */
-
-        var lowPriorityWarning = function() {}
-
-        {
-          var printWarning = function(format) {
-            for (
-              var _len = arguments.length,
-                args = Array(_len > 1 ? _len - 1 : 0),
-                _key = 1;
-              _key < _len;
-              _key++
-            ) {
-              args[_key - 1] = arguments[_key]
-            }
-
-            var argIndex = 0
-            var message =
-              'Warning: ' +
-              format.replace(/%s/g, function() {
-                return args[argIndex++]
-              })
-            if (typeof console !== 'undefined') {
-              console.warn(message)
-            }
-            try {
-              // --- Welcome to debugging React ---
-              // This error was thrown as a convenience so that you can use this stack
-              // to find the callsite that caused this warning to fire.
-              throw new Error(message)
-            } catch (x) {}
-          }
-
-          lowPriorityWarning = function(condition, format) {
-            if (format === undefined) {
-              throw new Error(
-                '`lowPriorityWarning(condition, format, ...args)` requires a warning ' +
-                  'message argument'
-              )
-            }
-            if (!condition) {
-              for (
-                var _len2 = arguments.length,
-                  args = Array(_len2 > 2 ? _len2 - 2 : 0),
-                  _key2 = 2;
-                _key2 < _len2;
-                _key2++
-              ) {
-                args[_key2 - 2] = arguments[_key2]
-              }
-
-              printWarning.apply(undefined, [format].concat(args))
-            }
-          }
-        }
-
-        var lowPriorityWarning$1 = lowPriorityWarning
 
         function typeOf(object) {
           if (typeof object === 'object' && object !== null) {
             var $$typeof = object.$$typeof
+
             switch ($$typeof) {
               case REACT_ELEMENT_TYPE:
                 var type = object.type
@@ -368,29 +166,31 @@
                   case REACT_STRICT_MODE_TYPE:
                   case REACT_SUSPENSE_TYPE:
                     return type
+
                   default:
                     var $$typeofType = type && type.$$typeof
 
                     switch ($$typeofType) {
                       case REACT_CONTEXT_TYPE:
                       case REACT_FORWARD_REF_TYPE:
+                      case REACT_LAZY_TYPE:
+                      case REACT_MEMO_TYPE:
                       case REACT_PROVIDER_TYPE:
                         return $$typeofType
+
                       default:
                         return $$typeof
                     }
                 }
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
+
               case REACT_PORTAL_TYPE:
                 return $$typeof
             }
           }
 
           return undefined
-        }
+        } // AsyncMode is deprecated along with isAsyncMode
 
-        // AsyncMode is deprecated along with isAsyncMode
         var AsyncMode = REACT_ASYNC_MODE_TYPE
         var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE
         var ContextConsumer = REACT_CONTEXT_TYPE
@@ -404,22 +204,21 @@
         var Profiler = REACT_PROFILER_TYPE
         var StrictMode = REACT_STRICT_MODE_TYPE
         var Suspense = REACT_SUSPENSE_TYPE
+        var hasWarnedAboutDeprecatedIsAsyncMode = false // AsyncMode should be deprecated
 
-        var hasWarnedAboutDeprecatedIsAsyncMode = false
-
-        // AsyncMode should be deprecated
         function isAsyncMode(object) {
           {
             if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-              hasWarnedAboutDeprecatedIsAsyncMode = true
-              lowPriorityWarning$1(
-                false,
+              hasWarnedAboutDeprecatedIsAsyncMode = true // Using console['warn'] to evade Babel and ESLint
+
+              console['warn'](
                 'The ReactIs.isAsyncMode() alias has been deprecated, ' +
                   'and will be removed in React 17+. Update your code to use ' +
                   'ReactIs.isConcurrentMode() instead. It has the exact same API.'
               )
             }
           }
+
           return (
             isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE
           )
@@ -465,7 +264,6 @@
           return typeOf(object) === REACT_SUSPENSE_TYPE
         }
 
-        exports.typeOf = typeOf
         exports.AsyncMode = AsyncMode
         exports.ConcurrentMode = ConcurrentMode
         exports.ContextConsumer = ContextConsumer
@@ -479,7 +277,6 @@
         exports.Profiler = Profiler
         exports.StrictMode = StrictMode
         exports.Suspense = Suspense
-        exports.isValidElementType = isValidElementType
         exports.isAsyncMode = isAsyncMode
         exports.isConcurrentMode = isConcurrentMode
         exports.isContextConsumer = isContextConsumer
@@ -493,39 +290,39 @@
         exports.isProfiler = isProfiler
         exports.isStrictMode = isStrictMode
         exports.isSuspense = isSuspense
+        exports.isValidElementType = isValidElementType
+        exports.typeOf = typeOf
       })()
     }
   })
-
-  unwrapExports(reactIs_development)
-  var reactIs_development_1 = reactIs_development.typeOf
-  var reactIs_development_2 = reactIs_development.AsyncMode
-  var reactIs_development_3 = reactIs_development.ConcurrentMode
-  var reactIs_development_4 = reactIs_development.ContextConsumer
-  var reactIs_development_5 = reactIs_development.ContextProvider
-  var reactIs_development_6 = reactIs_development.Element
-  var reactIs_development_7 = reactIs_development.ForwardRef
-  var reactIs_development_8 = reactIs_development.Fragment
-  var reactIs_development_9 = reactIs_development.Lazy
-  var reactIs_development_10 = reactIs_development.Memo
-  var reactIs_development_11 = reactIs_development.Portal
-  var reactIs_development_12 = reactIs_development.Profiler
-  var reactIs_development_13 = reactIs_development.StrictMode
-  var reactIs_development_14 = reactIs_development.Suspense
-  var reactIs_development_15 = reactIs_development.isValidElementType
-  var reactIs_development_16 = reactIs_development.isAsyncMode
-  var reactIs_development_17 = reactIs_development.isConcurrentMode
-  var reactIs_development_18 = reactIs_development.isContextConsumer
-  var reactIs_development_19 = reactIs_development.isContextProvider
-  var reactIs_development_20 = reactIs_development.isElement
-  var reactIs_development_21 = reactIs_development.isForwardRef
-  var reactIs_development_22 = reactIs_development.isFragment
-  var reactIs_development_23 = reactIs_development.isLazy
-  var reactIs_development_24 = reactIs_development.isMemo
-  var reactIs_development_25 = reactIs_development.isPortal
-  var reactIs_development_26 = reactIs_development.isProfiler
-  var reactIs_development_27 = reactIs_development.isStrictMode
-  var reactIs_development_28 = reactIs_development.isSuspense
+  var reactIs_development_1 = reactIs_development.AsyncMode
+  var reactIs_development_2 = reactIs_development.ConcurrentMode
+  var reactIs_development_3 = reactIs_development.ContextConsumer
+  var reactIs_development_4 = reactIs_development.ContextProvider
+  var reactIs_development_5 = reactIs_development.Element
+  var reactIs_development_6 = reactIs_development.ForwardRef
+  var reactIs_development_7 = reactIs_development.Fragment
+  var reactIs_development_8 = reactIs_development.Lazy
+  var reactIs_development_9 = reactIs_development.Memo
+  var reactIs_development_10 = reactIs_development.Portal
+  var reactIs_development_11 = reactIs_development.Profiler
+  var reactIs_development_12 = reactIs_development.StrictMode
+  var reactIs_development_13 = reactIs_development.Suspense
+  var reactIs_development_14 = reactIs_development.isAsyncMode
+  var reactIs_development_15 = reactIs_development.isConcurrentMode
+  var reactIs_development_16 = reactIs_development.isContextConsumer
+  var reactIs_development_17 = reactIs_development.isContextProvider
+  var reactIs_development_18 = reactIs_development.isElement
+  var reactIs_development_19 = reactIs_development.isForwardRef
+  var reactIs_development_20 = reactIs_development.isFragment
+  var reactIs_development_21 = reactIs_development.isLazy
+  var reactIs_development_22 = reactIs_development.isMemo
+  var reactIs_development_23 = reactIs_development.isPortal
+  var reactIs_development_24 = reactIs_development.isProfiler
+  var reactIs_development_25 = reactIs_development.isStrictMode
+  var reactIs_development_26 = reactIs_development.isSuspense
+  var reactIs_development_27 = reactIs_development.isValidElementType
+  var reactIs_development_28 = reactIs_development.typeOf
 
   var reactIs = createCommonjsModule(function(module) {
     {
@@ -1760,6 +1557,172 @@
     )
   }
 
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  function componentWillMount() {
+    // Call this.constructor.gDSFP to support sub-classes.
+    var state = this.constructor.getDerivedStateFromProps(
+      this.props,
+      this.state
+    )
+    if (state !== null && state !== undefined) {
+      this.setState(state)
+    }
+  }
+
+  function componentWillReceiveProps(nextProps) {
+    // Call this.constructor.gDSFP to support sub-classes.
+    // Use the setState() updater to ensure state isn't stale in certain edge cases.
+    function updater(prevState) {
+      var state = this.constructor.getDerivedStateFromProps(
+        nextProps,
+        prevState
+      )
+      return state !== null && state !== undefined ? state : null
+    }
+    // Binding "this" is important for shallow renderer support.
+    this.setState(updater.bind(this))
+  }
+
+  function componentWillUpdate(nextProps, nextState) {
+    try {
+      var prevProps = this.props
+      var prevState = this.state
+      this.props = nextProps
+      this.state = nextState
+      this.__reactInternalSnapshotFlag = true
+      this.__reactInternalSnapshot = this.getSnapshotBeforeUpdate(
+        prevProps,
+        prevState
+      )
+    } finally {
+      this.props = prevProps
+      this.state = prevState
+    }
+  }
+
+  // React may warn about cWM/cWRP/cWU methods being deprecated.
+  // Add a flag to suppress these warnings for this special case.
+  componentWillMount.__suppressDeprecationWarning = true
+  componentWillReceiveProps.__suppressDeprecationWarning = true
+  componentWillUpdate.__suppressDeprecationWarning = true
+
+  function polyfill(Component) {
+    var prototype = Component.prototype
+
+    if (!prototype || !prototype.isReactComponent) {
+      throw new Error('Can only polyfill class components')
+    }
+
+    if (
+      typeof Component.getDerivedStateFromProps !== 'function' &&
+      typeof prototype.getSnapshotBeforeUpdate !== 'function'
+    ) {
+      return Component
+    }
+
+    // If new component APIs are defined, "unsafe" lifecycles won't be called.
+    // Error if any of these lifecycles are present,
+    // Because they would work differently between older and newer (16.3+) versions of React.
+    var foundWillMountName = null
+    var foundWillReceivePropsName = null
+    var foundWillUpdateName = null
+    if (typeof prototype.componentWillMount === 'function') {
+      foundWillMountName = 'componentWillMount'
+    } else if (typeof prototype.UNSAFE_componentWillMount === 'function') {
+      foundWillMountName = 'UNSAFE_componentWillMount'
+    }
+    if (typeof prototype.componentWillReceiveProps === 'function') {
+      foundWillReceivePropsName = 'componentWillReceiveProps'
+    } else if (
+      typeof prototype.UNSAFE_componentWillReceiveProps === 'function'
+    ) {
+      foundWillReceivePropsName = 'UNSAFE_componentWillReceiveProps'
+    }
+    if (typeof prototype.componentWillUpdate === 'function') {
+      foundWillUpdateName = 'componentWillUpdate'
+    } else if (typeof prototype.UNSAFE_componentWillUpdate === 'function') {
+      foundWillUpdateName = 'UNSAFE_componentWillUpdate'
+    }
+    if (
+      foundWillMountName !== null ||
+      foundWillReceivePropsName !== null ||
+      foundWillUpdateName !== null
+    ) {
+      var componentName = Component.displayName || Component.name
+      var newApiName =
+        typeof Component.getDerivedStateFromProps === 'function'
+          ? 'getDerivedStateFromProps()'
+          : 'getSnapshotBeforeUpdate()'
+
+      throw Error(
+        'Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n' +
+          componentName +
+          ' uses ' +
+          newApiName +
+          ' but also contains the following legacy lifecycles:' +
+          (foundWillMountName !== null ? '\n  ' + foundWillMountName : '') +
+          (foundWillReceivePropsName !== null
+            ? '\n  ' + foundWillReceivePropsName
+            : '') +
+          (foundWillUpdateName !== null ? '\n  ' + foundWillUpdateName : '') +
+          '\n\nThe above lifecycles should be removed. Learn more about this warning here:\n' +
+          'https://fb.me/react-async-component-lifecycle-hooks'
+      )
+    }
+
+    // React <= 16.2 does not support static getDerivedStateFromProps.
+    // As a workaround, use cWM and cWRP to invoke the new static lifecycle.
+    // Newer versions of React will ignore these lifecycles if gDSFP exists.
+    if (typeof Component.getDerivedStateFromProps === 'function') {
+      prototype.componentWillMount = componentWillMount
+      prototype.componentWillReceiveProps = componentWillReceiveProps
+    }
+
+    // React <= 16.2 does not support getSnapshotBeforeUpdate.
+    // As a workaround, use cWU to invoke the new lifecycle.
+    // Newer versions of React will ignore that lifecycle if gSBU exists.
+    if (typeof prototype.getSnapshotBeforeUpdate === 'function') {
+      if (typeof prototype.componentDidUpdate !== 'function') {
+        throw new Error(
+          'Cannot polyfill getSnapshotBeforeUpdate() for components that do not define componentDidUpdate() on the prototype'
+        )
+      }
+
+      prototype.componentWillUpdate = componentWillUpdate
+
+      var componentDidUpdate = prototype.componentDidUpdate
+
+      prototype.componentDidUpdate = function componentDidUpdatePolyfill(
+        prevProps,
+        prevState,
+        maybeSnapshot
+      ) {
+        // 16.3+ will not execute our will-update method;
+        // It will pass a snapshot value to did-update though.
+        // Older versions will require our polyfilled will-update value.
+        // We need to handle both cases, but can't just check for the presence of "maybeSnapshot",
+        // Because for <= 15.x versions this might be a "prevContext" object.
+        // We also can't just check "__reactInternalSnapshot",
+        // Because get-snapshot might return a falsy value.
+        // So check for the explicit __reactInternalSnapshotFlag flag to determine behavior.
+        var snapshot = this.__reactInternalSnapshotFlag
+          ? this.__reactInternalSnapshot
+          : maybeSnapshot
+
+        componentDidUpdate.call(this, prevProps, prevState, snapshot)
+      }
+    }
+
+    return Component
+  }
+
+  var _jsxFileName = '/Users/jquense/src/uncontrollable/src/uncontrollable.js'
   function uncontrollable(Component, controlledValues, methods) {
     if (methods === void 0) {
       methods = []
@@ -1830,8 +1793,21 @@
                 _this._notifying = false
               }
 
-              _this._values[propName] = value
-              if (!_this.unmounted) _this.forceUpdate()
+              if (!_this.unmounted)
+                _this.setState(function(_ref) {
+                  var _extends2
+
+                  var values = _ref.values
+                  return {
+                    values: _extends(
+                      Object.create(null),
+                      values,
+                      ((_extends2 = {}),
+                      (_extends2[propName] = value),
+                      _extends2)
+                    ),
+                  }
+                })
             }
 
             _this.handlers[handlerName] = handleChange
@@ -1840,41 +1816,46 @@
             _this.attachRef = function(ref) {
               _this.inner = ref
             }
+          var values = Object.create(null)
+          controlledProps.forEach(function(key) {
+            values[key] = _this.props[defaultKey(key)]
+          })
+          _this.state = {
+            values: values,
+            prevProps: {},
+          }
           return _this
         }
 
         var _proto = UncontrolledComponent.prototype
 
         _proto.shouldComponentUpdate = function shouldComponentUpdate() {
-          //let the forceUpdate trigger the update
+          //let setState trigger the update
           return !this._notifying
         }
 
-        _proto.componentWillMount = function componentWillMount() {
-          var _this2 = this
-
-          var props = this.props
-          this._values = Object.create(null)
-          controlledProps.forEach(function(key) {
-            _this2._values[key] = props[defaultKey(key)]
-          })
-        }
-
-        _proto.componentWillReceiveProps = function componentWillReceiveProps(
-          nextProps
+        UncontrolledComponent.getDerivedStateFromProps = function getDerivedStateFromProps(
+          props,
+          _ref2
         ) {
-          var _this3 = this
-
-          var props = this.props
+          var values = _ref2.values,
+            prevProps = _ref2.prevProps
+          var nextState = {
+            values: _extends(Object.create(null), values),
+            prevProps: {},
+          }
           controlledProps.forEach(function(key) {
             /**
              * If a prop switches from controlled to Uncontrolled
              * reset its value to the defaultValue
              */
-            if (!isProp(nextProps, key) && isProp(props, key)) {
-              _this3._values[key] = nextProps[defaultKey(key)]
+            nextState.prevProps[key] = props[key]
+
+            if (!isProp(props, key) && isProp(prevProps, key)) {
+              nextState.values[key] = props[defaultKey(key)]
             }
           })
+          return nextState
         }
 
         _proto.componentWillUnmount = function componentWillUnmount() {
@@ -1882,7 +1863,7 @@
         }
 
         _proto.render = function render() {
-          var _this4 = this
+          var _this2 = this
 
           var _this$props2 = this.props,
             innerRef = _this$props2.innerRef,
@@ -1893,9 +1874,11 @@
           })
           var newProps = {}
           controlledProps.forEach(function(propName) {
-            var propValue = _this4.props[propName]
+            var propValue = _this2.props[propName]
             newProps[propName] =
-              propValue !== undefined ? propValue : _this4._values[propName]
+              propValue !== undefined
+                ? propValue
+                : _this2.state.values[propName]
           })
           return React__default.createElement(
             Component,
@@ -1908,6 +1891,7 @@
         return UncontrolledComponent
       })(React__default.Component)
 
+    polyfill(UncontrolledComponent)
     UncontrolledComponent.displayName = 'Uncontrolled(' + displayName + ')'
     UncontrolledComponent.propTypes = _extends(
       {
@@ -1930,6 +1914,11 @@
           UncontrolledComponent,
           _extends({}, props, {
             innerRef: ref,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 128,
+            },
+            __self: this,
           })
         )
       })
@@ -1965,39 +1954,43 @@
     var k,
       y,
       str = ''
-    if (mix) {
-      if (typeof mix === 'object') {
-        if (!!mix.push) {
-          for (k = 0; k < mix.length; k++) {
-            if (mix[k] && (y = toVal(mix[k]))) {
-              str && (str += ' ')
-              str += y
-            }
-          }
-        } else {
-          for (k in mix) {
-            if (mix[k] && (y = toVal(k))) {
+
+    if (typeof mix === 'string' || typeof mix === 'number') {
+      str += mix
+    } else if (typeof mix === 'object') {
+      if (Array.isArray(mix)) {
+        for (k = 0; k < mix.length; k++) {
+          if (mix[k]) {
+            if ((y = toVal(mix[k]))) {
               str && (str += ' ')
               str += y
             }
           }
         }
-      } else if (typeof mix !== 'boolean' && !mix.call) {
-        str && (str += ' ')
-        str += mix
+      } else {
+        for (k in mix) {
+          if (mix[k]) {
+            str && (str += ' ')
+            str += k
+          }
+        }
       }
     }
+
     return str
   }
 
   function clsx() {
     var i = 0,
+      tmp,
       x,
       str = ''
     while (i < arguments.length) {
-      if ((x = toVal(arguments[i++]))) {
-        str && (str += ' ')
-        str += x
+      if ((tmp = arguments[i++])) {
+        if ((x = toVal(tmp))) {
+          str && (str += ' ')
+          str += x
+        }
       }
     }
     return str
@@ -2802,7 +2795,7 @@
     return (
       !!length &&
       (type == 'number' || (type != 'symbol' && reIsUint.test(value))) &&
-      (value > -1 && value % 1 == 0 && value < length)
+      value > -1 && value % 1 == 0 && value < length
     )
   }
 
@@ -2829,6 +2822,40 @@
       return eq$1(object[index], value)
     }
     return false
+  }
+
+  /** Used to match a single whitespace character. */
+  var reWhitespace = /\s/
+
+  /**
+   * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
+   * character of `string`.
+   *
+   * @private
+   * @param {string} string The string to inspect.
+   * @returns {number} Returns the index of the last non-whitespace character.
+   */
+  function trimmedEndIndex(string) {
+    var index = string.length
+
+    while (index-- && reWhitespace.test(string.charAt(index))) {}
+    return index
+  }
+
+  /** Used to match leading whitespace. */
+  var reTrimStart = /^\s+/
+
+  /**
+   * The base implementation of `_.trim`.
+   *
+   * @private
+   * @param {string} string The string to trim.
+   * @returns {string} Returns the trimmed string.
+   */
+  function baseTrim(string) {
+    return string
+      ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '')
+      : string
   }
 
   /**
@@ -2889,9 +2916,6 @@
   /** Used as references for various `Number` constants. */
   var NAN = 0 / 0
 
-  /** Used to match leading and trailing whitespace. */
-  var reTrim = /^\s+|\s+$/g
-
   /** Used to detect bad signed hexadecimal string values. */
   var reIsBadHex = /^[-+]0x[0-9a-f]+$/i
 
@@ -2941,7 +2965,7 @@
     if (typeof value != 'string') {
       return value === 0 ? value : +value
     }
-    value = value.replace(reTrim, '')
+    value = baseTrim(value)
     var isBinary = reIsBinary.test(value)
     return isBinary || reIsOctal.test(value)
       ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
@@ -3067,14 +3091,32 @@
     return result
   }
 
+  /**
+   * Returns the owner document of a given element.
+   *
+   * @param node the element
+   */
   function ownerDocument(node) {
     return (node && node.ownerDocument) || document
   }
+
+  /**
+   * Returns the owner window of a given element.
+   *
+   * @param node the element
+   */
 
   function ownerWindow(node) {
     var doc = ownerDocument(node)
     return (doc && doc.defaultView) || window
   }
+
+  /**
+   * Returns one or all computed style properties of an element.
+   *
+   * @param node the element
+   * @param psuedoElement the style property
+   */
 
   function getComputedStyle(node, psuedoElement) {
     return ownerWindow(node).getComputedStyle(node, psuedoElement)
@@ -3131,9 +3173,16 @@
   }
 
   /* eslint-disable no-bitwise, no-cond-assign */
-  // HTML DOM and SVG DOM may have different support levels,
-  // so we need to check on context instead of a document root element.
+
+  /**
+   * Checks if an element contains another given element.
+   *
+   * @param context the context element
+   * @param node the element to check
+   */
   function contains(context, node) {
+    // HTML DOM and SVG DOM may have different support levels,
+    // so we need to check on context instead of a document root element.
     if (context.contains) return context.contains(node)
     if (context.compareDocumentPosition)
       return context === node || !!(context.compareDocumentPosition(node) & 16)
@@ -3160,7 +3209,7 @@
       }
 
       if (win) {
-        win.scrollTo(val, win[offset])
+        win.scrollTo(win[offset], val)
       } else {
         node[prop] = val
       }
@@ -3169,9 +3218,29 @@
     return scrollAccessor
   }
 
+  /**
+   * Gets or sets the scroll left position of a given element.
+   *
+   * @param node the element
+   * @param val the position to set
+   */
+
   var getScrollLeft = getscrollAccessor('pageXOffset')
 
+  /**
+   * Gets or sets the scroll top position of a given element.
+   *
+   * @param node the element
+   * @param val the position to set
+   */
+
   var getScrollTop = getscrollAccessor('pageYOffset')
+
+  /**
+   * Returns the offset of a given element, including top and left positions, width and height.
+   *
+   * @param node the element
+   */
 
   function offset(node) {
     var doc = ownerDocument(node)
@@ -3187,8 +3256,8 @@
     if (node.getBoundingClientRect !== undefined)
       box = node.getBoundingClientRect()
     box = {
-      top: box.top + getScrollTop(node) - (docElem.clientTop || 0),
-      left: box.left + getScrollLeft(node) - (docElem.clientLeft || 0),
+      top: box.top + getScrollTop(docElem) - (docElem.clientTop || 0),
+      left: box.left + getScrollLeft(docElem) - (docElem.clientLeft || 0),
       width: box.width,
       height: box.height,
     }
@@ -3217,6 +3286,12 @@
   var nodeName = function nodeName(node) {
     return node.nodeName && node.nodeName.toLowerCase()
   }
+  /**
+   * Returns the relative position of a given element.
+   *
+   * @param node the element
+   * @param offsetParent the offset parent
+   */
 
   function position(node, offsetParent$1) {
     var parentOffset = {
@@ -3298,6 +3373,26 @@
   }
   var request = rafImpl
 
+  var _excluded = [
+    'style',
+    'className',
+    'event',
+    'selected',
+    'isAllDay',
+    'onSelect',
+    'onDoubleClick',
+    'onKeyPress',
+    'localizer',
+    'continuesPrior',
+    'continuesAfter',
+    'accessors',
+    'getters',
+    'children',
+    'components',
+    'slotStart',
+    'slotEnd',
+  ]
+
   var EventCell = /*#__PURE__*/ (function(_React$Component) {
     _inheritsLoose(EventCell, _React$Component)
 
@@ -3328,25 +3423,7 @@
         EventWrapper = _this$props$component.eventWrapper,
         slotStart = _this$props.slotStart,
         slotEnd = _this$props.slotEnd,
-        props = _objectWithoutPropertiesLoose(_this$props, [
-          'style',
-          'className',
-          'event',
-          'selected',
-          'isAllDay',
-          'onSelect',
-          'onDoubleClick',
-          'onKeyPress',
-          'localizer',
-          'continuesPrior',
-          'continuesAfter',
-          'accessors',
-          'getters',
-          'children',
-          'components',
-          'slotStart',
-          'slotEnd',
-        ])
+        props = _objectWithoutPropertiesLoose(_this$props, _excluded)
 
       delete props.resizable
       var title = accessors.title(event)
@@ -3784,21 +3861,50 @@
     return placement.split('-')[0]
   }
 
-  // Returns the layout rect of an element relative to its offsetParent. Layout
-  // means it doesn't take into account transforms.
-  function getLayoutRect(element) {
+  function getBoundingClientRect(element) {
+    var rect = element.getBoundingClientRect()
     return {
-      x: element.offsetLeft,
-      y: element.offsetTop,
-      width: element.offsetWidth,
-      height: element.offsetHeight,
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      left: rect.left,
+      x: rect.left,
+      y: rect.top,
     }
   }
 
-  /*:: import type { Window } from '../types'; */
+  // means it doesn't take into account transforms.
 
-  /*:: declare function getWindow(node: Node | Window): Window; */
+  function getLayoutRect(element) {
+    var clientRect = getBoundingClientRect(element) // Use the clientRect sizes if it's not been transformed.
+    // Fixes https://github.com/popperjs/popper-core/issues/1223
+
+    var width = element.offsetWidth
+    var height = element.offsetHeight
+
+    if (Math.abs(clientRect.width - width) <= 1) {
+      width = clientRect.width
+    }
+
+    if (Math.abs(clientRect.height - height) <= 1) {
+      height = clientRect.height
+    }
+
+    return {
+      x: element.offsetLeft,
+      y: element.offsetTop,
+      width: width,
+      height: height,
+    }
+  }
+
   function getWindow(node) {
+    if (node == null) {
+      return window
+    }
+
     if (node.toString() !== '[object Window]') {
       var ownerDocument = node.ownerDocument
       return ownerDocument ? ownerDocument.defaultView || window : window
@@ -3807,24 +3913,22 @@
     return node
   }
 
-  /*:: declare function isElement(node: mixed): boolean %checks(node instanceof
-    Element); */
-
   function isElement(node) {
     var OwnElement = getWindow(node).Element
     return node instanceof OwnElement || node instanceof Element
   }
-  /*:: declare function isHTMLElement(node: mixed): boolean %checks(node instanceof
-    HTMLElement); */
 
   function isHTMLElement$1(node) {
     var OwnElement = getWindow(node).HTMLElement
     return node instanceof OwnElement || node instanceof HTMLElement
   }
-  /*:: declare function isShadowRoot(node: mixed): boolean %checks(node instanceof
-    ShadowRoot); */
 
   function isShadowRoot(node) {
+    // IE 11 has no ShadowRoot
+    if (typeof ShadowRoot === 'undefined') {
+      return false
+    }
+
     var OwnElement = getWindow(node).ShadowRoot
     return node instanceof OwnElement || node instanceof ShadowRoot
   }
@@ -3882,8 +3986,7 @@
       // $FlowFixMe[prop-missing]
       element.assignedSlot || // step into the shadow DOM of the parent of a slotted node
       element.parentNode || // DOM Element detected
-      // $FlowFixMe[incompatible-return]: need a better way to handle this...
-      element.host || // ShadowRoot detected
+      (isShadowRoot(element) ? element.host : null) || // ShadowRoot detected
       // $FlowFixMe[incompatible-call]: HTMLElement is a Node
       getDocumentElement(element) // fallback
     )
@@ -3897,25 +4000,23 @@
       return null
     }
 
-    var offsetParent = element.offsetParent
-
-    if (offsetParent) {
-      var html = getDocumentElement(offsetParent)
-
-      if (
-        getNodeName(offsetParent) === 'body' &&
-        getComputedStyle$1(offsetParent).position === 'static' &&
-        getComputedStyle$1(html).position !== 'static'
-      ) {
-        return html
-      }
-    }
-
-    return offsetParent
+    return element.offsetParent
   } // `.offsetParent` reports `null` for fixed elements, while absolute elements
   // return the containing block
 
   function getContainingBlock(element) {
+    var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1
+    var isIE = navigator.userAgent.indexOf('Trident') !== -1
+
+    if (isIE && isHTMLElement$1(element)) {
+      // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
+      var elementCss = getComputedStyle$1(element)
+
+      if (elementCss.position === 'fixed') {
+        return null
+      }
+    }
+
     var currentNode = getParentNode(element)
 
     while (
@@ -3924,11 +4025,15 @@
     ) {
       var css = getComputedStyle$1(currentNode) // This is non-exhaustive but covers the most common CSS properties that
       // create a containing block.
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
 
       if (
         css.transform !== 'none' ||
         css.perspective !== 'none' ||
-        (css.willChange && css.willChange !== 'auto')
+        css.contain === 'paint' ||
+        ['transform', 'perspective'].indexOf(css.willChange) !== -1 ||
+        (isFirefox && css.willChange === 'filter') ||
+        (isFirefox && css.filter && css.filter !== 'none')
       ) {
         return currentNode
       } else {
@@ -3954,8 +4059,9 @@
 
     if (
       offsetParent &&
-      getNodeName(offsetParent) === 'body' &&
-      getComputedStyle$1(offsetParent).position === 'static'
+      (getNodeName(offsetParent) === 'html' ||
+        (getNodeName(offsetParent) === 'body' &&
+          getComputedStyle$1(offsetParent).position === 'static'))
     ) {
       return window
     }
@@ -3967,8 +4073,12 @@
     return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y'
   }
 
+  var max$1 = Math.max
+  var min$1 = Math.min
+  var round = Math.round
+
   function within(min, value, max) {
-    return Math.max(min, Math.min(value, max))
+    return max$1(min, min$1(value, max))
   }
 
   function getFreshSideObject() {
@@ -3981,7 +4091,7 @@
   }
 
   function mergePaddingObject(paddingObject) {
-    return Object.assign(Object.assign({}, getFreshSideObject()), paddingObject)
+    return Object.assign({}, getFreshSideObject(), paddingObject)
   }
 
   function expandToHashMap(value, keys) {
@@ -3991,11 +4101,28 @@
     }, {})
   }
 
+  var toPaddingObject = function toPaddingObject(padding, state) {
+    padding =
+      typeof padding === 'function'
+        ? padding(
+            Object.assign({}, state.rects, {
+              placement: state.placement,
+            })
+          )
+        : padding
+    return mergePaddingObject(
+      typeof padding !== 'number'
+        ? padding
+        : expandToHashMap(padding, basePlacements)
+    )
+  }
+
   function arrow(_ref) {
     var _state$modifiersData$
 
     var state = _ref.state,
-      name = _ref.name
+      name = _ref.name,
+      options = _ref.options
     var arrowElement = state.elements.arrow
     var popperOffsets = state.modifiersData.popperOffsets
     var basePlacement = getBasePlacement(state.placement)
@@ -4007,7 +4134,7 @@
       return
     }
 
-    var paddingObject = state.modifiersData[name + '#persistent'].padding
+    var paddingObject = toPaddingObject(options.padding, state)
     var arrowRect = getLayoutRect(arrowElement)
     var minProp = axis === 'y' ? top : left
     var maxProp = axis === 'y' ? bottom : right
@@ -4032,21 +4159,19 @@
     var offset = within(min, center, max) // Prevents breaking syntax highlighting...
 
     var axisProp = axis
-    state.modifiersData[name] = ((_state$modifiersData$ = {}),
-    (_state$modifiersData$[axisProp] = offset),
-    (_state$modifiersData$.centerOffset = offset - center),
-    _state$modifiersData$)
+    state.modifiersData[name] =
+      ((_state$modifiersData$ = {}),
+      (_state$modifiersData$[axisProp] = offset),
+      (_state$modifiersData$.centerOffset = offset - center),
+      _state$modifiersData$)
   }
 
   function effect(_ref2) {
     var state = _ref2.state,
-      options = _ref2.options,
-      name = _ref2.name
+      options = _ref2.options
     var _options$element = options.element,
       arrowElement =
-        _options$element === void 0 ? '[data-popper-arrow]' : _options$element,
-      _options$padding = options.padding,
-      padding = _options$padding === void 0 ? 0 : _options$padding
+        _options$element === void 0 ? '[data-popper-arrow]' : _options$element
 
     if (arrowElement == null) {
       return
@@ -4086,13 +4211,6 @@
     }
 
     state.elements.arrow = arrowElement
-    state.modifiersData[name + '#persistent'] = {
-      padding: mergePaddingObject(
-        typeof padding !== 'number'
-          ? padding
-          : expandToHashMap(padding, basePlacements)
-      ),
-    }
   } // eslint-disable-next-line import/no-unused-modules
 
   var arrow$1 = {
@@ -4120,8 +4238,8 @@
     var win = window
     var dpr = win.devicePixelRatio || 1
     return {
-      x: Math.round(x * dpr) / dpr || 0,
-      y: Math.round(y * dpr) / dpr || 0,
+      x: round(round(x * dpr) / dpr) || 0,
+      y: round(round(y * dpr) / dpr) || 0,
     }
   }
 
@@ -4137,7 +4255,12 @@
       adaptive = _ref2.adaptive,
       roundOffsets = _ref2.roundOffsets
 
-    var _ref3 = roundOffsets ? roundOffsetsByDPR(offsets) : offsets,
+    var _ref3 =
+        roundOffsets === true
+          ? roundOffsetsByDPR(offsets)
+          : typeof roundOffsets === 'function'
+          ? roundOffsets(offsets)
+          : offsets,
       _ref3$x = _ref3.x,
       x = _ref3$x === void 0 ? 0 : _ref3$x,
       _ref3$y = _ref3.y,
@@ -4151,22 +4274,31 @@
 
     if (adaptive) {
       var offsetParent = getOffsetParent(popper)
+      var heightProp = 'clientHeight'
+      var widthProp = 'clientWidth'
 
       if (offsetParent === getWindow(popper)) {
         offsetParent = getDocumentElement(popper)
+
+        if (getComputedStyle$1(offsetParent).position !== 'static') {
+          heightProp = 'scrollHeight'
+          widthProp = 'scrollWidth'
+        }
       } // $FlowFixMe[incompatible-cast]: force type refinement, we compare offsetParent with window above, but Flow doesn't detect it
 
-      /*:: offsetParent = (offsetParent: Element); */
+      offsetParent = offsetParent
 
       if (placement === top) {
-        sideY = bottom
-        y -= offsetParent.clientHeight - popperRect.height
+        sideY = bottom // $FlowFixMe[prop-missing]
+
+        y -= offsetParent[heightProp] - popperRect.height
         y *= gpuAcceleration ? 1 : -1
       }
 
       if (placement === left) {
-        sideX = right
-        x -= offsetParent.clientWidth - popperRect.width
+        sideX = right // $FlowFixMe[prop-missing]
+
+        x -= offsetParent[widthProp] - popperRect.width
         x *= gpuAcceleration ? 1 : -1
       }
     }
@@ -4182,8 +4314,8 @@
       var _Object$assign
 
       return Object.assign(
-        Object.assign({}, commonStyles),
         {},
+        commonStyles,
         ((_Object$assign = {}),
         (_Object$assign[sideY] = hasY ? '0' : ''),
         (_Object$assign[sideX] = hasX ? '0' : ''),
@@ -4196,8 +4328,8 @@
     }
 
     return Object.assign(
-      Object.assign({}, commonStyles),
       {},
+      commonStyles,
       ((_Object$assign2 = {}),
       (_Object$assign2[sideY] = hasY ? y + 'px' : ''),
       (_Object$assign2[sideX] = hasX ? x + 'px' : ''),
@@ -4256,47 +4388,37 @@
 
     if (state.modifiersData.popperOffsets != null) {
       state.styles.popper = Object.assign(
-        Object.assign({}, state.styles.popper),
+        {},
+        state.styles.popper,
         mapToStyles(
-          Object.assign(
-            Object.assign({}, commonStyles),
-            {},
-            {
-              offsets: state.modifiersData.popperOffsets,
-              position: state.options.strategy,
-              adaptive: adaptive,
-              roundOffsets: roundOffsets,
-            }
-          )
+          Object.assign({}, commonStyles, {
+            offsets: state.modifiersData.popperOffsets,
+            position: state.options.strategy,
+            adaptive: adaptive,
+            roundOffsets: roundOffsets,
+          })
         )
       )
     }
 
     if (state.modifiersData.arrow != null) {
       state.styles.arrow = Object.assign(
-        Object.assign({}, state.styles.arrow),
+        {},
+        state.styles.arrow,
         mapToStyles(
-          Object.assign(
-            Object.assign({}, commonStyles),
-            {},
-            {
-              offsets: state.modifiersData.arrow,
-              position: 'absolute',
-              adaptive: false,
-              roundOffsets: roundOffsets,
-            }
-          )
+          Object.assign({}, commonStyles, {
+            offsets: state.modifiersData.arrow,
+            position: 'absolute',
+            adaptive: false,
+            roundOffsets: roundOffsets,
+          })
         )
       )
     }
 
-    state.attributes.popper = Object.assign(
-      Object.assign({}, state.attributes.popper),
-      {},
-      {
-        'data-popper-placement': state.placement,
-      }
-    )
+    state.attributes.popper = Object.assign({}, state.attributes.popper, {
+      'data-popper-placement': state.placement,
+    })
   } // eslint-disable-next-line import/no-unused-modules
 
   var computeStyles$1 = {
@@ -4379,20 +4501,6 @@
     })
   }
 
-  function getBoundingClientRect(element) {
-    var rect = element.getBoundingClientRect()
-    return {
-      width: rect.width,
-      height: rect.height,
-      top: rect.top,
-      right: rect.right,
-      bottom: rect.bottom,
-      left: rect.left,
-      x: rect.left,
-      y: rect.top,
-    }
-  }
-
   function getWindowScroll(node) {
     var win = getWindow(node)
     var scrollLeft = win.pageXOffset
@@ -4458,16 +4566,21 @@
   // of the `<html>` and `<body>` rect bounds if horizontally scrollable
 
   function getDocumentRect(element) {
+    var _element$ownerDocumen
+
     var html = getDocumentElement(element)
     var winScroll = getWindowScroll(element)
-    var body = element.ownerDocument.body
-    var width = Math.max(
+    var body =
+      (_element$ownerDocumen = element.ownerDocument) == null
+        ? void 0
+        : _element$ownerDocumen.body
+    var width = max$1(
       html.scrollWidth,
       html.clientWidth,
       body ? body.scrollWidth : 0,
       body ? body.clientWidth : 0
     )
-    var height = Math.max(
+    var height = max$1(
       html.scrollHeight,
       html.clientHeight,
       body ? body.scrollHeight : 0,
@@ -4477,7 +4590,7 @@
     var y = -winScroll.scrollTop
 
     if (getComputedStyle$1(body || html).direction === 'rtl') {
-      x += Math.max(html.clientWidth, body ? body.clientWidth : 0) - width
+      x += max$1(html.clientWidth, body ? body.clientWidth : 0) - width
     }
 
     return {
@@ -4519,12 +4632,18 @@
   */
 
   function listScrollParents(element, list) {
+    var _element$ownerDocumen
+
     if (list === void 0) {
       list = []
     }
 
     var scrollParent = getScrollParent(element)
-    var isBody = getNodeName(scrollParent) === 'body'
+    var isBody =
+      scrollParent ===
+      ((_element$ownerDocumen = element.ownerDocument) == null
+        ? void 0
+        : _element$ownerDocumen.body)
     var win = getWindow(scrollParent)
     var target = isBody
       ? [win].concat(
@@ -4539,16 +4658,12 @@
   }
 
   function rectToClientRect(rect) {
-    return Object.assign(
-      Object.assign({}, rect),
-      {},
-      {
-        left: rect.x,
-        top: rect.y,
-        right: rect.x + rect.width,
-        bottom: rect.y + rect.height,
-      }
-    )
+    return Object.assign({}, rect, {
+      left: rect.x,
+      top: rect.y,
+      right: rect.x + rect.width,
+      bottom: rect.y + rect.height,
+    })
   }
 
   function getInnerBoundingClientRect(element) {
@@ -4609,10 +4724,10 @@
       clippingParent
     ) {
       var rect = getClientRectFromMixedType(element, clippingParent)
-      accRect.top = Math.max(rect.top, accRect.top)
-      accRect.right = Math.min(rect.right, accRect.right)
-      accRect.bottom = Math.min(rect.bottom, accRect.bottom)
-      accRect.left = Math.max(rect.left, accRect.left)
+      accRect.top = max$1(rect.top, accRect.top)
+      accRect.right = min$1(rect.right, accRect.right)
+      accRect.bottom = min$1(rect.bottom, accRect.bottom)
+      accRect.left = max$1(rect.left, accRect.left)
       return accRect
     },
     getClientRectFromMixedType(element, firstClippingParent))
@@ -4690,8 +4805,6 @@
           offsets[mainAxis] =
             offsets[mainAxis] + (reference[len] / 2 - element[len] / 2)
           break
-
-        default:
       }
     }
 
@@ -4745,7 +4858,7 @@
       placement: placement,
     })
     var popperClientRect = rectToClientRect(
-      Object.assign(Object.assign({}, popperRect), popperOffsets)
+      Object.assign({}, popperRect, popperOffsets)
     )
     var elementClientRect =
       elementContext === popper ? popperClientRect : referenceClientRect // positive = overflowing the clipping rect
@@ -4778,9 +4891,6 @@
     return overflowOffsets
   }
 
-  /*:: type OverflowsMap = { [ComputedPlacement]: number }; */
-
-  /*;; type OverflowsMap = { [key in ComputedPlacement]: number }; */
   function computeAutoPlacement(state, options) {
     if (options === void 0) {
       options = {}
@@ -5053,14 +5163,10 @@
       isReferenceHidden: isReferenceHidden,
       hasPopperEscaped: hasPopperEscaped,
     }
-    state.attributes.popper = Object.assign(
-      Object.assign({}, state.attributes.popper),
-      {},
-      {
-        'data-popper-reference-hidden': isReferenceHidden,
-        'data-popper-escaped': hasPopperEscaped,
-      }
-    )
+    state.attributes.popper = Object.assign({}, state.attributes.popper, {
+      'data-popper-reference-hidden': isReferenceHidden,
+      'data-popper-escaped': hasPopperEscaped,
+    })
   } // eslint-disable-next-line import/no-unused-modules
 
   var hide$1 = {
@@ -5078,13 +5184,9 @@
     var _ref =
         typeof offset === 'function'
           ? offset(
-              Object.assign(
-                Object.assign({}, rects),
-                {},
-                {
-                  placement: placement,
-                }
-              )
+              Object.assign({}, rects, {
+                placement: placement,
+              })
             )
           : offset,
       skidding = _ref[0],
@@ -5194,13 +5296,9 @@
     var tetherOffsetValue =
       typeof tetherOffset === 'function'
         ? tetherOffset(
-            Object.assign(
-              Object.assign({}, state.rects),
-              {},
-              {
-                placement: state.placement,
-              }
-            )
+            Object.assign({}, state.rects, {
+              placement: state.placement,
+            })
           )
         : tetherOffset
     var data = {
@@ -5212,7 +5310,7 @@
       return
     }
 
-    if (checkMainAxis) {
+    if (checkMainAxis || checkAltAxis) {
       var mainSide = mainAxis === 'y' ? top : left
       var altSide = mainAxis === 'y' ? bottom : right
       var len = mainAxis === 'y' ? 'height' : 'width'
@@ -5270,30 +5368,37 @@
       var tetherMin =
         popperOffsets[mainAxis] + minOffset - offsetModifierValue - clientOffset
       var tetherMax = popperOffsets[mainAxis] + maxOffset - offsetModifierValue
-      var preventedOffset = within(
-        tether ? Math.min(min, tetherMin) : min,
-        offset,
-        tether ? Math.max(max, tetherMax) : max
-      )
-      popperOffsets[mainAxis] = preventedOffset
-      data[mainAxis] = preventedOffset - offset
-    }
 
-    if (checkAltAxis) {
-      var _mainSide = mainAxis === 'x' ? top : left
+      if (checkMainAxis) {
+        var preventedOffset = within(
+          tether ? min$1(min, tetherMin) : min,
+          offset,
+          tether ? max$1(max, tetherMax) : max
+        )
+        popperOffsets[mainAxis] = preventedOffset
+        data[mainAxis] = preventedOffset - offset
+      }
 
-      var _altSide = mainAxis === 'x' ? bottom : right
+      if (checkAltAxis) {
+        var _mainSide = mainAxis === 'x' ? top : left
 
-      var _offset = popperOffsets[altAxis]
+        var _altSide = mainAxis === 'x' ? bottom : right
 
-      var _min = _offset + overflow[_mainSide]
+        var _offset = popperOffsets[altAxis]
 
-      var _max = _offset - overflow[_altSide]
+        var _min = _offset + overflow[_mainSide]
 
-      var _preventedOffset = within(_min, _offset, _max)
+        var _max = _offset - overflow[_altSide]
 
-      popperOffsets[altAxis] = _preventedOffset
-      data[altAxis] = _preventedOffset - _offset
+        var _preventedOffset = within(
+          tether ? min$1(_min, tetherMin) : _min,
+          _offset,
+          tether ? max$1(_max, tetherMax) : _max
+        )
+
+        popperOffsets[altAxis] = _preventedOffset
+        data[altAxis] = _preventedOffset - _offset
+      }
     }
 
     state.modifiersData[name] = data
@@ -5621,20 +5726,10 @@
     var merged = modifiers.reduce(function(merged, current) {
       var existing = merged[current.name]
       merged[current.name] = existing
-        ? Object.assign(
-            Object.assign(Object.assign({}, existing), current),
-            {},
-            {
-              options: Object.assign(
-                Object.assign({}, existing.options),
-                current.options
-              ),
-              data: Object.assign(
-                Object.assign({}, existing.data),
-                current.data
-              ),
-            }
-          )
+        ? Object.assign({}, existing, current, {
+            options: Object.assign({}, existing.options, current.options),
+            data: Object.assign({}, existing.data, current.data),
+          })
         : current
       return merged
     }, {}) // IE11 does not support Object.values
@@ -5690,10 +5785,7 @@
       var state = {
         placement: 'bottom',
         orderedModifiers: [],
-        options: Object.assign(
-          Object.assign({}, DEFAULT_OPTIONS),
-          defaultOptions
-        ),
+        options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
         modifiersData: {},
         elements: {
           reference: reference,
@@ -5709,7 +5801,9 @@
         setOptions: function setOptions(options) {
           cleanupModifierEffects()
           state.options = Object.assign(
-            Object.assign(Object.assign({}, defaultOptions), state.options),
+            {},
+            defaultOptions,
+            state.options,
             options
           )
           state.scrollParents = {
@@ -6210,21 +6304,6 @@
     return popperState
   }
 
-  /* eslint-disable no-bitwise, no-cond-assign */
-  // HTML DOM and SVG DOM may have different support levels,
-  // so we need to check on context instead of a document root element.
-  function contains$2(context, node) {
-    if (context.contains) return context.contains(node)
-    if (context.compareDocumentPosition)
-      return context === node || !!(context.compareDocumentPosition(node) & 16)
-  }
-
-  var canUseDOM$1 = !!(
-    typeof window !== 'undefined' &&
-    window.document &&
-    window.document.createElement
-  )
-
   /* eslint-disable no-return-assign */
   var optionsSupported = false
   var onceSupported = false
@@ -6241,7 +6320,7 @@
       },
     }
 
-    if (canUseDOM$1) {
+    if (canUseDOM) {
       window.addEventListener('test', options, options)
       window.removeEventListener('test', options, true)
     }
@@ -6251,6 +6330,11 @@
 
   /**
    * An `addEventListener` ponyfill, supports the `once` option
+   *
+   * @param node the element
+   * @param eventName the event name
+   * @param handle the handler
+   * @param options event options
    */
   function addEventListener(node, eventName, handler, options) {
     if (options && typeof options !== 'boolean' && !onceSupported) {
@@ -6279,6 +6363,14 @@
     node.addEventListener(eventName, handler, options)
   }
 
+  /**
+   * A `removeEventListener` ponyfill
+   *
+   * @param node the element
+   * @param eventName the event name
+   * @param handle the handler
+   * @param options event options
+   */
   function removeEventListener(node, eventName, handler, options) {
     var capture =
       options && typeof options !== 'boolean' ? options.capture : options
@@ -6380,10 +6472,6 @@
 
   var warning_1 = warning
 
-  function ownerDocument$1(node) {
-    return (node && node.ownerDocument) || document
-  }
-
   function safeFindDOMNode(componentOrElement) {
     if (componentOrElement && 'setState' in componentOrElement) {
       return ReactDOM__default.findDOMNode(componentOrElement)
@@ -6392,8 +6480,8 @@
     return componentOrElement != null ? componentOrElement : null
   }
 
-  var ownerDocument$2 = function(componentOrElement) {
-    return ownerDocument$1(safeFindDOMNode(componentOrElement))
+  var ownerDocument$1 = function(componentOrElement) {
+    return ownerDocument(safeFindDOMNode(componentOrElement))
   }
 
   var escapeKeyCode = 27
@@ -6444,7 +6532,7 @@
           !currentTarget ||
           isModifiedEvent(e) ||
           !isLeftClickEvent(e) ||
-          !!contains$2(currentTarget, e.target)
+          !!contains(currentTarget, e.target)
       },
       [ref]
     )
@@ -6464,7 +6552,7 @@
         // https://github.com/facebook/react/issues/20074
 
         var currentEvent = window.event
-        var doc = ownerDocument$2(getRefTarget(ref)) // Use capture for this listener so it fires before React's listener, to
+        var doc = ownerDocument$1(getRefTarget(ref)) // Use capture for this listener so it fires before React's listener, to
         // avoid false positives in the contains() check below if the target DOM
         // element is removed in the React mouse callback.
 
@@ -6526,7 +6614,7 @@
     var _ref
 
     if (typeof document === 'undefined') return null
-    if (ref == null) return ownerDocument$1().body
+    if (ref == null) return ownerDocument().body
     if (typeof ref === 'function') ref = ref()
     if (ref && 'current' in ref) ref = ref.current
     if ((_ref = ref) == null ? void 0 : _ref.nodeType) return ref || null
@@ -6927,6 +7015,13 @@
     onExited: propTypes.func,
   }
 
+  /**
+   * Returns the height of a given element.
+   *
+   * @param node the element
+   * @param client whether to use `clientHeight` if possible
+   */
+
   function height(node, client) {
     var win = isWindow(node)
     return win
@@ -6937,11 +7032,25 @@
   }
 
   var toArray = Function.prototype.bind.call(Function.prototype.call, [].slice)
+  /**
+   * Runs `querySelectorAll` on a given element.
+   *
+   * @param element the element
+   * @param selector the selector
+   */
+
   function qsa(element, selector) {
     return toArray(element.querySelectorAll(selector))
   }
 
   var matchesImpl
+  /**
+   * Checks if a given element matches a selector.
+   *
+   * @param node the element
+   * @param selector the selector
+   */
+
   function matches(node, selector) {
     if (!matchesImpl) {
       var body = document.body
@@ -6960,6 +7069,14 @@
     return matchesImpl(node, selector)
   }
 
+  /**
+   * Returns the closest parent element that matches a given selector.
+   *
+   * @param node the reference element
+   * @param selector the selector to match
+   * @param stopAt stop traversing when this element is found
+   */
+
   function closest(node, selector, stopAt) {
     if (node.closest && !stopAt) node.closest(selector)
     var nextNode = node
@@ -6972,83 +7089,12 @@
     return null
   }
 
-  /* eslint-disable no-return-assign */
-  var optionsSupported$1 = false
-  var onceSupported$1 = false
-
-  try {
-    var options$1 = {
-      get passive() {
-        return (optionsSupported$1 = true)
-      },
-
-      get once() {
-        // eslint-disable-next-line no-multi-assign
-        return (onceSupported$1 = optionsSupported$1 = true)
-      },
-    }
-
-    if (canUseDOM) {
-      window.addEventListener('test', options$1, options$1)
-      window.removeEventListener('test', options$1, true)
-    }
-  } catch (e) {
-    /* */
-  }
-
-  /**
-   * An `addEventListener` ponyfill, supports the `once` option
-   */
-  function addEventListener$1(node, eventName, handler, options) {
-    if (options && typeof options !== 'boolean' && !onceSupported$1) {
-      var once = options.once,
-        capture = options.capture
-      var wrappedHandler = handler
-
-      if (!onceSupported$1 && once) {
-        wrappedHandler =
-          handler.__once ||
-          function onceHandler(event) {
-            this.removeEventListener(eventName, onceHandler, capture)
-            handler.call(this, event)
-          }
-
-        handler.__once = wrappedHandler
-      }
-
-      node.addEventListener(
-        eventName,
-        wrappedHandler,
-        optionsSupported$1 ? options : capture
-      )
-    }
-
-    node.addEventListener(eventName, handler, options)
-  }
-
-  function removeEventListener$1(node, eventName, handler, options) {
-    var capture =
-      options && typeof options !== 'boolean' ? options.capture : options
-    node.removeEventListener(eventName, handler, capture)
-
-    if (handler.__once) {
-      node.removeEventListener(eventName, handler.__once, capture)
-    }
-  }
-
-  function listen$1(node, eventName, handler, options) {
-    addEventListener$1(node, eventName, handler, options)
-    return function() {
-      removeEventListener$1(node, eventName, handler, options)
-    }
-  }
-
-  function addEventListener$2(type, handler, target) {
+  function addEventListener$1(type, handler, target) {
     if (target === void 0) {
       target = document
     }
 
-    return listen$1(target, type, handler, {
+    return listen(target, type, handler, {
       passive: false,
     })
   }
@@ -7109,21 +7155,21 @@
       ) // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
       // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
 
-      this._removeTouchMoveWindowListener = addEventListener$2(
+      this._removeTouchMoveWindowListener = addEventListener$1(
         'touchmove',
         function() {},
         window
       )
-      this._removeKeyDownListener = addEventListener$2(
+      this._removeKeyDownListener = addEventListener$1(
         'keydown',
         this._keyListener
       )
-      this._removeKeyUpListener = addEventListener$2('keyup', this._keyListener)
-      this._removeDropFromOutsideListener = addEventListener$2(
+      this._removeKeyUpListener = addEventListener$1('keyup', this._keyListener)
+      this._removeDropFromOutsideListener = addEventListener$1(
         'drop',
         this._dropFromOutsideListener
       )
-      this._removeDragOverFromOutsideListener = addEventListener$2(
+      this._removeDragOverFromOutsideListener = addEventListener$1(
         'dragover',
         this._dragOverFromOutsideListener
       )
@@ -7209,15 +7255,15 @@
           cleanup()
           handler(initialEvent)
         }, _this.longPressThreshold)
-        removeTouchMoveListener = addEventListener$2('touchmove', function() {
+        removeTouchMoveListener = addEventListener$1('touchmove', function() {
           return cleanup()
         })
-        removeTouchEndListener = addEventListener$2('touchend', function() {
+        removeTouchEndListener = addEventListener$1('touchend', function() {
           return cleanup()
         })
       }
 
-      var removeTouchStartListener = addEventListener$2(
+      var removeTouchStartListener = addEventListener$1(
         'touchstart',
         handleTouchStart
       )
@@ -7254,19 +7300,19 @@
     _proto._addInitialEventListener = function _addInitialEventListener() {
       var _this2 = this
 
-      var removeMouseDownListener = addEventListener$2('mousedown', function(
+      var removeMouseDownListener = addEventListener$1('mousedown', function(
         e
       ) {
         _this2._removeInitialEventListener()
 
         _this2._handleInitialEvent(e)
 
-        _this2._removeInitialEventListener = addEventListener$2(
+        _this2._removeInitialEventListener = addEventListener$1(
           'mousedown',
           _this2._handleInitialEvent
         )
       })
-      var removeTouchStartListener = addEventListener$2('touchstart', function(
+      var removeTouchStartListener = addEventListener$1('touchstart', function(
         e
       ) {
         _this2._removeInitialEventListener()
@@ -7376,15 +7422,15 @@
 
       switch (e.type) {
         case 'mousedown':
-          this._removeEndListener = addEventListener$2(
+          this._removeEndListener = addEventListener$1(
             'mouseup',
             this._handleTerminatingEvent
           )
-          this._onEscListener = addEventListener$2(
+          this._onEscListener = addEventListener$1(
             'keydown',
             this._handleTerminatingEvent
           )
-          this._removeMoveListener = addEventListener$2(
+          this._removeMoveListener = addEventListener$1(
             'mousemove',
             this._handleMoveEvent
           )
@@ -7393,17 +7439,14 @@
         case 'touchstart':
           this._handleMoveEvent(e)
 
-          this._removeEndListener = addEventListener$2(
+          this._removeEndListener = addEventListener$1(
             'touchend',
             this._handleTerminatingEvent
           )
-          this._removeMoveListener = addEventListener$2(
+          this._removeMoveListener = addEventListener$1(
             'touchmove',
             this._handleMoveEvent
           )
-          break
-
-        default:
           break
       }
     }
@@ -7579,12 +7622,14 @@
       _getBoundsForNode2$bo = _getBoundsForNode2.bottom,
       bBottom = _getBoundsForNode2$bo === void 0 ? bTop : _getBoundsForNode2$bo
 
-    return !// 'a' bottom doesn't touch 'b' top
-    (
-      aBottom - tolerance < bTop || // 'a' top doesn't touch 'b' bottom
-      aTop + tolerance > bBottom || // 'a' right doesn't touch 'b' left
-      aRight - tolerance < bLeft || // 'a' left doesn't touch 'b' right
-      aLeft + tolerance > bRight
+    return !(
+      // 'a' bottom doesn't touch 'b' top
+      (
+        aBottom - tolerance < bTop || // 'a' top doesn't touch 'b' bottom
+        aTop + tolerance > bBottom || // 'a' right doesn't touch 'b' left
+        aRight - tolerance < bLeft || // 'a' left doesn't touch 'b' right
+        aLeft + tolerance > bRight
+      )
     )
   }
   /**
@@ -9569,7 +9614,7 @@
       // Non `Object` object instances with different constructors are not equal.
       if (
         objCtor != othCtor &&
-        ('constructor' in object && 'constructor' in other) &&
+        'constructor' in object && 'constructor' in other &&
         !(
           typeof objCtor == 'function' &&
           objCtor instanceof objCtor &&
@@ -10484,7 +10529,7 @@
     if (index < 0) {
       index = nativeMax$1(length + index, 0)
     }
-    return baseFindIndex(array, baseIteratee(predicate, 3), index)
+    return baseFindIndex(array, baseIteratee(predicate), index)
   }
 
   function endOfRange(dateRange, unit) {
@@ -10826,12 +10871,26 @@
     )
   }
 
+  var safeIsNaN =
+    Number.isNaN ||
+    function ponyfill(value) {
+      return typeof value === 'number' && value !== value
+    }
+  function isEqual(first, second) {
+    if (first === second) {
+      return true
+    }
+    if (safeIsNaN(first) && safeIsNaN(second)) {
+      return true
+    }
+    return false
+  }
   function areInputsEqual(newInputs, lastInputs) {
     if (newInputs.length !== lastInputs.length) {
       return false
     }
     for (var i = 0; i < newInputs.length; i++) {
-      if (newInputs[i] !== lastInputs[i]) {
+      if (!isEqual(newInputs[i], lastInputs[i])) {
         return false
       }
     }
@@ -10867,7 +10926,7 @@
     return seg.left <= slot && seg.right >= slot
   }
 
-  var isEqual = function isEqual(a, b) {
+  var isEqual$1 = function isEqual(a, b) {
     return a[0].range === b[0].range && a[0].events === b[0].events
   }
 
@@ -10938,7 +10997,7 @@
             : gt(eventEnd, last, 'minutes')
         },
       }
-    }, isEqual)
+    }, isEqual$1)
   }
 
   var DateContentRow = /*#__PURE__*/ (function(_React$Component) {
@@ -11291,6 +11350,8 @@
     isOffRange: propTypes.bool,
   }
 
+  var _excluded$1 = ['date', 'className']
+
   var eventsForWeek = function eventsForWeek(evts, start, end, accessors) {
     return evts.filter(function(e) {
       return inRange$1(e, start, end, accessors)
@@ -11377,7 +11438,7 @@
       _this.readerDateHeading = function(_ref) {
         var date = _ref.date,
           className = _ref.className,
-          props = _objectWithoutPropertiesLoose(_ref, ['date', 'className'])
+          props = _objectWithoutPropertiesLoose(_ref, _excluded$1)
 
         var _this$props2 = _this.props,
           currentDate = _this$props2.date,
@@ -12998,6 +13059,9 @@
     )
   }
 
+  var _excluded$2 = ['dayProp'],
+    _excluded2 = ['eventContainerWrapper']
+
   var DayColumn = /*#__PURE__*/ (function(_React$Component) {
     _inheritsLoose(DayColumn, _React$Component)
 
@@ -13416,14 +13480,16 @@
         localizer = _this$props3.localizer,
         _this$props3$getters = _this$props3.getters,
         dayProp = _this$props3$getters.dayProp,
-        getters = _objectWithoutPropertiesLoose(_this$props3$getters, [
-          'dayProp',
-        ]),
+        getters = _objectWithoutPropertiesLoose(
+          _this$props3$getters,
+          _excluded$2
+        ),
         _this$props3$componen = _this$props3.components,
         EventContainer = _this$props3$componen.eventContainerWrapper,
-        components = _objectWithoutPropertiesLoose(_this$props3$componen, [
-          'eventContainerWrapper',
-        ])
+        components = _objectWithoutPropertiesLoose(
+          _this$props3$componen,
+          _excluded2
+        )
 
       var slotMetrics = this.slotMetrics
       var _this$state = this.state,
@@ -13659,6 +13725,13 @@
     localizer: propTypes.object.isRequired,
     resource: propTypes.string,
   }
+
+  /**
+   * Returns the width of a given element.
+   *
+   * @param node the element
+   * @param client whether to use `clientWidth` if possible
+   */
 
   function getWidth(node, client) {
     var win = isWindow(node)
@@ -14396,6 +14469,8 @@
     scrollToTime: startOf(new Date(), 'day'),
   }
 
+  var _excluded$3 = ['date']
+
   var Day = /*#__PURE__*/ (function(_React$Component) {
     _inheritsLoose(Day, _React$Component)
 
@@ -14408,7 +14483,7 @@
     _proto.render = function render() {
       var _this$props = this.props,
         date = _this$props.date,
-        props = _objectWithoutPropertiesLoose(_this$props, ['date'])
+        props = _objectWithoutPropertiesLoose(_this$props, _excluded$3)
 
       var range = Day.range(date)
       return /*#__PURE__*/ React__default.createElement(
@@ -14449,6 +14524,8 @@
     return localizer.format(date, 'dayHeaderFormat')
   }
 
+  var _excluded$4 = ['date']
+
   var Week = /*#__PURE__*/ (function(_React$Component) {
     _inheritsLoose(Week, _React$Component)
 
@@ -14461,7 +14538,7 @@
     _proto.render = function render() {
       var _this$props = this.props,
         date = _this$props.date,
-        props = _objectWithoutPropertiesLoose(_this$props, ['date'])
+        props = _objectWithoutPropertiesLoose(_this$props, _excluded$4)
 
       var range = Week.range(date, this.props)
       return /*#__PURE__*/ React__default.createElement(
@@ -14520,6 +14597,8 @@
     )
   }
 
+  var _excluded$5 = ['date']
+
   function workWeekRange(date, options) {
     return Week.range(date, options).filter(function(d) {
       return [6, 0].indexOf(d.getDay()) === -1
@@ -14538,7 +14617,7 @@
     _proto.render = function render() {
       var _this$props = this.props,
         date = _this$props.date,
-        props = _objectWithoutPropertiesLoose(_this$props, ['date'])
+        props = _objectWithoutPropertiesLoose(_this$props, _excluded$5)
 
       var range = workWeekRange(date, this.props)
       return /*#__PURE__*/ React__default.createElement(
@@ -14578,6 +14657,12 @@
     )
   }
 
+  /**
+   * Checks if a given element has a CSS class.
+   *
+   * @param element the element
+   * @param className the CSS class name
+   */
   function hasClass(element, className) {
     if (element.classList)
       return !!className && element.classList.contains(className)
@@ -14587,6 +14672,13 @@
       ) !== -1
     )
   }
+
+  /**
+   * Adds a CSS class to a given element.
+   *
+   * @param element the element
+   * @param className the CSS class name
+   */
 
   function addClass(element, className) {
     if (element.classList) element.classList.add(className)
@@ -14608,6 +14700,12 @@
       .replace(/\s+/g, ' ')
       .replace(/^\s*|\s*$/g, '')
   }
+  /**
+   * Removes a CSS class from a given element.
+   *
+   * @param element the element
+   * @param className the CSS class name
+   */
 
   function removeClass(element, className) {
     if (element.classList) {
@@ -14925,19 +15023,21 @@
   }
 
   var _VIEWS
-  var VIEWS = ((_VIEWS = {}),
-  (_VIEWS[views.MONTH] = MonthView),
-  (_VIEWS[views.WEEK] = Week),
-  (_VIEWS[views.WORK_WEEK] = WorkWeek),
-  (_VIEWS[views.DAY] = Day),
-  (_VIEWS[views.AGENDA] = Agenda),
-  _VIEWS)
+  var VIEWS =
+    ((_VIEWS = {}),
+    (_VIEWS[views.MONTH] = MonthView),
+    (_VIEWS[views.WEEK] = Week),
+    (_VIEWS[views.WORK_WEEK] = WorkWeek),
+    (_VIEWS[views.DAY] = Day),
+    (_VIEWS[views.AGENDA] = Agenda),
+    _VIEWS)
 
+  var _excluded$6 = ['action', 'date', 'today']
   function moveDate(View, _ref) {
     var action = _ref.action,
       date = _ref.date,
       today = _ref.today,
-      props = _objectWithoutPropertiesLoose(_ref, ['action', 'date', 'today'])
+      props = _objectWithoutPropertiesLoose(_ref, _excluded$6)
 
     View = typeof View === 'string' ? VIEWS[View] : View
 
@@ -16169,7 +16269,7 @@
     var isArr = isArray(object),
       isArrLike = isArr || isBuffer(object) || isTypedArray(object)
 
-    iteratee = baseIteratee(iteratee, 4)
+    iteratee = baseIteratee(iteratee)
     if (accumulator == null) {
       var Ctor = object && object.constructor
       if (isArrLike) {
@@ -16218,7 +16318,7 @@
    */
   function mapValues(object, iteratee) {
     var result = {}
-    iteratee = baseIteratee(iteratee, 3)
+    iteratee = baseIteratee(iteratee)
 
     baseForOwn(object, function(value, key, object) {
       baseAssignValue(result, key, iteratee(value, key, object))
@@ -16250,6 +16350,27 @@
       return accessor$1(data, acc)
     }
   }
+
+  var _excluded$7 = ['view', 'date', 'getNow', 'onNavigate'],
+    _excluded2$1 = [
+      'view',
+      'toolbar',
+      'events',
+      'backgroundEvents',
+      'style',
+      'className',
+      'elementProps',
+      'date',
+      'getNow',
+      'length',
+      'showMultiDayTimes',
+      'onShowMore',
+      'doShowMoreDrillDown',
+      'components',
+      'formats',
+      'messages',
+      'culture',
+    ]
 
   function viewNames$1(_views) {
     return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -16364,12 +16485,7 @@
           date = _this$props3.date,
           getNow = _this$props3.getNow,
           onNavigate = _this$props3.onNavigate,
-          props = _objectWithoutPropertiesLoose(_this$props3, [
-            'view',
-            'date',
-            'getNow',
-            'onNavigate',
-          ])
+          props = _objectWithoutPropertiesLoose(_this$props3, _excluded$7)
 
         var ViewComponent = _this.getView()
 
@@ -16573,25 +16689,7 @@
         _1 = _this$props4.formats,
         _2 = _this$props4.messages,
         _3 = _this$props4.culture,
-        props = _objectWithoutPropertiesLoose(_this$props4, [
-          'view',
-          'toolbar',
-          'events',
-          'backgroundEvents',
-          'style',
-          'className',
-          'elementProps',
-          'date',
-          'getNow',
-          'length',
-          'showMultiDayTimes',
-          'onShowMore',
-          'doShowMoreDrillDown',
-          'components',
-          'formats',
-          'messages',
-          'culture',
-        ])
+        props = _objectWithoutPropertiesLoose(_this$props4, _excluded2$1)
 
       current = current || getNow()
       var View = this.getView()

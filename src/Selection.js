@@ -1,5 +1,5 @@
-import contains from 'dom-helpers/contains'
 import closest from 'dom-helpers/closest'
+import contains from 'dom-helpers/contains'
 import listen from 'dom-helpers/listen'
 
 function addEventListener(type, handler, target = document) {
@@ -10,8 +10,8 @@ function isOverContainer(container, x, y) {
   return !container || contains(container, document.elementFromPoint(x, y))
 }
 
-export function getEventNodeFromPoint(node, { clientX, clientY }) {
-  let target = document.elementFromPoint(clientX, clientY)
+export function getEventNodeFromPoint(node, { x, y, clientX, clientY }) {
+  let target = document.elementFromPoint(clientX ?? x, clientY ?? y)
   return closest(target, '.rbc-event', node)
 }
 
@@ -108,7 +108,8 @@ class Selection {
     this._removeKeyUpListener && this._removeKeyUpListener()
     this._removeKeyDownListener && this._removeKeyDownListener()
     this._removeDropFromOutsideListener && this._removeDropFromOutsideListener()
-    this._removeDragOverFromOutsideListener && this._removeDragOverFromOutsideListener()
+    this._removeDragOverFromOutsideListener &&
+      this._removeDragOverFromOutsideListener()
   }
 
   isSelected(node) {
@@ -129,8 +130,8 @@ class Selection {
   }
 
   // Adds a listener that will call the handler only after the user has pressed on the screen
-  // without moving their finger for 250ms.
-  _addLongPressListener(handler, initialEvent) {
+  // without moving their finger for 250ms or fire Click event.
+  _addLongPressOrClickListener(handler, initialEvent) {
     let timer = null
     let removeTouchMoveListener = null
     let removeTouchEndListener = null
@@ -140,7 +141,11 @@ class Selection {
         handler(initialEvent)
       }, this.longPressThreshold)
       removeTouchMoveListener = addEventListener('touchmove', () => cleanup())
-      removeTouchEndListener = addEventListener('touchend', () => cleanup())
+      // removeTouchEndListener = addEventListener('touchend', () => cleanup())
+      removeTouchEndListener = addEventListener('touchend', e => {
+        this._handleClickEvent(e)
+        cleanup()
+      })
     }
     const removeTouchStartListener = addEventListener(
       'touchstart',
@@ -185,7 +190,7 @@ class Selection {
     })
     const removeTouchStartListener = addEventListener('touchstart', e => {
       this._removeInitialEventListener()
-      this._removeInitialEventListener = this._addLongPressListener(
+      this._removeInitialEventListener = this._addLongPressOrClickListener(
         this._handleInitialEvent,
         e
       )
@@ -412,8 +417,8 @@ class Selection {
     let { x, y, isTouch } = this._initialEventData
     return (
       !isTouch &&
-      (Math.abs(pageX - x) <= clickTolerance &&
-        Math.abs(pageY - y) <= clickTolerance)
+      Math.abs(pageX - x) <= clickTolerance &&
+      Math.abs(pageY - y) <= clickTolerance
     )
   }
 }
@@ -455,15 +460,17 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
     bottom: bBottom = bTop,
   } = getBoundsForNode(nodeB)
 
-  return !// 'a' bottom doesn't touch 'b' top
-  (
-    aBottom - tolerance < bTop ||
-    // 'a' top doesn't touch 'b' bottom
-    aTop + tolerance > bBottom ||
-    // 'a' right doesn't touch 'b' left
-    aRight - tolerance < bLeft ||
-    // 'a' left doesn't touch 'b' right
-    aLeft + tolerance > bRight
+  return !(
+    // 'a' bottom doesn't touch 'b' top
+    (
+      aBottom - tolerance < bTop ||
+      // 'a' top doesn't touch 'b' bottom
+      aTop + tolerance > bBottom ||
+      // 'a' right doesn't touch 'b' left
+      aRight - tolerance < bLeft ||
+      // 'a' left doesn't touch 'b' right
+      aLeft + tolerance > bRight
+    )
   )
 }
 

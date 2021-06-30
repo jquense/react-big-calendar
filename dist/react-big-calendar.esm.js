@@ -35,8 +35,8 @@ import getScrollLeft from 'dom-helpers/scrollLeft'
 import Overlay from 'react-overlays/Overlay'
 import getHeight from 'dom-helpers/height'
 import qsa from 'dom-helpers/querySelectorAll'
-import contains from 'dom-helpers/contains'
 import closest from 'dom-helpers/closest'
+import contains from 'dom-helpers/contains'
 import listen from 'dom-helpers/listen'
 import findIndex from 'lodash-es/findIndex'
 import range$1 from 'lodash-es/range'
@@ -669,9 +669,14 @@ function isOverContainer(container, x, y) {
 }
 
 function getEventNodeFromPoint(node, _ref) {
-  var clientX = _ref.clientX,
+  var x = _ref.x,
+    y = _ref.y,
+    clientX = _ref.clientX,
     clientY = _ref.clientY
-  var target = document.elementFromPoint(clientX, clientY)
+  var target = document.elementFromPoint(
+    clientX != null ? clientX : x,
+    clientY != null ? clientY : y
+  )
   return closest(target, '.rbc-event', node)
 }
 function isEvent(node, bounds) {
@@ -798,9 +803,9 @@ var Selection = /*#__PURE__*/ (function() {
     if (!box || !this.selecting) return []
     return items.filter(this.isSelected, this)
   } // Adds a listener that will call the handler only after the user has pressed on the screen
-  // without moving their finger for 250ms.
+  // without moving their finger for 250ms or fire Click event.
 
-  _proto._addLongPressListener = function _addLongPressListener(
+  _proto._addLongPressOrClickListener = function _addLongPressOrClickListener(
     handler,
     initialEvent
   ) {
@@ -817,9 +822,12 @@ var Selection = /*#__PURE__*/ (function() {
       }, _this.longPressThreshold)
       removeTouchMoveListener = addEventListener('touchmove', function() {
         return cleanup()
-      })
-      removeTouchEndListener = addEventListener('touchend', function() {
-        return cleanup()
+      }) // removeTouchEndListener = addEventListener('touchend', () => cleanup())
+
+      removeTouchEndListener = addEventListener('touchend', function(e) {
+        _this._handleClickEvent(e)
+
+        cleanup()
       })
     }
 
@@ -873,7 +881,7 @@ var Selection = /*#__PURE__*/ (function() {
     var removeTouchStartListener = addEventListener('touchstart', function(e) {
       _this2._removeInitialEventListener()
 
-      _this2._removeInitialEventListener = _this2._addLongPressListener(
+      _this2._removeInitialEventListener = _this2._addLongPressOrClickListener(
         _this2._handleInitialEvent,
         e
       )

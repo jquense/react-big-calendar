@@ -7104,9 +7104,14 @@
   }
 
   function getEventNodeFromPoint(node, _ref) {
-    var clientX = _ref.clientX,
+    var x = _ref.x,
+      y = _ref.y,
+      clientX = _ref.clientX,
       clientY = _ref.clientY
-    var target = document.elementFromPoint(clientX, clientY)
+    var target = document.elementFromPoint(
+      clientX != null ? clientX : x,
+      clientY != null ? clientY : y
+    )
     return closest(target, '.rbc-event', node)
   }
   function isEvent(node, bounds) {
@@ -7238,9 +7243,9 @@
       if (!box || !this.selecting) return []
       return items.filter(this.isSelected, this)
     } // Adds a listener that will call the handler only after the user has pressed on the screen
-    // without moving their finger for 250ms.
+    // without moving their finger for 250ms or fire Click event.
 
-    _proto._addLongPressListener = function _addLongPressListener(
+    _proto._addLongPressOrClickListener = function _addLongPressOrClickListener(
       handler,
       initialEvent
     ) {
@@ -7257,9 +7262,12 @@
         }, _this.longPressThreshold)
         removeTouchMoveListener = addEventListener$1('touchmove', function() {
           return cleanup()
-        })
-        removeTouchEndListener = addEventListener$1('touchend', function() {
-          return cleanup()
+        }) // removeTouchEndListener = addEventListener('touchend', () => cleanup())
+
+        removeTouchEndListener = addEventListener$1('touchend', function(e) {
+          _this._handleClickEvent(e)
+
+          cleanup()
         })
       }
 
@@ -7317,7 +7325,7 @@
       ) {
         _this2._removeInitialEventListener()
 
-        _this2._removeInitialEventListener = _this2._addLongPressListener(
+        _this2._removeInitialEventListener = _this2._addLongPressOrClickListener(
           _this2._handleInitialEvent,
           e
         )

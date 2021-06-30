@@ -52,7 +52,7 @@
     "prepublishOnly": "npm run build",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
     "precommit": "lint-staged",
-    "dev": "watch 'npm run build:cjs' ./src"
+    "dev": "watch 'npm run build' ./src"
   },
   "lint-staged": {
     "src/**/*.js": "eslint",

@@ -1,20 +1,18 @@
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
+import getWidth from 'dom-helpers/width'
+import memoize from 'memoize-one'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
-import memoize from 'memoize-one'
-
-import * as dates from './utils/dates'
 import DayColumn from './DayColumn'
-import TimeGutter from './TimeGutter'
-
-import getWidth from 'dom-helpers/width'
 import TimeGridHeader from './TimeGridHeader'
-import { notify } from './utils/helpers'
+import TimeGutter from './TimeGutter'
+import * as dates from './utils/dates'
 import { inRange, sortEvents } from './utils/eventLevels'
-import Resources from './utils/Resources'
+import { notify } from './utils/helpers'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
+import Resources from './utils/Resources'
 
 export default class TimeGrid extends Component {
   constructor(props) {
@@ -185,6 +183,7 @@ export default class TimeGrid extends Component {
       showMultiDayTimes,
       longPressThreshold,
       resizable,
+      view,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -256,7 +255,7 @@ export default class TimeGrid extends Component {
         />
         <div
           ref={this.contentRef}
-          className="rbc-time-content"
+          className={`rbc-time-content ${view}`}
           onScroll={this.handleScroll}
         >
           <TimeGutter
@@ -379,6 +378,8 @@ TimeGrid.propTypes = {
   getDrilldownView: PropTypes.func.isRequired,
 
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
+
+  view: PropTypes.string,
 }
 
 TimeGrid.defaultProps = {

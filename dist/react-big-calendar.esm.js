@@ -1,10 +1,14 @@
 import _extends from '@babel/runtime/helpers/esm/extends'
 import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/esm/objectWithoutPropertiesLoose'
 import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose'
+import clsx from 'clsx'
+import defaults from 'lodash-es/defaults'
+import mapValues from 'lodash-es/mapValues'
+import omit from 'lodash-es/omit'
+import transform from 'lodash-es/transform'
 import PropTypes from 'prop-types'
 import React, { Component, useRef, useEffect } from 'react'
 import { uncontrollable } from 'uncontrollable'
-import clsx from 'clsx'
 import invariant from 'invariant'
 import _assertThisInitialized from '@babel/runtime/helpers/esm/assertThisInitialized'
 import { findDOMNode } from 'react-dom'
@@ -41,89 +45,15 @@ import listen from 'dom-helpers/listen'
 import findIndex from 'lodash-es/findIndex'
 import range$1 from 'lodash-es/range'
 import memoize from 'memoize-one'
+import getWidth from 'dom-helpers/width'
 import _createClass from '@babel/runtime/helpers/esm/createClass'
 import sortBy from 'lodash-es/sortBy'
-import getWidth from 'dom-helpers/width'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
 import addClass from 'dom-helpers/addClass'
 import removeClass from 'dom-helpers/removeClass'
-import omit from 'lodash-es/omit'
-import defaults from 'lodash-es/defaults'
-import transform from 'lodash-es/transform'
-import mapValues from 'lodash-es/mapValues'
 
 function NoopWrapper(props) {
   return props.children
-}
-
-var navigate = {
-  PREVIOUS: 'PREV',
-  NEXT: 'NEXT',
-  TODAY: 'TODAY',
-  DATE: 'DATE',
-}
-var views = {
-  MONTH: 'month',
-  WEEK: 'week',
-  WORK_WEEK: 'work_week',
-  DAY: 'day',
-  AGENDA: 'agenda',
-}
-
-var viewNames = Object.keys(views).map(function(k) {
-  return views[k]
-})
-var accessor = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-var dateFormat = PropTypes.any
-var dateRangeFormat = PropTypes.func
-/**
- * accepts either an array of builtin view names:
- *
- * ```
- * views={['month', 'day', 'agenda']}
- * ```
- *
- * or an object hash of the view name and the component (or boolean for builtin)
- *
- * ```
- * views={{
- *   month: true,
- *   week: false,
- *   workweek: WorkWeekViewComponent,
- * }}
- * ```
- */
-
-var views$1 = PropTypes.oneOfType([
-  PropTypes.arrayOf(PropTypes.oneOf(viewNames)),
-  PropTypes.objectOf(function(prop, key) {
-    var isBuiltinView =
-      viewNames.indexOf(key) !== -1 && typeof prop[key] === 'boolean'
-
-    if (isBuiltinView) {
-      return null
-    } else {
-      for (
-        var _len = arguments.length,
-          args = new Array(_len > 2 ? _len - 2 : 0),
-          _key = 2;
-        _key < _len;
-        _key++
-      ) {
-        args[_key - 2] = arguments[_key]
-      }
-
-      return PropTypes.elementType.apply(PropTypes, [prop, key].concat(args))
-    }
-  }),
-])
-var DayLayoutAlgorithmPropType = PropTypes.oneOfType([
-  PropTypes.oneOf(['overlap', 'no-overlap']),
-  PropTypes.func,
-])
-
-function notify(handler, args) {
-  handler && handler.apply(null, [].concat(args))
 }
 
 var localePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
@@ -185,6 +115,174 @@ function mergeWithDefaults(localizer, culture, formatOverrides, messages) {
       return localizer.format(value, formats[_format2] || _format2, culture)
     },
   })
+}
+
+var navigate = {
+  PREVIOUS: 'PREV',
+  NEXT: 'NEXT',
+  TODAY: 'TODAY',
+  DATE: 'DATE',
+}
+var views = {
+  MONTH: 'month',
+  WEEK: 'week',
+  WORK_WEEK: 'work_week',
+  DAY: 'day',
+  AGENDA: 'agenda',
+}
+
+var Toolbar = /*#__PURE__*/ (function(_React$Component) {
+  _inheritsLoose(Toolbar, _React$Component)
+
+  function Toolbar() {
+    var _this
+
+    for (
+      var _len = arguments.length, args = new Array(_len), _key = 0;
+      _key < _len;
+      _key++
+    ) {
+      args[_key] = arguments[_key]
+    }
+
+    _this =
+      _React$Component.call.apply(_React$Component, [this].concat(args)) || this
+
+    _this.navigate = function(action) {
+      _this.props.onNavigate(action)
+    }
+
+    _this.view = function(view) {
+      _this.props.onView(view)
+    }
+
+    return _this
+  }
+
+  var _proto = Toolbar.prototype
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+      messages = _this$props.localizer.messages,
+      label = _this$props.label
+    return /*#__PURE__*/ React.createElement(
+      'div',
+      {
+        className: 'rbc-toolbar',
+      },
+      /*#__PURE__*/ React.createElement(
+        'span',
+        {
+          className: 'rbc-btn-group',
+        },
+        /*#__PURE__*/ React.createElement(
+          'button',
+          {
+            type: 'button',
+            onClick: this.navigate.bind(null, navigate.TODAY),
+          },
+          messages.today
+        ),
+        /*#__PURE__*/ React.createElement(
+          'button',
+          {
+            type: 'button',
+            onClick: this.navigate.bind(null, navigate.PREVIOUS),
+          },
+          messages.previous
+        ),
+        /*#__PURE__*/ React.createElement(
+          'button',
+          {
+            type: 'button',
+            onClick: this.navigate.bind(null, navigate.NEXT),
+          },
+          messages.next
+        )
+      ),
+      /*#__PURE__*/ React.createElement(
+        'span',
+        {
+          className: 'rbc-toolbar-label',
+        },
+        label
+      ),
+      /*#__PURE__*/ React.createElement(
+        'span',
+        {
+          className: 'rbc-btn-group',
+        },
+        this.viewNamesGroup(messages)
+      )
+    )
+  }
+
+  _proto.viewNamesGroup = function viewNamesGroup(messages) {
+    var _this2 = this
+
+    var viewNames = this.props.views
+    var view = this.props.view
+
+    if (viewNames.length > 1) {
+      return viewNames.map(function(name) {
+        return /*#__PURE__*/ React.createElement(
+          'button',
+          {
+            type: 'button',
+            key: name,
+            className: clsx({
+              'rbc-active': view === name,
+            }),
+            onClick: _this2.view.bind(null, name),
+          },
+          messages[name]
+        )
+      })
+    }
+  }
+
+  return Toolbar
+})(React.Component)
+
+Toolbar.propTypes =
+  process.env.NODE_ENV !== 'production'
+    ? {
+        view: PropTypes.string.isRequired,
+        views: PropTypes.arrayOf(PropTypes.string).isRequired,
+        label: PropTypes.node.isRequired,
+        localizer: PropTypes.object,
+        onNavigate: PropTypes.func.isRequired,
+        onView: PropTypes.func.isRequired,
+      }
+    : {}
+
+/**
+ * Retrieve via an accessor-like property
+ *
+ *    accessor(obj, 'name')   // => retrieves obj['name']
+ *    accessor(data, func)    // => retrieves func(data)
+ *    ... otherwise null
+ */
+function accessor(data, field) {
+  var value = null
+  if (typeof field === 'function') value = field(data)
+  else if (
+    typeof field === 'string' &&
+    typeof data === 'object' &&
+    data != null &&
+    field in data
+  )
+    value = data[field]
+  return value
+}
+var wrapAccessor = function wrapAccessor(acc) {
+  return function(data) {
+    return accessor(data, acc)
+  }
+}
+
+function notify(handler, args) {
+  handler && handler.apply(null, [].concat(args))
 }
 
 var defaultMessages = {
@@ -3407,6 +3505,58 @@ function TimeGridEvent(props) {
   )
 }
 
+var viewNames = Object.keys(views).map(function(k) {
+  return views[k]
+})
+var accessor$1 = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+var dateFormat = PropTypes.any
+var dateRangeFormat = PropTypes.func
+/**
+ * accepts either an array of builtin view names:
+ *
+ * ```
+ * views={['month', 'day', 'agenda']}
+ * ```
+ *
+ * or an object hash of the view name and the component (or boolean for builtin)
+ *
+ * ```
+ * views={{
+ *   month: true,
+ *   week: false,
+ *   workweek: WorkWeekViewComponent,
+ * }}
+ * ```
+ */
+
+var views$1 = PropTypes.oneOfType([
+  PropTypes.arrayOf(PropTypes.oneOf(viewNames)),
+  PropTypes.objectOf(function(prop, key) {
+    var isBuiltinView =
+      viewNames.indexOf(key) !== -1 && typeof prop[key] === 'boolean'
+
+    if (isBuiltinView) {
+      return null
+    } else {
+      for (
+        var _len = arguments.length,
+          args = new Array(_len > 2 ? _len - 2 : 0),
+          _key = 2;
+        _key < _len;
+        _key++
+      ) {
+        args[_key - 2] = arguments[_key]
+      }
+
+      return PropTypes.elementType.apply(PropTypes, [prop, key].concat(args))
+    }
+  }),
+])
+var DayLayoutAlgorithmPropType = PropTypes.oneOfType([
+  PropTypes.oneOf(['overlap', 'no-overlap']),
+  PropTypes.func,
+])
+
 var DayColumnWrapper = function DayColumnWrapper(_ref) {
   var children = _ref.children,
     className = _ref.className,
@@ -3979,112 +4129,6 @@ DayColumn.defaultProps = {
   timeslots: 2,
 }
 
-var TimeGutter = /*#__PURE__*/ (function(_Component) {
-  _inheritsLoose(TimeGutter, _Component)
-
-  function TimeGutter() {
-    var _this
-
-    for (
-      var _len = arguments.length, args = new Array(_len), _key = 0;
-      _key < _len;
-      _key++
-    ) {
-      args[_key] = arguments[_key]
-    }
-
-    _this = _Component.call.apply(_Component, [this].concat(args)) || this
-
-    _this.renderSlot = function(value, idx) {
-      if (idx !== 0) return null
-      var _this$props = _this.props,
-        localizer = _this$props.localizer,
-        getNow = _this$props.getNow
-
-      var isNow = _this.slotMetrics.dateIsInGroup(getNow(), idx)
-
-      return /*#__PURE__*/ React.createElement(
-        'span',
-        {
-          className: clsx('rbc-label', isNow && 'rbc-now'),
-        },
-        localizer.format(value, 'timeGutterFormat')
-      )
-    }
-
-    var _this$props2 = _this.props,
-      min = _this$props2.min,
-      max = _this$props2.max,
-      timeslots = _this$props2.timeslots,
-      step = _this$props2.step
-    _this.slotMetrics = getSlotMetrics$1({
-      min: min,
-      max: max,
-      timeslots: timeslots,
-      step: step,
-    })
-    return _this
-  }
-
-  var _proto = TimeGutter.prototype
-
-  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(
-    nextProps
-  ) {
-    var min = nextProps.min,
-      max = nextProps.max,
-      timeslots = nextProps.timeslots,
-      step = nextProps.step
-    this.slotMetrics = this.slotMetrics.update({
-      min: min,
-      max: max,
-      timeslots: timeslots,
-      step: step,
-    })
-  }
-
-  _proto.render = function render() {
-    var _this2 = this
-
-    var _this$props3 = this.props,
-      resource = _this$props3.resource,
-      components = _this$props3.components,
-      getters = _this$props3.getters
-    return /*#__PURE__*/ React.createElement(
-      'div',
-      {
-        className: 'rbc-time-gutter rbc-time-column',
-      },
-      this.slotMetrics.groups.map(function(grp, idx) {
-        return /*#__PURE__*/ React.createElement(TimeSlotGroup, {
-          key: idx,
-          group: grp,
-          resource: resource,
-          components: components,
-          renderSlot: _this2.renderSlot,
-          getters: getters,
-        })
-      })
-    )
-  }
-
-  return TimeGutter
-})(Component)
-TimeGutter.propTypes =
-  process.env.NODE_ENV !== 'production'
-    ? {
-        min: PropTypes.instanceOf(Date).isRequired,
-        max: PropTypes.instanceOf(Date).isRequired,
-        timeslots: PropTypes.number.isRequired,
-        step: PropTypes.number.isRequired,
-        getNow: PropTypes.func.isRequired,
-        components: PropTypes.object.isRequired,
-        getters: PropTypes.object,
-        localizer: PropTypes.object.isRequired,
-        resource: PropTypes.string,
-      }
-    : {}
-
 var ResourceHeader = function ResourceHeader(_ref) {
   var label = _ref.label
   return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
@@ -4367,6 +4411,112 @@ TimeGridHeader.propTypes =
       }
     : {}
 
+var TimeGutter = /*#__PURE__*/ (function(_Component) {
+  _inheritsLoose(TimeGutter, _Component)
+
+  function TimeGutter() {
+    var _this
+
+    for (
+      var _len = arguments.length, args = new Array(_len), _key = 0;
+      _key < _len;
+      _key++
+    ) {
+      args[_key] = arguments[_key]
+    }
+
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this
+
+    _this.renderSlot = function(value, idx) {
+      if (idx !== 0) return null
+      var _this$props = _this.props,
+        localizer = _this$props.localizer,
+        getNow = _this$props.getNow
+
+      var isNow = _this.slotMetrics.dateIsInGroup(getNow(), idx)
+
+      return /*#__PURE__*/ React.createElement(
+        'span',
+        {
+          className: clsx('rbc-label', isNow && 'rbc-now'),
+        },
+        localizer.format(value, 'timeGutterFormat')
+      )
+    }
+
+    var _this$props2 = _this.props,
+      min = _this$props2.min,
+      max = _this$props2.max,
+      timeslots = _this$props2.timeslots,
+      step = _this$props2.step
+    _this.slotMetrics = getSlotMetrics$1({
+      min: min,
+      max: max,
+      timeslots: timeslots,
+      step: step,
+    })
+    return _this
+  }
+
+  var _proto = TimeGutter.prototype
+
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(
+    nextProps
+  ) {
+    var min = nextProps.min,
+      max = nextProps.max,
+      timeslots = nextProps.timeslots,
+      step = nextProps.step
+    this.slotMetrics = this.slotMetrics.update({
+      min: min,
+      max: max,
+      timeslots: timeslots,
+      step: step,
+    })
+  }
+
+  _proto.render = function render() {
+    var _this2 = this
+
+    var _this$props3 = this.props,
+      resource = _this$props3.resource,
+      components = _this$props3.components,
+      getters = _this$props3.getters
+    return /*#__PURE__*/ React.createElement(
+      'div',
+      {
+        className: 'rbc-time-gutter rbc-time-column',
+      },
+      this.slotMetrics.groups.map(function(grp, idx) {
+        return /*#__PURE__*/ React.createElement(TimeSlotGroup, {
+          key: idx,
+          group: grp,
+          resource: resource,
+          components: components,
+          renderSlot: _this2.renderSlot,
+          getters: getters,
+        })
+      })
+    )
+  }
+
+  return TimeGutter
+})(Component)
+TimeGutter.propTypes =
+  process.env.NODE_ENV !== 'production'
+    ? {
+        min: PropTypes.instanceOf(Date).isRequired,
+        max: PropTypes.instanceOf(Date).isRequired,
+        timeslots: PropTypes.number.isRequired,
+        step: PropTypes.number.isRequired,
+        getNow: PropTypes.func.isRequired,
+        components: PropTypes.object.isRequired,
+        getters: PropTypes.object,
+        localizer: PropTypes.object.isRequired,
+        resource: PropTypes.string,
+      }
+    : {}
+
 var NONE = {}
 function Resources(resources, accessors) {
   return {
@@ -4607,7 +4757,8 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
       max = _this$props3.max,
       showMultiDayTimes = _this$props3.showMultiDayTimes,
       longPressThreshold = _this$props3.longPressThreshold,
-      resizable = _this$props3.resizable
+      resizable = _this$props3.resizable,
+      view = _this$props3.view
     width = width || this.state.gutterWidth
     var start = range[0],
       end = range[range.length - 1]
@@ -4675,7 +4826,7 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
         'div',
         {
           ref: this.contentRef,
-          className: 'rbc-time-content',
+          className: 'rbc-time-content ' + view,
           onScroll: this.handleScroll,
         },
         /*#__PURE__*/ React.createElement(TimeGutter, {
@@ -4780,6 +4931,7 @@ TimeGrid.propTypes =
         onDrillDown: PropTypes.func,
         getDrilldownView: PropTypes.func.isRequired,
         dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
+        view: PropTypes.string,
       }
     : {}
 TimeGrid.defaultProps = {
@@ -5324,156 +5476,6 @@ function moveDate(View, _ref) {
   return date
 }
 
-var Toolbar = /*#__PURE__*/ (function(_React$Component) {
-  _inheritsLoose(Toolbar, _React$Component)
-
-  function Toolbar() {
-    var _this
-
-    for (
-      var _len = arguments.length, args = new Array(_len), _key = 0;
-      _key < _len;
-      _key++
-    ) {
-      args[_key] = arguments[_key]
-    }
-
-    _this =
-      _React$Component.call.apply(_React$Component, [this].concat(args)) || this
-
-    _this.navigate = function(action) {
-      _this.props.onNavigate(action)
-    }
-
-    _this.view = function(view) {
-      _this.props.onView(view)
-    }
-
-    return _this
-  }
-
-  var _proto = Toolbar.prototype
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-      messages = _this$props.localizer.messages,
-      label = _this$props.label
-    return /*#__PURE__*/ React.createElement(
-      'div',
-      {
-        className: 'rbc-toolbar',
-      },
-      /*#__PURE__*/ React.createElement(
-        'span',
-        {
-          className: 'rbc-btn-group',
-        },
-        /*#__PURE__*/ React.createElement(
-          'button',
-          {
-            type: 'button',
-            onClick: this.navigate.bind(null, navigate.TODAY),
-          },
-          messages.today
-        ),
-        /*#__PURE__*/ React.createElement(
-          'button',
-          {
-            type: 'button',
-            onClick: this.navigate.bind(null, navigate.PREVIOUS),
-          },
-          messages.previous
-        ),
-        /*#__PURE__*/ React.createElement(
-          'button',
-          {
-            type: 'button',
-            onClick: this.navigate.bind(null, navigate.NEXT),
-          },
-          messages.next
-        )
-      ),
-      /*#__PURE__*/ React.createElement(
-        'span',
-        {
-          className: 'rbc-toolbar-label',
-        },
-        label
-      ),
-      /*#__PURE__*/ React.createElement(
-        'span',
-        {
-          className: 'rbc-btn-group',
-        },
-        this.viewNamesGroup(messages)
-      )
-    )
-  }
-
-  _proto.viewNamesGroup = function viewNamesGroup(messages) {
-    var _this2 = this
-
-    var viewNames = this.props.views
-    var view = this.props.view
-
-    if (viewNames.length > 1) {
-      return viewNames.map(function(name) {
-        return /*#__PURE__*/ React.createElement(
-          'button',
-          {
-            type: 'button',
-            key: name,
-            className: clsx({
-              'rbc-active': view === name,
-            }),
-            onClick: _this2.view.bind(null, name),
-          },
-          messages[name]
-        )
-      })
-    }
-  }
-
-  return Toolbar
-})(React.Component)
-
-Toolbar.propTypes =
-  process.env.NODE_ENV !== 'production'
-    ? {
-        view: PropTypes.string.isRequired,
-        views: PropTypes.arrayOf(PropTypes.string).isRequired,
-        label: PropTypes.node.isRequired,
-        localizer: PropTypes.object,
-        onNavigate: PropTypes.func.isRequired,
-        onView: PropTypes.func.isRequired,
-      }
-    : {}
-
-/**
- * Retrieve via an accessor-like property
- *
- *    accessor(obj, 'name')   // => retrieves obj['name']
- *    accessor(data, func)    // => retrieves func(data)
- *    ... otherwise null
- */
-function accessor$1(data, field) {
-  var value = null
-  if (typeof field === 'function') value = field(data)
-  else if (
-    typeof field === 'string' &&
-    typeof data === 'object' &&
-    data != null &&
-    field in data
-  )
-    value = data[field]
-  return value
-}
-var wrapAccessor = function wrapAccessor(acc) {
-  return function(data) {
-    return accessor$1(data, acc)
-  }
-}
-
 var _excluded$7 = ['view', 'date', 'getNow', 'onNavigate'],
   _excluded2$1 = [
     'view',
@@ -5843,6 +5845,7 @@ var Calendar = /*#__PURE__*/ (function(_React$Component) {
       /*#__PURE__*/ React.createElement(
         View,
         _extends({}, props, {
+          view: view,
           events: events,
           backgroundEvents: backgroundEvents,
           date: current,
@@ -5998,7 +6001,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        titleAccessor: accessor,
+        titleAccessor: accessor$1,
 
         /**
          * Accessor for the event tooltip. Should
@@ -6010,7 +6013,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        tooltipAccessor: accessor,
+        tooltipAccessor: accessor$1,
 
         /**
          * Determines whether the event should be considered an "all day" event and ignore time.
@@ -6022,7 +6025,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        allDayAccessor: accessor,
+        allDayAccessor: accessor$1,
 
         /**
          * The start date/time of the event. Must resolve to a JavaScript `Date` object.
@@ -6033,7 +6036,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        startAccessor: accessor,
+        startAccessor: accessor$1,
 
         /**
          * The end date/time of the event. Must resolve to a JavaScript `Date` object.
@@ -6044,7 +6047,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        endAccessor: accessor,
+        endAccessor: accessor$1,
 
         /**
          * Returns the id of the `resource` that the event is a member of. This
@@ -6056,7 +6059,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        resourceAccessor: accessor,
+        resourceAccessor: accessor$1,
 
         /**
          * An array of resource objects that map events to a specific resource.
@@ -6075,7 +6078,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        resourceIdAccessor: accessor,
+        resourceIdAccessor: accessor$1,
 
         /**
          * Provides a human readable name for the resource object, used in headers.
@@ -6086,7 +6089,7 @@ Calendar.propTypes =
          *
          * @type {(func|string)}
          */
-        resourceTitleAccessor: accessor,
+        resourceTitleAccessor: accessor$1,
 
         /**
          * Determines the current date/time which is highlighted in the views.

@@ -1,7 +1,19 @@
+import clsx from 'clsx'
+import defaults from 'lodash/defaults'
+import mapValues from 'lodash/mapValues'
+import omit from 'lodash/omit'
+import transform from 'lodash/transform'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { uncontrollable } from 'uncontrollable'
-import clsx from 'clsx'
+import { mergeWithDefaults } from './localizer'
+import NoopWrapper from './NoopWrapper'
+import Toolbar from './Toolbar'
+import { wrapAccessor } from './utils/accessors'
+import { navigate, views } from './utils/constants'
+import { notify } from './utils/helpers'
+import message from './utils/messages'
+import moveDate from './utils/move'
 import {
   accessor,
   dateFormat,
@@ -9,21 +21,7 @@ import {
   DayLayoutAlgorithmPropType,
   views as componentViews,
 } from './utils/propTypes'
-
-import { notify } from './utils/helpers'
-import { navigate, views } from './utils/constants'
-import { mergeWithDefaults } from './localizer'
-import message from './utils/messages'
-import moveDate from './utils/move'
 import VIEWS from './Views'
-import Toolbar from './Toolbar'
-import NoopWrapper from './NoopWrapper'
-
-import omit from 'lodash/omit'
-import defaults from 'lodash/defaults'
-import transform from 'lodash/transform'
-import mapValues from 'lodash/mapValues'
-import { wrapAccessor } from './utils/accessors'
 
 function viewNames(_views) {
   return !Array.isArray(_views) ? Object.keys(_views) : _views
@@ -973,6 +971,7 @@ class Calendar extends React.Component {
         )}
         <View
           {...props}
+          view={view}
           events={events}
           backgroundEvents={backgroundEvents}
           date={current}

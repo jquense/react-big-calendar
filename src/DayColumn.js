@@ -1,20 +1,21 @@
+import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import clsx from 'clsx'
-
-import Selection, { getBoundsForNode, isEvent } from './Selection'
-import * as dates from './utils/dates'
-import * as TimeSlotUtils from './utils/TimeSlots'
-import { isSelected } from './utils/selection'
-
-import { notify } from './utils/helpers'
-import * as DayEventLayout from './utils/DayEventLayout'
-import TimeSlotGroup from './TimeSlotGroup'
-import TimeGridEvent from './TimeGridEvent'
-import { DayLayoutAlgorithmPropType } from './utils/propTypes'
-
 import DayColumnWrapper from './DayColumnWrapper'
+import Selection, {
+  getBoundsForNode,
+  isEvent,
+  isOverContainer,
+} from './Selection'
+import TimeGridEvent from './TimeGridEvent'
+import TimeSlotGroup from './TimeSlotGroup'
+import * as dates from './utils/dates'
+import * as DayEventLayout from './utils/DayEventLayout'
+import { notify } from './utils/helpers'
+import { DayLayoutAlgorithmPropType } from './utils/propTypes'
+import { isSelected } from './utils/selection'
+import * as TimeSlotUtils from './utils/TimeSlots'
 
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
@@ -313,7 +314,11 @@ class DayColumn extends React.Component {
     }
 
     let selectorClicksHandler = (box, actionType) => {
-      if (!isEvent(findDOMNode(this), box)) {
+      let container = findDOMNode(this)
+      if (
+        !isEvent(container, box) &&
+        isOverContainer(container, box.x, box.y)
+      ) {
         const { startDate, endDate } = selectionState(box)
         this._selectSlot({
           startDate,

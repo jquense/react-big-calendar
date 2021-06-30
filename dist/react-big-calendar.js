@@ -11061,7 +11061,6 @@
   function isOverContainer(container, x, y) {
     return !container || contains(container, document.elementFromPoint(x, y))
   }
-
   function getEventNodeFromPoint(node, _ref) {
     var x = _ref.x,
       y = _ref.y,
@@ -13348,152 +13347,198 @@
     return win ? win.innerWidth : client ? node.clientWidth : offset(node).width
   }
 
-  var getDstOffset = function getDstOffset(start, end) {
-    return start.getTimezoneOffset() - end.getTimezoneOffset()
-  }
-
-  var getKey$1 = function getKey(min, max, step, slots) {
-    return (
-      '' +
-      +startOf(min, 'minutes') +
-      ('' + +startOf(max, 'minutes')) +
-      (step + '-' + slots)
+  var DayColumnWrapper = function DayColumnWrapper(_ref) {
+    var children = _ref.children,
+      className = _ref.className,
+      style = _ref.style
+    return /*#__PURE__*/ React__default.createElement(
+      'div',
+      {
+        className: className,
+        style: style,
+      },
+      children
     )
   }
 
-  function getSlotMetrics$1(_ref) {
-    var start = _ref.min,
-      end = _ref.max,
-      step = _ref.step,
-      timeslots = _ref.timeslots
-    var key = getKey$1(start, end, step, timeslots) // if the start is on a DST-changing day but *after* the moment of DST
-    // transition we need to add those extra minutes to our minutesFromMidnight
+  function stringifyPercent(v) {
+    return typeof v === 'string' ? v : v + '%'
+  }
+  /* eslint-disable react/prop-types */
 
-    var daystart = startOf(start, 'day')
-    var daystartdstoffset = getDstOffset(daystart, start)
-    var totalMin = 1 + diff(start, end, 'minutes') + getDstOffset(start, end)
-    var minutesFromMidnight =
-      diff(daystart, start, 'minutes') + daystartdstoffset
-    var numGroups = Math.ceil(totalMin / (step * timeslots))
-    var numSlots = numGroups * timeslots
-    var groups = new Array(numGroups)
-    var slots = new Array(numSlots) // Each slot date is created from "zero", instead of adding `step` to
-    // the previous one, in order to avoid DST oddities
+  function TimeGridEvent(props) {
+    var _extends2, _extends3
 
-    for (var grp = 0; grp < numGroups; grp++) {
-      groups[grp] = new Array(timeslots)
-
-      for (var slot = 0; slot < timeslots; slot++) {
-        var slotIdx = grp * timeslots + slot
-        var minFromStart = slotIdx * step // A date with total minutes calculated from the start of the day
-
-        slots[slotIdx] = groups[grp][slot] = new Date(
-          start.getFullYear(),
-          start.getMonth(),
-          start.getDate(),
-          0,
-          minutesFromMidnight + minFromStart,
-          0,
-          0
+    var style = props.style,
+      className = props.className,
+      event = props.event,
+      accessors = props.accessors,
+      rtl = props.rtl,
+      selected = props.selected,
+      label = props.label,
+      continuesEarlier = props.continuesEarlier,
+      continuesLater = props.continuesLater,
+      getters = props.getters,
+      onClick = props.onClick,
+      onDoubleClick = props.onDoubleClick,
+      isBackgroundEvent = props.isBackgroundEvent,
+      onKeyPress = props.onKeyPress,
+      _props$components = props.components,
+      Event = _props$components.event,
+      EventWrapper = _props$components.eventWrapper
+    var title = accessors.title(event)
+    var tooltip = accessors.tooltip(event)
+    var end = accessors.end(event)
+    var start = accessors.start(event)
+    var userProps = getters.eventProp(event, start, end, selected)
+    var height = style.height,
+      top = style.top,
+      width = style.width,
+      xOffset = style.xOffset
+    var inner = [
+      /*#__PURE__*/ React__default.createElement(
+        'div',
+        {
+          key: '1',
+          className: 'rbc-event-label',
+        },
+        label
+      ),
+      /*#__PURE__*/ React__default.createElement(
+        'div',
+        {
+          key: '2',
+          className: 'rbc-event-content',
+        },
+        Event
+          ? /*#__PURE__*/ React__default.createElement(Event, {
+              event: event,
+              title: title,
+            })
+          : title
+      ),
+    ]
+    var eventStyle = isBackgroundEvent
+      ? _extends(
+          {},
+          userProps.style,
+          ((_extends2 = {
+            top: stringifyPercent(top),
+            height: stringifyPercent(height),
+            // Adding 10px to take events container right margin into account
+            width: 'calc(' + width + ' + 10px)',
+          }),
+          (_extends2[rtl ? 'right' : 'left'] = stringifyPercent(
+            Math.max(0, xOffset)
+          )),
+          _extends2)
         )
-      }
-    } // Necessary to be able to select up until the last timeslot in a day
-
-    var lastSlotMinFromStart = slots.length * step
-    slots.push(
-      new Date(
-        start.getFullYear(),
-        start.getMonth(),
-        start.getDate(),
-        0,
-        minutesFromMidnight + lastSlotMinFromStart,
-        0,
-        0
+      : _extends(
+          {},
+          userProps.style,
+          ((_extends3 = {
+            top: stringifyPercent(top),
+            width: stringifyPercent(width),
+            height: stringifyPercent(height),
+          }),
+          (_extends3[rtl ? 'right' : 'left'] = stringifyPercent(xOffset)),
+          _extends3)
+        )
+    return /*#__PURE__*/ React__default.createElement(
+      EventWrapper,
+      _extends(
+        {
+          type: 'time',
+        },
+        props
+      ),
+      /*#__PURE__*/ React__default.createElement(
+        'div',
+        {
+          onClick: onClick,
+          onDoubleClick: onDoubleClick,
+          style: eventStyle,
+          onKeyPress: onKeyPress,
+          title: tooltip
+            ? (typeof label === 'string' ? label + ': ' : '') + tooltip
+            : undefined,
+          className: clsx(
+            isBackgroundEvent ? 'rbc-background-event' : 'rbc-event',
+            className,
+            userProps.className,
+            {
+              'rbc-selected': selected,
+              'rbc-event-continues-earlier': continuesEarlier,
+              'rbc-event-continues-later': continuesLater,
+            }
+          ),
+        },
+        inner
       )
     )
+  }
 
-    function positionFromDate(date) {
-      var diff$1 = diff(start, date, 'minutes') + getDstOffset(start, date)
-      return Math.min(diff$1, totalMin)
+  var TimeSlotGroup = /*#__PURE__*/ (function(_Component) {
+    _inheritsLoose(TimeSlotGroup, _Component)
+
+    function TimeSlotGroup() {
+      return _Component.apply(this, arguments) || this
     }
 
-    return {
-      groups: groups,
-      update: function update(args) {
-        if (getKey$1(args) !== key) return getSlotMetrics$1(args)
-        return this
-      },
-      dateIsInGroup: function dateIsInGroup(date, groupIndex) {
-        var nextGroup = groups[groupIndex + 1]
-        return inRange(
-          date,
-          groups[groupIndex][0],
-          nextGroup ? nextGroup[0] : end,
-          'minutes'
-        )
-      },
-      nextSlot: function nextSlot(slot) {
-        var next = slots[Math.min(slots.indexOf(slot) + 1, slots.length - 1)] // in the case of the last slot we won't a long enough range so manually get it
+    var _proto = TimeSlotGroup.prototype
 
-        if (next === slot) next = add(slot, step, 'minutes')
-        return next
-      },
-      closestSlotToPosition: function closestSlotToPosition(percent) {
-        var slot = Math.min(
-          slots.length - 1,
-          Math.max(0, Math.floor(percent * numSlots))
-        )
-        return slots[slot]
-      },
-      closestSlotFromPoint: function closestSlotFromPoint(point, boundaryRect) {
-        var range = Math.abs(boundaryRect.top - boundaryRect.bottom)
-        return this.closestSlotToPosition((point.y - boundaryRect.top) / range)
-      },
-      closestSlotFromDate: function closestSlotFromDate(date, offset) {
-        if (offset === void 0) {
-          offset = 0
-        }
-
-        if (lt(date, start, 'minutes')) return slots[0]
-        var diffMins = diff(start, date, 'minutes')
-        return slots[(diffMins - (diffMins % step)) / step + offset]
-      },
-      startsBeforeDay: function startsBeforeDay(date) {
-        return lt(date, start, 'day')
-      },
-      startsAfterDay: function startsAfterDay(date) {
-        return gt(date, end, 'day')
-      },
-      startsBefore: function startsBefore(date) {
-        return lt(merge(start, date), start, 'minutes')
-      },
-      startsAfter: function startsAfter(date) {
-        return gt(merge(end, date), end, 'minutes')
-      },
-      getRange: function getRange(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
-        if (!ignoreMin) rangeStart = min(end, max(start, rangeStart))
-        if (!ignoreMax) rangeEnd = min(end, max(start, rangeEnd))
-        var rangeStartMin = positionFromDate(rangeStart)
-        var rangeEndMin = positionFromDate(rangeEnd)
-        var top =
-          rangeEndMin > step * numSlots && !eq$1(end, rangeEnd)
-            ? ((rangeStartMin - step) / (step * numSlots)) * 100
-            : (rangeStartMin / (step * numSlots)) * 100
-        return {
-          top: top,
-          height: (rangeEndMin / (step * numSlots)) * 100 - top,
-          start: positionFromDate(rangeStart),
-          startDate: rangeStart,
-          end: positionFromDate(rangeEnd),
-          endDate: rangeEnd,
-        }
-      },
-      getCurrentTimePosition: function getCurrentTimePosition(rangeStart) {
-        var rangeStartMin = positionFromDate(rangeStart)
-        var top = (rangeStartMin / (step * numSlots)) * 100
-        return top
-      },
+    _proto.render = function render() {
+      var _this$props = this.props,
+        renderSlot = _this$props.renderSlot,
+        resource = _this$props.resource,
+        group = _this$props.group,
+        getters = _this$props.getters,
+        _this$props$component = _this$props.components
+      _this$props$component =
+        _this$props$component === void 0 ? {} : _this$props$component
+      var _this$props$component2 = _this$props$component.timeSlotWrapper,
+        Wrapper =
+          _this$props$component2 === void 0
+            ? NoopWrapper
+            : _this$props$component2
+      var groupProps = getters ? getters.slotGroupProp() : {}
+      return /*#__PURE__*/ React__default.createElement(
+        'div',
+        _extends(
+          {
+            className: 'rbc-timeslot-group',
+          },
+          groupProps
+        ),
+        group.map(function(value, idx) {
+          var slotProps = getters ? getters.slotProp(value, resource) : {}
+          return /*#__PURE__*/ React__default.createElement(
+            Wrapper,
+            {
+              key: idx,
+              value: value,
+              resource: resource,
+            },
+            /*#__PURE__*/ React__default.createElement(
+              'div',
+              _extends({}, slotProps, {
+                className: clsx('rbc-time-slot', slotProps.className),
+              }),
+              renderSlot && renderSlot(value, idx)
+            )
+          )
+        })
+      )
     }
+
+    return TimeSlotGroup
+  })(React.Component)
+  TimeSlotGroup.propTypes = {
+    renderSlot: propTypes.func,
+    group: propTypes.array.isRequired,
+    resource: propTypes.any,
+    components: propTypes.object,
+    getters: propTypes.object,
   }
 
   function _defineProperties(target, props) {
@@ -14122,186 +14167,6 @@
     return algorithm.apply(this, arguments)
   }
 
-  var TimeSlotGroup = /*#__PURE__*/ (function(_Component) {
-    _inheritsLoose(TimeSlotGroup, _Component)
-
-    function TimeSlotGroup() {
-      return _Component.apply(this, arguments) || this
-    }
-
-    var _proto = TimeSlotGroup.prototype
-
-    _proto.render = function render() {
-      var _this$props = this.props,
-        renderSlot = _this$props.renderSlot,
-        resource = _this$props.resource,
-        group = _this$props.group,
-        getters = _this$props.getters,
-        _this$props$component = _this$props.components
-      _this$props$component =
-        _this$props$component === void 0 ? {} : _this$props$component
-      var _this$props$component2 = _this$props$component.timeSlotWrapper,
-        Wrapper =
-          _this$props$component2 === void 0
-            ? NoopWrapper
-            : _this$props$component2
-      var groupProps = getters ? getters.slotGroupProp() : {}
-      return /*#__PURE__*/ React__default.createElement(
-        'div',
-        _extends(
-          {
-            className: 'rbc-timeslot-group',
-          },
-          groupProps
-        ),
-        group.map(function(value, idx) {
-          var slotProps = getters ? getters.slotProp(value, resource) : {}
-          return /*#__PURE__*/ React__default.createElement(
-            Wrapper,
-            {
-              key: idx,
-              value: value,
-              resource: resource,
-            },
-            /*#__PURE__*/ React__default.createElement(
-              'div',
-              _extends({}, slotProps, {
-                className: clsx('rbc-time-slot', slotProps.className),
-              }),
-              renderSlot && renderSlot(value, idx)
-            )
-          )
-        })
-      )
-    }
-
-    return TimeSlotGroup
-  })(React.Component)
-  TimeSlotGroup.propTypes = {
-    renderSlot: propTypes.func,
-    group: propTypes.array.isRequired,
-    resource: propTypes.any,
-    components: propTypes.object,
-    getters: propTypes.object,
-  }
-
-  function stringifyPercent(v) {
-    return typeof v === 'string' ? v : v + '%'
-  }
-  /* eslint-disable react/prop-types */
-
-  function TimeGridEvent(props) {
-    var _extends2, _extends3
-
-    var style = props.style,
-      className = props.className,
-      event = props.event,
-      accessors = props.accessors,
-      rtl = props.rtl,
-      selected = props.selected,
-      label = props.label,
-      continuesEarlier = props.continuesEarlier,
-      continuesLater = props.continuesLater,
-      getters = props.getters,
-      onClick = props.onClick,
-      onDoubleClick = props.onDoubleClick,
-      isBackgroundEvent = props.isBackgroundEvent,
-      onKeyPress = props.onKeyPress,
-      _props$components = props.components,
-      Event = _props$components.event,
-      EventWrapper = _props$components.eventWrapper
-    var title = accessors.title(event)
-    var tooltip = accessors.tooltip(event)
-    var end = accessors.end(event)
-    var start = accessors.start(event)
-    var userProps = getters.eventProp(event, start, end, selected)
-    var height = style.height,
-      top = style.top,
-      width = style.width,
-      xOffset = style.xOffset
-    var inner = [
-      /*#__PURE__*/ React__default.createElement(
-        'div',
-        {
-          key: '1',
-          className: 'rbc-event-label',
-        },
-        label
-      ),
-      /*#__PURE__*/ React__default.createElement(
-        'div',
-        {
-          key: '2',
-          className: 'rbc-event-content',
-        },
-        Event
-          ? /*#__PURE__*/ React__default.createElement(Event, {
-              event: event,
-              title: title,
-            })
-          : title
-      ),
-    ]
-    var eventStyle = isBackgroundEvent
-      ? _extends(
-          {},
-          userProps.style,
-          ((_extends2 = {
-            top: stringifyPercent(top),
-            height: stringifyPercent(height),
-            // Adding 10px to take events container right margin into account
-            width: 'calc(' + width + ' + 10px)',
-          }),
-          (_extends2[rtl ? 'right' : 'left'] = stringifyPercent(
-            Math.max(0, xOffset)
-          )),
-          _extends2)
-        )
-      : _extends(
-          {},
-          userProps.style,
-          ((_extends3 = {
-            top: stringifyPercent(top),
-            width: stringifyPercent(width),
-            height: stringifyPercent(height),
-          }),
-          (_extends3[rtl ? 'right' : 'left'] = stringifyPercent(xOffset)),
-          _extends3)
-        )
-    return /*#__PURE__*/ React__default.createElement(
-      EventWrapper,
-      _extends(
-        {
-          type: 'time',
-        },
-        props
-      ),
-      /*#__PURE__*/ React__default.createElement(
-        'div',
-        {
-          onClick: onClick,
-          onDoubleClick: onDoubleClick,
-          style: eventStyle,
-          onKeyPress: onKeyPress,
-          title: tooltip
-            ? (typeof label === 'string' ? label + ': ' : '') + tooltip
-            : undefined,
-          className: clsx(
-            isBackgroundEvent ? 'rbc-background-event' : 'rbc-event',
-            className,
-            userProps.className,
-            {
-              'rbc-selected': selected,
-              'rbc-event-continues-earlier': continuesEarlier,
-              'rbc-event-continues-later': continuesLater,
-            }
-          ),
-        },
-        inner
-      )
-    )
-  }
-
   var viewNames = Object.keys(views).map(function(k) {
     return views[k]
   })
@@ -14354,18 +14219,152 @@
     propTypes.func,
   ])
 
-  var DayColumnWrapper = function DayColumnWrapper(_ref) {
-    var children = _ref.children,
-      className = _ref.className,
-      style = _ref.style
-    return /*#__PURE__*/ React__default.createElement(
-      'div',
-      {
-        className: className,
-        style: style,
-      },
-      children
+  var getDstOffset = function getDstOffset(start, end) {
+    return start.getTimezoneOffset() - end.getTimezoneOffset()
+  }
+
+  var getKey$1 = function getKey(min, max, step, slots) {
+    return (
+      '' +
+      +startOf(min, 'minutes') +
+      ('' + +startOf(max, 'minutes')) +
+      (step + '-' + slots)
     )
+  }
+
+  function getSlotMetrics$1(_ref) {
+    var start = _ref.min,
+      end = _ref.max,
+      step = _ref.step,
+      timeslots = _ref.timeslots
+    var key = getKey$1(start, end, step, timeslots) // if the start is on a DST-changing day but *after* the moment of DST
+    // transition we need to add those extra minutes to our minutesFromMidnight
+
+    var daystart = startOf(start, 'day')
+    var daystartdstoffset = getDstOffset(daystart, start)
+    var totalMin = 1 + diff(start, end, 'minutes') + getDstOffset(start, end)
+    var minutesFromMidnight =
+      diff(daystart, start, 'minutes') + daystartdstoffset
+    var numGroups = Math.ceil(totalMin / (step * timeslots))
+    var numSlots = numGroups * timeslots
+    var groups = new Array(numGroups)
+    var slots = new Array(numSlots) // Each slot date is created from "zero", instead of adding `step` to
+    // the previous one, in order to avoid DST oddities
+
+    for (var grp = 0; grp < numGroups; grp++) {
+      groups[grp] = new Array(timeslots)
+
+      for (var slot = 0; slot < timeslots; slot++) {
+        var slotIdx = grp * timeslots + slot
+        var minFromStart = slotIdx * step // A date with total minutes calculated from the start of the day
+
+        slots[slotIdx] = groups[grp][slot] = new Date(
+          start.getFullYear(),
+          start.getMonth(),
+          start.getDate(),
+          0,
+          minutesFromMidnight + minFromStart,
+          0,
+          0
+        )
+      }
+    } // Necessary to be able to select up until the last timeslot in a day
+
+    var lastSlotMinFromStart = slots.length * step
+    slots.push(
+      new Date(
+        start.getFullYear(),
+        start.getMonth(),
+        start.getDate(),
+        0,
+        minutesFromMidnight + lastSlotMinFromStart,
+        0,
+        0
+      )
+    )
+
+    function positionFromDate(date) {
+      var diff$1 = diff(start, date, 'minutes') + getDstOffset(start, date)
+      return Math.min(diff$1, totalMin)
+    }
+
+    return {
+      groups: groups,
+      update: function update(args) {
+        if (getKey$1(args) !== key) return getSlotMetrics$1(args)
+        return this
+      },
+      dateIsInGroup: function dateIsInGroup(date, groupIndex) {
+        var nextGroup = groups[groupIndex + 1]
+        return inRange(
+          date,
+          groups[groupIndex][0],
+          nextGroup ? nextGroup[0] : end,
+          'minutes'
+        )
+      },
+      nextSlot: function nextSlot(slot) {
+        var next = slots[Math.min(slots.indexOf(slot) + 1, slots.length - 1)] // in the case of the last slot we won't a long enough range so manually get it
+
+        if (next === slot) next = add(slot, step, 'minutes')
+        return next
+      },
+      closestSlotToPosition: function closestSlotToPosition(percent) {
+        var slot = Math.min(
+          slots.length - 1,
+          Math.max(0, Math.floor(percent * numSlots))
+        )
+        return slots[slot]
+      },
+      closestSlotFromPoint: function closestSlotFromPoint(point, boundaryRect) {
+        var range = Math.abs(boundaryRect.top - boundaryRect.bottom)
+        return this.closestSlotToPosition((point.y - boundaryRect.top) / range)
+      },
+      closestSlotFromDate: function closestSlotFromDate(date, offset) {
+        if (offset === void 0) {
+          offset = 0
+        }
+
+        if (lt(date, start, 'minutes')) return slots[0]
+        var diffMins = diff(start, date, 'minutes')
+        return slots[(diffMins - (diffMins % step)) / step + offset]
+      },
+      startsBeforeDay: function startsBeforeDay(date) {
+        return lt(date, start, 'day')
+      },
+      startsAfterDay: function startsAfterDay(date) {
+        return gt(date, end, 'day')
+      },
+      startsBefore: function startsBefore(date) {
+        return lt(merge(start, date), start, 'minutes')
+      },
+      startsAfter: function startsAfter(date) {
+        return gt(merge(end, date), end, 'minutes')
+      },
+      getRange: function getRange(rangeStart, rangeEnd, ignoreMin, ignoreMax) {
+        if (!ignoreMin) rangeStart = min(end, max(start, rangeStart))
+        if (!ignoreMax) rangeEnd = min(end, max(start, rangeEnd))
+        var rangeStartMin = positionFromDate(rangeStart)
+        var rangeEndMin = positionFromDate(rangeEnd)
+        var top =
+          rangeEndMin > step * numSlots && !eq$1(end, rangeEnd)
+            ? ((rangeStartMin - step) / (step * numSlots)) * 100
+            : (rangeStartMin / (step * numSlots)) * 100
+        return {
+          top: top,
+          height: (rangeEndMin / (step * numSlots)) * 100 - top,
+          start: positionFromDate(rangeStart),
+          startDate: rangeStart,
+          end: positionFromDate(rangeEnd),
+          endDate: rangeEnd,
+        }
+      },
+      getCurrentTimePosition: function getCurrentTimePosition(rangeStart) {
+        var rangeStartMin = positionFromDate(rangeStart)
+        var top = (rangeStartMin / (step * numSlots)) * 100
+        return top
+      },
+    }
   }
 
   var _excluded$2 = ['dayProp'],
@@ -14544,8 +14543,11 @@
           box,
           actionType
         ) {
+          var container = ReactDOM.findDOMNode(_assertThisInitialized(_this))
+
           if (
-            !isEvent(ReactDOM.findDOMNode(_assertThisInitialized(_this)), box)
+            !isEvent(container, box) &&
+            isOverContainer(container, box.x, box.y)
           ) {
             var _selectionState = selectionState(box),
               startDate = _selectionState.startDate,

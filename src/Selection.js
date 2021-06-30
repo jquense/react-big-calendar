@@ -6,7 +6,7 @@ function addEventListener(type, handler, target = document) {
   return listen(target, type, handler, { passive: false })
 }
 
-function isOverContainer(container, x, y) {
+export function isOverContainer(container, x, y) {
   return !container || contains(container, document.elementFromPoint(x, y))
 }
 

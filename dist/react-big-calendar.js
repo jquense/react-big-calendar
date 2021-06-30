@@ -708,9 +708,7 @@
     return (
       !!length &&
       (type == 'number' || (type != 'symbol' && reIsUint.test(value))) &&
-      value > -1 &&
-      value % 1 == 0 &&
-      value < length
+      value > -1 && value % 1 == 0 && value < length
     )
   }
 
@@ -2445,8 +2443,7 @@
       // Non `Object` object instances with different constructors are not equal.
       if (
         objCtor != othCtor &&
-        'constructor' in object &&
-        'constructor' in other &&
+        'constructor' in object && 'constructor' in other &&
         !(
           typeof objCtor == 'function' &&
           objCtor instanceof objCtor &&
@@ -10155,12 +10152,14 @@
     var popperInstanceRef = React.useRef()
     var update = React.useCallback(function() {
       var _popperInstanceRef$cu
+
       ;(_popperInstanceRef$cu = popperInstanceRef.current) == null
         ? void 0
         : _popperInstanceRef$cu.update()
     }, [])
     var forceUpdate = React.useCallback(function() {
       var _popperInstanceRef$cu2
+
       ;(_popperInstanceRef$cu2 = popperInstanceRef.current) == null
         ? void 0
         : _popperInstanceRef$cu2.forceUpdate()
@@ -15468,9 +15467,7 @@
     _proto.componentDidMount = function componentDidMount() {
       this.checkOverflow()
 
-      if (this.props.width == null) {
-        this.measureGutter()
-      }
+      if (this.props.width == null);
 
       this.applyScroll()
       window.addEventListener('resize', this.handleResize)
@@ -15486,9 +15483,7 @@
     }
 
     _proto.componentDidUpdate = function componentDidUpdate() {
-      if (this.props.width == null) {
-        this.measureGutter()
-      }
+      if (this.props.width == null);
 
       this.applyScroll() //this.checkOverflow()
     }

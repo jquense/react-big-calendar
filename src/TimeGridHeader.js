@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
+import PropTypes from 'prop-types'
 import React from 'react'
-
-import * as dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import ResourceHeader from './ResourceHeader'
+import * as dates from './utils/dates'
 import { notify } from './utils/helpers'
 
 class TimeGridHeader extends React.Component {
@@ -107,7 +106,6 @@ class TimeGridHeader extends React.Component {
 
   render() {
     let {
-      width,
       rtl,
       resources,
       range,
@@ -140,10 +138,7 @@ class TimeGridHeader extends React.Component {
         ref={scrollRef}
         className={clsx('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        <div
-          className="rbc-label rbc-time-header-gutter"
-          style={{ width, minWidth: width, maxWidth: width }}
-        >
+        <div className="rbc-label rbc-time-header-gutter">
           {TimeGutterHeader && <TimeGutterHeader />}
         </div>
 
@@ -205,7 +200,6 @@ TimeGridHeader.propTypes = {
 
   rtl: PropTypes.bool,
   resizable: PropTypes.bool,
-  width: PropTypes.number,
 
   localizer: PropTypes.object.isRequired,
   accessors: PropTypes.object.isRequired,

@@ -4643,9 +4643,7 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
   _proto.componentDidMount = function componentDidMount() {
     this.checkOverflow()
 
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
+    if (this.props.width == null);
 
     this.applyScroll()
     window.addEventListener('resize', this.handleResize)
@@ -4661,9 +4659,7 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
   }
 
   _proto.componentDidUpdate = function componentDidUpdate() {
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
+    if (this.props.width == null);
 
     this.applyScroll() //this.checkOverflow()
   }

@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
-import getWidth from 'dom-helpers/width'
 import memoize from 'memoize-one'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -18,7 +17,7 @@ export default class TimeGrid extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { gutterWidth: undefined, isOverflowing: null }
+    this.state = { isOverflowing: null }
 
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
@@ -31,10 +30,6 @@ export default class TimeGrid extends Component {
 
   componentDidMount() {
     this.checkOverflow()
-
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
 
     this.applyScroll()
 
@@ -56,17 +51,9 @@ export default class TimeGrid extends Component {
     window.removeEventListener('resize', this.handleResize)
 
     animationFrame.cancel(this.rafHandle)
-
-    if (this.measureGutterAnimationFrameRequest) {
-      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    }
   }
 
   componentDidUpdate() {
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
-
     this.applyScroll()
     //this.checkOverflow()
   }
@@ -169,7 +156,6 @@ export default class TimeGrid extends Component {
       events,
       backgroundEvents,
       range,
-      width,
       rtl,
       selected,
       getNow,
@@ -185,8 +171,6 @@ export default class TimeGrid extends Component {
       resizable,
       view,
     } = this.props
-
-    width = width || this.state.gutterWidth
 
     let start = range[0],
       end = range[range.length - 1]
@@ -232,7 +216,6 @@ export default class TimeGrid extends Component {
         <TimeGridHeader
           range={range}
           events={allDayEvents}
-          width={width}
           rtl={rtl}
           getNow={getNow}
           localizer={localizer}
@@ -285,21 +268,6 @@ export default class TimeGrid extends Component {
   clearSelection() {
     clearTimeout(this._selectTimer)
     this._pendingSelection = []
-  }
-
-  measureGutter() {
-    if (this.measureGutterAnimationFrameRequest) {
-      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    }
-    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
-      () => {
-        const width = getWidth(this.gutter)
-
-        if (width && this.state.gutterWidth !== width) {
-          this.setState({ gutterWidth: width })
-        }
-      }
-    )
   }
 
   applyScroll() {

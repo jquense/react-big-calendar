@@ -1,9 +1,7 @@
 import clsx from 'clsx'
-import * as animationFrame from 'dom-helpers/animationFrame'
 import memoize from 'memoize-one'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import DayColumn from './DayColumn'
 import TimeGridHeader from './TimeGridHeader'
 import TimeGutter from './TimeGutter'
@@ -17,8 +15,6 @@ export default class TimeGrid extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { isOverflowing: null }
-
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
     this._scrollRatio = null
@@ -29,11 +25,7 @@ export default class TimeGrid extends Component {
   }
 
   componentDidMount() {
-    this.checkOverflow()
-
     this.applyScroll()
-
-    window.addEventListener('resize', this.handleResize)
   }
 
   handleScroll = e => {
@@ -42,20 +34,8 @@ export default class TimeGrid extends Component {
     }
   }
 
-  handleResize = () => {
-    animationFrame.cancel(this.rafHandle)
-    this.rafHandle = animationFrame.request(this.checkOverflow)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
-
-    animationFrame.cancel(this.rafHandle)
-  }
-
   componentDidUpdate() {
     this.applyScroll()
-    //this.checkOverflow()
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -67,10 +47,6 @@ export default class TimeGrid extends Component {
     ) {
       this.calculateScroll(nextProps)
     }
-  }
-
-  gutterRef = ref => {
-    this.gutter = ref && findDOMNode(ref)
   }
 
   handleSelectAlldayEvent = (...args) => {
@@ -226,7 +202,6 @@ export default class TimeGrid extends Component {
           getters={getters}
           components={components}
           scrollRef={this.scrollRef}
-          isOverflowing={this.state.isOverflowing}
           longPressThreshold={longPressThreshold}
           onSelectSlot={this.handleSelectAllDaySlot}
           onSelectEvent={this.handleSelectAlldayEvent}
@@ -243,7 +218,6 @@ export default class TimeGrid extends Component {
         >
           <TimeGutter
             date={start}
-            ref={this.gutterRef}
             localizer={localizer}
             min={dates.merge(start, min)}
             max={dates.merge(start, max)}
@@ -286,20 +260,6 @@ export default class TimeGrid extends Component {
     const totalMillis = dates.diff(max, min)
 
     this._scrollRatio = diffMillis / totalMillis
-  }
-
-  checkOverflow = () => {
-    if (this._updatingOverflow) return
-
-    const content = this.contentRef.current
-    let isOverflowing = content.scrollHeight > content.clientHeight
-
-    if (this.state.isOverflowing !== isOverflowing) {
-      this._updatingOverflow = true
-      this.setState({ isOverflowing }, () => {
-        this._updatingOverflow = false
-      })
-    }
   }
 
   memoizedResources = memoize((resources, accessors) =>

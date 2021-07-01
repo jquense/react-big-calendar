@@ -7324,11 +7324,6 @@
       return !!rafImpl
     })
   }
-
-  var cancel = function cancel(id) {
-    // @ts-ignore
-    if (typeof window[cancelMethod] === 'function') window[cancelMethod](id)
-  }
   var request = rafImpl
 
   var _excluded = [
@@ -13334,18 +13329,6 @@
     return localizer.format(date, 'monthHeaderFormat')
   }
 
-  /**
-   * Returns the width of a given element.
-   *
-   * @param node the element
-   * @param client whether to use `clientWidth` if possible
-   */
-
-  function getWidth(node, client) {
-    var win = isWindow(node)
-    return win ? win.innerWidth : client ? node.clientWidth : offset(node).width
-  }
-
   var DayColumnWrapper = function DayColumnWrapper(_ref) {
     var children = _ref.children,
       className = _ref.className,
@@ -14933,25 +14916,6 @@
     timeslots: 2,
   }
 
-  var size
-  function scrollbarSize(recalc) {
-    if ((!size && size !== 0) || recalc) {
-      if (canUseDOM) {
-        var scrollDiv = document.createElement('div')
-        scrollDiv.style.position = 'absolute'
-        scrollDiv.style.top = '-9999px'
-        scrollDiv.style.width = '50px'
-        scrollDiv.style.height = '50px'
-        scrollDiv.style.overflow = 'scroll'
-        document.body.appendChild(scrollDiv)
-        size = scrollDiv.offsetWidth - scrollDiv.clientWidth
-        document.body.removeChild(scrollDiv)
-      }
-    }
-
-    return size
-  }
-
   var ResourceHeader = function ResourceHeader(_ref) {
     var label = _ref.label
     return /*#__PURE__*/ React__default.createElement(
@@ -15096,7 +15060,6 @@
       var _this3 = this
 
       var _this$props3 = this.props,
-        width = _this$props3.width,
         rtl = _this$props3.rtl,
         resources = _this$props3.resources,
         range = _this$props3.range,
@@ -15108,7 +15071,6 @@
         getters = _this$props3.getters,
         scrollRef = _this$props3.scrollRef,
         localizer = _this$props3.localizer,
-        isOverflowing = _this$props3.isOverflowing,
         _this$props3$componen = _this$props3.components,
         TimeGutterHeader = _this$props3$componen.timeGutterHeader,
         _this$props3$componen2 = _this$props3$componen.resourceHeader,
@@ -15118,31 +15080,18 @@
             : _this$props3$componen2,
         resizable = _this$props3.resizable
       var style = {}
-
-      if (isOverflowing) {
-        style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px'
-      }
-
       var groupedEvents = resources.groupEvents(events)
       return /*#__PURE__*/ React__default.createElement(
         'div',
         {
           style: style,
           ref: scrollRef,
-          className: clsx(
-            'rbc-time-header',
-            isOverflowing && 'rbc-overflowing'
-          ),
+          className: clsx('rbc-time-header'),
         },
         /*#__PURE__*/ React__default.createElement(
           'div',
           {
             className: 'rbc-label rbc-time-header-gutter',
-            style: {
-              width: width,
-              minWidth: width,
-              maxWidth: width,
-            },
           },
           TimeGutterHeader &&
             /*#__PURE__*/ React__default.createElement(TimeGutterHeader, null)
@@ -15222,10 +15171,8 @@
     events: propTypes.array.isRequired,
     resources: propTypes.object,
     getNow: propTypes.func.isRequired,
-    isOverflowing: propTypes.bool,
     rtl: propTypes.bool,
     resizable: propTypes.bool,
-    width: propTypes.number,
     localizer: propTypes.object.isRequired,
     accessors: propTypes.object.isRequired,
     components: propTypes.object.isRequired,
@@ -15388,15 +15335,6 @@
         }
       }
 
-      _this.handleResize = function() {
-        cancel(_this.rafHandle)
-        _this.rafHandle = request(_this.checkOverflow)
-      }
-
-      _this.gutterRef = function(ref) {
-        _this.gutter = ref && ReactDOM.findDOMNode(ref)
-      }
-
       _this.handleSelectAlldayEvent = function() {
         //cancel any pending selections so only the event click goes through.
         _this.clearSelection()
@@ -15426,32 +15364,9 @@
         })
       }
 
-      _this.checkOverflow = function() {
-        if (_this._updatingOverflow) return
-        var content = _this.contentRef.current
-        var isOverflowing = content.scrollHeight > content.clientHeight
-
-        if (_this.state.isOverflowing !== isOverflowing) {
-          _this._updatingOverflow = true
-
-          _this.setState(
-            {
-              isOverflowing: isOverflowing,
-            },
-            function() {
-              _this._updatingOverflow = false
-            }
-          )
-        }
-      }
-
       _this.memoizedResources = memoizeOne(function(resources, accessors) {
         return Resources(resources, accessors)
       })
-      _this.state = {
-        gutterWidth: undefined,
-        isOverflowing: null,
-      }
       _this.scrollRef = /*#__PURE__*/ React__default.createRef()
       _this.contentRef = /*#__PURE__*/ React__default.createRef()
       _this._scrollRatio = null
@@ -15465,27 +15380,11 @@
     }
 
     _proto.componentDidMount = function componentDidMount() {
-      this.checkOverflow()
-
-      if (this.props.width == null);
-
       this.applyScroll()
-      window.addEventListener('resize', this.handleResize)
-    }
-
-    _proto.componentWillUnmount = function componentWillUnmount() {
-      window.removeEventListener('resize', this.handleResize)
-      cancel(this.rafHandle)
-
-      if (this.measureGutterAnimationFrameRequest) {
-        window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-      }
     }
 
     _proto.componentDidUpdate = function componentDidUpdate() {
-      if (this.props.width == null);
-
-      this.applyScroll() //this.checkOverflow()
+      this.applyScroll()
     }
 
     _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(
@@ -15570,7 +15469,6 @@
         events = _this$props3.events,
         backgroundEvents = _this$props3.backgroundEvents,
         range = _this$props3.range,
-        width = _this$props3.width,
         rtl = _this$props3.rtl,
         selected = _this$props3.selected,
         getNow = _this$props3.getNow,
@@ -15585,7 +15483,6 @@
         longPressThreshold = _this$props3.longPressThreshold,
         resizable = _this$props3.resizable,
         view = _this$props3.view
-      width = width || this.state.gutterWidth
       var start = range[0],
         end = range[range.length - 1]
       this.slots = range.length
@@ -15627,7 +15524,6 @@
         /*#__PURE__*/ React__default.createElement(TimeGridHeader, {
           range: range,
           events: allDayEvents,
-          width: width,
           rtl: rtl,
           getNow: getNow,
           localizer: localizer,
@@ -15638,7 +15534,6 @@
           getters: getters,
           components: components,
           scrollRef: this.scrollRef,
-          isOverflowing: this.state.isOverflowing,
           longPressThreshold: longPressThreshold,
           onSelectSlot: this.handleSelectAllDaySlot,
           onSelectEvent: this.handleSelectAlldayEvent,
@@ -15657,7 +15552,6 @@
           },
           /*#__PURE__*/ React__default.createElement(TimeGutter, {
             date: start,
-            ref: this.gutterRef,
             localizer: localizer,
             min: merge(start, min),
             max: merge(start, max),
@@ -15676,26 +15570,6 @@
     _proto.clearSelection = function clearSelection() {
       clearTimeout(this._selectTimer)
       this._pendingSelection = []
-    }
-
-    _proto.measureGutter = function measureGutter() {
-      var _this3 = this
-
-      if (this.measureGutterAnimationFrameRequest) {
-        window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-      }
-
-      this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
-        function() {
-          var width = getWidth(_this3.gutter)
-
-          if (width && _this3.state.gutterWidth !== width) {
-            _this3.setState({
-              gutterWidth: width,
-            })
-          }
-        }
-      )
     }
 
     _proto.applyScroll = function applyScroll() {
@@ -16017,6 +15891,37 @@
         )
       )
     }
+  }
+
+  /**
+   * Returns the width of a given element.
+   *
+   * @param node the element
+   * @param client whether to use `clientWidth` if possible
+   */
+
+  function getWidth(node, client) {
+    var win = isWindow(node)
+    return win ? win.innerWidth : client ? node.clientWidth : offset(node).width
+  }
+
+  var size
+  function scrollbarSize(recalc) {
+    if ((!size && size !== 0) || recalc) {
+      if (canUseDOM) {
+        var scrollDiv = document.createElement('div')
+        scrollDiv.style.position = 'absolute'
+        scrollDiv.style.top = '-9999px'
+        scrollDiv.style.width = '50px'
+        scrollDiv.style.height = '50px'
+        scrollDiv.style.overflow = 'scroll'
+        document.body.appendChild(scrollDiv)
+        size = scrollDiv.offsetWidth - scrollDiv.clientWidth
+        document.body.removeChild(scrollDiv)
+      }
+    }
+
+    return size
   }
 
   function Agenda(_ref) {

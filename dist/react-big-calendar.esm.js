@@ -32,7 +32,7 @@ import {
 } from 'date-arithmetic'
 import chunk from 'lodash-es/chunk'
 import getPosition from 'dom-helpers/position'
-import { request, cancel } from 'dom-helpers/animationFrame'
+import { request } from 'dom-helpers/animationFrame'
 import getOffset from 'dom-helpers/offset'
 import getScrollTop from 'dom-helpers/scrollTop'
 import getScrollLeft from 'dom-helpers/scrollLeft'
@@ -45,12 +45,12 @@ import listen from 'dom-helpers/listen'
 import findIndex from 'lodash-es/findIndex'
 import range$1 from 'lodash-es/range'
 import memoize from 'memoize-one'
-import getWidth from 'dom-helpers/width'
 import _createClass from '@babel/runtime/helpers/esm/createClass'
 import sortBy from 'lodash-es/sortBy'
-import scrollbarSize from 'dom-helpers/scrollbarSize'
 import addClass from 'dom-helpers/addClass'
 import removeClass from 'dom-helpers/removeClass'
+import getWidth from 'dom-helpers/width'
+import scrollbarSize from 'dom-helpers/scrollbarSize'
 
 function NoopWrapper(props) {
   return props.children
@@ -4272,7 +4272,6 @@ var TimeGridHeader = /*#__PURE__*/ (function(_React$Component) {
     var _this3 = this
 
     var _this$props3 = this.props,
-      width = _this$props3.width,
       rtl = _this$props3.rtl,
       resources = _this$props3.resources,
       range = _this$props3.range,
@@ -4284,7 +4283,6 @@ var TimeGridHeader = /*#__PURE__*/ (function(_React$Component) {
       getters = _this$props3.getters,
       scrollRef = _this$props3.scrollRef,
       localizer = _this$props3.localizer,
-      isOverflowing = _this$props3.isOverflowing,
       _this$props3$componen = _this$props3.components,
       TimeGutterHeader = _this$props3$componen.timeGutterHeader,
       _this$props3$componen2 = _this$props3$componen.resourceHeader,
@@ -4294,28 +4292,18 @@ var TimeGridHeader = /*#__PURE__*/ (function(_React$Component) {
           : _this$props3$componen2,
       resizable = _this$props3.resizable
     var style = {}
-
-    if (isOverflowing) {
-      style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px'
-    }
-
     var groupedEvents = resources.groupEvents(events)
     return /*#__PURE__*/ React.createElement(
       'div',
       {
         style: style,
         ref: scrollRef,
-        className: clsx('rbc-time-header', isOverflowing && 'rbc-overflowing'),
+        className: clsx('rbc-time-header'),
       },
       /*#__PURE__*/ React.createElement(
         'div',
         {
           className: 'rbc-label rbc-time-header-gutter',
-          style: {
-            width: width,
-            minWidth: width,
-            maxWidth: width,
-          },
         },
         TimeGutterHeader &&
           /*#__PURE__*/ React.createElement(TimeGutterHeader, null)
@@ -4394,10 +4382,8 @@ TimeGridHeader.propTypes =
         events: PropTypes.array.isRequired,
         resources: PropTypes.object,
         getNow: PropTypes.func.isRequired,
-        isOverflowing: PropTypes.bool,
         rtl: PropTypes.bool,
         resizable: PropTypes.bool,
-        width: PropTypes.number,
         localizer: PropTypes.object.isRequired,
         accessors: PropTypes.object.isRequired,
         components: PropTypes.object.isRequired,
@@ -4564,15 +4550,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
       }
     }
 
-    _this.handleResize = function() {
-      cancel(_this.rafHandle)
-      _this.rafHandle = request(_this.checkOverflow)
-    }
-
-    _this.gutterRef = function(ref) {
-      _this.gutter = ref && findDOMNode(ref)
-    }
-
     _this.handleSelectAlldayEvent = function() {
       //cancel any pending selections so only the event click goes through.
       _this.clearSelection()
@@ -4602,32 +4579,9 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
       })
     }
 
-    _this.checkOverflow = function() {
-      if (_this._updatingOverflow) return
-      var content = _this.contentRef.current
-      var isOverflowing = content.scrollHeight > content.clientHeight
-
-      if (_this.state.isOverflowing !== isOverflowing) {
-        _this._updatingOverflow = true
-
-        _this.setState(
-          {
-            isOverflowing: isOverflowing,
-          },
-          function() {
-            _this._updatingOverflow = false
-          }
-        )
-      }
-    }
-
     _this.memoizedResources = memoize(function(resources, accessors) {
       return Resources(resources, accessors)
     })
-    _this.state = {
-      gutterWidth: undefined,
-      isOverflowing: null,
-    }
     _this.scrollRef = /*#__PURE__*/ React.createRef()
     _this.contentRef = /*#__PURE__*/ React.createRef()
     _this._scrollRatio = null
@@ -4641,27 +4595,11 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
   }
 
   _proto.componentDidMount = function componentDidMount() {
-    this.checkOverflow()
-
-    if (this.props.width == null);
-
     this.applyScroll()
-    window.addEventListener('resize', this.handleResize)
-  }
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
-    cancel(this.rafHandle)
-
-    if (this.measureGutterAnimationFrameRequest) {
-      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    }
   }
 
   _proto.componentDidUpdate = function componentDidUpdate() {
-    if (this.props.width == null);
-
-    this.applyScroll() //this.checkOverflow()
+    this.applyScroll()
   }
 
   _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(
@@ -4744,7 +4682,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
       events = _this$props3.events,
       backgroundEvents = _this$props3.backgroundEvents,
       range = _this$props3.range,
-      width = _this$props3.width,
       rtl = _this$props3.rtl,
       selected = _this$props3.selected,
       getNow = _this$props3.getNow,
@@ -4759,7 +4696,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
       longPressThreshold = _this$props3.longPressThreshold,
       resizable = _this$props3.resizable,
       view = _this$props3.view
-    width = width || this.state.gutterWidth
     var start = range[0],
       end = range[range.length - 1]
     this.slots = range.length
@@ -4801,7 +4737,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
       /*#__PURE__*/ React.createElement(TimeGridHeader, {
         range: range,
         events: allDayEvents,
-        width: width,
         rtl: rtl,
         getNow: getNow,
         localizer: localizer,
@@ -4812,7 +4747,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
         getters: getters,
         components: components,
         scrollRef: this.scrollRef,
-        isOverflowing: this.state.isOverflowing,
         longPressThreshold: longPressThreshold,
         onSelectSlot: this.handleSelectAllDaySlot,
         onSelectEvent: this.handleSelectAlldayEvent,
@@ -4831,7 +4765,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
         },
         /*#__PURE__*/ React.createElement(TimeGutter, {
           date: start,
-          ref: this.gutterRef,
           localizer: localizer,
           min: merge(start, min),
           max: merge(start, max),
@@ -4850,26 +4783,6 @@ var TimeGrid = /*#__PURE__*/ (function(_Component) {
   _proto.clearSelection = function clearSelection() {
     clearTimeout(this._selectTimer)
     this._pendingSelection = []
-  }
-
-  _proto.measureGutter = function measureGutter() {
-    var _this3 = this
-
-    if (this.measureGutterAnimationFrameRequest) {
-      window.cancelAnimationFrame(this.measureGutterAnimationFrameRequest)
-    }
-
-    this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
-      function() {
-        var width = getWidth(_this3.gutter)
-
-        if (width && _this3.state.gutterWidth !== width) {
-          _this3.setState({
-            gutterWidth: width,
-          })
-        }
-      }
-    )
   }
 
   _proto.applyScroll = function applyScroll() {

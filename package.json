@@ -132,6 +132,7 @@
     "@babel/runtime": "^7.1.5",
     "clsx": "^1.0.4",
     "date-arithmetic": "^4.1.0",
+    "date-fns": "^2.22.1",
     "dom-helpers": "^5.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
@@ -139,7 +140,8 @@
     "memoize-one": "^5.1.1",
     "prop-types": "^15.7.2",
     "react-overlays": "^4.1.1",
-    "uncontrollable": "^7.0.0"
+    "uncontrollable": "^7.0.0",
+    "yarn": "^1.22.10"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"

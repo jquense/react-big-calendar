@@ -1,23 +1,33 @@
 /* eslint no-fallthrough: off */
 import * as dates from 'date-arithmetic'
+import startOfDay from 'date-fns/startOfDay'
+import startOfMonth from 'date-fns/startOfMonth'
+import startOfWeek from 'date-fns/startOfWeek'
+
+const startOfMethods = {
+  day: startOfDay,
+  month: startOfMonth,
+  week: startOfWeek,
+}
+dates.startOf = (d, unit) => startOfMethods[unit](d)
 
 export {
-  milliseconds,
-  seconds,
-  minutes,
-  hours,
-  month,
-  startOf,
-  endOf,
   add,
+  endOf,
   eq,
-  gte,
   gt,
-  lte,
-  lt,
+  gte,
+  hours,
   inRange,
-  min,
+  lt,
+  lte,
   max,
+  milliseconds,
+  min,
+  minutes,
+  month,
+  seconds,
+  startOf,
 } from 'date-arithmetic'
 
 const MILLI = {

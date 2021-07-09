@@ -14,6 +14,8 @@ import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
+import DayColumnWrapper from './DayColumnWrapper'
+
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
   intervalTriggered = false
@@ -37,7 +39,7 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable()
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable()
@@ -99,6 +101,7 @@ class DayColumn extends React.Component {
 
     if (current >= min && current <= max) {
       const top = this.slotMetrics.getCurrentTimePosition(current)
+      this.intervalTriggered = true
       this.setState({ timeIndicatorPosition: top })
     } else {
       this.clearTimeIndicatorInterval()
@@ -107,6 +110,7 @@ class DayColumn extends React.Component {
 
   render() {
     const {
+      date,
       max,
       rtl,
       isNow,
@@ -124,8 +128,12 @@ class DayColumn extends React.Component {
 
     const { className, style } = dayProp(max)
 
+    const DayColumnWrapperComponent =
+      components.dayColumnWrapper || DayColumnWrapper
+
     return (
-      <div
+      <DayColumnWrapperComponent
+        date={date}
         style={style}
         className={clsx(
           className,
@@ -154,7 +162,11 @@ class DayColumn extends React.Component {
           slotMetrics={slotMetrics}
         >
           <div className={clsx('rbc-events-container', rtl && 'rtl')}>
-            {this.renderEvents()}
+            {this.renderEvents({
+              events: this.props.backgroundEvents,
+              isBackgroundEvent: true,
+            })}
+            {this.renderEvents({ events: this.props.events })}
           </div>
         </EventContainer>
 
@@ -163,19 +175,18 @@ class DayColumn extends React.Component {
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}
-        {isNow && (
+        {isNow && this.intervalTriggered && (
           <div
             className="rbc-current-time-indicator"
             style={{ top: `${this.state.timeIndicatorPosition}%` }}
           />
         )}
-      </div>
+      </DayColumnWrapperComponent>
     )
   }
 
-  renderEvents = () => {
+  renderEvents = ({ events, isBackgroundEvent }) => {
     let {
-      events,
       rtl,
       selected,
       accessors,
@@ -185,6 +196,7 @@ class DayColumn extends React.Component {
       step,
       timeslots,
       dayLayoutAlgorithm,
+      resizable,
     } = this.props
 
     const { slotMetrics } = this
@@ -231,6 +243,9 @@ class DayColumn extends React.Component {
           selected={isSelected(event, selected)}
           onClick={e => this._select(event, e)}
           onDoubleClick={e => this._doubleClick(event, e)}
+          isBackgroundEvent={isBackgroundEvent}
+          onKeyPress={e => this._keyPress(event, e)}
+          resizable={resizable}
         />
       )
     })
@@ -349,7 +364,7 @@ class DayColumn extends React.Component {
 
     while (dates.lte(current, endDate)) {
       slots.push(current)
-      current = dates.add(current, this.props.step, 'minutes')
+      current = new Date(+current + this.props.step * 60 * 1000) // using Date ensures not to create an endless loop the day DST begins
     }
 
     notify(this.props.onSelectSlot, {
@@ -370,10 +385,15 @@ class DayColumn extends React.Component {
   _doubleClick = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
   }
+
+  _keyPress = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
+  }
 }
 
 DayColumn.propTypes = {
   events: PropTypes.array.isRequired,
+  backgroundEvents: PropTypes.array.isRequired,
   step: PropTypes.number.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,
   min: PropTypes.instanceOf(Date).isRequired,
@@ -382,6 +402,7 @@ DayColumn.propTypes = {
   isNow: PropTypes.bool,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
 
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
@@ -401,6 +422,7 @@ DayColumn.propTypes = {
   onSelectSlot: PropTypes.func.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onDoubleClickEvent: PropTypes.func.isRequired,
+  onKeyPressEvent: PropTypes.func,
 
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,

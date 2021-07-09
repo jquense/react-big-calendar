@@ -16,6 +16,7 @@ import './prism.scss'
 import Card from './Card'
 import ExampleControlSlot from './ExampleControlSlot'
 import Basic from './demos/basic'
+import BackgroundEvents from './demos/backgroundEvents'
 import Selectable from './demos/selectable'
 import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
@@ -44,6 +45,7 @@ const EXAMPLES = {
   timeslots: 'Custom Time Grids',
   rendering: 'Customized Component Rendering',
   customView: 'Custom Calendar Views',
+  backgroundEvents: 'Background Events',
   resource: 'Resource Scheduling',
   dnd: 'Addon: Drag and drop',
   dndresource: 'Resource Drag and drop',
@@ -74,6 +76,7 @@ class Example extends React.Component {
     let selected = this.state.selected
     let Current = {
       basic: Basic,
+      backgroundEvents: BackgroundEvents,
       selectable: Selectable,
       cultures: Cultures,
       popup: Popup,

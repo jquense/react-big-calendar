@@ -2,7 +2,7 @@
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
-[**DEMO and Docs**](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 
@@ -31,8 +31,8 @@ $ yarn examples
 
 ### Localization and Date Formatting
 
-`react-big-calendar` includes two options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](http://momentjs.com/) or [Globalize.js](https://github.com/jquery/globalize) localizers.
+`react-big-calendar` includes three options for handling the date formatting and culture localization, depending
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
@@ -112,8 +112,9 @@ const MyCalendar = props => (
 
 ## Custom Styling
 
-Out of the box you can include the compiled css files and be up and running. But, sometimes, you may want to style
-Big Calendar to match your application styling. For this reason SASS files are included with Big Calendar.
+Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style
+Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
+
 
 ```
   @import 'react-big-calendar/lib/sass/styles';
@@ -126,4 +127,4 @@ Big Calendar. Carefully test each change accordingly.
 
 ## Join us on Reactiflux Discord
 
-Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+Join us on [Reactiflux Discord](https://discord.gg/reactiflux) community under the channel #libraries if you have any questions.

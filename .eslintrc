@@ -2,6 +2,8 @@ parser: babel-eslint
 extends:
   - jason/react
   - prettier
+plugins:
+  - react-hooks
 env:
   es6: true
 rules:
@@ -15,3 +17,5 @@ rules:
     varsIgnorePattern: ^_,
     argsIgnorePattern: ^_,
   }]
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: warn

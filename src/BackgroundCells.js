@@ -25,7 +25,7 @@ class BackgroundCells extends React.Component {
     this._teardownSelectable()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable()
 
     if (!nextProps.selectable && this.props.selectable)
@@ -160,6 +160,7 @@ class BackgroundCells extends React.Component {
           action,
           bounds,
           box,
+          resourceId: this.props.resourceId,
         })
   }
 }
@@ -183,6 +184,7 @@ BackgroundCells.propTypes = {
   range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   rtl: PropTypes.bool,
   type: PropTypes.string,
+  resourceId: PropTypes.any,
 }
 
 export default BackgroundCells

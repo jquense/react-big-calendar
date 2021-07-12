@@ -75,8 +75,8 @@ class DateContentRow extends React.Component {
     //Clear handle seclect slot click timeout
     clearTimeout(this._selectTimer);
     //If onDayMore passed, ignore handle show more
-    if(onDayMore && view == 'day') {
-      onDayMore();
+    if(onDayMore) {
+      onDayMore(range[0], view);
       return false;
     }
 

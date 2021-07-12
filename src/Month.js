@@ -57,6 +57,8 @@ let propTypes = {
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
+  onDayMore: PropTypes.func,
+  selectedView: PropTypes.string,
 
   dateFormat,
 
@@ -298,9 +300,15 @@ class MonthView extends React.Component {
   }
 
   handleShowMore = (events, date, cell, slot) => {
-    const { popup, onDrillDown, onShowMore, getDrilldownView } = this.props
+    const { popup, onDrillDown, onShowMore, getDrilldownView, onDayMore, selectedView } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
+
+    //Will this work
+    if (onDayMore) {
+      onDayMore(date, selectedView);
+      return false;
+    }
 
     if (popup) {
       let position = getPosition(cell, findDOMNode(this))

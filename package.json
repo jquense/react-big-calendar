@@ -69,15 +69,17 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "react": "^16.6.1 || ^17",
+    "react-dom": "^16.6.1 || ^17"
   },
   "devDependencies": {
     "@4c/rollout": "^1.4.0",
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.5",
-    "@storybook/addon-actions": "^5.0.11",
-    "@storybook/react": "^5.0.11",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@storybook/addon-actions": "^6.1.15",
+    "@storybook/react": "^6.1.15",
     "autoprefixer": "^9.5.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
@@ -130,14 +132,14 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "clsx": "^1.0.4",
-    "date-arithmetic": "^4.0.1",
+    "date-arithmetic": "^4.1.0",
     "dom-helpers": "^5.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",
     "memoize-one": "^5.1.1",
     "prop-types": "^15.7.2",
-    "react-overlays": "^2.0.0-0",
+    "react-overlays": "^4.1.1",
     "uncontrollable": "^7.0.0"
   },
   "resolutions": {

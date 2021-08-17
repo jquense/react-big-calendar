@@ -1,20 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
-import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
+import { DnDContext } from './DnDContext'
 
 class EventWrapper extends React.Component {
-  static contextTypes = {
-    draggable: PropTypes.shape({
-      onStart: PropTypes.func,
-      onEnd: PropTypes.func,
-      onBeginAction: PropTypes.func,
-      draggableAccessor: accessor,
-      resizableAccessor: accessor,
-      dragAndDropAction: PropTypes.object,
-    }),
-  }
+  static contextType = DnDContext
 
   static propTypes = {
     type: PropTypes.oneOf(['date', 'time']),
@@ -27,32 +18,33 @@ class EventWrapper extends React.Component {
     continuesAfter: PropTypes.bool,
     isDragging: PropTypes.bool,
     isResizing: PropTypes.bool,
+    resizable: PropTypes.bool,
   }
 
   handleResizeUp = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
   }
   handleResizeDown = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
   }
   handleResizeLeft = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'LEFT')
   }
   handleResizeRight = e => {
     if (e.button !== 0) return
-    e.stopPropagation()
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'RIGHT')
   }
   handleStartDragging = e => {
-    if (e.button === 0) {
+    if (e.button !== 0) return
+    // hack: because of the way the anchors are arranged in the DOM, resize
+    // anchor events will bubble up to the move anchor listener. Don't start
+    // move operations when we're on a resize anchor.
+    const isResizeHandle = e.target.className.includes('rbc-addons-dnd-resize')
+    if (!isResizeHandle)
       this.context.draggable.onBeginAction(this.props.event, 'move')
-    }
   }
 
   renderAnchor(direction) {
@@ -68,7 +60,13 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    const { event, type, continuesPrior, continuesAfter } = this.props
+    const {
+      event,
+      type,
+      continuesPrior,
+      continuesAfter,
+      resizable,
+    } = this.props
 
     let { children } = this.props
 
@@ -111,9 +109,8 @@ class EventWrapper extends React.Component {
      * in the middle of events when showMultiDay is true, and to
      * events at the edges of the calendar's min/max location.
      */
-    const isResizable = resizableAccessor
-      ? !!get(event, resizableAccessor)
-      : true
+    const isResizable =
+      resizable && (resizableAccessor ? !!get(event, resizableAccessor) : true)
 
     if (isResizable || isDraggable) {
       /*

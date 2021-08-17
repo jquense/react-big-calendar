@@ -96,16 +96,21 @@ export default class TimeGrid extends Component {
 
   handleSelectAllDaySlot = (slots, slotInfo) => {
     const { onSelectSlot } = this.props
+
+    const start = new Date(slots[0])
+    const end = new Date(slots[slots.length - 1])
+    end.setDate(slots[slots.length - 1].getDate() + 1)
+
     notify(onSelectSlot, {
       slots,
-      start: slots[0],
-      end: slots[slots.length - 1],
+      start,
+      end,
       action: slotInfo.action,
       resourceId: slotInfo.resourceId,
     })
   }
 
-  renderEvents(range, events, now) {
+  renderEvents(range, events, backgroundEvents, now) {
     let {
       min,
       max,
@@ -117,10 +122,22 @@ export default class TimeGrid extends Component {
 
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
+    const groupedBackgroundEvents = resources.groupEvents(backgroundEvents)
 
     return resources.map(([id, resource], i) =>
       range.map((date, jj) => {
         let daysEvents = (groupedEvents.get(id) || []).filter(event =>
+          dates.inRange(
+            date,
+            accessors.start(event),
+            accessors.end(event),
+            'day'
+          )
+        )
+
+        let daysBackgroundEvents = (
+          groupedBackgroundEvents.get(id) || []
+        ).filter(event =>
           dates.inRange(
             date,
             accessors.start(event),
@@ -141,6 +158,7 @@ export default class TimeGrid extends Component {
             key={i + '-' + jj}
             date={date}
             events={daysEvents}
+            backgroundEvents={daysBackgroundEvents}
             dayLayoutAlgorithm={dayLayoutAlgorithm}
           />
         )
@@ -151,6 +169,7 @@ export default class TimeGrid extends Component {
   render() {
     let {
       events,
+      backgroundEvents,
       range,
       width,
       rtl,
@@ -165,6 +184,7 @@ export default class TimeGrid extends Component {
       max,
       showMultiDayTimes,
       longPressThreshold,
+      resizable,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -175,7 +195,8 @@ export default class TimeGrid extends Component {
     this.slots = range.length
 
     let allDayEvents = [],
-      rangeEvents = []
+      rangeEvents = [],
+      rangeBackgroundEvents = []
 
     events.forEach(event => {
       if (inRange(event, start, end, accessors)) {
@@ -191,6 +212,12 @@ export default class TimeGrid extends Component {
         } else {
           rangeEvents.push(event)
         }
+      }
+    })
+
+    backgroundEvents.forEach(event => {
+      if (inRange(event, start, end, accessors)) {
+        rangeBackgroundEvents.push(event)
       }
     })
 
@@ -225,6 +252,7 @@ export default class TimeGrid extends Component {
           onKeyPressEvent={this.props.onKeyPressEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
+          resizable={resizable}
         />
         <div
           ref={this.contentRef}
@@ -244,7 +272,12 @@ export default class TimeGrid extends Component {
             className="rbc-time-gutter"
             getters={getters}
           />
-          {this.renderEvents(range, rangeEvents, getNow())}
+          {this.renderEvents(
+            range,
+            rangeEvents,
+            rangeBackgroundEvents,
+            getNow()
+          )}
         </div>
       </div>
     )
@@ -309,6 +342,7 @@ export default class TimeGrid extends Component {
 
 TimeGrid.propTypes = {
   events: PropTypes.array.isRequired,
+  backgroundEvents: PropTypes.array.isRequired,
   resources: PropTypes.array,
 
   step: PropTypes.number,
@@ -322,6 +356,7 @@ TimeGrid.propTypes = {
   showMultiDayTimes: PropTypes.bool,
 
   rtl: PropTypes.bool,
+  resizable: PropTypes.bool,
   width: PropTypes.number,
 
   accessors: PropTypes.object.isRequired,

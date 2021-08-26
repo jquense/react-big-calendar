@@ -220,12 +220,6 @@ class DayColumn extends React.Component {
 
       if (startsBeforeDay && startsAfterDay) label = messages.allDay
       else label = localizer.format({ start, end }, format)
-      /* console.log('[EventContainerWrapper] label ', {
-        start,
-        end,
-        format,
-        formatted: localizer.format({ start, end }, format),
-      }) */
 
       let continuesEarlier = startsBeforeDay || slotMetrics.startsBefore(start)
       let continuesLater = startsAfterDay || slotMetrics.startsAfter(end)

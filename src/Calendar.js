@@ -704,7 +704,7 @@ class Calendar extends React.Component {
      *   timeGutterHeader: MyTimeGutterWrapper,
      *   toolbar: MyToolbar,
      *   agenda: {
-     *   	 event: MyAgendaEvent // with the agenda view use a different component to render events
+     *   	 event: MyAgendaEvent, // with the agenda view use a different component to render events
      *     time: MyAgendaTime,
      *     date: MyAgendaDate,
      *   },

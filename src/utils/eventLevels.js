@@ -1,22 +1,24 @@
 import findIndex from 'lodash/findIndex'
-import * as dates from './dates'
 
-export function endOfRange(dateRange, unit = 'day') {
+export function endOfRange({ dateRange, localizer, unit = 'day' }) {
   return {
     first: dateRange[0],
-    last: dates.add(dateRange[dateRange.length - 1], 1, unit),
+    last: localizer.add(dateRange[dateRange.length - 1], 1, unit),
   }
 }
 
-export function eventSegments(event, range, accessors) {
-  let { first, last } = endOfRange(range)
+export function eventSegments(event, range, accessors, localizer) {
+  let { first, last } = endOfRange({ dateRange: range, localizer })
 
-  let slots = dates.diff(first, last, 'day')
-  let start = dates.max(dates.startOf(accessors.start(event), 'day'), first)
-  let end = dates.min(dates.ceil(accessors.end(event), 'day'), last)
+  let slots = localizer.diff(first, last, 'day')
+  let start = localizer.max(
+    localizer.startOf(accessors.start(event), 'day'),
+    first
+  )
+  let end = localizer.min(localizer.ceil(accessors.end(event), 'day'), last)
 
-  let padding = findIndex(range, x => dates.eq(x, start, 'day'))
-  let span = dates.diff(start, end, 'day')
+  let padding = findIndex(range, x => localizer.eq(x, start, 'day'))
+  let span = localizer.diff(start, end, 'day')
 
   span = Math.min(span, slots)
   span = Math.max(span, 1)
@@ -55,15 +57,15 @@ export function eventLevels(rowSegments, limit = Infinity) {
   return { levels, extra }
 }
 
-export function inRange(e, start, end, accessors) {
-  let eStart = dates.startOf(accessors.start(e), 'day')
+export function inRange(e, start, end, accessors, localizer) {
+  let eStart = localizer.startOf(accessors.start(e), 'day')
   let eEnd = accessors.end(e)
 
-  let startsBeforeEnd = dates.lte(eStart, end, 'day')
+  let startsBeforeEnd = localizer.lte(eStart, end, 'day')
   // when the event is zero duration we need to handle a bit differently
-  let endsAfterStart = !dates.eq(eStart, eEnd, 'minutes')
-    ? dates.gt(eEnd, start, 'minutes')
-    : dates.gte(eEnd, start, 'minutes')
+  let endsAfterStart = !localizer.eq(eStart, eEnd, 'minutes')
+    ? localizer.gt(eEnd, start, 'minutes')
+    : localizer.gte(eEnd, start, 'minutes')
 
   return startsBeforeEnd && endsAfterStart
 }
@@ -74,20 +76,20 @@ export function segsOverlap(seg, otherSegs) {
   )
 }
 
-export function sortEvents(evtA, evtB, accessors) {
+export function sortEvents(evtA, evtB, accessors, localizer) {
   let startSort =
-    +dates.startOf(accessors.start(evtA), 'day') -
-    +dates.startOf(accessors.start(evtB), 'day')
+    +localizer.startOf(accessors.start(evtA), 'day') -
+    +localizer.startOf(accessors.start(evtB), 'day')
 
-  let durA = dates.diff(
+  let durA = localizer.diff(
     accessors.start(evtA),
-    dates.ceil(accessors.end(evtA), 'day'),
+    localizer.ceil(accessors.end(evtA), 'day'),
     'day'
   )
 
-  let durB = dates.diff(
+  let durB = localizer.diff(
     accessors.start(evtB),
-    dates.ceil(accessors.end(evtB), 'day'),
+    localizer.ceil(accessors.end(evtB), 'day'),
     'day'
   )
 

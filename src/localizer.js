@@ -1,5 +1,25 @@
 import PropTypes from 'prop-types'
 import invariant from 'invariant'
+import {
+  merge,
+  inRange,
+  lt,
+  lte,
+  gt,
+  gte,
+  eq,
+  startOf,
+  endOf,
+  add,
+  range,
+  diff,
+  ceil,
+  min,
+  max,
+  firstVisibleDay,
+  lastVisibleDay,
+  visibleDays,
+} from './utils/dates'
 
 const localePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 
@@ -17,6 +37,26 @@ function _format(localizer, formatter, value, format, culture) {
   return result
 }
 
+/**
+ * This date conversion was moved out of TimeSlots.js, to
+ * allow for localizer override
+ * @param {Date} dt - The date to start from
+ * @param {Number} minutesFromMidnight
+ * @param {Number} offset
+ * @returns {Date}
+ */
+function getSlotDate(dt, minutesFromMidnight, offset) {
+  return new Date(
+    dt.getFullYear(),
+    dt.getMonth(),
+    dt.getDate(),
+    0,
+    minutesFromMidnight + offset,
+    0,
+    0
+  )
+}
+
 export class DateLocalizer {
   constructor(spec) {
     invariant(
@@ -30,9 +70,30 @@ export class DateLocalizer {
 
     this.propType = spec.propType || localePropType
 
-    this.startOfWeek = spec.firstOfWeek
     this.formats = spec.formats
     this.format = (...args) => _format(this, spec.format, ...args)
+    // These date arithmetic methods can be overriden by the localizer
+    this.startOfWeek = spec.firstOfWeek
+    this.merge = spec.merge || merge
+    this.inRange = spec.inRange || inRange
+    this.lt = spec.lt || lt
+    this.lte = spec.lte || lte
+    this.gt = spec.gt || gt
+    this.gte = spec.gte || gte
+    this.eq = spec.eq || eq
+    this.startOf = spec.startOf || startOf
+    this.endOf = spec.endOf || endOf
+    this.add = spec.add || add
+    this.range = spec.range || range
+    this.diff = spec.diff || diff
+    this.ceil = spec.ceil || ceil
+    this.min = spec.min || min
+    this.max = spec.max || max
+    this.firstVisibleDay = spec.firstVisibleDay || firstVisibleDay
+    this.lastVisibleDay = spec.lastVisibleDay || lastVisibleDay
+    this.visibleDays = spec.visibleDays || visibleDays
+
+    this.getSlotDate = spec.getSlotDate || getSlotDate
   }
 }
 

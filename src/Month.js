@@ -19,8 +19,8 @@ import DateHeader from './DateHeader'
 
 import { inRange, sortEvents } from './utils/eventLevels'
 
-let eventsForWeek = (evts, start, end, accessors) =>
-  evts.filter(e => inRange(e, start, end, accessors))
+let eventsForWeek = (evts, start, end, accessors, localizer) =>
+  evts.filter(e => inRange(e, start, end, accessors, localizer))
 
 class MonthView extends React.Component {
   constructor(...args) {
@@ -36,8 +36,9 @@ class MonthView extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps({ date }) {
+    const { date: propsDate, localizer } = this.props
     this.setState({
-      needLimitMeasure: !dates.eq(date, this.props.date, 'month'),
+      needLimitMeasure: !localizer.eq(date, propsDate, 'month'),
     })
   }
 
@@ -74,7 +75,7 @@ class MonthView extends React.Component {
 
   render() {
     let { date, localizer, className } = this.props,
-      month = dates.visibleDays(date, localizer),
+      month = localizer.visibleDays(date, localizer),
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
@@ -111,9 +112,15 @@ class MonthView extends React.Component {
 
     const { needLimitMeasure, rowLimit } = this.state
 
-    events = eventsForWeek(events, week[0], week[week.length - 1], accessors)
+    events = eventsForWeek(
+      events,
+      week[0],
+      week[week.length - 1],
+      accessors,
+      localizer
+    )
 
-    events.sort((a, b) => sortEvents(a, b, accessors))
+    events.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
     return (
       <DateContentRow
@@ -151,7 +158,7 @@ class MonthView extends React.Component {
     let { date: currentDate, getDrilldownView, localizer } = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
-    let isCurrent = dates.eq(date, currentDate, 'day')
+    let isCurrent = localizer.eq(date, currentDate, 'day')
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, 'dateFormat')
     let DateHeaderComponent = this.props.components.dateHeader || DateHeader
@@ -183,7 +190,7 @@ class MonthView extends React.Component {
     let last = row[row.length - 1]
     let HeaderComponent = components.header || Header
 
-    return dates.range(first, last, 'day').map((day, idx) => (
+    return localizer.range(first, last, 'day').map((day, idx) => (
       <div key={'header_' + idx} className="rbc-header">
         <HeaderComponent
           date={day}
@@ -377,18 +384,18 @@ MonthView.propTypes = {
 }
 
 MonthView.range = (date, { localizer }) => {
-  let start = dates.firstVisibleDay(date, localizer)
-  let end = dates.lastVisibleDay(date, localizer)
+  let start = localizer.firstVisibleDay(date, localizer)
+  let end = localizer.lastVisibleDay(date, localizer)
   return { start, end }
 }
 
-MonthView.navigate = (date, action) => {
+MonthView.navigate = (date, action, { localizer }) => {
   switch (action) {
     case navigate.PREVIOUS:
-      return dates.add(date, -1, 'month')
+      return localizer.add(date, -1, 'month')
 
     case navigate.NEXT:
-      return dates.add(date, 1, 'month')
+      return localizer.add(date, 1, 'month')
 
     default:
       return date

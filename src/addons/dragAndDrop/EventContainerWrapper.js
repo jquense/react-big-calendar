@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import * as dates from '../../utils/dates'
 import { DnDContext } from './DnDContext'
 
 import Selection, {
@@ -69,8 +68,8 @@ class EventContainerWrapper extends React.Component {
       bounds
     )
 
-    const { duration } = eventTimes(event, accessors)
-    let newEnd = dates.add(newSlot, duration, 'milliseconds')
+    const { duration } = eventTimes(event, accessors, this.props.localizer)
+    let newEnd = this.props.localizer.add(newSlot, duration, 'milliseconds')
     this.update(event, slotMetrics.getRange(newSlot, newEnd, false, true))
   }
 
@@ -78,12 +77,13 @@ class EventContainerWrapper extends React.Component {
     const { accessors, slotMetrics } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
     const newTime = slotMetrics.closestSlotFromPoint(point, bounds)
+    const { localizer } = this.props
 
-    let { start, end } = eventTimes(event, accessors)
+    let { start, end } = eventTimes(event, accessors, localizer)
     if (direction === 'UP') {
-      start = dates.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
+      start = localizer.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
     } else if (direction === 'DOWN') {
-      end = dates.max(newTime, slotMetrics.closestSlotFromDate(start))
+      end = localizer.max(newTime, slotMetrics.closestSlotFromDate(start))
     }
 
     this.update(event, slotMetrics.getRange(start, end))

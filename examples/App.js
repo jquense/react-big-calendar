@@ -20,6 +20,7 @@ import BackgroundEvents from './demos/backgroundEvents'
 import Selectable from './demos/selectable'
 import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
+import Timezones from './demos/timezones'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
@@ -40,6 +41,7 @@ const EXAMPLES = {
   basic: 'Basic Calendar',
   selectable: 'Create events',
   createEventWithNoOverlap: 'Create events with no-overlap algorithm',
+  timezones: 'Timezones',
   cultures: 'Localization',
   popup: 'Show more via a popup',
   timeslots: 'Custom Time Grids',
@@ -78,6 +80,7 @@ class Example extends React.Component {
       basic: Basic,
       backgroundEvents: BackgroundEvents,
       selectable: Selectable,
+      timezones: Timezones,
       cultures: Cultures,
       popup: Popup,
       rendering: Rendering,

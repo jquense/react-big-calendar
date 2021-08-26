@@ -743,7 +743,33 @@ class Calendar extends React.Component {
 
     /**
      * String messages used throughout the component, override to provide localizations
+     *
+     * ```jsx
+     * const messages = {
+     *   date: 'Date',
+     *   time: 'Time',
+     *   event: 'Event',
+     *   allDay: 'All Day',
+     *   week: 'Week',
+     *   work_week: 'Work Week',
+     *   day: 'Day',
+     *   month: 'Month',
+     *   previous: 'Back',
+     *   next: 'Next',
+     *   yesterday: 'Yesterday',
+     *   tomorrow: 'Tomorrow',
+     *   today: 'Today',
+     *   agenda: 'Agenda',
+     *
+     *   noEventsInRange: 'There are no events in this range.',
+     *
+     *   showMore: total => `+${total} more`,
+     * }
+     *
+     * <Calendar messages={messages} />
+     * ```
      */
+
     messages: PropTypes.shape({
       allDay: PropTypes.node,
       previous: PropTypes.node,
@@ -762,8 +788,11 @@ class Calendar extends React.Component {
 
     /**
      * A day event layout(arrangement) algorithm.
+     *
      * `overlap` allows events to be overlapped.
+     *
      * `no-overlap` resizes events to avoid overlap.
+     *
      * or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
      */
     dayLayoutAlgorithm: DayLayoutAlgorithmPropType,

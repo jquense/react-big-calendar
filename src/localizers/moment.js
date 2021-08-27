@@ -170,6 +170,11 @@ export default function(moment) {
     return dtB.diff(dtA, comparator)
   }
 
+  function minutes(date) {
+    const dt = moment(date)
+    return dt.minutes()
+  }
+
   function firstOfWeek(culture) {
     let data = culture ? moment.localeData(culture) : moment.localeData()
     return data ? data.firstDayOfWeek() : 0
@@ -246,6 +251,7 @@ export default function(moment) {
     ceil,
     min,
     max,
+    minutes,
 
     getSlotDate,
   })

@@ -13,7 +13,7 @@ module.exports = {
   },
   stats: stats.minimal,
   devServer: {
-    port: 9000,
+    port: 3000,
     stats: stats.minimal,
   },
 

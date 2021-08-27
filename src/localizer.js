@@ -19,6 +19,7 @@ import {
   firstVisibleDay,
   lastVisibleDay,
   visibleDays,
+  minutes,
 } from './utils/dates'
 
 const localePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
@@ -89,6 +90,7 @@ export class DateLocalizer {
     this.ceil = spec.ceil || ceil
     this.min = spec.min || min
     this.max = spec.max || max
+    this.minutes = spec.minutes || minutes
     this.firstVisibleDay = spec.firstVisibleDay || firstVisibleDay
     this.lastVisibleDay = spec.lastVisibleDay || lastVisibleDay
     this.visibleDays = spec.visibleDays || visibleDays

@@ -34,7 +34,7 @@
   border: 1px solid @calendar-border;
   display: flex;
   flex-direction: column;
-  flex: 1 0 0;
+  flex: 1 0 0%;
   width: 100%;
   user-select: none;
   -webkit-user-select: none;
@@ -51,7 +51,7 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  flex: 1 0 0; // postcss will remove the 0px here hence the duplication below
+  flex: 1 0 0%; // postcss will remove the 0px here hence the duplication below
   flex-basis: 0px;
   overflow: hidden;
 
@@ -84,7 +84,7 @@
   &:extend(.rbc-abs-full);
   display: flex;
   flex-direction: row;
-  flex: 1 0 0;
+  flex: 1 0 0%;
   overflow: hidden;
 }
 

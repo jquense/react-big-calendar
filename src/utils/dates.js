@@ -168,3 +168,7 @@ export function yesterday() {
 export function tomorrow() {
   return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
 }
+
+export function isWorkDay(date) {
+  return date.getDay() !== 6 && date.getDay() !== 0
+}

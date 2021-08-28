@@ -171,7 +171,14 @@ class DayColumn extends React.Component {
         </EventContainer>
 
         {selecting && (
-          <div className="rbc-slot-selection" style={{ top, height }}>
+          <div
+            className={clsx(
+              'rbc-slot-selection',
+              this.props.getSlotSelectionClassName &&
+                this.props.getSlotSelectionClassName(selectDates)
+            )}
+            style={{ top, height }}
+          >
             <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
           </div>
         )}
@@ -423,6 +430,8 @@ DayColumn.propTypes = {
   onSelectEvent: PropTypes.func.isRequired,
   onDoubleClickEvent: PropTypes.func.isRequired,
   onKeyPressEvent: PropTypes.func,
+
+  getSlotSelectionClassName: PropTypes.func,
 
   className: PropTypes.string,
   dragThroughEvents: PropTypes.bool,

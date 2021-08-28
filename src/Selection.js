@@ -108,7 +108,8 @@ class Selection {
     this._removeKeyUpListener && this._removeKeyUpListener()
     this._removeKeyDownListener && this._removeKeyDownListener()
     this._removeDropFromOutsideListener && this._removeDropFromOutsideListener()
-    this._removeDragOverFromOutsideListener && this._removeDragOverFromOutsideListener()
+    this._removeDragOverFromOutsideListener &&
+      this._removeDragOverFromOutsideListener()
   }
 
   isSelected(node) {

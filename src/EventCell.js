@@ -34,7 +34,9 @@ class EventCell extends React.Component {
     let allDay = accessors.allDay(event)
 
     let showAsAllDay =
-      isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
+      isAllDay ||
+      allDay ||
+      dates.diff(start, dates.ceil(end, 'day', localizer), 'day', localizer) > 1
 
     let userProps = getters.eventProp(event, start, end, selected)
 

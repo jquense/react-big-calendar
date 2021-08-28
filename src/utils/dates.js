@@ -7,15 +7,7 @@ export {
   minutes,
   hours,
   month,
-  startOf,
-  endOf,
   add,
-  eq,
-  gte,
-  gt,
-  lte,
-  lt,
-  inRange,
   min,
   max,
 } from 'date-arithmetic'
@@ -36,15 +28,15 @@ export function monthsInYear(year) {
 }
 
 export function firstVisibleDay(date, localizer) {
-  let firstOfMonth = dates.startOf(date, 'month')
+  let firstOfMonth = startOf(date, 'month', localizer)
 
-  return dates.startOf(firstOfMonth, 'week', localizer.startOfWeek())
+  return startOfWeek(firstOfMonth, localizer)
 }
 
 export function lastVisibleDay(date, localizer) {
-  let endOfMonth = dates.endOf(date, 'month')
+  let endOfMonth = endOf(date, 'month', localizer)
 
-  return dates.endOf(endOfMonth, 'week', localizer.startOfWeek())
+  return endOfWeek(endOfMonth, localizer)
 }
 
 export function visibleDays(date, localizer) {
@@ -52,7 +44,7 @@ export function visibleDays(date, localizer) {
     last = lastVisibleDay(date, localizer),
     days = []
 
-  while (dates.lte(current, last, 'day')) {
+  while (lte(current, last, 'day')) {
     days.push(current)
     current = dates.add(current, 1, 'day')
   }
@@ -60,17 +52,17 @@ export function visibleDays(date, localizer) {
   return days
 }
 
-export function ceil(date, unit) {
-  let floor = dates.startOf(date, unit)
+export function ceil(date, unit, localizer) {
+  let floor = startOf(date, unit, localizer)
 
-  return dates.eq(floor, date) ? floor : dates.add(floor, 1, unit)
+  return eq(floor, date, localizer) ? floor : dates.add(floor, 1, unit)
 }
 
-export function range(start, end, unit = 'day') {
+export function range(start, end, unit = 'day', localizer) {
   let current = start,
     days = []
 
-  while (dates.lte(current, end, unit)) {
+  while (lte(current, end, unit, localizer)) {
     days.push(current)
     current = dates.add(current, 1, unit)
   }
@@ -78,17 +70,38 @@ export function range(start, end, unit = 'day') {
   return days
 }
 
-export function merge(date, time) {
+export function merge(date, time, localizer = null) {
   if (time == null && date == null) return null
 
   if (time == null) time = new Date()
   if (date == null) date = new Date()
 
-  date = dates.startOf(date, 'day')
-  date = dates.hours(date, dates.hours(time))
-  date = dates.minutes(date, dates.minutes(time))
-  date = dates.seconds(date, dates.seconds(time))
-  return dates.milliseconds(date, dates.milliseconds(time))
+  date = startOf(date, 'day', localizer)
+  const { hours, minutes, seconds, milliseconds } = getTimeUnits(time)
+
+  if (localizer && localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.setTime(
+      date,
+      hours,
+      minutes,
+      seconds,
+      milliseconds
+    )
+  }
+
+  date = dates.hours(date, hours)
+  date = dates.minutes(date, minutes)
+  date = dates.seconds(date, seconds)
+  return dates.milliseconds(date, milliseconds)
+}
+
+export function getTimeUnits(time) {
+  return {
+    hours: dates.hours(time),
+    minutes: dates.minutes(time),
+    seconds: dates.seconds(time),
+    milliseconds: dates.milliseconds(time),
+  }
 }
 
 export function eqTime(dateA, dateB) {
@@ -99,11 +112,20 @@ export function eqTime(dateA, dateB) {
   )
 }
 
-export function isJustDate(date) {
+export function isJustDate(date, localizer) {
+  const utilSource =
+    localizer && localizer.localizedDateUtil
+      ? localizer.localizedDateUtil
+      : dates
+  const {
+    hours: getHours,
+    minutes: getMinutes,
+    seconds: getSeconds,
+  } = utilSource
   return (
-    dates.hours(date) === 0 &&
-    dates.minutes(date) === 0 &&
-    dates.seconds(date) === 0 &&
+    getHours(date) === 0 &&
+    getMinutes(date) === 0 &&
+    getSeconds(date) === 0 &&
     dates.milliseconds(date) === 0
   )
 }
@@ -116,7 +138,7 @@ export function duration(start, end, unit, firstOfWeek) {
   )
 }
 
-export function diff(dateA, dateB, unit) {
+export function diff(dateA, dateB, unit, localizer) {
   if (!unit || unit === 'milliseconds') return Math.abs(+dateA - +dateB)
 
   // the .round() handles an edge case
@@ -124,8 +146,8 @@ export function diff(dateA, dateB, unit) {
   // since one day in the range may be shorter/longer by an hour
   return Math.round(
     Math.abs(
-      +dates.startOf(dateA, unit) / MILLI[unit] -
-        +dates.startOf(dateB, unit) / MILLI[unit]
+      +startOf(dateA, unit, localizer) / MILLI[unit] -
+        +startOf(dateB, unit, localizer) / MILLI[unit]
     )
   )
 }
@@ -158,13 +180,77 @@ export function week(date) {
 }
 
 export function today() {
-  return dates.startOf(new Date(), 'day')
+  return startOf(new Date(), 'day')
 }
 
 export function yesterday() {
-  return dates.add(dates.startOf(new Date(), 'day'), -1, 'day')
+  return dates.add(startOf(new Date(), 'day'), -1, 'day')
 }
 
 export function tomorrow() {
-  return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
+  return dates.add(startOf(new Date(), 'day'), 1, 'day')
+}
+
+export function endOf(date, unit, localizer) {
+  if (unit === 'week') return endOfWeek(date, localizer)
+  if (localizer && localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.endOf(date, 'week')
+  }
+  return dates.endOf(date, unit)
+}
+
+export function endOfWeek(date, localizer) {
+  const firstOfWeek = localizer.startOfWeek()
+  if (localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.endOf(date, 'week')
+  }
+  return dates.endOf(date, 'week', firstOfWeek)
+}
+
+export function startOfWeek(date, localizer) {
+  const firstOfWeek = localizer.startOfWeek()
+  if (localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.startOf(date, 'week')
+  }
+  return dates.startOf(date, 'week', firstOfWeek)
+}
+
+export function startOf(date, unit, localizer) {
+  if (unit === 'week') {
+    return startOfWeek(date, localizer)
+  }
+  if (localizer && localizer.localizedDateUtil) {
+    return localizer.localizedDateUtil.startOf(date, unit)
+  }
+  return dates.startOf(date, unit)
+}
+
+export var eq = createComparer(function(a, b) {
+  return a === b
+})
+export var gt = createComparer(function(a, b) {
+  return a > b
+})
+export var gte = createComparer(function(a, b) {
+  return a >= b
+})
+export var lt = createComparer(function(a, b) {
+  return a < b
+})
+export var lte = createComparer(function(a, b) {
+  return a <= b
+})
+export function inRange(day, min, max, unit, localizer) {
+  unit = unit || 'day'
+
+  return (
+    (!min || gte(day, min, unit, localizer)) &&
+    (!max || lte(day, max, unit, localizer))
+  )
+}
+
+function createComparer(operator) {
+  return function(a, b, unit, localizer) {
+    return operator(+startOf(a, unit, localizer), +startOf(b, unit, localizer))
+  }
 }

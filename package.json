@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.23.0",
+  "version": "0.33.4",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -51,7 +51,8 @@
     "release": "rollout",
     "prepublishOnly": "npm run build",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepare": "yarn build"
   },
   "lint-staged": {
     "src/**/*.js": "eslint",
@@ -106,6 +107,7 @@
     "markdown-jsx-loader": "^3.0.2",
     "marked": "^0.5.1",
     "moment": "^2.22.2",
+    "moment-timezone": "^0.5.33",
     "mt-changelog": "^0.6.1",
     "node-sass": "4.12.0",
     "postcss": "^7.0.16",

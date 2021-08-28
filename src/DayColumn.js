@@ -208,6 +208,7 @@ class DayColumn extends React.Component {
       slotMetrics,
       minimumStartDifference: Math.ceil((step * timeslots) / 2),
       dayLayoutAlgorithm,
+      localizer,
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -292,15 +293,18 @@ class DayColumn extends React.Component {
       }
 
       let initialSlot = this._initialSlot
-      if (dates.lte(initialSlot, currentSlot)) {
+      if (dates.lte(initialSlot, currentSlot, this.props.localizer)) {
         currentSlot = this.slotMetrics.nextSlot(currentSlot)
-      } else if (dates.gt(initialSlot, currentSlot)) {
+      } else if (dates.gt(initialSlot, currentSlot, this.props.localizer)) {
         initialSlot = this.slotMetrics.nextSlot(initialSlot)
       }
 
       const selectRange = this.slotMetrics.getRange(
         dates.min(initialSlot, currentSlot),
-        dates.max(initialSlot, currentSlot)
+        dates.max(initialSlot, currentSlot),
+        false,
+        false,
+        this.props.localizer
       )
 
       return {

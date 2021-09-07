@@ -9,7 +9,6 @@ export default {
     slotMetrics: PropTypes.object.isRequired,
 
     selected: PropTypes.object,
-    isAllDay: PropTypes.bool,
 
     accessors: PropTypes.object.isRequired,
     localizer: PropTypes.object.isRequired,
@@ -29,7 +28,6 @@ export default {
   renderEvent(props, event) {
     let {
       selected,
-      isAllDay: _,
       accessors,
       getters,
       onSelect,

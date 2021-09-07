@@ -1,7 +1,8 @@
 {
   "presets": ["jason"],
   "plugins": [
-    ["transform-react-remove-prop-types", { "mode": "wrap" }]
+    ["transform-react-remove-prop-types", { "mode": "wrap" }],
+    "@babel/plugin-proposal-nullish-coalescing-operator"
   ],
   "env": {
     "esm": {
@@ -10,7 +11,7 @@
       ],
       "plugins": [
         ["babel-plugin-transform-rename-import", {
-          replacements: [{ original: "lodash", replacement: "lodash-es" }]
+          "replacements": [{ "original": "lodash", "replacement": "lodash-es" }]
         }]
       ]
     }

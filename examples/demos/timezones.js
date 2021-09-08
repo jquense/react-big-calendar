@@ -11,14 +11,9 @@ const allZones = moment.tz.names()
 allZones.unshift('clear')
 const defaultTZ = moment.tz.guess()
 const defaultDateStr = '2015-4-13'
-const defaultTimeStr = '06:00'
 
 function getDate(str, momentObj) {
   return momentObj(str, 'YYYY-MM-DD').toDate()
-}
-
-function getTime(str, momentObj) {
-  return momentObj(str, 'HH:MM').toDate()
 }
 
 export default function Timezones() {
@@ -29,7 +24,7 @@ export default function Timezones() {
     return {
       localizer: momentLocalizer(moment),
       defaultDate: getDate(defaultDateStr, moment),
-      scrollToTime: getTime(defaultTimeStr, moment),
+      scrollToTime: moment().toDate(),
       myEvents: [...events],
     }
   }, [timezone])

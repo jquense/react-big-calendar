@@ -1,6 +1,7 @@
 import React from 'react'
 import Api from './Api'
 import Intro from './Intro.md'
+import TimezoneIntro from './Timezones.md'
 import { render } from 'react-dom'
 import Layout from 'react-tackle-box/Layout'
 
@@ -165,6 +166,9 @@ class Example extends React.Component {
         <div className="docs">
           <div className="contain section">
             <Intro />
+          </div>
+          <div className="contain section">
+            <TimezoneIntro />
           </div>
           <Api className="contain section" />
         </div>

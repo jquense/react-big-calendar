@@ -44,13 +44,10 @@ export default function(moment) {
   let locale = (m, c) => (c ? m.locale(c) : m)
 
   /*** BEGIN localized date arithmetic methods with moment ***/
-  function defineComparators(a, b, unit = '', keepDay = false) {
-    let comparator = unit.toLowerCase()
+  function defineComparators(a, b, unit) {
+    let comparator = unit?.toLowerCase?.()
     if (comparator === 'FullYear') {
       comparator = 'year'
-    }
-    if (!keepDay && comparator?.includes?.('day')) {
-      comparator = 'date'
     }
     return [moment(a), moment(b), comparator]
   }

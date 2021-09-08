@@ -45,7 +45,7 @@ export default function(moment) {
 
   /*** BEGIN localized date arithmetic methods with moment ***/
   function defineComparators(a, b, unit) {
-    let comparator = unit?.toLowerCase?.()
+    let comparator = unit ? unit.toLowerCase() : unit
     if (comparator === 'FullYear') {
       comparator = 'year'
     }

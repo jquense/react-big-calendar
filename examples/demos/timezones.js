@@ -16,15 +16,31 @@ function getDate(str, momentObj) {
   return momentObj(str, 'YYYY-MM-DD').toDate()
 }
 
+function getTimeAt(hour) {
+  return moment()
+    .startOf('day')
+    .hour(hour)
+    .toDate()
+}
+
 export default function Timezones() {
   const [timezone, setTimezone] = useState(defaultTZ)
 
-  const { localizer, defaultDate, scrollToTime, myEvents } = useMemo(() => {
+  const {
+    localizer,
+    defaultDate,
+    scrollToTime,
+    myEvents,
+    min,
+    max,
+  } = useMemo(() => {
     moment.tz.setDefault(timezone)
     return {
       localizer: momentLocalizer(moment),
       defaultDate: getDate(defaultDateStr, moment),
       scrollToTime: moment().toDate(),
+      min: getTimeAt(8),
+      max: getTimeAt(16),
       myEvents: [...events],
     }
   }, [timezone])

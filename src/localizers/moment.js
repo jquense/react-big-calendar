@@ -246,6 +246,18 @@ export default function(moment) {
       .minute(minutesFromMidnight + offset)
   }
 
+  // moment will automatically handle DST differences in it's calculations
+  function getTotalMin(start, end) {
+    const [dtA, dtB] = defineComparators(start, end)
+    return dtB.diff(dtA, 'minutes')
+  }
+
+  function getMinutesFromMidnight(start) {
+    const dayStart = moment(start).startOf('day')
+    const day = moment(start)
+    return day.diff(dayStart, 'minutes')
+  }
+
   /**
    * This method is used by eventLevels 'eventSegments()' to assist in determining
    * the 'span' of the event in the display, specifically when using a timezone
@@ -299,6 +311,8 @@ export default function(moment) {
     minutes,
 
     getSlotDate,
+    getTotalMin,
+    getMinutesFromMidnight,
     browserTZOffset,
   })
 }

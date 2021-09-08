@@ -59,8 +59,19 @@ function getSlotDate(dt, minutesFromMidnight, offset) {
   )
 }
 
-function normalizeAllDay(evt) {
-  return evt
+function getDstOffset(start, end) {
+  return start.getTimezoneOffset() - end.getTimezoneOffset()
+}
+
+// if the start is on a DST-changing day but *after* the moment of DST
+// transition we need to add those extra minutes to our minutesFromMidnight
+function getTotalMin(start, end) {
+  return diff(start, end, 'minutes') + getDstOffset(start, end)
+}
+
+function getMinutesFromMidnight(start) {
+  const daystart = startOf(start, 'day')
+  return diff(daystart, start, 'minutes') + getDstOffset(daystart, start)
 }
 
 export class DateLocalizer {
@@ -102,7 +113,9 @@ export class DateLocalizer {
     this.visibleDays = spec.visibleDays || visibleDays
 
     this.getSlotDate = spec.getSlotDate || getSlotDate
-    this.normalizeAllDay = spec.normalizeAllDay || normalizeAllDay
+    this.getTotalMin = spec.getTotalMin || getTotalMin
+    this.getMinutesFromMidnight =
+      spec.getMinutesFromMidnight || getMinutesFromMidnight
     this.segmentOffset = spec.browserTZOffset ? spec.browserTZOffset() : 0
   }
 }

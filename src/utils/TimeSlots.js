@@ -1,6 +1,3 @@
-const getDstOffset = (start, end) =>
-  start.getTimezoneOffset() - end.getTimezoneOffset()
-
 const getKey = ({ min, max, step, slots, localizer }) =>
   `${+localizer.startOf(min, 'minutes')}` +
   `${+localizer.startOf(max, 'minutes')}` +
@@ -15,14 +12,9 @@ export function getSlotMetrics({
 }) {
   const key = getKey({ start, end, step, timeslots, localizer })
 
-  // if the start is on a DST-changing day but *after* the moment of DST
-  // transition we need to add those extra minutes to our minutesFromMidnight
-  const daystart = localizer.startOf(start, 'day')
-  const daystartdstoffset = getDstOffset(daystart, start)
-  const totalMin =
-    1 + localizer.diff(start, end, 'minutes') + getDstOffset(start, end)
-  const minutesFromMidnight =
-    localizer.diff(daystart, start, 'minutes') + daystartdstoffset
+  // DST differences are handled inside the localizer
+  const totalMin = 1 + localizer.getTotalMin(start, end)
+  const minutesFromMidnight = localizer.getMinutesFromMidnight(start)
   const numGroups = Math.ceil((totalMin - 1) / (step * timeslots))
   const numSlots = numGroups * timeslots
 
@@ -52,8 +44,7 @@ export function getSlotMetrics({
   )
 
   function positionFromDate(date) {
-    const diff =
-      localizer.diff(start, date, 'minutes') + getDstOffset(start, date)
+    const diff = localizer.getTotalMin(start, date)
     return Math.min(diff, totalMin)
   }
 

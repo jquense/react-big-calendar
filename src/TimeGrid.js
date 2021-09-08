@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
-import * as dates from './utils/dates'
+import { isJustDate } from './utils/dates'
 import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
 
@@ -199,14 +199,14 @@ export default class TimeGrid extends Component {
       rangeBackgroundEvents = []
 
     events.forEach(event => {
-      if (inRange(event, start, end, accessors, localizer)) {
+      if (inRange(event, start, end, accessors)) {
         let eStart = accessors.start(event),
           eEnd = accessors.end(event)
 
         if (
           accessors.allDay(event) ||
-          (dates.isJustDate(eStart) && dates.isJustDate(eEnd)) ||
-          (!showMultiDayTimes && !localizer.eq(eStart, eEnd, 'day'))
+          (isJustDate(eStart) && isJustDate(eEnd)) ||
+          (!showMultiDayTimes && localizer.neq(eStart, eEnd, 'day'))
         ) {
           allDayEvents.push(event)
         } else {
@@ -216,12 +216,12 @@ export default class TimeGrid extends Component {
     })
 
     backgroundEvents.forEach(event => {
-      if (inRange(event, start, end, accessors, localizer)) {
+      if (inRange(event, start, end, accessors)) {
         rangeBackgroundEvents.push(event)
       }
     })
 
-    allDayEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
+    allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
 
     return (
       <div

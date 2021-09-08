@@ -44,12 +44,15 @@ export default function(moment) {
   let locale = (m, c) => (c ? m.locale(c) : m)
 
   /*** BEGIN localized date arithmetic methods with moment ***/
-  function defineComparators(a, b, unit = '') {
-    return [
-      moment(a),
-      moment(b),
-      unit === 'FullYear' ? 'year' : unit.toLowerCase(),
-    ]
+  function defineComparators(a, b, unit = '', keepDay = false) {
+    let comparator = unit.toLowerCase()
+    if (comparator === 'FullYear') {
+      comparator = 'year'
+    }
+    if (!keepDay && comparator?.includes?.('day')) {
+      comparator = 'date'
+    }
+    return [moment(a), moment(b), comparator]
   }
 
   function startOf(date = null, unit) {
@@ -72,44 +75,62 @@ export default function(moment) {
 
   function eq(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    const first = dtA.startOf(comparator)
-    const second = dtB.startOf(comparator)
-    return first.isSame(second, comparator)
+    if (!comparator) {
+      return dtA.isSame(dtB)
+    }
+    const first = dtA.startOf(comparator)[comparator]()
+    const second = dtB.startOf(comparator)[comparator]()
+    return first === second
   }
 
   function neq(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    const first = dtA.startOf(comparator)
-    const second = dtB.startOf(comparator)
-    return !first.isSame(second, comparator)
+    if (!comparator) {
+      return !dtA.isSame(dtB)
+    }
+    const first = dtA.startOf(comparator)[comparator]()
+    const second = dtB.startOf(comparator)[comparator]()
+    return first !== second
   }
 
   function gt(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    const first = dtA.startOf(comparator)
-    const second = dtB.startOf(comparator)
-    return first.isAfter(second, comparator)
+    if (!comparator) {
+      return dtA.isAfter(dtB)
+    }
+    const first = dtA.startOf(comparator)[comparator]()
+    const second = dtB.startOf(comparator)[comparator]()
+    return first > second
   }
 
   function lt(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    const first = dtA.startOf(comparator)
-    const second = dtB.startOf(comparator)
-    return first.isBefore(second, comparator)
+    if (!comparator) {
+      return dtA.isBefore(dtB)
+    }
+    const first = dtA.startOf(comparator)[comparator]()
+    const second = dtB.startOf(comparator)[comparator]()
+    return first < second
   }
 
   function gte(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    const first = dtA.startOf(comparator)
-    const second = dtB.startOf(comparator)
-    return first.isSameOrAfter(second, comparator)
+    if (!comparator) {
+      return dtA.isSameOrAfter(dtB)
+    }
+    const first = dtA.startOf(comparator)[comparator]()
+    const second = dtB.startOf(comparator)[comparator]()
+    return first >= second
   }
 
   function lte(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    const first = dtA.startOf(comparator)
-    const second = dtB.startOf(comparator)
-    return first.isSameOrBefore(second, comparator)
+    if (!comparator) {
+      return dtA.isSameOrBefore(dtB)
+    }
+    const first = dtA.startOf(comparator)[comparator]()
+    const second = dtB.startOf(comparator)[comparator]()
+    return first <= second
   }
 
   function inRange(day, min, max, unit = 'day') {
@@ -151,7 +172,7 @@ export default function(moment) {
     let current = start
     const days = []
 
-    while (lte(current, end, unit)) {
+    while (lte(current, end)) {
       days.push(current)
       current = add(current, 1, unit)
     }
@@ -166,7 +187,7 @@ export default function(moment) {
   }
 
   function diff(a, b, unit = 'day') {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
+    const [dtA, dtB, comparator] = defineComparators(a, b, unit, true)
     return dtB.diff(dtA, comparator)
   }
 
@@ -181,15 +202,23 @@ export default function(moment) {
   }
 
   function firstVisibleDay(date) {
-    let firstOfMonth = startOf(date, 'month')
+    return moment(date)
+      .startOf('month')
+      .startOf('week')
+      .toDate()
+    /* let firstOfMonth = startOf(date, 'month')
 
-    return startOf(firstOfMonth, 'week', firstOfWeek())
+    return startOf(firstOfMonth, 'month') */
   }
 
   function lastVisibleDay(date) {
-    let endOfMonth = endOf(date, 'month')
+    return moment(date)
+      .endOf('month')
+      .endOf('week')
+      .toDate()
+    /* let endOfMonth = endOf(date, 'month')
 
-    return endOf(endOfMonth, 'week')
+    return endOf(endOfMonth, 'week') */
   }
 
   function visibleDays(date) {
@@ -197,9 +226,9 @@ export default function(moment) {
     const last = lastVisibleDay(date)
     const days = []
 
-    while (lte(current, last, 'day')) {
+    while (lte(current, last)) {
       days.push(current)
-      current = add(current, 1, 'day')
+      current = add(current, 1, 'd')
     }
 
     return days
@@ -216,11 +245,30 @@ export default function(moment) {
    */
   function getSlotDate(dt, minutesFromMidnight, offset) {
     return moment(dt)
-      .hour(0)
+      .startOf('day')
       .minute(minutesFromMidnight + offset)
-      .second(0)
-      .millisecond(0)
-      .toDate()
+  }
+
+  /**
+   * This method is used by eventLevels 'eventSegments()' to assist in determining
+   * the 'span' of the event in the display, specifically when using a timezone
+   * that is greater than the browser native timezone.
+   * @returns number
+   */
+  function browserTZOffset() {
+    /**
+     * Date.prototype.getTimezoneOffset horrifically flips the
+     * positive/negative from what you see in it's string, so
+     * we have to jump through some hoops to get a value we
+     * can actually compare.
+     */
+    const dt = new Date()
+    const neg = /-/.test(dt.toString()) ? '-' : ''
+    const dtOffset = dt.getTimezoneOffset()
+    const comparator = Number(`${neg}${Math.abs(dtOffset)}`)
+    // moment correctly provides positive/negative offset, as expected
+    const mtOffset = moment().utcOffset()
+    return mtOffset > comparator ? 1 : 0
   }
 
   return new DateLocalizer({
@@ -254,5 +302,6 @@ export default function(moment) {
     minutes,
 
     getSlotDate,
+    browserTZOffset,
   })
 }

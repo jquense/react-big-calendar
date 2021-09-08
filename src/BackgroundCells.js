@@ -3,7 +3,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
-import * as dates from './utils/dates'
+import { month } from './utils/dates'
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
@@ -60,7 +60,7 @@ class BackgroundCells extends React.Component {
                   selected && 'rbc-selected-cell',
                   localizer.eq(date, current, 'day') && 'rbc-today',
                   currentDate &&
-                    dates.month(currentDate) !== dates.month(date) &&
+                    month(currentDate) !== month(date) &&
                     'rbc-off-range-bg'
                 )}
               />

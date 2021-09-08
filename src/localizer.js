@@ -8,6 +8,7 @@ import {
   gt,
   gte,
   eq,
+  neq,
   startOf,
   endOf,
   add,
@@ -58,6 +59,10 @@ function getSlotDate(dt, minutesFromMidnight, offset) {
   )
 }
 
+function normalizeAllDay(evt) {
+  return evt
+}
+
 export class DateLocalizer {
   constructor(spec) {
     invariant(
@@ -82,6 +87,7 @@ export class DateLocalizer {
     this.gt = spec.gt || gt
     this.gte = spec.gte || gte
     this.eq = spec.eq || eq
+    this.neq = spec.neq || neq
     this.startOf = spec.startOf || startOf
     this.endOf = spec.endOf || endOf
     this.add = spec.add || add
@@ -96,6 +102,8 @@ export class DateLocalizer {
     this.visibleDays = spec.visibleDays || visibleDays
 
     this.getSlotDate = spec.getSlotDate || getSlotDate
+    this.normalizeAllDay = spec.normalizeAllDay || normalizeAllDay
+    this.segmentOffset = spec.browserTZOffset ? spec.browserTZOffset() : 0
   }
 }
 

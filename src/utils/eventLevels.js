@@ -1,12 +1,15 @@
 import findIndex from 'lodash/findIndex'
+import { startOf, lte, neq, gt, gte, ceil, diff } from './dates'
 
-export function endOfRange({ dateRange, localizer, unit = 'day' }) {
+export function endOfRange({ dateRange, unit = 'day', localizer }) {
   return {
     first: dateRange[0],
     last: localizer.add(dateRange[dateRange.length - 1], 1, unit),
   }
 }
 
+// properly calculating segments requires working with dates in
+// the timezone we're working with, so we use the localizer
 export function eventSegments(event, range, accessors, localizer) {
   let { first, last } = endOfRange({ dateRange: range, localizer })
 
@@ -21,7 +24,9 @@ export function eventSegments(event, range, accessors, localizer) {
   let span = localizer.diff(start, end, 'day')
 
   span = Math.min(span, slots)
-  span = Math.max(span, 1)
+  // The segmentOffset is necessary when adjusting for timezones
+  // ahead of the browser timezone
+  span = Math.max(span - localizer.segmentOffset, 1)
 
   return {
     event,
@@ -57,15 +62,15 @@ export function eventLevels(rowSegments, limit = Infinity) {
   return { levels, extra }
 }
 
-export function inRange(e, start, end, accessors, localizer) {
-  let eStart = localizer.startOf(accessors.start(e), 'day')
+export function inRange(e, start, end, accessors) {
+  let eStart = startOf(accessors.start(e), 'day')
   let eEnd = accessors.end(e)
 
-  let startsBeforeEnd = localizer.lte(eStart, end, 'day')
+  let startsBeforeEnd = lte(eStart, end, 'day')
   // when the event is zero duration we need to handle a bit differently
-  let endsAfterStart = !localizer.eq(eStart, eEnd, 'minutes')
-    ? localizer.gt(eEnd, start, 'minutes')
-    : localizer.gte(eEnd, start, 'minutes')
+  let endsAfterStart = neq(eStart, eEnd, 'minutes')
+    ? gt(eEnd, start, 'minutes')
+    : gte(eEnd, start, 'minutes')
 
   return startsBeforeEnd && endsAfterStart
 }
@@ -76,20 +81,20 @@ export function segsOverlap(seg, otherSegs) {
   )
 }
 
-export function sortEvents(evtA, evtB, accessors, localizer) {
+export function sortEvents(evtA, evtB, accessors) {
   let startSort =
-    +localizer.startOf(accessors.start(evtA), 'day') -
-    +localizer.startOf(accessors.start(evtB), 'day')
+    +startOf(accessors.start(evtA), 'day') -
+    +startOf(accessors.start(evtB), 'day')
 
-  let durA = localizer.diff(
+  let durA = diff(
     accessors.start(evtA),
-    localizer.ceil(accessors.end(evtA), 'day'),
+    ceil(accessors.end(evtA), 'day'),
     'day'
   )
 
-  let durB = localizer.diff(
+  let durB = diff(
     accessors.start(evtB),
-    localizer.ceil(accessors.end(evtB), 'day'),
+    ceil(accessors.end(evtB), 'day'),
     'day'
   )
 

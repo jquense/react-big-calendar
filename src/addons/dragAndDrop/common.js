@@ -1,5 +1,6 @@
 import { wrapAccessor } from '../../utils/accessors'
 import { createFactory } from 'react'
+import { eq, minutes, add, diff } from '../../utils/dates'
 
 export const dragAccessors = {
   start: wrapAccessor(e => e.start),
@@ -32,14 +33,13 @@ export function pointInColumn(bounds, point) {
   return x < right + 10 && x > left && y > top
 }
 
-export function eventTimes(event, accessors, localizer) {
+export function eventTimes(event, accessors) {
   let start = accessors.start(event)
   let end = accessors.end(event)
 
-  const isZeroDuration =
-    localizer.eq(start, end, 'minutes') && localizer.minutes(start) === 0
+  const isZeroDuration = eq(start, end, 'minutes') && minutes(start) === 0
   // make zero duration midnight events at least one day long
-  if (isZeroDuration) end = localizer.add(end, 1, 'day')
-  const duration = localizer.diff(end, start, 'milliseconds')
+  if (isZeroDuration) end = add(end, 1, 'day')
+  const duration = diff(end, start, 'milliseconds')
   return { start, end, duration }
 }

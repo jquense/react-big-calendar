@@ -37,8 +37,7 @@ function Agenda({
         e,
         localizer.startOf(day, 'day'),
         localizer.endOf(day, 'day'),
-        accessors,
-        localizer
+        accessors
       )
     )
 

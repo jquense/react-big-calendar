@@ -3,7 +3,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
-import * as dates from './utils/dates'
+import { month } from './utils/dates'
 import chunk from 'lodash/chunk'
 
 import { navigate, views } from './utils/constants'
@@ -19,8 +19,8 @@ import DateHeader from './DateHeader'
 
 import { inRange, sortEvents } from './utils/eventLevels'
 
-let eventsForWeek = (evts, start, end, accessors, localizer) =>
-  evts.filter(e => inRange(e, start, end, accessors, localizer))
+let eventsForWeek = (evts, start, end, accessors) =>
+  evts.filter(e => inRange(e, start, end, accessors))
 
 class MonthView extends React.Component {
   constructor(...args) {
@@ -112,15 +112,16 @@ class MonthView extends React.Component {
 
     const { needLimitMeasure, rowLimit } = this.state
 
-    events = eventsForWeek(
-      events,
+    // let's not mutate props
+    // eventsForWeek(evts, start, end, accessors)
+    const weeksEvents = eventsForWeek(
+      [...events],
       week[0],
       week[week.length - 1],
-      accessors,
-      localizer
+      accessors
     )
 
-    events.sort((a, b) => sortEvents(a, b, accessors, localizer))
+    weeksEvents.sort((a, b) => sortEvents(a, b, accessors))
 
     return (
       <DateContentRow
@@ -131,7 +132,7 @@ class MonthView extends React.Component {
         getNow={getNow}
         date={date}
         range={week}
-        events={events}
+        events={weeksEvents}
         maxRows={showAllEvents ? Infinity : rowLimit}
         selected={selected}
         selectable={selectable}
@@ -156,8 +157,7 @@ class MonthView extends React.Component {
 
   readerDateHeading = ({ date, className, ...props }) => {
     let { date: currentDate, getDrilldownView, localizer } = this.props
-
-    let isOffRange = dates.month(date) !== dates.month(currentDate)
+    let isOffRange = month(date) !== month(currentDate)
     let isCurrent = localizer.eq(date, currentDate, 'day')
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, 'dateFormat')

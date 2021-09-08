@@ -43,7 +43,8 @@ class WeekWrapper extends React.Component {
     const segment = eventSegments(
       { ...event, end, start, __isPreview: true },
       this.props.slotMetrics.range,
-      dragAccessors
+      dragAccessors,
+      this.props.localizer
     )
 
     const { segment: lastSegment } = this.state
@@ -68,7 +69,7 @@ class WeekWrapper extends React.Component {
     const date = slotMetrics.getDateForSlot(slot)
 
     // Adjust the dates, but maintain the times when moving
-    let { start, duration } = eventTimes(event, accessors, this.props.localizer)
+    let { start, duration } = eventTimes(event, accessors)
     start = localizer.merge(date, start)
     const end = localizer.add(start, duration, 'milliseconds')
     // LATER: when dragging a multi-row event, only the first row is animating

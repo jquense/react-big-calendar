@@ -11,6 +11,7 @@ export {
   endOf,
   add,
   eq,
+  neq,
   gte,
   gt,
   lte,

@@ -21,6 +21,7 @@ import {
   lastVisibleDay,
   visibleDays,
   minutes,
+  isJustDate,
 } from './utils/dates'
 
 const localePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
@@ -128,6 +129,10 @@ function isSameDate(date1, date2) {
   return eq(date1, date2, 'day')
 }
 
+function startAndEndAreDateOnly(start, end) {
+  return isJustDate(start) && isJustDate(end)
+}
+
 export class DateLocalizer {
   constructor(spec) {
     invariant(
@@ -175,6 +180,8 @@ export class DateLocalizer {
     this.sortEvents = spec.sortEvents || sortEvents
     this.inEventRange = spec.inEventRange || inEventRange
     this.isSameDate = spec.isSameDate || isSameDate
+    this.startAndEndAreDateOnly =
+      spec.startAndEndAreDateOnly || startAndEndAreDateOnly
     this.segmentOffset = spec.browserTZOffset ? spec.browserTZOffset() : 0
   }
 }

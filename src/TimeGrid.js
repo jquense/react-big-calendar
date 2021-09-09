@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
-import { isJustDate } from './utils/dates'
 import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
 
@@ -205,7 +204,7 @@ export default class TimeGrid extends Component {
 
         if (
           accessors.allDay(event) ||
-          (isJustDate(eStart) && isJustDate(eEnd)) ||
+          localizer.startAndEndAreDateOnly(eStart, eEnd) ||
           (!showMultiDayTimes && !localizer.isSameDate(eStart, eEnd))
         ) {
           allDayEvents.push(event)

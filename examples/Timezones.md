@@ -28,4 +28,4 @@ const MyCalendar = props => (
 )
 ```
 
-The moment localizer will now handle all dates and date math as if the date is in the timezone you specified. It is important to note that [changing moment's default timezone](https://momentjs.com/timezone/docs/#/using-timezones/default-timezone/) affects all dates, created by moment, from that point forward, so you may want to reset the default when your component unmounts. And, if switching timezones 'on-the-fly', you want to update your 'localizer' and any Date based props (min, max, scrollToTime, etc) at the same time.
+The moment localizer will now handle all dates and date math as if the date is in the timezone you specified. It is important to note that [changing moment's default timezone](https://momentjs.com/timezone/docs/#/using-timezones/default-timezone/) affects all dates, created by moment, from that point forward, so you may want to reset the default when your component unmounts. And, if switching timezones 'on-the-fly', you want to update your 'localizer' and any Date based props (min, max, getNow, etc) at the same time.

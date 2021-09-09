@@ -115,10 +115,10 @@ function inEventRange({
 
   let startsBeforeEnd = lte(eStart, rangeEnd, 'day')
   // when the event is zero duration we need to handle a bit differently
-  let endsAfterStart = neq(eStart, end, 'minutes')
+  const sameMin = neq(eStart, end, 'minutes')
+  let endsAfterStart = sameMin
     ? gt(end, rangeStart, 'minutes')
     : gte(end, rangeStart, 'minutes')
-
   return startsBeforeEnd && endsAfterStart
 }
 

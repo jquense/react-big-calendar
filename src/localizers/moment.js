@@ -296,8 +296,12 @@ export default function(moment) {
     const rStart = moment(rangeStart)
     const rEnd = moment(rangeEnd)
 
-    let startsBeforeEnd = startOfDay.isSameOrBefore(rEnd, 'day')
-    let endsAfterStart = eEnd.isSameOrAfter(rStart, 'minutes')
+    const startsBeforeEnd = startOfDay.isSameOrBefore(rEnd, 'day')
+    // when the event is zero duration we need to handle a bit differently
+    const sameMin = !startOfDay.isSame(eEnd, 'minutes') //neq(startOfDay, eEnd, 'minutes')
+    const endsAfterStart = sameMin
+      ? eEnd.isAfter(rStart, 'minutes')
+      : eEnd.isSameOrAfter(rStart, 'minutes')
 
     return startsBeforeEnd && endsAfterStart
   }

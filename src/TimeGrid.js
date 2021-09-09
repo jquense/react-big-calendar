@@ -199,7 +199,7 @@ export default class TimeGrid extends Component {
       rangeBackgroundEvents = []
 
     events.forEach(event => {
-      if (inRange(event, start, end, accessors)) {
+      if (inRange(event, start, end, accessors, localizer)) {
         let eStart = accessors.start(event),
           eEnd = accessors.end(event)
 
@@ -216,12 +216,12 @@ export default class TimeGrid extends Component {
     })
 
     backgroundEvents.forEach(event => {
-      if (inRange(event, start, end, accessors)) {
+      if (inRange(event, start, end, accessors, localizer)) {
         rangeBackgroundEvents.push(event)
       }
     })
 
-    allDayEvents.sort((a, b) => sortEvents(a, b, accessors))
+    allDayEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
     return (
       <div

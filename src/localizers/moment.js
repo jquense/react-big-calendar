@@ -131,7 +131,10 @@ export default function(moment) {
   }
 
   function inRange(day, min, max, unit = 'day') {
-    return (!min || gte(day, min, unit)) && (!max || lte(day, max, unit))
+    const mDay = moment(day)
+    const mMin = moment(min)
+    const mMax = moment(max)
+    return mDay.isBetween(mMin, mMax, unit, '[]')
   }
 
   function min(dateA, dateB) {
@@ -203,9 +206,6 @@ export default function(moment) {
       .startOf('month')
       .startOf('week')
       .toDate()
-    /* let firstOfMonth = startOf(date, 'month')
-
-    return startOf(firstOfMonth, 'month') */
   }
 
   function lastVisibleDay(date) {
@@ -213,9 +213,6 @@ export default function(moment) {
       .endOf('month')
       .endOf('week')
       .toDate()
-    /* let endOfMonth = endOf(date, 'month')
-
-    return endOf(endOfMonth, 'week') */
   }
 
   function visibleDays(date) {
@@ -258,18 +255,65 @@ export default function(moment) {
     return day.diff(dayStart, 'minutes')
   }
 
+  // These two are used by DateSlotMetrics
+  function continuesPrior(start, first) {
+    const mStart = moment(start)
+    const mFirst = moment(first)
+    return mStart.isBefore(mFirst, 'day')
+  }
+
+  function continuesAfter(start, end, last) {
+    const mEnd = moment(end)
+    const mLast = moment(last)
+    return mEnd.isSameOrAfter(mLast, 'minutes')
+  }
+
+  // These two are used by eventLevels
+  function sortEvents({
+    evtA: { start: aStart, end: aEnd, allDay: aAllDay },
+    evtB: { start: bStart, end: bEnd, allDay: bAllDay },
+  }) {
+    let startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
+
+    let durA = diff(aStart, ceil(aEnd, 'day'), 'day')
+
+    let durB = diff(bStart, ceil(bEnd, 'day'), 'day')
+
+    return (
+      startSort || // sort by start Day first
+      Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
+      !!bAllDay - !!aAllDay || // then allDay single day events
+      +aStart - +bStart || // then sort by start time *don't need moment conversion here
+      +aEnd - +bEnd // then sort by end time *don't need moment conversion here either
+    )
+  }
+
+  function inEventRange({
+    event: { start, end },
+    range: { start: rangeStart, end: rangeEnd },
+  }) {
+    const startOfDay = moment(start).startOf('day')
+    const eEnd = moment(end)
+    const rStart = moment(rangeStart)
+    const rEnd = moment(rangeEnd)
+
+    let startsBeforeEnd = startOfDay.isSameOrBefore(rEnd, 'day')
+    let endsAfterStart = eEnd.isSameOrAfter(rStart, 'minutes')
+
+    return startsBeforeEnd && endsAfterStart
+  }
+
   /**
-   * This method is used by eventLevels 'eventSegments()' to assist in determining
-   * the 'span' of the event in the display, specifically when using a timezone
-   * that is greater than the browser native timezone.
+   * This method, called once in the localizer constructor, is used by eventLevels
+   * 'eventSegments()' to assist in determining the 'span' of the event in the display,
+   * specifically when using a timezone that is greater than the browser native timezone.
    * @returns number
    */
   function browserTZOffset() {
     /**
-     * Date.prototype.getTimezoneOffset horrifically flips the
-     * positive/negative from what you see in it's string, so
-     * we have to jump through some hoops to get a value we
-     * can actually compare.
+     * Date.prototype.getTimezoneOffset horrifically flips the positive/negative from
+     * what you see in it's string, so we have to jump through some hoops to get a value
+     * we can actually compare.
      */
     const dt = new Date()
     const neg = /-/.test(dt.toString()) ? '-' : ''
@@ -313,6 +357,10 @@ export default function(moment) {
     getSlotDate,
     getTotalMin,
     getMinutesFromMidnight,
+    continuesPrior,
+    continuesAfter,
+    sortEvents,
+    inEventRange,
     browserTZOffset,
   })
 }

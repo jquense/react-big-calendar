@@ -3,7 +3,6 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
-import { month } from './utils/dates'
 import chunk from 'lodash/chunk'
 
 import { navigate, views } from './utils/constants'
@@ -19,8 +18,8 @@ import DateHeader from './DateHeader'
 
 import { inRange, sortEvents } from './utils/eventLevels'
 
-let eventsForWeek = (evts, start, end, accessors) =>
-  evts.filter(e => inRange(e, start, end, accessors))
+let eventsForWeek = (evts, start, end, accessors, localizer) =>
+  evts.filter(e => inRange(e, start, end, accessors, localizer))
 
 class MonthView extends React.Component {
   constructor(...args) {
@@ -113,15 +112,15 @@ class MonthView extends React.Component {
     const { needLimitMeasure, rowLimit } = this.state
 
     // let's not mutate props
-    // eventsForWeek(evts, start, end, accessors)
     const weeksEvents = eventsForWeek(
       [...events],
       week[0],
       week[week.length - 1],
-      accessors
+      accessors,
+      localizer
     )
 
-    weeksEvents.sort((a, b) => sortEvents(a, b, accessors))
+    weeksEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
     return (
       <DateContentRow
@@ -157,7 +156,7 @@ class MonthView extends React.Component {
 
   readerDateHeading = ({ date, className, ...props }) => {
     let { date: currentDate, getDrilldownView, localizer } = this.props
-    let isOffRange = month(date) !== month(currentDate)
+    let isOffRange = localizer.neq(date, currentDate, 'month')
     let isCurrent = localizer.eq(date, currentDate, 'day')
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, 'dateFormat')

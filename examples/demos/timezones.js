@@ -40,7 +40,7 @@ export default function Timezones() {
       defaultDate: getDate(defaultDateStr, moment),
       scrollToTime: moment().toDate(),
       min: getTimeAt(8),
-      max: getTimeAt(16),
+      max: getTimeAt(18),
       myEvents: [...events],
     }
   }, [timezone])
@@ -78,6 +78,8 @@ export default function Timezones() {
         defaultDate={defaultDate}
         scrollToTime={scrollToTime}
         localizer={localizer}
+        min={min}
+        max={max}
       />
     </Fragment>
   )

@@ -74,6 +74,53 @@ function getMinutesFromMidnight(start) {
   return diff(daystart, start, 'minutes') + getDstOffset(daystart, start)
 }
 
+// These two are used by DateSlotMetrics
+function continuesPrior(start, first) {
+  return lt(start, first, 'day')
+}
+
+function continuesAfter(start, end, last) {
+  const singleDayDuration = eq(start, end, 'minutes')
+  return singleDayDuration
+    ? gte(end, last, 'minutes')
+    : gt(end, last, 'minutes')
+}
+
+// These two are used by eventLevels
+function sortEvents({
+  evtA: { start: aStart, end: aEnd, allDay: aAllDay },
+  evtB: { start: bStart, end: bEnd, allDay: bAllDay },
+}) {
+  let startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
+
+  let durA = diff(aStart, ceil(aEnd, 'day'), 'day')
+
+  let durB = diff(bStart, ceil(bEnd, 'day'), 'day')
+
+  return (
+    startSort || // sort by start Day first
+    Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
+    !!bAllDay - !!aAllDay || // then allDay single day events
+    +aStart - +bStart || // then sort by start time
+    +aEnd - +bEnd // then sort by end time
+  )
+}
+
+function inEventRange({
+  event: { start, end },
+  range: { start: rangeStart, end: rangeEnd },
+}) {
+  let eStart = startOf(start, 'day')
+
+  let startsBeforeEnd = lte(eStart, rangeEnd, 'day')
+  // when the event is zero duration we need to handle a bit differently
+  let endsAfterStart = neq(eStart, end, 'minutes')
+    ? gt(end, rangeStart, 'minutes')
+    : gte(end, rangeStart, 'minutes')
+
+  return startsBeforeEnd && endsAfterStart
+}
+
 export class DateLocalizer {
   constructor(spec) {
     invariant(
@@ -116,6 +163,10 @@ export class DateLocalizer {
     this.getTotalMin = spec.getTotalMin || getTotalMin
     this.getMinutesFromMidnight =
       spec.getMinutesFromMidnight || getMinutesFromMidnight
+    this.continuesPrior = spec.continuesPrior || continuesPrior
+    this.continuesAfter = spec.continuesAfter || continuesAfter
+    this.sortEvents = spec.sortEvents || sortEvents
+    this.inEventRange = spec.inEventRange || inEventRange
     this.segmentOffset = spec.browserTZOffset ? spec.browserTZOffset() : 0
   }
 }

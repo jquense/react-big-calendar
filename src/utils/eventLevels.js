@@ -1,5 +1,4 @@
 import findIndex from 'lodash/findIndex'
-import { startOf, lte, neq, gt, gte, ceil, diff } from './dates'
 
 export function endOfRange({ dateRange, unit = 'day', localizer }) {
   return {
@@ -62,17 +61,13 @@ export function eventLevels(rowSegments, limit = Infinity) {
   return { levels, extra }
 }
 
-export function inRange(e, start, end, accessors) {
-  let eStart = startOf(accessors.start(e), 'day')
-  let eEnd = accessors.end(e)
-
-  let startsBeforeEnd = lte(eStart, end, 'day')
-  // when the event is zero duration we need to handle a bit differently
-  let endsAfterStart = neq(eStart, eEnd, 'minutes')
-    ? gt(eEnd, start, 'minutes')
-    : gte(eEnd, start, 'minutes')
-
-  return startsBeforeEnd && endsAfterStart
+export function inRange(e, start, end, accessors, localizer) {
+  const event = {
+    start: accessors.start(e),
+    end: accessors.end(e),
+  }
+  const range = { start, end }
+  return localizer.inEventRange({ event, range })
 }
 
 export function segsOverlap(seg, otherSegs) {
@@ -81,28 +76,16 @@ export function segsOverlap(seg, otherSegs) {
   )
 }
 
-export function sortEvents(evtA, evtB, accessors) {
-  let startSort =
-    +startOf(accessors.start(evtA), 'day') -
-    +startOf(accessors.start(evtB), 'day')
-
-  let durA = diff(
-    accessors.start(evtA),
-    ceil(accessors.end(evtA), 'day'),
-    'day'
-  )
-
-  let durB = diff(
-    accessors.start(evtB),
-    ceil(accessors.end(evtB), 'day'),
-    'day'
-  )
-
-  return (
-    startSort || // sort by start Day first
-    Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
-    !!accessors.allDay(evtB) - !!accessors.allDay(evtA) || // then allDay single day events
-    +accessors.start(evtA) - +accessors.start(evtB) || // then sort by start time
-    +accessors.end(evtA) - +accessors.end(evtB) // then sort by end time
-  )
+export function sortEvents(eventA, eventB, accessors, localizer) {
+  const evtA = {
+    start: accessors.start(eventA),
+    end: accessors.end(eventA),
+    allDay: accessors.allDay(eventA),
+  }
+  const evtB = {
+    start: accessors.start(eventB),
+    end: accessors.end(eventB),
+    allDay: accessors.allDay(eventB),
+  }
+  return localizer.sortEvents({ evtA, evtB })
 }

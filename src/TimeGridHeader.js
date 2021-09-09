@@ -42,7 +42,7 @@ class TimeGridHeader extends React.Component {
           className={clsx(
             'rbc-header',
             className,
-            localizer.eq(date, today, 'day') && 'rbc-today'
+            localizer.isSameDate(date, today) && 'rbc-today'
           )}
         >
           {drilldownView ? (

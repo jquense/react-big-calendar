@@ -121,6 +121,13 @@ function inEventRange({
   return startsBeforeEnd && endsAfterStart
 }
 
+// other localizers treats 'day' and 'date' equality very differently, so we
+// abstract the change the 'localizer.eq(date1, date2, 'day') into this
+// new method, where they can be treated correctly by the localizer overrides
+function isSameDate(date1, date2) {
+  return eq(date1, date2, 'day')
+}
+
 export class DateLocalizer {
   constructor(spec) {
     invariant(
@@ -167,6 +174,7 @@ export class DateLocalizer {
     this.continuesAfter = spec.continuesAfter || continuesAfter
     this.sortEvents = spec.sortEvents || sortEvents
     this.inEventRange = spec.inEventRange || inEventRange
+    this.isSameDate = spec.isSameDate || isSameDate
     this.segmentOffset = spec.browserTZOffset ? spec.browserTZOffset() : 0
   }
 }

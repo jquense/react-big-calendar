@@ -37,7 +37,7 @@ export function getSlotMetrics() {
       },
 
       getSlotForDate(date) {
-        return range.find(r => localizer.eq(r, date, 'day'))
+        return range.find(r => localizer.isSameDate(r, date))
       },
 
       getEventsForSlot(slot) {

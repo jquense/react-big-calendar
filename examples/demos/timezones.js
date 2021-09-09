@@ -31,6 +31,7 @@ export default function Timezones() {
     defaultDate,
     scrollToTime,
     myEvents,
+    getNow,
     min,
     max,
   } = useMemo(() => {
@@ -39,6 +40,7 @@ export default function Timezones() {
       localizer: momentLocalizer(moment),
       defaultDate: getDate(defaultDateStr, moment),
       scrollToTime: moment().toDate(),
+      getNow: () => moment().toDate(),
       min: getTimeAt(8),
       max: getTimeAt(18),
       myEvents: [...events],
@@ -78,6 +80,7 @@ export default function Timezones() {
         defaultDate={defaultDate}
         scrollToTime={scrollToTime}
         localizer={localizer}
+        getNow={getNow}
         min={min}
         max={max}
       />

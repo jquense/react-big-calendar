@@ -95,11 +95,11 @@ function Agenda({
     if (!accessors.allDay(event)) {
       if (localizer.eq(start, end)) {
         label = localizer.format(start, 'agendaTimeFormat')
-      } else if (localizer.eq(start, end, 'day')) {
+      } else if (localizer.isSameDate(start, end)) {
         label = localizer.format({ start, end }, 'agendaTimeRangeFormat')
-      } else if (localizer.eq(day, start, 'day')) {
+      } else if (localizer.isSameDate(day, start)) {
         label = localizer.format(start, 'agendaTimeFormat')
-      } else if (localizer.eq(day, end, 'day')) {
+      } else if (localizer.isSameDate(day, end)) {
         label = localizer.format(end, 'agendaTimeFormat')
       }
     }

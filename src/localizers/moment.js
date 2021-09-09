@@ -245,8 +245,7 @@ export default function(moment) {
 
   // moment will automatically handle DST differences in it's calculations
   function getTotalMin(start, end) {
-    const [dtA, dtB] = defineComparators(start, end)
-    return dtB.diff(dtA, 'minutes')
+    return diff(start, end, 'minutes')
   }
 
   function getMinutesFromMidnight(start) {
@@ -301,6 +300,15 @@ export default function(moment) {
     let endsAfterStart = eEnd.isSameOrAfter(rStart, 'minutes')
 
     return startsBeforeEnd && endsAfterStart
+  }
+
+  // moment treats 'day' and 'date' equality very different
+  // moment(date1).isSame(date2, 'day') would test that they were both the same day of the week
+  // moment(date1).isSame(date2, 'date') would test that they were both the same date of the month of the year
+  function isSameDate(date1, date2) {
+    const dt = moment(date1)
+    const dt2 = moment(date2)
+    return dt.isSame(dt2, 'date')
   }
 
   /**
@@ -361,6 +369,7 @@ export default function(moment) {
     continuesAfter,
     sortEvents,
     inEventRange,
+    isSameDate,
     browserTZOffset,
   })
 }

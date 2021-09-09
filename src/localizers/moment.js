@@ -48,8 +48,12 @@ export default function(moment) {
     let comparator = unit ? unit.toLowerCase() : unit
     if (comparator === 'FullYear') {
       comparator = 'year'
+    } else if (!comparator) {
+      comparator = undefined
     }
-    return [moment(a), moment(b), comparator]
+    const dtA = comparator ? moment(a).startOf(comparator) : moment(a)
+    const dtB = comparator ? moment(b).startOf(comparator) : moment(b)
+    return [dtA, dtB, comparator]
   }
 
   function startOf(date = null, unit) {
@@ -70,64 +74,35 @@ export default function(moment) {
     return moment(date).toDate()
   }
 
+  // moment comparison operations *always* convert both sides to moment objects
+  // prior to running the comparisons
   function eq(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    if (!comparator) {
-      return dtA.isSame(dtB)
-    }
-    const first = dtA.startOf(comparator)[comparator]()
-    const second = dtB.startOf(comparator)[comparator]()
-    return first === second
+    return dtA.isSame(dtB, comparator)
   }
 
   function neq(a, b, unit) {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    if (!comparator) {
-      return !dtA.isSame(dtB)
-    }
-    const first = dtA.startOf(comparator)[comparator]()
-    const second = dtB.startOf(comparator)[comparator]()
-    return first !== second
+    return !eq(a, b, unit)
   }
 
   function gt(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    if (!comparator) {
-      return dtA.isAfter(dtB)
-    }
-    const first = dtA.startOf(comparator)[comparator]()
-    const second = dtB.startOf(comparator)[comparator]()
-    return first > second
+    return dtA.isAfter(dtB, comparator)
   }
 
   function lt(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    if (!comparator) {
-      return dtA.isBefore(dtB)
-    }
-    const first = dtA.startOf(comparator)[comparator]()
-    const second = dtB.startOf(comparator)[comparator]()
-    return first < second
+    return dtA.isBefore(dtB, comparator)
   }
 
   function gte(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    if (!comparator) {
-      return dtA.isSameOrAfter(dtB)
-    }
-    const first = dtA.startOf(comparator)[comparator]()
-    const second = dtB.startOf(comparator)[comparator]()
-    return first >= second
+    return dtA.isSameOrBefore(dtB, comparator)
   }
 
   function lte(a, b, unit) {
     const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    if (!comparator) {
-      return dtA.isSameOrBefore(dtB)
-    }
-    const first = dtA.startOf(comparator)[comparator]()
-    const second = dtB.startOf(comparator)[comparator]()
-    return first <= second
+    return dtA.isSameOrBefore(dtB, comparator)
   }
 
   function inRange(day, min, max, unit = 'day') {
@@ -187,8 +162,10 @@ export default function(moment) {
   }
 
   function diff(a, b, unit = 'day') {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit, true)
-    return dtB.diff(dtA, comparator)
+    // don't use 'defineComparators' here, as we don't want to mutate the values
+    const dtA = moment(a)
+    const dtB = moment(b)
+    return dtB.diff(dtA, unit === 'FullYear' ? 'year' : unit)
   }
 
   function minutes(date) {
@@ -298,7 +275,7 @@ export default function(moment) {
 
     const startsBeforeEnd = startOfDay.isSameOrBefore(rEnd, 'day')
     // when the event is zero duration we need to handle a bit differently
-    const sameMin = !startOfDay.isSame(eEnd, 'minutes') //neq(startOfDay, eEnd, 'minutes')
+    const sameMin = !startOfDay.isSame(eEnd, 'minutes')
     const endsAfterStart = sameMin
       ? eEnd.isAfter(rStart, 'minutes')
       : eEnd.isSameOrAfter(rStart, 'minutes')

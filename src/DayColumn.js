@@ -48,7 +48,7 @@ class DayColumn extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { getNow, isNow, localizer, date, min, max } = this.props
-    const getNowChanged = !localizer.eq(prevProps.getNow(), getNow(), 'minutes')
+    const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes')
 
     if (prevProps.isNow !== isNow || getNowChanged) {
       this.clearTimeIndicatorInterval()
@@ -63,8 +63,8 @@ class DayColumn extends React.Component {
       }
     } else if (
       isNow &&
-      (!localizer.eq(prevProps.min, min, 'minutes') ||
-        !localizer.eq(prevProps.max, max, 'minutes'))
+      (localizer.neq(prevProps.min, min, 'minutes') ||
+        localizer.neq(prevProps.max, max, 'minutes'))
     ) {
       this.positionTimeIndicator()
     }

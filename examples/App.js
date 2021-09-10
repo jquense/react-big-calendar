@@ -22,6 +22,7 @@ import Selectable from './demos/selectable'
 import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
 import Timezones from './demos/timezones'
+import Luxon from './demos/luxon'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
@@ -44,6 +45,7 @@ const EXAMPLES = {
   createEventWithNoOverlap: 'Create events with no-overlap algorithm',
   timezones: 'Timezones',
   cultures: 'Localization',
+  luxon: 'Luxon Localizer',
   popup: 'Show more via a popup',
   timeslots: 'Custom Time Grids',
   rendering: 'Customized Component Rendering',
@@ -83,6 +85,7 @@ class Example extends React.Component {
       selectable: Selectable,
       timezones: Timezones,
       cultures: Cultures,
+      luxon: Luxon,
       popup: Popup,
       rendering: Rendering,
       customView: CustomView,

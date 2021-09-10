@@ -10,6 +10,7 @@ export const components = {
 export { default as Calendar } from './Calendar'
 export { DateLocalizer } from './localizer'
 export { default as momentLocalizer } from './localizers/moment'
+export { default as luxonLocalizer } from './localizers/luxon'
 export { default as globalizeLocalizer } from './localizers/globalize'
 export { default as dateFnsLocalizer } from './localizers/date-fns'
 export { default as move } from './utils/move'

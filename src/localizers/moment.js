@@ -154,7 +154,8 @@ export default function(moment) {
 
   function range(start, end, unit = 'day') {
     let datePart = fixUnit(unit)
-    let current = moment(start).toDate() // because the add method will put these in tz, we have to start that way
+    // because the add method will put these in tz, we have to start that way
+    let current = moment(start).toDate()
     const days = []
 
     while (lte(current, end)) {
@@ -230,6 +231,7 @@ export default function(moment) {
     return moment(dt)
       .startOf('day')
       .minute(minutesFromMidnight + offset)
+      .toDate()
   }
 
   // moment will automatically handle DST differences in it's calculations

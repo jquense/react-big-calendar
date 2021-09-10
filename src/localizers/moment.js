@@ -40,35 +40,42 @@ export let formats = {
   agendaTimeRangeFormat: timeRangeFormat,
 }
 
+function fixUnit(unit) {
+  let datePart = unit ? unit.toLowerCase() : unit
+  if (datePart === 'FullYear') {
+    datePart = 'year'
+  } else if (!datePart) {
+    datePart = undefined
+  }
+  return datePart
+}
+
 export default function(moment) {
   let locale = (m, c) => (c ? m.locale(c) : m)
 
   /*** BEGIN localized date arithmetic methods with moment ***/
   function defineComparators(a, b, unit) {
-    let comparator = unit ? unit.toLowerCase() : unit
-    if (comparator === 'FullYear') {
-      comparator = 'year'
-    } else if (!comparator) {
-      comparator = undefined
-    }
-    const dtA = comparator ? moment(a).startOf(comparator) : moment(a)
-    const dtB = comparator ? moment(b).startOf(comparator) : moment(b)
-    return [dtA, dtB, comparator]
+    let datePart = fixUnit(unit)
+    const dtA = datePart ? moment(a).startOf(datePart) : moment(a)
+    const dtB = datePart ? moment(b).startOf(datePart) : moment(b)
+    return [dtA, dtB, datePart]
   }
 
   function startOf(date = null, unit) {
-    if (unit) {
+    let datePart = fixUnit(unit)
+    if (datePart) {
       return moment(date)
-        .startOf(unit === 'FullYear' ? 'year' : unit.toLowerCase())
+        .startOf(datePart)
         .toDate()
     }
     return moment(date).toDate()
   }
 
   function endOf(date = null, unit) {
-    if (unit) {
+    let datePart = fixUnit(unit)
+    if (datePart) {
       return moment(date)
-        .endOf(unit === 'FullYear' ? 'year' : unit.toLowerCase())
+        .endOf(datePart)
         .toDate()
     }
     return moment(date).toDate()
@@ -77,8 +84,8 @@ export default function(moment) {
   // moment comparison operations *always* convert both sides to moment objects
   // prior to running the comparisons
   function eq(a, b, unit) {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    return dtA.isSame(dtB, comparator)
+    const [dtA, dtB, datePart] = defineComparators(a, b, unit)
+    return dtA.isSame(dtB, datePart)
   }
 
   function neq(a, b, unit) {
@@ -86,30 +93,31 @@ export default function(moment) {
   }
 
   function gt(a, b, unit) {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    return dtA.isAfter(dtB, comparator)
+    const [dtA, dtB, datePart] = defineComparators(a, b, unit)
+    return dtA.isAfter(dtB, datePart)
   }
 
   function lt(a, b, unit) {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    return dtA.isBefore(dtB, comparator)
+    const [dtA, dtB, datePart] = defineComparators(a, b, unit)
+    return dtA.isBefore(dtB, datePart)
   }
 
   function gte(a, b, unit) {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    return dtA.isSameOrBefore(dtB, comparator)
+    const [dtA, dtB, datePart] = defineComparators(a, b, unit)
+    return dtA.isSameOrBefore(dtB, datePart)
   }
 
   function lte(a, b, unit) {
-    const [dtA, dtB, comparator] = defineComparators(a, b, unit)
-    return dtA.isSameOrBefore(dtB, comparator)
+    const [dtA, dtB, datePart] = defineComparators(a, b, unit)
+    return dtA.isSameOrBefore(dtB, datePart)
   }
 
   function inRange(day, min, max, unit = 'day') {
+    let datePart = fixUnit(unit)
     const mDay = moment(day)
     const mMin = moment(min)
     const mMax = moment(max)
-    return mDay.isBetween(mMin, mMax, unit, '[]')
+    return mDay.isBetween(mMin, mMax, datePart, '[]')
   }
 
   function min(dateA, dateB) {
@@ -138,34 +146,38 @@ export default function(moment) {
   }
 
   function add(date, adder, unit) {
+    let datePart = fixUnit(unit)
     return moment(date)
-      .add(adder, unit === 'FullYear' ? 'year' : unit.toLowerCase())
+      .add(adder, datePart)
       .toDate()
   }
 
   function range(start, end, unit = 'day') {
+    let datePart = fixUnit(unit)
     let current = moment(start).toDate() // because the add method will put these in tz, we have to start that way
     const days = []
 
     while (lte(current, end)) {
       days.push(current)
-      current = add(current, 1, unit)
+      current = add(current, 1, datePart)
     }
 
     return days
   }
 
   function ceil(date, unit) {
-    let floor = startOf(date, unit)
+    let datePart = fixUnit(unit)
+    let floor = startOf(date, datePart)
 
-    return eq(floor, date) ? floor : add(floor, 1, unit)
+    return eq(floor, date) ? floor : add(floor, 1, datePart)
   }
 
   function diff(a, b, unit = 'day') {
+    let datePart = fixUnit(unit)
     // don't use 'defineComparators' here, as we don't want to mutate the values
     const dtA = moment(a)
     const dtB = moment(b)
-    return dtB.diff(dtA, unit === 'FullYear' ? 'year' : unit)
+    return dtB.diff(dtA, datePart)
   }
 
   function minutes(date) {

@@ -1,24 +1,24 @@
 import { DateLocalizer } from '../localizer'
 
-let weekRangeFormat = ({ start, end }, culture, local) =>
+const weekRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'MMMM DD', culture) +
   ' – ' +
   // updated to use this localizer 'eq()' method
   local.format(end, local.eq(start, end, 'month') ? 'DD' : 'MMMM DD', culture)
 
-let dateRangeFormat = ({ start, end }, culture, local) =>
+const dateRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'L', culture) + ' – ' + local.format(end, 'L', culture)
 
-let timeRangeFormat = ({ start, end }, culture, local) =>
+const timeRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'LT', culture) + ' – ' + local.format(end, 'LT', culture)
 
-let timeRangeStartFormat = ({ start }, culture, local) =>
+const timeRangeStartFormat = ({ start }, culture, local) =>
   local.format(start, 'LT', culture) + ' – '
 
-let timeRangeEndFormat = ({ end }, culture, local) =>
+const timeRangeEndFormat = ({ end }, culture, local) =>
   ' – ' + local.format(end, 'LT', culture)
 
-export let formats = {
+export const formats = {
   dateFormat: 'DD',
   dayFormat: 'DD ddd',
   weekdayFormat: 'ddd',
@@ -51,18 +51,18 @@ function fixUnit(unit) {
 }
 
 export default function(moment) {
-  let locale = (m, c) => (c ? m.locale(c) : m)
+  const locale = (m, c) => (c ? m.locale(c) : m)
 
   /*** BEGIN localized date arithmetic methods with moment ***/
   function defineComparators(a, b, unit) {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     const dtA = datePart ? moment(a).startOf(datePart) : moment(a)
     const dtB = datePart ? moment(b).startOf(datePart) : moment(b)
     return [dtA, dtB, datePart]
   }
 
   function startOf(date = null, unit) {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     if (datePart) {
       return moment(date)
         .startOf(datePart)
@@ -72,7 +72,7 @@ export default function(moment) {
   }
 
   function endOf(date = null, unit) {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     if (datePart) {
       return moment(date)
         .endOf(datePart)
@@ -113,7 +113,7 @@ export default function(moment) {
   }
 
   function inRange(day, min, max, unit = 'day') {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     const mDay = moment(day)
     const mMin = moment(min)
     const mMax = moment(max)
@@ -146,14 +146,14 @@ export default function(moment) {
   }
 
   function add(date, adder, unit) {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     return moment(date)
       .add(adder, datePart)
       .toDate()
   }
 
   function range(start, end, unit = 'day') {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     // because the add method will put these in tz, we have to start that way
     let current = moment(start).toDate()
     const days = []
@@ -167,14 +167,14 @@ export default function(moment) {
   }
 
   function ceil(date, unit) {
-    let datePart = fixUnit(unit)
-    let floor = startOf(date, datePart)
+    const datePart = fixUnit(unit)
+    const floor = startOf(date, datePart)
 
     return eq(floor, date) ? floor : add(floor, 1, datePart)
   }
 
   function diff(a, b, unit = 'day') {
-    let datePart = fixUnit(unit)
+    const datePart = fixUnit(unit)
     // don't use 'defineComparators' here, as we don't want to mutate the values
     const dtA = moment(a)
     const dtB = moment(b)
@@ -187,7 +187,7 @@ export default function(moment) {
   }
 
   function firstOfWeek(culture) {
-    let data = culture ? moment.localeData(culture) : moment.localeData()
+    const data = culture ? moment.localeData(culture) : moment.localeData()
     return data ? data.firstDayOfWeek() : 0
   }
 
@@ -263,11 +263,11 @@ export default function(moment) {
     evtA: { start: aStart, end: aEnd, allDay: aAllDay },
     evtB: { start: bStart, end: bEnd, allDay: bAllDay },
   }) {
-    let startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
+    const startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
 
-    let durA = diff(aStart, ceil(aEnd, 'day'), 'day')
+    const durA = diff(aStart, ceil(aEnd, 'day'), 'day')
 
-    let durB = diff(bStart, ceil(bEnd, 'day'), 'day')
+    const durB = diff(bStart, ceil(bEnd, 'day'), 'day')
 
     return (
       startSort || // sort by start Day first

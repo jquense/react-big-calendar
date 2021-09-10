@@ -1,9 +1,12 @@
 import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
+//import { DateTime } from 'luxon'
+//import luxonLocalizer from '../../src/localizers/luxon'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import * as dates from '../../src/utils/dates'
 
 const localizer = momentLocalizer(moment)
+//const localizer = luxonLocalizer(DateTime)
 
 describe('getSlotMetrics', () => {
   const min = dates.startOf(new Date(2018, 0, 29, 0, 0, 0), 'day')

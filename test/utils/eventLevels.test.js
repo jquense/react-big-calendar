@@ -1,5 +1,7 @@
 import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
+//import { DateTime } from 'luxon'
+//import luxonLocalizer from '../../src/localizers/luxon'
 import {
   endOfRange,
   eventSegments,
@@ -10,6 +12,7 @@ import {
 } from '../../src/utils/eventLevels'
 
 const localizer = momentLocalizer(moment)
+//const localizer = luxonLocalizer(DateTime)
 
 describe('endOfRange', () => {
   test('it adds one day by default', () => {

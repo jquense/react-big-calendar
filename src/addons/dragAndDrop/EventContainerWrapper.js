@@ -81,9 +81,15 @@ class EventContainerWrapper extends React.Component {
 
     let { start, end } = eventTimes(event, accessors)
     if (direction === 'UP') {
-      start = dates.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
+      start = dates.min(
+        newTime,
+        slotMetrics.closestSlotFromDate(end, -1) || newTime
+      )
     } else if (direction === 'DOWN') {
-      end = dates.max(newTime, slotMetrics.closestSlotFromDate(start))
+      end = dates.max(
+        newTime,
+        slotMetrics.closestSlotFromDate(start) || newTime
+      )
     }
 
     this.update(event, slotMetrics.getRange(start, end))

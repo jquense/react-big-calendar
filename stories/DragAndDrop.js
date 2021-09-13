@@ -1,8 +1,9 @@
+import moment from 'moment'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
-import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
+import { events, Views, DragAndDropCalendar } from './helpers'
 import customComponents from './helpers/customComponents'
 
 storiesOf('Drag and Drop', module)
@@ -45,6 +46,37 @@ storiesOf('Drag and Drop', module)
       />
     )
   })
+  .add(
+    'draggable and resizable with event overflows the custom time period',
+    () => {
+      return (
+        <DragAndDropCalendar
+          defaultDate={new Date()}
+          defaultView={Views.WEEK}
+          events={[
+            {
+              title: 'test larger',
+              start: moment()
+                .startOf('day')
+                .add(5, 'hours')
+                .toDate(),
+              end: moment()
+                .startOf('day')
+                .add(10, 'hours')
+                .toDate(),
+              allDay: false,
+            },
+          ]}
+          resizable
+          showMultiDayTimes
+          onEventDrop={action('event dropped')}
+          onEventResize={action('event resized')}
+          min={moment('04:00am', 'h:mma').toDate()}
+          max={moment('08:00am', 'h:mma').toDate()}
+        />
+      )
+    }
+  )
   .add('draggable and resizable with custom dateCellWrapper', () => {
     return (
       <DragAndDropCalendar

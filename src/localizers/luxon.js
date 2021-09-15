@@ -83,7 +83,7 @@ export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
   // Since Luxon (and current Intl API) has no support
   // for culture based weekInfo, we need to handle
   // the start of the week differently
-  // depending on locale, the firstDayOfWeek could also be Friday, Saturday, Sunday or Monday
+  // depending on locale, the firstDayOfWeek could also be Saturday, Sunday or Monday
   function startOfDTWeek(dtObj) {
     const weekday = dtObj.weekday
     if (weekday === firstDayOfWeek) {
@@ -92,7 +92,6 @@ export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
       return dtObj.startOf('week') // fow is Monday, which is Luxon default
     }
     const diff = firstDayOfWeek === 7 ? weekday : weekday + (7 - firstDayOfWeek)
-    // fow is Sunday, and current day is after, so go back
     return dtObj.minus({ day: diff }).startOf('day')
   }
 

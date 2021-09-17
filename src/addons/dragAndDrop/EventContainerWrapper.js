@@ -74,10 +74,9 @@ class EventContainerWrapper extends React.Component {
   }
 
   handleResize(point, bounds) {
-    const { accessors, slotMetrics } = this.props
+    const { accessors, slotMetrics, localizer } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
     const newTime = slotMetrics.closestSlotFromPoint(point, bounds)
-    const { localizer } = this.props
 
     let { start, end } = eventTimes(event, accessors, localizer)
     if (direction === 'UP') {

@@ -21,7 +21,7 @@ element has a height, or the calendar won't be visible. To provide your own cust
 ## Run examples locally
 
 ```sh
-$ git clone git@github.com:intljusticemission/react-big-calendar.git
+$ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
 $ yarn examples
@@ -89,7 +89,7 @@ import getDay from 'date-fns/getDay'
 import enUS from 'date-fns/locale/en-US'
 
 const locales = {
-  'en-US': enUS
+  'en-US': enUS,
 }
 
 const localizer = dateFnsLocalizer({
@@ -117,7 +117,6 @@ const MyCalendar = props => (
 
 Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style
 Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
-
 
 ```
   @import 'react-big-calendar/lib/sass/styles';

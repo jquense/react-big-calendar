@@ -99,7 +99,7 @@ class WeekWrapper extends React.Component {
     const { event, direction } = this.context.draggable.dragAndDropAction
     const { accessors, slotMetrics, rtl, localizer } = this.props
 
-    let { start, end } = eventTimes(event, accessors, this.props.localizer)
+    let { start, end } = eventTimes(event, accessors, localizer)
 
     const slot = getSlotAtX(bounds, point.x, rtl, slotMetrics.slots)
     const date = slotMetrics.getDateForSlot(slot)

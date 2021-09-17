@@ -27,7 +27,7 @@ const customComponents = {
       </div>
     )
   },
-  /* timeSlotWrapper: timeSlotWrapperProps => {
+  timeSlotWrapper: timeSlotWrapperProps => {
     // Show different styles at arbitrary time
     const hasCustomInfo = timeSlotWrapperProps.value
       ? timeSlotWrapperProps.value.getHours() === 4
@@ -43,7 +43,7 @@ const customComponents = {
         {timeSlotWrapperProps.children}
       </div>
     )
-  }, */
+  },
   eventWrapper: eventWrapperProps => {
     const style = {
       border: '4px solid',

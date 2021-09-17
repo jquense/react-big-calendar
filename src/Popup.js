@@ -67,6 +67,7 @@ class Popup extends React.Component {
           <EventCell
             key={idx}
             type="popup"
+            localizer={localizer}
             event={event}
             getters={getters}
             onSelect={onSelect}

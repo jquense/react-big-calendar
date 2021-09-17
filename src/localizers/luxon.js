@@ -100,10 +100,11 @@ export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
     const eow = firstDayOfWeek === 1 ? 7 : firstDayOfWeek - 1
     if (weekday === eow) {
       return dtObj.endOf('day') // already last day of the week
-    } else if (eow === 7) {
+    } else if (firstDayOfWeek === 1) {
       return dtObj.endOf('week') // use Luxon default (Sunday)
     }
-    return dtObj.plus({ day: eow - weekday }).endOf('day')
+    const diff = weekday < eow ? eow - weekday : eow === 5 ? weekday : eow
+    return dtObj.plus({ day: diff }).endOf('day')
   }
 
   // This returns a DateTime instance

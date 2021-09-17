@@ -37,7 +37,7 @@ import MenuItem from 'react-bootstrap/lib/MenuItem'
 const globalizeLocalizer = localizer(globalize)
 
 let demoRoot =
-  'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
+  'https://github.com/jquense/react-big-calendar/tree/master/examples/demos'
 
 const EXAMPLES = {
   basic: 'Basic Calendar',
@@ -116,7 +116,7 @@ class Example extends React.Component {
               {' | '}
               <a
                 target="_blank"
-                href="https://github.com/intljusticemission/react-big-calendar"
+                href="https://github.com/jquense/react-big-calendar"
               >
                 <i className="fa fa-github" /> github
               </a>

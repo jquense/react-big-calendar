@@ -105,7 +105,7 @@
     "lint-staged": "^8.0.4",
     "luxon": "^2.0.2",
     "markdown-jsx-loader": "^3.0.2",
-    "marked": "^0.5.1",
+    "marked": "^0.7.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "mt-changelog": "^0.6.1",

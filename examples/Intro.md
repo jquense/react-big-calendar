@@ -9,14 +9,14 @@ _npm:_ `npm install --save react-big-calendar`
 `react-big-calendar` is a full featured Calendar component for managing events and dates. It uses modern `flexbox` for layout, making it super responsive and performant. Leaving most of the layout heavy lifting to the browser.
 
 Styles can be found at: `react-big-calendar/lib/css/react-big-calendar.css`, and should be included on the page
-with the calendar component. Alternatively, you can include the styles directly in your SASS build. See the [Custom Styling](https://github.com/intljusticemission/react-big-calendar/blob/master/README.md#custom-styling) section of the README file for more details.
+with the calendar component. Alternatively, you can include the styles directly in your SASS build. See the [Custom Styling](https://github.com/jquense/react-big-calendar/blob/master/README.md#custom-styling) section of the README file for more details.
 
 Also make sure that your calendar's container element has a height, or the calendar won't be visible (see why below).
 
 Date internationalization and localization is **hard** and `react-big-calendar` doesn't even attempt to
 solve that problem. Instead you can use one of the many excellent solutions already
-out there, via adapters called "localizers". Big Calendar comes with two localizers for use
-with [Globalize.js](https://github.com/jquery/globalize) or [Moment.js](http://momentjs.com/).
+out there, via adapters called "localizers". Big Calendar comes with three localizers for use
+with [Globalize.js](https://github.com/jquery/globalize), [Moment.js](http://momentjs.com/) or [Luxon](https://moment.github.io/luxon).
 
 Choose the localizer that best suits your needs, or write your own. Whatever you do, you'll need to set it up
 before you can use the calendar (you only need to set it up once).
@@ -25,7 +25,7 @@ before you can use the calendar (you only need to set it up once).
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
-// Setup the localizer by providing the moment (or globalize) Object
+// Setup the localizer by providing the moment (or globalize, or Luxon) Object
 // to the correct localizer.
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 

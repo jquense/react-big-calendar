@@ -36,6 +36,46 @@ function isValidView(view, { views: _views }) {
 
 class Calendar extends React.Component {
   static propTypes = {
+    /**
+     * The localizer used for formatting dates and times according to the `format` and `culture`
+     *
+     * globalize
+     * ```js
+     * import {globalizeLocalizer} from 'react-big-calendar'
+     * import globalize from 'globalize'
+     *
+     * const localizer = globalizeLocalizer(globalize)
+     * ```
+     * moment
+     * ```js
+     * import {momentLocalizer} from 'react-big-calendar'
+     * import moment from 'moment'
+     * // and, for optional time zone support
+     * import 'moment-timezone'
+     *
+     * moment.tz.setDefault('America/Los_Angeles')
+     * // end optional time zone support
+     *
+     * const localizer = momentLocalizer(moment)
+     * ```
+     *
+     * Luxon
+     * ```js
+     * import {luxonLocalizer} from 'react-big-calendar'
+     * import {DateTime, Settings} from 'luxon'
+     * // only use `Settings` if you require optional time zone support
+     * Settings.defaultZone = 'America/Los_Angeles'
+     * // end optional time zone support
+     *
+     * // Luxon uses the Intl API, which currently does not contain `weekInfo`
+     * // to determine which weekday is the start of the week by `culture`.
+     * // The `luxonLocalizer` defaults this to Sunday, which differs from
+     * // the Luxon default of Monday. The localizer requires this option
+     * // to change the display, and the date math for determining the
+     * // start of a week. Luxon uses non-zero based values for `weekday`.
+     * const localizer = luxonLocalizer(DateTime, {firstDayOfWeek: 7})
+     * ```
+     */
     localizer: PropTypes.object.isRequired,
 
     /**
@@ -579,7 +619,7 @@ class Calendar extends React.Component {
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
      *
-     * `format` types are dependent on the configured localizer; both Moment and Globalize
+     * `format` types are dependent on the configured localizer; Moment, Luxon and Globalize
      * accept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.
      *
      * ```jsx

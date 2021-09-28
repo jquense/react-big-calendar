@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
-import * as dates from './utils/dates'
 
 class EventCell extends React.Component {
   render() {
@@ -34,7 +33,9 @@ class EventCell extends React.Component {
     let allDay = accessors.allDay(event)
 
     let showAsAllDay =
-      isAllDay || allDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1
+      isAllDay ||
+      allDay ||
+      localizer.diff(start, localizer.ceil(end, 'day'), 'day') > 1
 
     let userProps = getters.eventProp(event, start, end, selected)
 

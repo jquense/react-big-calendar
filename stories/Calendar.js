@@ -117,8 +117,9 @@ storiesOf('Big Calendar', module)
   })
   .add('custom now is the first of the month', () => {
     const customNow = () => {
-      let now = new Date()
-      now.setDate(1)
+      let now = moment()
+        .date(1)
+        .toDate()
       return now
     }
     return (

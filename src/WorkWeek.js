@@ -3,6 +3,7 @@ import React from 'react'
 
 import Week from './Week'
 import TimeGrid from './TimeGrid'
+import { hasStateOrPropsChanged } from './utils/helpers'
 
 function workWeekRange(date, options) {
   return Week.range(date, options).filter(
@@ -11,6 +12,17 @@ function workWeekRange(date, options) {
 }
 
 class WorkWeek extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return hasStateOrPropsChanged(
+      this.state,
+      nextState,
+      this.props,
+      nextProps,
+      [],
+      false
+    )
+  }
+
   render() {
     let { date, ...props } = this.props
     let range = workWeekRange(date, this.props)

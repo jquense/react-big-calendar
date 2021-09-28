@@ -7,7 +7,7 @@ import * as dates from './utils/dates'
 import chunk from 'lodash/chunk'
 
 import { navigate, views } from './utils/constants'
-import { notify } from './utils/helpers'
+import { notify, hasStateOrPropsChanged } from './utils/helpers'
 import getPosition from 'dom-helpers/position'
 import * as animationFrame from 'dom-helpers/animationFrame'
 
@@ -16,7 +16,6 @@ import Overlay from 'react-overlays/Overlay'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import DateHeader from './DateHeader'
-
 import { inRange, sortEvents } from './utils/eventLevels'
 
 let eventsForWeek = (evts, start, end, accessors) =>
@@ -33,6 +32,17 @@ class MonthView extends React.Component {
       rowLimit: 5,
       needLimitMeasure: true,
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return hasStateOrPropsChanged(
+      this.state,
+      nextState,
+      this.props,
+      nextProps,
+      [],
+      false
+    )
   }
 
   UNSAFE_componentWillReceiveProps({ date }) {

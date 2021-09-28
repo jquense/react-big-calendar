@@ -29,7 +29,6 @@ export function hasStateOrPropsChanged(
   oldProps,
   newProps,
   excludedKeys = []
-  // shouldPrint = false
 ) {
   // Might need to change for when changing URL is important
   let stateKeys = newState ? Object.keys(newState) : []

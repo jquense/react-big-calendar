@@ -1,4 +1,4 @@
-import { isValidJSDate, isSameDay } from './dates'
+import { isValidJSDate, isSameMinute } from './dates'
 import { useRef, useEffect } from 'react'
 
 var idCount = 0
@@ -37,7 +37,7 @@ export function hasStateOrPropsChanged(
   let hasStateChanged = stateKeys.some(k => {
     if (oldState[k] !== newState[k] && !excludedKeys.includes(k)) {
       if (isValidJSDate(newState[k]) && isValidJSDate(oldState[k])) {
-        return !isSameDay(newState[k], oldState[k])
+        return !isSameMinute(newState[k], oldState[k])
       } else if (
         Array.isArray(oldState[k]) &&
         Array.isArray(newState[k]) &&
@@ -62,7 +62,7 @@ export function hasStateOrPropsChanged(
   let hasPropsChanged = propKeys.some(k => {
     if (oldProps[k] !== newProps[k] && !excludedKeys.includes(k)) {
       if (isValidJSDate(newProps[k]) && isValidJSDate(oldProps[k])) {
-        return !isSameDay(newProps[k], oldProps[k])
+        return !isSameMinute(newProps[k], oldProps[k])
       } else if (
         Array.isArray(oldProps[k]) &&
         Array.isArray(newProps[k]) &&

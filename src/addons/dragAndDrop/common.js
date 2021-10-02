@@ -41,6 +41,6 @@ export function eventTimes(event, accessors, localizer) {
     localizer.diff(start, end, 'minutes') === 0
   // make zero duration midnight events at least one day long
   if (isZeroDuration) end = localizer.add(end, 1, 'day')
-  const duration = localizer.diff(end, start, 'milliseconds')
+  const duration = localizer.diff(start, end, 'milliseconds')
   return { start, end, duration }
 }

@@ -1,48 +1,42 @@
-## [0.22.1](https://github.com/intljusticemission/react-big-calendar/compare/v0.22.0...v0.22.1) (2019-09-13)
-
+## [0.22.1](https://github.com/jquense/react-big-calendar/compare/v0.22.0...v0.22.1) (2019-09-13)
 
 ### Bug Fixes
 
-* add new method to get correct time indicator top position | fixes [#1396](https://github.com/intljusticemission/react-big-calendar/issues/1396) ([#1447](https://github.com/intljusticemission/react-big-calendar/issues/1447)) ([1cf0205](https://github.com/intljusticemission/react-big-calendar/commit/1cf0205))
-* drag cancelation for month view ([#1322](https://github.com/intljusticemission/react-big-calendar/issues/1322)) ([9c81e9e](https://github.com/intljusticemission/react-big-calendar/commit/9c81e9e))
-* invalid prop-types. ([#1435](https://github.com/intljusticemission/react-big-calendar/issues/1435)) ([61e1a1e](https://github.com/intljusticemission/react-big-calendar/commit/61e1a1e))
-* update time indicator position if max prop changes ([#1379](https://github.com/intljusticemission/react-big-calendar/issues/1379)) ([ac945b7](https://github.com/intljusticemission/react-big-calendar/commit/ac945b7))
-* use fixed date arithmetic lib and move bt-sass to devdepen… ([#1374](https://github.com/intljusticemission/react-big-calendar/issues/1374)) ([b223a61](https://github.com/intljusticemission/react-big-calendar/commit/b223a61))
-
+- add new method to get correct time indicator top position | fixes [#1396](https://github.com/jquense/react-big-calendar/issues/1396) ([#1447](https://github.com/jquense/react-big-calendar/issues/1447)) ([1cf0205](https://github.com/jquense/react-big-calendar/commit/1cf0205))
+- drag cancelation for month view ([#1322](https://github.com/jquense/react-big-calendar/issues/1322)) ([9c81e9e](https://github.com/jquense/react-big-calendar/commit/9c81e9e))
+- invalid prop-types. ([#1435](https://github.com/jquense/react-big-calendar/issues/1435)) ([61e1a1e](https://github.com/jquense/react-big-calendar/commit/61e1a1e))
+- update time indicator position if max prop changes ([#1379](https://github.com/jquense/react-big-calendar/issues/1379)) ([ac945b7](https://github.com/jquense/react-big-calendar/commit/ac945b7))
+- use fixed date arithmetic lib and move bt-sass to devdepen… ([#1374](https://github.com/jquense/react-big-calendar/issues/1374)) ([b223a61](https://github.com/jquense/react-big-calendar/commit/b223a61))
 
 ### Features
 
-* [#1390](https://github.com/intljusticemission/react-big-calendar/issues/1390) use en dashes in ranges ([#1391](https://github.com/intljusticemission/react-big-calendar/issues/1391)) ([7619e59](https://github.com/intljusticemission/react-big-calendar/commit/7619e59))
-* added continuesPrior and continuesAfter props to Event component ([#1201](https://github.com/intljusticemission/react-big-calendar/issues/1201)) ([74a2233](https://github.com/intljusticemission/react-big-calendar/commit/74a2233))
-* upgrade react-overlays ([#1421](https://github.com/intljusticemission/react-big-calendar/issues/1421)) ([9117549](https://github.com/intljusticemission/react-big-calendar/commit/9117549))
-* **dnd:** add preview of an item inside cell while dragging ([#1369](https://github.com/intljusticemission/react-big-calendar/issues/1369)) ([ac715f8](https://github.com/intljusticemission/react-big-calendar/commit/ac715f8))
-
-
-
-
+- [#1390](https://github.com/jquense/react-big-calendar/issues/1390) use en dashes in ranges ([#1391](https://github.com/jquense/react-big-calendar/issues/1391)) ([7619e59](https://github.com/jquense/react-big-calendar/commit/7619e59))
+- added continuesPrior and continuesAfter props to Event component ([#1201](https://github.com/jquense/react-big-calendar/issues/1201)) ([74a2233](https://github.com/jquense/react-big-calendar/commit/74a2233))
+- upgrade react-overlays ([#1421](https://github.com/jquense/react-big-calendar/issues/1421)) ([9117549](https://github.com/jquense/react-big-calendar/commit/9117549))
+- **dnd:** add preview of an item inside cell while dragging ([#1369](https://github.com/jquense/react-big-calendar/issues/1369)) ([ac715f8](https://github.com/jquense/react-big-calendar/commit/ac715f8))
 
 ## 0.22.0 (2019-06-18)
 
-- Chore: clean up prop-types (#1344) ([94e3679](https://github.com/intljusticemission/react-big-calendar/commit/94e3679)), closes [#1344](https://github.com/intljusticemission/react-big-calendar/issues/1344)
-- Publish v0.22.0 ([321d8cf](https://github.com/intljusticemission/react-big-calendar/commit/321d8cf))
-- save snapshot ([8480413](https://github.com/intljusticemission/react-big-calendar/commit/8480413))
-- stale-bot ([0e0ebb2](https://github.com/intljusticemission/react-big-calendar/commit/0e0ebb2))
-- chore: fix linting ([976faf1](https://github.com/intljusticemission/react-big-calendar/commit/976faf1))
-- chore: remove prop-types-extra (#1349) ([c3b7734](https://github.com/intljusticemission/react-big-calendar/commit/c3b7734)), closes [#1349](https://github.com/intljusticemission/react-big-calendar/issues/1349)
-- chore(deps): upgrade date-math (#1354) ([762e8cf](https://github.com/intljusticemission/react-big-calendar/commit/762e8cf)), closes [#1354](https://github.com/intljusticemission/react-big-calendar/issues/1354)
-- chore(deps): upgrade uncontrollable (#1357) ([689f74e](https://github.com/intljusticemission/react-big-calendar/commit/689f74e)), closes [#1357](https://github.com/intljusticemission/react-big-calendar/issues/1357)
-- fix: bad propType. (#1351) ([e704e17](https://github.com/intljusticemission/react-big-calendar/commit/e704e17)), closes [#1351](https://github.com/intljusticemission/react-big-calendar/issues/1351)
-- fix: bug where appointments can appear outside the calendar (#1204) ([9689b7d](https://github.com/intljusticemission/react-big-calendar/commit/9689b7d)), closes [#1204](https://github.com/intljusticemission/react-big-calendar/issues/1204)
-- fix: bug with dayWrapper not applying (#1196) ([f3ea6f8](https://github.com/intljusticemission/react-big-calendar/commit/f3ea6f8)), closes [#1196](https://github.com/intljusticemission/react-big-calendar/issues/1196)
-- fix: ie fix for event bindings on unmounted components (#1338) ([8ef00d6](https://github.com/intljusticemission/react-big-calendar/commit/8ef00d6)), closes [#1338](https://github.com/intljusticemission/react-big-calendar/issues/1338)
-- fix: rtl incorrectly named or not propagated (#1353) ([caa863f](https://github.com/intljusticemission/react-big-calendar/commit/caa863f)), closes [#1353](https://github.com/intljusticemission/react-big-calendar/issues/1353)
-- fix(addons): do not cut end while dragging multiday event (#1342) ([6fab261](https://github.com/intljusticemission/react-big-calendar/commit/6fab261)), closes [#1342](https://github.com/intljusticemission/react-big-calendar/issues/1342)
-- docs: update docs and examples with named exports (#1352) ([f478be0](https://github.com/intljusticemission/react-big-calendar/commit/f478be0)), closes [#1352](https://github.com/intljusticemission/react-big-calendar/issues/1352)
-- docs(dnd): remove deprecated comment about `react-dnd` (#1323) ([4d933c1](https://github.com/intljusticemission/react-big-calendar/commit/4d933c1)), closes [#1323](https://github.com/intljusticemission/react-big-calendar/issues/1323)
-- feat: provide named exports api (#1348) ([4e09704](https://github.com/intljusticemission/react-big-calendar/commit/4e09704)), closes [#1348](https://github.com/intljusticemission/react-big-calendar/issues/1348)
-- feat: redeclared all sass variables as !default (#1321) ([c4f09cd](https://github.com/intljusticemission/react-big-calendar/commit/c4f09cd)), closes [#1321](https://github.com/intljusticemission/react-big-calendar/issues/1321)
-- feat: use lodash-es for esm bundle (#1350) ([fb0fe5e](https://github.com/intljusticemission/react-big-calendar/commit/fb0fe5e)), closes [#1350](https://github.com/intljusticemission/react-big-calendar/issues/1350)
-- Feat: expose date localizer (#1347) ([5d93c9d](https://github.com/intljusticemission/react-big-calendar/commit/5d93c9d)), closes [#1347](https://github.com/intljusticemission/react-big-calendar/issues/1347)
+- Chore: clean up prop-types (#1344) ([94e3679](https://github.com/jquense/react-big-calendar/commit/94e3679)), closes [#1344](https://github.com/jquense/react-big-calendar/issues/1344)
+- Publish v0.22.0 ([321d8cf](https://github.com/jquense/react-big-calendar/commit/321d8cf))
+- save snapshot ([8480413](https://github.com/jquense/react-big-calendar/commit/8480413))
+- stale-bot ([0e0ebb2](https://github.com/jquense/react-big-calendar/commit/0e0ebb2))
+- chore: fix linting ([976faf1](https://github.com/jquense/react-big-calendar/commit/976faf1))
+- chore: remove prop-types-extra (#1349) ([c3b7734](https://github.com/jquense/react-big-calendar/commit/c3b7734)), closes [#1349](https://github.com/jquense/react-big-calendar/issues/1349)
+- chore(deps): upgrade date-math (#1354) ([762e8cf](https://github.com/jquense/react-big-calendar/commit/762e8cf)), closes [#1354](https://github.com/jquense/react-big-calendar/issues/1354)
+- chore(deps): upgrade uncontrollable (#1357) ([689f74e](https://github.com/jquense/react-big-calendar/commit/689f74e)), closes [#1357](https://github.com/jquense/react-big-calendar/issues/1357)
+- fix: bad propType. (#1351) ([e704e17](https://github.com/jquense/react-big-calendar/commit/e704e17)), closes [#1351](https://github.com/jquense/react-big-calendar/issues/1351)
+- fix: bug where appointments can appear outside the calendar (#1204) ([9689b7d](https://github.com/jquense/react-big-calendar/commit/9689b7d)), closes [#1204](https://github.com/jquense/react-big-calendar/issues/1204)
+- fix: bug with dayWrapper not applying (#1196) ([f3ea6f8](https://github.com/jquense/react-big-calendar/commit/f3ea6f8)), closes [#1196](https://github.com/jquense/react-big-calendar/issues/1196)
+- fix: ie fix for event bindings on unmounted components (#1338) ([8ef00d6](https://github.com/jquense/react-big-calendar/commit/8ef00d6)), closes [#1338](https://github.com/jquense/react-big-calendar/issues/1338)
+- fix: rtl incorrectly named or not propagated (#1353) ([caa863f](https://github.com/jquense/react-big-calendar/commit/caa863f)), closes [#1353](https://github.com/jquense/react-big-calendar/issues/1353)
+- fix(addons): do not cut end while dragging multiday event (#1342) ([6fab261](https://github.com/jquense/react-big-calendar/commit/6fab261)), closes [#1342](https://github.com/jquense/react-big-calendar/issues/1342)
+- docs: update docs and examples with named exports (#1352) ([f478be0](https://github.com/jquense/react-big-calendar/commit/f478be0)), closes [#1352](https://github.com/jquense/react-big-calendar/issues/1352)
+- docs(dnd): remove deprecated comment about `react-dnd` (#1323) ([4d933c1](https://github.com/jquense/react-big-calendar/commit/4d933c1)), closes [#1323](https://github.com/jquense/react-big-calendar/issues/1323)
+- feat: provide named exports api (#1348) ([4e09704](https://github.com/jquense/react-big-calendar/commit/4e09704)), closes [#1348](https://github.com/jquense/react-big-calendar/issues/1348)
+- feat: redeclared all sass variables as !default (#1321) ([c4f09cd](https://github.com/jquense/react-big-calendar/commit/c4f09cd)), closes [#1321](https://github.com/jquense/react-big-calendar/issues/1321)
+- feat: use lodash-es for esm bundle (#1350) ([fb0fe5e](https://github.com/jquense/react-big-calendar/commit/fb0fe5e)), closes [#1350](https://github.com/jquense/react-big-calendar/issues/1350)
+- Feat: expose date localizer (#1347) ([5d93c9d](https://github.com/jquense/react-big-calendar/commit/5d93c9d)), closes [#1347](https://github.com/jquense/react-big-calendar/issues/1347)
 
 ### BREAKING CHANGE
 
@@ -61,65 +55,65 @@ import {
 } from 'react-big-calendar'
 ```
 
-# [0.21.0](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.4...v0.21.0) (2019-05-14)
+# [0.21.0](https://github.com/jquense/react-big-calendar/compare/v0.20.4...v0.21.0) (2019-05-14)
 
 ### Bug Fixes
 
-- prevent un/mounting of date components ([#1276](https://github.com/intljusticemission/react-big-calendar/issues/1276)) ([3c25009](https://github.com/intljusticemission/react-big-calendar/commit/3c25009)), closes [/github.com/intljusticemission/react-big-calendar/blob/master/src/DateContentRow.js#L121](https://github.com//github.com/intljusticemission/react-big-calendar/blob/master/src/DateContentRow.js/issues/L121)
-- support point-in-time events in the Agenda view ([#1246](https://github.com/intljusticemission/react-big-calendar/issues/1246)) ([58c39c3](https://github.com/intljusticemission/react-big-calendar/commit/58c39c3))
-- TimeGrid display on DST change days when min is after the transition ([#1303](https://github.com/intljusticemission/react-big-calendar/issues/1303)) ([b436017](https://github.com/intljusticemission/react-big-calendar/commit/b436017)), closes [#1098](https://github.com/intljusticemission/react-big-calendar/issues/1098) [#1273](https://github.com/intljusticemission/react-big-calendar/issues/1273)
-- update time indicator position if min prop changes ([#1311](https://github.com/intljusticemission/react-big-calendar/issues/1311)) ([97ea841](https://github.com/intljusticemission/react-big-calendar/commit/97ea841))
-- use React.createRef instead of string refs ([#1282](https://github.com/intljusticemission/react-big-calendar/issues/1282)) ([239f0a3](https://github.com/intljusticemission/react-big-calendar/commit/239f0a3))
+- prevent un/mounting of date components ([#1276](https://github.com/jquense/react-big-calendar/issues/1276)) ([3c25009](https://github.com/jquense/react-big-calendar/commit/3c25009)), closes [/github.com/jquense/react-big-calendar/blob/master/src/DateContentRow.js#L121](https://github.com//github.com/jquense/react-big-calendar/blob/master/src/DateContentRow.js/issues/L121)
+- support point-in-time events in the Agenda view ([#1246](https://github.com/jquense/react-big-calendar/issues/1246)) ([58c39c3](https://github.com/jquense/react-big-calendar/commit/58c39c3))
+- TimeGrid display on DST change days when min is after the transition ([#1303](https://github.com/jquense/react-big-calendar/issues/1303)) ([b436017](https://github.com/jquense/react-big-calendar/commit/b436017)), closes [#1098](https://github.com/jquense/react-big-calendar/issues/1098) [#1273](https://github.com/jquense/react-big-calendar/issues/1273)
+- update time indicator position if min prop changes ([#1311](https://github.com/jquense/react-big-calendar/issues/1311)) ([97ea841](https://github.com/jquense/react-big-calendar/commit/97ea841))
+- use React.createRef instead of string refs ([#1282](https://github.com/jquense/react-big-calendar/issues/1282)) ([239f0a3](https://github.com/jquense/react-big-calendar/commit/239f0a3))
 
 ### Features
 
-- **dnd:** add onDropFromOutside prop for Dnd Cal ([#1290](https://github.com/intljusticemission/react-big-calendar/issues/1290)) ([b9fdce4](https://github.com/intljusticemission/react-big-calendar/commit/b9fdce4)), closes [#1090](https://github.com/intljusticemission/react-big-calendar/issues/1090)
-- **dnd:** implement callback on initializing drag or resize action ([#1206](https://github.com/intljusticemission/react-big-calendar/issues/1206)) ([0fa2c30](https://github.com/intljusticemission/react-big-calendar/commit/0fa2c30)), closes [#1205](https://github.com/intljusticemission/react-big-calendar/issues/1205)
-- add resource to handleDropFromOutside ([#1319](https://github.com/intljusticemission/react-big-calendar/issues/1319)) ([2b7ad2a](https://github.com/intljusticemission/react-big-calendar/commit/2b7ad2a))
-- switch to Sass for styles ([884bece](https://github.com/intljusticemission/react-big-calendar/commit/884bece))
+- **dnd:** add onDropFromOutside prop for Dnd Cal ([#1290](https://github.com/jquense/react-big-calendar/issues/1290)) ([b9fdce4](https://github.com/jquense/react-big-calendar/commit/b9fdce4)), closes [#1090](https://github.com/jquense/react-big-calendar/issues/1090)
+- **dnd:** implement callback on initializing drag or resize action ([#1206](https://github.com/jquense/react-big-calendar/issues/1206)) ([0fa2c30](https://github.com/jquense/react-big-calendar/commit/0fa2c30)), closes [#1205](https://github.com/jquense/react-big-calendar/issues/1205)
+- add resource to handleDropFromOutside ([#1319](https://github.com/jquense/react-big-calendar/issues/1319)) ([2b7ad2a](https://github.com/jquense/react-big-calendar/commit/2b7ad2a))
+- switch to Sass for styles ([884bece](https://github.com/jquense/react-big-calendar/commit/884bece))
 
 ### BREAKING CHANGES
 
 - Less files have been replaced with Sass versions
 
-## [0.20.4](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.3...v0.20.4) (2019-03-21)
+## [0.20.4](https://github.com/jquense/react-big-calendar/compare/v0.20.3...v0.20.4) (2019-03-21)
 
 ### Bug Fixes
 
-- allow override onShowMore callback ([#1214](https://github.com/intljusticemission/react-big-calendar/issues/1214)) ([8fefeee](https://github.com/intljusticemission/react-big-calendar/commit/8fefeee)), closes [/github.com/intljusticemission/react-big-calendar/blob/f9a873368a78f5ced81b799c4dffe1095b3ab712/src/Calendar.jsx#L280](https://github.com//github.com/intljusticemission/react-big-calendar/blob/f9a873368a78f5ced81b799c4dffe1095b3ab712/src/Calendar.jsx/issues/L280) [/github.com/intljusticemission/react-big-calendar/blob/1d62c432eaa183ed6b38f08cfcec5ee7edcbfe41/src/Month.js#L300-L307](https://github.com//github.com/intljusticemission/react-big-calendar/blob/1d62c432eaa183ed6b38f08cfcec5ee7edcbfe41/src/Month.js/issues/L300-L307) [#1147](https://github.com/intljusticemission/react-big-calendar/issues/1147)
-- firefox event click bug ([#1262](https://github.com/intljusticemission/react-big-calendar/issues/1262)) ([b526416](https://github.com/intljusticemission/react-big-calendar/commit/b526416)), closes [#1173](https://github.com/intljusticemission/react-big-calendar/issues/1173)
-- issue with gutter width initialization ([#1181](https://github.com/intljusticemission/react-big-calendar/issues/1181)) ([69b28af](https://github.com/intljusticemission/react-big-calendar/commit/69b28af))
-- misplacement of current time indicator ([#1239](https://github.com/intljusticemission/react-big-calendar/issues/1239)) ([2d6e99e](https://github.com/intljusticemission/react-big-calendar/commit/2d6e99e)), closes [#1054](https://github.com/intljusticemission/react-big-calendar/issues/1054)
-- remove duplicate getter prop ([#1185](https://github.com/intljusticemission/react-big-calendar/issues/1185)) ([6b90182](https://github.com/intljusticemission/react-big-calendar/commit/6b90182))
-- remove global window from Map() usage, update eslint rules for new es6 environment ([#1195](https://github.com/intljusticemission/react-big-calendar/issues/1195)) ([4768188](https://github.com/intljusticemission/react-big-calendar/commit/4768188))
-- selecting events in mobile browsers ([#1233](https://github.com/intljusticemission/react-big-calendar/issues/1233)) ([2bc9fee](https://github.com/intljusticemission/react-big-calendar/commit/2bc9fee))
+- allow override onShowMore callback ([#1214](https://github.com/jquense/react-big-calendar/issues/1214)) ([8fefeee](https://github.com/jquense/react-big-calendar/commit/8fefeee)), closes [/github.com/jquense/react-big-calendar/blob/f9a873368a78f5ced81b799c4dffe1095b3ab712/src/Calendar.jsx#L280](https://github.com//github.com/jquense/react-big-calendar/blob/f9a873368a78f5ced81b799c4dffe1095b3ab712/src/Calendar.jsx/issues/L280) [/github.com/jquense/react-big-calendar/blob/1d62c432eaa183ed6b38f08cfcec5ee7edcbfe41/src/Month.js#L300-L307](https://github.com//github.com/jquense/react-big-calendar/blob/1d62c432eaa183ed6b38f08cfcec5ee7edcbfe41/src/Month.js/issues/L300-L307) [#1147](https://github.com/jquense/react-big-calendar/issues/1147)
+- firefox event click bug ([#1262](https://github.com/jquense/react-big-calendar/issues/1262)) ([b526416](https://github.com/jquense/react-big-calendar/commit/b526416)), closes [#1173](https://github.com/jquense/react-big-calendar/issues/1173)
+- issue with gutter width initialization ([#1181](https://github.com/jquense/react-big-calendar/issues/1181)) ([69b28af](https://github.com/jquense/react-big-calendar/commit/69b28af))
+- misplacement of current time indicator ([#1239](https://github.com/jquense/react-big-calendar/issues/1239)) ([2d6e99e](https://github.com/jquense/react-big-calendar/commit/2d6e99e)), closes [#1054](https://github.com/jquense/react-big-calendar/issues/1054)
+- remove duplicate getter prop ([#1185](https://github.com/jquense/react-big-calendar/issues/1185)) ([6b90182](https://github.com/jquense/react-big-calendar/commit/6b90182))
+- remove global window from Map() usage, update eslint rules for new es6 environment ([#1195](https://github.com/jquense/react-big-calendar/issues/1195)) ([4768188](https://github.com/jquense/react-big-calendar/commit/4768188))
+- selecting events in mobile browsers ([#1233](https://github.com/jquense/react-big-calendar/issues/1233)) ([2bc9fee](https://github.com/jquense/react-big-calendar/commit/2bc9fee))
 
 ### Features
 
-- add ability to set custom resource headers ([#1187](https://github.com/intljusticemission/react-big-calendar/issues/1187)) ([6708a45](https://github.com/intljusticemission/react-big-calendar/commit/6708a45)), closes [#1174](https://github.com/intljusticemission/react-big-calendar/issues/1174)
-- adding bounds and box on slot select in Month view ([#1241](https://github.com/intljusticemission/react-big-calendar/issues/1241)) ([2a870b0](https://github.com/intljusticemission/react-big-calendar/commit/2a870b0))
-- remove propTypes in production ([#1180](https://github.com/intljusticemission/react-big-calendar/issues/1180)) ([ce0d56b](https://github.com/intljusticemission/react-big-calendar/commit/ce0d56b))
+- add ability to set custom resource headers ([#1187](https://github.com/jquense/react-big-calendar/issues/1187)) ([6708a45](https://github.com/jquense/react-big-calendar/commit/6708a45)), closes [#1174](https://github.com/jquense/react-big-calendar/issues/1174)
+- adding bounds and box on slot select in Month view ([#1241](https://github.com/jquense/react-big-calendar/issues/1241)) ([2a870b0](https://github.com/jquense/react-big-calendar/commit/2a870b0))
+- remove propTypes in production ([#1180](https://github.com/jquense/react-big-calendar/issues/1180)) ([ce0d56b](https://github.com/jquense/react-big-calendar/commit/ce0d56b))
 
-## [0.20.2](https://github.com/intljusticemission/react-big-calendar/compare/v0.20.0...v0.20.2) (2018-11-07)
+## [0.20.2](https://github.com/jquense/react-big-calendar/compare/v0.20.0...v0.20.2) (2018-11-07)
 
 ### Bug Fixes
 
-- add runtime to deps ([ade68bb](https://github.com/intljusticemission/react-big-calendar/commit/ade68bb))
-- calculation of slots number for date when DST ends. ([#1046](https://github.com/intljusticemission/react-big-calendar/issues/1046)) ([2ca0226](https://github.com/intljusticemission/react-big-calendar/commit/2ca0226))
-- dragging is disabled if resizing is not allowed ([#1072](https://github.com/intljusticemission/react-big-calendar/issues/1072)) ([#1073](https://github.com/intljusticemission/react-big-calendar/issues/1073)) ([0d5ed30](https://github.com/intljusticemission/react-big-calendar/commit/0d5ed30))
-- elements position on TimeGrid if max prop is set ([#1057](https://github.com/intljusticemission/react-big-calendar/issues/1057)) ([f174a60](https://github.com/intljusticemission/react-big-calendar/commit/f174a60))
-- move [@babel](https://github.com/babel)/cli to devDependencies ([#1062](https://github.com/intljusticemission/react-big-calendar/issues/1062)) ([4cfcb1f](https://github.com/intljusticemission/react-big-calendar/commit/4cfcb1f))
-- onRangeChange not passing localizer ([#1056](https://github.com/intljusticemission/react-big-calendar/issues/1056)) ([80855e8](https://github.com/intljusticemission/react-big-calendar/commit/80855e8))
-- proptype warnings ([#1084](https://github.com/intljusticemission/react-big-calendar/issues/1084)) ([08c2494](https://github.com/intljusticemission/react-big-calendar/commit/08c2494))
-- reference to draggable/resizable Accessor ([#1070](https://github.com/intljusticemission/react-big-calendar/issues/1070)) ([1889a51](https://github.com/intljusticemission/react-big-calendar/commit/1889a51))
+- add runtime to deps ([ade68bb](https://github.com/jquense/react-big-calendar/commit/ade68bb))
+- calculation of slots number for date when DST ends. ([#1046](https://github.com/jquense/react-big-calendar/issues/1046)) ([2ca0226](https://github.com/jquense/react-big-calendar/commit/2ca0226))
+- dragging is disabled if resizing is not allowed ([#1072](https://github.com/jquense/react-big-calendar/issues/1072)) ([#1073](https://github.com/jquense/react-big-calendar/issues/1073)) ([0d5ed30](https://github.com/jquense/react-big-calendar/commit/0d5ed30))
+- elements position on TimeGrid if max prop is set ([#1057](https://github.com/jquense/react-big-calendar/issues/1057)) ([f174a60](https://github.com/jquense/react-big-calendar/commit/f174a60))
+- move [@babel](https://github.com/babel)/cli to devDependencies ([#1062](https://github.com/jquense/react-big-calendar/issues/1062)) ([4cfcb1f](https://github.com/jquense/react-big-calendar/commit/4cfcb1f))
+- onRangeChange not passing localizer ([#1056](https://github.com/jquense/react-big-calendar/issues/1056)) ([80855e8](https://github.com/jquense/react-big-calendar/commit/80855e8))
+- proptype warnings ([#1084](https://github.com/jquense/react-big-calendar/issues/1084)) ([08c2494](https://github.com/jquense/react-big-calendar/commit/08c2494))
+- reference to draggable/resizable Accessor ([#1070](https://github.com/jquense/react-big-calendar/issues/1070)) ([1889a51](https://github.com/jquense/react-big-calendar/commit/1889a51))
 
 ### Features
 
-- hide single day header with css ([#1019](https://github.com/intljusticemission/react-big-calendar/issues/1019)) ([5857d8f](https://github.com/intljusticemission/react-big-calendar/commit/5857d8f))
+- hide single day header with css ([#1019](https://github.com/jquense/react-big-calendar/issues/1019)) ([5857d8f](https://github.com/jquense/react-big-calendar/commit/5857d8f))
 
 ### Performance Improvements
 
-- increase startup time of event dragging ([#1020](https://github.com/intljusticemission/react-big-calendar/issues/1020)) ([167b69f](https://github.com/intljusticemission/react-big-calendar/commit/167b69f))
+- increase startup time of event dragging ([#1020](https://github.com/jquense/react-big-calendar/issues/1020)) ([167b69f](https://github.com/jquense/react-big-calendar/commit/167b69f))
 
 ## v0.19.2 - Wed, 27 Jun 2018 14:24:55 GMT
 

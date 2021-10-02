@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-import * as dates from './utils/dates'
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
@@ -60,14 +59,14 @@ class DateContentRow extends React.Component {
   }
 
   renderHeadingCell = (date, index) => {
-    let { renderHeader, getNow } = this.props
+    let { renderHeader, getNow, localizer } = this.props
 
     return renderHeader({
       date,
       key: `header_${index}`,
       className: clsx(
         'rbc-date-cell',
-        dates.eq(date, getNow(), 'day') && 'rbc-now'
+        localizer.isSameDate(date, getNow()) && 'rbc-now'
       ),
     })
   }
@@ -155,6 +154,7 @@ class DateContentRow extends React.Component {
     return (
       <div className={className} role="rowgroup">
         <BackgroundCells
+          localizer={localizer}
           date={date}
           getNow={getNow}
           rtl={rtl}

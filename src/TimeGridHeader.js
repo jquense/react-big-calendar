@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
 import React from 'react'
 
-import * as dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import ResourceHeader from './ResourceHeader'
@@ -43,7 +42,7 @@ class TimeGridHeader extends React.Component {
           className={clsx(
             'rbc-header',
             className,
-            dates.eq(date, today, 'day') && 'rbc-today'
+            localizer.isSameDate(date, today) && 'rbc-today'
           )}
         >
           {drilldownView ? (

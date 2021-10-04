@@ -7633,7 +7633,7 @@
         n.eq(o, r, 'minutes') &&
           0 === n.diff(o, r, 'minutes') &&
           (r = n.add(r, 1, 'day'))
-        var a = n.diff(r, o, 'milliseconds')
+        var a = n.diff(o, r, 'milliseconds')
         return { start: o, end: r, duration: a }
       }),
       (t.dragAccessors = void 0)
@@ -9626,7 +9626,7 @@ object-assign
               var c = y(e),
                 s = y(t),
                 d =
-                  s > a * A && !l.isSameDate(r, t)
+                  s > a * A && !l.eq(r, t)
                     ? ((c - a) / (a * A)) * 100
                     : (c / (a * A)) * 100
               return {
@@ -25848,6 +25848,14 @@ object-assign
         o.createElement(
           'p',
           null,
+          o.createElement('code', null, 'react-big-calendar'),
+          ' is a full featured Calendar component for managing events and dates. It uses modern ',
+          o.createElement('code', null, 'flexbox'),
+          ' for layout, making it super responsive and performant. Leaving most of the layout heavy lifting to the browser.'
+        ),
+        o.createElement(
+          'p',
+          null,
           'Styles can be found at: ',
           o.createElement(
             'code',
@@ -25921,6 +25929,23 @@ object-assign
             'Moment format pattern'
           ),
           ' is valid!'
+        ),
+        o.createElement(
+          'p',
+          null,
+          'One thing to note is that, ',
+          o.createElement('code', null, 'react-big-calendar'),
+          ' treats event start/end dates as an ',
+          o.createElement('em', null, 'exclusive'),
+          ' range which means that the event spans up to, but not including, the end date. In the case of displaying events on whole days, end dates are rounded _up_ to the next day. So an event ending on ',
+          o.createElement('code', null, 'Apr 8th 12:00:00 am'),
+          ' will not appear on the 8th, whereas one ending on ',
+          o.createElement('code', null, 'Apr 8th 12:01:00 am'),
+          ' will. If you want ',
+          o.createElement('em', null, 'inclusive'),
+          ' ranges consider providing a function ',
+          o.createElement('code', null, 'endAccessor'),
+          ' that returns the end date + 1 day for those events that end at midnight.'
         )
       )
     }),
@@ -37881,9 +37906,11 @@ object-assign
             n = 1 === r ? 7 : r - 1
           return t === n
             ? e.endOf('day')
-            : 7 === n
+            : 1 === r
             ? e.endOf('week')
-            : e.plus({ day: n - t }).endOf('day')
+            : (r > n ? e.plus({ day: r - n }) : e)
+                .set({ weekday: n })
+                .endOf('day')
         }
         function d(t, n) {
           void 0 === t && (t = new Date())
@@ -44293,12 +44320,6 @@ object-assign
                   getNow: function() {
                     return (0, i.default)().toDate()
                   },
-                  min: (0, i.default)()
-                    .hour(6)
-                    .startOf('hour'),
-                  max: (0, i.default)()
-                    .hour(18)
-                    .endOf('hour'),
                   myEvents: [].concat(l.default),
                 }
               )
@@ -44310,9 +44331,7 @@ object-assign
           u = o.defaultDate,
           A = o.scrollToTime,
           p = o.myEvents,
-          f = o.getNow,
-          b = o.min,
-          m = o.max
+          f = o.getNow
         return (
           (0, r.useEffect)(function() {
             return function() {
@@ -44334,8 +44353,6 @@ object-assign
               scrollToTime: A,
               localizer: s,
               getNow: f,
-              min: b,
-              max: m,
             })
           )
         )
@@ -49920,24 +49937,26 @@ object-assign
     var r = o(n(5)),
       a = o(n(4)),
       i = o(n(1)),
-      l = (function(e, t) {
-        if (!t && e && e.__esModule) return e
-        if (null === e || ('object' != typeof e && 'function' != typeof e))
-          return { default: e }
-        var n = A(t)
-        if (n && n.has(e)) return n.get(e)
-        var o = {},
-          r = Object.defineProperty && Object.getOwnPropertyDescriptor
-        for (var a in e)
-          if ('default' !== a && Object.prototype.hasOwnProperty.call(e, a)) {
-            var i = r ? Object.getOwnPropertyDescriptor(e, a) : null
-            i && (i.get || i.set)
-              ? Object.defineProperty(o, a, i)
-              : (o[a] = e[a])
-          }
-        ;(o.default = e), n && n.set(e, o)
-        return o
-      })(n(163)),
+      l =
+        (o(n(2)),
+        (function(e, t) {
+          if (!t && e && e.__esModule) return e
+          if (null === e || ('object' != typeof e && 'function' != typeof e))
+            return { default: e }
+          var n = A(t)
+          if (n && n.has(e)) return n.get(e)
+          var o = {},
+            r = Object.defineProperty && Object.getOwnPropertyDescriptor
+          for (var a in e)
+            if ('default' !== a && Object.prototype.hasOwnProperty.call(e, a)) {
+              var i = r ? Object.getOwnPropertyDescriptor(e, a) : null
+              i && (i.get || i.set)
+                ? Object.defineProperty(o, a, i)
+                : (o[a] = e[a])
+            }
+          ;(o.default = e), n && n.set(e, o)
+          return o
+        })(n(163))),
       c = o(n(12)),
       s = n(9),
       d = o(n(89)),
@@ -49957,31 +49976,48 @@ object-assign
       return (
         (0, a.default)(t, e),
         (t.prototype.render = function() {
-          var e = this.props.date,
-            n = t.range(e)
+          var e = this.props,
+            n = e.date,
+            o = e.localizer,
+            a = e.min,
+            l = void 0 === a ? o.startOf(new Date(), 'day') : a,
+            c = e.max,
+            s = void 0 === c ? o.endOf(new Date(), 'day') : c,
+            u = e.scrollToTime,
+            A = void 0 === u ? o.startOf(new Date(), 'day') : u,
+            p = t.range(n, { localizer: o })
           return i.default.createElement(
             d.default,
-            (0, r.default)({}, this.props, { range: n, eventOffset: 15 })
+            (0, r.default)({}, this.props, {
+              range: p,
+              eventOffset: 15,
+              localizer: o,
+              min: l,
+              max: s,
+              scrollToTime: A,
+            })
           )
         }),
         t
       )
     })(i.default.Component)
-    ;(p.range = function(e) {
-      for (
-        var t = e, n = l.add(t, 2, 'day'), o = t, r = [];
-        l.lte(o, n, 'day');
+    ;(p.propTypes = {}),
+      (p.range = function(e, t) {
+        for (
+          var n = t.localizer, o = e, r = l.add(o, 2, 'day'), a = o, i = [];
+          n.lte(a, r, 'day');
 
-      )
-        r.push(o), (o = l.add(o, 1, 'day'))
-      return r
-    }),
-      (p.navigate = function(e, t) {
+        )
+          i.push(a), (a = n.add(a, 1, 'day'))
+        return i
+      }),
+      (p.navigate = function(e, t, n) {
+        var o = n.localizer
         switch (t) {
           case s.Navigate.PREVIOUS:
-            return l.add(e, -3, 'day')
+            return o.add(e, -3, 'day')
           case s.Navigate.NEXT:
-            return l.add(e, 3, 'day')
+            return o.add(e, 3, 'day')
           default:
             return e
         }

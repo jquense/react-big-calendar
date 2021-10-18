@@ -10,7 +10,7 @@ import {
   views as componentViews,
 } from './utils/propTypes'
 
-import { notify } from './utils/helpers'
+import { notify, hasStateOrPropsChanged } from './utils/helpers'
 import { navigate, views } from './utils/constants'
 import { mergeWithDefaults } from './localizer'
 import message from './utils/messages'
@@ -69,6 +69,7 @@ class Calendar extends React.Component {
      * @controllable onNavigate
      */
     date: PropTypes.instanceOf(Date),
+    context: PropTypes.object,
 
     /**
      * The current view of the calendar.
@@ -821,6 +822,10 @@ class Calendar extends React.Component {
     }
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
+    const { context } = this.props
+    if (context === nextProps.context) {
+      return
+    }
     this.setState({ context: this.getContext(nextProps) })
   }
 
@@ -916,6 +921,17 @@ class Calendar extends React.Component {
     if (!getDrilldownView) return drilldownView
 
     return getDrilldownView(date, view, Object.keys(this.getViews()))
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return hasStateOrPropsChanged(
+      this.state,
+      nextState,
+      this.props,
+      nextProps,
+      ['selected'],
+      false
+    )
   }
 
   render() {

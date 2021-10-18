@@ -8,6 +8,7 @@ import EventContainerWrapper from './EventContainerWrapper'
 import WeekWrapper from './WeekWrapper'
 import { mergeComponents } from './common'
 import { DnDContext } from './DnDContext'
+import { hasStateOrPropsChanged } from '../../utils/helpers'
 
 export default function withDragAndDrop(Calendar) {
   class DragAndDropCalendar extends React.Component {
@@ -39,12 +40,18 @@ export default function withDragAndDrop(Calendar) {
     constructor(...args) {
       super(...args)
 
-      const { components } = this.props
+      const { components, elementProps, onDragOver } = this.props
 
       this.components = mergeComponents(components, {
         eventWrapper: EventWrapper,
         eventContainerWrapper: EventContainerWrapper,
         weekWrapper: WeekWrapper,
+        elementPropsWithDropFromOutside: this.props.onDropFromOutside
+          ? {
+              ...elementProps,
+              onDragOver: onDragOver || this.defaultOnDragOver,
+            }
+          : elementProps,
       })
 
       this.state = { interacting: false }
@@ -98,20 +105,24 @@ export default function withDragAndDrop(Calendar) {
       if (action === 'resize' && onEventResize) onEventResize(interactionInfo)
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+      return hasStateOrPropsChanged(
+        this.state,
+        nextState,
+        this.props,
+        nextProps,
+        [],
+        false
+      )
+    }
+
     render() {
-      const { selectable, elementProps, ...props } = this.props
+      const { selectable, ...props } = this.props
       const { interacting } = this.state
 
       delete props.onEventDrop
       delete props.onEventResize
       props.selectable = selectable ? 'ignoreEvents' : false
-
-      const elementPropsWithDropFromOutside = this.props.onDropFromOutside
-        ? {
-            ...elementProps,
-            onDragOver: this.props.onDragOver || this.defaultOnDragOver,
-          }
-        : elementProps
 
       props.className = clsx(
         props.className,
@@ -124,7 +135,7 @@ export default function withDragAndDrop(Calendar) {
         <DnDContext.Provider value={context}>
           <Calendar
             {...props}
-            elementProps={elementPropsWithDropFromOutside}
+            elementProps={this.state.elementPropsWithDropFromOutside}
             components={this.components}
           />
         </DnDContext.Provider>

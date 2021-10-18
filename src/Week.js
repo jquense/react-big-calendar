@@ -3,8 +3,19 @@ import React from 'react'
 import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
+import { hasStateOrPropsChanged } from './utils/helpers'
 
 class Week extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return hasStateOrPropsChanged(
+      this.state,
+      nextState,
+      this.props,
+      nextProps,
+      [],
+      false
+    )
+  }
   render() {
     let { date, ...props } = this.props
     let range = Week.range(date, this.props)

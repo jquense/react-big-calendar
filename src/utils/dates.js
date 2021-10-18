@@ -168,3 +168,15 @@ export function yesterday() {
 export function tomorrow() {
   return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
 }
+
+export function isSameDay(a, b) {
+  return dates.eq(a, b, 'day')
+}
+
+export function isSameMinute(a, b) {
+  return dates.eq(a, b, 'minutes')
+}
+
+export function isValidJSDate(dateObject) {
+  return typeof dateObject === 'object' && dateObject > 0
+}

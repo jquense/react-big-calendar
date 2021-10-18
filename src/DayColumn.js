@@ -8,7 +8,7 @@ import * as dates from './utils/dates'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import { isSelected } from './utils/selection'
 
-import { notify } from './utils/helpers'
+import { notify, hasStateOrPropsChanged } from './utils/helpers'
 import * as DayEventLayout from './utils/DayEventLayout'
 import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
@@ -106,6 +106,17 @@ class DayColumn extends React.Component {
     } else {
       this.clearTimeIndicatorInterval()
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return hasStateOrPropsChanged(
+      this.state,
+      nextState,
+      this.props,
+      nextProps,
+      [],
+      false
+    )
   }
 
   render() {

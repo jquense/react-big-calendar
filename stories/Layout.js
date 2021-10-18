@@ -2,14 +2,14 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import moment from 'moment'
 
-import { events, Calendar, DragAndDropCalendar } from './helpers'
+import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
 import createEvents from './helpers/createEvents'
 
-storiesOf('Layout Issues')
+storiesOf('Layout Issues', module)
   .add('event layout', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         defaultDate={new Date()}
         timeslots={4}
         events={createEvents(1)}
@@ -89,7 +89,7 @@ storiesOf('Layout Issues')
   .add('events on a constrained day column', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.DAY}
+        defaultView={Views.DAY}
         min={moment('8 am', 'h a').toDate()}
         max={moment('5 pm', 'h a').toDate()}
         events={events}

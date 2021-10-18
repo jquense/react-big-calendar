@@ -2,19 +2,25 @@ import { addDecorator } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
 import moment from 'moment'
+import 'moment-timezone'
 import React from 'react'
 
-import BaseCalendar from '../../src'
-import momentLocalizer from '../../src/localizers/moment.js'
+import { Calendar as BaseCalendar, momentLocalizer } from '../../src'
 
-import '../../src/less/styles.less'
-import '../../src/addons/dragAndDrop/styles.less'
+// For Testing SASS styling
+import '../../src/sass/styles.scss'
+import '../../src/addons/dragAndDrop/styles.scss'
 
 import withDragAndDrop from '../../src/addons/dragAndDrop'
 
-addDecorator(function WithHeigt(fn) {
+export { Views } from '../../src'
+
+addDecorator(function WithHeight(fn) {
   return <div style={{ height: 600 }}>{fn()}</div>
 })
+
+// uncomment for timezone testing in Storybook
+//moment.tz.setDefault('America/Los_Angeles')
 
 const localizer = momentLocalizer(moment)
 
@@ -25,8 +31,6 @@ export const date = (...args) => moment(...args).toDate()
 export const Calendar = props => (
   <BaseCalendar localizer={localizer} {...props} />
 )
-
-Object.assign(Calendar, BaseCalendar)
 
 export const DragAndDropCalendar = withDragAndDrop(Calendar)
 
@@ -109,6 +113,21 @@ export const events = [
     start: moment().toDate(),
     end: moment()
       .add(3, 'days')
+      .toDate(),
+    allDay: false,
+  },
+]
+
+export const backgroundEvents = [
+  {
+    title: 'test background event',
+    start: moment()
+      .startOf('day')
+      .add(2, 'hours')
+      .toDate(),
+    end: moment()
+      .startOf('day')
+      .add(12, 'hours')
       .toDate(),
     allDay: false,
   },

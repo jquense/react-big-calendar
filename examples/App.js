@@ -1,6 +1,7 @@
 import React from 'react'
 import Api from './Api'
 import Intro from './Intro.md'
+import TimezoneIntro from './Timezones.md'
 import { render } from 'react-dom'
 import Layout from 'react-tackle-box/Layout'
 
@@ -10,14 +11,18 @@ import globalize from 'globalize'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 
-import 'react-big-calendar/lib/less/styles.less'
-import './styles.less'
-import './prism.less'
+import 'react-big-calendar/lib/sass/styles.scss'
+import './styles.scss'
+import './prism.scss'
 import Card from './Card'
 import ExampleControlSlot from './ExampleControlSlot'
 import Basic from './demos/basic'
+import BackgroundEvents from './demos/backgroundEvents'
 import Selectable from './demos/selectable'
+import CreateEventWithNoOverlap from './demos/createEventWithNoOverlap'
 import Cultures from './demos/cultures'
+import Timezones from './demos/timezones'
+import Luxon from './demos/luxon'
 import Popup from './demos/popup'
 import Rendering from './demos/rendering'
 import CustomView from './demos/customView'
@@ -25,24 +30,31 @@ import Resource from './demos/resource'
 import DndResource from './demos/dndresource'
 import Timeslots from './demos/timeslots'
 import Dnd from './demos/dnd'
+import DndOutsideSource from './demos/dndOutsideSource'
 import Dropdown from 'react-bootstrap/lib/Dropdown'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
 const globalizeLocalizer = localizer(globalize)
 
 let demoRoot =
-  'https://github.com/intljusticemission/react-big-calendar/tree/master/examples/demos'
+  'https://github.com/jquense/react-big-calendar/tree/master/examples/demos'
 
 const EXAMPLES = {
   basic: 'Basic Calendar',
   selectable: 'Create events',
+  createEventWithNoOverlap: 'Create events with no-overlap algorithm',
+  timezones: 'Timezones',
   cultures: 'Localization',
+  luxon: 'Luxon Localizer',
   popup: 'Show more via a popup',
   timeslots: 'Custom Time Grids',
   rendering: 'Customized Component Rendering',
   customView: 'Custom Calendar Views',
+  backgroundEvents: 'Background Events',
   resource: 'Resource Scheduling',
   dnd: 'Addon: Drag and drop',
+  dndresource: 'Resource Drag and drop',
+  dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
 }
 
 const DEFAULT_EXAMPLE = 'basic'
@@ -69,8 +81,11 @@ class Example extends React.Component {
     let selected = this.state.selected
     let Current = {
       basic: Basic,
+      backgroundEvents: BackgroundEvents,
       selectable: Selectable,
+      timezones: Timezones,
       cultures: Cultures,
+      luxon: Luxon,
       popup: Popup,
       rendering: Rendering,
       customView: CustomView,
@@ -78,6 +93,8 @@ class Example extends React.Component {
       timeslots: Timeslots,
       dnd: Dnd,
       dndresource: DndResource,
+      dndOutsideSource: DndOutsideSource,
+      createEventWithNoOverlap: CreateEventWithNoOverlap,
     }[selected]
 
     return (
@@ -99,7 +116,7 @@ class Example extends React.Component {
               {' | '}
               <a
                 target="_blank"
-                href="https://github.com/intljusticemission/react-big-calendar"
+                href="https://github.com/jquense/react-big-calendar"
               >
                 <i className="fa fa-github" /> github
               </a>
@@ -152,6 +169,9 @@ class Example extends React.Component {
         <div className="docs">
           <div className="contain section">
             <Intro />
+          </div>
+          <div className="contain section">
+            <TimezoneIntro />
           </div>
           <Api className="contain section" />
         </div>

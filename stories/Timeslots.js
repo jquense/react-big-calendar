@@ -10,7 +10,7 @@ storiesOf('Timeslots', module)
   .add('selectable, step 15, 4 timeslots', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         selectable
         timeslots={4}
         step={15}
@@ -27,7 +27,7 @@ storiesOf('Timeslots', module)
     return (
       <Calendar
         selectable
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         timeslots={6}
         step={10}
         min={moment('12:00am', 'h:mma').toDate()}
@@ -43,7 +43,7 @@ storiesOf('Timeslots', module)
     return (
       <Calendar
         selectable
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         timeslots={6}
         step={5}
         min={moment('12:00am', 'h:mma').toDate()}
@@ -58,7 +58,7 @@ storiesOf('Timeslots', module)
   .add('selectable, 3 timeslots', () => {
     return (
       <Calendar
-        defaultView={Calendar.Views.WEEK}
+        defaultView={Views.WEEK}
         selectable
         timeslots={3}
         getNow={() => moment('9:30am', 'h:mma').toDate()}

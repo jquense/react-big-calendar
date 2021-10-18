@@ -1,17 +1,16 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import getOffset from 'dom-helpers/query/offset'
-import getScrollTop from 'dom-helpers/query/scrollTop'
-import getScrollLeft from 'dom-helpers/query/scrollLeft'
-import dates from './utils/dates'
+import getOffset from 'dom-helpers/offset'
+import getScrollTop from 'dom-helpers/scrollTop'
+import getScrollLeft from 'dom-helpers/scrollLeft'
 
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
 class Popup extends React.Component {
   componentDidMount() {
-    let { popupOffset = 5 } = this.props,
-      { top, left, width, height } = getOffset(this.refs.root),
+    let { popupOffset = 5, popperRef } = this.props,
+      { top, left, width, height } = getOffset(popperRef.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -38,23 +37,29 @@ class Popup extends React.Component {
       components,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       slotStart,
       slotEnd,
       localizer,
+      popperRef,
     } = this.props
 
-    let { left, width, top } = this.props.position,
+    let { width } = this.props.position,
       topOffset = (this.state || {}).topOffset || 0,
       leftOffset = (this.state || {}).leftOffset || 0
 
     let style = {
-      top: Math.max(0, top - topOffset),
-      left: left - leftOffset,
+      top: -topOffset,
+      left: -leftOffset,
       minWidth: width + width / 2,
     }
 
     return (
-      <div ref="root" style={style} className="rbc-overlay">
+      <div
+        style={{ ...this.props.style, ...style }}
+        className="rbc-overlay"
+        ref={popperRef}
+      >
         <div className="rbc-overlay-header">
           {localizer.format(slotStart, 'dayHeaderFormat')}
         </div>
@@ -62,15 +67,30 @@ class Popup extends React.Component {
           <EventCell
             key={idx}
             type="popup"
+            localizer={localizer}
             event={event}
             getters={getters}
             onSelect={onSelect}
             accessors={accessors}
             components={components}
             onDoubleClick={onDoubleClick}
-            continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
-            continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
+            onKeyPress={onKeyPress}
+            continuesPrior={localizer.lt(
+              accessors.end(event),
+              slotStart,
+              'day'
+            )}
+            continuesAfter={localizer.gte(
+              accessors.start(event),
+              slotEnd,
+              'day'
+            )}
+            slotStart={slotStart}
+            slotEnd={slotEnd}
             selected={isSelected(event, selected)}
+            draggable={true}
+            onDragStart={() => this.props.handleDragStart(event)}
+            onDragEnd={() => this.props.show()}
           />
         ))}
       </div>
@@ -96,8 +116,21 @@ Popup.propTypes = {
   localizer: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  handleDragStart: PropTypes.func,
+  show: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),
   slotEnd: PropTypes.number,
+  popperRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.Element }),
+  ]),
 }
 
-export default Popup
+/**
+ * The Overlay component, of react-overlays, creates a ref that is passed to the Popup, and
+ * requires proper ref forwarding to be used without error
+ */
+export default React.forwardRef((props, ref) => (
+  <Popup popperRef={ref} {...props} />
+))

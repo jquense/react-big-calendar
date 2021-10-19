@@ -33,7 +33,7 @@ $ yarn examples
 ### Localization and Date Formatting
 
 `react-big-calendar` includes three options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Luxon.js](https://moment.github.io/luxon), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
@@ -44,6 +44,27 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
 const localizer = momentLocalizer(moment)
+
+const MyCalendar = props => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
+#### Luxon.js
+
+```js
+import { Calendar, luxonLocalizer } from 'react-big-calendar'
+import luxon from 'luxon'
+
+const localizer = luxonLocalizer(luxon)
 
 const MyCalendar = props => (
   <div>

@@ -10,14 +10,16 @@ import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
 function Agenda({
-  selected,
-  getters,
   accessors,
-  localizer,
   components,
-  length,
   date,
   events,
+  getters,
+  length,
+  localizer,
+  onDoubleClickEvent,
+  onSelectEvent,
+  selected,
 }) {
   const headerRef = useRef(null)
   const dateColRef = useRef(null)
@@ -76,7 +78,13 @@ function Agenda({
         >
           {first}
           <td className="rbc-agenda-time-cell">{timeRangeLabel(day, event)}</td>
-          <td className="rbc-agenda-event-cell">
+          <td
+            className="rbc-agenda-event-cell"
+            onClick={e => onSelectEvent && onSelectEvent(event, e)}
+            onDoubleClick={e =>
+              onDoubleClickEvent && onDoubleClickEvent(event, e)
+            }
+          >
             {Event ? <Event event={event} title={title} /> : title}
           </td>
         </tr>
@@ -197,16 +205,16 @@ function Agenda({
 }
 
 Agenda.propTypes = {
-  events: PropTypes.array,
-  date: PropTypes.instanceOf(Date),
-  length: PropTypes.number.isRequired,
-
-  selected: PropTypes.object,
-
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
+  date: PropTypes.instanceOf(Date),
+  events: PropTypes.array,
   getters: PropTypes.object.isRequired,
+  length: PropTypes.number.isRequired,
   localizer: PropTypes.object.isRequired,
+  onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
+  selected: PropTypes.object,
 }
 
 Agenda.defaultProps = {

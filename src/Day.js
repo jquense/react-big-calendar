@@ -17,6 +17,7 @@ class Day extends React.Component {
       min = localizer.startOf(new Date(), 'day'),
       max = localizer.endOf(new Date(), 'day'),
       scrollToTime = localizer.startOf(new Date(), 'day'),
+      showAllDayEventsMax,
       ...props
     } = this.props
     let range = Day.range(date, { localizer: localizer })
@@ -30,6 +31,13 @@ class Day extends React.Component {
         min={min}
         max={max}
         scrollToTime={scrollToTime}
+        showAllDayEventsMax={
+          Number(showAllDayEventsMax?.day)
+            ? showAllDayEventsMax.day
+            : Number(showAllDayEventsMax)
+            ? showAllDayEventsMax
+            : 5
+        }
       />
     )
   }
@@ -41,6 +49,8 @@ Day.propTypes = {
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
   scrollToTime: PropTypes.instanceOf(Date),
+  showAllDayEventsMax: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
+    .isRequired,
 }
 
 Day.range = (date, { localizer }) => {

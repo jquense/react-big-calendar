@@ -43,7 +43,7 @@
     "build:cjs": "babel src --out-dir lib",
     "build": "yarn clean && yarn build:cjs && yarn build:umd && yarn assets && yarn build:css",
     "build:examples": "yarn clean:examples && webpack --config examples/webpack.config.js",
-    "examples": "yarn clean:examples && webpack-dev-server --config examples/webpack.config.js --mode development --host 0.0.0.0 --hot --open --useLocalIp",
+    "examples": "yarn clean:examples && webpack-dev-server --config examples/webpack.config.js",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
     "test": "yarn lint && jest",

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import * as dates from 'date-arithmetic'
 import events from '../events'
@@ -8,35 +9,59 @@ import ExampleControlSlot from '../ExampleControlSlot'
 
 class MyWeek extends React.Component {
   render() {
-    let { date } = this.props
-    let range = MyWeek.range(date)
+    let {
+      date,
+      localizer,
+      min = localizer.startOf(new Date(), 'day'),
+      max = localizer.endOf(new Date(), 'day'),
+      scrollToTime = localizer.startOf(new Date(), 'day'),
+    } = this.props
+    let range = MyWeek.range(date, { localizer })
 
-    return <TimeGrid {...this.props} range={range} eventOffset={15} />
+    return (
+      <TimeGrid
+        {...this.props}
+        range={range}
+        eventOffset={15}
+        localizer={localizer}
+        min={min}
+        max={max}
+        scrollToTime={scrollToTime}
+      />
+    )
   }
 }
 
-MyWeek.range = date => {
+MyWeek.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+  localizer: PropTypes.any,
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
+  scrollToTime: PropTypes.instanceOf(Date),
+}
+
+MyWeek.range = (date, { localizer }) => {
   let start = date
   let end = dates.add(start, 2, 'day')
 
   let current = start
   let range = []
 
-  while (dates.lte(current, end, 'day')) {
+  while (localizer.lte(current, end, 'day')) {
     range.push(current)
-    current = dates.add(current, 1, 'day')
+    current = localizer.add(current, 1, 'day')
   }
 
   return range
 }
 
-MyWeek.navigate = (date, action) => {
+MyWeek.navigate = (date, action, { localizer }) => {
   switch (action) {
     case Navigate.PREVIOUS:
-      return dates.add(date, -3, 'day')
+      return localizer.add(date, -3, 'day')
 
     case Navigate.NEXT:
-      return dates.add(date, 3, 'day')
+      return localizer.add(date, 3, 'day')
 
     default:
       return date

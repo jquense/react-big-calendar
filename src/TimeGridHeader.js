@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
 import React from 'react'
 
-import * as dates from './utils/dates'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import ResourceHeader from './ResourceHeader'
@@ -43,7 +42,7 @@ class TimeGridHeader extends React.Component {
           className={clsx(
             'rbc-header',
             className,
-            dates.eq(date, today, 'day') && 'rbc-today'
+            localizer.isSameDate(date, today) && 'rbc-today'
           )}
         >
           {drilldownView ? (
@@ -172,6 +171,7 @@ class TimeGridHeader extends React.Component {
               rtl={rtl}
               getNow={getNow}
               minRows={2}
+              maxRows={this.props.showAllDayEventsMax}
               range={range}
               events={groupedEvents.get(id) || []}
               resourceId={resource && id}
@@ -188,6 +188,7 @@ class TimeGridHeader extends React.Component {
               onSelectSlot={this.props.onSelectSlot}
               longPressThreshold={this.props.longPressThreshold}
               resizable={resizable}
+              showAllEvents={this.props.showAllDayEventsMax === Infinity}
             />
           </div>
         ))}
@@ -223,6 +224,7 @@ TimeGridHeader.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
+  showAllDayEventsMax: PropTypes.number.isRequired,
 }
 
 export default TimeGridHeader

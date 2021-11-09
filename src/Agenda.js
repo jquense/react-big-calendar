@@ -5,20 +5,21 @@ import removeClass from 'dom-helpers/removeClass'
 import getWidth from 'dom-helpers/width'
 import scrollbarSize from 'dom-helpers/scrollbarSize'
 
-import * as dates from './utils/dates'
 import { navigate } from './utils/constants'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
 function Agenda({
-  selected,
-  getters,
   accessors,
-  localizer,
   components,
-  length,
   date,
   events,
+  getters,
+  length,
+  localizer,
+  onDoubleClickEvent,
+  onSelectEvent,
+  selected,
 }) {
   const headerRef = useRef(null)
   const dateColRef = useRef(null)
@@ -34,7 +35,13 @@ function Agenda({
     const { event: Event, date: AgendaDate } = components
 
     events = events.filter(e =>
-      inRange(e, dates.startOf(day, 'day'), dates.endOf(day, 'day'), accessors)
+      inRange(
+        e,
+        localizer.startOf(day, 'day'),
+        localizer.endOf(day, 'day'),
+        accessors,
+        localizer
+      )
     )
 
     return events.map((event, idx) => {
@@ -71,7 +78,13 @@ function Agenda({
         >
           {first}
           <td className="rbc-agenda-time-cell">{timeRangeLabel(day, event)}</td>
-          <td className="rbc-agenda-event-cell">
+          <td
+            className="rbc-agenda-event-cell"
+            onClick={e => onSelectEvent && onSelectEvent(event, e)}
+            onDoubleClick={e =>
+              onDoubleClickEvent && onDoubleClickEvent(event, e)
+            }
+          >
             {Event ? <Event event={event} title={title} /> : title}
           </td>
         </tr>
@@ -88,19 +101,19 @@ function Agenda({
     let start = accessors.start(event)
 
     if (!accessors.allDay(event)) {
-      if (dates.eq(start, end)) {
+      if (localizer.eq(start, end)) {
         label = localizer.format(start, 'agendaTimeFormat')
-      } else if (dates.eq(start, end, 'day')) {
+      } else if (localizer.isSameDate(start, end)) {
         label = localizer.format({ start, end }, 'agendaTimeRangeFormat')
-      } else if (dates.eq(day, start, 'day')) {
+      } else if (localizer.isSameDate(day, start)) {
         label = localizer.format(start, 'agendaTimeFormat')
-      } else if (dates.eq(day, end, 'day')) {
+      } else if (localizer.isSameDate(day, end)) {
         label = localizer.format(end, 'agendaTimeFormat')
       }
     }
 
-    if (dates.gt(day, start, 'day')) labelClass = 'rbc-continues-prior'
-    if (dates.lt(day, end, 'day')) labelClass += ' rbc-continues-after'
+    if (localizer.gt(day, start, 'day')) labelClass = 'rbc-continues-prior'
+    if (localizer.lt(day, end, 'day')) labelClass += ' rbc-continues-after'
 
     return (
       <span className={labelClass.trim()}>
@@ -143,11 +156,19 @@ function Agenda({
   }
 
   let { messages } = localizer
-  let end = dates.add(date, length, 'day')
+  let end = localizer.add(date, length, 'day')
 
-  let range = dates.range(date, end, 'day')
+  let range = localizer.range(date, end, 'day')
 
-  events = events.filter(event => inRange(event, dates.startOf(date, 'day'), dates.endOf(end, 'day'), accessors))
+  events = events.filter(event =>
+    inRange(
+      event,
+      localizer.startOf(date, 'day'),
+      localizer.endOf(end, 'day'),
+      accessors,
+      localizer
+    )
+  )
 
   events.sort((a, b) => +accessors.start(a) - +accessors.start(b))
 
@@ -184,34 +205,38 @@ function Agenda({
 }
 
 Agenda.propTypes = {
-  events: PropTypes.array,
-  date: PropTypes.instanceOf(Date),
-  length: PropTypes.number.isRequired,
-
-  selected: PropTypes.object,
-
   accessors: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
+  date: PropTypes.instanceOf(Date),
+  events: PropTypes.array,
   getters: PropTypes.object.isRequired,
+  length: PropTypes.number.isRequired,
   localizer: PropTypes.object.isRequired,
+  onSelectEvent: PropTypes.func,
+  onDoubleClickEvent: PropTypes.func,
+  selected: PropTypes.object,
 }
 
 Agenda.defaultProps = {
   length: 30,
 }
 
-Agenda.range = (start, { length = Agenda.defaultProps.length }) => {
-  let end = dates.add(start, length, 'day')
+Agenda.range = (start, { length = Agenda.defaultProps.length, localizer }) => {
+  let end = localizer.add(start, length, 'day')
   return { start, end }
 }
 
-Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
+Agenda.navigate = (
+  date,
+  action,
+  { length = Agenda.defaultProps.length, localizer }
+) => {
   switch (action) {
     case navigate.PREVIOUS:
-      return dates.add(date, -length, 'day')
+      return localizer.add(date, -length, 'day')
 
     case navigate.NEXT:
-      return dates.add(date, length, 'day')
+      return localizer.add(date, length, 'day')
 
     default:
       return date
@@ -219,7 +244,7 @@ Agenda.navigate = (date, action, { length = Agenda.defaultProps.length }) => {
 }
 
 Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
-  let end = dates.add(start, length, 'day')
+  let end = localizer.add(start, length, 'day')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }
 

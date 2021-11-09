@@ -1,3 +1,7 @@
+import moment from 'moment'
+import momentLocalizer from '../../src/localizers/moment'
+//import { DateTime } from 'luxon'
+//import luxonLocalizer from '../../src/localizers/luxon'
 import {
   endOfRange,
   eventSegments,
@@ -7,11 +11,14 @@ import {
   sortEvents,
 } from '../../src/utils/eventLevels'
 
+const localizer = momentLocalizer(moment)
+//const localizer = luxonLocalizer(DateTime)
+
 describe('endOfRange', () => {
   test('it adds one day by default', () => {
     const dateRange = [new Date(2017, 0, 1), new Date(2017, 0, 2)]
 
-    const result = endOfRange(dateRange)
+    const result = endOfRange({ dateRange, localizer })
 
     expect(result.first).toEqual(dateRange[0])
     expect(result.last).toEqual(new Date(2017, 0, 3))
@@ -20,7 +27,7 @@ describe('endOfRange', () => {
   test('it respects unit value when passed', () => {
     const dateRange = [new Date(2017, 0, 1), new Date(2017, 0, 2)]
 
-    const result = endOfRange(dateRange, 'week')
+    const result = endOfRange({ dateRange, unit: 'week', localizer })
 
     expect(result.first).toEqual(dateRange[0])
     expect(result.last).toEqual(new Date(2017, 0, 9))
@@ -39,7 +46,7 @@ describe('eventSegments', () => {
       new Date(2017, 0, 11),
     ]
 
-    const result = eventSegments(event, range, accessors)
+    const result = eventSegments(event, range, accessors, localizer)
 
     expect(result.event).toEqual(event)
   })
@@ -53,19 +60,19 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the event spans', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.span).toBe(4)
     })
 
     test('it sets left equal to one', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.left).toBe(1)
     })
 
     test('it sets right equal to the length of the range', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.right).toBe(4)
     })
@@ -79,19 +86,19 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the range spans', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.span).toBe(3)
     })
 
     test('it sets left equal to one', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.left).toBe(1)
     })
 
     test('it sets right equal to the length of the range', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.right).toBe(3)
     })
@@ -105,19 +112,19 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the range spans', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.span).toBe(3)
     })
 
     test('it sets left equal to one', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.left).toBe(1)
     })
 
     test('it sets right equal to the length of the range', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.right).toBe(3)
     })
@@ -134,19 +141,19 @@ describe('eventSegments', () => {
     ]
 
     test('it sets span equal to the number of days the event spans', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.span).toBe(4)
     })
 
     test('it sets left equal to the 1-based index into the range where the event starts', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.left).toBe(2)
     })
 
     test('it sets right equal to the 1-based index into the range where the event ends', () => {
-      const result = eventSegments(event, range, accessors)
+      const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.right).toBe(5)
     })
@@ -258,7 +265,9 @@ describe('inRange', () => {
   describe('matrix', () => {
     function compare(title, event, [rangeStart, rangeEnd], result = true) {
       it(`${title}: inRange ${result}`, () => {
-        expect(inRange(event, rangeStart, rangeEnd, accessors)).toBe(result)
+        expect(inRange(event, rangeStart, rangeEnd, accessors, localizer)).toBe(
+          result
+        )
       })
     }
     const weekOfThe5th = [d(5), d(11)]
@@ -367,7 +376,7 @@ describe('inRange', () => {
   test('it returns true when event starts before the range end and ends after the range start', () => {
     const event = { start: new Date(2017, 4, 12), end: new Date(2017, 4, 31) }
 
-    const result = inRange(event, rangeStart, rangeEnd, accessors)
+    const result = inRange(event, rangeStart, rangeEnd, accessors, localizer)
 
     expect(result).toBeTruthy()
   })
@@ -375,7 +384,7 @@ describe('inRange', () => {
   test('it returns false when event starts before the range end and ends before the range start', () => {
     const event = { start: new Date(2017, 3, 25), end: new Date(2017, 3, 28) }
 
-    const result = inRange(event, rangeStart, rangeEnd, accessors)
+    const result = inRange(event, rangeStart, rangeEnd, accessors, localizer)
 
     expect(result).toBeFalsy()
   })
@@ -383,7 +392,7 @@ describe('inRange', () => {
   test('it returns false when event starts after the range end and ends after the range start', () => {
     const event = { start: new Date(2017, 5, 2), end: new Date(2017, 5, 3) }
 
-    const result = inRange(event, rangeStart, rangeEnd, accessors)
+    const result = inRange(event, rangeStart, rangeEnd, accessors, localizer)
 
     expect(result).toBeFalsy()
   })
@@ -391,7 +400,7 @@ describe('inRange', () => {
   test('it returns true when event spans the whole range', () => {
     const event = { start: new Date(2017, 4, 1), end: new Date(2017, 5, 1) }
 
-    const result = inRange(event, rangeStart, rangeEnd, accessors)
+    const result = inRange(event, rangeStart, rangeEnd, accessors, localizer)
 
     expect(result).toBeTruthy()
   })
@@ -402,7 +411,7 @@ describe('inRange', () => {
       end: new Date(2017, 5, 1),
     }
 
-    const result = inRange(event, rangeStart, rangeEnd, accessors)
+    const result = inRange(event, rangeStart, rangeEnd, accessors, localizer)
 
     expect(result).toBeTruthy()
   })
@@ -480,13 +489,13 @@ describe('sortEvents', () => {
     }
 
     test('it returns a positive number when event B starts on a day before the start day of event A', () => {
-      const result = sortEvents(laterEvent, earlierEvent, accessors)
+      const result = sortEvents(laterEvent, earlierEvent, accessors, localizer)
 
       expect(result).toBeGreaterThan(0)
     })
 
     test('it returns a negative number when event A starts on a day before the start day of event B', () => {
-      const result = sortEvents(earlierEvent, laterEvent, accessors)
+      const result = sortEvents(earlierEvent, laterEvent, accessors, localizer)
 
       expect(result).toBeLessThan(0)
     })
@@ -504,13 +513,23 @@ describe('sortEvents', () => {
       }
 
       test('it returns a positive number when event B has a longer duration than event A', () => {
-        const result = sortEvents(shorterEvent, longerEvent, accessors)
+        const result = sortEvents(
+          shorterEvent,
+          longerEvent,
+          accessors,
+          localizer
+        )
 
         expect(result).toBeGreaterThan(0)
       })
 
       test('it returns a negative number when event A has a longer duration than event B', () => {
-        const result = sortEvents(longerEvent, shorterEvent, accessors)
+        const result = sortEvents(
+          longerEvent,
+          shorterEvent,
+          accessors,
+          localizer
+        )
 
         expect(result).toBeLessThan(0)
       })
@@ -530,13 +549,23 @@ describe('sortEvents', () => {
         }
 
         test('it returns a positive number when event B is an all day event', () => {
-          const result = sortEvents(nonAllDayEvent, allDayEvent, accessors)
+          const result = sortEvents(
+            nonAllDayEvent,
+            allDayEvent,
+            accessors,
+            localizer
+          )
 
           expect(result).toBeGreaterThan(0)
         })
 
         test('it returns a negative number when event A is an all day event', () => {
-          const result = sortEvents(allDayEvent, nonAllDayEvent, accessors)
+          const result = sortEvents(
+            allDayEvent,
+            nonAllDayEvent,
+            accessors,
+            localizer
+          )
 
           expect(result).toBeLessThan(0)
         })
@@ -555,7 +584,12 @@ describe('sortEvents', () => {
         }
 
         test('it returns zero', () => {
-          const result = sortEvents(allDayEvent, otherAllDayEvent, accessors)
+          const result = sortEvents(
+            allDayEvent,
+            otherAllDayEvent,
+            accessors,
+            localizer
+          )
 
           expect(result).toBe(0)
         })
@@ -574,20 +608,35 @@ describe('sortEvents', () => {
         }
 
         test('it returns a positive number when event B starts at an earlier time than event A', () => {
-          const result = sortEvents(laterEvent, earlierEvent, accessors)
+          const result = sortEvents(
+            laterEvent,
+            earlierEvent,
+            accessors,
+            localizer
+          )
 
           expect(result).toBeGreaterThan(0)
         })
 
         test('it returns a negative number when event A starts at an earlier time than event B', () => {
-          const result = sortEvents(earlierEvent, laterEvent, accessors)
+          const result = sortEvents(
+            earlierEvent,
+            laterEvent,
+            accessors,
+            localizer
+          )
 
           expect(result).toBeLessThan(0)
         })
 
         test('it returns zero when both events start at the same time', () => {
           const otherEarlierEvent = Object.assign({}, earlierEvent)
-          const result = sortEvents(earlierEvent, otherEarlierEvent, accessors)
+          const result = sortEvents(
+            earlierEvent,
+            otherEarlierEvent,
+            accessors,
+            localizer
+          )
 
           expect(result).toBe(0)
         })

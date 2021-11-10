@@ -315,7 +315,7 @@ export default class TimeGrid extends Component {
     const { min, max, scrollToTime, localizer } = props
 
     const diffMillis = scrollToTime - localizer.startOf(scrollToTime, 'day')
-    const totalMillis = localizer.diff(max, min)
+    const totalMillis = localizer.diff(min, max, 'milliseconds')
 
     this._scrollRatio = diffMillis / totalMillis
   }

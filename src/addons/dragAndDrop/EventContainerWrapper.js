@@ -70,7 +70,21 @@ class EventContainerWrapper extends React.Component {
 
     const { duration } = eventTimes(event, accessors, this.props.localizer)
     let newEnd = this.props.localizer.add(newSlot, duration, 'milliseconds')
-    this.update(event, slotMetrics.getRange(newSlot, newEnd, false, true))
+    const positionData = slotMetrics.getRange(newSlot, newEnd, false, true)
+
+    // Skip updates, when return "false" in onDragging event
+    if (
+      this.context.draggable.onDragging &&
+      this.context.draggable.onDragging({
+        event,
+        start: positionData.startDate,
+        end: positionData.endDate,
+        resourceId: this.props.resource,
+      }) === false
+    ) {
+      return
+    }
+    this.update(event, positionData)
   }
 
   handleResize(point, bounds) {
@@ -85,7 +99,20 @@ class EventContainerWrapper extends React.Component {
       end = localizer.max(newTime, slotMetrics.closestSlotFromDate(start))
     }
 
-    this.update(event, slotMetrics.getRange(start, end))
+    const positionData = slotMetrics.getRange(start, end)
+
+    // Skip updates, when return "false" in onResizing event
+    if (
+      this.context.draggable.onResizing &&
+      this.context.draggable.onResizing({
+        event,
+        start: positionData.startDate,
+        end: positionData.endDate,
+      }) === false
+    ) {
+      return
+    }
+    this.update(event, positionData)
   }
 
   handleDropFromOutside = (point, boundaryBox) => {

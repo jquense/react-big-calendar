@@ -82,6 +82,7 @@
     "rimraf": "^2.4.2",
     "sinon": "^1.17.6",
     "webpack": "^2.4.1",
+    "webpack-atoms": "^15.0.1",
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
@@ -94,7 +95,6 @@
     "react-overlays": "^0.7.0",
     "react-prop-types": "^0.4.0",
     "uncontrollable": "^3.3.1 || ^4.0.0",
-    "warning": "^2.0.0",
-    "webpack-atoms": "^15.0.1"
+    "warning": "^2.0.0"
   }
 }

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import * as dates from '../../utils/dates'
 import { DnDContext } from './DnDContext'
 
 import Selection, {
@@ -10,7 +9,6 @@ import Selection, {
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors, eventTimes, pointInColumn } from './common'
 import NoopWrapper from '../../NoopWrapper'
-import { hasStateOrPropsChanged } from '../../utils/helpers'
 
 class EventContainerWrapper extends React.Component {
   static propTypes = {
@@ -70,21 +68,21 @@ class EventContainerWrapper extends React.Component {
       bounds
     )
 
-    const { duration } = eventTimes(event, accessors)
-    let newEnd = dates.add(newSlot, duration, 'milliseconds')
+    const { duration } = eventTimes(event, accessors, this.props.localizer)
+    let newEnd = this.props.localizer.add(newSlot, duration, 'milliseconds')
     this.update(event, slotMetrics.getRange(newSlot, newEnd, false, true))
   }
 
   handleResize(point, bounds) {
-    const { accessors, slotMetrics } = this.props
+    const { accessors, slotMetrics, localizer } = this.props
     const { event, direction } = this.context.draggable.dragAndDropAction
     const newTime = slotMetrics.closestSlotFromPoint(point, bounds)
 
-    let { start, end } = eventTimes(event, accessors)
+    let { start, end } = eventTimes(event, accessors, localizer)
     if (direction === 'UP') {
-      start = dates.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
+      start = localizer.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
     } else if (direction === 'DOWN') {
-      end = dates.max(newTime, slotMetrics.closestSlotFromDate(start))
+      end = localizer.max(newTime, slotMetrics.closestSlotFromDate(start))
     }
 
     this.update(event, slotMetrics.getRange(start, end))
@@ -246,17 +244,6 @@ class EventContainerWrapper extends React.Component {
         </React.Fragment>
       ),
     })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return hasStateOrPropsChanged(
-      this.state,
-      nextState,
-      this.props,
-      nextProps,
-      [],
-      false
-    )
   }
 
   render() {

@@ -111,8 +111,7 @@ export default function withDragAndDrop(Calendar) {
         nextState,
         this.props,
         nextProps,
-        [],
-        false
+        []
       )
     }
 

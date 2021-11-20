@@ -74,7 +74,7 @@ export function hasStateOrPropsChanged(
       }
 
       // shouldPrint &&
-      // console.log(`${shouldPrint} Prop ${k}: `, oldProps[k], newProps[k])
+      //   console.log(`${shouldPrint} Prop ${k}: `, oldProps[k], newProps[k])
 
       return true
     }

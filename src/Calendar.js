@@ -982,8 +982,7 @@ class Calendar extends React.Component {
       nextState,
       this.props,
       nextProps,
-      ['selected'],
-      false
+      ['selected']
     )
   }
 

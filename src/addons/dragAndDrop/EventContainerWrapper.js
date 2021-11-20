@@ -9,7 +9,6 @@ import Selection, {
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors, eventTimes, pointInColumn } from './common'
 import NoopWrapper from '../../NoopWrapper'
-import { hasStateOrPropsChanged } from '../../utils/helpers'
 
 class EventContainerWrapper extends React.Component {
   static propTypes = {
@@ -245,17 +244,6 @@ class EventContainerWrapper extends React.Component {
         </React.Fragment>
       ),
     })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return hasStateOrPropsChanged(
-      this.state,
-      nextState,
-      this.props,
-      nextProps,
-      [],
-      false
-    )
   }
 
   render() {

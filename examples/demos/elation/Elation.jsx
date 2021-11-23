@@ -44,11 +44,13 @@ export default class Elation extends React.Component {
 
   onSelectSlot = ({ start, end, entityKey/*, slots */}) => {
     const name = getPhysicianName(entityKey || this.state.currentPhysicianId);
+    // eslint-disable-next-line no-undef
     alert(`Adding event from ${start.toLocaleString()} to ${end.toLocaleString()} for physician ${name}`);
   }
 
   onSelectEvent = (event/*, e*/) => {
     const name = getPhysicianName(event._physicianUserId);
+    // eslint-disable-next-line no-undef
     alert(`Selected appointment with ${event._patientName} for ${name} starting at ${new Date(event._apptTime).toLocaleString()}`);
   }
 
@@ -67,15 +69,16 @@ export default class Elation extends React.Component {
         formats={formats}
         nowTimezone="America/Los_Angeles"
         step={10}
-        rightOffset={10}
+        rightOffset={5}
         groupHeight={140}
         timeslots={6}
-        views={['week', 'multi']}
+        views={['day', 'week', 'multi']}
         messages={{
+          day: 'Day',
           week: '7 Days',
           multi: 'Multi-Providers'
         }}
-        defaultView="week"
+        defaultView="day"
         defaultDate={new Date(2015, 3, 12)}
         titleAccessor="_patientName"
         startAccessor={(event) => new Date(event._apptTime)}

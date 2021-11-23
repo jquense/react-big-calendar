@@ -39,6 +39,7 @@ class BackgroundCells extends React.Component {
       date: currentDate,
       components: { dateCellWrapper: Wrapper },
       localizer,
+      resourceId,
     } = this.props
     let { selecting, startIdx, endIdx } = this.state
     let current = getNow()
@@ -47,7 +48,7 @@ class BackgroundCells extends React.Component {
       <div className="rbc-row-bg">
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style } = getters.dayProp(date)
+          const { className, style } = getters.dayProp(date, resourceId)
 
           return (
             <Wrapper key={index} value={date} range={range}>

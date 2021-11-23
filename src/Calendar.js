@@ -580,7 +580,7 @@ class Calendar extends React.Component {
      * position may break the calendar in unexpected ways.
      *
      * ```js
-     * (date: Date) => { className?: string, style?: Object }
+     * (date: Date, resourceId) => { className?: string, style?: Object }
      * ```
      */
     dayPropGetter: PropTypes.func,

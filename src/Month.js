@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
 import chunk from 'lodash/chunk'
@@ -28,6 +27,7 @@ class MonthView extends React.Component {
     this._bgRows = []
     this._pendingSelection = []
     this.slotRowRef = React.createRef()
+    this.ref = React.createRef()
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
@@ -69,7 +69,7 @@ class MonthView extends React.Component {
   }
 
   getContainer = () => {
-    return findDOMNode(this)
+    return this.ref.current
   }
 
   render() {
@@ -84,6 +84,7 @@ class MonthView extends React.Component {
         className={clsx('rbc-month-view', className)}
         role="table"
         aria-label="Month View"
+        ref={this.ref}
       >
         <div className="rbc-row rbc-month-header" role="row">
           {this.renderHeaders(weeks[0])}
@@ -290,7 +291,7 @@ class MonthView extends React.Component {
     this.clearSelection()
 
     if (popup) {
-      let position = getPosition(cell, findDOMNode(this))
+      let position = getPosition(cell, this.ref.current)
 
       this.setState({
         overlay: { date, events, position, target },

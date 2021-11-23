@@ -36,10 +36,10 @@ export default class TimeGutter extends Component {
   }
 
   render() {
-    const { resource, components, getters } = this.props
+    const { resource, components, getters, innerRef } = this.props
 
     return (
-      <div className="rbc-time-gutter rbc-time-column">
+      <div className="rbc-time-gutter rbc-time-column" ref={innerRef}>
         {this.slotMetrics.groups.map((grp, idx) => {
           return (
             <TimeSlotGroup
@@ -65,6 +65,7 @@ TimeGutter.propTypes = {
   getNow: PropTypes.func.isRequired,
   components: PropTypes.object.isRequired,
   getters: PropTypes.object,
+  innerRef: PropTypes.object.isRequired,
 
   localizer: PropTypes.object.isRequired,
   resource: PropTypes.string,

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import clsx from 'clsx'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
@@ -23,6 +22,7 @@ class DayColumn extends React.Component {
     super(...args)
 
     this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
+    this.dayColumnRef = React.createRef()
   }
 
   componentDidMount() {
@@ -131,6 +131,7 @@ class DayColumn extends React.Component {
       <DayColumnWrapperComponent
         date={date}
         style={style}
+        innerRef={this.dayColumnRef}
         className={clsx(
           className,
           'rbc-day-slot',
@@ -248,11 +249,14 @@ class DayColumn extends React.Component {
   }
 
   _selectable = () => {
-    let node = findDOMNode(this)
+    let node = this.dayColumnRef.current
     const { longPressThreshold, localizer } = this.props
-    let selector = (this._selector = new Selection(() => findDOMNode(this), {
-      longPressThreshold: longPressThreshold,
-    }))
+    let selector = (this._selector = new Selection(
+      () => this.dayColumnRef.current,
+      {
+        longPressThreshold: longPressThreshold,
+      }
+    ))
 
     let maybeSelect = box => {
       let onSelecting = this.props.onSelecting
@@ -310,7 +314,7 @@ class DayColumn extends React.Component {
     }
 
     let selectorClicksHandler = (box, actionType) => {
-      if (!isEvent(findDOMNode(this), box)) {
+      if (!isEvent(this.dayColumnRef.current, box)) {
         const { startDate, endDate } = selectionState(box)
         this._selectSlot({
           startDate,
@@ -328,7 +332,7 @@ class DayColumn extends React.Component {
     selector.on('beforeSelect', box => {
       if (this.props.selectable !== 'ignoreEvents') return
 
-      return !isEvent(findDOMNode(this), box)
+      return !isEvent(this.dayColumnRef.current, box)
     })
 
     selector.on('click', box => selectorClicksHandler(box, 'click'))

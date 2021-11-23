@@ -1,6 +1,6 @@
 {
   "name": "@elationhealth/react-big-calendar",
-  "version": "0.12.6",
+  "version": "0.12.7",
   "description": "Calendar! with events",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "repository": "intljusticemission/react-big-calendar",
@@ -88,8 +88,8 @@
     "lodash": "^4.17.4",
     "moment": "2.17.1",
     "moment-timezone": "0.5.13",
-    "react-overlays": "^0.8.3",
     "prop-types-extra": "^1.0.0",
+    "react-overlays": "^0.8.3",
     "uncontrollable": "^5.1.0",
     "warning": "^3.0.0"
   }

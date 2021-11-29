@@ -569,7 +569,7 @@ class Calendar extends React.Component {
      * Optionally provide a function that returns an object of props to be applied
      * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
      * ```js
-     * () => { style?: Object }
+     * (group: Date[]) => { style?: Object }
      * ```
      */
     slotGroupPropGetter: PropTypes.func,

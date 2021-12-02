@@ -19,6 +19,8 @@ export default function withDragAndDrop(Calendar) {
       onDragStart: PropTypes.func,
       onDragOver: PropTypes.func,
       onDropFromOutside: PropTypes.func,
+      onEventResizing: PropTypes.func,
+      onEventDragging: PropTypes.func,
 
       dragFromOutsideItem: PropTypes.func,
 
@@ -57,6 +59,8 @@ export default function withDragAndDrop(Calendar) {
           onEnd: this.handleInteractionEnd,
           onBeginAction: this.handleBeginAction,
           onDropFromOutside: this.props.onDropFromOutside,
+          onResizing: this.props.onEventResizing,
+          onDragging: this.props.onEventDragging,
           dragFromOutsideItem: this.props.dragFromOutsideItem,
           draggableAccessor: this.props.draggableAccessor,
           resizableAccessor: this.props.resizableAccessor,

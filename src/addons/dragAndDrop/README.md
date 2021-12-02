@@ -23,12 +23,14 @@ return (
 Set `resizable` to false in your calendar if you don't want events to be resizable.
 `resizable` is set to true by default.
 
-The HOC adds `onEventDrop`, `onEventResize`, and `onDragStart` callback properties if the events are
+The HOC adds `onEventDrop`, `onEventResize`, `onEventResizing`, `onEventDragging` and `onDragStart` callback properties if the events are
 moved or resized. These callbacks are called with these signatures:
 
 ```js
    function onEventDrop({ event, start, end, allDay }) {...}
-   function onEventResize(type, { event, start, end, allDay }) {...}  // type is always 'drop'
+   function onEventDragging({ event, start, end, resourceId }) {...} // when return "false" prevent dragging
+   function onEventResize({ event, start, end, allDay }) {...}
+   function onEventResizing({ event, start, end }) {...} // when return "false" prevent resizing
    function onDragStart({ event, action, direction }) {...}
 ```
 

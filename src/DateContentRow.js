@@ -3,7 +3,6 @@ import getHeight from 'dom-helpers/height'
 import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
@@ -17,6 +16,7 @@ class DateContentRow extends React.Component {
     super(...args)
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
+    this.ref = React.createRef()
   }
 
   handleSelectSlot = slot => {
@@ -28,7 +28,7 @@ class DateContentRow extends React.Component {
   handleShowMore = (slot, target) => {
     const { range, onShowMore } = this.props
     let metrics = this.slotMetrics(this.props)
-    let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
+    let row = qsa(this.ref.current, '.rbc-row-bg')[0]
 
     let cell
     if (row) cell = row.children[slot - 1]
@@ -47,13 +47,13 @@ class DateContentRow extends React.Component {
 
   getContainer = () => {
     const { container } = this.props
-    return container ? container() : findDOMNode(this)
+    return container ? container() : this.ref.current
   }
 
   getRowLimit() {
     let eventHeight = getHeight(this.eventRow)
     let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
-    let eventSpace = getHeight(findDOMNode(this)) - headingHeight
+    let eventSpace = getHeight(this.ref.current) - headingHeight
 
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
@@ -152,7 +152,7 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className} role="rowgroup">
+      <div className={className} role="rowgroup" ref={this.ref}>
         <BackgroundCells
           localizer={localizer}
           date={date}

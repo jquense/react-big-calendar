@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
 import DayColumn from './DayColumn'
@@ -23,6 +22,7 @@ export default class TimeGrid extends Component {
 
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
+    this.gutterRef = React.createRef()
     this._scrollRatio = null
   }
 
@@ -81,10 +81,6 @@ export default class TimeGrid extends Component {
     ) {
       this.calculateScroll(nextProps)
     }
-  }
-
-  gutterRef = ref => {
-    this.gutter = ref && findDOMNode(ref)
   }
 
   handleSelectAlldayEvent = (...args) => {
@@ -260,7 +256,7 @@ export default class TimeGrid extends Component {
         >
           <TimeGutter
             date={start}
-            ref={this.gutterRef}
+            innerRef={this.gutterRef}
             localizer={localizer}
             min={localizer.merge(start, min)}
             max={localizer.merge(start, max)}
@@ -293,7 +289,7 @@ export default class TimeGrid extends Component {
     }
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
-        const width = getWidth(this.gutter)
+        const width = getWidth(this.gutterRef.current)
 
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })

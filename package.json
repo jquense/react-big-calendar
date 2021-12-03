@@ -109,7 +109,7 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "mt-changelog": "^0.6.1",
-    "node-sass": "4.12.0",
+    "node-sass": "^6.0.1",
     "postcss": "^7.0.16",
     "postcss-cli": "^6.1.2",
     "prettier": "^1.15.1",

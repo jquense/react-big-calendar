@@ -7,7 +7,12 @@ const DateHeader = ({ label, drilldownView, onDrillDown }) => {
   }
 
   return (
-    <button className="rbc-button-link" onClick={onDrillDown} role="cell">
+    <button
+      type="button"
+      className="rbc-button-link"
+      onClick={onDrillDown}
+      role="cell"
+    >
       {label}
     </button>
   )

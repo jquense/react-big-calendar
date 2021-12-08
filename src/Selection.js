@@ -99,7 +99,7 @@ class Selection {
 
   teardown() {
     this.isDetached = true
-    this.listeners = Object.create(null)
+    this._listeners = Object.create(null)
     this._removeTouchMoveWindowListener && this._removeTouchMoveWindowListener()
     this._removeInitialEventListener && this._removeInitialEventListener()
     this._removeEndListener && this._removeEndListener()
@@ -108,7 +108,8 @@ class Selection {
     this._removeKeyUpListener && this._removeKeyUpListener()
     this._removeKeyDownListener && this._removeKeyDownListener()
     this._removeDropFromOutsideListener && this._removeDropFromOutsideListener()
-    this._removeDragOverFromOutsideListener && this._removeDragOverFromOutsideListener()
+    this._removeDragOverFromOutsideListener &&
+      this._removeDragOverFromOutsideListener()
   }
 
   isSelected(node) {
@@ -412,8 +413,8 @@ class Selection {
     let { x, y, isTouch } = this._initialEventData
     return (
       !isTouch &&
-      (Math.abs(pageX - x) <= clickTolerance &&
-        Math.abs(pageY - y) <= clickTolerance)
+      Math.abs(pageX - x) <= clickTolerance &&
+      Math.abs(pageY - y) <= clickTolerance
     )
   }
 }
@@ -455,15 +456,17 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
     bottom: bBottom = bTop,
   } = getBoundsForNode(nodeB)
 
-  return !// 'a' bottom doesn't touch 'b' top
-  (
-    aBottom - tolerance < bTop ||
-    // 'a' top doesn't touch 'b' bottom
-    aTop + tolerance > bBottom ||
-    // 'a' right doesn't touch 'b' left
-    aRight - tolerance < bLeft ||
-    // 'a' left doesn't touch 'b' right
-    aLeft + tolerance > bRight
+  return !(
+    // 'a' bottom doesn't touch 'b' top
+    (
+      aBottom - tolerance < bTop ||
+      // 'a' top doesn't touch 'b' bottom
+      aTop + tolerance > bBottom ||
+      // 'a' right doesn't touch 'b' left
+      aRight - tolerance < bLeft ||
+      // 'a' left doesn't touch 'b' right
+      aLeft + tolerance > bRight
+    )
   )
 }
 

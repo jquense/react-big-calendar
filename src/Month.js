@@ -217,7 +217,14 @@ class MonthView extends React.Component {
         placement="bottom"
         show={!!overlay.position}
         onHide={() => this.setState({ overlay: null })}
-        target={() => overlay.target}
+        target={() => {
+          const { target } = overlay
+          if (target && !target.isConnected) {
+            this.setState({ overlay: null })
+            return
+          }
+          return target
+        }}
       >
         {({ props }) => (
           <Popup

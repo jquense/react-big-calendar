@@ -8,9 +8,14 @@ import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
 class Popup extends React.Component {
-  componentDidMount() {
-    let { popupOffset = 5, popperRef } = this.props,
-      { top, left, width, height } = getOffset(popperRef.current),
+  
+  innerRef = React.createRef()
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.style === this.props.style) return
+    
+    let { popupOffset = 5 } = this.props,
+      { top, left, width, height } = getOffset(this.innerRef.current),
       viewBottom = window.innerHeight + getScrollTop(window),
       viewRight = window.innerWidth + getScrollLeft(window),
       bottom = top + height,
@@ -27,7 +32,14 @@ class Popup extends React.Component {
       this.setState({ topOffset, leftOffset }) //eslint-disable-line
     }
   }
-
+  
+  mergeRef = ref => {
+      const outerRef = this.props.popperRef
+      if (typeof outerRef === 'function') outerRef(ref)
+      else if (outerRef) outerRef.current = ref
+      this.innerRef.current = ref
+ }
+  
   render() {
     let {
       events,
@@ -41,7 +53,6 @@ class Popup extends React.Component {
       slotStart,
       slotEnd,
       localizer,
-      popperRef,
     } = this.props
 
     let { width } = this.props.position,
@@ -58,7 +69,7 @@ class Popup extends React.Component {
       <div
         style={{ ...this.props.style, ...style }}
         className="rbc-overlay"
-        ref={popperRef}
+        ref={this.mergeRef}
       >
         <div className="rbc-overlay-header">
           {localizer.format(slotStart, 'dayHeaderFormat')}

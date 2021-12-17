@@ -2245,7 +2245,7 @@
               ('(' === (o = o || '()')[0]
                 ? this.isAfter(r, n)
                 : !this.isBefore(r, n)) &&
-                (')' === o[1] ? this.isBefore(a, n) : !this.isAfter(a, n))
+              (')' === o[1] ? this.isBefore(a, n) : !this.isAfter(a, n))
             )
           }),
           (hn.isSame = function(e, t) {
@@ -7521,7 +7521,9 @@
           null != e &&
           !r(e)
         ) ||
-        i.test(e) || !a.test(e) || (null != t && e in Object(t))
+        i.test(e) ||
+        !a.test(e) ||
+        (null != t && e in Object(t))
       )
     }
   },
@@ -26307,8 +26309,8 @@ object-assign
         ? 0 === r.type
         : !o &&
           2 < t.length &&
-            ('o' === t[0] || 'O' === t[0]) &&
-            ('n' === t[1] || 'N' === t[1])) ||
+          ('o' === t[0] || 'O' === t[0]) &&
+          ('n' === t[1] || 'N' === t[1])) ||
         ((function(e, t, n, o) {
           if (
             null == t ||
@@ -28853,7 +28855,8 @@ object-assign
         ;(i = l),
           (a.shared.pending = null),
           null !== (c = e.alternate) &&
-            null !== (c = c.updateQueue) && (c.baseQueue = l)
+            null !== (c = c.updateQueue) &&
+            (c.baseQueue = l)
       }
       if (null !== i) {
         c = i.next
@@ -28991,7 +28994,8 @@ object-assign
         ? e.shouldComponentUpdate(o, a, i)
         : !t.prototype ||
             !t.prototype.isPureReactComponent ||
-            !Fo(n, o) || !Fo(r, a)
+            !Fo(n, o) ||
+            !Fo(r, a)
     }
     function ga(e, t, n) {
       var o = !1,
@@ -38483,14 +38487,15 @@ object-assign
   function(e, t, n) {
     ;(function(e, o) {
       var r
-      /**
-       * @license
-       * Lodash <https://lodash.com/>
-       * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
-       * Released under MIT license <https://lodash.com/license>
-       * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-       * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-       */ ;(function() {
+        /**
+         * @license
+         * Lodash <https://lodash.com/>
+         * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+         * Released under MIT license <https://lodash.com/license>
+         * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+         * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+         */
+      ;(function() {
         var a = 'Expected a function',
           i = '__lodash_placeholder__',
           l = [
@@ -41044,7 +41049,9 @@ object-assign
                 null != e &&
                 !Zi(e)
               ) ||
-              X.test(e) || !R.test(e) || (null != t && e in fe(t))
+              X.test(e) ||
+              !R.test(e) ||
+              (null != t && e in fe(t))
             )
           }
           function ua(e) {
@@ -47782,7 +47789,8 @@ object-assign
           (t.equals = function(e) {
             return (
               !(!this.isValid || !e.isValid) &&
-              this.s.equals(e.s) && this.e.equals(e.e)
+              this.s.equals(e.s) &&
+              this.e.equals(e.e)
             )
           }),
           (t.intersection = function(t) {

@@ -396,6 +396,32 @@ class Calendar extends React.Component {
     showAllEvents: PropTypes.bool,
 
     /**
+     * Number of allday events to display in the TimeGrid views before rendering
+     * "+{count} more" which is also a counted row. This will
+     * cause the rows to be scrollable if
+     * the number of events exceed the height of the row.
+     * Set Infinity to show all
+     *
+     * Set a number for all TimeGrid views
+     * ```jsx
+     * showAllDayEventsMax = {4}
+     * ```
+     *
+     * Or an object for individual views
+     * ```jsx
+     * showAllDayEventsMax = {{
+     *   week: 6,
+     *   day: 7,
+     * }}
+     * ```
+     * In any case the default value is 5
+     */
+    showAllDayEventsMax: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.object,
+    ]),
+
+    /**
      * The selected event, if any.
      */
     selected: PropTypes.object,

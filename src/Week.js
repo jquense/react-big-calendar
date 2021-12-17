@@ -16,6 +16,7 @@ class Week extends React.Component {
       min = localizer.startOf(new Date(), 'day'),
       max = localizer.endOf(new Date(), 'day'),
       scrollToTime = localizer.startOf(new Date(), 'day'),
+      showAllDayEventsMax,
       ...props
     } = this.props
     let range = Week.range(date, this.props)
@@ -29,6 +30,13 @@ class Week extends React.Component {
         min={min}
         max={max}
         scrollToTime={scrollToTime}
+        showAllDayEventsMax={
+          Number(showAllDayEventsMax?.week)
+            ? showAllDayEventsMax.week
+            : Number(showAllDayEventsMax)
+            ? showAllDayEventsMax
+            : 5
+        }
       />
     )
   }
@@ -40,6 +48,8 @@ Week.propTypes = {
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
   scrollToTime: PropTypes.instanceOf(Date),
+  showAllDayEventsMax: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
+    .isRequired,
 }
 
 Week.defaultProps = TimeGrid.defaultProps

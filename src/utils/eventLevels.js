@@ -13,11 +13,8 @@ export function eventSegments(event, range, accessors, localizer) {
   let { first, last } = endOfRange({ dateRange: range, localizer })
 
   let slots = localizer.diff(first, last, 'day')
-  let start = localizer.max(
-    localizer.startOf(accessors.start(event), 'day'),
-    first
-  )
-  let end = localizer.min(localizer.ceil(accessors.end(event), 'day'), last)
+  let start = localizer.max(accessors.start(event), first)
+  let end = localizer.min(accessors.end(event), last)
 
   let padding = findIndex(range, x => localizer.isSameDate(x, start))
   let span = localizer.diff(start, end, 'day')

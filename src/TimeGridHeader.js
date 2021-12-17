@@ -171,6 +171,7 @@ class TimeGridHeader extends React.Component {
               rtl={rtl}
               getNow={getNow}
               minRows={2}
+              maxRows={this.props.showAllDayEventsMax}
               range={range}
               events={groupedEvents.get(id) || []}
               resourceId={resource && id}
@@ -187,6 +188,7 @@ class TimeGridHeader extends React.Component {
               onSelectSlot={this.props.onSelectSlot}
               longPressThreshold={this.props.longPressThreshold}
               resizable={resizable}
+              showAllEvents={this.props.showAllDayEventsMax === Infinity}
             />
           </div>
         ))}
@@ -222,6 +224,7 @@ TimeGridHeader.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
+  showAllDayEventsMax: PropTypes.number.isRequired,
 }
 
 export default TimeGridHeader

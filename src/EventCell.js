@@ -9,7 +9,6 @@ class EventCell extends React.Component {
       className,
       event,
       selected,
-      isAllDay,
       onSelect,
       onDoubleClick,
       onKeyPress,
@@ -32,10 +31,8 @@ class EventCell extends React.Component {
     let start = accessors.start(event)
     let allDay = accessors.allDay(event)
 
-    let showAsAllDay =
-      isAllDay ||
-      allDay ||
-      localizer.diff(start, localizer.ceil(end, 'day'), 'day') > 1
+    let isAllDay =
+      allDay ?? event.allDay ?? localizer.diff(start, end, 'hours') >= 24
 
     let userProps = getters.eventProp(event, start, end, selected)
 
@@ -47,7 +44,7 @@ class EventCell extends React.Component {
             continuesPrior={continuesPrior}
             continuesAfter={continuesAfter}
             title={title}
-            isAllDay={allDay}
+            isAllDay={isAllDay}
             localizer={localizer}
             slotStart={slotStart}
             slotEnd={slotEnd}
@@ -66,7 +63,7 @@ class EventCell extends React.Component {
           style={{ ...userProps.style, ...style }}
           className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
-            'rbc-event-allday': showAsAllDay,
+            'rbc-event-allday': isAllDay,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
           })}
@@ -88,7 +85,6 @@ EventCell.propTypes = {
 
   resizable: PropTypes.bool,
   selected: PropTypes.bool,
-  isAllDay: PropTypes.bool,
   continuesPrior: PropTypes.bool,
   continuesAfter: PropTypes.bool,
 

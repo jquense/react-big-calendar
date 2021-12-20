@@ -32,10 +32,10 @@
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
-    "s": "node-sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
+    "s": "sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
     "sass": "yarn s  && yarn sass-dnd",
-    "sass-dnd": "node-sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
-    "autoprefixer": "postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/css/react-big/calendar.css | postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/addons/dragAndDrop/styles.css",
+    "sass-dnd": "sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
+    "autoprefixer": "postcss ./lib/css/react-big-calendar.css && postcss ./lib/addons/dragAndDrop/styles.css",
     "build:css": "yarn sass && yarn autoprefixer",
     "assets": "cpy src/sass/* lib/sass && yarn assets-addons",
     "assets-addons": "cpy addons/**/*.scss ../lib/ --cwd=src --parents",
@@ -68,6 +68,11 @@
     "trailingComma": "es5",
     "bracketSpacing": true
   },
+  "browserslist": [
+    "ie >= 10",
+    "safari >= 8",
+    "last 2 versions"
+  ],
   "peerDependencies": {
     "react": "^16.6.1 || ^17",
     "react-dom": "^16.6.1 || ^17"
@@ -80,7 +85,7 @@
     "@commitlint/config-conventional": "^12.1.4",
     "@storybook/addon-actions": "^6.1.15",
     "@storybook/react": "^6.1.15",
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^10.4.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -109,9 +114,8 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "mt-changelog": "^0.6.1",
-    "node-sass": "4.12.0",
-    "postcss": "^7.0.16",
-    "postcss-cli": "^6.1.2",
+    "postcss": "^8.4.5",
+    "postcss-cli": "^9.1.0",
     "prettier": "^1.15.1",
     "react": "^16.13.1",
     "react-bootstrap": "^0.32.4",
@@ -126,6 +130,7 @@
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-size-snapshot": "^0.8.0",
     "rollup-plugin-terser": "^4.0.2",
+    "sass": "1.44.0",
     "webpack": "^4.25.1",
     "webpack-atoms": "^8.0.0",
     "webpack-cli": "^3.1.2",

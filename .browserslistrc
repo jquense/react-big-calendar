@@ -1,0 +1,7 @@
+# Supported Browsers
+# came from previous autoprefixer script call
+# TODO: review browser support 
+
+ie >= 10
+safari >= 8
+last 2 versions

@@ -1,0 +1,7 @@
+# Supported Browsers
+# Pulled from previous postcss script
+# TODO: review support matrix
+
+ie >= 10
+safari >= 8
+last 2 versions

@@ -68,11 +68,6 @@
     "trailingComma": "es5",
     "bracketSpacing": true
   },
-  "browserslist": [
-    "ie >= 10",
-    "safari >= 8",
-    "last 2 versions"
-  ],
   "peerDependencies": {
     "react": "^16.6.1 || ^17",
     "react-dom": "^16.6.1 || ^17"

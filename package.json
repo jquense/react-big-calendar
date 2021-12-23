@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.23.0",
+  "version": "0.38.2",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -155,7 +155,5 @@
   "bugs": {
     "url": "https://github.com/jquense/react-big-calendar/issues"
   },
-  "readme": "ERROR: No README data found!",
-  "homepage": "https://github.com/jquense/react-big-calendar#readme",
-  "_id": "react-big-calendar@0.22.1"
+  "homepage": "https://github.com/jquense/react-big-calendar#readme"
 }

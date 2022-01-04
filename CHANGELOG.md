@@ -1,3 +1,10 @@
+## [0.38.3](https://github.com/jquense/react-big-calendar/compare/v0.38.2...v0.38.3) (2022-01-04)
+
+
+### Bug Fixes
+
+* Correct typo in custom view example ([267629b](https://github.com/jquense/react-big-calendar/commit/267629b5d253b5247b2cd2071764e6bb86c4d3a5))
+
 ## [0.22.1](https://github.com/jquense/react-big-calendar/compare/v0.22.0...v0.22.1) (2019-09-13)
 
 ### Bug Fixes

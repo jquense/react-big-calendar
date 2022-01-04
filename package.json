@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.38.2",
+  "version": "0.38.3",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -32,9 +32,9 @@
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
-    "s": "sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
+    "s": "sass ./lib/sass/styles.scss ./lib/css/react-big-calendar.css",
     "sass": "yarn s  && yarn sass-dnd",
-    "sass-dnd": "sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
+    "sass-dnd": "sass ./lib/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
     "autoprefixer": "postcss ./lib/css/react-big-calendar.css && postcss ./lib/addons/dragAndDrop/styles.css",
     "build:css": "yarn sass && yarn autoprefixer",
     "assets": "cpy src/sass/* lib/sass && yarn assets-addons",

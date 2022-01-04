@@ -1,3 +1,10 @@
+## [0.38.4](https://github.com/jquense/react-big-calendar/compare/v0.38.3...v0.38.4) (2022-01-04)
+
+
+### Bug Fixes
+
+* **sass:** Reference distributed folder in SASS compile ([#2091](https://github.com/jquense/react-big-calendar/issues/2091)) ([20502f3](https://github.com/jquense/react-big-calendar/commit/20502f334a3c9ce62a1322a88d897b9afa66ee23)), closes [#2086](https://github.com/jquense/react-big-calendar/issues/2086)
+
 ## [0.38.3](https://github.com/jquense/react-big-calendar/compare/v0.38.2...v0.38.3) (2022-01-04)
 
 

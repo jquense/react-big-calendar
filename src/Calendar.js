@@ -588,11 +588,12 @@ class Calendar extends React.Component {
     /**
      * Support to show multi-day events with specific start and end times in the
      * main time grid (rather than in the all day header).
+     * The property is a function, which allows to return a boolean for each event.
      *
      * **Note: This may cause calendars with several events to look very busy in
      * the week and day views.**
      */
-    showMultiDayTimes: PropTypes.bool,
+    showMultiDayTimes: PropTypes.func,
 
     /**
      * Constrains the minimum _time_ of the Day and Week views.

@@ -205,7 +205,7 @@ export default class TimeGrid extends Component {
         if (
           accessors.allDay(event) ||
           localizer.startAndEndAreDateOnly(eStart, eEnd) ||
-          (!showMultiDayTimes && !localizer.isSameDate(eStart, eEnd))
+          !showMultiDayTimes(event)
         ) {
           allDayEvents.push(event)
         } else {
@@ -352,7 +352,7 @@ TimeGrid.propTypes = {
   getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date).isRequired,
-  showMultiDayTimes: PropTypes.bool,
+  showMultiDayTimes: PropTypes.func,
 
   rtl: PropTypes.bool,
   resizable: PropTypes.bool,

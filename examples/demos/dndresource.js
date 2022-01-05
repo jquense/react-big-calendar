@@ -9,16 +9,18 @@ const DragAndDropCalendar = withDragAndDrop(Calendar)
 const events = [
   {
     id: 0,
-    title: 'Board meeting',
+    title: 'Board meeting 1',
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
+    isAllDay: true,
     resourceId: [1, 2],
   },
   {
     id: 1,
-    title: 'MS training',
+    title: 'MS training 2',
     start: new Date(2018, 0, 29, 14, 0, 0),
     end: new Date(2018, 0, 29, 16, 30, 0),
+    isAllDay: true,
     resourceId: 2,
   },
   {
@@ -194,7 +196,14 @@ class Dnd extends React.Component {
           onEventResize={this.resizeEvent}
           defaultView="day"
           step={15}
-          showMultiDayTimes={true}
+          showMultiDayTimes={event => {
+            console.log('The event in showMultiDayTimes', event)
+
+            if (event.isAllDay) {
+              return false
+            }
+            return true
+          }}
           defaultDate={new Date(2018, 0, 29)}
         />
       </>

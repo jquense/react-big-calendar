@@ -150,8 +150,10 @@ class Dnd extends React.Component {
     })
   }
 
-  resizeEvent = (resizeType, { event, start, end }) => {
+  resizeEvent = ({ event, start, end }) => {
     const { events } = this.state
+
+    console.log('events', events)
 
     const nextEvents = events.map(existingEvent => {
       return existingEvent.id == event.id

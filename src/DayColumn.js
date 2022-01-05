@@ -409,7 +409,7 @@ DayColumn.propTypes = {
   getters: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
 
-  showMultiDayTimes: PropTypes.func,
+  showMultiDayTimes: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   culture: PropTypes.string,
   timeslots: PropTypes.number,
 

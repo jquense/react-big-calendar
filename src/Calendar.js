@@ -593,7 +593,7 @@ class Calendar extends React.Component {
      * **Note: This may cause calendars with several events to look very busy in
      * the week and day views.**
      */
-    showMultiDayTimes: PropTypes.func,
+    showMultiDayTimes: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
 
     /**
      * Constrains the minimum _time_ of the Day and Week views.

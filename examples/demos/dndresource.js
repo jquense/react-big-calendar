@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 import { Calendar } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -12,7 +13,13 @@ const events = [
     title: 'Board meeting 1',
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
-    isAllDay: true,
+    resourceId: [1, 2],
+  },
+  {
+    id: 0,
+    title: 'Board meeting 2',
+    start: new Date(2018, 0, 29, 17, 0, 0),
+    end: new Date(2018, 0, 29, 23, 15, 0),
     resourceId: [1, 2],
   },
   {
@@ -20,7 +27,6 @@ const events = [
     title: 'MS training 2',
     start: new Date(2018, 0, 29, 14, 0, 0),
     end: new Date(2018, 0, 29, 16, 30, 0),
-    isAllDay: true,
     resourceId: 2,
   },
   {
@@ -32,7 +38,7 @@ const events = [
   },
   {
     id: 10,
-    title: 'Board meeting',
+    title: 'Board meeting 3',
     start: new Date(2018, 0, 30, 23, 0, 0),
     end: new Date(2018, 0, 30, 23, 59, 0),
     resourceId: 1,
@@ -197,12 +203,26 @@ class Dnd extends React.Component {
           defaultView="day"
           step={15}
           showMultiDayTimes={event => {
-            console.log('The event in showMultiDayTimes', event)
+            //if return true, the event is shown in allday-Row
 
-            if (event.isAllDay) {
-              return false
+            const startMoment = moment(event.start)
+            const endMoment = moment(event.end)
+
+            console.log('dates', startMoment, endMoment)
+
+            console.log('hours', startMoment.hours(), endMoment.hours())
+            console.log('minutes', startMoment.minutes(), endMoment.minutes())
+
+            if (
+              startMoment.isSame(endMoment, 'day') &&
+              startMoment.hours() === 0 &&
+              startMoment.minutes() === 0 &&
+              endMoment.hours() === 23 &&
+              endMoment.minutes() === 15
+            ) {
+              return true
             }
-            return true
+            return false
           }}
           defaultDate={new Date(2018, 0, 29)}
         />

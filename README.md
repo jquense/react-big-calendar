@@ -2,7 +2,7 @@
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
-[**DEMO and Docs**](http://jquense.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 
@@ -17,11 +17,12 @@ element has a height, or the calendar won't be visible. To provide your own cust
 
 - [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
 - [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+- [react-big-calendar with TypeScript and React hooks bundled with Vite](https://github.com/christopher-caldwell/react-big-calendar-demo)
 
 ## Run examples locally
 
 ```sh
-$ git clone git@github.com:intljusticemission/react-big-calendar.git
+$ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
 $ yarn examples
@@ -31,8 +32,8 @@ $ yarn examples
 
 ### Localization and Date Formatting
 
-`react-big-calendar` includes two options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](http://momentjs.com/) or [Globalize.js](https://github.com/jquery/globalize) localizers.
+`react-big-calendar` includes three options for handling the date formatting and culture localization, depending
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
@@ -78,7 +79,7 @@ const MyCalendar = props => (
 )
 ```
 
-#### date-fns 2.0
+#### date-fns v2
 
 ```js
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
@@ -86,9 +87,12 @@ import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
+import enUS from 'date-fns/locale/en-US'
+
 const locales = {
-  'en-US': require('date-fns/locale/en-US'),
+  'en-US': enUS,
 }
+
 const localizer = dateFnsLocalizer({
   format,
   parse,
@@ -115,7 +119,6 @@ const MyCalendar = props => (
 Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style
 Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
 
-
 ```
   @import 'react-big-calendar/lib/sass/styles';
   @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
@@ -127,4 +130,4 @@ Big Calendar. Carefully test each change accordingly.
 
 ## Join us on Reactiflux Discord
 
-Join us on [Reactiflux Discord](https://discord.gg/PPgj6tb) community under the channel #libraries if you have any questions.
+Join us on [Reactiflux Discord](https://discord.gg/reactiflux) community under the channel #libraries if you have any questions.

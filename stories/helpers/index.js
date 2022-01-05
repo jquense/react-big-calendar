@@ -2,6 +2,7 @@ import { addDecorator } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
 import moment from 'moment'
+import 'moment-timezone'
 import React from 'react'
 
 import { Calendar as BaseCalendar, momentLocalizer } from '../../src'
@@ -17,6 +18,9 @@ export { Views } from '../../src'
 addDecorator(function WithHeight(fn) {
   return <div style={{ height: 600 }}>{fn()}</div>
 })
+
+// uncomment for timezone testing in Storybook
+//moment.tz.setDefault('America/Los_Angeles')
 
 const localizer = momentLocalizer(moment)
 
@@ -109,6 +113,21 @@ export const events = [
     start: moment().toDate(),
     end: moment()
       .add(3, 'days')
+      .toDate(),
+    allDay: false,
+  },
+]
+
+export const backgroundEvents = [
+  {
+    title: 'test background event',
+    start: moment()
+      .startOf('day')
+      .add(2, 'hours')
+      .toDate(),
+    end: moment()
+      .startOf('day')
+      .add(12, 'hours')
       .toDate(),
     allDay: false,
   },

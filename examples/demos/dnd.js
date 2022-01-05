@@ -55,7 +55,7 @@ class Dnd extends React.Component {
 
     const nextEvents = events.map(existingEvent => {
       return existingEvent.id == event.id
-        ? { ...existingEvent, start, end }
+        ? { ...existingEvent, start, end, allDay }
         : existingEvent
     })
 
@@ -82,7 +82,7 @@ class Dnd extends React.Component {
     //alert(`${event.title} was resized to ${start}-${end}`)
   }
 
-  newEvent(event) {
+  newEvent(_event) {
     // let idList = this.state.events.map(a => a.id)
     // let newId = Math.max(...idList) + 1
     // let hour = {

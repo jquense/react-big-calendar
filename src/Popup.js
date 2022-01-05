@@ -3,7 +3,6 @@ import React from 'react'
 import getOffset from 'dom-helpers/offset'
 import getScrollTop from 'dom-helpers/scrollTop'
 import getScrollLeft from 'dom-helpers/scrollLeft'
-import * as dates from './utils/dates'
 
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
@@ -38,6 +37,7 @@ class Popup extends React.Component {
       components,
       onSelect,
       onDoubleClick,
+      onKeyPress,
       slotStart,
       slotEnd,
       localizer,
@@ -67,14 +67,24 @@ class Popup extends React.Component {
           <EventCell
             key={idx}
             type="popup"
+            localizer={localizer}
             event={event}
             getters={getters}
             onSelect={onSelect}
             accessors={accessors}
             components={components}
             onDoubleClick={onDoubleClick}
-            continuesPrior={dates.lt(accessors.end(event), slotStart, 'day')}
-            continuesAfter={dates.gte(accessors.start(event), slotEnd, 'day')}
+            onKeyPress={onKeyPress}
+            continuesPrior={localizer.lt(
+              accessors.end(event),
+              slotStart,
+              'day'
+            )}
+            continuesAfter={localizer.gte(
+              accessors.start(event),
+              slotEnd,
+              'day'
+            )}
             slotStart={slotStart}
             slotEnd={slotEnd}
             selected={isSelected(event, selected)}
@@ -106,6 +116,7 @@ Popup.propTypes = {
   localizer: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onKeyPress: PropTypes.func,
   handleDragStart: PropTypes.func,
   show: PropTypes.func,
   slotStart: PropTypes.instanceOf(Date),

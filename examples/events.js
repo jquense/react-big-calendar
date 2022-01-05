@@ -77,9 +77,27 @@ export default [
   },
   {
     id: 11,
-    title: 'Birthday Party',
-    start: new Date(2015, 3, 13, 7, 0, 0),
+    title: 'Planning Meeting with Paige',
+    start: new Date(2015, 3, 13, 8, 0, 0),
     end: new Date(2015, 3, 13, 10, 30, 0),
+  },
+  {
+    id: 11.1,
+    title: 'Inconvenient Conference Call',
+    start: new Date(2015, 3, 13, 9, 30, 0),
+    end: new Date(2015, 3, 13, 12, 0, 0),
+  },
+  {
+    id: 11.2,
+    title: "Project Kickoff - Lou's Shoes",
+    start: new Date(2015, 3, 13, 11, 30, 0),
+    end: new Date(2015, 3, 13, 14, 0, 0),
+  },
+  {
+    id: 11.3,
+    title: 'Quote Follow-up - Tea by Tina',
+    start: new Date(2015, 3, 13, 15, 30, 0),
+    end: new Date(2015, 3, 13, 16, 0, 0),
   },
   {
     id: 12,

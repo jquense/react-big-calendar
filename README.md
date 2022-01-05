@@ -2,7 +2,7 @@
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
-[**DEMO and Docs**](http://jquense.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 
@@ -17,11 +17,12 @@ element has a height, or the calendar won't be visible. To provide your own cust
 
 - [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
 - [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+- [react-big-calendar with TypeScript and React hooks bundled with Vite](https://github.com/christopher-caldwell/react-big-calendar-demo)
 
 ## Run examples locally
 
 ```sh
-$ git clone git@github.com:intljusticemission/react-big-calendar.git
+$ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
 $ yarn examples
@@ -78,7 +79,7 @@ const MyCalendar = props => (
 )
 ```
 
-#### date-fns 2.0
+#### date-fns v2
 
 ```js
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
@@ -86,9 +87,12 @@ import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
+import enUS from 'date-fns/locale/en-US'
+
 const locales = {
-  'en-US': require('date-fns/locale/en-US'),
+  'en-US': enUS,
 }
+
 const localizer = dateFnsLocalizer({
   format,
   parse,

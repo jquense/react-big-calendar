@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.23.0",
+  "version": "0.38.4",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -32,24 +32,24 @@
   "scripts": {
     "clean": "rimraf lib",
     "clean:examples": "rimraf examples/static",
-    "s": "node-sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
-    "sass": "npm run s  && npm run sass-dnd",
-    "sass-dnd": "node-sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
-    "autoprefixer": "postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/css/react-big/calendar.css | postcss --use autoprefixer -b 'ie >= 10, safari >= 8, last 2 versions' < ./lib/addons/dragAndDrop/styles.css",
-    "build:css": "npm run sass && npm run autoprefixer",
-    "assets": "cpy src/sass/* lib/sass && npm run assets-addons",
+    "s": "sass ./lib/sass/styles.scss ./lib/css/react-big-calendar.css",
+    "sass": "yarn s  && yarn sass-dnd",
+    "sass-dnd": "sass ./lib/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
+    "autoprefixer": "postcss ./lib/css/react-big-calendar.css && postcss ./lib/addons/dragAndDrop/styles.css",
+    "build:css": "yarn sass && yarn autoprefixer",
+    "assets": "cpy src/sass/* lib/sass && yarn assets-addons",
     "assets-addons": "cpy addons/**/*.scss ../lib/ --cwd=src --parents",
     "build:umd": "BABEL_ENV=esm yarn rollup -c",
     "build:cjs": "babel src --out-dir lib",
     "build": "yarn clean && yarn build:cjs && yarn build:umd && yarn assets && yarn build:css",
-    "build:examples": "npm run clean:examples && webpack --config examples/webpack.config.js",
-    "examples": "npm run clean:examples && webpack-dev-server --config examples/webpack.config.js --mode development",
+    "build:examples": "yarn clean:examples && webpack --config examples/webpack.config.js",
+    "examples": "yarn clean:examples && webpack-dev-server --config examples/webpack.config.js --mode development",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
-    "test": "npm run lint && jest",
+    "test": "yarn lint && jest",
     "tdd": "jest --watch",
     "release": "rollout",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "yarn build",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
     "precommit": "lint-staged"
   },
@@ -68,17 +68,24 @@
     "trailingComma": "es5",
     "bracketSpacing": true
   },
+  "browserslist": [
+    "ie >= 10",
+    "safari >= 8",
+    "last 2 versions"
+  ],
   "peerDependencies": {
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "react": "^16.6.1 || ^17",
+    "react-dom": "^16.6.1 || ^17"
   },
   "devDependencies": {
     "@4c/rollout": "^1.4.0",
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.5",
-    "@storybook/addon-actions": "^5.0.11",
-    "@storybook/react": "^5.0.11",
-    "autoprefixer": "^9.5.1",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@storybook/addon-actions": "^6.1.15",
+    "@storybook/react": "^6.1.15",
+    "autoprefixer": "^10.4.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -101,13 +108,14 @@
     "husky": "^0.14.3",
     "jest": "^23.6.0",
     "lint-staged": "^8.0.4",
+    "luxon": "^2.0.2",
     "markdown-jsx-loader": "^3.0.2",
     "marked": "^0.5.1",
-    "moment": "^2.22.2",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "mt-changelog": "^0.6.1",
-    "node-sass": "4.12.0",
-    "postcss": "^7.0.16",
-    "postcss-cli": "^6.1.2",
+    "postcss": "^8.4.5",
+    "postcss-cli": "^9.1.0",
     "prettier": "^1.15.1",
     "react": "^16.13.1",
     "react-bootstrap": "^0.32.4",
@@ -122,6 +130,7 @@
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-size-snapshot": "^0.8.0",
     "rollup-plugin-terser": "^4.0.2",
+    "sass": "1.44.0",
     "webpack": "^4.25.1",
     "webpack-atoms": "^8.0.0",
     "webpack-cli": "^3.1.2",
@@ -130,7 +139,7 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "clsx": "^1.0.4",
-    "date-arithmetic": "^4.0.1",
+    "date-arithmetic": "^4.1.0",
     "dom-helpers": "^5.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.11",
@@ -146,7 +155,5 @@
   "bugs": {
     "url": "https://github.com/jquense/react-big-calendar/issues"
   },
-  "readme": "ERROR: No README data found!",
-  "homepage": "https://github.com/jquense/react-big-calendar#readme",
-  "_id": "react-big-calendar@0.22.1"
+  "homepage": "https://github.com/jquense/react-big-calendar#readme"
 }

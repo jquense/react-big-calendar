@@ -54,6 +54,11 @@
     overflow: hidden;
     position: absolute;
   }
+  
+  .rbc-background-event {
+    @extend .rbc-event;
+    opacity: 0.75;
+  }
 
   .rbc-event-label {
     flex: none;

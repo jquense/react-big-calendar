@@ -1,10 +1,23 @@
+import moment from 'moment'
+import momentLocalizer from '../../src/localizers/moment'
+//import { DateTime } from 'luxon'
+//import luxonLocalizer from '../../src/localizers/luxon'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import * as dates from '../../src/utils/dates'
+
+const localizer = momentLocalizer(moment)
+//const localizer = luxonLocalizer(DateTime)
 
 describe('getSlotMetrics', () => {
   const min = dates.startOf(new Date(2018, 0, 29, 0, 0, 0), 'day')
   const max = dates.endOf(new Date(2018, 0, 29, 59, 59, 59), 'day')
-  const slotMetrics = getSlotMetrics({ min, max, step: 60, timeslots: 1 })
+  const slotMetrics = getSlotMetrics({
+    min,
+    max,
+    step: 60,
+    timeslots: 1,
+    localizer,
+  })
   test('getSlotMetrics.closestSlotToPosition: always returns timeslot if valid percentage is given', () => {
     expect(slotMetrics.closestSlotToPosition(0)).toBeDefined()
     expect(slotMetrics.closestSlotToPosition(1)).toBeDefined()
@@ -26,7 +39,13 @@ describe('getSlotMetrics', () => {
 describe('getRange', () => {
   const min = dates.startOf(new Date(2018, 0, 29, 0, 0, 0), 'day')
   const max = dates.endOf(new Date(2018, 0, 29, 59, 59, 59), 'day')
-  const slotMetrics = getSlotMetrics({ min, max, step: 60, timeslots: 1 })
+  const slotMetrics = getSlotMetrics({
+    min,
+    max,
+    step: 60,
+    timeslots: 1,
+    localizer,
+  })
 
   test('getRange: 15 minute start of day appointment stays within calendar', () => {
     let range = slotMetrics.getRange(

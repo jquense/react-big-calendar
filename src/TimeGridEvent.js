@@ -20,6 +20,7 @@ function TimeGridEvent(props) {
     getters,
     onClick,
     onDoubleClick,
+    isBackgroundEvent,
     onKeyPress,
     components: { event: Event, eventWrapper: EventWrapper },
   } = props
@@ -40,29 +41,45 @@ function TimeGridEvent(props) {
     </div>,
   ]
 
+  const eventStyle = isBackgroundEvent
+    ? {
+        ...userProps.style,
+        top: stringifyPercent(top),
+        height: stringifyPercent(height),
+        // Adding 10px to take events container right margin into account
+        width: `calc(${width} + 10px)`,
+        [rtl ? 'right' : 'left']: stringifyPercent(Math.max(0, xOffset)),
+      }
+    : {
+        ...userProps.style,
+        top: stringifyPercent(top),
+        width: stringifyPercent(width),
+        height: stringifyPercent(height),
+        [rtl ? 'right' : 'left']: stringifyPercent(xOffset),
+      }
+
   return (
     <EventWrapper type="time" {...props}>
       <div
         onClick={onClick}
         onDoubleClick={onDoubleClick}
+        style={eventStyle}
         onKeyPress={onKeyPress}
-        style={{
-          ...userProps.style,
-          top: stringifyPercent(top),
-          [rtl ? 'right' : 'left']: stringifyPercent(xOffset),
-          width: stringifyPercent(width),
-          height: stringifyPercent(height),
-        }}
         title={
           tooltip
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip
             : undefined
         }
-        className={clsx('rbc-event', className, userProps.className, {
-          'rbc-selected': selected,
-          'rbc-event-continues-earlier': continuesEarlier,
-          'rbc-event-continues-later': continuesLater,
-        })}
+        className={clsx(
+          isBackgroundEvent ? 'rbc-background-event' : 'rbc-event',
+          className,
+          userProps.className,
+          {
+            'rbc-selected': selected,
+            'rbc-event-continues-earlier': continuesEarlier,
+            'rbc-event-continues-later': continuesLater,
+          }
+        )}
       >
         {inner}
       </div>

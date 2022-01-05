@@ -1,6 +1,8 @@
+import isEqual from 'lodash/isEqual'
+
 export function isSelected(event, selected) {
   if (!event || selected == null) return false
-  return [].concat(selected).indexOf(event) !== -1
+  return isEqual(event, selected)
 }
 
 export function slotWidth(rowBox, slots) {
@@ -18,7 +20,7 @@ export function getSlotAtX(rowBox, x, rtl, slots) {
 }
 
 export function pointInBox(box, { x, y }) {
-  return y >= box.top && y <= box.bottom && (x >= box.left && x <= box.right)
+  return y >= box.top && y <= box.bottom && x >= box.left && x <= box.right
 }
 
 export function dateCellSelection(start, rowBox, box, slots, rtl) {

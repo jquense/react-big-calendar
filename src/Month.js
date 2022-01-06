@@ -17,6 +17,8 @@ import Header from './Header'
 import DateHeader from './DateHeader'
 
 import { inRange, sortEvents } from './utils/eventLevels'
+import memoize from 'memoize-one'
+import { deepDifference } from './utils/deepDifference'
 
 let eventsForWeek = (evts, start, end, accessors, localizer) =>
   evts.filter(e => inRange(e, start, end, accessors, localizer))
@@ -93,7 +95,18 @@ class MonthView extends React.Component {
       </div>
     )
   }
-
+  makeEventsForWeek = memoize(
+    (events, week, accessors, localizer) =>
+      eventsForWeek(
+        [...events],
+        week[0],
+        week[week.length - 1],
+        accessors,
+        localizer
+      ).sort((a, b) => sortEvents(a, b, accessors, localizer)),
+    (newProps, prevProps) =>
+      !Object.keys(deepDifference(newProps, prevProps)).length
+  )
   renderWeek = (week, weekIdx) => {
     let {
       events,
@@ -112,15 +125,12 @@ class MonthView extends React.Component {
     const { needLimitMeasure, rowLimit } = this.state
 
     // let's not mutate props
-    const weeksEvents = eventsForWeek(
-      [...events],
-      week[0],
-      week[week.length - 1],
+    const weeksEvents = this.makeEventsForWeek(
+      events,
+      week,
       accessors,
       localizer
     )
-
-    weeksEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
     return (
       <DateContentRow

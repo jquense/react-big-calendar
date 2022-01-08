@@ -24,51 +24,51 @@ const events = [
   },
   {
     id: 1,
-    title: 'MS training 2',
+    title: 'MS training 3',
     start: new Date(2018, 0, 29, 14, 0, 0),
     end: new Date(2018, 0, 29, 16, 30, 0),
     resourceId: 2,
   },
   {
     id: 2,
-    title: 'Team lead meeting',
+    title: 'Team lead meeting 4',
     start: new Date(2018, 0, 29, 8, 30, 0),
     end: new Date(2018, 0, 29, 12, 30, 0),
     resourceId: 3,
   },
   {
     id: 10,
-    title: 'Board meeting 3',
+    title: 'Board meeting 5',
     start: new Date(2018, 0, 30, 23, 0, 0),
     end: new Date(2018, 0, 30, 23, 59, 0),
     resourceId: 1,
   },
   {
     id: 11,
-    title: 'Birthday Party',
+    title: 'Birthday Party 6',
     start: new Date(2018, 0, 30, 7, 0, 0),
     end: new Date(2018, 0, 30, 10, 30, 0),
     resourceId: 4,
   },
   {
     id: 12,
-    title: 'Board meeting',
+    title: 'Board meeting 7',
     start: new Date(2018, 0, 29, 23, 59, 0),
     end: new Date(2018, 0, 30, 13, 0, 0),
     resourceId: 1,
   },
   {
     id: 13,
-    title: 'Board meeting',
-    start: new Date(2018, 0, 29, 23, 50, 0),
-    end: new Date(2018, 0, 30, 13, 0, 0),
+    title: 'Board meeting 8',
+    start: new Date(2018, 0, 29, 0, 0, 0),
+    end: new Date(2018, 0, 29, 23, 10, 0),
     resourceId: 2,
   },
   {
     id: 14,
-    title: 'Board meeting',
-    start: new Date(2018, 0, 29, 23, 40, 0),
-    end: new Date(2018, 0, 30, 13, 0, 0),
+    title: 'Board meeting 9',
+    start: new Date(2018, 0, 29, 0, 0, 0),
+    end: new Date(2018, 0, 29, 23, 0, 0),
     resourceId: 4,
   },
 ]
@@ -203,26 +203,28 @@ class Dnd extends React.Component {
           defaultView="day"
           step={15}
           showMultiDayTimes={event => {
-            //if return true, the event is shown in allday-Row
+            //if return false, the event is shown in allday-Row, if true it is shown according to start/end
 
             const startMoment = moment(event.start)
             const endMoment = moment(event.end)
 
             console.log('dates', startMoment, endMoment)
 
+            console.log('day', startMoment.day(), endMoment.day())
             console.log('hours', startMoment.hours(), endMoment.hours())
             console.log('minutes', startMoment.minutes(), endMoment.minutes())
 
+            //if start and end is same day and start is 00:00 and end is > 23:00
             if (
               startMoment.isSame(endMoment, 'day') &&
-              startMoment.hours() === 0 &&
-              startMoment.minutes() === 0 &&
-              endMoment.hours() === 23 &&
-              endMoment.minutes() === 15
+              startMoment.hours() == 0 &&
+              startMoment.minutes() == 0 &&
+              endMoment.hours() == 23 &&
+              endMoment.minutes() >= 0
             ) {
-              return true
+              return false //show as allAay
             }
-            return false
+            return true
           }}
           defaultDate={new Date(2018, 0, 29)}
         />

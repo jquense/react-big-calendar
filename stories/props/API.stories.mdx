@@ -454,3 +454,71 @@ Set to `null` to disable drill-down actions.
 Functionally equivalent to drilldownView, but accepts a function that can return a view name. It's useful for customizing the drill-down actions depending on the target date and triggering view.
 
 Return null to disable drill-down actions.
+
+### length
+
+- type: `number`
+- default: `30`
+- <LinkTo kind="props" story="cal-length">
+    Example
+  </LinkTo>
+
+Determines the end date from date prop in the agenda view date prop + length (in number of days) = end date.
+
+### toolbar
+
+- type: `boolean`
+- default: `true`
+- <LinkTo kind="props" story="toolbar">
+    Example
+  </LinkTo>
+
+Determines whether the toolbar is displayed
+
+### popup
+
+- type: `boolean`
+- default: `true`
+- <LinkTo kind="props" story="popup">
+    Example
+  </LinkTo>
+
+Show truncated events in an overlay when you click the "+_x_ more" link.
+
+### popupOffset
+
+- type: `number|shape {x: number, y: number}`
+- <LinkTo kind="props" story="popup-offset">
+    Example
+  </LinkTo>
+
+Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
+
+### longPressThreshold
+
+- type: `number`
+- default: `250`
+- <LinkTo kind="props" story="long-press-threshold">
+    Example
+  </LinkTo>
+
+Specifies the number of miliseconds the user must press and hold on the screen for a touch to be considered a "long press." Long presses are used for time slot selection on touch devices.
+
+### step
+
+- type: `number`
+- default: `30`
+- <LinkTo kind="props" story="step">
+    Example
+  </LinkTo>
+
+Determines the selectable time increments in week and day views
+
+### timeslots
+
+- type: `number`
+- <LinkTo kind="props" story="timeslots">
+    Example
+  </LinkTo>
+
+The number of slots per "section" in the time grid views. Adjust with <LinkTo kind="props" story="step">step</LinkTo> to change the default of 1 hour long groups, with 30 minute slots.

@@ -1,8 +1,8 @@
 import React from 'react'
 import moment from 'moment'
-import { Calendar, Views, momentLocalizer } from '../../src'
+import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../../examples/events'
-import mdx from './drilldownView.mdx'
+import mdx from './longPressThreshold.mdx'
 
 const mLocalizer = momentLocalizer(moment)
 
@@ -25,11 +25,11 @@ export default {
 
 const Template = (args) => <Calendar {...args} />
 
-export const DrilldownView = Template.bind({})
-DrilldownView.storyName = 'drilldownView'
-DrilldownView.args = {
-  defaultDate: new Date(2015, 3, 1),
+export const LongPressThreshold = Template.bind({})
+LongPressThreshold.storyName = 'longPressThreshold'
+LongPressThreshold.args = {
+  defaultDate: new Date(2015, 3, 13),
   localizer: mLocalizer,
   events: demoEvents,
-  drilldownView: Views.AGENDA,
+  longPressThreshold: 250,
 }

@@ -7,6 +7,7 @@ const { events: resourceEvents, list: resources } = resourceData
 
 const mLocalizer = momentLocalizer(moment)
 
+/** Specific to event key accessors */
 const adjusted = demoEvents.map((event) => {
   const {
     start: startDate,
@@ -28,7 +29,9 @@ export const accessorStoryArgs = {
   endAccessor: 'endDate',
   allDayAccessor: 'allDayEvent',
 }
+/** END Specific to event key accessors */
 
+/** Specific to resource key accessors */
 const adjustedResources = resources.map(({ id: Id, title: Title }) => ({
   Id,
   Title,
@@ -43,3 +46,4 @@ export const resourceAccessorStoryArgs = {
   resourceIdAccessor: 'Id',
   resourceTitleAccessor: 'Title',
 }
+/** ENDSpecific to resource key accessors */

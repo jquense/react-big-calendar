@@ -9,6 +9,16 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    events: { control: { type: null } },
+    defaultDate: {
+      control: {
+        type: null,
+      },
+    },
+    toolbar: 'boolean',
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -29,7 +39,7 @@ export const Toolbar = Template.bind({})
 Toolbar.storyName = 'toolbar'
 Toolbar.args = {
   defaultDate: new Date(2015, 3, 13),
-  localizer: mLocalizer,
   events: demoEvents,
+  localizer: mLocalizer,
   toolbar: true,
 }

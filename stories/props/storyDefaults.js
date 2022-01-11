@@ -20,14 +20,14 @@ const adjusted = demoEvents.map((event) => {
 })
 
 export const accessorStoryArgs = {
+  allDayAccessor: 'allDayEvent',
   defaultDate: new Date(2015, 3, 13),
-  localizer: mLocalizer,
+  endAccessor: 'endDate',
   events: adjusted,
+  localizer: mLocalizer,
   titleAccessor: 'label',
   tooltipAccessor: 'label',
   startAccessor: 'startDate',
-  endAccessor: 'endDate',
-  allDayAccessor: 'allDayEvent',
 }
 /** END Specific to event key accessors */
 
@@ -40,10 +40,10 @@ const adjustedResources = resources.map(({ id: Id, title: Title }) => ({
 export const resourceAccessorStoryArgs = {
   defaultDate: new Date(2015, 3, 4),
   defaultView: Views.DAY,
-  localizer: mLocalizer,
   events: resourceEvents,
-  resources: adjustedResources,
+  localizer: mLocalizer,
   resourceIdAccessor: 'Id',
+  resources: adjustedResources,
   resourceTitleAccessor: 'Title',
 }
 /** ENDSpecific to resource key accessors */

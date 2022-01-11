@@ -11,6 +11,20 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    events: { control: { type: null } },
+    defaultDate: {
+      control: {
+        type: null,
+      },
+    },
+    defaultView: {
+      control: {
+        type: null,
+      },
+    },
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -32,7 +46,7 @@ Resources.storyName = 'resources'
 Resources.args = {
   defaultDate: new Date(2015, 3, 4),
   defaultView: Views.DAY,
-  localizer: mLocalizer,
   events: resourceEvents,
+  localizer: mLocalizer,
   resources,
 }

@@ -30,10 +30,10 @@ export function CalNavigate() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       date={date}
-      onNavigate={onNavigate}
       events={demoEvents}
+      localizer={mLocalizer}
+      onNavigate={onNavigate}
     />
   )
 }

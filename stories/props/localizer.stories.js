@@ -28,9 +28,9 @@ export function Localizer() {
   const localizer = momentLocalizer(moment)
   return (
     <Calendar
-      localizer={localizer}
-      events={demoEvents}
       defaultDate={new Date(2015, 3, 13)}
+      events={demoEvents}
+      localizer={localizer}
     />
   )
 }

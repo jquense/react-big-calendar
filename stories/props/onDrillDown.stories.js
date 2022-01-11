@@ -38,12 +38,12 @@ export function CalOnDrillDown() {
   return (
     <Calendar
       date={date}
-      onNavigate={onNavigate}
-      view={view}
-      onView={onView}
-      localizer={mLocalizer}
       events={demoEvents}
+      localizer={mLocalizer}
       onDrillDown={onDrillDown}
+      onNavigate={onNavigate}
+      onView={onView}
+      view={view}
     />
   )
 }

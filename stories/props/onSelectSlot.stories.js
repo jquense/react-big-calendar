@@ -61,9 +61,9 @@ export function CalSelectSlot() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       defaultDate={new Date(2015, 3, 1)}
       events={demoEvents}
+      localizer={mLocalizer}
       onSelectSlot={onSelectSlot}
       selectable
     />

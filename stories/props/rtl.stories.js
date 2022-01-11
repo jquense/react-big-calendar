@@ -9,6 +9,16 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    events: { control: { type: null } },
+    defaultDate: {
+      control: {
+        type: null,
+      },
+    },
+    rtl: 'boolean',
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -30,7 +40,7 @@ export const RightToLeft = Template.bind({})
 RightToLeft.storyName = 'rtl'
 RightToLeft.args = {
   defaultDate: new Date(2015, 3, 13),
-  localizer: mLocalizer,
   events: demoEvents,
+  localizer: mLocalizer,
   rtl: true,
 }

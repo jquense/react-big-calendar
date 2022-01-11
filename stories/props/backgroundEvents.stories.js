@@ -9,6 +9,15 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    events: { control: { type: null } },
+    defaultView: {
+      control: {
+        type: null,
+      },
+    },
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -28,8 +37,8 @@ const Template = (args) => <Calendar {...args} />
 export const BackGroundEvents = Template.bind({})
 BackGroundEvents.storyName = 'backgroundEvents'
 BackGroundEvents.args = {
-  defaultView: Views.WEEK,
-  localizer: mLocalizer,
-  events,
   backgroundEvents,
+  defaultView: Views.WEEK,
+  events,
+  localizer: mLocalizer,
 }

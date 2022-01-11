@@ -74,11 +74,11 @@ export function CalSelectEvent() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       defaultDate={new Date(2015, 3, 1)}
       events={demoEvents}
-      onSelectEvent={onSelectEvent}
+      localizer={mLocalizer}
       onDoubleClickEvent={onDoubleClickEvent}
+      onSelectEvent={onSelectEvent}
     />
   )
 }

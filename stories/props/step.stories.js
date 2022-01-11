@@ -9,6 +9,21 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    events: { control: { type: null } },
+    defaultDate: {
+      control: {
+        type: null,
+      },
+    },
+    defaultView: {
+      control: {
+        type: null,
+      },
+    },
+    step: 'number',
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -29,8 +44,8 @@ export const Step = Template.bind({})
 Step.storyName = 'step'
 Step.args = {
   defaultDate: new Date(2015, 3, 13),
-  localizer: mLocalizer,
-  events: demoEvents,
-  step: 15,
   defaultView: Views.WEEK,
+  events: demoEvents,
+  localizer: mLocalizer,
+  step: 15,
 }

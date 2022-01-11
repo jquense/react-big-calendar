@@ -59,9 +59,9 @@ export function CalRangeChange() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       date={date}
       events={demoEvents}
+      localizer={mLocalizer}
       onNavigate={onNavigate}
       onRangeChange={onRangeChange}
     />

@@ -9,6 +9,14 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    defaultDate: {
+      control: {
+        type: null,
+      },
+    },
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -29,6 +37,6 @@ export const CalEvents = Template.bind({})
 CalEvents.storyName = 'events *'
 CalEvents.args = {
   defaultDate: new Date(2015, 3, 13),
-  localizer: mLocalizer,
   events: demoEvents,
+  localizer: mLocalizer,
 }

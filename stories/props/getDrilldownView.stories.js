@@ -36,10 +36,10 @@ export function CalDrilldownView() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       defaultDate={new Date(2015, 3, 1)}
       events={demoEvents}
       getDrilldownView={getDrilldownView}
+      localizer={mLocalizer}
     />
   )
 }

@@ -26,9 +26,9 @@ export default {
 export function CalViews() {
   return (
     <Calendar
-      localizer={mLocalizer}
       defaultDate={new Date(2015, 3, 1)}
       events={demoEvents}
+      localizer={mLocalizer}
       views={[Views.MONTH, Views.DAY, Views.AGENDA]}
     />
   )

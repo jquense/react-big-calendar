@@ -32,12 +32,12 @@ export function CalView() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       date={date}
-      onNavigate={onNavigate}
-      view={view}
-      onView={onView}
       events={demoEvents}
+      localizer={mLocalizer}
+      onNavigate={onNavigate}
+      onView={onView}
+      view={view}
     />
   )
 }

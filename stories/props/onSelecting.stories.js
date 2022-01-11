@@ -78,12 +78,12 @@ export function CalSelecting() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       defaultDate={new Date(2015, 3, 1)}
       defaultView={Views.WEEK}
       events={demoEvents}
-      onSelectSlot={onSelectSlot}
+      localizer={mLocalizer}
       onSelecting={onSelecting}
+      onSelectSlot={onSelectSlot}
       selectable
     />
   )

@@ -62,11 +62,10 @@ export function Selected() {
 
   return (
     <Calendar
-      localizer={mLocalizer}
       defaultDate={new Date(2015, 3, 1)}
       events={demoEvents}
+      localizer={mLocalizer}
       onSelectEvent={onSelectEvent}
-      events={demoEvents}
       selected={selected}
     />
   )

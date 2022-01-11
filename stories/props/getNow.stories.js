@@ -9,6 +9,10 @@ const mLocalizer = momentLocalizer(moment)
 export default {
   title: 'props',
   component: Calendar,
+  argTypes: {
+    localizer: { control: { type: null } },
+    events: { control: { type: null } },
+  },
   parameters: {
     docs: {
       page: mdx,
@@ -30,7 +34,7 @@ const getNow = () => new Date(2015, 3, 13)
 export const GetNow = Template.bind({})
 GetNow.storyName = 'getNow'
 GetNow.args = {
-  localizer: mLocalizer,
-  getNow,
   events: demoEvents,
+  getNow,
+  localizer: mLocalizer,
 }

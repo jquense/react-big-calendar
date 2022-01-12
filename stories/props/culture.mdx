@@ -1,0 +1,12 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+
+# culture
+
+- type: `string`
+- default: `none (browser default)`
+
+Specify a specific culture code for the Calendar. The `culture` is used by `formats` with your <LinkTo kind="props" story="localizer">localizer</LinkTo> to 'format' date/time information on the Calendar. To localize messaging, use the `messages` prop.
+
+**Note: it's generally better to handle this globally via your i18n library.**
+
+<Story id="props--culture" />

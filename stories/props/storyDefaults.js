@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { momentLocalizer, Views } from '../../src'
-import demoEvents from '../../examples/events'
+import demoEvents from '../resources/events'
 import resourceData from '../helpers/resourceEvents'
 
 const { events: resourceEvents, list: resources } = resourceData

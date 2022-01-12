@@ -2,7 +2,7 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 
 import moment from 'moment'
-import demoEvents from '../examples/events'
+import demoEvents from './resources/events'
 import { Calendar } from '../src'
 
 import {

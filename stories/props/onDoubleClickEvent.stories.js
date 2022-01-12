@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useEffect } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
-import demoEvents from '../../examples/events'
+import demoEvents from '../resources/events'
 import mdx from './onDoubleClickEvent.mdx'
 
 const mLocalizer = momentLocalizer(moment)

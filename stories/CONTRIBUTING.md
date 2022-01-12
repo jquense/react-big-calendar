@@ -7,3 +7,17 @@ You will notice that we use the [With MDX documentation](https://storybook.js.or
 We have attempted to include an implementation example with each prop. While MDX documentation does allow us to include multiple Stories, the rendering of multiple Big Calendar implementations in that view (especially in light of the number of props available) would have negative effects on rendering the documentation.
 
 Previous documentation was built using the jsDocs metadata in the Calendar component. Since we wanted to expand our documentation, and include examples of each prop's usage, this was no longer a viable path.
+
+TODO:
+
+- [ ] `elementProps` - props
+- [ ] `backgroundEventPropGetter` - props
+- [ ] `slotGroupPropGetter` - props
+- [ ] `onShowMore` - props
+- [ ] `onShowMoreDrillDown` - props
+- [ ] `onKeyPressEvent` - props
+- [ ] Give Drag and Drop it's own sub category, with it's own props section
+- [ ] Migrate 'Examples' into SB sub category, with clear explanations
+- [ ] Split 'Examples' down by 'core' and 'Drag and Drop'
+- [ ] Create custom 'View' documentation
+- [ ] Can we write true unit testing with SB and React Testing Library?

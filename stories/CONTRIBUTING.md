@@ -10,12 +10,12 @@ Previous documentation was built using the jsDocs metadata in the Calendar compo
 
 TODO:
 
-- [ ] `elementProps` - props
-- [ ] `backgroundEventPropGetter` - props
-- [ ] `slotGroupPropGetter` - props
+- [x] `elementProps` - props
+- [ ] `backgroundEventPropGetter` - props (not currently implemented. skipping it)
+- [x] `slotGroupPropGetter` - props
 - [ ] `onShowMore` - props
 - [ ] `onShowMoreDrillDown` - props
-- [ ] `onKeyPressEvent` - props
+- [x] `onKeyPressEvent` - props
 - [ ] Give Drag and Drop it's own sub category, with it's own props section
 - [ ] Migrate 'Examples' into SB sub category, with clear explanations
 - [ ] Split 'Examples' down by 'core' and 'Drag and Drop'

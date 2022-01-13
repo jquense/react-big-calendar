@@ -45,7 +45,7 @@ function buildMessage(range) {
   This occurs when within the 'week' or 'work week' views.`
 }
 
-export function CalRangeChange() {
+export function OnRangeChange() {
   const [date, setDate] = useState(new Date(2015, 3, 1))
 
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
@@ -67,4 +67,4 @@ export function CalRangeChange() {
     />
   )
 }
-CalRangeChange.storyName = 'onRangeChange'
+OnRangeChange.storyName = 'onRangeChange'

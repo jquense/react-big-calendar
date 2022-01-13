@@ -20,3 +20,9 @@
 .tuesday {
   @extend .powderBlue;
 }
+
+#my_scheduler {
+  @extend .powderBlue;
+  padding: 0.5em;
+  border: 1px solid blue;
+}

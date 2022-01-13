@@ -1,8 +1,9 @@
+// TODO: not actually implemented
 import React, { useCallback } from 'react'
 import moment from 'moment'
 import { Calendar, Views, momentLocalizer } from '../../src'
-import demoEvents from '../resources/events'
-import mdx from './eventPropGetter.mdx'
+import { backgroundEvents, events } from '../helpers'
+import mdx from './backgroundEventPropGetter.mdx'
 import '../resources/propGetter.scss'
 
 const mLocalizer = momentLocalizer(moment)
@@ -24,14 +25,9 @@ export default {
   ],
 }
 
-export function EventPropGetter() {
-  const eventPropGetter = useCallback(
-    (event, start, end, isSelected) => ({
-      ...(isSelected && {
-        style: {
-          backgroundColor: '#000',
-        },
-      }),
+export function BackgroundEventPropGetter() {
+  const backgroundEventPropGetter = useCallback(
+    (event, start, end) => ({
       ...(moment(start).hour() < 12 && {
         className: 'powderBlue',
       }),
@@ -44,12 +40,12 @@ export function EventPropGetter() {
 
   return (
     <Calendar
-      defaultDate={new Date(2015, 3, 13)}
       defaultView={Views.WEEK}
-      eventPropGetter={eventPropGetter}
-      events={demoEvents}
+      backgroundEventPropGetter={backgroundEventPropGetter}
+      events={events}
+      backgroundEvents={backgroundEvents}
       localizer={mLocalizer}
     />
   )
 }
-EventPropGetter.storyName = 'eventPropGetter'
+BackgroundEventPropGetter.storyName = 'backgroundEventPropGetter'

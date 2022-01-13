@@ -23,7 +23,7 @@ export default {
   ],
 }
 
-export function CalView() {
+export function View() {
   const [date, setDate] = useState(new Date(2015, 3, 1))
   const [view, setView] = useState(Views.WEEK)
 
@@ -41,4 +41,4 @@ export function CalView() {
     />
   )
 }
-CalView.storyName = 'view'
+View.storyName = 'view'

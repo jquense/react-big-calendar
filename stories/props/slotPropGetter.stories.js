@@ -24,7 +24,7 @@ export default {
   ],
 }
 
-export function CalSlotPropGetter() {
+export function SlotPropGetter() {
   const slotPropGetter = useCallback(
     (date) => ({
       className: 'slotDefault',
@@ -54,4 +54,4 @@ export function CalSlotPropGetter() {
     />
   )
 }
-CalSlotPropGetter.storyName = 'slotPropGetter'
+SlotPropGetter.storyName = 'slotPropGetter'

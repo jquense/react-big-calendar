@@ -52,6 +52,17 @@ Settings.defaultZone = 'America/Los_Angeles'
 const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 7 })
 ```
 
+### elementProps
+
+- type: `object`
+- <LinkTo kind="props" story="element-props">
+    Example
+  </LinkTo>
+
+Props passed to main calendar `<div>`.
+
+**Note:** Will not pass down `className`.
+
 ### getNow
 
 - type: `function () => Date`
@@ -80,7 +91,7 @@ Sets the initial `date` value in your calendar when you don't want it to be 'tod
 
 - type: `instanceOf(Date)`
 - default: `new Date()`
-- controlled by: <LinkTo kind="props" story="cal-navigate">onNavigate</LinkTo>
+- controlled by: <LinkTo kind="props" story="on-navigate">onNavigate</LinkTo>
 - <LinkTo kind="props" story="date">
     Example
   </LinkTo>
@@ -89,14 +100,14 @@ The current date value of the calendar. Determines the visible view range.
 If `date` is omitted then the result of <LinkTo kind="props" story="get-now">getNow</LinkTo> is used; otherwise the
 current date is used.
 
-This is a controllable prop, when using <LinkTo kind="props" story="cal-navigate">onNavigate</LinkTo>
+This is a controllable prop, when using <LinkTo kind="props" story="on-navigate">onNavigate</LinkTo>
 
 ### onNavigate
 
 - type: `function`
 - controls: <LinkTo kind="props" story="date">date</LinkTo>
 - example: `(newDate) => setDate(newDate)`
-- <LinkTo kind="props" story="cal-navigate">
+- <LinkTo kind="props" story="on-navigate">
     Example
   </LinkTo>
 
@@ -116,22 +127,22 @@ The initial `view` set for your calendar when you don't want it to be the defaul
 
 - type: `string`
 - default: `Views.MONTH (month|week|work_week|day|agenda)`
-- controlled by: <LinkTo kind="props" story="cal-view-change">onView</LinkTo>
-- <LinkTo kind="props" story="cal-view">
+- controlled by: <LinkTo kind="props" story="on-view">onView</LinkTo>
+- <LinkTo kind="props" story="view">
     Example
   </LinkTo>
 
 The current view value of the calendar. Determines the visible 'view'.
 If `view` is omitted then it is defaulted to 'month'.
 
-This is a controllable prop, when using <LinkTo kind="props" story="cal-view-change">onView</LinkTo>
+This is a controllable prop, when using <LinkTo kind="props" story="on-view">onView</LinkTo>
 
 ### onView
 
 - type: 'function'
 - controls: <LinkTo kind="props" story="view">view</LinkTo>
 - example: `(newView) => setView(newView)`
-- <LinkTo kind="props" story="cal-view-change">
+- <LinkTo kind="props" story="on-view">
     Example
   </LinkTo>
 
@@ -185,6 +196,15 @@ BackgroundEvent {
   end: Date,
 }
 ```
+
+<!-- ### backgroundEventPropGetter
+
+- type: `function (event: Object, start: Date, end: Date, isSelected: boolean) => {className?: string, style?: Object}`
+- <LinkTo kind="props" story="background-event-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the the event node. -->
 
 ### titleAccessor
 
@@ -273,7 +293,7 @@ Provides a human readable name for the resource object, used in headers.
 ### onDrillDown
 
 - type: `function (date: Date) => // do something`
-- <LinkTo kind="props" story="cal-on-drill-down">
+- <LinkTo kind="props" story="on-drill-down">
     Example
   </LinkTo>
 
@@ -282,7 +302,7 @@ Callback fired when date header, or the truncated events links are clicked. When
 ### onRangeChange
 
 - type: `function (range: Array [1|7] | Object {start: Date, end: Date}) => // do something`
-- <LinkTo kind="props" story="cal-range-change">
+- <LinkTo kind="props" story="on-range-change">
     Example
   </LinkTo>
 
@@ -303,13 +323,13 @@ Allows mouse selection of ranges of dates/times.
 
 The 'ignoreEvents' option prevents selection code from running when a drag begins over an event. Useful when you want custom event click or drag logic.
 
-_Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fire. Click on the 'showCode' button, at the bottom of the <LinkTo kind="props" story="cal-select-slot">example</LinkTo>, to see how you can get around this issue.
+_Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fire. Click on the 'showCode' button, at the bottom of the <LinkTo kind="props" story="on-select-slot">example</LinkTo>, to see how you can get around this issue.
 
 ## onSelectSlot
 
 - type: `function (Object: slotInfo) => any`
 - requires: <LinkTo kind="props" story="selectable">selectable</LinkTo>
-- <LinkTo kind="props" story="cal-select-slot">
+- <LinkTo kind="props" story="on-select-slot">
     Example
   </LinkTo>
 
@@ -344,12 +364,12 @@ _Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fi
 
 #### What's The Difference from onSelecting?
 
-How is this different from <LinkTo kind="props" story="cal-selecting">onSelecting</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+How is this different from <LinkTo kind="props" story="on-selecting">onSelecting</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
 
 ### onSelectEvent
 
 - type: `function (event: Object) => any`
-- <LinkTo kind="props" story="cal-select-event">
+- <LinkTo kind="props" story="on-select-event">
     Example
   </LinkTo>
 
@@ -362,7 +382,7 @@ Callback fired when a calendar event is selected (i.e.: an `onClick` handler).
 ### onDoubleClickEvent
 
 - type: `function (event: Object) => any`
-- <LinkTo kind="props" story="cal-double-click-event">
+- <LinkTo kind="props" story="on-double-click-event">
     Example
   </LinkTo>
 
@@ -376,7 +396,7 @@ Callback fired when a calendar event is clicked twice. (i.e.: an `onDoubleClick`
 
 - type: `(range: Object { start: Date, end: Date, resourceId: null|string|number }) => ?boolean`
 - requires: <LinkTo kind="props" story="selectable">selectable</LinkTo>
-- <LinkTo kind="props" story="cal-selecting">
+- <LinkTo kind="props" story="on-selecting">
     Example
   </LinkTo>
 
@@ -386,7 +406,16 @@ Returning `false` from the handler will prevent a selection.
 
 #### What's The Difference from onSelectSlot?
 
-How is this different from <LinkTo kind="props" story="cal-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+How is this different from <LinkTo kind="props" story="on-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+
+### onKeyPressEvent
+
+- type: `function (event: Object, e: SyntheticEvent) => void`
+- <LinkTo kind="props" story="on-key-press-event">
+    Example
+  </LinkTo>
+
+Callback fired when a focused calendar event receives a key press.
 
 ### showAllEvents
 
@@ -407,7 +436,7 @@ Displays all events on the month view instead of having some hidden behind +{cou
 
 The selected event, if any. By default, Big Calendar 'controls' the `selected` (highlighted) event in the display. You can use this prop to control which event is highlighted. The `selected` event must be a object reference to the event within the <LinkTo kind="props" story="events">events</LinkTo> array.
 
-Often used in conjunction with <LinkTo kind="props" story="cal-select-event">OnSelectEvent</LinkTo> and/or <LinkTo kind="props" story="cal-double-click-event">onDoubleClickEvent</LinkTo>.
+Often used in conjunction with <LinkTo kind="props" story="on-select-event">OnSelectEvent</LinkTo> and/or <LinkTo kind="props" story="on-double-click-event">onDoubleClickEvent</LinkTo>.
 
 ### views
 
@@ -457,7 +486,7 @@ Set to `null` to disable drill-down actions.
 ### getDrilldownView
 
 - type: `function (targetDate: Date, currentViewName: string, configuredViewNames: Views[]) => string|null`
-- <LinkTo kind="props" story="cal-drilldown-view">
+- <LinkTo kind="props" story="get-drilldown-view">
     Example
   </LinkTo>
 
@@ -469,7 +498,7 @@ Return null to disable drill-down actions.
 
 - type: `number`
 - default: `30`
-- <LinkTo kind="props" story="cal-length">
+- <LinkTo kind="props" story="length">
     Example
   </LinkTo>
 
@@ -546,7 +575,7 @@ Switch the calendar to a right-to-left read direction.
 ### eventPropGetter
 
 - type: `function (event: Object, start: Date, end: Date, isSelected: boolean) => {className?: string, style?: Object}`
-- <LinkTo kind="props" story="cal-event-prop-getter">
+- <LinkTo kind="props" story="event-prop-getter">
     Example
   </LinkTo>
 
@@ -555,7 +584,7 @@ Optionally provide a function that returns an object of className or style props
 ### slotPropGetter
 
 - type: `function (date: Date) => {className?: string, style?: Object}`
-- <LinkTo kind="props" story="cal-slot-prop-getter">
+- <LinkTo kind="props" story="on-slot-prop-getter">
     Example
   </LinkTo>
 
@@ -563,10 +592,21 @@ Optionally provide a function that returns an object of className or style props
 
 **Caution!** Styles that change layout or position may break the calendar in unexpected ways.
 
+### slotGroupPropGetter
+
+- type: `function () => { style?: Object }`
+- <LinkTo kind="props" story="slot-group-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the time-slot node.
+
+**Caution! Styles that change layout or position may break the calendar in unexpected ways.**
+
 ### dayPropGetter
 
 - type: `function (date: Date) => {className?: string, style?: Object}`
-- <LinkTo kind="props" story="cal-day-prop-getter">
+- <LinkTo kind="props" story="day-prop-getter">
     Example
   </LinkTo>
 

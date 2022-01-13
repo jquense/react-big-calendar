@@ -1,0 +1,25 @@
+name: Build and Deploy Documentation
+on: 
+  push:
+    branches:
+      - master
+    paths: [".storybook/**", "stories/**", "src/**"] # Trigger the action only when files change in the folders defined here
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.5.1
+    
+      - name: Install and Build 🔧
+        run: | # Install npm packages and build the Storybook files
+          npm ci
+          npm run build-storybook
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: docs-build # The folder that the build-storybook script generates files.
+          clean: true # Automatically remove deleted files from the deploy branch

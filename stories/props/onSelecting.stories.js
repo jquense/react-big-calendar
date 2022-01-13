@@ -28,7 +28,7 @@ function buildMessage(range, eventName) {
   ${JSON.stringify(range, null, 2)}`
 }
 
-export function CalSelecting() {
+export function OnSelecting() {
   const clickRef = useRef(null)
 
   useEffect(() => {
@@ -88,4 +88,4 @@ export function CalSelecting() {
     />
   )
 }
-CalSelecting.storyName = 'onSelecting'
+OnSelecting.storyName = 'onSelecting'

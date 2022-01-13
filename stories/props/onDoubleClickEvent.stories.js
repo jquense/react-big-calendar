@@ -28,7 +28,7 @@ function buildMessage(calEvent, eventName) {
   ${JSON.stringify(calEvent, null, 2)}`
 }
 
-export function CalDoubleClickEvent() {
+export function OnDoubleClickEvent() {
   const clickRef = useRef(null)
 
   useEffect(() => {
@@ -82,4 +82,4 @@ export function CalDoubleClickEvent() {
     />
   )
 }
-CalDoubleClickEvent.storyName = 'onDoubleClickEvent'
+OnDoubleClickEvent.storyName = 'onDoubleClickEvent'

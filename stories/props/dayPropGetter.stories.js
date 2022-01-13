@@ -24,7 +24,7 @@ export default {
   ],
 }
 
-export function CalDayPropGetter() {
+export function DayPropGetter() {
   const dayPropGetter = useCallback(
     (date) => ({
       ...(moment(date).day() === 2 && {
@@ -50,4 +50,4 @@ export function CalDayPropGetter() {
     />
   )
 }
-CalDayPropGetter.storyName = 'dayPropGetter'
+DayPropGetter.storyName = 'dayPropGetter'

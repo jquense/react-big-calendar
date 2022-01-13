@@ -28,7 +28,7 @@ function buildMessage(slotInfo) {
   ${JSON.stringify(slotInfo, null, 2)}`
 }
 
-export function CalSelectSlot() {
+export function OnSelectSlot() {
   const clickRef = useRef(null)
 
   useEffect(() => {
@@ -69,4 +69,4 @@ export function CalSelectSlot() {
     />
   )
 }
-CalSelectSlot.storyName = 'onSelectSlot'
+OnSelectSlot.storyName = 'onSelectSlot'

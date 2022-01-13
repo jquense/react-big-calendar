@@ -23,7 +23,7 @@ export default {
   ],
 }
 
-export function CalNavigate() {
+export function OnNavigate() {
   const [date, setDate] = useState(new Date(2015, 3, 1))
 
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
@@ -37,4 +37,4 @@ export function CalNavigate() {
     />
   )
 }
-CalNavigate.storyName = 'onNavigate'
+OnNavigate.storyName = 'onNavigate'

@@ -1,27 +1,22 @@
 import { create } from '@storybook/theming'
 
 export default create({
-  base: 'light',
-
-  colorSecondary: 'white',
+  base: 'dark',
 
   // UI
-  appBg: 'white',
+  appBg: 'rgb(49, 116, 173)',
+  appContentBg: 'rgba(49, 116, 173, .2)',
 
   // Typography
   fontBase: '"Open Sans", sans-serif',
   fontCode: 'monospace',
-
-  // Text colors
-  textColor: 'black',
-  textInverseColor: 'rgba(255,255,255,0.9)',
 
   // Toolbar default and active colors
   barTextColor: 'white',
   barBg: 'rgb(49, 116, 173)',
 
   // Form colors
-  inputBg: 'white',
+  inputBg: '#FFF',
   inputTextColor: 'black',
   inputBorderRadius: 4,
 

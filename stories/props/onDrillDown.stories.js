@@ -23,7 +23,7 @@ export default {
   ],
 }
 
-export function CalOnDrillDown() {
+export function OnDrillDown() {
   const [view, setView] = useState(Views.MONTH)
   const [date, setDate] = useState(new Date(2015, 3, 13))
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
@@ -47,4 +47,4 @@ export function CalOnDrillDown() {
     />
   )
 }
-CalOnDrillDown.storyName = 'onDrillDown'
+OnDrillDown.storyName = 'onDrillDown'

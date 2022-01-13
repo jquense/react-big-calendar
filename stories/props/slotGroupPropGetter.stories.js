@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react'
 import moment from 'moment'
-import { Calendar, momentLocalizer } from '../../src'
+import { Calendar, Views, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './getDrilldownView.mdx'
+import mdx from './slotGroupPropGetter.mdx'
+import '../resources/propGetter.scss'
 
 const mLocalizer = momentLocalizer(moment)
 
@@ -23,24 +24,24 @@ export default {
   ],
 }
 
-export function GetDrilldownView() {
-  const getDrilldownView = useCallback(
-    (targetDate, currentViewName, configuredViewNames) => {
-      if (currentViewName === 'month' && configuredViewNames.includes('week'))
-        return 'week'
-
-      return null
-    },
+export function SlotGroupPropGetter() {
+  const slotGroupPropGetter = useCallback(
+    () => ({
+      style: {
+        minHeight: 60,
+      },
+    }),
     []
   )
 
   return (
     <Calendar
-      defaultDate={new Date(2015, 3, 1)}
+      defaultDate={new Date(2015, 3, 13)}
+      defaultView={Views.WEEK}
+      slotGroupPropGetter={slotGroupPropGetter}
       events={demoEvents}
-      getDrilldownView={getDrilldownView}
       localizer={mLocalizer}
     />
   )
 }
-GetDrilldownView.storyName = 'getDrilldownView'
+SlotGroupPropGetter.storyName = 'slotGroupPropGetter'

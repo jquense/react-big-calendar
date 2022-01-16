@@ -1,3 +1,10 @@
+## [0.38.5](https://github.com/jquense/react-big-calendar/compare/v0.38.4...v0.38.5) (2022-01-16)
+
+
+### Bug Fixes
+
+* Correct issue with semantic-release and yarn-lock ([cc48854](https://github.com/jquense/react-big-calendar/commit/cc48854c87b03ca23541484e30061576c2edfe98)), closes [#2096](https://github.com/jquense/react-big-calendar/issues/2096)
+
 ## [0.38.4](https://github.com/jquense/react-big-calendar/compare/v0.38.3...v0.38.4) (2022-01-04)
 
 

@@ -14,17 +14,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '16.13.2'
 
       - name: Install Dependencies
         run: yarn install
 
-# semantic release comes pre-installed in GitHub actions by default
-# so only load plugins
-      - name: Install semantic-release extra plugins
-        run: yarn add @semantic-release/changelog @semantic-release/git
 # test and build prior to release
       - name: Unit Test & Linting
         run: yarn test

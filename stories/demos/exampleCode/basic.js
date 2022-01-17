@@ -1,9 +1,9 @@
-import React from 'react'
-import { Calendar, Views } from '../../../src'
+import React, { Fragment, useMemo } from 'react'
+import PropTypes from 'prop-types'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 import * as dates from '../../../src/utils/dates'
-
-let allViews = Object.keys(Views).map((k) => Views[k])
 
 const ColoredDateCellWrapper = ({ children }) =>
   React.cloneElement(React.Children.only(children), {
@@ -12,19 +12,35 @@ const ColoredDateCellWrapper = ({ children }) =>
     },
   })
 
-let Basic = ({ localizer }) => (
-  <Calendar
-    events={events}
-    views={allViews}
-    step={60}
-    showMultiDayTimes
-    max={dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours')}
-    defaultDate={new Date(2015, 3, 1)}
-    components={{
-      timeSlotWrapper: ColoredDateCellWrapper,
-    }}
-    localizer={localizer}
-  />
-)
+export default function Basic({ localizer }) {
+  const { components, defaultDate, max, views } = useMemo(
+    () => ({
+      components: {
+        timeSlotWrapper: ColoredDateCellWrapper,
+      },
+      defaultDate: new Date(2015, 3, 1),
+      max: dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours'),
+      views: Object.keys(Views).map((k) => Views[k]),
+    }),
+    []
+  )
 
-export default Basic
+  return (
+    <Fragment>
+      <DemoLink fileName="basic" />
+      <Calendar
+        components={components}
+        defaultDate={defaultDate}
+        events={events}
+        localizer={localizer}
+        max={max}
+        showMultiDayTimes
+        step={60}
+        views={views}
+      />
+    </Fragment>
+  )
+}
+Basic.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

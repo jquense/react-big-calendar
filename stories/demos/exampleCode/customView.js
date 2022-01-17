@@ -1,40 +1,42 @@
-import React from 'react'
+import React, { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import * as dates from 'date-arithmetic'
+import { Calendar, Views, Navigate, DateLocalizer } from 'react-big-calendar'
+import TimeGrid from '../../../src/TimeGrid' // use 'react-big-calendar/lib/TimeGrid'. Can't 'alias' in Storybook
 import events from '../../resources/events'
-import { Calendar, Views, Navigate } from 'react-big-calendar'
-import TimeGrid from 'react-big-calendar/lib/TimeGrid'
-import ExampleControlSlot from '../ExampleControlSlot'
+import DemoLink from '../../DemoLink.component'
 
-class MyWeek extends React.Component {
-  render() {
-    let {
-      date,
-      localizer,
-      min = localizer.startOf(new Date(), 'day'),
-      max = localizer.endOf(new Date(), 'day'),
-      scrollToTime = localizer.startOf(new Date(), 'day'),
-    } = this.props
-    let range = MyWeek.range(date, { localizer })
+function MyWeek({
+  date,
+  localizer,
+  min = localizer.startOf(new Date(), 'day'),
+  max = localizer.endOf(new Date(), 'day'),
+  scrollToTime = localizer.startOf(new Date(), 'day'),
+  ...props
+}) {
+  const currRange = useMemo(
+    () => MyWeek.range(date, { localizer }),
+    [date, localizer]
+  )
 
-    return (
-      <TimeGrid
-        {...this.props}
-        range={range}
-        eventOffset={15}
-        localizer={localizer}
-        min={min}
-        max={max}
-        scrollToTime={scrollToTime}
-      />
-    )
-  }
+  return (
+    <TimeGrid
+      date={date}
+      eventOffset={15}
+      range={currRange}
+      localizer={localizer}
+      max={max}
+      min={min}
+      scrollToTime={scrollToTime}
+      {...props}
+    />
+  )
 }
 
 MyWeek.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
-  localizer: PropTypes.any,
+  localizer: PropTypes.object,
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
   scrollToTime: PropTypes.instanceOf(Date),
@@ -72,19 +74,33 @@ MyWeek.title = (date) => {
   return `My awesome week: ${date.toLocaleDateString()}`
 }
 
-let CustomView = ({ localizer }) => (
-  <React.Fragment>
-    <ExampleControlSlot.Entry waitForOutlet>
-      <strong>The Calendar below implements a custom 3-day week view</strong>
-    </ExampleControlSlot.Entry>
-    <Calendar
-      events={events}
-      localizer={localizer}
-      defaultView={Views.WEEK}
-      defaultDate={new Date(2015, 3, 1)}
-      views={{ month: true, week: MyWeek }}
-    />
-  </React.Fragment>
-)
+export default function CustomView({ localizer }) {
+  const { defaultDate, views } = useMemo(
+    () => ({
+      defaultDate: new Date(2015, 3, 1),
+      views: {
+        month: true,
+        week: MyWeek,
+      },
+    }),
+    []
+  )
 
-export default CustomView
+  return (
+    <Fragment>
+      <DemoLink fileName="customView">
+        <strong>The Calendar below implements a custom 3-day week view</strong>
+      </DemoLink>
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.WEEK}
+        events={events}
+        localizer={localizer}
+        views={views}
+      />
+    </Fragment>
+  )
+}
+CustomView.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

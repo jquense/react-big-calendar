@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect, useMemo } from 'react'
 import { Calendar, luxonLocalizer, Views } from 'react-big-calendar'
 import { DateTime, Settings } from 'luxon'
+import DemoLink from '../../DemoLink.component'
 
 import events from '../../resources/events'
 import TimezoneSelect from '../TimezoneSelect'
@@ -35,19 +36,21 @@ export default function Luxon() {
 
   return (
     <Fragment>
-      <TimezoneSelect
-        title={`This calendar uses the 'luxonLocalizer'`}
-        defaultTZ={defaultTZ}
-        timezone={timezone}
-        setTimezone={setTimezone}
-      />
+      <DemoLink fileName="luxon">
+        <TimezoneSelect
+          defaultTZ={defaultTZ}
+          setTimezone={setTimezone}
+          timezone={timezone}
+          title={`This calendar uses the 'luxonLocalizer'`}
+        />
+      </DemoLink>
       <Calendar
-        events={myEvents}
-        defaultView={Views.WEEK}
         defaultDate={defaultDate}
-        scrollToTime={scrollToTime}
-        localizer={localizer}
+        defaultView={Views.WEEK}
+        events={myEvents}
         getNow={getNow}
+        localizer={localizer}
+        scrollToTime={scrollToTime}
       />
     </Fragment>
   )

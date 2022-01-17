@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect, useMemo } from 'react'
-import { Calendar, momentLocalizer, Views } from '../../../src'
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
 import moment from 'moment'
 import 'moment-timezone'
-
+import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 import TimezoneSelect from '../TimezoneSelect'
 
@@ -36,18 +36,20 @@ export default function Timezones() {
 
   return (
     <Fragment>
-      <TimezoneSelect
-        defaultTZ={defaultTZ}
-        timezone={timezone}
-        setTimezone={setTimezone}
-      />
+      <DemoLink fileName="timezones">
+        <TimezoneSelect
+          defaultTZ={defaultTZ}
+          setTimezone={setTimezone}
+          timezone={timezone}
+        />
+      </DemoLink>
       <Calendar
-        events={myEvents}
-        defaultView={Views.WEEK}
         defaultDate={defaultDate}
-        scrollToTime={scrollToTime}
-        localizer={localizer}
+        defaultView={Views.WEEK}
+        events={myEvents}
         getNow={getNow}
+        localizer={localizer}
+        scrollToTime={scrollToTime}
       />
     </Fragment>
   )

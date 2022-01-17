@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
-import Selectable from './exampleCode/selectable'
+import Luxon from './exampleCode/luxon'
 
 export default {
   title: 'Examples',
@@ -22,7 +22,6 @@ export default {
 
 const localizer = momentLocalizer(moment)
 
-export function Example2() {
-  return <Selectable localizer={localizer} />
+export function LuxonLocalizer() {
+  return <Luxon localizer={localizer} />
 }
-Example2.storyName = 'Create Events'

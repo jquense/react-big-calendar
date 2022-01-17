@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer } from '../../src'
 import CultureDemo from './exampleCode/cultures'
 
 export default {
-  title: 'Demos',
+  title: 'Examples',
   component: Calendar,
   parameters: {
     docs: {
@@ -22,6 +22,7 @@ export default {
 
 const localizer = momentLocalizer(moment)
 
-export function Localization() {
+export function Example5() {
   return <CultureDemo localizer={localizer} />
 }
+Example5.storyName = 'Localization'

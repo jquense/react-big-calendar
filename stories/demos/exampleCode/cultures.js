@@ -1,6 +1,7 @@
-import React, { Fragment, useState, useCallback } from 'react'
+import React, { Fragment, useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { Calendar, DateLocalizer } from '../../../src'
+import { Calendar, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 import Layout from 'react-tackle-box/Layout'
 
@@ -24,9 +25,11 @@ export default function CulturesDemo({ localizer }) {
     [setCulture]
   )
 
+  const defaultDate = useMemo(() => new Date(2015, 3, 1), [])
+
   return (
     <Fragment>
-      <div style={{ marginBottom: 10 }}>
+      <DemoLink fileName="cultures">
         <Layout direction="column" align="center">
           <label>Select a Culture</label>{' '}
           <select
@@ -42,13 +45,13 @@ export default function CulturesDemo({ localizer }) {
             ))}
           </select>
         </Layout>
-      </div>
+      </DemoLink>
       <Calendar
-        rtl={rightToLeft}
-        events={events}
         culture={culture}
-        defaultDate={new Date(2015, 3, 1)}
+        defaultDate={defaultDate}
+        events={events}
         localizer={localizer}
+        rtl={rightToLeft}
       />
     </Fragment>
   )

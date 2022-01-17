@@ -1,6 +1,9 @@
-import React from 'react'
-import { Calendar, Views } from 'react-big-calendar'
+import React, { Fragment, useMemo } from 'react'
+import PropTypes from 'prop-types'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
+import styles from './rendering.module.scss'
 
 function Event({ event }) {
   return (
@@ -9,6 +12,9 @@ function Event({ event }) {
       {event.desc && ':  ' + event.desc}
     </span>
   )
+}
+Event.propTypes = {
+  event: PropTypes.object,
 }
 
 function EventAgenda({ event }) {
@@ -19,11 +25,14 @@ function EventAgenda({ event }) {
     </span>
   )
 }
+EventAgenda.propTypes = {
+  event: PropTypes.object,
+}
 
 const customDayPropGetter = (date) => {
   if (date.getDate() === 7 || date.getDate() === 15)
     return {
-      className: 'special-day',
+      className: styles.specialDay,
       style: {
         border: 'solid 3px ' + (date.getDate() === 7 ? '#faa' : '#afa'),
       },
@@ -34,26 +43,40 @@ const customDayPropGetter = (date) => {
 const customSlotPropGetter = (date) => {
   if (date.getDate() === 7 || date.getDate() === 15)
     return {
-      className: 'special-day',
+      className: styles.specialDay,
     }
   else return {}
 }
 
-let Rendering = ({ localizer }) => (
-  <Calendar
-    events={events}
-    localizer={localizer}
-    defaultDate={new Date(2015, 3, 1)}
-    defaultView={Views.AGENDA}
-    dayPropGetter={customDayPropGetter}
-    slotPropGetter={customSlotPropGetter}
-    components={{
-      event: Event,
-      agenda: {
-        event: EventAgenda,
+export default function Rendering({ localizer }) {
+  const { components, defaultDate } = useMemo(
+    () => ({
+      components: {
+        event: Event,
+        agenda: {
+          event: EventAgenda,
+        },
       },
-    }}
-  />
-)
+      defaultDate: new Date(2015, 3, 7),
+    }),
+    []
+  )
 
-export default Rendering
+  return (
+    <Fragment>
+      <DemoLink fileName="rendering" />
+      <Calendar
+        components={components}
+        dayPropGetter={customDayPropGetter}
+        defaultDate={defaultDate}
+        defaultView={Views.AGENDA}
+        events={events}
+        localizer={localizer}
+        slotPropGetter={customSlotPropGetter}
+      />
+    </Fragment>
+  )
+}
+Rendering.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

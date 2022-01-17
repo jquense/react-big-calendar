@@ -1,16 +1,25 @@
-import React from 'react'
-import { Calendar, Views } from 'react-big-calendar'
+import React, { useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 
-let Timeslots = ({ localizer }) => (
-  <Calendar
-    events={events}
-    step={15}
-    timeslots={8}
-    localizer={localizer}
-    defaultView={Views.WEEK}
-    defaultDate={new Date(2015, 3, 12)}
-  />
-)
-
-export default Timeslots
+export default function Timeslots({ localizer }) {
+  const defaultDate = useMemo(() => new Date(2015, 3, 12), [])
+  return (
+    <Fragment>
+      <DemoLink fileName="timeslots" />
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.WEEK}
+        events={events}
+        localizer={localizer}
+        step={15}
+        timeslots={8}
+      />
+    </Fragment>
+  )
+}
+Timeslots.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

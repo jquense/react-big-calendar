@@ -8,7 +8,29 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-jest',
-    '@storybook/preset-scss',
+    // nomodule
+    {
+      name: `@storybook/preset-scss`,
+      options: {
+        rule: {
+          test: /(?<!\.module).s[ca]ss$/,
+        },
+      },
+    },
+    // module
+    {
+      name: `@storybook/preset-scss`,
+      options: {
+        rule: {
+          test: /\.module\.s[ca]ss$/,
+        },
+        cssLoaderOptions: {
+          modules: {
+            localIdentName: '[name]__[local]--[hash:base64:5]',
+          },
+        },
+      },
+    },
   ],
   framework: '@storybook/react',
   core: {
@@ -19,6 +41,12 @@ module.exports = {
 
     config.entry.unshift(
       path.resolve(__dirname, '../stories/resources/main.scss')
+    )
+
+    // Aliases the src to the package name, so that 'example' scripting reads right
+    config.resolve.alias['react-big-calendar'] = path.resolve(
+      __dirname,
+      '../src'
     )
 
     return config

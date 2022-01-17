@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer } from '../../src'
 import CreateEventWithNoOverlap from './exampleCode/createEventWithNoOverlap'
 
 export default {
-  title: 'Demos',
+  title: 'Examples',
   component: Calendar,
   parameters: {
     docs: {
@@ -22,7 +22,7 @@ export default {
 
 const localizer = momentLocalizer(moment)
 
-export function NoOverlapDemo() {
+export function Example3() {
   return <CreateEventWithNoOverlap localizer={localizer} />
 }
-NoOverlapDemo.storyName = 'Create events with no-overlap algorithm'
+Example3.storyName = 'Create events with no-overlap algorithm'

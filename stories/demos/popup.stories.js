@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
-import Selectable from './exampleCode/selectable'
+import PopupDemo from './exampleCode/popup'
 
 export default {
   title: 'Examples',
@@ -22,7 +22,7 @@ export default {
 
 const localizer = momentLocalizer(moment)
 
-export function Example2() {
-  return <Selectable localizer={localizer} />
+export function Example6() {
+  return <LuxonDemo localizer={localizer} />
 }
-Example2.storyName = 'Create Events'
+Example6.storyName = 'Show more via a popup'

@@ -3,7 +3,7 @@ import { Calendar } from '../../src'
 import TimezoneCalendar from './exampleCode/timezones'
 
 export default {
-  title: 'Demos',
+  title: 'Examples',
   component: Calendar,
   parameters: {
     docs: {
@@ -19,6 +19,7 @@ export default {
   ],
 }
 
-export function Timezones() {
+export function Example4() {
   return <TimezoneCalendar />
 }
+Example4.storyName = 'Timezones'

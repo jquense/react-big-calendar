@@ -1,12 +1,13 @@
-import React, { Fragment, useState, useCallback } from 'react'
+import React, { Fragment, useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { Calendar, Views, DateLocalizer } from '../../../src' // You import from 'react-big-calendar'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 
 export default function Selectable({ localizer }) {
   const [myEvents, setEvents] = useState(events)
 
-  const handleSelect = useCallback(
+  const handleSelectSlot = useCallback(
     ({ start, end }) => {
       const title = window.prompt('New Event name')
       if (title) {
@@ -16,23 +17,36 @@ export default function Selectable({ localizer }) {
     [setEvents]
   )
 
+  const handleSelectEvent = useCallback(
+    (event) => window.alert(event.title),
+    []
+  )
+
+  const { defaultDate, scrollToTime } = useMemo(
+    () => ({
+      defaultDate: new Date(2015, 3, 12),
+      scrollToTime: new Date(1970, 1, 1, 6),
+    }),
+    []
+  )
+
   return (
     <Fragment>
-      <div>
+      <DemoLink fileName="selectable">
         <strong>
           Click an event to see more info, or drag the mouse over the calendar
           to select a date/time range.
         </strong>
-      </div>
+      </DemoLink>
       <Calendar
-        selectable
-        localizer={localizer}
-        events={myEvents}
+        defaultDate={defaultDate}
         defaultView={Views.WEEK}
-        scrollToTime={new Date(1970, 1, 1, 6)}
-        defaultDate={new Date(2015, 3, 12)}
-        onSelectEvent={(event) => window.alert(event.title)}
-        onSelectSlot={handleSelect}
+        events={myEvents}
+        localizer={localizer}
+        onSelectEvent={handleSelectEvent}
+        onSelectSlot={handleSelectSlot}
+        selectable
+        scrollToTime={scrollToTime}
       />
     </Fragment>
   )

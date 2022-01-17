@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer } from '../../src'
 import Basic from './exampleCode/basic'
 
 export default {
-  title: 'Demos',
+  title: 'Examples',
   component: Calendar,
   parameters: {
     docs: {
@@ -22,6 +22,7 @@ export default {
 
 const localizer = momentLocalizer(moment)
 
-export function BasicDemo() {
+export function Example1() {
   return <Basic localizer={localizer} />
 }
+Example1.storyName = 'Basic Demo'

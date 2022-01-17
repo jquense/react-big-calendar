@@ -17,9 +17,9 @@ export default function TimezoneSelect({
     setTimezone(value ? value : defaultTZ)
 
   return (
-    <div style={{ marginBottom: 10 }}>
+    <div>
       <Layout direction="column" align="center">
-        {title ? <h4>{title}</h4> : null}
+        {title ? <strong style={{ marginBottom: 10 }}>{title}</strong> : null}
         <label>Select a Timezone</label>{' '}
         <select
           className="form-control"

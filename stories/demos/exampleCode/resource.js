@@ -1,6 +1,7 @@
-import React from 'react'
-import { Calendar, Views } from 'react-big-calendar'
-import ExampleControlSlot from '../ExampleControlSlot'
+import React, { Fragment, useMemo } from 'react'
+import PropTypes from 'prop-types'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 
 const events = [
   {
@@ -41,20 +42,32 @@ const resourceMap = [
   { resourceId: 4, resourceTitle: 'Meeting room 2' },
 ]
 
-let Resource = ({ localizer }) => (
-  <>
-    <Calendar
-      events={events}
-      localizer={localizer}
-      defaultView={Views.DAY}
-      views={['day', 'work_week']}
-      step={60}
-      defaultDate={new Date(2018, 0, 29)}
-      resources={resourceMap}
-      resourceIdAccessor="resourceId"
-      resourceTitleAccessor="resourceTitle"
-    />
-  </>
-)
+export default function Resource({ localizer }) {
+  const { defaultDate, views } = useMemo(
+    () => ({
+      defaultDate: new Date(2018, 0, 29),
+      views: ['day', 'work_week'],
+    }),
+    []
+  )
 
-export default Resource
+  return (
+    <Fragment>
+      <DemoLink fileName="resource" />
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.DAY}
+        events={events}
+        localizer={localizer}
+        resourceIdAccessor="resourceId"
+        resources={resourceMap}
+        resourceTitleAccessor="resourceTitle"
+        step={60}
+        views={views}
+      />
+    </Fragment>
+  )
+}
+Resource.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

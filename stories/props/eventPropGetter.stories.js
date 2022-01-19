@@ -15,13 +15,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function EventPropGetter() {
@@ -43,13 +36,15 @@ export function EventPropGetter() {
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.WEEK}
-      eventPropGetter={eventPropGetter}
-      events={demoEvents}
-      localizer={mLocalizer}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={new Date(2015, 3, 13)}
+        defaultView={Views.WEEK}
+        eventPropGetter={eventPropGetter}
+        events={demoEvents}
+        localizer={mLocalizer}
+      />
+    </div>
   )
 }
 EventPropGetter.storyName = 'eventPropGetter'

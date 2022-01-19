@@ -10,8 +10,8 @@ import DemoLink from '../../DemoLink.component'
 function MyWeek({
   date,
   localizer,
-  min = localizer.startOf(new Date(), 'day'),
   max = localizer.endOf(new Date(), 'day'),
+  min = localizer.startOf(new Date(), 'day'),
   scrollToTime = localizer.startOf(new Date(), 'day'),
   ...props
 }) {
@@ -24,10 +24,10 @@ function MyWeek({
     <TimeGrid
       date={date}
       eventOffset={15}
-      range={currRange}
       localizer={localizer}
       max={max}
       min={min}
+      range={currRange}
       scrollToTime={scrollToTime}
       {...props}
     />
@@ -37,17 +37,17 @@ function MyWeek({
 MyWeek.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
   localizer: PropTypes.object,
-  min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date),
   scrollToTime: PropTypes.instanceOf(Date),
 }
 
 MyWeek.range = (date, { localizer }) => {
-  let start = date
-  let end = dates.add(start, 2, 'day')
+  const start = date
+  const end = dates.add(start, 2, 'day')
 
   let current = start
-  let range = []
+  const range = []
 
   while (localizer.lte(current, end, 'day')) {
     range.push(current)
@@ -91,13 +91,15 @@ export default function CustomView({ localizer }) {
       <DemoLink fileName="customView">
         <strong>The Calendar below implements a custom 3-day week view</strong>
       </DemoLink>
-      <Calendar
-        defaultDate={defaultDate}
-        defaultView={Views.WEEK}
-        events={events}
-        localizer={localizer}
-        views={views}
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={events}
+          localizer={localizer}
+          views={views}
+        />
+      </div>
     </Fragment>
   )
 }

@@ -14,39 +14,37 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function Messages() {
-  const messages = useMemo(
+  const { defaultDate, messages } = useMemo(
     () => ({
-      week: 'Semana',
-      work_week: 'Semana de trabajo',
-      day: 'Día',
-      month: 'Mes',
-      previous: 'Atrás',
-      next: 'Después',
-      today: 'Hoy',
-      agenda: 'El Diario',
+      defaultDate: new Date(2015, 3, 13),
+      messages: {
+        week: 'Semana',
+        work_week: 'Semana de trabajo',
+        day: 'Día',
+        month: 'Mes',
+        previous: 'Atrás',
+        next: 'Después',
+        today: 'Hoy',
+        agenda: 'El Diario',
 
-      showMore: (total) => `+${total} más`,
+        showMore: (total) => `+${total} más`,
+      },
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      events={demoEvents}
-      localizer={mLocalizer}
-      messages={messages}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        localizer={mLocalizer}
+        messages={messages}
+      />
+    </div>
   )
 }
 Messages.storyName = 'messages'

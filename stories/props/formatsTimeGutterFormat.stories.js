@@ -14,33 +14,32 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsTimeGutterFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats, views } = useMemo(
     () => ({
-      timeGutterFormat: (date, culture, localizer) =>
-        localizer.format(date, 'hh:mm a', culture),
+      defaultDate: new Date(2015, 3, 13),
+      formats: {
+        timeGutterFormat: (date, culture, localizer) =>
+          localizer.format(date, 'hh:mm a', culture),
+      },
+      views: [Views.WEEK, Views.DAY],
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.WEEK}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-      views={[Views.WEEK, Views.DAY]}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.WEEK}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+        views={views}
+      />
+    </div>
   )
 }
 FormatsTimeGutterFormat.storyName = 'formats.timeGutterFormat'

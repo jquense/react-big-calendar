@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react'
+import React, { useCallback, useRef, useEffect, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 function buildMessage(event, { altKey, ctrlKey, shiftKey, metaKey, key }) {
@@ -58,13 +51,17 @@ export function OnKeyPressEvent() {
     }, 250)
   }, [])
 
+  const defaultDate = useMemo(() => new Date(2015, 3, 13), [])
+
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onKeyPressEvent={onKeyPressEvent}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onKeyPressEvent={onKeyPressEvent}
+      />
+    </div>
   )
 }
 OnKeyPressEvent.storyName = 'onKeypressEvent'

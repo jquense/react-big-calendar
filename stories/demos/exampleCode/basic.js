@@ -28,16 +28,18 @@ export default function Basic({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="basic" />
-      <Calendar
-        components={components}
-        defaultDate={defaultDate}
-        events={events}
-        localizer={localizer}
-        max={max}
-        showMultiDayTimes
-        step={60}
-        views={views}
-      />
+      <div className="height600">
+        <Calendar
+          components={components}
+          defaultDate={defaultDate}
+          events={events}
+          localizer={localizer}
+          max={max}
+          showMultiDayTimes
+          step={60}
+          views={views}
+        />
+      </div>
     </Fragment>
   )
 }

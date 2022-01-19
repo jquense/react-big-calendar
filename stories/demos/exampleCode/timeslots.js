@@ -9,14 +9,16 @@ export default function Timeslots({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="timeslots" />
-      <Calendar
-        defaultDate={defaultDate}
-        defaultView={Views.WEEK}
-        events={events}
-        localizer={localizer}
-        step={15}
-        timeslots={8}
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={events}
+          localizer={localizer}
+          step={15}
+          timeslots={8}
+        />
+      </div>
     </Fragment>
   )
 }

@@ -14,31 +14,29 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsDateFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats } = useMemo(
     () => ({
-      dateFormat: (date, culture, localizer) =>
-        localizer.format(date, 'D', culture),
+      defaultDate: new Date(2015, 3, 1),
+      formats: {
+        dateFormat: (date, culture, localizer) =>
+          localizer.format(date, 'D', culture),
+      },
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 1)}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+      />
+    </div>
   )
 }
 FormatsDateFormat.storyName = 'formats.dateFormat'

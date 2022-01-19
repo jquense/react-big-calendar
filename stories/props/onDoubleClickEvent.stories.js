@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react'
+import React, { useCallback, useRef, useEffect, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 function buildMessage(calEvent, eventName) {
@@ -42,44 +35,42 @@ export function OnDoubleClickEvent() {
     }
   }, [])
 
-  const onSelectEvent = useCallback(
-    (calEvent) => {
-      /**
-       * Here we are waiting 250 milliseconds (use what you want) prior to firing
-       * our method. Why? Because both 'click' and 'doubleClick'
-       * would fire, in the event of a 'doubleClick'. By doing
-       * this, the 'click' handler is overridden by the 'doubleClick'
-       * action.
-       */
-      window.clearTimeout(clickRef?.current)
-      clickRef.current = window.setTimeout(() => {
-        window.alert(buildMessage(calEvent, 'onSelectEvent'))
-      }, 250)
-    },
-    [buildMessage]
-  )
+  const onSelectEvent = useCallback((calEvent) => {
+    /**
+     * Here we are waiting 250 milliseconds (use what you want) prior to firing
+     * our method. Why? Because both 'click' and 'doubleClick'
+     * would fire, in the event of a 'doubleClick'. By doing
+     * this, the 'click' handler is overridden by the 'doubleClick'
+     * action.
+     */
+    window.clearTimeout(clickRef?.current)
+    clickRef.current = window.setTimeout(() => {
+      window.alert(buildMessage(calEvent, 'onSelectEvent'))
+    }, 250)
+  }, [])
 
-  const onDoubleClickEvent = useCallback(
-    (calEvent) => {
-      /**
-       * Notice our use of the same ref as above.
-       */
-      window.clearTimeout(clickRef?.current)
-      clickRef.current = window.setTimeout(() => {
-        window.alert(buildMessage(calEvent, 'onDoubleClickEvent'))
-      }, 250)
-    },
-    [buildMessage]
-  )
+  const onDoubleClickEvent = useCallback((calEvent) => {
+    /**
+     * Notice our use of the same ref as above.
+     */
+    window.clearTimeout(clickRef?.current)
+    clickRef.current = window.setTimeout(() => {
+      window.alert(buildMessage(calEvent, 'onDoubleClickEvent'))
+    }, 250)
+  }, [])
+
+  const defaultDate = useMemo(() => new Date(2015, 3, 1), [])
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 1)}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onDoubleClickEvent={onDoubleClickEvent}
-      onSelectEvent={onSelectEvent}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onDoubleClickEvent={onDoubleClickEvent}
+        onSelectEvent={onSelectEvent}
+      />
+    </div>
   )
 }
 OnDoubleClickEvent.storyName = 'onDoubleClickEvent'

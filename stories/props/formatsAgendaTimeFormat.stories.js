@@ -14,33 +14,32 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsAgendTimeFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats, views } = useMemo(
     () => ({
-      agendaTimeFormat: (date, culture, localizer) =>
-        localizer.format(date, 'hh:mm A', culture),
+      defaultDate: new Date(2015, 3, 13),
+      formats: {
+        agendaTimeFormat: (date, culture, localizer) =>
+          localizer.format(date, 'hh:mm A', culture),
+      },
+      views: [Views.WEEK, Views.DAY, Views.AGENDA],
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.AGENDA}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-      views={[Views.WEEK, Views.DAY, Views.AGENDA]}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.AGENDA}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+        views={views}
+      />
+    </div>
   )
 }
 FormatsAgendTimeFormat.storyName = 'formats.agendaTimeFormat'

@@ -16,30 +16,28 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function Components() {
-  const components = useMemo(
+  const { components, defaultDate } = useMemo(
     () => ({
-      toolbar: CustomToolbar,
+      components: {
+        toolbar: CustomToolbar,
+      },
+      defaultDate: new Date(2015, 3, 13),
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      events={demoEvents}
-      localizer={mLocalizer}
-      components={components}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        localizer={mLocalizer}
+        components={components}
+      />
+    </div>
   )
 }
 Components.storyName = 'components'

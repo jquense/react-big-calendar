@@ -13,11 +13,11 @@ TODO:
 - [x] `elementProps` - props
 - [ ] `backgroundEventPropGetter` - props (not currently implemented. skipping it)
 - [x] `slotGroupPropGetter` - props
-- [ ] `onShowMore` - props
-- [ ] `onShowMoreDrillDown` - props
+- [x] `onShowMore` - props
+- [ ] `onShowMoreDrillDown` - props (not currently implemented. skipping it)
 - [x] `onKeyPressEvent` - props
-- [ ] Give Drag and Drop it's own sub category, with it's own props section
+- [x] Give Drag and Drop it's own sub category, with it's own props section
 - [ ] Migrate 'Examples' into SB sub category, with clear explanations
-- [ ] Split 'Examples' down by 'core' and 'Drag and Drop'
+- [x] Split 'Examples' down by 'core' and 'Drag and Drop'
 - [ ] Create custom 'View' documentation
 - [ ] Can we write true unit testing with SB and React Testing Library?

@@ -40,4 +40,16 @@ RightToLeft.args = {
   events: demoEvents,
   localizer: mLocalizer,
   rtl: true,
+  messages: {
+    week: 'أسبوع',
+    work_week: 'أسبوع العمل',
+    day: 'يوم',
+    month: 'شهر',
+    previous: 'سابق',
+    next: 'التالي',
+    today: 'اليوم',
+    agenda: 'جدول أعمال',
+
+    showMore: (total) => `+${total} إضافي`,
+  },
 }

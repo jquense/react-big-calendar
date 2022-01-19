@@ -20,18 +20,20 @@ export default function BackgroundEventsCalendar({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="backgroundEvents" />
-      <Calendar
-        backgroundEvents={backgroundEvents}
-        dayLayoutAlgorithm="no-overlap"
-        defaultDate={defaultDate}
-        defaultView={Views.DAY}
-        events={events}
-        localizer={localizer}
-        max={max}
-        showMultiDayTimes
-        step={60}
-        views={allViews}
-      />
+      <div className="height600">
+        <Calendar
+          backgroundEvents={backgroundEvents}
+          dayLayoutAlgorithm="no-overlap"
+          defaultDate={defaultDate}
+          defaultView={Views.DAY}
+          events={events}
+          localizer={localizer}
+          max={max}
+          showMultiDayTimes
+          step={60}
+          views={allViews}
+        />
+      </div>
     </Fragment>
   )
 }

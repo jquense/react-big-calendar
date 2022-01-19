@@ -1,169 +1,137 @@
-import React from 'react'
+import React, { Fragment, useCallback, useMemo, useState } from 'react'
+import PropTypes from 'prop-types'
 import events from '../../resources/events'
-import { Calendar, Views } from 'react-big-calendar'
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-import Layout from 'react-tackle-box/Layout'
-import Card from '../Card'
-
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import Card from '../../resources/Card'
+import DemoLink from '../../DemoLink.component'
+// Storybook cannot alias this, so you would use 'react-big-calendar/lib/addons/dragAndDrop'
+import withDragAndDrop from '../../../src/addons/dragAndDrop'
+// Storybook cannot alias this, so you would use 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
+import '../../../src/addons/dragAndDrop/styles.scss'
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 const formatName = (name, count) => `${name} ID ${count}`
 
-class Dnd extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      events: events,
-      draggedEvent: null,
-      counters: {
-        item1: 0,
-        item2: 0,
-      },
-      displayDragItemInCell: true,
-    }
-  }
+export default function DnDOutsideResource({ localizer }) {
+  const [myEvents, setMyEvents] = useState(events)
+  const [draggedEvent, setDraggedEvent] = useState()
+  const [displayDragItemInCell, setDisplayDragItemInCell] = useState(true)
+  const [counters, setCounters] = useState({ item1: 0, item2: 0 })
 
-  handleDragStart = (event) => {
-    this.setState({ draggedEvent: event })
-  }
+  const handleDragStart = useCallback(
+    (event) => setDraggedEvent(event),
+    [setDraggedEvent]
+  )
 
-  handleDisplayDragItemInCell = () => {
-    this.setState({
-      displayDragItemInCell: !this.state.displayDragItemInCell,
-    })
-  }
+  const dragFromOutsideItem = useCallback(() => draggedEvent, [draggedEvent])
 
-  dragFromOutsideItem = () => {
-    return this.state.draggedEvent
-  }
+  const customOnDragOver = useCallback(
+    (dragEvent) => {
+      // check for undroppable is specific to this example
+      // and not part of API. This just demonstrates that
+      // onDragOver can optionally be passed to conditionally
+      // allow draggable items to be dropped on cal, based on
+      // whether event.preventDefault is called
+      if (draggedEvent !== 'undroppable') {
+        console.log('preventDefault')
+        dragEvent.preventDefault()
+      }
+    },
+    [draggedEvent]
+  )
 
-  customOnDragOver = (event) => {
-    // check for undroppable is specific to this example
-    // and not part of API. This just demonstrates that
-    // onDragOver can optionally be passed to conditionally
-    // allow draggable items to be dropped on cal, based on
-    // whether event.preventDefault is called
-    if (this.state.draggedEvent !== 'undroppable') {
-      console.log('preventDefault')
-      event.preventDefault()
-    }
-  }
+  const handleDisplayDragItemInCell = useCallback(
+    () => setDisplayDragItemInCell((prev) => !prev),
+    []
+  )
 
-  onDropFromOutside = ({ start, end, allDay }) => {
-    const { draggedEvent, counters } = this.state
-    const event = {
-      title: formatName(draggedEvent.name, counters[draggedEvent.name]),
-      start,
-      end,
-      isAllDay: allDay,
-    }
-    const updatedCounters = {
-      ...counters,
-      [draggedEvent.name]: counters[draggedEvent.name] + 1,
-    }
-    this.setState({ draggedEvent: null, counters: updatedCounters })
-    this.newEvent(event)
-  }
+  const moveEvent = useCallback(
+    ({ event, start, end, isAllDay: droppedOnAllDaySlot = false }) => {
+      const { allDay } = event
+      if (!allDay && droppedOnAllDaySlot) {
+        event.allDay = true
+      }
 
-  moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
-    const { events } = this.state
+      setMyEvents((prev) => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end, allDay }]
+      })
+    },
+    [setMyEvents]
+  )
 
-    const idx = events.indexOf(event)
-    let allDay = event.allDay
+  const newEvent = useCallback(
+    (event) => {
+      setMyEvents((prev) => {
+        const idList = prev.map((item) => item.id)
+        const newId = Math.max(...idList) + 1
+        return [...prev, { ...event, id: newId }]
+      })
+    },
+    [setMyEvents]
+  )
 
-    if (!event.allDay && droppedOnAllDaySlot) {
-      allDay = true
-    } else if (event.allDay && !droppedOnAllDaySlot) {
-      allDay = false
-    }
+  const onDropFromOutside = useCallback(
+    ({ start, end, allDay: isAllDay }) => {
+      if (draggedEvent === 'undroppable') {
+        return
+      }
 
-    const updatedEvent = { ...event, start, end, allDay }
+      const { name } = draggedEvent
+      const event = {
+        title: formatName(name, counters[name]),
+        start,
+        end,
+        isAllDay,
+      }
+      setDraggedEvent(null)
+      setCounters((prev) => {
+        const { [name]: count } = prev
+        return {
+          ...prev,
+          [name]: count + 1,
+        }
+      })
+      newEvent(event)
+    },
+    [draggedEvent, counters, setDraggedEvent, setCounters, newEvent]
+  )
 
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, updatedEvent)
+  const resizeEvent = useCallback(
+    ({ event, start, end }) => {
+      setMyEvents((prev) => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end }]
+      })
+    },
+    [setMyEvents]
+  )
 
-    this.setState({
-      events: nextEvents,
-    })
+  const defaultDate = useMemo(() => new Date(2015, 3, 12), [])
 
-    // alert(`${event.title} was dropped onto ${updatedEvent.start}`)
-  }
-
-  resizeEvent = ({ event, start, end }) => {
-    const { events } = this.state
-
-    const nextEvents = events.map((existingEvent) => {
-      return existingEvent.id == event.id
-        ? { ...existingEvent, start, end }
-        : existingEvent
-    })
-
-    this.setState({
-      events: nextEvents,
-    })
-
-    //alert(`${event.title} was resized to ${start}-${end}`)
-  }
-
-  newEvent = (event) => {
-    let idList = this.state.events.map((a) => a.id)
-    let newId = Math.max(...idList) + 1
-    let hour = {
-      id: newId,
-      title: event.title,
-      allDay: event.isAllDay,
-      start: event.start,
-      end: event.end,
-    }
-    this.setState({
-      events: this.state.events.concat([hour]),
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <Card className="examples--header" style={{ display: 'flex' }}>
-          <div
-            style={{
-              display: 'flex',
-              flex: 1,
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            <h4 style={{ color: 'gray', width: '100%' }}>
-              Outside Drag Sources
-            </h4>
-            {Object.entries(this.state.counters).map(([name, count]) => (
+  return (
+    <Fragment>
+      <DemoLink fileName="dndOutsideSource">
+        <Card className="dndOutsideSourceExample">
+          <div className="inner">
+            <h4>Outside Drag Sources</h4>
+            {Object.entries(counters).map(([name, count]) => (
               <div
-                style={{
-                  border: '2px solid gray',
-                  borderRadius: '4px',
-                  width: '100px',
-                  margin: '10px',
-                }}
                 draggable="true"
                 key={name}
                 onDragStart={() =>
-                  this.handleDragStart({ title: formatName(name, count), name })
+                  handleDragStart({ title: formatName(name, count), name })
                 }
               >
                 {formatName(name, count)}
               </div>
             ))}
             <div
-              style={{
-                border: '2px solid gray',
-                borderRadius: '4px',
-                width: '100px',
-                margin: '10px',
-              }}
               draggable="true"
-              key={name}
-              onDragStart={() => this.handleDragStart('undroppable')}
+              onDragStart={() => handleDragStart('undroppable')}
             >
               Draggable but not for calendar.
             </div>
@@ -172,35 +140,36 @@ class Dnd extends React.Component {
           <div>
             <label>
               <input
-                style={{ marginRight: 5 }}
                 type="checkbox"
-                checked={this.state.displayDragItemInCell}
-                onChange={this.handleDisplayDragItemInCell}
+                checked={displayDragItemInCell}
+                onChange={handleDisplayDragItemInCell}
               />
               Display dragged item in cell while dragging over
             </label>
           </div>
         </Card>
+      </DemoLink>
+      <div className="height600">
         <DragAndDropCalendar
-          selectable
-          localizer={this.props.localizer}
-          events={this.state.events}
-          onEventDrop={this.moveEvent}
-          dragFromOutsideItem={
-            this.state.displayDragItemInCell ? this.dragFromOutsideItem : null
-          }
-          onDropFromOutside={this.onDropFromOutside}
-          onDragOver={this.customOnDragOver}
-          resizable
-          onEventResize={this.resizeEvent}
-          onSelectSlot={this.newEvent}
-          onD
+          defaultDate={defaultDate}
           defaultView={Views.MONTH}
-          defaultDate={new Date(2015, 3, 12)}
+          dragFromOutsideItem={
+            displayDragItemInCell ? dragFromOutsideItem : null
+          }
+          events={myEvents}
+          localizer={localizer}
+          onDropFromOutside={onDropFromOutside}
+          onDragOver={customOnDragOver}
+          onEventDrop={moveEvent}
+          onEventResize={resizeEvent}
+          onSelectSlot={newEvent}
+          resizable
+          selectable
         />
       </div>
-    )
-  }
+    </Fragment>
+  )
 }
-
-export default Dnd
+DnDOutsideResource.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

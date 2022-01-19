@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function OnNavigate() {
@@ -29,12 +22,14 @@ export function OnNavigate() {
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
 
   return (
-    <Calendar
-      date={date}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onNavigate={onNavigate}
-    />
+    <div className="height600">
+      <Calendar
+        date={date}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onNavigate={onNavigate}
+      />
+    </div>
   )
 }
 OnNavigate.storyName = 'onNavigate'

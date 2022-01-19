@@ -14,36 +14,35 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsSelectRangeFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats, views } = useMemo(
     () => ({
-      selectRangeFormat: ({ start, end }, culture, localizer) =>
-        localizer.format(start, 'hh:mm a', culture) +
-        ' - ' +
-        localizer.format(end, 'hh:mm a', culture),
+      defaultDate: new Date(2015, 3, 13),
+      formats: {
+        selectRangeFormat: ({ start, end }, culture, localizer) =>
+          localizer.format(start, 'hh:mm a', culture) +
+          ' - ' +
+          localizer.format(end, 'hh:mm a', culture),
+      },
+      views: [Views.WEEK, Views.DAY],
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.WEEK}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-      selectable
-      views={[Views.WEEK, Views.DAY]}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.WEEK}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+        selectable
+        views={views}
+      />
+    </div>
   )
 }
 FormatsSelectRangeFormat.storyName = 'formats.selectRangeFormat'

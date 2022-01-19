@@ -54,17 +54,19 @@ export default function Resource({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="resource" />
-      <Calendar
-        defaultDate={defaultDate}
-        defaultView={Views.DAY}
-        events={events}
-        localizer={localizer}
-        resourceIdAccessor="resourceId"
-        resources={resourceMap}
-        resourceTitleAccessor="resourceTitle"
-        step={60}
-        views={views}
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.DAY}
+          events={events}
+          localizer={localizer}
+          resourceIdAccessor="resourceId"
+          resources={resourceMap}
+          resourceTitleAccessor="resourceTitle"
+          step={60}
+          views={views}
+        />
+      </div>
     </Fragment>
   )
 }

@@ -46,13 +46,15 @@ export default function CulturesDemo({ localizer }) {
           </select>
         </Layout>
       </DemoLink>
-      <Calendar
-        culture={culture}
-        defaultDate={defaultDate}
-        events={events}
-        localizer={localizer}
-        rtl={rightToLeft}
-      />
+      <div className="height600">
+        <Calendar
+          culture={culture}
+          defaultDate={defaultDate}
+          events={events}
+          localizer={localizer}
+          rtl={rightToLeft}
+        />
+      </div>
     </Fragment>
   )
 }

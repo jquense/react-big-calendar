@@ -16,15 +16,15 @@ function getDate(str, momentObj) {
 export default function Timezones() {
   const [timezone, setTimezone] = useState(defaultTZ)
 
-  const { localizer, defaultDate, scrollToTime, myEvents, getNow } =
+  const { defaultDate, getNow, localizer, myEvents, scrollToTime } =
     useMemo(() => {
       moment.tz.setDefault(timezone)
       return {
-        localizer: momentLocalizer(moment),
         defaultDate: getDate(defaultDateStr, moment),
-        scrollToTime: moment().toDate(),
         getNow: () => moment().toDate(),
+        localizer: momentLocalizer(moment),
         myEvents: [...events],
+        scrollToTime: moment().toDate(),
       }
     }, [timezone])
 
@@ -43,14 +43,16 @@ export default function Timezones() {
           timezone={timezone}
         />
       </DemoLink>
-      <Calendar
-        defaultDate={defaultDate}
-        defaultView={Views.WEEK}
-        events={myEvents}
-        getNow={getNow}
-        localizer={localizer}
-        scrollToTime={scrollToTime}
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={myEvents}
+          getNow={getNow}
+          localizer={localizer}
+          scrollToTime={scrollToTime}
+        />
+      </div>
     </Fragment>
   )
 }

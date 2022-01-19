@@ -14,33 +14,31 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsEventTimeRangeEndFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats } = useMemo(
     () => ({
-      eventTimeRangeEndFormat: (date, culture, localizer) =>
-        ' << ' + localizer.format(date, 'hh:mm A', culture),
+      defaultDate: new Date(2015, 3, 13),
+      formats: {
+        eventTimeRangeEndFormat: (date, culture, localizer) =>
+          ' << ' + localizer.format(date, 'hh:mm A', culture),
+      },
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.WEEK}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-      showMultiDayTimes
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.WEEK}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+        showMultiDayTimes
+      />
+    </div>
   )
 }
 FormatsEventTimeRangeEndFormat.storyName = 'formats.eventTimeRangeEndFormat'

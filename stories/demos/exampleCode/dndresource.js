@@ -1,8 +1,11 @@
-import React from 'react'
-import { Calendar } from 'react-big-calendar'
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
+import React, { Fragment, useMemo, useState, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
+// Storybook cannot alias this, so you would use 'react-big-calendar/lib/addons/dragAndDrop'
+import withDragAndDrop from '../../../src/addons/dragAndDrop'
+// Storybook cannot alias this, so you would use 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
+import '../../../src/addons/dragAndDrop/styles.scss'
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
@@ -72,71 +75,78 @@ const resourceMap = [
   { resourceId: 4, resourceTitle: 'Meeting room 2' },
 ]
 
-class Dnd extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      events: events,
-    }
+export default function DnDResource({ localizer }) {
+  const [myEvents, setMyEvents] = useState(events)
 
-    this.moveEvent = this.moveEvent.bind(this)
-  }
+  const moveEvent = useCallback(
+    ({
+      event,
+      start,
+      end,
+      resourceId,
+      isAllDay: droppedOnAllDaySlot = false,
+    }) => {
+      const { allDay } = event
+      if (!allDay && droppedOnAllDaySlot) {
+        event.allDay = true
+      }
 
-  moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
-    const { events } = this.state
+      setMyEvents((prev) => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end, resourceId, allDay }]
+      })
+    },
+    [setMyEvents]
+  )
 
-    const idx = events.indexOf(event)
-    let allDay = event.allDay
+  const resizeEvent = useCallback(
+    ({ event, start, end }) => {
+      setMyEvents((prev) => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end }]
+      })
+    },
+    [setMyEvents]
+  )
 
-    if (!event.allDay && droppedOnAllDaySlot) {
-      allDay = true
-    } else if (event.allDay && !droppedOnAllDaySlot) {
-      allDay = false
-    }
+  const { defaultDate, scrollToTime } = useMemo(
+    () => ({
+      defaultDate: new Date(2018, 0, 29),
+      scrollToTime: new Date(1972, 0, 1, 8),
+    }),
+    []
+  )
 
-    const updatedEvent = { ...event, start, end, resourceId, allDay }
-
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, updatedEvent)
-
-    this.setState({
-      events: nextEvents,
-    })
-  }
-
-  resizeEvent = (resizeType, { event, start, end }) => {
-    const { events } = this.state
-
-    const nextEvents = events.map((existingEvent) => {
-      return existingEvent.id == event.id
-        ? { ...existingEvent, start, end }
-        : existingEvent
-    })
-
-    this.setState({
-      events: nextEvents,
-    })
-  }
-
-  render() {
-    return (
-      <DragAndDropCalendar
-        selectable
-        localizer={this.props.localizer}
-        events={this.state.events}
-        onEventDrop={this.moveEvent}
-        resizable
-        resources={resourceMap}
-        resourceIdAccessor="resourceId"
-        resourceTitleAccessor="resourceTitle"
-        onEventResize={this.resizeEvent}
-        defaultView="day"
-        step={15}
-        showMultiDayTimes={true}
-        defaultDate={new Date(2018, 0, 29)}
-      />
-    )
-  }
+  return (
+    <Fragment>
+      <DemoLink fileName="dndresource">
+        <strong>
+          Drag and Drop an "event" from one resource slot to another.
+        </strong>
+      </DemoLink>
+      <div className="height600">
+        <DragAndDropCalendar
+          defaultDate={defaultDate}
+          defaultView={Views.DAY}
+          events={myEvents}
+          localizer={localizer}
+          onEventDrop={moveEvent}
+          onEventResize={resizeEvent}
+          resizable
+          resourceIdAccessor="resourceId"
+          resources={resourceMap}
+          resourceTitleAccessor="resourceTitle"
+          scrollToTime={scrollToTime}
+          selectable
+          showMultiDayTimes={true}
+          step={15}
+        />
+      </div>
+    </Fragment>
+  )
 }
-
-export default Dnd
+DnDResource.propTypes = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+}

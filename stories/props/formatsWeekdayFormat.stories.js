@@ -14,31 +14,29 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsWeekdayFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats } = useMemo(
     () => ({
-      weekdayFormat: (date, culture, localizer) =>
-        localizer.format(date, 'dddd', culture),
+      defaultDate: new Date(2015, 3, 1),
+      formats: {
+        weekdayFormat: (date, culture, localizer) =>
+          localizer.format(date, 'dddd', culture),
+      },
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 1)}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+      />
+    </div>
   )
 }
 FormatsWeekdayFormat.storyName = 'formats.weekdayFormat'

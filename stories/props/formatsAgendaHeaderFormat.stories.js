@@ -14,35 +14,34 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsAgendHeaderFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats, views } = useMemo(
     () => ({
-      agendaHeaderFormat: ({ start, end }, culture, localizer) =>
-        localizer.format(start, 'dddd MMMM Do, YYYY', culture) +
-        ' - ' +
-        localizer.format(end, 'dddd MMMM Do, YYYY', culture),
+      defaultDate: new Date(2015, 3, 13),
+      formats: {
+        agendaHeaderFormat: ({ start, end }, culture, localizer) =>
+          localizer.format(start, 'dddd MMMM Do, YYYY', culture) +
+          ' - ' +
+          localizer.format(end, 'dddd MMMM Do, YYYY', culture),
+      },
+      views: [Views.WEEK, Views.DAY, Views.AGENDA],
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.AGENDA}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-      views={[Views.WEEK, Views.DAY, Views.AGENDA]}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.AGENDA}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+        views={views}
+      />
+    </div>
   )
 }
 FormatsAgendHeaderFormat.storyName = 'formats.agendaHeaderFormat'

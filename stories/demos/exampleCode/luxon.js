@@ -16,15 +16,15 @@ function getDate(str, DateTimeObj) {
 export default function Luxon() {
   const [timezone, setTimezone] = useState(defaultTZ)
 
-  const { localizer, defaultDate, scrollToTime, myEvents, getNow } =
+  const { defaultDate, getNow, localizer, myEvents, scrollToTime } =
     useMemo(() => {
       Settings.defaultZone = timezone
       return {
-        localizer: luxonLocalizer(DateTime),
         defaultDate: getDate(defaultDateStr, DateTime),
-        scrollToTime: DateTime.local().toJSDate(),
         getNow: () => DateTime.local().toJSDate(),
+        localizer: luxonLocalizer(DateTime),
         myEvents: [...events],
+        scrollToTime: DateTime.local().toJSDate(),
       }
     }, [timezone])
 
@@ -44,14 +44,16 @@ export default function Luxon() {
           title={`This calendar uses the 'luxonLocalizer'`}
         />
       </DemoLink>
-      <Calendar
-        defaultDate={defaultDate}
-        defaultView={Views.WEEK}
-        events={myEvents}
-        getNow={getNow}
-        localizer={localizer}
-        scrollToTime={scrollToTime}
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={myEvents}
+          getNow={getNow}
+          localizer={localizer}
+          scrollToTime={scrollToTime}
+        />
+      </div>
     </Fragment>
   )
 }

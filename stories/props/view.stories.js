@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function View() {
@@ -31,14 +24,16 @@ export function View() {
   const onView = useCallback((newView) => setView(newView), [setView])
 
   return (
-    <Calendar
-      date={date}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onNavigate={onNavigate}
-      onView={onView}
-      view={view}
-    />
+    <div className="height600">
+      <Calendar
+        date={date}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onNavigate={onNavigate}
+        onView={onView}
+        view={view}
+      />
+    </div>
   )
 }
 View.storyName = 'view'

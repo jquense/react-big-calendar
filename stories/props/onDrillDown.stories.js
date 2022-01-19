@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function OnDrillDown() {
@@ -36,15 +29,17 @@ export function OnDrillDown() {
     [setDate, setView]
   )
   return (
-    <Calendar
-      date={date}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onDrillDown={onDrillDown}
-      onNavigate={onNavigate}
-      onView={onView}
-      view={view}
-    />
+    <div className="height600">
+      <Calendar
+        date={date}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onDrillDown={onDrillDown}
+        onNavigate={onNavigate}
+        onView={onView}
+        view={view}
+      />
+    </div>
   )
 }
 OnDrillDown.storyName = 'onDrillDown'

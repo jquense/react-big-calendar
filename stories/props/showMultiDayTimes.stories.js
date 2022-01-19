@@ -20,16 +20,13 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
-const Template = (args) => <Calendar {...args} />
+const Template = (args) => (
+  <div className="height600">
+    <Calendar {...args} />
+  </div>
+)
 
 export const ShowMultiDayTimes = Template.bind({})
 ShowMultiDayTimes.storyName = 'showMultiDayTimes'

@@ -20,8 +20,8 @@ moment.tz.setDefault('Europe/Paris')
 // to the correct localizer.
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
-const MyCalendar = props => (
-  <div>
+const MyCalendar = (props) => (
+  <div className="myCustomHeight">
     <Calendar
       localizer={localizer}
       events={myEventsList}

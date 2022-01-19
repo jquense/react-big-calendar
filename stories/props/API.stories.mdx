@@ -408,6 +408,32 @@ Returning `false` from the handler will prevent a selection.
 
 How is this different from <LinkTo kind="props" story="on-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
 
+### onShowMore
+
+- type: `function (events: Array[event: Object], date: Date) => any`
+- <LinkTo kind="props" story="on-show-more">
+    Example
+  </LinkTo>
+
+Callback fired when a +{count} more is clicked. Receives **all** of the `events` for the `date` on which it was selected.
+
+<!-- TODO: doShowMoreDrillDown is not functioning -->
+
+<!-- Required when using the <LinkTo kind="props" story="do-show-more-drill-down">doShowMoreDrillDown</LinkTo> props as `false`. -->
+
+<!-- ### doShowMoreDrillDown
+
+- type: `boolean`
+- <LinkTo kind="props" story="do-show-more-drill-down">
+    Example
+  </LinkTo>
+
+Determines whether the drill down should occur when clicking on the "+_x_ more" link.
+
+If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `true`, the drill down will occur as usual.
+
+If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `false`, the drill down will not occur and the <LinkTo kind="props" story="on-show-more">onShowMore</LinkTo> function will trigger. -->
+
 ### onKeyPressEvent
 
 - type: `function (event: Object, e: SyntheticEvent) => void`

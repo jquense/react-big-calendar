@@ -11,18 +11,11 @@ export default {
       page: null,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 const localizer = momentLocalizer(moment)
 
 export function Example6() {
-  return <LuxonDemo localizer={localizer} />
+  return <PopupDemo localizer={localizer} />
 }
 Example6.storyName = 'Show more via a popup'

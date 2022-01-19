@@ -52,10 +52,10 @@ export default function Rendering({ localizer }) {
   const { components, defaultDate } = useMemo(
     () => ({
       components: {
-        event: Event,
         agenda: {
           event: EventAgenda,
         },
+        event: Event,
       },
       defaultDate: new Date(2015, 3, 7),
     }),
@@ -65,15 +65,17 @@ export default function Rendering({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="rendering" />
-      <Calendar
-        components={components}
-        dayPropGetter={customDayPropGetter}
-        defaultDate={defaultDate}
-        defaultView={Views.AGENDA}
-        events={events}
-        localizer={localizer}
-        slotPropGetter={customSlotPropGetter}
-      />
+      <div className="height600">
+        <Calendar
+          components={components}
+          dayPropGetter={customDayPropGetter}
+          defaultDate={defaultDate}
+          defaultView={Views.AGENDA}
+          events={events}
+          localizer={localizer}
+          slotPropGetter={customSlotPropGetter}
+        />
+      </div>
     </Fragment>
   )
 }

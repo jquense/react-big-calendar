@@ -14,12 +14,14 @@ export default function Popup({ localizer }) {
           fit all the days events to see an inline popup of all the events.
         </strong>
       </DemoLink>
-      <Calendar
-        defaultDate={defaultDate}
-        events={events}
-        localizer={localizer}
-        popup
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          events={events}
+          localizer={localizer}
+          popup
+        />
+      </div>
     </Fragment>
   )
 }

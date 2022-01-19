@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function GetDrilldownView() {
@@ -34,13 +27,17 @@ export function GetDrilldownView() {
     []
   )
 
+  const defaultDate = useMemo(() => new Date(2015, 3, 1), [])
+
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 1)}
-      events={demoEvents}
-      getDrilldownView={getDrilldownView}
-      localizer={mLocalizer}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        getDrilldownView={getDrilldownView}
+        localizer={mLocalizer}
+      />
+    </div>
   )
 }
 GetDrilldownView.storyName = 'getDrilldownView'

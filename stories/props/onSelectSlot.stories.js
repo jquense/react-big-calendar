@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react'
+import React, { useCallback, useRef, useEffect, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 function buildMessage(slotInfo) {
@@ -42,31 +35,32 @@ export function OnSelectSlot() {
     }
   }, [])
 
-  const onSelectSlot = useCallback(
-    (slotInfo) => {
-      /**
-       * Here we are waiting 250 milliseconds (use what you want) prior to firing
-       * our method. Why? Because both 'click' and 'doubleClick'
-       * would fire, in the event of a 'doubleClick'. By doing
-       * this, the 'click' handler is overridden by the 'doubleClick'
-       * action.
-       */
-      window.clearTimeout(clickRef?.current)
-      clickRef.current = window.setTimeout(() => {
-        window.alert(buildMessage(slotInfo))
-      }, 250)
-    },
-    [buildMessage]
-  )
+  const onSelectSlot = useCallback((slotInfo) => {
+    /**
+     * Here we are waiting 250 milliseconds (use what you want) prior to firing
+     * our method. Why? Because both 'click' and 'doubleClick'
+     * would fire, in the event of a 'doubleClick'. By doing
+     * this, the 'click' handler is overridden by the 'doubleClick'
+     * action.
+     */
+    window.clearTimeout(clickRef?.current)
+    clickRef.current = window.setTimeout(() => {
+      window.alert(buildMessage(slotInfo))
+    }, 250)
+  }, [])
+
+  const defaultDate = useMemo(() => new Date(2015, 3, 1), [])
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 1)}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onSelectSlot={onSelectSlot}
-      selectable
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onSelectSlot={onSelectSlot}
+        selectable
+      />
+    </div>
   )
 }
 OnSelectSlot.storyName = 'onSelectSlot'

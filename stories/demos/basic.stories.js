@@ -11,13 +11,6 @@ export default {
       page: null,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 const localizer = momentLocalizer(moment)

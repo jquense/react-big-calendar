@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../../src'
-import Basic from '../../demos/exampleCode/dnd'
+import DnDResource from '../../demos/exampleCode/dndresource'
 
 export default {
   title: 'Addons/Drag and Drop',
@@ -15,7 +15,7 @@ export default {
 
 const localizer = momentLocalizer(moment)
 
-export function Example1() {
-  return <Basic localizer={localizer} />
+export function Example2() {
+  return <DnDResource localizer={localizer} />
 }
-Example1.storyName = 'Basic Drag n Drop'
+Example2.storyName = 'Resource Drag and Drop'

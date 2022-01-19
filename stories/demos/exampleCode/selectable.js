@@ -38,16 +38,18 @@ export default function Selectable({ localizer }) {
           to select a date/time range.
         </strong>
       </DemoLink>
-      <Calendar
-        defaultDate={defaultDate}
-        defaultView={Views.WEEK}
-        events={myEvents}
-        localizer={localizer}
-        onSelectEvent={handleSelectEvent}
-        onSelectSlot={handleSelectSlot}
-        selectable
-        scrollToTime={scrollToTime}
-      />
+      <div className="height600">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={myEvents}
+          localizer={localizer}
+          onSelectEvent={handleSelectEvent}
+          onSelectSlot={handleSelectSlot}
+          selectable
+          scrollToTime={scrollToTime}
+        />
+      </div>
     </Fragment>
   )
 }

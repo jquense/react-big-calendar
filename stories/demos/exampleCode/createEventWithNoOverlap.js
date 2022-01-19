@@ -43,17 +43,19 @@ export default function CreateEventWithNoOverlap({
           The events are being arranged by `no-overlap` algorithm.
         </strong>
       </DemoLink>
-      <Calendar
-        dayLayoutAlgorithm={dayLayoutAlgorithm}
-        defaultDate={defaultDate}
-        defaultView={Views.WEEK}
-        events={myEvents}
-        localizer={localizer}
-        onSelectEvent={handleSelectEvent}
-        onSelectSlot={handleSelectSlot}
-        selectable
-        scrollToTime={scrollToTime}
-      />
+      <div className="height600">
+        <Calendar
+          dayLayoutAlgorithm={dayLayoutAlgorithm}
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={myEvents}
+          localizer={localizer}
+          onSelectEvent={handleSelectEvent}
+          onSelectSlot={handleSelectSlot}
+          selectable
+          scrollToTime={scrollToTime}
+        />
+      </div>
     </Fragment>
   )
 }

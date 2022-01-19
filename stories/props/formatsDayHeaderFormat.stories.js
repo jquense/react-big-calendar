@@ -14,33 +14,32 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function FormatsDayHeaderFormat() {
-  const formats = useMemo(
+  const { defaultDate, formats, views } = useMemo(
     () => ({
-      dayHeaderFormat: (date, culture, localizer) =>
-        localizer.format(date, 'dddd MMMM Do', culture),
+      defaultDate: new Date(2015, 3, 13),
+      formats: {
+        dayHeaderFormat: (date, culture, localizer) =>
+          localizer.format(date, 'dddd MMMM Do', culture),
+      },
+      views: [Views.WEEK, Views.DAY],
     }),
     []
   )
 
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.DAY}
-      events={demoEvents}
-      formats={formats}
-      localizer={mLocalizer}
-      views={[Views.WEEK, Views.DAY]}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.DAY}
+        events={demoEvents}
+        formats={formats}
+        localizer={mLocalizer}
+        views={views}
+      />
+    </div>
   )
 }
 FormatsDayHeaderFormat.storyName = 'formats.dayHeaderFormat'

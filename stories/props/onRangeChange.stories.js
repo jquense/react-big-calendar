@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 function buildMessage(range) {
@@ -50,21 +43,20 @@ export function OnRangeChange() {
 
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate])
 
-  const onRangeChange = useCallback(
-    (range) => {
-      window.alert(buildMessage(range))
-    },
-    [buildMessage]
-  )
+  const onRangeChange = useCallback((range) => {
+    window.alert(buildMessage(range))
+  }, [])
 
   return (
-    <Calendar
-      date={date}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onNavigate={onNavigate}
-      onRangeChange={onRangeChange}
-    />
+    <div className="height600">
+      <Calendar
+        date={date}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onNavigate={onNavigate}
+        onRangeChange={onRangeChange}
+      />
+    </div>
   )
 }
 OnRangeChange.storyName = 'onRangeChange'

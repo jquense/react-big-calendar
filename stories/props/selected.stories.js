@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
@@ -14,13 +14,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function Selected() {
@@ -60,14 +53,18 @@ export function Selected() {
     [setSelected]
   )
 
+  const defaultDate = useMemo(() => new Date(2015, 3, 1), [])
+
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 1)}
-      events={demoEvents}
-      localizer={mLocalizer}
-      onSelectEvent={onSelectEvent}
-      selected={selected}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        events={demoEvents}
+        localizer={mLocalizer}
+        onSelectEvent={onSelectEvent}
+        selected={selected}
+      />
+    </div>
   )
 }
 Selected.storyName = 'selected'

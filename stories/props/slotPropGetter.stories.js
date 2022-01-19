@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, Views, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
@@ -15,13 +15,6 @@ export default {
       page: mdx,
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: 600 }}>
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export function SlotPropGetter() {
@@ -44,14 +37,18 @@ export function SlotPropGetter() {
     []
   )
 
+  const defaultDate = useMemo(() => new Date(2015, 3, 13), [])
+
   return (
-    <Calendar
-      defaultDate={new Date(2015, 3, 13)}
-      defaultView={Views.WEEK}
-      slotPropGetter={slotPropGetter}
-      events={demoEvents}
-      localizer={mLocalizer}
-    />
+    <div className="height600">
+      <Calendar
+        defaultDate={defaultDate}
+        defaultView={Views.WEEK}
+        slotPropGetter={slotPropGetter}
+        events={demoEvents}
+        localizer={mLocalizer}
+      />
+    </div>
   )
 }
 SlotPropGetter.storyName = 'slotPropGetter'

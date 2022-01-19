@@ -1,16 +1,19 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 
-import moment from 'moment'
 import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
-import customComponents from './helpers/customComponents'
+import customComponents from './resources/customComponents'
 
 export default {
   title: 'Big Calendar/Drag and Drop',
   component: Calendar,
 }
 
-const Template = (args) => <DragAndDropCalendar {...args} />
+const Template = (args) => (
+  <div className="height600">
+    <DragAndDropCalendar {...args} />
+  </div>
+)
 
 export const DraggableAndResizable = Template.bind({})
 DraggableAndResizable.storyName = 'draggable and resizable'

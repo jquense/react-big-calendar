@@ -1,0 +1,16 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# doShowMoreDrillDown
+
+- type: `boolean`
+
+Determines whether the drill down should occur when clicking on the "+_x_ more" link.
+
+If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `true`, the drill down will occur as usual.
+
+If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `false`, the drill down will not occur and the <LinkTo kind="props" story="on-show-more">onShowMore</LinkTo> function will trigger.
+
+<Canvas>
+  <Story id="props--on-show-more" />
+</Canvas>

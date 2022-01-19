@@ -1,10 +1,11 @@
 import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
 
 # localizer
 
 - type: `instanceOf(DateLocalizer)` **required**
 
-The localizer used for formatting dates and times according to the `format` and `culture`
+The localizer used for **formatting dates** and times according to the <LinkTo kind="props" story="formats">formats</LinkTo> and <LinkTo kind="props" story="culture">culture</LinkTo>. To format buttons and messaging use the <LinkTo kind="props" story="messages">messages</LinkTo> prop.
 
 ```js
 // When using `Globalize`
@@ -43,6 +44,8 @@ Settings.defaultZone = 'America/Los_Angeles'
 // start of a week. Luxon uses non-zero based values for `weekday`.
 const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 7 })
 ```
+
+See the <LinkTo kind="examples" story="example-5">Localization Example</LinkTo> for another example of combining `rtl`, `localizer`, `culture` and `messages`.
 
 <Canvas>
   <Story id="props--localizer" />

@@ -6,8 +6,6 @@ import React from 'react'
 
 import { Calendar as BaseCalendar, momentLocalizer } from '../../src'
 
-export resourcesEvents from './resourceEvents'
-
 // For Testing SASS styling
 import '../../src/sass/styles.scss'
 import '../../src/addons/dragAndDrop/styles.scss'

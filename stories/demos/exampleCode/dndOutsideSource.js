@@ -11,13 +11,27 @@ import '../../../src/addons/dragAndDrop/styles.scss'
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
+const adjEvents = events.map((it, ind) => ({
+  ...it,
+  isDraggable: ind % 2 === 0,
+}))
+
 const formatName = (name, count) => `${name} ID ${count}`
 
 export default function DnDOutsideResource({ localizer }) {
-  const [myEvents, setMyEvents] = useState(events)
+  const [myEvents, setMyEvents] = useState(adjEvents)
   const [draggedEvent, setDraggedEvent] = useState()
   const [displayDragItemInCell, setDisplayDragItemInCell] = useState(true)
   const [counters, setCounters] = useState({ item1: 0, item2: 0 })
+
+  const eventPropGetter = useCallback(
+    (event) => ({
+      ...(event.isDraggable
+        ? { className: 'isDraggable' }
+        : { className: 'nonDraggable' }),
+    }),
+    []
+  )
 
   const handleDragStart = useCallback(
     (event) => setDraggedEvent(event),
@@ -156,6 +170,8 @@ export default function DnDOutsideResource({ localizer }) {
           dragFromOutsideItem={
             displayDragItemInCell ? dragFromOutsideItem : null
           }
+          draggableAccessor="isDraggable"
+          eventPropGetter={eventPropGetter}
           events={myEvents}
           localizer={localizer}
           onDropFromOutside={onDropFromOutside}

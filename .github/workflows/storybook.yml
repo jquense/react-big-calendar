@@ -1,9 +1,10 @@
 name: Build and Deploy Documentation
 on: 
-  push:
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
     branches:
       - master
-    paths: [".storybook/**", "stories/**", "src/**"] # Trigger the action only when files change in the folders defined here
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

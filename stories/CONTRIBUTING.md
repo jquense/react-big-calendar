@@ -10,14 +10,6 @@ Previous documentation was built using the jsDocs metadata in the Calendar compo
 
 TODO:
 
-- [x] `elementProps` - props
 - [ ] `backgroundEventPropGetter` - props (not currently implemented. skipping it)
-- [x] `slotGroupPropGetter` - props
-- [x] `onShowMore` - props
 - [ ] `onShowMoreDrillDown` - props (not currently implemented. skipping it)
-- [x] `onKeyPressEvent` - props
-- [x] Give Drag and Drop it's own sub category, with it's own props section
-- [ ] Migrate 'Examples' into SB sub category, with clear explanations
-- [x] Split 'Examples' down by 'core' and 'Drag and Drop'
-- [ ] Create custom 'View' documentation
 - [ ] Can we write true unit testing with SB and React Testing Library?

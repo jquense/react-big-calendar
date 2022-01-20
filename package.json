@@ -152,6 +152,7 @@
     "react-bootstrap": "^0.32.4",
     "react-docgen": "^5.4.0",
     "react-dom": "^17.0.2",
+    "react-icons": "4.3.1",
     "react-tackle-box": "^2.1.0",
     "rimraf": "^2.4.2",
     "rollup": "^1.1.0",

@@ -12,14 +12,6 @@ const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 export default function DragAndDrop({ localizer }) {
   const [myEvents, setMyEvents] = useState(events)
-  const [draggedEvent, setDraggedEvent] = useState()
-
-  const handleDragStart = useCallback(
-    (event) => setDraggedEvent(event),
-    [setDraggedEvent]
-  )
-
-  const dragFromOutsideItem = useCallback(() => draggedEvent, [draggedEvent])
 
   const moveEvent = useCallback(
     ({ event, start, end, isAllDay: droppedOnAllDaySlot = false }) => {
@@ -35,22 +27,6 @@ export default function DragAndDrop({ localizer }) {
       })
     },
     [setMyEvents]
-  )
-
-  const onDropFromOutside = useCallback(
-    ({ start, end, allDay }) => {
-      const { id, title } = draggedEvent
-      const event = {
-        id,
-        title,
-        start,
-        end,
-        allDay,
-      }
-      setDraggedEvent(null)
-      moveEvent({ event, start, end })
-    },
-    [draggedEvent, setDraggedEvent, moveEvent]
   )
 
   const resizeEvent = useCallback(
@@ -78,16 +54,12 @@ export default function DragAndDrop({ localizer }) {
         <DragAndDropCalendar
           defaultDate={defaultDate}
           defaultView={Views.MONTH}
-          dragFromOutsideItem={dragFromOutsideItem}
           events={myEvents}
-          handleDragStart={handleDragStart}
           localizer={localizer}
-          onDropFromOutside={onDropFromOutside}
           onEventDrop={moveEvent}
           onEventResize={resizeEvent}
           popup
           resizable
-          selectable
         />
       </div>
     </Fragment>

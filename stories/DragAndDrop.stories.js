@@ -5,7 +5,7 @@ import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
 import customComponents from './resources/customComponents'
 
 export default {
-  title: 'Big Calendar/Drag and Drop',
+  title: 'Additional Examples/Drag and Drop',
   component: Calendar,
 }
 

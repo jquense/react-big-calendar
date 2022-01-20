@@ -8,4 +8,15 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  storySort: {
+    order: [
+      'About Big Calendar',
+      'About Our Examples',
+      'props',
+      'Examples',
+      'Guides',
+      'Addons',
+      ['Introduction', 'props'],
+    ],
+  },
 }

@@ -32,11 +32,8 @@ export default function DnDOutsideResource({ localizer }) {
     }),
     []
   )
-
-  const handleDragStart = useCallback(
-    (event) => setDraggedEvent(event),
-    [setDraggedEvent]
-  )
+  //,
+  const handleDragStart = useCallback((event) => setDraggedEvent(event), [])
 
   const dragFromOutsideItem = useCallback(() => draggedEvent, [draggedEvent])
 
@@ -90,6 +87,7 @@ export default function DnDOutsideResource({ localizer }) {
   const onDropFromOutside = useCallback(
     ({ start, end, allDay: isAllDay }) => {
       if (draggedEvent === 'undroppable') {
+        setDraggedEvent(null)
         return
       }
 
@@ -132,6 +130,10 @@ export default function DnDOutsideResource({ localizer }) {
         <Card className="dndOutsideSourceExample">
           <div className="inner">
             <h4>Outside Drag Sources</h4>
+            <p>
+              Lighter colored events, in the Calendar, have an `isDraggable` key
+              of `false`.
+            </p>
             {Object.entries(counters).map(([name, count]) => (
               <div
                 draggable="true"

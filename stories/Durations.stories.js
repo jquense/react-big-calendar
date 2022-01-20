@@ -6,7 +6,7 @@ import moment from 'moment'
 import { Calendar, Views, DragableCalendar } from './helpers'
 
 export default {
-  title: 'Big Calendar/Event Durations',
+  title: 'Additional Examples/Event Durations',
   component: Calendar,
 }
 

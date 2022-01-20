@@ -10,7 +10,7 @@ import createEvents from './helpers/createEvents'
 import customComponents from './resources/customComponents'
 
 export default {
-  title: 'Big Calendar',
+  title: 'Additional Examples',
   component: Calendar,
 }
 

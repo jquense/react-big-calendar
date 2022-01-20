@@ -57,7 +57,8 @@
   cursor: grab !important;
 }
 
-.nonDraggable {
+.nonDraggable,
+.nonResizable {
   background-color: lighten(#3174ad, 40) !important;
   color: black !important;
 }

@@ -5,7 +5,7 @@ import { Calendar } from '../src'
 import { Calendar as BaseCalendar, Views, events } from './helpers'
 
 export default {
-  title: 'Big Calendar/Timeslots',
+  title: 'Additional Examples/Timeslots',
   component: Calendar,
 }
 

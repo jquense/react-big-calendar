@@ -2,8 +2,8 @@ import { wrapAccessor } from '../../utils/accessors'
 import { createFactory } from 'react'
 
 export const dragAccessors = {
-  start: wrapAccessor(e => e.start),
-  end: wrapAccessor(e => e.end),
+  start: wrapAccessor((e) => e.start),
+  end: wrapAccessor((e) => e.end),
 }
 
 function nest(...Components) {
@@ -18,7 +18,7 @@ export function mergeComponents(components = {}, addons) {
   const keys = Object.keys(addons)
   const result = { ...components }
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     result[key] = components[key]
       ? nest(components[key], addons[key])
       : addons[key]

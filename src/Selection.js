@@ -51,9 +51,8 @@ class Selection {
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
     this._keyListener = this._keyListener.bind(this)
     this._dropFromOutsideListener = this._dropFromOutsideListener.bind(this)
-    this._dragOverFromOutsideListener = this._dragOverFromOutsideListener.bind(
-      this
-    )
+    this._dragOverFromOutsideListener =
+      this._dragOverFromOutsideListener.bind(this)
 
     // Fixes an iOS 10 bug where scrolling could not be prevented on the window.
     // https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
@@ -91,7 +90,7 @@ class Selection {
   emit(type, ...args) {
     let result
     let handlers = this._listeners[type] || []
-    handlers.forEach(fn => {
+    handlers.forEach((fn) => {
       if (result === undefined) result = fn(...args)
     })
     return result
@@ -135,7 +134,7 @@ class Selection {
     let timer = null
     let removeTouchMoveListener = null
     let removeTouchEndListener = null
-    const handleTouchStart = initialEvent => {
+    const handleTouchStart = (initialEvent) => {
       timer = setTimeout(() => {
         cleanup()
         handler(initialEvent)
@@ -176,7 +175,7 @@ class Selection {
   // Listen for mousedown and touchstart events. When one is received, disable the other and setup
   // future event handling based on the type of event.
   _addInitialEventListener() {
-    const removeMouseDownListener = addEventListener('mousedown', e => {
+    const removeMouseDownListener = addEventListener('mousedown', (e) => {
       this._removeInitialEventListener()
       this._handleInitialEvent(e)
       this._removeInitialEventListener = addEventListener(
@@ -184,7 +183,7 @@ class Selection {
         this._handleInitialEvent
       )
     })
-    const removeTouchStartListener = addEventListener('touchstart', e => {
+    const removeTouchStartListener = addEventListener('touchstart', (e) => {
       this._removeInitialEventListener()
       this._removeInitialEventListener = this._addLongPressListener(
         this._handleInitialEvent,

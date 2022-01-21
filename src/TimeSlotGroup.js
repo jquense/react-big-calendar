@@ -14,7 +14,7 @@ export default class TimeSlotGroup extends Component {
       components: { timeSlotWrapper: Wrapper = BackgroundWrapper } = {},
     } = this.props
 
-	const groupProps = getters ? getters.slotGroupProp() : {}
+    const groupProps = getters ? getters.slotGroupProp() : {}
     return (
       <div className="rbc-timeslot-group" {...groupProps}>
         {group.map((value, idx) => {

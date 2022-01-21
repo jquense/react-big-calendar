@@ -50,7 +50,7 @@ function fixUnit(unit) {
   return datePart
 }
 
-export default function(moment) {
+export default function (moment) {
   const locale = (m, c) => (c ? m.locale(c) : m)
 
   function getTimezoneOffset(date) {
@@ -95,9 +95,7 @@ export default function(moment) {
   function startOf(date = null, unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      return moment(date)
-        .startOf(datePart)
-        .toDate()
+      return moment(date).startOf(datePart).toDate()
     }
     return moment(date).toDate()
   }
@@ -105,9 +103,7 @@ export default function(moment) {
   function endOf(date = null, unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      return moment(date)
-        .endOf(datePart)
-        .toDate()
+      return moment(date).endOf(datePart).toDate()
     }
     return moment(date).toDate()
   }
@@ -169,18 +165,14 @@ export default function(moment) {
     if (!date && !time) return null
 
     const tm = moment(time).format('HH:mm:ss')
-    const dt = moment(date)
-      .startOf('day')
-      .format('MM/DD/YYYY')
+    const dt = moment(date).startOf('day').format('MM/DD/YYYY')
     // We do it this way to avoid issues when timezone switching
     return moment(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
   }
 
   function add(date, adder, unit) {
     const datePart = fixUnit(unit)
-    return moment(date)
-      .add(adder, datePart)
-      .toDate()
+    return moment(date).add(adder, datePart).toDate()
   }
 
   function range(start, end, unit = 'day') {
@@ -223,17 +215,11 @@ export default function(moment) {
   }
 
   function firstVisibleDay(date) {
-    return moment(date)
-      .startOf('month')
-      .startOf('week')
-      .toDate()
+    return moment(date).startOf('month').startOf('week').toDate()
   }
 
   function lastVisibleDay(date) {
-    return moment(date)
-      .endOf('month')
-      .endOf('week')
-      .toDate()
+    return moment(date).endOf('month').endOf('week').toDate()
   }
 
   function visibleDays(date) {

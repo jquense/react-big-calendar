@@ -20,7 +20,7 @@ describe('getStyledEvents', () => {
     timeslots: 4,
     localizer,
   })
-  const accessors = { start: e => e.start, end: e => e.end }
+  const accessors = { start: (e) => e.start, end: (e) => e.end }
   const dayLayoutAlgorithm = 'overlap'
 
   describe('matrix', () => {
@@ -33,7 +33,7 @@ describe('getStyledEvents', () => {
           minimumStartDifference: 10,
           dayLayoutAlgorithm,
         })
-        const results = styledEvents.map(result => ({
+        const results = styledEvents.map((result) => ({
           width: Math.floor(result.style.width),
           xOffset: Math.floor(result.style.xOffset),
         }))
@@ -120,6 +120,6 @@ describe('getStyledEvents', () => {
         ],
       ],
     ]
-    toCheck.forEach(args => compare(...args))
+    toCheck.forEach((args) => compare(...args))
   })
 })

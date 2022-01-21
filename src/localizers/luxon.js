@@ -57,15 +57,13 @@ function fixUnit(unit) {
 // Luxon does not currently have weekInfo by culture
 // Luxon uses 1 based values for month and weekday
 // So we default to Sunday (7)
-export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
+export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   function formatDate(value, format) {
     return DateTime.fromJSDate(value).toFormat(format)
   }
 
   function formatDateWithCulture(value, culture, format) {
-    return DateTime.fromJSDate(value)
-      .setLocale(culture)
-      .format(format)
+    return DateTime.fromJSDate(value).setLocale(culture).format(format)
   }
 
   /*** BEGIN localized date arithmetic methods with Luxon ***/

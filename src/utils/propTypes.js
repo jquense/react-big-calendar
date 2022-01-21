@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { views as Views } from './constants'
 
-let viewNames = Object.keys(Views).map(k => Views[k])
+let viewNames = Object.keys(Views).map((k) => Views[k])
 
 export let accessor = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 

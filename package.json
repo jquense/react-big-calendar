@@ -31,8 +31,12 @@
   ],
   "scripts": {
     "clean": "rimraf lib",
+<<<<<<< HEAD
     "clean:examples": "rimraf examples/static",
     "s": "sass ./lib/sass/styles.scss ./lib/css/react-big-calendar.css",
+=======
+    "s": "sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
+>>>>>>> 09e40c4 (chore: Remove old Examples)
     "sass": "yarn s  && yarn sass-dnd",
     "sass-dnd": "sass ./lib/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
     "autoprefixer": "postcss ./lib/css/react-big-calendar.css && postcss ./lib/addons/dragAndDrop/styles.css",
@@ -42,15 +46,13 @@
     "build:umd": "BABEL_ENV=esm yarn rollup -c",
     "build:cjs": "babel src --out-dir lib",
     "build": "yarn clean && yarn build:cjs && yarn build:umd && yarn assets && yarn build:css",
-    "build:examples": "yarn clean:examples && webpack --config examples/webpack.config.js",
-    "examples": "yarn clean:examples && webpack-dev-server --config examples/webpack.config.js --mode development",
     "lint": "eslint src test",
     "storybook": "start-storybook -p 9002",
     "test": "yarn lint && jest",
     "tdd": "jest --watch",
     "release": "rollout",
     "prepublishOnly": "yarn build",
-    "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
+    "prettier": "prettier '**/*js' '!lib/**' --write ",
     "precommit": "lint-staged",
     "build-storybook": "build-storybook"
   },
@@ -80,16 +82,6 @@
   },
   "devDependencies": {
     "@4c/rollout": "^1.4.0",
-<<<<<<< HEAD
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.5",
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@storybook/addon-actions": "^6.1.15",
-    "@storybook/react": "^6.1.15",
-=======
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.5",
     "@commitlint/cli": "^15.0.0",
@@ -102,21 +94,9 @@
     "@storybook/builder-webpack5": "^6.4.13",
     "@storybook/manager-webpack5": "^6.4.13",
     "@storybook/preset-scss": "1.0.3",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "@storybook/react": "^6.4.9",
-    "@storybook/theming": "6.4.9",
->>>>>>> 8d82b59 (chore: Convert stories to current Storybook format)
-=======
-    "@storybook/react": "^6.4.12",
-    "@storybook/theming": "6.4.12",
->>>>>>> 13d134a (docs: Continue with props)
-    "autoprefixer": "^10.4.0",
-=======
     "@storybook/react": "^6.4.13",
     "@storybook/theming": "6.4.13",
     "autoprefixer": "^10.4.2",
->>>>>>> 213da45 (docs: Continuing Examples)
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.2.3",

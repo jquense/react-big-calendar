@@ -34,7 +34,7 @@ function Agenda({
   const renderDay = (day, events, dayKey) => {
     const { event: Event, date: AgendaDate } = components
 
-    events = events.filter(e =>
+    events = events.filter((e) =>
       inRange(
         e,
         localizer.startOf(day, 'day'),
@@ -80,8 +80,8 @@ function Agenda({
           <td className="rbc-agenda-time-cell">{timeRangeLabel(day, event)}</td>
           <td
             className="rbc-agenda-event-cell"
-            onClick={e => onSelectEvent && onSelectEvent(event, e)}
-            onDoubleClick={e =>
+            onClick={(e) => onSelectEvent && onSelectEvent(event, e)}
+            onDoubleClick={(e) =>
               onDoubleClickEvent && onDoubleClickEvent(event, e)
             }
           >
@@ -160,7 +160,7 @@ function Agenda({
 
   let range = localizer.range(date, end, 'day')
 
-  events = events.filter(event =>
+  events = events.filter((event) =>
     inRange(
       event,
       localizer.startOf(date, 'day'),

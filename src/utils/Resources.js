@@ -18,7 +18,7 @@ export default function Resources(resources, accessors) {
         return eventsByResource
       }
 
-      events.forEach(event => {
+      events.forEach((event) => {
         const id = accessors.resource(event) || NONE
         let resourceEvents = eventsByResource.get(id) || []
         resourceEvents.push(event)

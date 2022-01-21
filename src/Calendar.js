@@ -963,7 +963,7 @@ class Calendar extends React.Component {
     return views[this.props.view]
   }
 
-  getDrilldownView = date => {
+  getDrilldownView = (date) => {
     const { view, drilldownView, getDrilldownView } = this.props
 
     if (!getDrilldownView) return drilldownView
@@ -996,13 +996,8 @@ class Calendar extends React.Component {
     current = current || getNow()
 
     let View = this.getView()
-    const {
-      accessors,
-      components,
-      getters,
-      localizer,
-      viewNames,
-    } = this.state.context
+    const { accessors, components, getters, localizer, viewNames } =
+      this.state.context
 
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { localizer, length })
@@ -1089,7 +1084,7 @@ class Calendar extends React.Component {
     this.handleRangeChange(date, ViewComponent)
   }
 
-  handleViewChange = view => {
+  handleViewChange = (view) => {
     if (view !== this.props.view && isValidView(view, this.props)) {
       this.props.onView(view)
     }
@@ -1114,7 +1109,7 @@ class Calendar extends React.Component {
     notify(this.props.onKeyPressEvent, args)
   }
 
-  handleSelectSlot = slotInfo => {
+  handleSelectSlot = (slotInfo) => {
     notify(this.props.onSelectSlot, slotInfo)
   }
 

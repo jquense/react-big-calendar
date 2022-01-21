@@ -6,7 +6,7 @@ import range from 'lodash/range'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 let eventsInSlot = (segments, slot) =>
-  segments.filter(seg => isSegmentInSlot(seg, slot)).length
+  segments.filter((seg) => isSegmentInSlot(seg, slot)).length
 
 class EventEndingRow extends React.Component {
   render() {
@@ -24,7 +24,7 @@ class EventEndingRow extends React.Component {
       let key = '_lvl_' + current
 
       let { event, left, right, span } =
-        rowSegments.filter(seg => isSegmentInSlot(seg, current))[0] || {} //eslint-disable-line
+        rowSegments.filter((seg) => isSegmentInSlot(seg, current))[0] || {} //eslint-disable-line
 
       if (!event) {
         current++
@@ -66,7 +66,7 @@ class EventEndingRow extends React.Component {
   canRenderSlotEvent(slot, span) {
     let { segments } = this.props
 
-    return range(slot, slot + span).every(s => {
+    return range(slot, slot + span).every((s) => {
       let count = eventsInSlot(segments, s)
 
       return count === 1
@@ -82,7 +82,7 @@ class EventEndingRow extends React.Component {
         key={'sm_' + slot}
         href="#"
         className={'rbc-show-more'}
-        onClick={e => this.showMore(slot, e)}
+        onClick={(e) => this.showMore(slot, e)}
       >
         {localizer.messages.showMore(count)}
       </a>

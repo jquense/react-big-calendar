@@ -21,23 +21,23 @@ class EventWrapper extends React.Component {
     resizable: PropTypes.bool,
   }
 
-  handleResizeUp = e => {
+  handleResizeUp = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
   }
-  handleResizeDown = e => {
+  handleResizeDown = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
   }
-  handleResizeLeft = e => {
+  handleResizeLeft = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'LEFT')
   }
-  handleResizeRight = e => {
+  handleResizeRight = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'RIGHT')
   }
-  handleStartDragging = e => {
+  handleStartDragging = (e) => {
     if (e.button !== 0) return
     // hack: because of the way the anchors are arranged in the DOM, resize
     // anchor events will bubble up to the move anchor listener. Don't start
@@ -60,13 +60,8 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    const {
-      event,
-      type,
-      continuesPrior,
-      continuesAfter,
-      resizable,
-    } = this.props
+    const { event, type, continuesPrior, continuesAfter, resizable } =
+      this.props
 
     let { children } = this.props
 

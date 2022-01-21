@@ -1,7 +1,7 @@
-import nodeResolve from 'rollup-plugin-node-resolve'
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import replace from 'rollup-plugin-replace'
+import nodeResolve from 'rollup-plugin-node-resolve' // TODO: replace with @rollup/plugin-node-resolve
+import babel from 'rollup-plugin-babel' // TODO: replace with @rollup/plugin-babel
+import commonjs from 'rollup-plugin-commonjs' // TODO: replace with @rollup/plugin-commonjs
+import replace from 'rollup-plugin-replace' // TODO: replace with @rollup/plugin-replace
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import { terser } from 'rollup-plugin-terser'
 import pkg from './package.json'
@@ -15,7 +15,7 @@ const globals = {
 
 const babelOptions = {
   exclude: /node_modules/,
-  runtimeHelpers: true,
+  runtimeHelpers: true, // would change to 'runtime'
 }
 
 const commonjsOptions = {
@@ -64,7 +64,7 @@ export default [
     input,
     output: { file: pkg.module, format: 'esm' },
     // prevent bundling all dependencies
-    external: id => !id.startsWith('.') && !id.startsWith('/'),
+    external: (id) => !id.startsWith('.') && !id.startsWith('/'),
     plugins: [babel(babelOptions), sizeSnapshot()],
   },
 ]

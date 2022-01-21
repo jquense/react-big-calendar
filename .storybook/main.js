@@ -7,8 +7,7 @@ module.exports = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-jest',
-    // nomodule
+    //'@storybook/addon-jest', // TODO: try this out
     {
       name: `@storybook/preset-scss`,
       options: {

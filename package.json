@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "0.38.2",
+  "version": "0.38.5",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -33,7 +33,7 @@
     "clean": "rimraf lib",
     "s": "sass src/sass/styles.scss ./lib/css/react-big-calendar.css",
     "sass": "yarn s  && yarn sass-dnd",
-    "sass-dnd": "sass src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
+    "sass-dnd": "sass ./lib/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css",
     "autoprefixer": "postcss ./lib/css/react-big-calendar.css && postcss ./lib/addons/dragAndDrop/styles.css",
     "build:css": "yarn sass && yarn autoprefixer",
     "assets": "cpy src/sass/* lib/sass && yarn assets-addons",
@@ -81,6 +81,8 @@
     "@babel/core": "^7.16.5",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@storybook/addon-actions": "^6.4.13",
     "@storybook/addon-essentials": "^6.4.13",
     "@storybook/addon-jest": "6.4.13",
@@ -137,6 +139,7 @@
     "rollup-plugin-size-snapshot": "^0.8.0",
     "rollup-plugin-terser": "^4.0.2",
     "sass": "1.48.0",
+    "semantic-release": "^18.0.1",
     "webpack": "^5.66.0",
     "webpack-atoms": "^17.1.0",
     "webpack-cli": "^4.9.1",

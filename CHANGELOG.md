@@ -1,3 +1,21 @@
+## [0.38.5](https://github.com/jquense/react-big-calendar/compare/v0.38.4...v0.38.5) (2022-01-16)
+
+### Bug Fixes
+
+- Correct issue with semantic-release and yarn-lock ([cc48854](https://github.com/jquense/react-big-calendar/commit/cc48854c87b03ca23541484e30061576c2edfe98)), closes [#2096](https://github.com/jquense/react-big-calendar/issues/2096)
+
+## [0.38.4](https://github.com/jquense/react-big-calendar/compare/v0.38.3...v0.38.4) (2022-01-04)
+
+### Bug Fixes
+
+- **sass:** Reference distributed folder in SASS compile ([#2091](https://github.com/jquense/react-big-calendar/issues/2091)) ([20502f3](https://github.com/jquense/react-big-calendar/commit/20502f334a3c9ce62a1322a88d897b9afa66ee23)), closes [#2086](https://github.com/jquense/react-big-calendar/issues/2086)
+
+## [0.38.3](https://github.com/jquense/react-big-calendar/compare/v0.38.2...v0.38.3) (2022-01-04)
+
+### Bug Fixes
+
+- Correct typo in custom view example ([267629b](https://github.com/jquense/react-big-calendar/commit/267629b5d253b5247b2cd2071764e6bb86c4d3a5))
+
 ## [0.22.1](https://github.com/jquense/react-big-calendar/compare/v0.22.0...v0.22.1) (2019-09-13)
 
 ### Bug Fixes

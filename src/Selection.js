@@ -316,6 +316,7 @@ class Selection {
 
     let inRoot = !this.container || contains(this.container(), e.target)
     let bounds = this._selectRect
+    bounds.mouseEvent = e
     let click = this.isClick(pageX, pageY)
 
     this._initialEventData = null

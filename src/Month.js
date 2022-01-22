@@ -319,14 +319,18 @@ class MonthView extends React.Component {
     const end = new Date(slots[slots.length - 1])
     end.setDate(slots[slots.length - 1].getDate() + 1)
 
-    notify(this.props.onSelectSlot, {
-      slots,
-      start,
-      end,
-      action: slotInfo.action,
-      bounds: slotInfo.bounds,
-      box: slotInfo.box,
-    })
+    const { action, bounds, box, mouseEvent } = slotInfo
+    notify(this.props.onSelectSlot, [
+      {
+        slots,
+        start,
+        end,
+        action,
+        bounds,
+        box,
+      },
+      mouseEvent,
+    ])
   }
 
   clearSelection() {

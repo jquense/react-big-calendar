@@ -364,15 +364,19 @@ class DayColumn extends React.Component {
       current = new Date(+current + this.props.step * 60 * 1000) // using Date ensures not to create an endless loop the day DST begins
     }
 
-    notify(this.props.onSelectSlot, {
-      slots,
-      start: startDate,
-      end: endDate,
-      resourceId: this.props.resource,
-      action,
-      bounds,
-      box,
-    })
+    const { mouseEvent, ...other } = bounds
+    notify(this.props.onSelectSlot, [
+      {
+        slots,
+        start: startDate,
+        end: endDate,
+        resourceId: this.props.resource,
+        action,
+        bounds: other,
+        box,
+      },
+      mouseEvent,
+    ])
   }
 
   _select = (...args) => {

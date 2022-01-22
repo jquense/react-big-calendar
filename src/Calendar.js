@@ -1114,8 +1114,8 @@ class Calendar extends React.Component {
     notify(this.props.onKeyPressEvent, args)
   }
 
-  handleSelectSlot = slotInfo => {
-    notify(this.props.onSelectSlot, slotInfo)
+  handleSelectSlot = (...args) => {
+    notify(this.props.onSelectSlot, args)
   }
 
   handleDrillDown = (date, view) => {

@@ -100,13 +100,17 @@ export default class TimeGrid extends Component {
     const end = new Date(slots[slots.length - 1])
     end.setDate(slots[slots.length - 1].getDate() + 1)
 
-    notify(onSelectSlot, {
-      slots,
-      start,
-      end,
-      action: slotInfo.action,
-      resourceId: slotInfo.resourceId,
-    })
+    const { action, resourceId, mouseEvent } = slotInfo
+    notify(onSelectSlot, [
+      {
+        slots,
+        start,
+        end,
+        action,
+        resourceId,
+      },
+      mouseEvent,
+    ])
   }
 
   renderEvents(range, events, backgroundEvents, now) {

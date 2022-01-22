@@ -316,7 +316,6 @@ class Selection {
 
     let inRoot = !this.container || contains(this.container(), e.target)
     let bounds = this._selectRect
-    bounds.mouseEvent = e
     let click = this.isClick(pageX, pageY)
 
     this._initialEventData = null
@@ -334,7 +333,7 @@ class Selection {
     }
 
     // User drag-clicked in the Selectable area
-    if (!click) return this.emit('select', bounds)
+    if (!click) return this.emit('select', { bounds, e })
   }
 
   _handleClickEvent(e) {

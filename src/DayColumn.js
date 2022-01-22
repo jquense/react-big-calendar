@@ -335,9 +335,9 @@ class DayColumn extends React.Component {
 
     selector.on('doubleClick', box => selectorClicksHandler(box, 'doubleClick'))
 
-    selector.on('select', bounds => {
+    selector.on('select', ({ bounds, e }) => {
       if (this.state.selecting) {
-        this._selectSlot({ ...this.state, action: 'select', bounds })
+        this._selectSlot({ ...this.state, action: 'select', bounds }, e)
         this.setState({ selecting: false })
       }
     })
@@ -355,7 +355,7 @@ class DayColumn extends React.Component {
     this._selector = null
   }
 
-  _selectSlot = ({ startDate, endDate, action, bounds, box }) => {
+  _selectSlot = ({ startDate, endDate, action, bounds, box }, ...args) => {
     let current = startDate,
       slots = []
 
@@ -364,7 +364,6 @@ class DayColumn extends React.Component {
       current = new Date(+current + this.props.step * 60 * 1000) // using Date ensures not to create an endless loop the day DST begins
     }
 
-    const { mouseEvent, ...other } = bounds
     notify(this.props.onSelectSlot, [
       {
         slots,
@@ -372,10 +371,10 @@ class DayColumn extends React.Component {
         end: endDate,
         resourceId: this.props.resource,
         action,
-        bounds: other,
+        bounds,
         box,
       },
-      mouseEvent,
+      ...args,
     ])
   }
 

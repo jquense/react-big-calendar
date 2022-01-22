@@ -137,8 +137,8 @@ class BackgroundCells extends React.Component {
       selectorClicksHandler(point, 'doubleClick')
     )
 
-    selector.on('select', bounds => {
-      this._selectSlot({ ...this.state, action: 'select', bounds })
+    selector.on('select', ({ bounds, e }) => {
+      this._selectSlot({ ...this.state, action: 'select', bounds }, e)
       this._initial = {}
       this.setState({ selecting: false })
       notify(this.props.onSelectEnd, [this.state])
@@ -151,19 +151,20 @@ class BackgroundCells extends React.Component {
     this._selector = null
   }
 
-  _selectSlot({ endIdx, startIdx, action, bounds, box }) {
-    const { mouseEvent, ...other } = bounds
+  _selectSlot({ endIdx, startIdx, action, bounds, box }, e) {
     if (endIdx !== -1 && startIdx !== -1)
       this.props.onSelectSlot &&
-        this.props.onSelectSlot({
-          start: startIdx,
-          end: endIdx,
-          action,
-          bounds: other,
-          box,
-          resourceId: this.props.resourceId,
-          mouseEvent,
-        })
+        this.props.onSelectSlot(
+          {
+            start: startIdx,
+            end: endIdx,
+            action,
+            bounds,
+            box,
+            resourceId: this.props.resourceId,
+          },
+          e
+        )
   }
 }
 

@@ -1,3 +1,10 @@
+## [0.38.6](https://github.com/jquense/react-big-calendar/compare/v0.38.5...v0.38.6) (2022-01-25)
+
+
+### Bug Fixes
+
+* Correct DragAndDrop event resizing in 'month' view ([e3d96e5](https://github.com/jquense/react-big-calendar/commit/e3d96e5b5899e809092051e32274c8cfdd11d4e9)), closes [#2012](https://github.com/jquense/react-big-calendar/issues/2012)
+
 ## [0.38.5](https://github.com/jquense/react-big-calendar/compare/v0.38.4...v0.38.5) (2022-01-16)
 
 

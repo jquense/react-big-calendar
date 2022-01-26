@@ -121,6 +121,31 @@ storiesOf('Layout Issues', module)
       />
     )
   })
+  .add(
+    'events without duration with the same dates shouldn`t overlap each other in the `day` view with dayLayoutAlgorithm=`no-overlap`',
+    () => {
+      const date = new Date()
+      return (
+        <Calendar
+          defaultDate={date}
+          view={'day'}
+          events={[
+            {
+              title: 'event A',
+              start: date,
+              end: date,
+            },
+            {
+              title: 'event B',
+              start: date,
+              end: date,
+            },
+          ]}
+          dayLayoutAlgorithm={'no-overlap'}
+        />
+      )
+    }
+  )
   .add('Single days should only span one slot, multi-days multiple', () => {
     return (
       <Calendar

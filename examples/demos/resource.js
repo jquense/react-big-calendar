@@ -1,6 +1,5 @@
 import React from 'react'
 import { Calendar, Views } from 'react-big-calendar'
-import ExampleControlSlot from '../ExampleControlSlot'
 
 const events = [
   {

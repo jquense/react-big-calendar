@@ -1,3 +1,10 @@
+## [0.38.7](https://github.com/jquense/react-big-calendar/compare/v0.38.6...v0.38.7) (2022-02-03)
+
+
+### Bug Fixes
+
+* Correct display of beginning DST ([bd8e0e9](https://github.com/jquense/react-big-calendar/commit/bd8e0e971a5c5e2590ca0016df4e186b326dec19)), closes [#1617](https://github.com/jquense/react-big-calendar/issues/1617)
+
 ## [0.38.6](https://github.com/jquense/react-big-calendar/compare/v0.38.5...v0.38.6) (2022-01-25)
 
 

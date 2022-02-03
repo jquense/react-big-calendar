@@ -5,6 +5,12 @@ import React, { Component } from 'react'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
+/**
+ * Since the TimeGutter only displays the 'times' of slots in a day, and is separate
+ * from the Day Columns themselves, we check to see if the range contains an offset difference
+ * and, if so, change the beginning and end 'date' by a day to properly display the slots times
+ * used.
+ */
 function adjustForDST({ min, max, localizer }) {
   if (localizer.getTimezoneOffset(min) !== localizer.getTimezoneOffset(max)) {
     return {

@@ -5,14 +5,25 @@ import React, { Component } from 'react'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
+function adjustForDST({ min, max, localizer }) {
+  if (localizer.getTimezoneOffset(min) !== localizer.getTimezoneOffset(max)) {
+    return {
+      start: localizer.add(min, -1, 'day'),
+      end: localizer.add(max, -1, 'day'),
+    }
+  }
+  return { start: min, end: max }
+}
+
 export default class TimeGutter extends Component {
   constructor(...args) {
     super(...args)
 
     const { min, max, timeslots, step, localizer } = this.props
+    const { start, end } = adjustForDST({ min, max, localizer })
     this.slotMetrics = TimeSlotUtils.getSlotMetrics({
-      min,
-      max,
+      min: start,
+      max: end,
       timeslots,
       step,
       localizer,
@@ -20,7 +31,13 @@ export default class TimeGutter extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.slotMetrics = this.slotMetrics.update(nextProps)
+    const { min, max, localizer } = nextProps
+    const { start, end } = adjustForDST({ min, max, localizer })
+    this.slotMetrics = this.slotMetrics.update({
+      ...nextProps,
+      min: start,
+      max: end,
+    })
   }
 
   renderSlot = (value, idx) => {

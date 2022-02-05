@@ -15,8 +15,8 @@ function TimeGridEvent(props) {
     rtl,
     selected,
     label,
-    continuesEarlier,
-    continuesLater,
+    continuesPrior,
+    continuesAfter,
     getters,
     onClick,
     onDoubleClick,
@@ -76,8 +76,8 @@ function TimeGridEvent(props) {
           userProps.className,
           {
             'rbc-selected': selected,
-            'rbc-event-continues-earlier': continuesEarlier,
-            'rbc-event-continues-later': continuesLater,
+            'rbc-event-continues-earlier': continuesPrior,
+            'rbc-event-continues-later': continuesAfter,
           }
         )}
       >

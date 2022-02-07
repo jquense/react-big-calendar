@@ -1,0 +1,15 @@
+---
+version: 2
+registries:
+  npm-github:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: "${{secrets.READ_ONLY_PACKAGES_CCIMU}}"
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  pull-request-branch-name:
+    separator: "-"
+  registries: "*"

@@ -83,9 +83,9 @@ export default [
   },
   {
     id: 11.1,
-    title: 'Inconvenient Conference Call',
+    title: 'Inconvenient multi-day Conference Call',
     start: new Date(2015, 3, 13, 9, 30, 0),
-    end: new Date(2015, 3, 13, 12, 0, 0),
+    end: new Date(2015, 3, 14, 1, 0, 0),
   },
   {
     id: 11.2,

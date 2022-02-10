@@ -237,8 +237,8 @@ class EventContainerWrapper extends React.Component {
               getters={getters}
               components={{ ...components, eventWrapper: NoopWrapper }}
               accessors={{ ...accessors, ...dragAccessors }}
-              continuesEarlier={startsBeforeDay}
-              continuesLater={startsAfterDay}
+              continuesPrior={startsBeforeDay}
+              continuesAfter={startsAfterDay}
             />
           )}
         </React.Fragment>

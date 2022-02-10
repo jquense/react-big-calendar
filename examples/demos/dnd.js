@@ -106,6 +106,7 @@ class Dnd extends React.Component {
         onEventDrop={this.moveEvent}
         resizable
         onEventResize={this.resizeEvent}
+        showMultiDayTimes={true}
         onSelectSlot={this.newEvent}
         onDragStart={console.log}
         defaultView={Views.MONTH}

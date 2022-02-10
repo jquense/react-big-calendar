@@ -1,3 +1,10 @@
+## [0.38.9](https://github.com/jquense/react-big-calendar/compare/v0.38.8...v0.38.9) (2022-02-10)
+
+
+### Bug Fixes
+
+* Correct no overlap algorithm stretch behavior ([#2120](https://github.com/jquense/react-big-calendar/issues/2120)) ([c3f25eb](https://github.com/jquense/react-big-calendar/commit/c3f25eb61545af36ada0c940f0f05b440250341f))
+
 ## [0.38.8](https://github.com/jquense/react-big-calendar/compare/v0.38.7...v0.38.8) (2022-02-10)
 
 

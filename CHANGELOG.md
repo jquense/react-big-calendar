@@ -1,3 +1,10 @@
+## [0.38.8](https://github.com/jquense/react-big-calendar/compare/v0.38.7...v0.38.8) (2022-02-10)
+
+
+### Bug Fixes
+
+* Correct variable name that gets passed on to EventWrapper so dragndrop ha… ([#2121](https://github.com/jquense/react-big-calendar/issues/2121)) ([19294de](https://github.com/jquense/react-big-calendar/commit/19294de0de5c3aaf4280bfb9c28f37d88254d51d))
+
 ## [0.38.7](https://github.com/jquense/react-big-calendar/compare/v0.38.6...v0.38.7) (2022-02-03)
 
 

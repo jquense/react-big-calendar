@@ -23,7 +23,7 @@ const events = [
     title: 'Team lead meeting',
     start: new Date(2018, 0, 29, 8, 30, 0),
     end: new Date(2018, 0, 29, 12, 30, 0),
-    resourceId: 3,
+    resourceId: [2, 3],
   },
   {
     id: 11,

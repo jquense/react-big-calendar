@@ -236,8 +236,11 @@ class DayColumn extends React.Component {
           continuesPrior={continuesPrior}
           continuesAfter={continuesAfter}
           accessors={accessors}
+          resource={this.props.resource} //added to have the resource also in the TimeGrid
           selected={isSelected(event, selected)}
-          onClick={e => this._select(event, e)}
+          onClick={e =>
+            this._select({ ...event, sourceResource: this.props.resource }, e)
+          }
           onDoubleClick={e => this._doubleClick(event, e)}
           isBackgroundEvent={isBackgroundEvent}
           onKeyPress={e => this._keyPress(event, e)}
@@ -406,7 +409,7 @@ DayColumn.propTypes = {
   getters: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
 
-  showMultiDayTimes: PropTypes.bool,
+  showMultiDayTimes: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   culture: PropTypes.string,
   timeslots: PropTypes.number,
 

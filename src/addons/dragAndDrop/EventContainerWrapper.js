@@ -162,6 +162,7 @@ class EventContainerWrapper extends React.Component {
       const bounds = getBoundsForNode(node)
       isBeingDragged = false
       if (!this.state.event || !pointInColumn(bounds, point)) return
+
       this.handleInteractionEnd()
     })
 

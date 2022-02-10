@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 import { Calendar } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -9,58 +10,65 @@ const DragAndDropCalendar = withDragAndDrop(Calendar)
 const events = [
   {
     id: 0,
-    title: 'Board meeting',
+    title: 'Board meeting 1',
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
-    resourceId: 1,
+    resourceId: [1, 2],
+  },
+  {
+    id: 0,
+    title: 'Board meeting 2',
+    start: new Date(2018, 0, 29, 17, 0, 0),
+    end: new Date(2018, 0, 29, 23, 15, 0),
+    resourceId: [1, 2],
   },
   {
     id: 1,
-    title: 'MS training',
+    title: 'MS training 3',
     start: new Date(2018, 0, 29, 14, 0, 0),
     end: new Date(2018, 0, 29, 16, 30, 0),
     resourceId: 2,
   },
   {
     id: 2,
-    title: 'Team lead meeting',
+    title: 'Team lead meeting 4',
     start: new Date(2018, 0, 29, 8, 30, 0),
     end: new Date(2018, 0, 29, 12, 30, 0),
     resourceId: 3,
   },
   {
     id: 10,
-    title: 'Board meeting',
+    title: 'Board meeting 5',
     start: new Date(2018, 0, 30, 23, 0, 0),
     end: new Date(2018, 0, 30, 23, 59, 0),
     resourceId: 1,
   },
   {
     id: 11,
-    title: 'Birthday Party',
+    title: 'Birthday Party 6',
     start: new Date(2018, 0, 30, 7, 0, 0),
     end: new Date(2018, 0, 30, 10, 30, 0),
     resourceId: 4,
   },
   {
     id: 12,
-    title: 'Board meeting',
+    title: 'Board meeting 7',
     start: new Date(2018, 0, 29, 23, 59, 0),
     end: new Date(2018, 0, 30, 13, 0, 0),
     resourceId: 1,
   },
   {
     id: 13,
-    title: 'Board meeting',
-    start: new Date(2018, 0, 29, 23, 50, 0),
-    end: new Date(2018, 0, 30, 13, 0, 0),
+    title: 'Board meeting 8',
+    start: new Date(2018, 0, 29, 0, 0, 0),
+    end: new Date(2018, 0, 29, 23, 10, 0),
     resourceId: 2,
   },
   {
     id: 14,
-    title: 'Board meeting',
-    start: new Date(2018, 0, 29, 23, 40, 0),
-    end: new Date(2018, 0, 30, 13, 0, 0),
+    title: 'Board meeting 9',
+    start: new Date(2018, 0, 29, 0, 0, 0),
+    end: new Date(2018, 0, 29, 23, 0, 0),
     resourceId: 4,
   },
 ]
@@ -77,9 +85,40 @@ class Dnd extends React.Component {
     super(props)
     this.state = {
       events: events,
+      isCopyingMode: true,
     }
 
     this.moveEvent = this.moveEvent.bind(this)
+    this.handleChangeMode = this.handleChangeMode.bind(this)
+  }
+
+  handleChangeMode(e) {
+    this.setState({
+      isCopyingMode: e.target.checked,
+    })
+  }
+
+  modifyResource(oldResourceId, sourceResource, newResourceId, isCopyingMode) {
+    //new array with all present Ids
+    let tempArr = [...oldResourceId]
+
+    if (isCopyingMode) {
+      //add the new Id to the array
+      tempArr.push(newResourceId)
+    } else {
+      if (sourceResource) {
+        //replace old with new
+        const index = tempArr.indexOf(sourceResource)
+
+        if (index !== -1) {
+          tempArr[index] = newResourceId
+        }
+      }
+    }
+
+    // delete duplicates in the array
+    let unique = Array.from(new Set(tempArr))
+    return unique
   }
 
   moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
@@ -94,7 +133,22 @@ class Dnd extends React.Component {
       allDay = false
     }
 
-    const updatedEvent = { ...event, start, end, resourceId, allDay }
+    const relatedEvent = events[idx]
+
+    //new event obj with updated resource
+    const tempResId = this.modifyResource(
+      relatedEvent.resourceId,
+      relatedEvent.sourceResource,
+      resourceId,
+      this.state.isCopyingMode
+    )
+    const updatedEvent = {
+      ...event,
+      start,
+      end,
+      resourceId: tempResId,
+      allDay,
+    }
 
     const nextEvents = [...events]
     nextEvents.splice(idx, 1, updatedEvent)
@@ -104,8 +158,10 @@ class Dnd extends React.Component {
     })
   }
 
-  resizeEvent = (resizeType, { event, start, end }) => {
+  resizeEvent = ({ event, start, end }) => {
     const { events } = this.state
+
+    console.log('events', events)
 
     const nextEvents = events.map(existingEvent => {
       return existingEvent.id == event.id
@@ -120,21 +176,59 @@ class Dnd extends React.Component {
 
   render() {
     return (
-      <DragAndDropCalendar
-        selectable
-        localizer={this.props.localizer}
-        events={this.state.events}
-        onEventDrop={this.moveEvent}
-        resizable
-        resources={resourceMap}
-        resourceIdAccessor="resourceId"
-        resourceTitleAccessor="resourceTitle"
-        onEventResize={this.resizeEvent}
-        defaultView="day"
-        step={15}
-        showMultiDayTimes={true}
-        defaultDate={new Date(2018, 0, 29)}
-      />
+      <>
+        <div style={{ padding: '40px', background: '#dbdbdb' }}>
+          <label>Copy Event?</label>
+          <input
+            type="checkbox"
+            id="copyMode"
+            defaultChecked={this.state.isCopyingMode}
+            onChange={this.handleChangeMode}
+          />
+          <p>active: {this.state.isCopyingMode ? 'CopyMode' : 'MoveMode'}</p>
+        </div>
+        <DragAndDropCalendar
+          selectable
+          localizer={this.props.localizer}
+          events={this.state.events}
+          onEventDrop={this.moveEvent}
+          onDragStart={args => console.log('dragStart', args)}
+          onSelectSlot={args => console.log('onSelectSlot', args)}
+          onSelectEvent={args => console.log('select', args)}
+          resizable
+          resources={resourceMap}
+          resourceIdAccessor="resourceId"
+          resourceTitleAccessor="resourceTitle"
+          onEventResize={this.resizeEvent}
+          defaultView="day"
+          step={15}
+          showMultiDayTimes={event => {
+            //if return false, the event is shown in allday-Row, if true it is shown according to start/end
+
+            const startMoment = moment(event.start)
+            const endMoment = moment(event.end)
+
+            console.log('dates', startMoment, endMoment)
+
+            console.log('day', startMoment.day(), endMoment.day())
+            console.log('hours', startMoment.hours(), endMoment.hours())
+            console.log('minutes', startMoment.minutes(), endMoment.minutes())
+
+            //if start and end is same day and start is 00:00 and end is > 23:00
+            if (
+              startMoment.isSame(endMoment, 'day') &&
+              startMoment.hours() == 0 &&
+              startMoment.minutes() == 0 &&
+              endMoment.hours() == 23 &&
+              endMoment.minutes() >= 0
+            ) {
+              return false //show as allAay
+            }
+            return true
+          }}
+          defaultDate={new Date(2018, 0, 29)}
+        />
+      </>
     )
   }
 }

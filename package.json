@@ -1,14 +1,11 @@
 {
-  "name": "react-big-calendar",
-  "version": "0.38.9",
+  "name": "@aerotime/react-big-calendar",
+  "version": "0.38.10",
   "description": "Calendar! with events",
-  "author": {
-    "name": "Jason Quense",
-    "email": "monastic.panic@gmail.com"
-  },
+  "author": "Aerotime <support@aerotime.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jquense/react-big-calendar.git"
+    "url": "git+https://github.com/Aerotime/react-big-calendar.git"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -148,6 +145,7 @@
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",
     "memoize-one": "^5.1.1",
+    "npm": "^8.5.1",
     "prop-types": "^15.7.2",
     "react-overlays": "^4.1.1",
     "uncontrollable": "^7.0.0"

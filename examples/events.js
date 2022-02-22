@@ -1,6 +1,6 @@
 const now = new Date()
 
-export default [
+const DEFAULT_EXAMPLE = [
   {
     id: 0,
     title: 'All Day Event very long title',
@@ -178,3 +178,22 @@ export default [
     end: new Date(2015, 3, 14, 20, 0, 0),
   },
 ]
+
+function getRandomInt(inputMin, inputMax) {
+  const min = Math.ceil(inputMin)
+  const max = Math.floor(inputMax)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+let exampleEvents = DEFAULT_EXAMPLE
+for (let i = 0; i < 800; i++) {
+  const date = getRandomInt(12, 18)
+  const hour = getRandomInt(1, 22)
+  exampleEvents = exampleEvents.concat({
+    id: exampleEvents.length,
+    title: `${i} random event`,
+    start: new Date(2015, 3, date, hour, getRandomInt(1, 59), 0),
+    end: new Date(2015, 3, date, hour + 1, getRandomInt(1, 59), 0),
+  })
+}
+export default exampleEvents

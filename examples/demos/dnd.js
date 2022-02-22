@@ -97,6 +97,10 @@ class Dnd extends React.Component {
     // })
   }
 
+  onDragStart(e) {
+    console.log('onDragStart', e)
+  }
+
   render() {
     return (
       <DragAndDropCalendar
@@ -108,8 +112,8 @@ class Dnd extends React.Component {
         onEventResize={this.resizeEvent}
         showMultiDayTimes={true}
         onSelectSlot={this.newEvent}
-        onDragStart={console.log}
-        defaultView={Views.MONTH}
+        onDragStart={this.onDragStart}
+        defaultView={Views.WEEK}
         defaultDate={new Date(2015, 3, 12)}
         popup={true}
         dragFromOutsideItem={

@@ -2,8 +2,19 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { navigate } from './utils/constants'
 import TimeGrid from './TimeGrid'
+import { hasStateOrPropsChanged } from './utils/helpers'
 
 class Week extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return hasStateOrPropsChanged(
+      this.state,
+      nextState,
+      this.props,
+      nextProps,
+      [],
+      false
+    )
+  }
   render() {
     /**
      * This allows us to default min, max, and scrollToTime

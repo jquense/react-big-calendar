@@ -57,7 +57,7 @@ const EXAMPLES = {
   dndOutsideSource: 'Addon: Drag and drop (from outside calendar)',
 }
 
-const DEFAULT_EXAMPLE = 'basic'
+const DEFAULT_EXAMPLE = 'dnd'
 
 class Example extends React.Component {
   constructor(...args) {

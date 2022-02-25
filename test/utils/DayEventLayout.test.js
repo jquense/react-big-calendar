@@ -1,12 +1,25 @@
+import moment from 'moment'
+import momentLocalizer from '../../src/localizers/moment'
+//import { DateTime } from 'luxon'
+//import luxonLocalizer from '../../src/localizers/luxon'
 import { getStyledEvents } from '../../src/utils/DayEventLayout'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import * as dates from '../../src/utils/dates'
+
+const localizer = momentLocalizer(moment)
+//const localizer = luxonLocalizer(DateTime)
 
 describe('getStyledEvents', () => {
   const d = (...args) => new Date(2015, 3, 1, ...args)
   const min = dates.startOf(d(), 'day')
   const max = dates.endOf(d(), 'day')
-  const slotMetrics = getSlotMetrics({ min, max, step: 30, timeslots: 4 })
+  const slotMetrics = getSlotMetrics({
+    min,
+    max,
+    step: 30,
+    timeslots: 4,
+    localizer,
+  })
   const accessors = { start: e => e.start, end: e => e.end }
   const dayLayoutAlgorithm = 'overlap'
 
@@ -40,17 +53,32 @@ describe('getStyledEvents', () => {
           { start: d(11), end: d(11, 10) },
           { start: d(11, 10), end: d(11, 20) },
         ],
-        [{ width: 100, xOffset: 0 }, { width: 100, xOffset: 0 }],
+        [
+          { width: 100, xOffset: 0 },
+          { width: 100, xOffset: 0 },
+        ],
       ],
       [
         'two consecutive events too close together',
-        [{ start: d(11), end: d(11, 5) }, { start: d(11, 5), end: d(11, 10) }],
-        [{ width: 85, xOffset: 0 }, { width: 50, xOffset: 50 }],
+        [
+          { start: d(11), end: d(11, 5) },
+          { start: d(11, 5), end: d(11, 10) },
+        ],
+        [
+          { width: 85, xOffset: 0 },
+          { width: 50, xOffset: 50 },
+        ],
       ],
       [
         'two overlapping events',
-        [{ start: d(11), end: d(12) }, { start: d(11), end: d(12) }],
-        [{ width: 85, xOffset: 0 }, { width: 50, xOffset: 50 }],
+        [
+          { start: d(11), end: d(12) },
+          { start: d(11), end: d(12) },
+        ],
+        [
+          { width: 85, xOffset: 0 },
+          { width: 50, xOffset: 50 },
+        ],
       ],
       [
         'three overlapping events',

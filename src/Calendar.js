@@ -9,7 +9,6 @@ import {
   DayLayoutAlgorithmPropType,
   views as componentViews,
 } from './utils/propTypes'
-import warning from 'warning'
 
 import { notify } from './utils/helpers'
 import { navigate, views } from './utils/constants'
@@ -35,25 +34,48 @@ function isValidView(view, { views: _views }) {
   return names.indexOf(view) !== -1
 }
 
-/**
- * react-big-calendar is a full featured Calendar component for managing events and dates. It uses
- * modern `flexbox` for layout, making it super responsive and performant. Leaving most of the layout heavy lifting
- * to the browser. __note:__ The default styles use `height: 100%` which means your container must set an explicit
- * height (feel free to adjust the styles to suit your specific needs).
- *
- * Big Calendar is unopiniated about editing and moving events, preferring to let you implement it in a way that makes
- * the most sense to your app. It also tries not to be prescriptive about your event data structures, just tell it
- * how to find the start and end datetimes and you can pass it whatever you want.
- *
- * One thing to note is that, `react-big-calendar` treats event start/end dates as an _exclusive_ range.
- * which means that the event spans up to, but not including, the end date. In the case
- * of displaying events on whole days, end dates are rounded _up_ to the next day. So an
- * event ending on `Apr 8th 12:00:00 am` will not appear on the 8th, whereas one ending
- * on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a
- * function `endAccessor` that returns the end date + 1 day for those events that end at midnight.
- */
 class Calendar extends React.Component {
   static propTypes = {
+    /**
+     * The localizer used for formatting dates and times according to the `format` and `culture`
+     *
+     * globalize
+     * ```js
+     * import {globalizeLocalizer} from 'react-big-calendar'
+     * import globalize from 'globalize'
+     *
+     * const localizer = globalizeLocalizer(globalize)
+     * ```
+     * moment
+     * ```js
+     * import {momentLocalizer} from 'react-big-calendar'
+     * import moment from 'moment'
+     * // and, for optional time zone support
+     * import 'moment-timezone'
+     *
+     * moment.tz.setDefault('America/Los_Angeles')
+     * // end optional time zone support
+     *
+     * const localizer = momentLocalizer(moment)
+     * ```
+     *
+     * Luxon
+     * ```js
+     * import {luxonLocalizer} from 'react-big-calendar'
+     * import {DateTime, Settings} from 'luxon'
+     * // only use `Settings` if you require optional time zone support
+     * Settings.defaultZone = 'America/Los_Angeles'
+     * // end optional time zone support
+     *
+     * // Luxon uses the Intl API, which currently does not contain `weekInfo`
+     * // to determine which weekday is the start of the week by `culture`.
+     * // The `luxonLocalizer` defaults this to Sunday, which differs from
+     * // the Luxon default of Monday. The localizer requires this option
+     * // to change the display, and the date math for determining the
+     * // start of a week. Luxon uses non-zero based values for `weekday`.
+     * const localizer = luxonLocalizer(DateTime, {firstDayOfWeek: 7})
+     * ```
+     */
     localizer: PropTypes.object.isRequired,
 
     /**
@@ -112,6 +134,29 @@ class Calendar extends React.Component {
      * ```
      */
     events: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * An array of background event objects to display on the calendar. Background
+     * Events behave similarly to Events but are not factored into Event overlap logic,
+     * allowing them to sit behind any Events that may occur during the same period.
+     * Background Events objects can be any shape, as long as the Calendar knows how to
+     * retrieve the following details of the event:
+     *
+     *  - start time
+     *  - end time
+     *
+     * Each of these properties can be customized or generated dynamically by
+     * setting the various "accessor" props. Without any configuration the default
+     * event should look like:
+     *
+     * ```js
+     * BackgroundEvent {
+     *   start: Date,
+     *   end: Date,
+     * }
+     * ```
+     */
+    backgroundEvents: PropTypes.arrayOf(PropTypes.object),
 
     /**
      * Accessor for the event title, used to display event information. Should
@@ -251,7 +296,7 @@ class Calendar extends React.Component {
     /**
      *
      * ```js
-     * (dates: Date[] | { start: Date; end: Date }, view?: 'month'|'week'|'work_week'|'day'|'agenda') => void
+     * (dates: Date[] | { start: Date; end: Date }, view: 'month'|'week'|'work_week'|'day'|'agenda'|undefined) => void
      * ```
      *
      * Callback fired when the visible date range changes. Returns an Array of dates
@@ -314,6 +359,15 @@ class Calendar extends React.Component {
     onDoubleClickEvent: PropTypes.func,
 
     /**
+     * Callback fired when a focused calendar event receives a key press.
+     *
+     * ```js
+     * (event: Object, e: SyntheticEvent) => void
+     * ```
+     */
+    onKeyPressEvent: PropTypes.func,
+
+    /**
      * Callback fired when dragging a selection in the Time views.
      *
      * Returning `false` from the handler will prevent a selection.
@@ -332,6 +386,14 @@ class Calendar extends React.Component {
      * ```
      */
     onShowMore: PropTypes.func,
+
+    /**
+     * Displays all events on the month view instead of
+     * having some hidden behind +{count} more. This will
+     * cause the rows in the month view to be scrollable if
+     * the number of events exceed the height of the row.
+     */
+    showAllEvents: PropTypes.bool,
 
     /**
      * The selected event, if any.
@@ -370,6 +432,13 @@ class Calendar extends React.Component {
      ['month', 'week', 'day', 'agenda']
      */
     views: componentViews,
+
+    /**
+     * Determines whether the drill down should occur when clicking on the "+_x_ more" link.
+     * If `popup` is false, and `doShowMoreDrillDown` is true, the drill down will occur as usual.
+     * If `popup` is false, and `doShowMoreDrillDown` is false, the drill down will not occur and the `onShowMore` function will trigger.
+     */
+    doShowMoreDrillDown: PropTypes.bool,
 
     /**
      * The string name of the destination view for drill-down actions, such
@@ -445,7 +514,7 @@ class Calendar extends React.Component {
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
 
     /**
-     * Specifies the number of miliseconds the user must press and hold on the screen for a touch
+     * Specifies the number of milliseconds the user must press and hold on the screen for a touch
      * to be considered a "long press." Long presses are used for time slot selection on touch
      * devices.
      *
@@ -455,7 +524,7 @@ class Calendar extends React.Component {
     longPressThreshold: PropTypes.number,
 
     /**
-     * Determines the selectable time increments in week and day views
+     * Determines the selectable time increments in week and day views, in minutes.
      */
     step: PropTypes.number,
 
@@ -487,7 +556,7 @@ class Calendar extends React.Component {
 
     /**
      * Optionally provide a function that returns an object of className or style props
-     * to be applied to the the time-slot node. Caution! Styles that change layout or
+     * to be applied to the time-slot node. Caution! Styles that change layout or
      * position may break the calendar in unexpected ways.
      *
      * ```js
@@ -495,6 +564,15 @@ class Calendar extends React.Component {
      * ```
      */
     slotPropGetter: PropTypes.func,
+
+    /**
+     * Optionally provide a function that returns an object of props to be applied
+     * to the time-slot group node. Useful to dynamically change the sizing of time nodes.
+     * ```js
+     * () => { style?: Object }
+     * ```
+     */
+    slotGroupPropGetter: PropTypes.func,
 
     /**
      * Optionally provide a function that returns an object of className or style props
@@ -541,7 +619,7 @@ class Calendar extends React.Component {
     /**
      * Localizer specific formats, tell the Calendar how to format and display dates.
      *
-     * `format` types are dependent on the configured localizer; both Moment and Globalize
+     * `format` types are dependent on the configured localizer; Moment, Luxon and Globalize
      * accept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.
      *
      * ```jsx
@@ -647,9 +725,10 @@ class Calendar extends React.Component {
      *   dateCellWrapper: MyDateCellWrapper,
      *   timeSlotWrapper: MyTimeSlotWrapper,
      *   timeGutterHeader: MyTimeGutterWrapper,
+     *   resourceHeader: MyResourceHeader,
      *   toolbar: MyToolbar,
      *   agenda: {
-     *   	 event: MyAgendaEvent // with the agenda view use a different component to render events
+     *   	 event: MyAgendaEvent, // with the agenda view use a different component to render events
      *     time: MyAgendaTime,
      *     date: MyAgendaDate,
      *   },
@@ -675,6 +754,7 @@ class Calendar extends React.Component {
       eventWrapper: PropTypes.elementType,
       eventContainerWrapper: PropTypes.elementType,
       dateCellWrapper: PropTypes.elementType,
+      dayColumnWrapper: PropTypes.elementType,
       timeSlotWrapper: PropTypes.elementType,
       timeGutterHeader: PropTypes.elementType,
       resourceHeader: PropTypes.elementType,
@@ -704,7 +784,33 @@ class Calendar extends React.Component {
 
     /**
      * String messages used throughout the component, override to provide localizations
+     *
+     * ```jsx
+     * const messages = {
+     *   date: 'Date',
+     *   time: 'Time',
+     *   event: 'Event',
+     *   allDay: 'All Day',
+     *   week: 'Week',
+     *   work_week: 'Work Week',
+     *   day: 'Day',
+     *   month: 'Month',
+     *   previous: 'Back',
+     *   next: 'Next',
+     *   yesterday: 'Yesterday',
+     *   tomorrow: 'Tomorrow',
+     *   today: 'Today',
+     *   agenda: 'Agenda',
+     *
+     *   noEventsInRange: 'There are no events in this range.',
+     *
+     *   showMore: total => `+${total} more`,
+     * }
+     *
+     * <Calendar messages={messages} />
+     * ```
      */
+
     messages: PropTypes.shape({
       allDay: PropTypes.node,
       previous: PropTypes.node,
@@ -723,8 +829,11 @@ class Calendar extends React.Component {
 
     /**
      * A day event layout(arrangement) algorithm.
+     *
      * `overlap` allows events to be overlapped.
+     *
      * `no-overlap` resizes events to avoid overlap.
+     *
      * or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
      */
     dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
@@ -739,6 +848,7 @@ class Calendar extends React.Component {
     step: 30,
     length: 30,
 
+    doShowMoreDrillDown: true,
     drilldownView: views.DAY,
 
     titleAccessor: 'title',
@@ -758,11 +868,12 @@ class Calendar extends React.Component {
 
   constructor(...args) {
     super(...args)
+
     this.state = {
       context: this.getContext(this.props),
     }
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ context: this.getContext(nextProps) })
   }
 
@@ -776,7 +887,9 @@ class Calendar extends React.Component {
     resourceIdAccessor,
     resourceTitleAccessor,
     eventPropGetter,
+    backgroundEventPropGetter,
     slotPropGetter,
+    slotGroupPropGetter,
     dayPropGetter,
     view,
     views,
@@ -794,12 +907,18 @@ class Calendar extends React.Component {
       getters: {
         eventProp: (...args) =>
           (eventPropGetter && eventPropGetter(...args)) || {},
+        backgroundEventProp: (...args) =>
+          (backgroundEventPropGetter && backgroundEventPropGetter(...args)) ||
+          {},
         slotProp: (...args) =>
           (slotPropGetter && slotPropGetter(...args)) || {},
+        slotGroupProp: (...args) =>
+          (slotGroupPropGetter && slotGroupPropGetter(...args)) || {},
         dayProp: (...args) => (dayPropGetter && dayPropGetter(...args)) || {},
       },
       components: defaults(components[view] || {}, omit(components, names), {
         eventWrapper: NoopWrapper,
+        backgroundEventWrapper: NoopWrapper,
         eventContainerWrapper: NoopWrapper,
         dateCellWrapper: NoopWrapper,
         weekWrapper: NoopWrapper,
@@ -857,6 +976,7 @@ class Calendar extends React.Component {
       view,
       toolbar,
       events,
+      backgroundEvents = [],
       style,
       className,
       elementProps,
@@ -865,6 +985,7 @@ class Calendar extends React.Component {
       length,
       showMultiDayTimes,
       onShowMore,
+      doShowMoreDrillDown,
       components: _0,
       formats: _1,
       messages: _2,
@@ -906,6 +1027,7 @@ class Calendar extends React.Component {
         <View
           {...props}
           events={events}
+          backgroundEvents={backgroundEvents}
           date={current}
           getNow={getNow}
           length={length}
@@ -919,8 +1041,10 @@ class Calendar extends React.Component {
           onDrillDown={this.handleDrillDown}
           onSelectEvent={this.handleSelectEvent}
           onDoubleClickEvent={this.handleDoubleClickEvent}
+          onKeyPressEvent={this.handleKeyPressEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={onShowMore}
+          doShowMoreDrillDown={doShowMoreDrillDown}
         />
       </div>
     )
@@ -942,7 +1066,9 @@ class Calendar extends React.Component {
       if (viewComponent.range) {
         onRangeChange(viewComponent.range(date, { localizer }), view)
       } else {
-        warning(true, 'onRangeChange prop not supported for this view')
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('onRangeChange prop not supported for this view')
+        }
       }
     }
   }
@@ -982,6 +1108,10 @@ class Calendar extends React.Component {
 
   handleDoubleClickEvent = (...args) => {
     notify(this.props.onDoubleClickEvent, args)
+  }
+
+  handleKeyPressEvent = (...args) => {
+    notify(this.props.onKeyPressEvent, args)
   }
 
   handleSelectSlot = slotInfo => {

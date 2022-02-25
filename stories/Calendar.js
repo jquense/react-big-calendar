@@ -10,7 +10,7 @@ import demoEvents from '../examples/events'
 import createEvents from './helpers/createEvents'
 import customComponents from './helpers/customComponents'
 
-import { events, Views, Calendar } from './helpers'
+import { events, backgroundEvents, Calendar, Views } from './helpers'
 
 storiesOf('Big Calendar', module)
   .add('demo', () => (
@@ -117,8 +117,9 @@ storiesOf('Big Calendar', module)
   })
   .add('custom now is the first of the month', () => {
     const customNow = () => {
-      let now = new Date()
-      now.setDate(1)
+      let now = moment()
+        .date(1)
+        .toDate()
       return now
     }
     return (
@@ -204,6 +205,15 @@ storiesOf('Big Calendar', module)
         components={{
           timeSlotWrapper: customComponents.timeSlotWrapper,
         }}
+      />
+    )
+  })
+  .add('add background event', () => {
+    return (
+      <Calendar
+        defaultView={Views.WEEK}
+        events={events}
+        backgroundEvents={backgroundEvents}
       />
     )
   })

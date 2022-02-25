@@ -90,7 +90,7 @@ export default function({
     // stretch to maximum
     let maxIdx = 0
     for (let j = 0; j < e.friends.length; ++j) {
-      const idx = e.friends[j]
+      const idx = e.friends[j].idx
       maxIdx = maxIdx > idx ? maxIdx : idx
     }
     if (maxIdx <= e.idx) e.size = 100 - e.idx * e.size

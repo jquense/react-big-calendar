@@ -1,18 +1,15 @@
 .rbc-addons-dnd .rbc-addons-dnd-row-body {
   position: relative;
 }
-
 .rbc-addons-dnd .rbc-addons-dnd-drag-row {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
 }
-
 .rbc-addons-dnd .rbc-addons-dnd-over {
   background-color: rgba(0, 0, 0, 0.3);
 }
-
 .rbc-addons-dnd .rbc-event {
   transition: opacity 150ms;
 }
@@ -20,22 +17,18 @@
 .rbc-addons-dnd .rbc-event:hover .rbc-addons-dnd-resize-ew-icon {
   display: block;
 }
-
 .rbc-addons-dnd .rbc-addons-dnd-dragged-event {
   opacity: 0;
 }
-
 .rbc-addons-dnd.rbc-addons-dnd-is-dragging
   .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
   opacity: 0.5;
 }
-
 .rbc-addons-dnd .rbc-addons-dnd-resizable {
   position: relative;
   width: 100%;
   height: 100%;
 }
-
 .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor {
   width: 100%;
   text-align: center;
@@ -56,7 +49,6 @@
   width: 10px;
   cursor: ns-resize;
 }
-
 .rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor {
   position: absolute;
   top: 4px;
@@ -78,3 +70,5 @@
   height: 10px;
   cursor: ew-resize;
 }
+
+/*# sourceMappingURL=styles.css.map */

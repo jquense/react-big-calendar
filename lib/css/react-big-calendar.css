@@ -46,9 +46,9 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-ellipsis,
-.rbc-event-label,
+.rbc-show-more,
 .rbc-row-segment .rbc-event-content,
-.rbc-show-more {
+.rbc-event-label {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -99,6 +99,25 @@ button.rbc-input::-moz-focus-inner {
   user-select: none;
   -webkit-user-select: none;
   z-index: 4;
+}
+
+.rbc-row-content-scrollable {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.rbc-row-content-scrollable .rbc-row-content-scroll-container {
+  height: 100%;
+  overflow-y: scroll;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+.rbc-row-content-scrollable
+  .rbc-row-content-scroll-container::-webkit-scrollbar {
+  display: none;
 }
 
 .rbc-today {
@@ -195,7 +214,8 @@ button.rbc-input::-moz-focus-inner {
   margin-left: 10px;
 }
 
-.rbc-event {
+.rbc-event,
+.rbc-day-slot .rbc-background-event {
   border: none;
   box-sizing: border-box;
   box-shadow: none;
@@ -208,14 +228,18 @@ button.rbc-input::-moz-focus-inner {
   width: 100%;
   text-align: left;
 }
-.rbc-slot-selecting .rbc-event {
+.rbc-slot-selecting .rbc-event,
+.rbc-slot-selecting .rbc-day-slot .rbc-background-event,
+.rbc-day-slot .rbc-slot-selecting .rbc-background-event {
   cursor: inherit;
   pointer-events: none;
 }
-.rbc-event.rbc-selected {
+.rbc-event.rbc-selected,
+.rbc-day-slot .rbc-selected.rbc-background-event {
   background-color: #265985;
 }
-.rbc-event:focus {
+.rbc-event:focus,
+.rbc-day-slot .rbc-background-event:focus {
   outline: 5px auto #3b99fc;
 }
 
@@ -255,7 +279,6 @@ button.rbc-input::-moz-focus-inner {
 .rbc-row-segment {
   padding: 0 1px 1px 1px;
 }
-
 .rbc-selected-cell {
   background-color: rgba(0, 0, 0, 0.1);
 }
@@ -450,7 +473,8 @@ button.rbc-input::-moz-focus-inner {
   left: 10px;
   right: 0;
 }
-.rbc-day-slot .rbc-event {
+.rbc-day-slot .rbc-event,
+.rbc-day-slot .rbc-background-event {
   border: 1px solid #265985;
   display: flex;
   max-height: 100%;
@@ -459,6 +483,9 @@ button.rbc-input::-moz-focus-inner {
   align-items: flex-start;
   overflow: hidden;
   position: absolute;
+}
+.rbc-day-slot .rbc-background-event {
+  opacity: 0.75;
 }
 .rbc-day-slot .rbc-event-label {
   flex: none;
@@ -486,25 +513,20 @@ button.rbc-input::-moz-focus-inner {
   z-index: 10;
   margin-right: -1px;
 }
-
 .rbc-time-view-resources .rbc-time-header {
   overflow: hidden;
 }
-
 .rbc-time-view-resources .rbc-time-header-content {
   min-width: auto;
   flex: 1 0 0;
   flex-basis: 0px;
 }
-
 .rbc-time-view-resources .rbc-time-header-cell-single-day {
   display: none;
 }
-
 .rbc-time-view-resources .rbc-day-slot {
   min-width: 140px;
 }
-
 .rbc-time-view-resources .rbc-header,
 .rbc-time-view-resources .rbc-day-bg {
   width: 140px;
@@ -551,6 +573,7 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-time-view .rbc-time-gutter {
   white-space: nowrap;
+  text-align: right;
 }
 .rbc-time-view .rbc-allday-cell {
   box-sizing: content-box;
@@ -643,3 +666,5 @@ button.rbc-input::-moz-focus-inner {
   background-color: #74ad31;
   pointer-events: none;
 }
+
+/*# sourceMappingURL=react-big-calendar.css.map */

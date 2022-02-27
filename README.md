@@ -17,6 +17,7 @@ element has a height, or the calendar won't be visible. To provide your own cust
 
 - [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
 - [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+- [react-big-calendar with TypeScript and React hooks bundled with Vite](https://github.com/christopher-caldwell/react-big-calendar-demo)
 
 ## Run examples locally
 

@@ -95,7 +95,7 @@
     "babel-plugin-transform-rename-import": "^2.3.0",
     "babel-preset-jason": "^6.0.1",
     "bootstrap": "^3.3.5",
-    "bootstrap-sass": "^3.4.1",
+    "bootstrap-sass": "3.4.3",
     "component-metadata-loader": "^4.0.0",
     "cpy-cli": "^2.0.0",
     "eslint": "^5.8.0",

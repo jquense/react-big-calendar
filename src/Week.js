@@ -16,6 +16,7 @@ class Week extends React.Component {
       min = localizer.startOf(new Date(), 'day'),
       max = localizer.endOf(new Date(), 'day'),
       scrollToTime = localizer.startOf(new Date(), 'day'),
+      enableAutoScroll = true,
       ...props
     } = this.props
     let range = Week.range(date, this.props)
@@ -29,6 +30,7 @@ class Week extends React.Component {
         min={min}
         max={max}
         scrollToTime={scrollToTime}
+        enableAutoScroll={enableAutoScroll}
       />
     )
   }
@@ -40,6 +42,7 @@ Week.propTypes = {
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
   scrollToTime: PropTypes.instanceOf(Date),
+  enableAutoScroll: PropTypes.bool,
 }
 
 Week.defaultProps = TimeGrid.defaultProps

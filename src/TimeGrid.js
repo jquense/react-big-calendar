@@ -303,7 +303,8 @@ export default class TimeGrid extends Component {
   }
 
   applyScroll() {
-    if (this._scrollRatio != null) {
+    // If auto-scroll is disabled, we don't actually apply the scroll
+    if (this._scrollRatio != null && this.props.enableAutoScroll === true) {
       const content = this.contentRef.current
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once
@@ -352,6 +353,7 @@ TimeGrid.propTypes = {
   getNow: PropTypes.func.isRequired,
 
   scrollToTime: PropTypes.instanceOf(Date).isRequired,
+  enableAutoScroll: PropTypes.bool,
   showMultiDayTimes: PropTypes.bool,
 
   rtl: PropTypes.bool,

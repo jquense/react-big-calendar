@@ -1,3 +1,10 @@
+# [0.39.0](https://github.com/jquense/react-big-calendar/compare/v0.38.9...v0.39.0) (2022-03-02)
+
+
+### Features
+
+* Disable autoscroll functionality,  Add a functionality to disable auto-scroll on calendar render. ([aa8f374](https://github.com/jquense/react-big-calendar/commit/aa8f374bed642703639db8f659f2771bfae346e7))
+
 ## [0.38.9](https://github.com/jquense/react-big-calendar/compare/v0.38.8...v0.38.9) (2022-02-10)
 
 

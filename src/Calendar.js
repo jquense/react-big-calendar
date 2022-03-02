@@ -610,6 +610,11 @@ class Calendar extends React.Component {
     scrollToTime: PropTypes.instanceOf(Date),
 
     /**
+     * Determines whether the scroll pane is automatically scrolled down or not.
+     */
+    enableAutoScroll: PropTypes.bool,
+
+    /**
      * Specify a specific culture code for the Calendar.
      *
      * **Note: it's generally better to handle this globally via your i18n library.**

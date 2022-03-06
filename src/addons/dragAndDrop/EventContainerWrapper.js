@@ -169,7 +169,6 @@ class EventContainerWrapper extends React.Component {
       if (isBeingDragged) this.reset()
       this.context.draggable.onEnd(null)
     })
-
     selector.on('reset', () => {
       this.reset()
       this.context.draggable.onEnd(null)

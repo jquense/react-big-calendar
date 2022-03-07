@@ -70,7 +70,6 @@ export default function withDragAndDrop(Calendar) {
     }
 
     handleBeginAction = (event, action, direction) => {
-      console.log('handleBeginAction:', event, action, direction)
       this.setState({ event, action, direction })
       const { onDragStart } = this.props
       if (onDragStart) onDragStart({ event, action, direction })
@@ -95,7 +94,6 @@ export default function withDragAndDrop(Calendar) {
 
       interactionInfo.event = event
       const { onEventDrop, onEventResize } = this.props
-      console.log('handleInteractionEnd, action:', action)
       if (action === 'move' && onEventDrop) onEventDrop(interactionInfo)
       if (action === 'resize' && onEventResize) onEventResize(interactionInfo)
     }

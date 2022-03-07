@@ -26,10 +26,10 @@ export function mergeComponents(components = {}, addons) {
   return result
 }
 
-export function pointInColumn(bounds, point) {
+export function pointInColumn(bounds, point, isResize = false) {
   const { left, right, top } = bounds
   const { x, y } = point
-  return x < right + 10 && x > left && y > top
+  return x < right + 10 && x > left && (isResize ? true : y > top)
 }
 
 export function eventTimes(event, accessors, localizer) {

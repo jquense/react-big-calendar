@@ -161,7 +161,12 @@ class EventContainerWrapper extends React.Component {
     selector.on('select', point => {
       const bounds = getBoundsForNode(node)
       isBeingDragged = false
-      if (!this.state.event || !pointInColumn(bounds, point)) return
+      const { dragAndDropAction } = this.context.draggable
+      if (
+        !this.state.event ||
+        !pointInColumn(bounds, point, dragAndDropAction.action === 'resize')
+      )
+        return
       this.handleInteractionEnd()
     })
 
@@ -178,7 +183,6 @@ class EventContainerWrapper extends React.Component {
   handleInteractionEnd = () => {
     const { resource } = this.props
     const { event } = this.state
-
     this.reset()
 
     this.context.draggable.onEnd({

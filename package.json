@@ -54,7 +54,12 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-
+    "src/**/*.js": "eslint",
+    "test/**/*.js": "eslint",
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 80,

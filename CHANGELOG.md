@@ -1,3 +1,10 @@
+## [0.39.2](https://github.com/jquense/react-big-calendar/compare/v0.39.1...v0.39.2) (2022-03-10)
+
+
+### Bug Fixes
+
+* Correct resize for multi-day event. ([#2138](https://github.com/jquense/react-big-calendar/issues/2138)) ([3632345](https://github.com/jquense/react-big-calendar/commit/363234520ad3289bf4b182d8fc2f02dba2460f56))
+
 ## [0.39.1](https://github.com/jquense/react-big-calendar/compare/v0.39.0...v0.39.1) (2022-03-10)
 
 

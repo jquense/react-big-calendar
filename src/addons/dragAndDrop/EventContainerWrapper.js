@@ -162,12 +162,13 @@ class EventContainerWrapper extends React.Component {
       const bounds = getBoundsForNode(node)
       isBeingDragged = false
       const { dragAndDropAction } = this.context.draggable
-      if (
-        !this.state.event ||
-        !pointInColumn(bounds, point, dragAndDropAction.action === 'resize')
-      )
+      if (dragAndDropAction.action === 'resize') {
+        this.handleInteractionEnd()
+      } else if (!this.state.event || !pointInColumn(bounds, point)) {
         return
-      this.handleInteractionEnd()
+      } else {
+        this.handleInteractionEnd()
+      }
     })
 
     selector.on('click', () => {

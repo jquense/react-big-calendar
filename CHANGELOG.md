@@ -1,3 +1,10 @@
+## [0.39.1](https://github.com/jquense/react-big-calendar/compare/v0.39.0...v0.39.1) (2022-03-10)
+
+
+### Bug Fixes
+
+* Correct resizing event bug in Week & Day ([#2143](https://github.com/jquense/react-big-calendar/issues/2143)) ([afa8468](https://github.com/jquense/react-big-calendar/commit/afa84683fc6d3cd637013f08eac6d7bc1314c254))
+
 # [0.39.0](https://github.com/jquense/react-big-calendar/compare/v0.38.9...v0.39.0) (2022-03-02)
 
 

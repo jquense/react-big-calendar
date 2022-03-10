@@ -79,13 +79,34 @@ class EventContainerWrapper extends React.Component {
     const newTime = slotMetrics.closestSlotFromPoint(point, bounds)
 
     let { start, end } = eventTimes(event, accessors, localizer)
+    let newRange
     if (direction === 'UP') {
-      start = localizer.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
+      const newStart = localizer.min(
+        newTime,
+        slotMetrics.closestSlotFromDate(end, -1)
+      )
+      // Get the new range based on the new start
+      // but don't overwrite the end date as it could be outside this day boundary.
+      newRange = slotMetrics.getRange(newStart, end)
+      newRange = {
+        ...newRange,
+        endDate: end,
+      }
     } else if (direction === 'DOWN') {
-      end = localizer.max(newTime, slotMetrics.closestSlotFromDate(start))
+      // Get the new range based on the new end
+      // but don't overwrite the start date as it could be outside this day boundary.
+      const newEnd = localizer.max(
+        newTime,
+        slotMetrics.closestSlotFromDate(start)
+      )
+      newRange = slotMetrics.getRange(start, newEnd)
+      newRange = {
+        ...newRange,
+        startDate: start,
+      }
     }
 
-    this.update(event, slotMetrics.getRange(start, end))
+    this.update(event, newRange)
   }
 
   handleDropFromOutside = (point, boundaryBox) => {

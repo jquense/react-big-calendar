@@ -41,10 +41,6 @@
     "test": "yarn lint && NODE_ENV=test jest",
     "tdd": "NODE_ENV=test jest --watch"
   },
-  "peerDependencies": {
-    "react": "^16.6.1 || ^17",
-    "react-dom": "^16.6.1 || ^17"
-  },
   "devDependencies": {
     "@4c/rollout": "^1.4.0",
     "@babel/cli": "^7.17.6",
@@ -127,6 +123,8 @@
     "lodash-es": "^4.17.21",
     "memoize-one": "^6.0.0",
     "prop-types": "^15.8.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-overlays": "^4.1.1",
     "uncontrollable": "^7.2.1"
   },

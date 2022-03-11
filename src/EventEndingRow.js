@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import clsx from 'clsx'
 import EventRowMixin from './EventRowMixin'
 import { eventLevels } from './utils/eventLevels'
 import range from 'lodash/range'
@@ -78,14 +79,14 @@ class EventEndingRow extends React.Component {
     let count = eventsInSlot(segments, slot)
 
     return count ? (
-      <a
+      <button
+        type="button"
         key={'sm_' + slot}
-        href="#"
-        className={'rbc-show-more'}
+        className={clsx('rbc-button-link', 'rbc-show-more')}
         onClick={e => this.showMore(slot, e)}
       >
         {localizer.messages.showMore(count)}
-      </a>
+      </button>
     ) : (
       false
     )

@@ -13,10 +13,10 @@ if (b) {
 console.log(chalk.blue('[BEGIN BUILD]'))
 console.log(chalk.blue('Building js'))
 // build distributables
-await $`BABEL_ENV=esm rollup -c`;
+await $`NODE_ENV=production rollup -c`;
 console.log(chalk.blue(`Compiling 'lib' js files`))
 // build files used for overrides
-await $`babel src --out-dir lib`
+await $`NODE_ENV=production babel src --out-dir lib`
 console.log(chalk.blue(`Copying SASS files to 'lib'`))
 // and since we don't currently use CSS modules...
 await fs.copy('./src/sass', './lib/sass')

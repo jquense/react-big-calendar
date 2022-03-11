@@ -1,17 +1,29 @@
-/**
- * Had to pull babel config out of the package.json, to properly
- * build with the MaskedInput control updates
- * @param {*} api
- */
 module.exports = function (api) {
-  api.cache(false)
+  //api.cache(false)
 
   const config = {
-    presets: ['jason'],
-    plugins: [['transform-react-remove-prop-types', { mode: 'wrap' }]],
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          ...(api.env('test') && {
+            targets: {
+              node: 'current',
+            },
+          }),
+        },
+      ],
+      'react-app',
+    ],
+    plugins: [
+      ['@babel/plugin-transform-runtime'],
+      ['transform-react-remove-prop-types', { mode: 'wrap' }],
+      ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
+      ['@babel/plugin-proposal-private-methods', { loose: true }],
+    ],
     env: {
       esm: {
-        presets: [['jason', { modules: false }]],
+        presets: ['@babel/preset-env', 'react-app'],
         plugins: [
           [
             'babel-plugin-transform-rename-import',

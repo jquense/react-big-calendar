@@ -1,3 +1,10 @@
+## [0.39.3](https://github.com/jquense/react-big-calendar/compare/v0.39.2...v0.39.3) (2022-03-11)
+
+
+### Bug Fixes
+
+* Trade href="#" anchors for stylized buttons ([#2074](https://github.com/jquense/react-big-calendar/issues/2074)) ([cd385f5](https://github.com/jquense/react-big-calendar/commit/cd385f5f9fc9f998d944e9a3db643e6152fbb5d1))
+
 ## [0.39.2](https://github.com/jquense/react-big-calendar/compare/v0.39.1...v0.39.2) (2022-03-10)
 
 

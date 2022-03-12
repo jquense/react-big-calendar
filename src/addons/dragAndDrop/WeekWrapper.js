@@ -108,7 +108,9 @@ class WeekWrapper extends React.Component {
     if (direction === 'RIGHT') {
       if (cursorInRow) {
         if (slotMetrics.last < start) return this.reset()
-        end = localizer.add(date, 1, 'day')
+        if (localizer.eq(localizer.startOf(end, 'day'), end))
+          end = localizer.add(date, 1, 'day')
+        else end = date
       } else if (
         localizer.inRange(start, slotMetrics.first, slotMetrics.last) ||
         (bounds.bottom < point.y && +slotMetrics.first > +start)

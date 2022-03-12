@@ -139,6 +139,7 @@ class DayColumn extends React.Component {
           isNow && 'rbc-today', // WHY
           selecting && 'rbc-slot-selecting'
         )}
+        slotMetrics={slotMetrics}
       >
         {slotMetrics.groups.map((grp, idx) => (
           <TimeSlotGroup
@@ -221,8 +222,8 @@ class DayColumn extends React.Component {
       if (startsBeforeDay && startsAfterDay) label = messages.allDay
       else label = localizer.format({ start, end }, format)
 
-      let continuesEarlier = startsBeforeDay || slotMetrics.startsBefore(start)
-      let continuesLater = startsAfterDay || slotMetrics.startsAfter(end)
+      let continuesPrior = startsBeforeDay || slotMetrics.startsBefore(start)
+      let continuesAfter = startsAfterDay || slotMetrics.startsAfter(end)
 
       return (
         <TimeGridEvent
@@ -233,8 +234,8 @@ class DayColumn extends React.Component {
           getters={getters}
           rtl={rtl}
           components={components}
-          continuesEarlier={continuesEarlier}
-          continuesLater={continuesLater}
+          continuesPrior={continuesPrior}
+          continuesAfter={continuesAfter}
           accessors={accessors}
           resource={this.props.resource} //added to have the resource also in the TimeGrid
           selected={isSelected(event, selected)}

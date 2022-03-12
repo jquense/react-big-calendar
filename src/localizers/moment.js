@@ -53,6 +53,37 @@ function fixUnit(unit) {
 export default function(moment) {
   const locale = (m, c) => (c ? m.locale(c) : m)
 
+  function getTimezoneOffset(date) {
+    // ensures this gets cast to timezone
+    return moment(date)
+      .toDate()
+      .getTimezoneOffset()
+  }
+
+  function getDstOffset(start, end) {
+    // convert to moment, in case
+    const st = moment(start)
+    const ed = moment(end)
+    // if not using moment timezone
+    if (!moment.tz) {
+      return st.toDate().getTimezoneOffset() - ed.toDate().getTimezoneOffset()
+    }
+    /**
+     * If using moment-timezone, and a timezone has been applied, then
+     * use this to get the proper timezone offset, otherwise default
+     * the timezone to the browser local
+     */
+    const tzName = st?._z?.name ?? moment.tz.guess()
+    const startOffset = moment.tz.zone(tzName).utcOffset(+st)
+    const endOffset = moment.tz.zone(tzName).utcOffset(+ed)
+    return startOffset - endOffset
+  }
+
+  function getDayStartDstOffset(start) {
+    const dayStart = moment(start).startOf('day')
+    return getDstOffset(dayStart, start)
+  }
+
   /*** BEGIN localized date arithmetic methods with moment ***/
   function defineComparators(a, b, unit) {
     const datePart = fixUnit(unit)
@@ -242,7 +273,7 @@ export default function(moment) {
   function getMinutesFromMidnight(start) {
     const dayStart = moment(start).startOf('day')
     const day = moment(start)
-    return day.diff(dayStart, 'minutes')
+    return day.diff(dayStart, 'minutes') + getDayStartDstOffset(start)
   }
 
   // These two are used by DateSlotMetrics
@@ -358,6 +389,8 @@ export default function(moment) {
     minutes,
 
     getSlotDate,
+    getTimezoneOffset,
+    getDstOffset,
     getTotalMin,
     getMinutesFromMidnight,
     continuesPrior,

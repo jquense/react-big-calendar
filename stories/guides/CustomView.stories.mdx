@@ -14,9 +14,9 @@ It is possible to override an existing Calendar `view`, or even create a new `vi
 First build your custom `view` component. This could be based off an existing component, or something completely custom.
 
 ```js
-import React from 'react'
+import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
-import { Navigate as navigate } from 'react-big-calendar'
+import { Navigate } from 'react-big-calendar'
 import TimeGrid from 'react-big-calendar/lib/TimeGrid'
 
 export default function CustomWeekView({
@@ -56,7 +56,7 @@ CustomWeekView.propTypes = {
 
 CustomWeekView.range = (date, { localizer }) => {
   const start = date
-  const end = dates.add(start, 2, 'day')
+  const end = localizer.add(start, 2, 'day')
 
   let current = start
   const range = []
@@ -83,7 +83,7 @@ CustomWeekView.navigate = (date, action, { localizer }) => {
 }
 
 CustomWeekView.title = (date, { localizer }) => {
-  const [start, ...rest] = Week.range(date, { localizer })
+  const [start, ...rest] = CustomWeekView.range(date, { localizer })
   return localizer.format({ start, end: rest.pop() }, 'dayRangeHeaderFormat')
 }
 ```

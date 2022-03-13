@@ -5,7 +5,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 # What is a Localizer?
 
-You have probably noticed that your Big Calendar implementations require a <LinkTo kind="props" story="localizer">localizer</LinkTo> prop. The `localizer` is needed for applying formatting and culture (i18n) to your date displays throughought the Calendar.
+You have probably noticed that your Big Calendar implementations require a <LinkTo kind="props" story="localizer">localizer</LinkTo> prop. The `localizer` is needed for applying formatting and culture (i18n) to your date displays throughout the Calendar.
 
 Now the `localizer` also handles all internal date math, utilizing the `localizer` you provide. This is how the [moment](https://momentjs.com/) and [Luxon](https://moment.github.io/luxon/#/) localizers handle timezones, and how all of them handle things like Daylight Savings Time. Most components receive the `localizer` as a prop, meaning that your override components can also take advantage of these features.
 Each `localizer`, when created, creates an instance of `DateLocalizer` class, and each one has a normalized group of functions and props available for manipulating dates.
@@ -20,7 +20,7 @@ Each `localizer`, when created, creates an instance of `DateLocalizer` class, an
 - `firstVisibleDay(date:Date) => Date`
 - `format(value:Date, format:string) => string`,
 - `formats:object`
-- `getDstOffeset(start:Date, end:Date) => number`
+- `getDstOffset(start:Date, end:Date) => number`
 - `getMinutesFromMidnight(start:Date) => number`
 - `getSlotDate(dt:Date, minutesFromMidnight:number, offset:number) => Date`
 - `getTimezoneOffset(date:Date) => number`

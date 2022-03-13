@@ -5,6 +5,9 @@ on:
     types: [completed]
     branches:
       - master
+    paths:
+      - 'src/**'
+      - 'stories/**'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

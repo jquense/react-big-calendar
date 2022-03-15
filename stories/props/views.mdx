@@ -1,0 +1,36 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# views
+
+- type: `Views ('month'|'week'|'work_week'|'day'|'agenda')`
+- default: `[views.MONTH, views.WEEK, views.DAY, views.AGENDA]`
+
+An array of built-in view names to allow the calendar to display. accepts either an array of builtin view names,
+
+```js
+views={['month', 'day', 'agenda']}
+```
+
+or an object hash of the view name and the component (or boolean for builtin).
+
+```js
+views={{
+  month: true,
+  week: false,
+  myweek: WorkWeekViewComponent,
+}}
+```
+
+Custom views can be any React component, that implements the following interface:
+
+```js
+interface View {
+  static title(date: Date, { formats: DateFormat[], culture: string?, ...props }): string
+  static navigate(date: Date, action: 'PREV' | 'NEXT' | 'DATE'): Date
+}
+```
+
+<Canvas>
+  <Story id="props--cal-views" />
+</Canvas>

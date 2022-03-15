@@ -1,0 +1,14 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onView
+
+- type: 'function'
+- controls: <LinkTo kind="props" story="view">view</LinkTo>
+- example: `(newView) => setView(newView)`
+
+Callback fired when the `view` value changes. When included it is used to 'control' the <LinkTo kind="props" story="view">view</LinkTo> prop value.
+
+<Canvas>
+  <Story id="props--on-view" />
+</Canvas>

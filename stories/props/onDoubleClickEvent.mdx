@@ -1,0 +1,16 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onDoubleClickEvent
+
+- type: `function (event: Object) => any`
+
+Callback fired when a calendar event is clicked twice. (i.e.: an `onDoubleClick` handler).
+
+**Note:** The <LinkTo kind="props" story="selectable">selectable</LinkTo> prop is _not_ required for this prop to function.
+
+**Important:** The event passed into the function is the Calendar Event, not the SyntheticEvent expected by most click handlers.
+
+<Canvas>
+  <Story id="props--on-double-click-event" />
+</Canvas>

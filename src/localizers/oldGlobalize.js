@@ -40,7 +40,7 @@ export let formats = {
   agendaTimeRangeFormat: timeRangeFormat,
 }
 
-export default function(globalize) {
+export default function (globalize) {
   function getCulture(culture) {
     return culture ? globalize.findClosestCulture(culture) : globalize.culture()
   }

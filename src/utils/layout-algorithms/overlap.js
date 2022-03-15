@@ -2,14 +2,8 @@ import sortBy from 'lodash/sortBy'
 
 class Event {
   constructor(data, { accessors, slotMetrics }) {
-    const {
-      start,
-      startDate,
-      end,
-      endDate,
-      top,
-      height,
-    } = slotMetrics.getRange(accessors.start(data), accessors.end(data))
+    const { start, startDate, end, endDate, top, height } =
+      slotMetrics.getRange(accessors.start(data), accessors.end(data))
 
     this.start = start
     this.end = end
@@ -99,7 +93,7 @@ function onSameRow(a, b, minimumStartDifference) {
 }
 
 function sortByRender(events) {
-  const sortedByTime = sortBy(events, ['startMs', e => -e.endMs])
+  const sortedByTime = sortBy(events, ['startMs', (e) => -e.endMs])
 
   const sorted = []
   while (sortedByTime.length > 0) {
@@ -137,7 +131,7 @@ export default function getStyledEvents({
   // Create proxy events and order them so that we don't have
   // to fiddle with z-indexes.
   const proxies = events.map(
-    event => new Event(event, { slotMetrics, accessors })
+    (event) => new Event(event, { slotMetrics, accessors })
   )
   const eventsInRenderOrder = sortByRender(proxies)
 
@@ -150,7 +144,7 @@ export default function getStyledEvents({
 
     // Check if this event can go into a container event.
     const container = containerEvents.find(
-      c =>
+      (c) =>
         c.end > event.start ||
         Math.abs(event.start - c.start) < minimumStartDifference
     )
@@ -186,7 +180,7 @@ export default function getStyledEvents({
   }
 
   // Return the original events, along with their styles.
-  return eventsInRenderOrder.map(event => ({
+  return eventsInRenderOrder.map((event) => ({
     event: event.data,
     style: {
       top: event.top,

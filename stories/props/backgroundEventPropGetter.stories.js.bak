@@ -1,0 +1,51 @@
+// TODO: not actually implemented
+import React, { useCallback } from 'react'
+import moment from 'moment'
+import { Calendar, Views, momentLocalizer } from '../../src'
+import { backgroundEvents, events } from '../helpers'
+import mdx from './backgroundEventPropGetter.mdx'
+import '../resources/propGetter.scss'
+
+const mLocalizer = momentLocalizer(moment)
+
+export default {
+  title: 'props',
+  component: Calendar,
+  parameters: {
+    docs: {
+      page: mdx,
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ height: 600 }}>
+        <Story />
+      </div>
+    ),
+  ],
+}
+
+export function BackgroundEventPropGetter() {
+  const backgroundEventPropGetter = useCallback(
+    (event, start, end) => ({
+      ...(moment(start).hour() < 12 && {
+        className: 'powderBlue',
+      }),
+      ...(event.title.includes('Meeting') && {
+        className: 'darkGreen',
+      }),
+    }),
+    []
+  )
+
+  return (
+    <Calendar
+      defaultView={Views.WEEK}
+      backgroundEventPropGetter={backgroundEventPropGetter}
+      events={events}
+      backgroundEvents={backgroundEvents}
+      localizer={mLocalizer}
+    />
+  )
+}
+BackgroundEventPropGetter.storyName = 'backgroundEventPropGetter'

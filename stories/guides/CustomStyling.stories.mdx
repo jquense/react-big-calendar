@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="Guides/Custom Styling" />
+
+# Custom Styling
+
+Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
+
+```sass
+@import 'react-big-calendar/lib/sass/styles';
+@import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+```
+
+SASS implementation provides a `variables` file containing color and sizing variables that you can update to fit your application. Note: Changing and/or overriding styles can cause rendering issues with your Big Calendar. Carefully test each change accordingly.

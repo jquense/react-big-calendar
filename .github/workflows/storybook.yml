@@ -17,8 +17,8 @@ jobs:
     
       - name: Install and Build 🔧
         run: | # Install npm packages and build the Storybook files
-          npm ci
-          npm run build-storybook
+          yarn install --frozen-lockfile
+          yarn build-storybook
 
       - name: Deploy 🚀
         # https://github.com/JamesIves/github-pages-deploy-action

@@ -1,3 +1,10 @@
+## [0.39.4](https://github.com/jquense/react-big-calendar/compare/v0.39.3...v0.39.4) (2022-03-15)
+
+
+### Bug Fixes
+
+* correct storybook deploy ([#2145](https://github.com/jquense/react-big-calendar/issues/2145)) ([8c98fb2](https://github.com/jquense/react-big-calendar/commit/8c98fb25bc063cbd88260fb4d2cf709c52912a67))
+
 ## [0.39.3](https://github.com/jquense/react-big-calendar/compare/v0.39.2...v0.39.3) (2022-03-11)
 
 ### Bug Fixes

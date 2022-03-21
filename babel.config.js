@@ -13,7 +13,7 @@ module.exports = function (api) {
           }),
         },
       ],
-      'react-app',
+      ['react-app', { absoluteRuntime: false }],
     ],
     plugins: [
       ['@babel/plugin-transform-runtime'],

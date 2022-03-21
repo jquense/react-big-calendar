@@ -50,7 +50,7 @@ export function eventLevels(_rowSegments, limit = Infinity) {
     let seg = rowSegments[i]
 
     //Allow only one for now, we'll think about supporting multiple top events
-    if (seg.event.positionTop) {
+    if (seg?.event?.positionTop) {
       levels[0] = [seg]
       rowSegments.splice(i, 1)
       break

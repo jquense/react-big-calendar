@@ -1,5 +1,5 @@
 {
-  "name": "react-big-calendar",
+  "name": "@talk-to/react-big-calendar",
   "version": "0.39.4",
   "description": "Calendar! with events",
   "author": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jquense/react-big-calendar.git"
+    "url": "git+https://github.com/talk-to/react-big-calendar.git"
   },
   "license": "MIT",
   "main": "lib/index.js",

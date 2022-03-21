@@ -33,14 +33,6 @@ class DayColumn extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    window.clearTimeout(this._timeIndicatorTimeout)
-    if (this.props.isNow) {
-      this.positionTimeIndicator()
-      this.triggerTimeIndicatorUpdate()
-    }
-  }
-
   componentWillUnmount() {
     this._teardownSelectable()
     this.clearTimeIndicatorInterval()

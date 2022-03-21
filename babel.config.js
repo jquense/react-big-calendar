@@ -13,10 +13,10 @@ module.exports = function (api) {
           }),
         },
       ],
-      'react-app',
+      ['react-app', { absoluteRuntime: false }],
     ],
     plugins: [
-      ['@babel/plugin-transform-runtime'],
+      ['@babel/plugin-transform-runtime', { regenerator: false }],
       ['transform-react-remove-prop-types', { mode: 'wrap' }],
       ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
       ['@babel/plugin-proposal-private-methods', { loose: true }],

@@ -1,3 +1,10 @@
+## [0.39.5](https://github.com/jquense/react-big-calendar/compare/v0.39.4...v0.39.5) (2022-03-21)
+
+
+### Bug Fixes
+
+* disable `absoluteRuntime` in babel-preset-react-app ([#2155](https://github.com/jquense/react-big-calendar/issues/2155)) ([b8fcb93](https://github.com/jquense/react-big-calendar/commit/b8fcb9337bb5eb3e2c19f766d18cddba43ea1a06))
+
 ## [0.39.4](https://github.com/jquense/react-big-calendar/compare/v0.39.3...v0.39.4) (2022-03-15)
 
 

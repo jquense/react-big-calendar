@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/talk-to/react-big-calendar.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "module": "dist/react-big-calendar.esm.js",

@@ -7,31 +7,6 @@ import getScrollLeft from 'dom-helpers/scrollLeft'
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
-<<<<<<< HEAD
-const propTypes = {
-  position: PropTypes.object,
-  popupOffset: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number,
-    }),
-  ]),
-  events: PropTypes.array,
-  selected: PropTypes.object,
-
-  accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
-  getters: PropTypes.object.isRequired,
-  localizer: PropTypes.object.isRequired,
-  onSelect: PropTypes.func,
-  onDoubleClick: PropTypes.func,
-  slotStart: PropTypes.object, //date object
-  slotEnd: PropTypes.number,
-}
-
-=======
->>>>>>> 3e92d098275f0a8ea7801b6b809a2c6af4a2c56e
 class Popup extends React.Component {
   componentDidMount() {
     let { popupOffset = 5, popperRef } = this.props,

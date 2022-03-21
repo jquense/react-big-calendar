@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="Guides/Understanding Dates" />
+
+# Understanding Dates
+
+Big Calendar is all about dates and times. Probably one of the easiest things that beginners miss, when first implementing Big Calendar, is that we **require** true JS [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects in our <LinkTo kind="props">props</LinkTo> and `event` definitions.
+
+It is **up to the developer** to handle translating date/time values **to and from JS `Date` format**.
+
+What does this mean?
+
+```js
+// will cause errors
+const defaultDate = useMemo(() => '2015-04-12T13:45:00-05:00', [])
+
+// will work as expected
+const defaultDate = useMemo(() => new Date('2015-04-12T13:45:00-05:00'), [])
+
+// will never display in the Calendar
+const events = [
+  {
+    title: 'My Event'
+    start: '2015-04-12T13:45:00-05:00',
+    end: '2015-04-12T14:00:00-05:00'
+  }
+]
+
+// what you must have is this
+const events = [
+  {
+    title: 'My Event'
+    start: new Date('2015-04-12T13:45:00-05:00'),
+    end: new Date('2015-04-12T14:00:00-05:00')
+  }
+]
+```
+
+The other thing to remember is that the `Date`s you provide to the Calendar will, by default, be displayed in the browser's native local timezone and culture, regardless of any offsets. This is how JS `Date`s work in browsers today. If you need to display dates and times in a specific timezone, other than the browser native, then you should review our <LinkTo kind="guides-timezones">Timezones Guide</LinkTo> on using a <LinkTo kind="props" story="localiizer">localizer</LinkTo> that supports timezone conversions.
+
+**Side Note:** Storing your date/time values in UTC (Zulu) date format (YYYY-MM-DDTHH:mm:ssZ) will make these types of transformations much easier to work with.

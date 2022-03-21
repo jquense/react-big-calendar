@@ -1,0 +1,44 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onSelectSlot
+
+- type: `function (Object: slotInfo) => any`
+- requires: <LinkTo kind="props" story="selectable">selectable</LinkTo>
+
+A callback fired when a date selection is made. Only fires when <LinkTo kind="props" story="selectable">selectable</LinkTo> is true.
+
+_Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fire. Click on the 'showCode' button, at the bottom of the example below, to see how you can get around this issue.
+
+```js
+;(slotInfo: {
+  start: Date,
+  end: Date,
+  slots: Array<Date>,
+  action: 'select' | 'click' | 'doubleClick',
+  bounds: ?{
+    // For "select" action
+    x: number,
+    y: number,
+    top: number,
+    right: number,
+    left: number,
+    bottom: number,
+  },
+  box: ?{
+    // For "click" or "doubleClick" actions
+    clientX: number,
+    clientY: number,
+    x: number,
+    y: number,
+  },
+}) => any
+```
+
+## What's The Difference?
+
+How is this different from <LinkTo kind="props" story="cal-selecting">onSelecting</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+
+<Canvas>
+  <Story id="props--on-select-slot" />
+</Canvas>

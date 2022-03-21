@@ -1,0 +1,14 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# getDrilldownView
+
+- type: `function (targetDate: Date, currentViewName: string, configuredViewNames: Views[]) => string|null`
+
+Functionally equivalent to drilldownView, but accepts a function that can return a view name. It's useful for customizing the drill-down actions depending on the target date and triggering view.
+
+Return null to disable drill-down actions.
+
+<Canvas>
+  <Story id="props--get-drilldown-view" />
+</Canvas>

@@ -1,9 +1,0 @@
-
-rules:
-  no-console: off
-globals:
-  alert: false
-settings:
-  import/resolver:
-    webpack:
-      config: 'examples/webpack.config.js'

@@ -1,35 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import clsx from 'clsx'
 
-import dates from './utils/dates'
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 
 class BackgroundCells extends React.Component {
-  static propTypes = {
-    date: PropTypes.instanceOf(Date),
-    getNow: PropTypes.func.isRequired,
-
-    getters: PropTypes.object.isRequired,
-    components: PropTypes.object.isRequired,
-
-    container: PropTypes.func,
-    dayPropGetter: PropTypes.func,
-    selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
-    longPressThreshold: PropTypes.number,
-
-    onSelectSlot: PropTypes.func.isRequired,
-    onSelectEnd: PropTypes.func,
-    onSelectStart: PropTypes.func,
-
-    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-    rtl: PropTypes.bool,
-    type: PropTypes.string,
-  }
-
   constructor(props, context) {
     super(props, context)
 
@@ -46,7 +24,7 @@ class BackgroundCells extends React.Component {
     this._teardownSelectable()
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selectable && !this.props.selectable) this._selectable()
 
     if (!nextProps.selectable && this.props.selectable)
@@ -60,6 +38,7 @@ class BackgroundCells extends React.Component {
       getters,
       date: currentDate,
       components: { dateCellWrapper: Wrapper },
+      localizer,
     } = this.props
     let { selecting, startIdx, endIdx } = this.state
     let current = getNow()
@@ -74,13 +53,13 @@ class BackgroundCells extends React.Component {
             <Wrapper key={index} value={date} range={range}>
               <div
                 style={style}
-                className={cn(
+                className={clsx(
                   'rbc-day-bg',
                   className,
                   selected && 'rbc-selected-cell',
-                  dates.eq(date, current, 'day') && 'rbc-today',
+                  localizer.isSameDate(date, current) && 'rbc-today',
                   currentDate &&
-                    dates.month(currentDate) !== dates.month(date) &&
+                    localizer.neq(currentDate, date, 'month') &&
                     'rbc-off-range-bg'
                 )}
               />
@@ -118,7 +97,7 @@ class BackgroundCells extends React.Component {
       this.setState({ selecting: false })
     }
 
-    selector.on('selecting', box => {
+    selector.on('selecting', (box) => {
       let { range, rtl } = this.props
 
       let startIdx = -1
@@ -146,19 +125,19 @@ class BackgroundCells extends React.Component {
       })
     })
 
-    selector.on('beforeSelect', box => {
+    selector.on('beforeSelect', (box) => {
       if (this.props.selectable !== 'ignoreEvents') return
 
       return !isEvent(findDOMNode(this), box)
     })
 
-    selector.on('click', point => selectorClicksHandler(point, 'click'))
+    selector.on('click', (point) => selectorClicksHandler(point, 'click'))
 
-    selector.on('doubleClick', point =>
+    selector.on('doubleClick', (point) =>
       selectorClicksHandler(point, 'doubleClick')
     )
 
-    selector.on('select', bounds => {
+    selector.on('select', (bounds) => {
       this._selectSlot({ ...this.state, action: 'select', bounds })
       this._initial = {}
       this.setState({ selecting: false })
@@ -181,8 +160,33 @@ class BackgroundCells extends React.Component {
           action,
           bounds,
           box,
+          resourceId: this.props.resourceId,
         })
   }
+}
+
+BackgroundCells.propTypes = {
+  date: PropTypes.instanceOf(Date),
+  getNow: PropTypes.func.isRequired,
+
+  getters: PropTypes.object.isRequired,
+  components: PropTypes.object.isRequired,
+
+  container: PropTypes.func,
+  dayPropGetter: PropTypes.func,
+  selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
+  longPressThreshold: PropTypes.number,
+
+  onSelectSlot: PropTypes.func.isRequired,
+  onSelectEnd: PropTypes.func,
+  onSelectStart: PropTypes.func,
+
+  range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  rtl: PropTypes.bool,
+  type: PropTypes.string,
+  resourceId: PropTypes.any,
+
+  localizer: PropTypes.any,
 }
 
 export default BackgroundCells

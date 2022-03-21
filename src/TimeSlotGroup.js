@@ -1,23 +1,10 @@
-import cn from 'classnames'
+import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import BackgroundWrapper from './BackgroundWrapper'
 
 export default class TimeSlotGroup extends Component {
-  /*
-    Source prop is not provided by RBC, we added this to identify which parent component is rendering 
-    TimeSlotGroups. i.e either TimeGutter or DayColumn.
-  */
-  static propTypes = {
-    renderSlot: PropTypes.func,
-    group: PropTypes.array.isRequired,
-    resource: PropTypes.any,
-    components: PropTypes.object,
-    getters: PropTypes.object,
-    source: PropTypes.string,
-  }
-
   render() {
     const {
       renderSlot,
@@ -28,10 +15,11 @@ export default class TimeSlotGroup extends Component {
       components: { timeSlotWrapper: Wrapper = BackgroundWrapper } = {},
     } = this.props
 
+    const groupProps = getters ? getters.slotGroupProp() : {}
     return (
-      <div className="rbc-timeslot-group">
+      <div className="rbc-timeslot-group" {...groupProps}>
         {group.map((value, idx) => {
-          const slotProps = getters ? getters.slotProp(value) : {}
+          const slotProps = getters ? getters.slotProp(value, resource) : {}
           return (
             <Wrapper
               key={idx}
@@ -42,7 +30,7 @@ export default class TimeSlotGroup extends Component {
             >
               <div
                 {...slotProps}
-                className={cn('rbc-time-slot', slotProps.className)}
+                className={clsx('rbc-time-slot', slotProps.className)}
               >
                 {renderSlot && renderSlot(value, idx)}
               </div>
@@ -52,4 +40,12 @@ export default class TimeSlotGroup extends Component {
       </div>
     )
   }
+}
+
+TimeSlotGroup.propTypes = {
+  renderSlot: PropTypes.func,
+  group: PropTypes.array.isRequired,
+  resource: PropTypes.any,
+  components: PropTypes.object,
+  getters: PropTypes.object,
 }

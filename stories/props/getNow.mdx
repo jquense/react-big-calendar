@@ -1,0 +1,14 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+
+# getNow
+
+- type: `function () => Date`
+- default: `() => new Date()`
+
+Determines the current date/time which is highlighted in the views.
+
+The value affects which day is shaded and which time is shown as the current time. It also affects the date used by the Today button in the toolbar.
+
+Providing a value here can be useful when you are implementing time zones using the `startAccessor` and `endAccessor` properties.
+
+<Story id="props--get-now" />

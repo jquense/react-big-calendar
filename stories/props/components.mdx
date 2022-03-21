@@ -1,0 +1,44 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# components
+
+- type: `object`
+
+Customize how different sections of the calendar render by providing custom Components. In particular the Event component can be specified for the entire calendar, or you can provide an individual component for each view type.
+
+```jsx
+const components = useMemo(() => ({
+  event: MyEvent, // used by each view (Month, Day, Week)
+  eventWrapper: MyEventWrapper,
+  eventContainerWrapper: MyEventContainerWrapper,
+  dateCellWrapper: MyDateCellWrapper,
+  timeSlotWrapper: MyTimeSlotWrapper,
+  timeGutterHeader: MyTimeGutterWrapper,
+  resourceHeader: MyResourceHeader,
+  toolbar: MyToolbar,
+  agenda: {
+    event: MyAgendaEvent, // with the agenda view use a different component to render events
+    time: MyAgendaTime,
+    date: MyAgendaDate,
+  },
+  day: {
+    header: MyDayHeader,
+    event: MyDayEvent,
+  },
+  week: {
+    header: MyWeekHeader,
+    event: MyWeekEvent,
+  },
+  month: {
+    header: MyMonthHeader,
+    dateHeader: MyMonthDateHeader,
+    event: MyMonthEvent,
+  }
+}), [])
+<Calendar components={components} />
+```
+
+<Canvas>
+  <Story id="props--components" />
+</Canvas>

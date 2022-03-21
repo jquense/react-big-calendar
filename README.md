@@ -2,55 +2,57 @@
 
 An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
 
-[**DEMO and Docs**](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 
 ## Use and Setup
 
-`npm install react-big-calendar --save`
+`yarn add react-big-calendar` or `npm install --save react-big-calendar`
 
 Include `react-big-calendar/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
-element has a height, or the calendar won't be visible.
+element has a height, or the calendar won't be visible. To provide your own custom styling, see the [Custom Styling](#custom-styling) topic.
 
 ## Starters
 
 - [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
 - [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
+- [react-big-calendar with TypeScript and React hooks bundled with Vite](https://github.com/christopher-caldwell/react-big-calendar-demo)
 
 ## Run examples locally
 
-```
-$ git clone git@github.com:intljusticemission/react-big-calendar.git
+```sh
+$ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
-$ npm install
-$ npm run examples
+$ yarn
+$ yarn examples
 ```
 
 - Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
 ### Localization and Date Formatting
 
-`react-big-calendar` includes two options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](http://momentjs.com/) or [Globalize.js](https://github.com/jquery/globalize) localizers.
+`react-big-calendar` includes three options for handling the date formatting and culture localization, depending
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
 #### Moment.js
 
 ```js
-import BigCalendar from 'react-big-calendar'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
-const localizer = BigCalendar.momentLocalizer(moment)
+const localizer = momentLocalizer(moment)
 
 const MyCalendar = props => (
   <div>
-    <BigCalendar
+    <Calendar
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
+      style={{ height: 500 }}
     />
   </div>
 )
@@ -59,26 +61,74 @@ const MyCalendar = props => (
 #### Globalize.js v0.1.1
 
 ```js
-import BigCalendar from 'react-big-calendar'
+import { Calendar, globalizeLocalizer } from 'react-big-calendar'
 import globalize from 'globalize'
 
-const localizer = BigCalendar.globalizeLocalizer(globalize)
+const localizer = globalizeLocalizer(globalize)
 
 const MyCalendar = props => (
   <div>
-    <BigCalendar
+    <Calendar
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
+      style={{ height: 500 }}
     />
   </div>
 )
 ```
 
-## Join us on Reactiflux Discord
+#### date-fns v2
 
-Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+```js
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
+import format from 'date-fns/format'
+import parse from 'date-fns/parse'
+import startOfWeek from 'date-fns/startOfWeek'
+import getDay from 'date-fns/getDay'
+import enUS from 'date-fns/locale/en-US'
+
+const locales = {
+  'en-US': enUS,
+}
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+})
+
+const MyCalendar = props => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
+## Custom Styling
+
+Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style
+Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
+
+```
+  @import 'react-big-calendar/lib/sass/styles';
+  @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+```
+
+SASS implementation provides a `variables` file containing color and sizing variables that you can
+update to fit your application. _Note:_ Changing and/or overriding styles can cause rendering issues with your
+Big Calendar. Carefully test each change accordingly.
+
+## Join us on Reactiflux Discord
 
 ##Updates
 
@@ -90,3 +140,4 @@ Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the 
 - Updated overlay logic in month view to fix https://jira.directi.com/browse/CWDC-80 .
   Adding a variable called `isDeleted` to each event and filtering overlay events based on that, as
   it's not getting updated on just rerendering monthView.
+Join us on [Reactiflux Discord](https://discord.gg/reactiflux) community under the channel #libraries if you have any questions.

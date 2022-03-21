@@ -1,0 +1,14 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# selected
+
+- type: `Event: Object`
+
+The selected event, if any. By default, Big Calendar 'controls' the `selected` (highlighted) event in the display. You can use this prop to control which event is highlighted. The `selected` event must be a object reference to the event within the <LinkTo kind="props" story="events">events</LinkTo> array.
+
+Often used in conjunction with <LinkTo kind="props" story="cal-select-event">OnSelectEvent</LinkTo> and/or <LinkTo kind="props" story="cal-double-click-event">onDoubleClickEvent</LinkTo>.
+
+<Canvas>
+  <Story id="props--selected" />
+</Canvas>

@@ -1,0 +1,10 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onEventDrop
+
+- type: `function ({ event, start, end, allDay }) => any`
+
+A callback fired when user drops an item from one slot to another from within the Calendar. Developers will typically use this method to update an item's `start` and `end` in <LinkTo kind="props" story="events">events</LinkTo>.
+
+<Story id="addons-drag-and-drop-props--on-event-drop" />

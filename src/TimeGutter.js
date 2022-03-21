@@ -1,38 +1,49 @@
-import cn from 'classnames'
+import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import * as TimeSlotUtils from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
-export default class TimeGutter extends Component {
-  static propTypes = {
-    min: PropTypes.instanceOf(Date).isRequired,
-    max: PropTypes.instanceOf(Date).isRequired,
-    timeslots: PropTypes.number.isRequired,
-    step: PropTypes.number.isRequired,
-    getNow: PropTypes.func.isRequired,
-    components: PropTypes.object.isRequired,
-
-    localizer: PropTypes.object.isRequired,
-    resource: PropTypes.string,
+/**
+ * Since the TimeGutter only displays the 'times' of slots in a day, and is separate
+ * from the Day Columns themselves, we check to see if the range contains an offset difference
+ * and, if so, change the beginning and end 'date' by a day to properly display the slots times
+ * used.
+ */
+function adjustForDST({ min, max, localizer }) {
+  if (localizer.getTimezoneOffset(min) !== localizer.getTimezoneOffset(max)) {
+    return {
+      start: localizer.add(min, -1, 'day'),
+      end: localizer.add(max, -1, 'day'),
+    }
   }
+  return { start: min, end: max }
+}
 
+export default class TimeGutter extends Component {
   constructor(...args) {
     super(...args)
 
-    const { min, max, timeslots, step } = this.props
+    const { min, max, timeslots, step, localizer } = this.props
+    const { start, end } = adjustForDST({ min, max, localizer })
     this.slotMetrics = TimeSlotUtils.getSlotMetrics({
-      min,
-      max,
+      min: start,
+      max: end,
       timeslots,
       step,
+      localizer,
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { min, max, timeslots, step } = nextProps
-    this.slotMetrics = this.slotMetrics.update({ min, max, timeslots, step })
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { min, max, localizer } = nextProps
+    const { start, end } = adjustForDST({ min, max, localizer })
+    this.slotMetrics = this.slotMetrics.update({
+      ...nextProps,
+      min: start,
+      max: end,
+    })
   }
 
   renderSlot = (value, idx) => {
@@ -41,14 +52,14 @@ export default class TimeGutter extends Component {
 
     const isNow = this.slotMetrics.dateIsInGroup(getNow(), idx)
     return (
-      <span className={cn('rbc-label', isNow && 'rbc-now')}>
+      <span className={clsx('rbc-label', isNow && 'rbc-now')}>
         {localizer.format(value, 'timeGutterFormat')}
       </span>
     )
   }
 
   render() {
-    const { resource, components } = this.props
+    const { resource, components, getters } = this.props
 
     return (
       <div className="rbc-time-gutter rbc-time-column">
@@ -61,10 +72,24 @@ export default class TimeGutter extends Component {
               components={components}
               renderSlot={this.renderSlot}
               source={'gutter'}
+              getters={getters}
             />
           )
         })}
       </div>
     )
   }
+}
+
+TimeGutter.propTypes = {
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
+  timeslots: PropTypes.number.isRequired,
+  step: PropTypes.number.isRequired,
+  getNow: PropTypes.func.isRequired,
+  components: PropTypes.object.isRequired,
+  getters: PropTypes.object,
+
+  localizer: PropTypes.object.isRequired,
+  resource: PropTypes.string,
 }

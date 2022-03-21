@@ -1,0 +1,32 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# formats
+
+- type: `Object`
+
+<LinkTo kind="props" story="localizer">
+  Localizer
+</LinkTo> specific formats, tell the Calendar how to format and display dates and
+times.
+
+The `format` types are dependent on the configured localizer; both Moment and Globalize accept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.
+
+```js
+const formats = useMemo(() => ({
+  dateFormat: 'dd',
+
+  dayFormat: (date, , localizer) =>
+    localizer.format(date, 'DDD', culture),
+
+  dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
+    localizer.format(start, { date: 'short' }, culture) + ' — ' +
+    localizer.format(end, { date: 'short' }, culture)
+}), [])
+
+<Calendar formats={formats} />
+```
+
+<Canvas>
+  <Story id="props--formats" />
+</Canvas>

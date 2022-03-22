@@ -1,21 +1,22 @@
-import nodeResolve from 'rollup-plugin-node-resolve'
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import replace from 'rollup-plugin-replace'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import replace from '@rollup/plugin-replace'
+import clear from 'rollup-plugin-clear'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import { terser } from 'rollup-plugin-terser'
 import pkg from './package.json'
 
 const input = './src/index.js'
 const name = 'ReactBigCalendar'
-const globals = {
-  react: 'React',
-  'react-dom': 'ReactDOM',
-}
 
 const babelOptions = {
   exclude: /node_modules/,
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
+}
+const globals = {
+  react: 'React',
+  'react-dom': 'ReactDOM',
 }
 
 const commonjsOptions = {
@@ -30,13 +31,22 @@ export default [
       format: 'umd',
       name,
       globals,
+      interop: 'auto',
     },
-    external: Object.keys(globals),
+    external: Object.keys(globals).push(/@babel\/runtime/),
     plugins: [
+      // only use 'clear' on the first target
+      clear({
+        targets: ['./dist', './lib'],
+        watch: true,
+      }),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('development'),
+        preventAssignment: true,
+      }),
       nodeResolve(),
-      babel(babelOptions),
       commonjs(commonjsOptions),
-      replace({ 'process.env.NODE_ENV': JSON.stringify('development') }),
+      babel(babelOptions),
       sizeSnapshot(),
     ],
   },
@@ -48,23 +58,31 @@ export default [
       format: 'umd',
       name,
       globals,
+      interop: 'auto',
     },
-    external: Object.keys(globals),
+    external: Object.keys(globals).push(/@babel\/runtime/),
     plugins: [
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('production'),
+        preventAssignment: true,
+      }),
       nodeResolve(),
-      babel(babelOptions),
       commonjs(commonjsOptions),
-      replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
-      sizeSnapshot(),
+      babel(babelOptions),
       terser(),
+      sizeSnapshot(),
     ],
   },
 
   {
     input,
-    output: { file: pkg.module, format: 'esm' },
+    output: {
+      file: pkg.module,
+      format: 'esm',
+      interop: 'auto',
+    },
     // prevent bundling all dependencies
-    external: id => !id.startsWith('.') && !id.startsWith('/'),
+    external: (id) => !id.startsWith('.') && !id.startsWith('/'),
     plugins: [babel(babelOptions), sizeSnapshot()],
   },
 ]

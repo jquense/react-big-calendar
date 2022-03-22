@@ -36,7 +36,7 @@ describe('endOfRange', () => {
 
 describe('eventSegments', () => {
   const event = { start: new Date(2017, 0, 8), end: new Date(2017, 0, 11, 12) }
-  const accessors = { start: e => e.start, end: e => e.end }
+  const accessors = { start: (e) => e.start, end: (e) => e.end }
 
   test('it includes the original event in the returned object', () => {
     const range = [
@@ -260,7 +260,7 @@ describe('inRange', () => {
 
   const rangeStart = new Date(2017, 4, 1)
   const rangeEnd = new Date(2017, 5, 1)
-  const accessors = { start: e => e.start, end: e => e.end }
+  const accessors = { start: (e) => e.start, end: (e) => e.end }
 
   describe('matrix', () => {
     function compare(title, event, [rangeStart, rangeEnd], result = true) {
@@ -370,7 +370,7 @@ describe('inRange', () => {
         weekOfThe12th,
         true,
       ],
-    ].forEach(g => compare(...g))
+    ].forEach((g) => compare(...g))
   })
 
   test('it returns true when event starts before the range end and ends after the range start', () => {
@@ -473,9 +473,9 @@ describe('segsOverlap', () => {
 
 describe('sortEvents', () => {
   const accessors = {
-    start: e => e.start,
-    end: e => e.end,
-    allDay: e => e.allDay,
+    start: (e) => e.start,
+    end: (e) => e.end,
+    allDay: (e) => e.allDay,
   }
 
   describe('when the events start on different calendar days', () => {

@@ -40,11 +40,11 @@ class Toolbar extends React.Component {
     )
   }
 
-  navigate = action => {
+  navigate = (action) => {
     this.props.onNavigate(action)
   }
 
-  view = view => {
+  view = (view) => {
     this.props.onView(view)
   }
 
@@ -53,7 +53,7 @@ class Toolbar extends React.Component {
     const view = this.props.view
 
     if (viewNames.length > 1) {
-      return viewNames.map(name => (
+      return viewNames.map((name) => (
         <button
           type="button"
           key={name}

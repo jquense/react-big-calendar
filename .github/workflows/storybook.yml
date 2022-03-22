@@ -1,0 +1,32 @@
+name: Build and Deploy Documentation
+on: 
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - 'stories/**'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+    
+      - name: Install and Build 🔧
+        run: | # Install npm packages and build the Storybook files
+          yarn install --frozen-lockfile
+          yarn build-storybook
+
+      - name: Deploy 🚀
+        # https://github.com/JamesIves/github-pages-deploy-action
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: storybook-static # The folder that the build-storybook script generates files.
+          target-folder: examples
+          clean: true # Automatically remove deleted files from the deploy branch
+          commit-msg: 'docs: update documentation site'

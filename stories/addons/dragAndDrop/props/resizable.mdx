@@ -1,0 +1,13 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# resizable
+
+- type: `boolean`
+- default: `true`
+
+Determines if events may be resized on the Calendar. Used in conjunction with <LinkTo kind="addons-drag-and-drop-props" story="on-event-resize">onEventResize</LinkTo>. When used with the <LinkTo kind="addons-drag-and-drop-props" story="resizable-accessor">resizableAccessor</LinkTo> the developer has even greater control.
+
+**Note:** `resizable` events must also be draggable. You cannot resize an event with a <LinkTo kind="addons-drag-and-drop-props" story="draggable-accessor">draggableAccessor</LinkTo> prop of `false`.
+
+<Story id="addons-drag-and-drop-props--resizable" />

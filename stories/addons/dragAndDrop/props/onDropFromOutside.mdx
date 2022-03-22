@@ -1,0 +1,12 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onDropFromOutside
+
+- type: `function ({ start, end, allDay }) => any`
+
+A callback fired when user drops an item onto the Calendar from outside of the Calendar. Developers will typically use this method to add new items to the Calendar's <LinkTo kind="props" story="events">events</LinkTo>.
+
+**Important:** The callback does **not** receive the element being dropped. It only receives the details of the slot an element was dropped on.
+
+<Story id="addons-drag-and-drop-props--on-drop-from-outside" />

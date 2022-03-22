@@ -19,7 +19,7 @@ import DateHeader from './DateHeader'
 import { inRange, sortEvents } from './utils/eventLevels'
 
 let eventsForWeek = (evts, start, end, accessors, localizer) =>
-  evts.filter(e => inRange(e, start, end, accessors, localizer))
+  evts.filter((e) => inRange(e, start, end, accessors, localizer))
 
 class MonthView extends React.Component {
   constructor(...args) {
@@ -177,7 +177,7 @@ class MonthView extends React.Component {
           date={date}
           drilldownView={drilldownView}
           isOffRange={isOffRange}
-          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+          onDrillDown={(e) => this.handleHeadingClick(date, drilldownView, e)}
         />
       </div>
     )
@@ -202,14 +202,8 @@ class MonthView extends React.Component {
 
   renderOverlay() {
     let overlay = (this.state && this.state.overlay) || {}
-    let {
-      accessors,
-      localizer,
-      components,
-      getters,
-      selected,
-      popupOffset,
-    } = this.props
+    let { accessors, localizer, components, getters, selected, popupOffset } =
+      this.props
 
     return (
       <Overlay

@@ -42,7 +42,7 @@ export let formats = {
   agendaTimeRangeFormat: timeRangeFormat,
 }
 
-const dateFnsLocalizer = function({
+const dateFnsLocalizer = function ({
   startOfWeek,
   getDay,
   format: _format,

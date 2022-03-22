@@ -1,0 +1,14 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onEventResize
+
+- type: `function ({ event, start, end }) => any`
+
+A callback fired when user resizes an event. Developers will typically use this method to update an item's `start` and `end` in <LinkTo kind="props" story="events">events</LinkTo>.
+
+The <LinkTo kind="addons-drag-and-drop-props" story="resizable">resizable</LinkTo> prop must be `true` (the default) to use the method.
+
+**Note:** `resizable` events must also be draggable. You cannot resize an event with a <LinkTo kind="addons-drag-and-drop-props" story="draggable-accessor">draggableAccessor</LinkTo> prop of `false`.
+
+<Story id="addons-drag-and-drop-props--on-event-resize" />

@@ -1,0 +1,47 @@
+import { Meta } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="About Our Examples" />
+
+# About Our Examples
+
+We have attempted to provide best practice code examples for using Big Calendar.
+
+Big Calendar is... well, "big". It has dozens of props, and can be configured in a lot of different ways to meet a wide number of use cases. It also has quite a number of subcomponents, and provides the ability to override most all of them.
+
+Because of this, it's important to think about how you initialize your properties as you pass them to Big Calendar. Let's look at a small example:
+
+```js
+// don't do this
+<Calendar defaultDate={new Date(2015, 3, 13)} {...otherProps} />
+```
+
+```js
+// do this
+const {defaultDate} = useMemo(() => ({
+  defaultDate: new Date(2015, 3, 13)
+}), [])
+//...
+<Calendar defaultDate={defaultDate} {...otherProps} />
+```
+
+Instantiating a new JS `Date` creates a new object. React will see this 'new' prop and re-render every subcomponent that relies upon `defaultDate`, even if (technically) it did not change.
+
+```js
+// don't do this
+<Calendar onView={(newView) => setView(newView)} {...otherProps} />
+```
+
+```js
+// and don't do this
+const onView = (newView) => setView(newView)
+<Calendar onView={onView} {...otherProps} />
+```
+
+```js
+// do this
+const onView = useCallback((newView) => setView(newView), [setView])
+<Calendar onView={onView} {...otherProps} />
+```
+
+If a prop takes an `Object`, an `Array`, a `Date`, a `Function`, or any other non-simple variable type, it is always a good idea to memoize those values prior to passing them as props. Chances are that some prop or state change will trigger a re-render of your Calendar. How well you manage your props will effect overall render performance.

@@ -12,7 +12,7 @@ function getMaxIdxDFS(node, maxIdx, visited) {
   return maxIdx
 }
 
-export default function({
+export default function ({
   events,
   minimumStartDifference,
   slotMetrics,

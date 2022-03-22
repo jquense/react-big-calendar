@@ -79,13 +79,34 @@ class EventContainerWrapper extends React.Component {
     const newTime = slotMetrics.closestSlotFromPoint(point, bounds)
 
     let { start, end } = eventTimes(event, accessors, localizer)
+    let newRange
     if (direction === 'UP') {
-      start = localizer.min(newTime, slotMetrics.closestSlotFromDate(end, -1))
+      const newStart = localizer.min(
+        newTime,
+        slotMetrics.closestSlotFromDate(end, -1)
+      )
+      // Get the new range based on the new start
+      // but don't overwrite the end date as it could be outside this day boundary.
+      newRange = slotMetrics.getRange(newStart, end)
+      newRange = {
+        ...newRange,
+        endDate: end,
+      }
     } else if (direction === 'DOWN') {
-      end = localizer.max(newTime, slotMetrics.closestSlotFromDate(start))
+      // Get the new range based on the new end
+      // but don't overwrite the start date as it could be outside this day boundary.
+      const newEnd = localizer.max(
+        newTime,
+        slotMetrics.closestSlotFromDate(start)
+      )
+      newRange = slotMetrics.getRange(start, newEnd)
+      newRange = {
+        ...newRange,
+        startDate: start,
+      }
     }
 
-    this.update(event, slotMetrics.getRange(start, end))
+    this.update(event, newRange)
   }
 
   handleDropFromOutside = (point, boundaryBox) => {
@@ -112,7 +133,7 @@ class EventContainerWrapper extends React.Component {
       wrapper.closest('.rbc-time-view')
     ))
 
-    selector.on('beforeSelect', point => {
+    selector.on('beforeSelect', (point) => {
       const { dragAndDropAction } = this.context.draggable
 
       if (!dragAndDropAction.action) return false
@@ -132,7 +153,7 @@ class EventContainerWrapper extends React.Component {
       this.eventOffsetTop = point.y - getBoundsForNode(eventNode).top
     })
 
-    selector.on('selecting', box => {
+    selector.on('selecting', (box) => {
       const bounds = getBoundsForNode(node)
       const { dragAndDropAction } = this.context.draggable
 
@@ -140,14 +161,14 @@ class EventContainerWrapper extends React.Component {
       if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
     })
 
-    selector.on('dropFromOutside', point => {
+    selector.on('dropFromOutside', (point) => {
       if (!this.context.draggable.onDropFromOutside) return
       const bounds = getBoundsForNode(node)
       if (!pointInColumn(bounds, point)) return
       this.handleDropFromOutside(point, bounds)
     })
 
-    selector.on('dragOver', point => {
+    selector.on('dragOver', (point) => {
       if (!this.context.draggable.dragFromOutsideItem) return
       const bounds = getBoundsForNode(node)
       this.handleDropFromOutside(point, bounds)
@@ -158,7 +179,7 @@ class EventContainerWrapper extends React.Component {
       this.context.draggable.onStart()
     })
 
-    selector.on('select', point => {
+    selector.on('select', (point) => {
       const bounds = getBoundsForNode(node)
       isBeingDragged = false
       const { dragAndDropAction } = this.context.draggable
@@ -200,14 +221,8 @@ class EventContainerWrapper extends React.Component {
   }
 
   renderContent() {
-    const {
-      children,
-      accessors,
-      components,
-      getters,
-      slotMetrics,
-      localizer,
-    } = this.props
+    const { children, accessors, components, getters, slotMetrics, localizer } =
+      this.props
 
     let { event, top, height } = this.state
     if (!event) return children

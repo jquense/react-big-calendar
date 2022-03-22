@@ -1,0 +1,16 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+
+# dayLayoutAlgorithm
+
+- type: `string | Function(events, minimumStartDifference, slotMetrics, accessors)`
+- default: `overlap`
+
+A day event layout(arrangement) algorithm.
+
+`overlap` allows events to be overlapped.
+
+`no-overlap` resizes events to avoid overlap.
+
+or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
+
+<Story id="props--day-layout-algorithm" />

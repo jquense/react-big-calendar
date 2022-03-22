@@ -89,6 +89,7 @@ export function getSlotMetrics({
 
     closestSlotFromDate(date, offset = 0) {
       if (localizer.lt(date, start, 'minutes')) return slots[0]
+      if (localizer.gt(date, end, 'minutes')) return slots[slots.length - 1]
 
       const diffMins = localizer.diff(start, date, 'minutes')
       return slots[(diffMins - (diffMins % step)) / step + offset]

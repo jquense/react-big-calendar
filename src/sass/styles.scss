@@ -66,11 +66,23 @@
   }
 
   & > a {
-    &, &:active, &:visited {
+    &,
+    &:active,
+    &:visited {
       color: inherit;
       text-decoration: none;
     }
   }
+}
+
+.rbc-button-link {
+  color: inherit;
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  user-select: text;
 }
 
 .rbc-row-content {
@@ -94,8 +106,8 @@
       display: none;
     }
 
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 

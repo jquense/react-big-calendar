@@ -19,7 +19,7 @@ class DateContentRow extends React.Component {
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
   }
 
-  handleSelectSlot = slot => {
+  handleSelectSlot = (slot) => {
     const { range, onSelectSlot } = this.props
 
     onSelectSlot(range.slice(slot.start, slot.end + 1), slot)
@@ -37,11 +37,11 @@ class DateContentRow extends React.Component {
     onShowMore(events, range[slot - 1], cell, slot, target)
   }
 
-  createHeadingRef = r => {
+  createHeadingRef = (r) => {
     this.headingRow = r
   }
 
-  createEventRef = r => {
+  createEventRef = (r) => {
     this.eventRow = r
   }
 

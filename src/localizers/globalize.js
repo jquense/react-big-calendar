@@ -45,8 +45,8 @@ export let formats = {
   agendaTimeRangeFormat: timeRangeFormat,
 }
 
-export default function(globalize) {
-  let locale = culture => (culture ? globalize(culture) : globalize)
+export default function (globalize) {
+  let locale = (culture) => (culture ? globalize(culture) : globalize)
 
   // return the first day of the week from the locale data. Defaults to 'world'
   // territory if no territory is derivable from CLDR.

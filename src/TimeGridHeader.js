@@ -46,12 +46,13 @@ class TimeGridHeader extends React.Component {
           )}
         >
           {drilldownView ? (
-            <a
-              href="#"
+            <button
+              type="button"
+              className="rbc-button-link"
               onClick={e => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}
-            </a>
+            </button>
           ) : (
             <span>{header}</span>
           )}
@@ -59,7 +60,7 @@ class TimeGridHeader extends React.Component {
       )
     })
   }
-  renderRow = resource => {
+  renderRow = (resource) => {
     let {
       events,
       rtl,
@@ -75,7 +76,7 @@ class TimeGridHeader extends React.Component {
 
     const resourceId = accessors.resourceId(resource)
     let eventsToDisplay = resource
-      ? events.filter(event => accessors.resource(event) === resourceId)
+      ? events.filter((event) => accessors.resource(event) === resourceId)
       : events
 
     return (

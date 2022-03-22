@@ -1,0 +1,17 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# drilldownView
+
+- type: `string`
+- default: `Views.DAY`
+
+The string name of the destination `view` for drill-down actions, such as clicking a date header, or the truncated events links. If `getDrilldownView` is also specified it will be used instead.
+
+Set to `null` to disable drill-down actions.
+
+```js
+<Calendar drilldownView="agenda" />
+```
+
+<Story id="props--drilldown-view" />

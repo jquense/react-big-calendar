@@ -1,0 +1,56 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# localizer
+
+- type: `instanceOf(DateLocalizer)` **required**
+
+The localizer used for **formatting dates** and times according to the <LinkTo kind="props" story="formats">formats</LinkTo> and <LinkTo kind="props" story="culture">culture</LinkTo>. To format buttons and messaging use the <LinkTo kind="props" story="messages">messages</LinkTo> prop.
+
+```js
+// When using `Globalize`
+import { globalizeLocalizer } from 'react-big-calendar'
+import globalize from 'globalize'
+
+const localizer = globalizeLocalizer(globalize)
+```
+
+```js
+// When using `moment`
+import { momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+// and, for optional time zone support
+import 'moment-timezone'
+
+moment.tz.setDefault('America/Los_Angeles')
+// end optional time zone support
+
+const localizer = momentLocalizer(moment)
+```
+
+```js
+// When using `Luxon`
+import { luxonLocalizer } from 'react-big-calendar'
+import { DateTime, Settings } from 'luxon'
+// only use `Settings` if you require optional time zone support
+Settings.defaultZone = 'America/Los_Angeles'
+// end optional time zone support
+
+// Luxon uses the Intl API, which currently does not contain `weekInfo`
+// to determine which weekday is the start of the week by `culture`.
+// The `luxonLocalizer` defaults this to Sunday, which differs from
+// the Luxon default of Monday. The localizer requires this option
+// to change the display, and the date math for determining the
+// start of a week. Luxon uses non-zero based values for `weekday`.
+const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 7 })
+```
+
+See the <LinkTo kind="examples" story="example-5">Localization Example</LinkTo> for another example of combining `rtl`, `localizer`, `culture` and `messages`.
+
+<Canvas>
+  <Story id="props--localizer" />
+</Canvas>
+
+## More Information
+
+The `localizer` can be used for date math in a number of ways. Look at the <LinkTo kind="guides-localizers">Localizer Guide</LinkTo> for more information.

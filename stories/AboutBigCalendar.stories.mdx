@@ -1,0 +1,69 @@
+import { Meta } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+import Basic from './demos/exampleCode/basic.js'
+
+<Meta title="About Big Calendar" />
+
+# Big Calendar
+
+<!-- We won't load this in a 'Story' block, as we want it inline without creating subnavigation -->
+
+<Basic showDemoLink={false} style={{ marginBottom: 15 }} />
+
+## Introduction
+
+Big Calendar is a full featured Calendar component for managing events and dates. It uses modern `flexbox` for layout, making it super responsive and performant. Leaving most of the layout heavy lifting to the browser.
+
+Here you will find all of the documentation you need for implementing Big Calendar. We explain the basics of implementation, give you clear details and examples of the various props needed, and try to answer your questions on how you can use Big Calendar to implement custom scheduling solutions.
+
+## Getting Started
+
+You can install Big Calendar via [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com/):
+
+_yarn:_ `yarn add react-big-calendar`
+
+_npm:_ `npm install --save react-big-calendar`
+
+When you include Big Calendar in your interface, you will need the core styles. We provide a precompiled style sheet (`react-big-calendar/lib/css/react-big-calendar.css`) for you, or you can directly import the SASS into your implementation. For more information on this, see the <LinkTo kind="guides-custom-styling">Custom Styling</LinkTo> guide for more details.
+
+Also make sure that your calendar's container element has a height, or the calendar won't be visible (see why below).
+
+Date internationalization and localization is **hard** and Big Calendar doesn't even attempt to
+solve that problem. Instead you can use one of the many excellent solutions already
+out there, via adapters called _localizers_. Big Calendar comes with three localizers for use
+with [Globalize.js](https://github.com/jquery/globalize), [Moment.js](http://momentjs.com/) or [Luxon](https://moment.github.io/luxon).
+
+Choose the <LinkTo kind="props" story="localizer">localizer</LinkTo> that best suits your needs, or write your own. Whatever you do, you'll need to set it up before you can use the calendar (you only need to set it up once).
+
+```jsx
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+
+// Setup the localizer by providing the moment (or globalize, or Luxon) Object
+// to the correct localizer.
+const localizer = momentLocalizer(moment) // or globalizeLocalizer
+
+const MyCalendar = (props) => (
+  <div className="myCustomHeight">
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  </div>
+)
+```
+
+Once you've configured a <LinkTo kind="props" story="localizer">localizer</LinkTo>, the Calendar is ready to accept `dateFormat` props. These props determine how dates will be displayed throughout the component and are specific to the localizer of your choice. For instance if you are using the Moment localizer, then any [Moment format pattern](http://momentjs.com/docs/#/displaying/format/) is valid!
+
+One thing to note is that, Big Calendar treats event start/end dates as an _exclusive_ range which means that the event spans up to, but not including, the end date. In the case of displaying events on whole days, end dates are rounded _up_ to the next day. So an event ending on `Apr 8th 12:00:00 am` will not appear on the 8th, whereas one ending
+on `Apr 8th 12:01:00 am` will. If you want _inclusive_ ranges consider providing a function <LinkTo kind="props" story="end-accessor">endAccessor</LinkTo> that returns the end date + 1 day for those events that end at midnight.
+
+## Next Steps
+
+We have provided a number of <LinkTo kind="examples">Examples</LinkTo> within this documentation, including individual examples of each and every <LinkTo kind="props">prop</LinkTo>, as well as the Drag and Drop <LinkTo kind="addons">Addon</LinkTo>.
+
+The documentation 'Canvas' tab, at the top of the page, will show you the component example for that specific piece of documentation. While in the 'Canvas' you may also have interactive controls in the 'Controls' panel, allowing you to play with a prop's different values.
+
+The 'Docs' tab will contain additional information, special case scenarios, and the rendered example. Most of these examples contain a 'Show code' button (bottom right), or even a special link at the top to 'View Example Source Code'.

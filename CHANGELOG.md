@@ -1,3 +1,10 @@
+## [0.39.6](https://github.com/jquense/react-big-calendar/compare/v0.39.5...v0.39.6) (2022-03-23)
+
+
+### Bug Fixes
+
+* incorrect babel imports in CJS/ESM builds ([#2157](https://github.com/jquense/react-big-calendar/issues/2157)) ([687b121](https://github.com/jquense/react-big-calendar/commit/687b1213d91ded826e92ab1ec39314676aa24bf5))
+
 ## [0.39.5](https://github.com/jquense/react-big-calendar/compare/v0.39.4...v0.39.5) (2022-03-21)
 
 

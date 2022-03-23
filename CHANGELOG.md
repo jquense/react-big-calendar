@@ -1,3 +1,10 @@
+## [0.39.7](https://github.com/jquense/react-big-calendar/compare/v0.39.6...v0.39.7) (2022-03-23)
+
+
+### Bug Fixes
+
+* move react, react-dom to devDependencies ([#2160](https://github.com/jquense/react-big-calendar/issues/2160)) ([6917c15](https://github.com/jquense/react-big-calendar/commit/6917c15f25bad5462392003dcae59ef7fe20f24d))
+
 ## [0.39.6](https://github.com/jquense/react-big-calendar/compare/v0.39.5...v0.39.6) (2022-03-23)
 
 

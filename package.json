@@ -40,6 +40,11 @@
     "test": "yarn lint && NODE_ENV=test jest",
     "tdd": "NODE_ENV=test jest --watch"
   },
+  "peerDependencies": {
+    "moment": "^2.29.1",
+    "react": "^16.14.0 || ^17",
+    "react-dom": "^16.14.0 || ^17"
+  },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
@@ -92,8 +97,10 @@
     "postcss": "^8.4.8",
     "postcss-cli": "^9.1.0",
     "prettier": "^2.5.1",
+    "react": "^17.0.2",
     "react-bootstrap": "^0.32.4",
     "react-docgen": "^5.4.0",
+    "react-dom": "^17.0.2",
     "react-tackle-box": "^2.1.0",
     "regenerator-runtime": "^0.13.9",
     "rollup": "^2.70.0",
@@ -118,8 +125,6 @@
     "lodash-es": "^4.17.21",
     "memoize-one": "^6.0.0",
     "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-overlays": "^4.1.1",
     "uncontrollable": "^7.2.1"
   },

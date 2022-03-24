@@ -845,6 +845,8 @@ class Calendar extends React.Component {
   }
 
   static defaultProps = {
+    events: [],
+    backgroundEvents: [],
     elementProps: {},
     popup: false,
     toolbar: true,
@@ -981,7 +983,7 @@ class Calendar extends React.Component {
       view,
       toolbar,
       events,
-      backgroundEvents = [],
+      backgroundEvents,
       style,
       className,
       elementProps,

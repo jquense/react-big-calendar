@@ -1,3 +1,24 @@
+# [0.40.0](https://github.com/jquense/react-big-calendar/compare/v0.39.7...v0.40.0) (2022-03-24)
+
+
+### Features
+
+* **events:** default events prop to an empty array ([#2161](https://github.com/jquense/react-big-calendar/issues/2161)) ([efac0b2](https://github.com/jquense/react-big-calendar/commit/efac0b26b365bbddb803ad256e22a5844cf36052)), closes [#1708](https://github.com/jquense/react-big-calendar/issues/1708)
+
+## [0.39.7](https://github.com/jquense/react-big-calendar/compare/v0.39.6...v0.39.7) (2022-03-23)
+
+
+### Bug Fixes
+
+* move react, react-dom to devDependencies ([#2160](https://github.com/jquense/react-big-calendar/issues/2160)) ([6917c15](https://github.com/jquense/react-big-calendar/commit/6917c15f25bad5462392003dcae59ef7fe20f24d))
+
+## [0.39.6](https://github.com/jquense/react-big-calendar/compare/v0.39.5...v0.39.6) (2022-03-23)
+
+
+### Bug Fixes
+
+* incorrect babel imports in CJS/ESM builds ([#2157](https://github.com/jquense/react-big-calendar/issues/2157)) ([687b121](https://github.com/jquense/react-big-calendar/commit/687b1213d91ded826e92ab1ec39314676aa24bf5))
+
 ## [0.39.5](https://github.com/jquense/react-big-calendar/compare/v0.39.4...v0.39.5) (2022-03-21)
 
 

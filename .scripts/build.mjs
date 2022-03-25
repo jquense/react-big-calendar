@@ -16,7 +16,7 @@ console.log(chalk.blue('Building js'))
 await $`NODE_ENV=production rollup -c`;
 console.log(chalk.blue(`Compiling 'lib' js files`))
 // build files used for overrides
-await $`NODE_ENV=production babel src --out-dir lib`
+await $`NODE_ENV=production RBC_CJS_BUILD=true babel src --out-dir lib`
 console.log(chalk.blue(`Copying SASS files to 'lib'`))
 // and since we don't currently use CSS modules...
 await fs.copy('./src/sass', './lib/sass')

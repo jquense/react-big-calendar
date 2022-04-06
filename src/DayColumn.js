@@ -237,8 +237,11 @@ class DayColumn extends React.Component {
           continuesPrior={continuesPrior}
           continuesAfter={continuesAfter}
           accessors={accessors}
+          resource={this.props.resource}
           selected={isSelected(event, selected)}
-          onClick={(e) => this._select(event, e)}
+          onClick={(e) =>
+            this._select({ ...event, sourceResource: this.props.resource }, e)
+          }
           onDoubleClick={(e) => this._doubleClick(event, e)}
           isBackgroundEvent={isBackgroundEvent}
           onKeyPress={(e) => this._keyPress(event, e)}

@@ -15,7 +15,7 @@ const events = [
     title: 'Board meeting',
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
-    resourceId: 1,
+    resourceId: [1, 2],
   },
   {
     id: 1,
@@ -77,6 +77,9 @@ const resourceMap = [
 
 export default function DnDResource({ localizer }) {
   const [myEvents, setMyEvents] = useState(events)
+  const [copyEvent, setCopyEvent] = useState(true)
+
+  const toggleCopyEvent = useCallback(() => setCopyEvent((val) => !val), [])
 
   const moveEvent = useCallback(
     ({
@@ -90,6 +93,9 @@ export default function DnDResource({ localizer }) {
       if (!allDay && droppedOnAllDaySlot) {
         event.allDay = true
       }
+      if (copyEvent && Array.isArray(event.resourceId)) {
+        resourceId = [...new Set([...event.resourceId, resourceId])]
+      }
 
       setMyEvents((prev) => {
         const existing = prev.find((ev) => ev.id === event.id) ?? {}
@@ -97,7 +103,7 @@ export default function DnDResource({ localizer }) {
         return [...filtered, { ...existing, start, end, resourceId, allDay }]
       })
     },
-    [setMyEvents]
+    [setMyEvents, copyEvent]
   )
 
   const resizeEvent = useCallback(
@@ -125,6 +131,16 @@ export default function DnDResource({ localizer }) {
         <strong>
           Drag and Drop an "event" from one resource slot to another.
         </strong>
+        <div style={{ margin: '10px 0 20px 0' }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={copyEvent}
+              onChange={toggleCopyEvent}
+            />
+            Copy changes from a multi-resource event to other resources
+          </label>
+        </div>
       </DemoLink>
       <div className="height600">
         <DragAndDropCalendar

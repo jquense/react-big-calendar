@@ -93,8 +93,15 @@ export default function DnDResource({ localizer }) {
       if (!allDay && droppedOnAllDaySlot) {
         event.allDay = true
       }
-      if (copyEvent && Array.isArray(event.resourceId)) {
-        resourceId = [...new Set([...event.resourceId, resourceId])]
+      if (Array.isArray(event.resourceId)) {
+        if (copyEvent) {
+          resourceId = [...new Set([...event.resourceId, resourceId])]
+        } else {
+          const filtered = event.resourceId.filter(
+            (ev) => ev !== event.sourceResource
+          )
+          resourceId = [...new Set([...filtered, resourceId])]
+        }
       }
 
       setMyEvents((prev) => {
@@ -138,7 +145,7 @@ export default function DnDResource({ localizer }) {
               checked={copyEvent}
               onChange={toggleCopyEvent}
             />
-            Copy changes from any multi-resource event to other resource slots
+            Keep copy of dragged "source" event in its original resource slot.
           </label>
         </div>
       </DemoLink>

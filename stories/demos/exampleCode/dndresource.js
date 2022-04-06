@@ -138,7 +138,7 @@ export default function DnDResource({ localizer }) {
               checked={copyEvent}
               onChange={toggleCopyEvent}
             />
-            Copy changes from a multi-resource event to other resources
+            Copy changes from any multi-resource event to other resource slots
           </label>
         </div>
       </DemoLink>

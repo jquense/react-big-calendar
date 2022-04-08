@@ -6,6 +6,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './localizer';
 import chunk from 'lodash/chunk';
+import Combokeys from 'combokeys';
 
 import { navigate, views } from './utils/constants';
 import { notify } from './utils/helpers';
@@ -19,6 +20,8 @@ import DateHeader from './DateHeader';
 
 import { accessor, dateFormat } from './utils/propTypes';
 import { segStyle, inRange, sortEvents } from './utils/eventLevels';
+
+const combokeys = new Combokeys(document.documentElement);
 
 let eventsForWeek = (evts, start, end, props) => evts.filter(e => inRange(e, start, end, props));
 
@@ -73,6 +76,8 @@ let propTypes = {
       y: PropTypes.number,
     }),
   ]),
+
+  onNavigate: PropTypes.func.isRequired,
 };
 
 class MonthView extends React.Component {
@@ -91,6 +96,7 @@ class MonthView extends React.Component {
     this.state = {
       rowLimit: props.showAllEvents ? Infinity : 5,
       needLimitMeasure: props.showAllEvents ? false : true,
+      isArrowNavigated: false,
     };
   }
 
@@ -119,6 +125,30 @@ class MonthView extends React.Component {
       }),
       false,
     );
+    const { date } = this.props;
+
+    combokeys.bind('up', () => {
+      this.setState({ isArrowNavigated: true });
+      this.props.onNavigate(navigate.PREVIOUS_WEEK);
+    });
+
+    combokeys.bind('down', () => {
+      this.setState({ isArrowNavigated: true });
+      this.props.onNavigate(navigate.NEXT_WEEK);
+    });
+
+    combokeys.bind('left', () => {
+      this.setState({ isArrowNavigated: true });
+      this.props.onNavigate(navigate.PREVIOUS_DAY);
+    });
+
+    combokeys.bind('right', () => {
+      this.setState({ isArrowNavigated: true });
+      this.props.onNavigate(navigate.NEXT_DAY);
+    });
+  }
+  generateId(date) {
+    return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join('-');
   }
 
   componentDidUpdate() {
@@ -139,19 +169,20 @@ class MonthView extends React.Component {
       weeks = chunk(month, 7);
 
     this._weekCount = weeks.length;
+    const { isArrowNavigated } = this.state;
 
     return (
       <div className={cn('rbc-month-view', className)}>
         <div className="rbc-row rbc-month-header">
           {this.renderHeaders(weeks[0], weekdayFormat, culture)}
         </div>
-        {weeks.map((week, idx) => this.renderWeek(week, idx))}
+        {weeks.map((week, idx) => this.renderWeek(week, idx, isArrowNavigated))}
         {this.props.popup && this.renderOverlay()}
       </div>
     );
   }
 
-  renderWeek = (week, weekIdx) => {
+  renderWeek = (week, weekIdx, isArrowNavigated) => {
     let {
       events,
       components,
@@ -167,6 +198,7 @@ class MonthView extends React.Component {
       date,
       longPressThreshold,
       eventsSorter,
+      onNavigate,
     } = this.props;
 
     const { needLimitMeasure, rowLimit } = this.state;
@@ -212,6 +244,8 @@ class MonthView extends React.Component {
         selected={selected}
         startAccessor={startAccessor}
         titleAccessor={titleAccessor}
+        onNavigate={onNavigate}
+        isArrowNavigated={isArrowNavigated}
       />
     );
   };
@@ -383,6 +417,18 @@ MonthView.navigate = (date, action) => {
 
     case navigate.NEXT:
       return dates.add(date, 1, 'month');
+
+    case navigate.NEXT_DAY:
+      return dates.add(date, 1, 'day');
+
+    case navigate.PREVIOUS_DAY:
+      return dates.add(date, -1, 'day');
+
+    case navigate.NEXT_WEEK:
+      return dates.add(date, 7, 'day');
+
+    case navigate.PREVIOUS_WEEK:
+      return dates.add(date, -7, 'day');
 
     default:
       return date;

@@ -23,6 +23,8 @@ class BackgroundCells extends React.Component {
     onSelectSlot: PropTypes.func.isRequired,
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
+    onNavigate: PropTypes.func,
+    isArrowNavigated: PropTypes.bool,
 
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     rtl: PropTypes.bool,
@@ -51,13 +53,29 @@ class BackgroundCells extends React.Component {
     if (!nextProps.selectable && this.props.selectable) this._teardownSelectable();
   }
 
+  generateId(date) {
+    return [date.getMonth(), date.getDate(), date.getFullYear()].join('-');
+  }
+
+  isSelectedCell(cellId) {
+    const selectedCell = this.generateId(this.props.date);
+    return selectedCell === cellId;
+  }
+
+  parseDateFromId(cellId) {
+    const [month, day, year] = cellId.split('-').map(i => parseInt(i));
+    return new Date(year, month, day);
+  }
+
   render() {
-    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate, isArrowNavigated } = this.props;
     let { selecting, startIdx, endIdx, click } = this.state;
 
     return (
       <div className="rbc-row-bg">
         {range.map((date, index) => {
+          const cellId = this.generateId(date);
+          const isNavigatedCellId = this.isSelectedCell(cellId);
           let selected = selecting && index >= startIdx && index <= endIdx;
           return (
             <Wrapper key={index} value={date} range={range}>
@@ -71,11 +89,12 @@ class BackgroundCells extends React.Component {
                   id={RIGHT_CLICK_DAY_CELL}
                 >
                   <div
+                    id={cellId}
                     style={{ height: '100%' }}
                     className={cn('rbc-day-bg', {
                       'rbc-today': dates.isToday(date),
                       'rbc-selected-cell': selected,
-                      'rbc-selected-cell-click': selected && click,
+                      'rbc-selected-cell-click': isNavigatedCellId || (selected && click),
                       'rbc-off-range-bg': dates.month(currentDate) !== dates.month(date),
                     })}
                   />
@@ -151,12 +170,18 @@ class BackgroundCells extends React.Component {
         if (pointInBox(rowBox, point)) {
           let width = slotWidth(getBoundsForNode(node), range.length);
           let currentCell = getCellAtX(rowBox, point.x, width, rtl, range.length);
+          const cellId = node.childNodes
+            .item(currentCell)
+            .querySelector('.rbc-day-bg')
+            .getAttribute('id');
+          const date = this.parseDateFromId(cellId);
+          this.props.onNavigate(null, date);
 
-          this._selectSlot({
-            startIdx: currentCell,
-            endIdx: currentCell,
-            action: 'click',
-          });
+          // this._selectSlot({
+          //   startIdx: currentCell,
+          //   endIdx: currentCell,
+          //   action: 'click',
+          // });
         }
       }
 

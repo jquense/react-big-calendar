@@ -43,6 +43,7 @@ const propTypes = {
   eventWrapperComponent: elementType.isRequired,
   minRows: PropTypes.number.isRequired,
   maxRows: PropTypes.number.isRequired,
+  onNavigate: PropTypes.func,
 };
 
 const defaultProps = {
@@ -156,6 +157,8 @@ class DateContentRow extends React.Component {
       onSelectStart,
       onSelectEnd,
       longPressThreshold,
+      isArrowNavigated,
+      onNavigate,
       ...props
     } = this.props;
 
@@ -177,6 +180,8 @@ class DateContentRow extends React.Component {
           onRightClickSlot={this.handleRightClickSlot}
           cellWrapperComponent={dateCellWrapper}
           longPressThreshold={longPressThreshold}
+          onNavigate={onNavigate}
+          isArrowNavigated={isArrowNavigated}
         />
 
         <div className="rbc-row-content">

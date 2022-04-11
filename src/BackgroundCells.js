@@ -24,7 +24,6 @@ class BackgroundCells extends React.Component {
     onSelectEnd: PropTypes.func,
     onSelectStart: PropTypes.func,
     onNavigate: PropTypes.func,
-    isArrowNavigated: PropTypes.bool,
 
     range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     rtl: PropTypes.bool,
@@ -68,7 +67,7 @@ class BackgroundCells extends React.Component {
   }
 
   render() {
-    let { range, cellWrapperComponent: Wrapper, date: currentDate, isArrowNavigated } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
     let { selecting, startIdx, endIdx, click } = this.state;
 
     return (

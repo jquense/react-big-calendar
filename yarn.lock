@@ -1830,6 +1830,11 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
+combokeys@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/combokeys/-/combokeys-3.0.1.tgz#fc8ca5c3f5f2d2b03a458544cb88b14ab5f53f86"
+  integrity sha512-5nAfaLZ3oO3kA+/xdoL7t197UJTz2WWidyH3BBeU6hqHtvyFERICd0y3DQFrQkJFTKBrtUDck/xCLLoFpnjaCw==
+
 commander@2.11.x, commander@^2.11.0, commander@^2.8.1, commander@^2.9.0, commander@~2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"

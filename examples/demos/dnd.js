@@ -143,7 +143,7 @@ class Dnd extends React.Component {
             dayCell: this.rightClickDayCellMenu,
           }}
           components={{ month: { event: ResizableMonthEvent } }}
-          defaultDate={new Date(2015, 3, 12)}
+          defaultDate={new Date()}
           defaultView="month"
           events={this.state.events}
           eventsSorter={this.eventsSorter}

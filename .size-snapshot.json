@@ -31,12 +31,12 @@
   "react-big-calendar.min.js": {
     "bundled": 283419,
     "minified": 281970,
-    "gzipped": 88895
+    "gzipped": 88896
   },
   "react-big-calendar.esm.js": {
-    "bundled": 199990,
-    "minified": 93355,
-    "gzipped": 24214,
+    "bundled": 199925,
+    "minified": 93298,
+    "gzipped": 24211,
     "treeshaked": {
       "rollup": {
         "code": 66434,

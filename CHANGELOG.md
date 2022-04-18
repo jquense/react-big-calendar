@@ -1,3 +1,10 @@
+## [0.40.1](https://github.com/jquense/react-big-calendar/compare/v0.40.0...v0.40.1) (2022-04-18)
+
+
+### Bug Fixes
+
+* correct luxon localizer formatting ([#2172](https://github.com/jquense/react-big-calendar/issues/2172)) ([b130351](https://github.com/jquense/react-big-calendar/commit/b130351966fa6a3870607bbb78394db11a10915b))
+
 # [0.40.0](https://github.com/jquense/react-big-calendar/compare/v0.39.7...v0.40.0) (2022-03-24)
 
 

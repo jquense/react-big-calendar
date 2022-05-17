@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
-import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
+import { events, Views, DragAndDropCalendar } from './helpers'
 import customComponents from './helpers/customComponents'
 
 storiesOf('Drag and Drop', module)
@@ -90,6 +90,18 @@ storiesOf('Drag and Drop', module)
         showMultiDayTimes
         onEventDrop={action('event dropped')}
         onEventResize={action('event resized')}
+      />
+    )
+  })
+  .add('draggable with auto scroll', () => {
+    return (
+      <DragAndDropCalendar
+        defaultDate={new Date()}
+        defaultView={Views.WEEK}
+        events={events}
+        onEventDrop={action('event dropped')}
+        onEventResize={action('event resized')}
+        enableDragAutoScroll
       />
     )
   })

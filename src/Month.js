@@ -6,7 +6,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import localizer from './localizer';
 import chunk from 'lodash/chunk';
-import Combokeys from 'combokeys';
+// import Combokeys from 'combokeys';
 
 import { navigate, views } from './utils/constants';
 import { notify } from './utils/helpers';
@@ -21,7 +21,7 @@ import DateHeader from './DateHeader';
 import { accessor, dateFormat } from './utils/propTypes';
 import { segStyle, inRange, sortEvents } from './utils/eventLevels';
 
-const combokeys = new Combokeys(document.documentElement);
+// const combokeys = new Combokeys(document.documentElement);
 
 let eventsForWeek = (evts, start, end, props) => evts.filter(e => inRange(e, start, end, props));
 
@@ -124,23 +124,22 @@ class MonthView extends React.Component {
       }),
       false,
     );
-    const { date } = this.props;
 
-    combokeys.bind('up', () => {
-      this.props.onNavigate(navigate.PREVIOUS_WEEK);
-    });
+    // combokeys.bind('up', () => {
+    //   this.props.onNavigate(navigate.PREVIOUS_WEEK);
+    // });
 
-    combokeys.bind('down', () => {
-      this.props.onNavigate(navigate.NEXT_WEEK);
-    });
+    // combokeys.bind('down', () => {
+    //   this.props.onNavigate(navigate.NEXT_WEEK);
+    // });
 
-    combokeys.bind('left', () => {
-      this.props.onNavigate(navigate.PREVIOUS_DAY);
-    });
+    // combokeys.bind('left', () => {
+    //   this.props.onNavigate(navigate.PREVIOUS_DAY);
+    // });
 
-    combokeys.bind('right', () => {
-      this.props.onNavigate(navigate.NEXT_DAY);
-    });
+    // combokeys.bind('right', () => {
+    //   this.props.onNavigate(navigate.NEXT_DAY);
+    // });
   }
   generateId(date) {
     return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join('-');

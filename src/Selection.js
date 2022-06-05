@@ -38,11 +38,15 @@ const clickTolerance = 5
 const clickInterval = 250
 
 class Selection {
-  constructor(node, { global = false, longPressThreshold = 250 } = {}) {
+  constructor(
+    node,
+    { global = false, longPressThreshold = 250, allowedTargets = () => [] } = {}
+  ) {
     this.isDetached = false
     this.container = node
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
+    this.getAllowedTargets = allowedTargets
 
     this._listeners = Object.create(null)
 
@@ -314,6 +318,7 @@ class Selection {
     if (!this._initialEventData) return
 
     let inRoot = !this.container || contains(this.container(), e.target)
+    let inAllowedTarget = this._checkIfInAllowedTarget(e)
     let bounds = this._selectRect
     let click = this.isClick(pageX, pageY)
 
@@ -323,7 +328,7 @@ class Selection {
       return this.emit('reset')
     }
 
-    if (!inRoot) {
+    if (!inRoot || !inAllowedTarget) {
       return this.emit('reset')
     }
 
@@ -333,6 +338,19 @@ class Selection {
 
     // User drag-clicked in the Selectable area
     if (!click) return this.emit('select', bounds)
+  }
+
+  _checkIfInAllowedTarget(e) {
+    let allowedTargets = this.getAllowedTargets()
+    if (!allowedTargets || !allowedTargets.length) return true
+    let inAllowedTarget = false
+    allowedTargets.forEach(n => {
+      if (contains(n, e.target)) {
+        inAllowedTarget = true
+      }
+    })
+
+    return inAllowedTarget
   }
 
   _handleClickEvent(e) {

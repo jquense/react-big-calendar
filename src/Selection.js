@@ -323,16 +323,14 @@ class Selection {
       return this.emit('reset')
     }
 
-    if (!inRoot) {
-      return this.emit('reset')
-    }
-
     if (click && inRoot) {
       return this._handleClickEvent(e)
     }
 
     // User drag-clicked in the Selectable area
     if (!click) return this.emit('select', bounds)
+
+    return this.emit('reset')
   }
 
   _handleClickEvent(e) {

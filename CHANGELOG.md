@@ -1,3 +1,10 @@
+## [0.40.2](https://github.com/jquense/react-big-calendar/compare/v0.40.1...v0.40.2) (2022-06-16)
+
+
+### Bug Fixes
+
+* Allow resize to last visible slot ([f26c8a7](https://github.com/jquense/react-big-calendar/commit/f26c8a75a5e7ad667eb6dbc4d392dac32e51dc10)), closes [#2147](https://github.com/jquense/react-big-calendar/issues/2147)
+
 ## [0.40.1](https://github.com/jquense/react-big-calendar/compare/v0.40.0...v0.40.1) (2022-04-18)
 
 

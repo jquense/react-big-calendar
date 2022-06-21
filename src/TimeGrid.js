@@ -1,8 +1,7 @@
+import React, { Component, createRef } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
-import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
 import DayColumn from './DayColumn'
@@ -24,6 +23,7 @@ export default class TimeGrid extends Component {
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
     this._scrollRatio = null
+    this.gutterRef = createRef()
   }
 
   UNSAFE_componentWillMount() {
@@ -81,10 +81,6 @@ export default class TimeGrid extends Component {
     ) {
       this.calculateScroll(nextProps)
     }
-  }
-
-  gutterRef = (ref) => {
-    this.gutter = ref && findDOMNode(ref)
   }
 
   handleSelectAlldayEvent = (...args) => {

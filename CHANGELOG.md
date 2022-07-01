@@ -1,3 +1,10 @@
+## [0.40.4](https://github.com/jquense/react-big-calendar/compare/v0.40.3...v0.40.4) (2022-07-01)
+
+
+### Bug Fixes
+
+* replace findDOMNode with refs ([a902d20](https://github.com/jquense/react-big-calendar/commit/a902d20a7413016a662e1f7b3f7a5241213ce354)), closes [#2193](https://github.com/jquense/react-big-calendar/issues/2193)
+
 ## [0.40.3](https://github.com/jquense/react-big-calendar/compare/v0.40.2...v0.40.3) (2022-07-01)
 
 

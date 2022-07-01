@@ -1,9 +1,8 @@
+import React, { createRef } from 'react'
 import clsx from 'clsx'
 import getHeight from 'dom-helpers/height'
 import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
-import React from 'react'
-import { findDOMNode } from 'react-dom'
 
 import BackgroundCells from './BackgroundCells'
 import EventRow from './EventRow'
@@ -15,6 +14,10 @@ import * as DateSlotMetrics from './utils/DateSlotMetrics'
 class DateContentRow extends React.Component {
   constructor(...args) {
     super(...args)
+
+    this.containerRef = createRef()
+    this.headingRowRef = createRef()
+    this.eventRowRef = createRef()
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
   }
@@ -28,7 +31,7 @@ class DateContentRow extends React.Component {
   handleShowMore = (slot, target) => {
     const { range, onShowMore } = this.props
     let metrics = this.slotMetrics(this.props)
-    let row = qsa(findDOMNode(this), '.rbc-row-bg')[0]
+    let row = qsa(this.containerRef.current, '.rbc-row-bg')[0]
 
     let cell
     if (row) cell = row.children[slot - 1]
@@ -37,23 +40,19 @@ class DateContentRow extends React.Component {
     onShowMore(events, range[slot - 1], cell, slot, target)
   }
 
-  createHeadingRef = (r) => {
-    this.headingRow = r
-  }
-
-  createEventRef = (r) => {
-    this.eventRow = r
-  }
-
   getContainer = () => {
     const { container } = this.props
-    return container ? container() : findDOMNode(this)
+    return container ? container() : this.containerRef.current
   }
 
   getRowLimit() {
-    let eventHeight = getHeight(this.eventRow)
-    let headingHeight = this.headingRow ? getHeight(this.headingRow) : 0
-    let eventSpace = getHeight(findDOMNode(this)) - headingHeight
+    /* Guessing this only gets called on the dummyRow */
+    const eventHeight = getHeight(this.eventRowRef.current)
+    const headingHeight =
+      this.headingRowRef && this.headingRowRef.current
+        ? getHeight(this.headingRowRef.current)
+        : 0
+    const eventSpace = getHeight(this.containerRef.current) - headingHeight
 
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
@@ -74,7 +73,7 @@ class DateContentRow extends React.Component {
   renderDummy = () => {
     let { className, range, renderHeader, showAllEvents } = this.props
     return (
-      <div className={className}>
+      <div className={className} ref={this.containerRef}>
         <div
           className={clsx(
             'rbc-row-content',
@@ -82,11 +81,11 @@ class DateContentRow extends React.Component {
           )}
         >
           {renderHeader && (
-            <div className="rbc-row" ref={this.createHeadingRef}>
+            <div className="rbc-row" ref={this.headingRowRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          <div className="rbc-row" ref={this.createEventRef}>
+          <div className="rbc-row" ref={this.eventRowRef}>
             <div className="rbc-row-segment">
               <div className="rbc-event">
                 <div className="rbc-event-content">&nbsp;</div>
@@ -152,7 +151,7 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className} role="rowgroup">
+      <div className={className} role="rowgroup" ref={this.containerRef}>
         <BackgroundCells
           localizer={localizer}
           date={date}
@@ -178,7 +177,7 @@ class DateContentRow extends React.Component {
           role="row"
         >
           {renderHeader && (
-            <div className="rbc-row " ref={this.createHeadingRef}>
+            <div className="rbc-row " ref={this.headingRowRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}

@@ -1,3 +1,10 @@
+## [0.40.3](https://github.com/jquense/react-big-calendar/compare/v0.40.2...v0.40.3) (2022-07-01)
+
+
+### Bug Fixes
+
+* **DND:** Corrects issue of losing droppable event when releasing on non-event related containers ([#2199](https://github.com/jquense/react-big-calendar/issues/2199)) ([508b668](https://github.com/jquense/react-big-calendar/commit/508b668f4adb17635b47f435fdc3b676058a7405)), closes [#2198](https://github.com/jquense/react-big-calendar/issues/2198) [#1902](https://github.com/jquense/react-big-calendar/issues/1902)
+
 ## [0.40.2](https://github.com/jquense/react-big-calendar/compare/v0.40.1...v0.40.2) (2022-06-16)
 
 

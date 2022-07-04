@@ -34,6 +34,8 @@ export default class TimeGutter extends Component {
       step,
       localizer,
     })
+
+    this.containerRef = React.createRef()
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -62,7 +64,7 @@ export default class TimeGutter extends Component {
     const { resource, components, getters } = this.props
 
     return (
-      <div className="rbc-time-gutter rbc-time-column">
+      <div className="rbc-time-gutter rbc-time-column" ref={this.containerRef}>
         {this.slotMetrics.groups.map((grp, idx) => {
           return (
             <TimeSlotGroup

@@ -283,7 +283,7 @@ export default class TimeGrid extends Component {
     }
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
-        const width = getWidth(this.gutter)
+        const width = getWidth(this.gutterRef?.current)
 
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })

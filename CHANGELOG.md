@@ -1,3 +1,10 @@
+## [0.40.6](https://github.com/jquense/react-big-calendar/compare/v0.40.5...v0.40.6) (2022-07-05)
+
+
+### Bug Fixes
+
+* correct TimeGutter ref ([#2204](https://github.com/jquense/react-big-calendar/issues/2204)) ([055cdd0](https://github.com/jquense/react-big-calendar/commit/055cdd01c153752e90b889cfa37ad5734fe8217e)), closes [#2201](https://github.com/jquense/react-big-calendar/issues/2201)
+
 ## [0.40.5](https://github.com/jquense/react-big-calendar/compare/v0.40.4...v0.40.5) (2022-07-05)
 
 

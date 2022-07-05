@@ -1,3 +1,10 @@
+## [0.40.7](https://github.com/jquense/react-big-calendar/compare/v0.40.6...v0.40.7) (2022-07-05)
+
+
+### Bug Fixes
+
+* adjust TimeGutter for DST ([#2205](https://github.com/jquense/react-big-calendar/issues/2205)) ([4ba1255](https://github.com/jquense/react-big-calendar/commit/4ba1255ac80239e3a35d8adb32cbaa3da526619f))
+
 ## [0.40.6](https://github.com/jquense/react-big-calendar/compare/v0.40.5...v0.40.6) (2022-07-05)
 
 

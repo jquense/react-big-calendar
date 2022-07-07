@@ -151,12 +151,14 @@ class WeekWrapper extends React.Component {
   _selectable = () => {
     let node = this.ref.current.closest('.rbc-month-row, .rbc-allday-cell')
     let container = node.closest('.rbc-month-view, .rbc-time-view')
+    let isMonthRow = node.classList.contains('rbc-month-row')
 
-    let selector = (
-      this._selector = new Selection(
-        () => container,
-        { validContainers: ['.rbc-day-slot', '.rbc-allday-cell'] }
-      ))
+    // Valid container check only necessary in TimeGrid views
+    let selector = (this._selector = new Selection(() => container, {
+      validContainers: [
+        ...(!isMonthRow ? ['.rbc-day-slot', '.rbc-allday-cell'] : []),
+      ],
+    }))
 
     selector.on('beforeSelect', (point) => {
       const { isAllDay } = this.props

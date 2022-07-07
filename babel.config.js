@@ -41,6 +41,7 @@ module.exports = function (api) {
     plugins: [
       ['@babel/plugin-transform-runtime'],
       ['transform-react-remove-prop-types', { mode: 'wrap' }],
+      ['@babel/plugin-proposal-class-properties', { loose: true }],
       ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
       ['@babel/plugin-proposal-private-methods', { loose: true }],
       ...optionalPlugins,

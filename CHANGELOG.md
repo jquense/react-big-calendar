@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/jquense/react-big-calendar/compare/v0.40.8...v1.0.0) (2022-07-07)
+
+
+### Features
+
+* **localizers:** move localizer dependencies ([e4a3235](https://github.com/jquense/react-big-calendar/commit/e4a323538c2d2c3cd6c56300ef560ac5f18519c4))
+
+
+### BREAKING CHANGES
+
+* **localizers:** moment, luxon and globalize are no longer bundled
+
 ## [0.40.8](https://github.com/jquense/react-big-calendar/compare/v0.40.7...v0.40.8) (2022-07-07)
 
 

@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/jquense/react-big-calendar/compare/v1.0.0...v1.0.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* zero duration no-overlap events ([#2213](https://github.com/jquense/react-big-calendar/issues/2213)) ([bbe1109](https://github.com/jquense/react-big-calendar/commit/bbe11094c0bfcfc162022711f848905e57479152))
+
 # [1.0.0](https://github.com/jquense/react-big-calendar/compare/v0.40.8...v1.0.0) (2022-07-07)
 
 

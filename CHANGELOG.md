@@ -1,3 +1,10 @@
+## [0.40.8](https://github.com/jquense/react-big-calendar/compare/v0.40.7...v0.40.8) (2022-07-07)
+
+
+### Bug Fixes
+
+* resolve resizing events in Month view ([c7b105f](https://github.com/jquense/react-big-calendar/commit/c7b105f8d59b460b8ed2e45fa90653296651b52c)), closes [#2207](https://github.com/jquense/react-big-calendar/issues/2207)
+
 ## [0.40.7](https://github.com/jquense/react-big-calendar/compare/v0.40.6...v0.40.7) (2022-07-05)
 
 

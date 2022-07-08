@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/jquense/react-big-calendar/compare/v1.1.0...v1.2.0) (2022-07-08)
+
+
+### Features
+
+* replace unsafe deprecated methods ([#2216](https://github.com/jquense/react-big-calendar/issues/2216)) ([c5c6a8b](https://github.com/jquense/react-big-calendar/commit/c5c6a8bf8f710402dc69bf1322d76b83c19824c4)), closes [#1200](https://github.com/jquense/react-big-calendar/issues/1200) [#1777](https://github.com/jquense/react-big-calendar/issues/1777) [#1481](https://github.com/jquense/react-big-calendar/issues/1481) [#2126](https://github.com/jquense/react-big-calendar/issues/2126) [#2104](https://github.com/jquense/react-big-calendar/issues/2104) [#2105](https://github.com/jquense/react-big-calendar/issues/2105) [#1526](https://github.com/jquense/react-big-calendar/issues/1526)
+
 # [1.1.0](https://github.com/jquense/react-big-calendar/compare/v1.0.1...v1.1.0) (2022-07-08)
 
 

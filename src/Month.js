@@ -9,8 +9,9 @@ import { notify } from './utils/helpers'
 import getPosition from 'dom-helpers/position'
 import * as animationFrame from 'dom-helpers/animationFrame'
 
-import Popup from './Popup'
-import Overlay from 'react-overlays/Overlay'
+/* import Popup from './Popup'
+import Overlay from 'react-overlays/Overlay' */
+import PopOverlay from './PopOverlay'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import DateHeader from './DateHeader'
@@ -204,11 +205,40 @@ class MonthView extends React.Component {
   }
 
   renderOverlay() {
-    let overlay = (this.state && this.state.overlay) || {}
-    let { accessors, localizer, components, getters, selected, popupOffset } =
-      this.props
+    let overlay = this.state?.overlay ?? {}
+    let {
+      accessors,
+      localizer,
+      components,
+      getters,
+      selected,
+      popupOffset,
+      handleDragStart,
+    } = this.props
+
+    const onHide = () => this.setState({ overlay: null })
 
     return (
+      <PopOverlay
+        overlay={overlay}
+        accessors={accessors}
+        localizer={localizer}
+        components={components}
+        getters={getters}
+        selected={selected}
+        popupOffset={popupOffset}
+        ref={this.containerRef}
+        handleKeyPressEvent={this.handleKeyPressEvent}
+        handleSelectEvent={this.handleSelectEvent}
+        handleDoubleClickEvent={this.handleDoubleClickEvent}
+        handleDragStart={handleDragStart}
+        show={!!overlay.position}
+        overlayDisplay={this.overlayDisplay}
+        onHide={onHide}
+      />
+    )
+
+    /* return (
       <Overlay
         rootClose
         placement="bottom"
@@ -237,7 +267,7 @@ class MonthView extends React.Component {
           />
         )}
       </Overlay>
-    )
+    ) */
   }
 
   measureRowLimit() {

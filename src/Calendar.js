@@ -809,7 +809,7 @@ class Calendar extends React.Component {
      *
      *   noEventsInRange: 'There are no events in this range.',
      *
-     *   showMore: total => `+${total} more`,
+     *   showMore: total => `+ ${total} more`,
      * }
      *
      * <Calendar messages={messages} />

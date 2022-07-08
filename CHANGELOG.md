@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/jquense/react-big-calendar/compare/v1.0.1...v1.1.0) (2022-07-08)
+
+
+### Features
+
+* remove unneeded dependencies ([#2215](https://github.com/jquense/react-big-calendar/issues/2215)) ([fb05151](https://github.com/jquense/react-big-calendar/commit/fb05151252ad02610c7fafa7fbe13dd00b5d40af))
+
 ## [1.0.1](https://github.com/jquense/react-big-calendar/compare/v1.0.0...v1.0.1) (2022-07-07)
 
 

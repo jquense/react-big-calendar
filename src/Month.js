@@ -27,6 +27,7 @@ class MonthView extends React.Component {
     this.state = {
       rowLimit: 5,
       needLimitMeasure: true,
+      date: null,
     }
     this.containerRef = createRef()
     this.slotRowRef = createRef()
@@ -35,11 +36,11 @@ class MonthView extends React.Component {
     this._pendingSelection = []
   }
 
-  UNSAFE_componentWillReceiveProps({ date }) {
-    const { date: propsDate, localizer } = this.props
-    this.setState({
-      needLimitMeasure: localizer.neq(date, propsDate, 'month'),
-    })
+  static getDerivedStateFromProps({ date, localizer }, state) {
+    return {
+      date,
+      needLimitMeasure: localizer.neq(date, state.date, 'month'),
+    }
   }
 
   componentDidMount() {

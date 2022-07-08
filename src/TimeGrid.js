@@ -26,17 +26,17 @@ export default class TimeGrid extends Component {
     this.gutterRef = createRef()
   }
 
-  UNSAFE_componentWillMount() {
+  getSnapshotBeforeUpdate() {
     this.calculateScroll()
-  }
-
-  componentDidMount() {
     this.checkOverflow()
 
     if (this.props.width == null) {
       this.measureGutter()
     }
+    return null
+  }
 
+  componentDidMount() {
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)
@@ -64,23 +64,7 @@ export default class TimeGrid extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
-
     this.applyScroll()
-    //this.checkOverflow()
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { range, scrollToTime, localizer } = this.props
-    // When paginating, reset scroll
-    if (
-      localizer.neq(nextProps.range[0], range[0], 'minutes') ||
-      localizer.neq(nextProps.scrollToTime, scrollToTime, 'minutes')
-    ) {
-      this.calculateScroll(nextProps)
-    }
   }
 
   handleSelectAlldayEvent = (...args) => {

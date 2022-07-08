@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/jquense/react-big-calendar/compare/v1.2.0...v1.2.1) (2022-07-08)
+
+
+### Bug Fixes
+
+* update to current react-overlays ([#2217](https://github.com/jquense/react-big-calendar/issues/2217)) ([27ebe46](https://github.com/jquense/react-big-calendar/commit/27ebe46f6d4900d1bac5986f57770c93f2ab1287)), closes [#2186](https://github.com/jquense/react-big-calendar/issues/2186)
+
 # [1.2.0](https://github.com/jquense/react-big-calendar/compare/v1.1.0...v1.2.0) (2022-07-08)
 
 

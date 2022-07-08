@@ -1,9 +1,10 @@
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Overlay } from 'react-overlays'
-import Popup from './Popup2'
+import Popup from './Popup'
 
 function CalOverlay({
+  containerRef,
   popupOffset = 5,
   overlay,
   accessors,
@@ -39,6 +40,7 @@ function CalOverlay({
       {({ props }) => (
         <Popup
           {...props}
+          containerRef={containerRef}
           ref={popperRef}
           target={overlay.target}
           offset={offset}

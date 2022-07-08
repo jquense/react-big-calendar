@@ -33,6 +33,7 @@ export default class TimeGrid extends Component {
     if (this.props.width == null) {
       this.measureGutter()
     }
+    return null
   }
 
   componentDidMount() {

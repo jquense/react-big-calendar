@@ -29,14 +29,13 @@ export default class TimeGrid extends Component {
   getSnapshotBeforeUpdate() {
     this.calculateScroll()
     this.checkOverflow()
-
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
     return null
   }
 
   componentDidMount() {
+    if (this.props.width == null) {
+      this.measureGutter()
+    }
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)

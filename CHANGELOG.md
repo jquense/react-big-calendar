@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/jquense/react-big-calendar/compare/v1.2.1...v1.2.2) (2022-07-11)
+
+
+### Bug Fixes
+
+* correct popupOffset ([#2218](https://github.com/jquense/react-big-calendar/issues/2218)) ([6fdec30](https://github.com/jquense/react-big-calendar/commit/6fdec3049660a97dcf42819b16bfc01aa5764267))
+
 ## [1.2.1](https://github.com/jquense/react-big-calendar/compare/v1.2.0...v1.2.1) (2022-07-08)
 
 

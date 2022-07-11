@@ -1,5 +1,6 @@
 @import './variables';
 @import './reset';
+@import './mixins';
 
 .rbc-calendar {
   box-sizing: border-box;
@@ -7,6 +8,41 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  @include defineColorRGB(--rbc-out-of-range-color, $out-of-range-color);
+  @include defineColorRGB(--rbc-out-of-range-bg-color, $out-of-range-bg-color);
+
+  @include defineColorRGB(--rbc-calendar-border, $calendar-border);
+  @include defineColorRGB(--rbc-cell-border, $cell-border);
+
+  @include defineColorRGB(--rbc-border-color, $border-color);
+
+  @include defineColorRGB(--rbc-segment-width, $segment-width);
+
+  @include defineColorRGB(--rbc-time-selection-color, $time-selection-color);
+  @include defineColorRGB(--rbc-time-selection-bg-color, $time-selection-bg-color);
+  @include defineColorRGB(--rbc-date-selection-bg-color, $date-selection-bg-color);
+
+  @include defineColorRGB(--rbc-event-bg, $event-bg);
+  @include defineColorRGB(--rbc-event-border, $event-border);
+  @include defineColorRGB(--rbc-event-outline, $event-outline);
+  @include defineColorRGB(--rbc-event-color, $event-color);
+  @include defineColorRGB(--rbc-event-border-radius, $event-border-radius);
+  @include defineColorRGB(--rbc-event-padding, $event-padding);
+  @include defineColorRGB(--rbc-event-zindex, $event-zindex);
+
+  @include defineColorRGB(--rbc-btn-color, $btn-color);
+  @include defineColorRGB(--rbc-btn-bg, $btn-bg);
+  @include defineColorRGB(--rbc-btn-border, $btn-border);
+
+  @include defineColorRGB(--rbc-current-time-color, $current-time-color);
+
+  @include defineColorRGB(--rbc-rbc-css-prefix, $rbc-css-prefix);
+
+  @include defineColorRGB(--rbc-today-highlight-bg, $today-highlight-bg);
+
+  @include defineColorRGB(--rbc-active-background, $active-background);
+  @include defineColorRGB(--rbc-active-border, $active-border);
 }
 
 .rbc-calendar *,
@@ -36,11 +72,11 @@
 }
 
 .rbc-off-range {
-  color: $out-of-range-color;
+  color: var(--rbc-out-of-range-color);
 }
 
 .rbc-off-range-bg {
-  background: $out-of-range-bg-color;
+  background: var(--rbc-out-of-range-bg-color);
 }
 
 .rbc-header {
@@ -54,15 +90,15 @@
   font-weight: bold;
   font-size: 90%;
   min-height: 0;
-  border-bottom: 1px solid $cell-border;
+  border-bottom: 1px solid var(--rbc-cell-border);
 
   & + & {
-    border-left: 1px solid $cell-border;
+    border-left: 1px solid var(--rbc-cell-border);
   }
 
   .rbc-rtl & + & {
     border-left-width: 0;
-    border-right: 1px solid $cell-border;
+    border-right: 1px solid var(--rbc-cell-border);
   }
 
   & > a {
@@ -112,7 +148,7 @@
 }
 
 .rbc-today {
-  background-color: $today-highlight-bg;
+  background-color: var(--rbc-today-highlight-bg);
 }
 
 @import './toolbar';

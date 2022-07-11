@@ -5,10 +5,10 @@
   box-sizing: border-box;
   box-shadow: none;
   margin: 0;
-  padding: $event-padding;
-  background-color: $event-bg;
-  border-radius: $event-border-radius;
-  color: $event-color;
+  padding: var(--rbc-event-padding);
+  background-color: var(--rbc-event-bg);
+  border-radius: var(--rbc-event-border-radius);
+  color: var(--rbc-event-color);
   cursor: pointer;
   width: 100%;
   text-align: left;
@@ -23,7 +23,7 @@
   }
 
   &:focus {
-    outline: 5px auto $event-outline;
+    outline: 5px auto var(--rbc-event-outline);
   }
 }
 

@@ -1,8 +1,8 @@
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 
-import * as TimeSlotUtils from './utils/TimeSlots'
+import { getSlotMetrics } from './utils/TimeSlots'
 import TimeSlotGroup from './TimeSlotGroup'
 
 /**
@@ -21,63 +21,81 @@ function adjustForDST({ min, max, localizer }) {
   return { start: min, end: max }
 }
 
-export default class TimeGutter extends Component {
-  constructor(...args) {
-    super(...args)
-
-    const { min, max, timeslots, step, localizer } = this.props
-    const { start, end } = adjustForDST({ min, max, localizer })
-    this.slotMetrics = TimeSlotUtils.getSlotMetrics({
+const TimeGutter = ({
+  min,
+  max,
+  timeslots,
+  step,
+  localizer,
+  getNow,
+  resource,
+  components,
+  getters,
+  gutterRef,
+}) => {
+  const { start, end } = useMemo(
+    () => adjustForDST({ min, max, localizer }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [min?.toISOString(), max?.toISOString(), localizer]
+  )
+  const [slotMetrics, setSlotMetrics] = useState(
+    getSlotMetrics({
       min: start,
       max: end,
       timeslots,
       step,
       localizer,
     })
-  }
+  )
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { min, max, localizer } = nextProps
-    const { start, end } = adjustForDST({ min, max, localizer })
-    this.slotMetrics = this.slotMetrics.update({
-      ...nextProps,
-      min: start,
-      max: end,
-    })
-  }
+  useEffect(() => {
+    if (slotMetrics) {
+      setSlotMetrics(
+        slotMetrics.update({
+          min: start,
+          max: end,
+          timeslots,
+          step,
+          localizer,
+        })
+      )
+    }
+    /**
+     * We don't want this to fire when slotMetrics is updated as it would recursively bomb
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [start?.toISOString(), end?.toISOString(), timeslots, step])
 
-  renderSlot = (value, idx) => {
-    if (idx !== 0) return null
-    const { localizer, getNow } = this.props
+  const renderSlot = useCallback(
+    (value, idx) => {
+      if (idx) return null // don't return the first (0) idx
 
-    const isNow = this.slotMetrics.dateIsInGroup(getNow(), idx)
-    return (
-      <span className={clsx('rbc-label', isNow && 'rbc-now')}>
-        {localizer.format(value, 'timeGutterFormat')}
-      </span>
-    )
-  }
+      const isNow = slotMetrics.dateIsInGroup(getNow(), idx)
+      return (
+        <span className={clsx('rbc-label', isNow && 'rbc-now')}>
+          {localizer.format(value, 'timeGutterFormat')}
+        </span>
+      )
+    },
+    [slotMetrics, localizer, getNow]
+  )
 
-  render() {
-    const { resource, components, getters } = this.props
-
-    return (
-      <div className="rbc-time-gutter rbc-time-column">
-        {this.slotMetrics.groups.map((grp, idx) => {
-          return (
-            <TimeSlotGroup
-              key={idx}
-              group={grp}
-              resource={resource}
-              components={components}
-              renderSlot={this.renderSlot}
-              getters={getters}
-            />
-          )
-        })}
-      </div>
-    )
-  }
+  return (
+    <div className="rbc-time-gutter rbc-time-column" ref={gutterRef}>
+      {slotMetrics.groups.map((grp, idx) => {
+        return (
+          <TimeSlotGroup
+            key={idx}
+            group={grp}
+            resource={resource}
+            components={components}
+            renderSlot={renderSlot}
+            getters={getters}
+          />
+        )
+      })}
+    </div>
+  )
 }
 
 TimeGutter.propTypes = {
@@ -91,4 +109,9 @@ TimeGutter.propTypes = {
 
   localizer: PropTypes.object.isRequired,
   resource: PropTypes.string,
+  gutterRef: PropTypes.any,
 }
+
+export default React.forwardRef((props, ref) => (
+  <TimeGutter gutterRef={ref} {...props} />
+))

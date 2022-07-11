@@ -1,136 +1,125 @@
+import React, { useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
 import getOffset from 'dom-helpers/offset'
-import getScrollTop from 'dom-helpers/scrollTop'
-import getScrollLeft from 'dom-helpers/scrollLeft'
 
+import useClickOutside from './hooks/useClickOutside'
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 
-class Popup extends React.Component {
-  componentDidMount() {
-    let { popupOffset = 5, popperRef } = this.props,
-      { top, left, width, height } = getOffset(popperRef.current),
-      viewBottom = window.innerHeight + getScrollTop(window),
-      viewRight = window.innerWidth + getScrollLeft(window),
-      bottom = top + height,
-      right = left + width
+/**
+ * Changes to react-overlays cause issue with auto positioning,
+ * so we need to manually calculate the position of the popper,
+ * and constrain it to the Month container.
+ */
+function getPosition({ target, offset, container, box }) {
+  const { top, left, width, height } = getOffset(target)
+  const {
+    top: cTop,
+    left: cLeft,
+    width: cWidth,
+    height: cHeight,
+  } = getOffset(container)
+  const { width: bWidth, height: bHeight } = getOffset(box)
+  const viewBottom = cTop + cHeight
+  const viewRight = cLeft + cWidth
+  const bottom = top + bHeight
+  const right = left + bWidth
+  const { x, y } = offset
+  const topOffset = bottom > viewBottom ? top - bHeight - y : top + y + height
+  const leftOffset = right > viewRight ? left + x - bWidth + width : left + x
 
-    if (bottom > viewBottom || right > viewRight) {
-      let topOffset, leftOffset
-
-      if (bottom > viewBottom)
-        topOffset = bottom - viewBottom + (popupOffset.y || +popupOffset || 0)
-      if (right > viewRight)
-        leftOffset = right - viewRight + (popupOffset.x || +popupOffset || 0)
-
-      this.setState({ topOffset, leftOffset }) //eslint-disable-line
-    }
-  }
-
-  render() {
-    let {
-      events,
-      selected,
-      getters,
-      accessors,
-      components,
-      onSelect,
-      onDoubleClick,
-      onKeyPress,
-      slotStart,
-      slotEnd,
-      localizer,
-      popperRef,
-    } = this.props
-
-    let { width } = this.props.position,
-      topOffset = (this.state || {}).topOffset || 0,
-      leftOffset = (this.state || {}).leftOffset || 0
-
-    let style = {
-      top: -topOffset,
-      left: -leftOffset,
-      minWidth: width + width / 2,
-    }
-
-    return (
-      <div
-        style={{ ...this.props.style, ...style }}
-        className="rbc-overlay"
-        ref={popperRef}
-      >
-        <div className="rbc-overlay-header">
-          {localizer.format(slotStart, 'dayHeaderFormat')}
-        </div>
-        {events.map((event, idx) => (
-          <EventCell
-            key={idx}
-            type="popup"
-            localizer={localizer}
-            event={event}
-            getters={getters}
-            onSelect={onSelect}
-            accessors={accessors}
-            components={components}
-            onDoubleClick={onDoubleClick}
-            onKeyPress={onKeyPress}
-            continuesPrior={localizer.lt(
-              accessors.end(event),
-              slotStart,
-              'day'
-            )}
-            continuesAfter={localizer.gte(
-              accessors.start(event),
-              slotEnd,
-              'day'
-            )}
-            slotStart={slotStart}
-            slotEnd={slotEnd}
-            selected={isSelected(event, selected)}
-            draggable={true}
-            onDragStart={() => this.props.handleDragStart(event)}
-            onDragEnd={() => this.props.show()}
-          />
-        ))}
-      </div>
-    )
+  return {
+    topOffset,
+    leftOffset,
   }
 }
 
-Popup.propTypes = {
-  position: PropTypes.object,
-  popupOffset: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number,
-    }),
-  ]),
-  events: PropTypes.array,
-  selected: PropTypes.object,
+function Pop({
+  containerRef,
+  accessors,
+  getters,
+  selected,
+  components,
+  localizer,
+  position,
+  show,
+  events,
+  slotStart,
+  slotEnd,
+  onSelect,
+  onDoubleClick,
+  onKeyPress,
+  handleDragStart,
+  popperRef,
+  target,
+  offset,
+}) {
+  useClickOutside({ ref: popperRef, callback: show })
+  useLayoutEffect(() => {
+    const { topOffset, leftOffset } = getPosition({
+      target,
+      offset,
+      container: containerRef.current,
+      box: popperRef.current,
+    })
+    popperRef.current.style.top = `${topOffset}px`
+    popperRef.current.style.left = `${leftOffset}px`
+  }, [offset.x, offset.y, target])
 
+  const { width } = position
+  const style = {
+    minWidth: width + width / 2,
+  }
+  return (
+    <div style={style} className="rbc-overlay" ref={popperRef}>
+      <div className="rbc-overlay-header">
+        {localizer.format(slotStart, 'dayHeaderFormat')}
+      </div>
+      {events.map((event, idx) => (
+        <EventCell
+          key={idx}
+          type="popup"
+          localizer={localizer}
+          event={event}
+          getters={getters}
+          onSelect={onSelect}
+          accessors={accessors}
+          components={components}
+          onDoubleClick={onDoubleClick}
+          onKeyPress={onKeyPress}
+          continuesPrior={localizer.lt(accessors.end(event), slotStart, 'day')}
+          continuesAfter={localizer.gte(accessors.start(event), slotEnd, 'day')}
+          slotStart={slotStart}
+          slotEnd={slotEnd}
+          selected={isSelected(event, selected)}
+          draggable={true}
+          onDragStart={() => handleDragStart(event)}
+          onDragEnd={() => show()}
+        />
+      ))}
+    </div>
+  )
+}
+
+const Popup = React.forwardRef((props, ref) => (
+  <Pop {...props} popperRef={ref} />
+))
+Popup.propTypes = {
   accessors: PropTypes.object.isRequired,
-  components: PropTypes.object.isRequired,
   getters: PropTypes.object.isRequired,
+  selected: PropTypes.object,
+  components: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
+  position: PropTypes.object.isRequired,
+  show: PropTypes.func.isRequired,
+  events: PropTypes.array.isRequired,
+  slotStart: PropTypes.instanceOf(Date).isRequired,
+  slotEnd: PropTypes.instanceOf(Date),
   onSelect: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onKeyPress: PropTypes.func,
   handleDragStart: PropTypes.func,
-  show: PropTypes.func,
-  slotStart: PropTypes.instanceOf(Date),
-  slotEnd: PropTypes.number,
-  popperRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.Element }),
-  ]),
+  style: PropTypes.object,
+  offset: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
 }
-
-/**
- * The Overlay component, of react-overlays, creates a ref that is passed to the Popup, and
- * requires proper ref forwarding to be used without error
- */
-export default React.forwardRef((props, ref) => (
-  <Popup popperRef={ref} {...props} />
-))
+export default Popup

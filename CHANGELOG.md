@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/jquense/react-big-calendar/compare/v1.2.2...v1.2.3) (2022-07-11)
+
+
+### Bug Fixes
+
+* correct time-header-gutter ([#2219](https://github.com/jquense/react-big-calendar/issues/2219)) ([160e251](https://github.com/jquense/react-big-calendar/commit/160e251f288174a469932599251af06f179a47f9))
+
 ## [1.2.2](https://github.com/jquense/react-big-calendar/compare/v1.2.1...v1.2.2) (2022-07-11)
 
 

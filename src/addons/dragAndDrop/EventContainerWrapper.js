@@ -8,7 +8,6 @@ import Selection, {
 } from '../../Selection'
 import TimeGridEvent from '../../TimeGridEvent'
 import { dragAccessors, eventTimes, pointInColumn } from './common'
-import NoopWrapper from '../../NoopWrapper'
 
 class EventContainerWrapper extends React.Component {
   static propTypes = {
@@ -254,7 +253,7 @@ class EventContainerWrapper extends React.Component {
               className="rbc-addons-dnd-drag-preview"
               style={{ top, height, width: 100 }}
               getters={getters}
-              components={{ ...components, eventWrapper: NoopWrapper }}
+              components={{ ...components }}
               accessors={{ ...accessors, ...dragAccessors }}
               continuesPrior={startsBeforeDay}
               continuesAfter={startsAfterDay}

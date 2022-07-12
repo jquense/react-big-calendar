@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/jquense/react-big-calendar/compare/v1.3.0...v1.3.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* revert change ([#2223](https://github.com/jquense/react-big-calendar/issues/2223)) ([bdb0595](https://github.com/jquense/react-big-calendar/commit/bdb0595400eaf0a612af3bb39d27f3c0c0fc5867))
+
 # [1.3.0](https://github.com/jquense/react-big-calendar/compare/v1.2.4...v1.3.0) (2022-07-11)
 
 

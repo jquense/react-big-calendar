@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/jquense/react-big-calendar/compare/v1.3.3...v1.4.0) (2022-07-12)
+
+
+### Features
+
+* allow using custom event wrapper component while dragging ([#2228](https://github.com/jquense/react-big-calendar/issues/2228)) ([afa8824](https://github.com/jquense/react-big-calendar/commit/afa882426b893e300da25202b5c56b23d591e9f1)), closes [#1864](https://github.com/jquense/react-big-calendar/issues/1864)
+
 ## [1.3.3](https://github.com/jquense/react-big-calendar/compare/v1.3.2...v1.3.3) (2022-07-12)
 
 

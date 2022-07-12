@@ -38,13 +38,13 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  getSnapshotBeforeUpdate(prevProps) {
     if (!prevProps.selectable && this.props.selectable) this._selectable()
     if (prevProps.selectable && !this.props.selectable)
       this._teardownSelectable()
+  }
 
-    this.slotMetrics = this.slotMetrics.update(this.props)
-
+  componentDidUpdate(prevProps, prevState) {
     const { getNow, isNow, localizer, date, min, max } = this.props
     const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes')
 
@@ -115,7 +115,7 @@ class DayColumn extends React.Component {
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
 
-    let { slotMetrics } = this
+    let slotMetrics = this?.slotMetrics?.update?.(this.props) ?? {}
     let { selecting, top, height, startDate, endDate } = this.state
 
     let selectDates = { start: startDate, end: endDate }

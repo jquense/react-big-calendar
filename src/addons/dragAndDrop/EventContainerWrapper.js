@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { DnDContext } from './DnDContext'
+import NoopWrapper from '../../NoopWrapper'
 
 import Selection, {
   getBoundsForNode,
@@ -253,7 +254,7 @@ class EventContainerWrapper extends React.Component {
               className="rbc-addons-dnd-drag-preview"
               style={{ top, height, width: 100 }}
               getters={getters}
-              components={{ ...components }}
+              components={{ ...components, eventWrapper: NoopWrapper }}
               accessors={{ ...accessors, ...dragAccessors }}
               continuesPrior={startsBeforeDay}
               continuesAfter={startsAfterDay}

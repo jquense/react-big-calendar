@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/jquense/react-big-calendar/compare/v1.3.1...v1.3.2) (2022-07-12)
+
+
+### Bug Fixes
+
+* temp fix for DayColumn render ([#2224](https://github.com/jquense/react-big-calendar/issues/2224)) ([48b23a2](https://github.com/jquense/react-big-calendar/commit/48b23a26edb2383abee9978a2b99eb4520a97f12)), closes [#2222](https://github.com/jquense/react-big-calendar/issues/2222)
+
 ## [1.3.1](https://github.com/jquense/react-big-calendar/compare/v1.3.0...v1.3.1) (2022-07-12)
 
 

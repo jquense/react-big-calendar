@@ -277,7 +277,11 @@ export default class TimeGrid extends Component {
 
   applyScroll() {
     // If auto-scroll is disabled, we don't actually apply the scroll
-    if (this._scrollRatio != null && this.props.enableAutoScroll === true) {
+    if (
+      !this.props.selected &&
+      this._scrollRatio != null &&
+      this.props.enableAutoScroll === true
+    ) {
       const content = this.contentRef.current
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once

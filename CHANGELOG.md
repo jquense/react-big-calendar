@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/jquense/react-big-calendar/compare/v1.4.1...v1.4.2) (2022-07-15)
+
+
+### Bug Fixes
+
+* do not autoscroll on event selection ([#2234](https://github.com/jquense/react-big-calendar/issues/2234)) ([b85b1ff](https://github.com/jquense/react-big-calendar/commit/b85b1ff884862c8116e0e571e0715499f4e7d5f4)), closes [#2233](https://github.com/jquense/react-big-calendar/issues/2233)
+
 ## [1.4.1](https://github.com/jquense/react-big-calendar/compare/v1.4.0...v1.4.1) (2022-07-15)
 
 

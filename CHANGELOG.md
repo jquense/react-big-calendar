@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/jquense/react-big-calendar/compare/v1.4.0...v1.4.1) (2022-07-15)
+
+
+### Bug Fixes
+
+* **dnd:** dont use classname ([#2232](https://github.com/jquense/react-big-calendar/issues/2232)) ([2332f12](https://github.com/jquense/react-big-calendar/commit/2332f121260bc772f4a709f6334bd9bb96c05e69))
+
 # [1.4.0](https://github.com/jquense/react-big-calendar/compare/v1.3.3...v1.4.0) (2022-07-12)
 
 

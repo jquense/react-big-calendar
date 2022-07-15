@@ -27,7 +27,6 @@ export default class TimeGrid extends Component {
   }
 
   getSnapshotBeforeUpdate() {
-    this.calculateScroll()
     this.checkOverflow()
     return null
   }
@@ -36,6 +35,8 @@ export default class TimeGrid extends Component {
     if (this.props.width == null) {
       this.measureGutter()
     }
+
+    this.calculateScroll()
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)
@@ -277,11 +278,7 @@ export default class TimeGrid extends Component {
 
   applyScroll() {
     // If auto-scroll is disabled, we don't actually apply the scroll
-    if (
-      !this.props.selected &&
-      this._scrollRatio != null &&
-      this.props.enableAutoScroll === true
-    ) {
+    if (this._scrollRatio != null && this.props.enableAutoScroll === true) {
       const content = this.contentRef.current
       content.scrollTop = content.scrollHeight * this._scrollRatio
       // Only do this once

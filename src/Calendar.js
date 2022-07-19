@@ -730,6 +730,7 @@ class Calendar extends React.Component {
      *   dateCellWrapper: MyDateCellWrapper,
      *   timeSlotWrapper: MyTimeSlotWrapper,
      *   timeGutterHeader: MyTimeGutterWrapper,
+     *   timeGutterWrapper: MyTimeGutterWrapper,
      *   resourceHeader: MyResourceHeader,
      *   toolbar: MyToolbar,
      *   agenda: {
@@ -762,6 +763,7 @@ class Calendar extends React.Component {
       dayColumnWrapper: PropTypes.elementType,
       timeSlotWrapper: PropTypes.elementType,
       timeGutterHeader: PropTypes.elementType,
+      timeGutterWrapper: PropTypes.elementType,
       resourceHeader: PropTypes.elementType,
 
       toolbar: PropTypes.elementType,
@@ -930,6 +932,7 @@ class Calendar extends React.Component {
         dateCellWrapper: NoopWrapper,
         weekWrapper: NoopWrapper,
         timeSlotWrapper: NoopWrapper,
+        timeGutterWrapper: NoopWrapper,
       }),
       accessors: {
         start: wrapAccessor(startAccessor),

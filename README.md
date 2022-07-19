@@ -1,6 +1,10 @@
 # react-big-calendar
 
-An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
+An events calendar component built for React and made for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
+
+<p align="center">
+  <img src="./assets/rbc-demo.gif" alt="Big Calendar Demo Image" />
+</p>
 
 [**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
@@ -45,7 +49,7 @@ import moment from 'moment'
 
 const localizer = momentLocalizer(moment)
 
-const MyCalendar = props => (
+const MyCalendar = (props) => (
   <div>
     <Calendar
       localizer={localizer}
@@ -66,7 +70,7 @@ import globalize from 'globalize'
 
 const localizer = globalizeLocalizer(globalize)
 
-const MyCalendar = props => (
+const MyCalendar = (props) => (
   <div>
     <Calendar
       localizer={localizer}
@@ -101,7 +105,7 @@ const localizer = dateFnsLocalizer({
   locales,
 })
 
-const MyCalendar = props => (
+const MyCalendar = (props) => (
   <div>
     <Calendar
       localizer={localizer}

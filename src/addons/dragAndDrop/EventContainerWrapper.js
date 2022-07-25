@@ -184,11 +184,13 @@ class EventContainerWrapper extends React.Component {
       const { dragAndDropAction } = this.context.draggable
 
       if (dragAndDropAction.action === 'move') {
-        if (this.context.draggable.enableDragAutoScroll)
-          this.updateParentScroll(parent, node)
+        this.updateParentScroll(parent, node)
         this.handleMove(box, bounds)
       }
-      if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
+      if (dragAndDropAction.action === 'resize') {
+        this.updateParentScroll(parent, node)
+        this.handleResize(box, bounds)
+      }
     })
 
     selector.on('dropFromOutside', (point) => {

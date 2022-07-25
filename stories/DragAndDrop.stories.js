@@ -99,14 +99,3 @@ WithCustomEventWrapper.args = {
     eventWrapper: customComponents.eventWrapper,
   },
 }
-
-export const WithAutoScroll = Template.bind({})
-WithAutoScroll.storyName = 'draggable with auto scroll'
-WithAutoScroll.args = {
-  defaultDate: new Date(),
-  defaultView: Views.WEEK,
-  events,
-  onEventDrop: action('event dropped'),
-  onEventResize: action('event resized'),
-  enableDragAutoScroll: true,
-}

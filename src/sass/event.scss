@@ -19,7 +19,7 @@
   }
 
   &.rbc-selected {
-    background-color: var(--rbc-event-bg--selected, $event-bg--selected);
+    background-color: var(--rbc-event-bg--selected, darken($event-bg, 10%));
   }
 
   &:focus {

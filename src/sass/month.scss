@@ -31,7 +31,7 @@
   color: var(--rbc-event-bg, $event-bg);
   &:hover,
   &:focus {
-    color: var(--rbc-event-bg--selected, $event-bg--selected);
+    color: var(--rbc-event-bg--selected, darken($event-bg, 10%));
   }
 }
 

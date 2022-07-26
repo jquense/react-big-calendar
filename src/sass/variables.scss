@@ -14,7 +14,8 @@ $time-selection-bg-color: rgba(0, 0, 0, 0.5) !default;
 $date-selection-bg-color: rgba(0, 0, 0, 0.1) !default;
 
 $event-bg: #3174ad !default;
-$event-border: darken(#3174ad, 10%) !default;
+$event-bg--selected: darken($event-bg, 10%) !default;
+$event-border: darken($event-bg, 10%) !default;
 $event-outline: #3b99fc !default;
 $event-color: #fff !default;
 $event-border-radius: 5px !default;
@@ -23,10 +24,14 @@ $event-zindex: 4 !default;
 
 $btn-color: #373a3c !default;
 $btn-bg: #fff !default;
+$btn-bg--active: darken(#fff, 10%) !default;
 $btn-border: #ccc !default;
+$btn-border--active: darken($btn-border, 12%) !default;
 
 $current-time-color: #74ad31 !default;
 
 $rbc-css-prefix: rbc-i !default;
 
 $today-highlight-bg: #eaf6ff !default;
+
+$time-slot-border-top: lighten($cell-border, 10%) !default;

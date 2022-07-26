@@ -4,8 +4,8 @@
 .rbc-slot-selection {
   z-index: 10;
   position: absolute;
-  background-color: var(--rbc-time-selection-bg-color);
-  color: var(--rbc-time-selection-color);
+  background-color: var(--rbc-time-selection-bg-color, $time-selection-bg-color);
+  color: var(--rbc-time-selection-color, $time-selection-color);
   font-size: 75%;
   width: 100%;
   padding: 3px;
@@ -20,7 +20,7 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
-  border: 1px solid var(--rbc-calendar-border);
+  border: 1px solid var(--rbc-calendar-border, $calendar-border);
   min-height: 0;
 
   .rbc-time-gutter {
@@ -35,7 +35,7 @@
     position: relative;
   }
   .rbc-allday-cell + .rbc-allday-cell {
-    border-left: 1px solid var(--rbc-cell-border);
+    border-left: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   .rbc-allday-events {
@@ -55,20 +55,20 @@
   flex-direction: row;
 
   &.rbc-overflowing {
-    border-right: 1px solid var(--rbc-cell-border);
+    border-right: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   .rbc-rtl &.rbc-overflowing {
     border-right-width: 0;
-    border-left: 1px solid var(--rbc-cell-border);
+    border-left: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   > .rbc-row:first-child {
-    border-bottom: 1px solid var(--rbc-cell-border);
+    border-bottom: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   > .rbc-row.rbc-row-resource {
-    border-bottom: 1px solid var(--rbc-cell-border);
+    border-bottom: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   // .rbc-gutter-cell {
@@ -89,15 +89,15 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  border-left: 1px solid var(--rbc-cell-border);
+  border-left: 1px solid var(--rbc-cell-border, $cell-border);
 
   .rbc-rtl & {
     border-left-width: 0;
-    border-right: 1px solid var(--rbc-cell-border);
+    border-right: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   > .rbc-row.rbc-row-resource {
-    border-bottom: 1px solid var(--rbc-cell-border);
+    border-bottom: 1px solid var(--rbc-cell-border, $cell-border);
     flex-shrink: 0;
   }
 }
@@ -107,7 +107,7 @@
   flex: 1 0 0%;
   align-items: flex-start;
   width: 100%;
-  border-top: 2px solid var(--rbc-calendar-border);
+  border-top: 2px solid var(--rbc-calendar-border, $cell-border);
   overflow-y: auto;
   position: relative;
 
@@ -116,12 +116,12 @@
   }
 
   > * + * > * {
-    border-left: 1px solid var(--rbc-cell-border);
+    border-left: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   .rbc-rtl & > * + * > * {
     border-left-width: 0;
-    border-right: 1px solid var(--rbc-cell-border);
+    border-right: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   > .rbc-day-slot {
@@ -138,6 +138,6 @@
   right: 0;
   height: 1px;
 
-  background-color: var(--rbc-current-time-color);
+  background-color: var(--rbc-current-time-color, $current-time-color);
   pointer-events: none;
 }

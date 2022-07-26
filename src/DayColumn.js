@@ -38,13 +38,15 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.selectable && this.props.selectable) this._selectable()
-    if (prevProps.selectable && !this.props.selectable)
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.selectable && !this.props.selectable) this._selectable()
+    if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable()
 
-    this.slotMetrics = this.slotMetrics.update(this.props)
+    this.slotMetrics = this.slotMetrics.update(nextProps)
+  }
 
+  componentDidUpdate(prevProps, prevState) {
     const { getNow, isNow, localizer, date, min, max } = this.props
     const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes')
 

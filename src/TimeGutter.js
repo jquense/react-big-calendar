@@ -33,6 +33,7 @@ const TimeGutter = ({
   getters,
   gutterRef,
 }) => {
+  const { timeGutterWrapper: TimeGutterWrapper } = components
   const { start, end } = useMemo(
     () => adjustForDST({ min, max, localizer }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,20 +82,22 @@ const TimeGutter = ({
   )
 
   return (
-    <div className="rbc-time-gutter rbc-time-column" ref={gutterRef}>
-      {slotMetrics.groups.map((grp, idx) => {
-        return (
-          <TimeSlotGroup
-            key={idx}
-            group={grp}
-            resource={resource}
-            components={components}
-            renderSlot={renderSlot}
-            getters={getters}
-          />
-        )
-      })}
-    </div>
+    <TimeGutterWrapper slotMetrics={slotMetrics}>
+      <div className="rbc-time-gutter rbc-time-column" ref={gutterRef}>
+        {slotMetrics.groups.map((grp, idx) => {
+          return (
+            <TimeSlotGroup
+              key={idx}
+              group={grp}
+              resource={resource}
+              components={components}
+              renderSlot={renderSlot}
+              getters={getters}
+            />
+          )
+        })}
+      </div>
+    </TimeGutterWrapper>
   )
 }
 

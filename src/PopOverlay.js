@@ -22,7 +22,7 @@ function CalOverlay({
   const popperRef = useRef(null)
   if (!overlay.position) return null
 
-  let offset
+  let offset = popupOffset
   if (!isNaN(popupOffset)) {
     offset = { x: popupOffset, y: popupOffset }
   }

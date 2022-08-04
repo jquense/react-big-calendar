@@ -38,11 +38,15 @@ const clickTolerance = 5
 const clickInterval = 250
 
 class Selection {
-  constructor(node, { global = false, longPressThreshold = 250 } = {}) {
+  constructor(
+    node,
+    { global = false, longPressThreshold = 250, validContainers = [] } = {}
+  ) {
     this.isDetached = false
     this.container = node
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
+    this.validContainers = validContainers
 
     this._listeners = Object.create(null)
 
@@ -303,6 +307,19 @@ class Selection {
     }
   }
 
+  // Check whether provided event target element
+  // - is contained within a valid container
+  _isWithinValidContainer(e) {
+    const eventTarget = e.target
+    const containers = this.validContainers
+
+    if (!containers || !containers.length || !eventTarget) {
+      return true
+    }
+
+    return containers.some((target) => !!eventTarget.closest(target))
+  }
+
   _handleTerminatingEvent(e) {
     const { pageX, pageY } = getEventCoordinates(e)
 
@@ -314,16 +331,13 @@ class Selection {
     if (!this._initialEventData) return
 
     let inRoot = !this.container || contains(this.container(), e.target)
+    let isWithinValidContainer = this._isWithinValidContainer(e)
     let bounds = this._selectRect
     let click = this.isClick(pageX, pageY)
 
     this._initialEventData = null
 
-    if (e.key === 'Escape') {
-      return this.emit('reset')
-    }
-
-    if (!inRoot) {
+    if (e.key === 'Escape' || !isWithinValidContainer) {
       return this.emit('reset')
     }
 
@@ -333,6 +347,8 @@ class Selection {
 
     // User drag-clicked in the Selectable area
     if (!click) return this.emit('select', bounds)
+
+    return this.emit('reset')
   }
 
   _handleClickEvent(e) {

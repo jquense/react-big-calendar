@@ -36,5 +36,5 @@ ScrollToTime.args = {
   defaultView: Views.WEEK,
   events: demoEvents,
   localizer: mLocalizer,
-  scrollToTime: new Date(1972, 0, 1, 10),
+  scrollToTime: new Date(1972, 0, 1, 22),
 }

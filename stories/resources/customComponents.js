@@ -69,6 +69,16 @@ const customComponents = {
           }
     return <div style={style}>{timeSlotWrapperProps.children}</div>
   },
+  timeGutterWrapper: (timeGutterWrapperProps) => {
+    return (
+      <div
+        id="my-custom-time-gutter-wrapper"
+        style={{ backgroundColor: 'gray' }}
+      >
+        {timeGutterWrapperProps.children}
+      </div>
+    )
+  },
 }
 
 export default customComponents

@@ -51,7 +51,7 @@ export default function ({
       const y4 = se2.style.top + se2.style.height
 
       // be friends when overlapped
-      if ((y3 <= y1 && y1 < y4) || (y1 <= y3 && y3 < y2)) {
+      if ((y3 <= y1 && y1 <= y4) || (y1 <= y3 && y3 <= y2)) {
         // TODO : hashmap would be effective for performance
         se1.friends.push(se2)
         se2.friends.push(se1)

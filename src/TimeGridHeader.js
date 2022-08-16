@@ -21,6 +21,7 @@ class TimeGridHeader extends React.Component {
       getNow,
       getters: { dayProp },
       components: { header: HeaderComponent = Header },
+      view,
     } = this.props
 
     const today = getNow()
@@ -32,7 +33,12 @@ class TimeGridHeader extends React.Component {
       const { className, style } = dayProp(date)
 
       let header = (
-        <HeaderComponent date={date} label={label} localizer={localizer} />
+        <HeaderComponent
+          date={date}
+          label={label}
+          localizer={localizer}
+          view={view}
+        />
       )
 
       return (
@@ -49,7 +55,7 @@ class TimeGridHeader extends React.Component {
             <button
               type="button"
               className="rbc-button-link"
-              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
+              onClick={(e) => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}
             </button>
@@ -223,6 +229,7 @@ TimeGridHeader.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
+  view: PropTypes.string,
 }
 
 export default TimeGridHeader

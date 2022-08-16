@@ -147,6 +147,7 @@ class DateContentRow extends React.Component {
       resourceId,
       slotMetrics: metrics,
       resizable,
+      getNow,
     }
 
     return (

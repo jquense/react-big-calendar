@@ -1050,6 +1050,7 @@ class Calendar extends React.Component {
           onSelectSlot={this.handleSelectSlot}
           onShowMore={onShowMore}
           doShowMoreDrillDown={doShowMoreDrillDown}
+          view={view}
         />
       </div>
     )

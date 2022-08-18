@@ -201,7 +201,7 @@ class MonthView extends React.Component {
   }
 
   renderHeaders(row) {
-    let { localizer, components, view } = this.props
+    let { localizer, components } = this.props
     let first = row[0]
     let last = row[row.length - 1]
     let HeaderComponent = components.header || Header
@@ -212,14 +212,13 @@ class MonthView extends React.Component {
           date={day}
           localizer={localizer}
           label={localizer.format(day, 'weekdayFormat')}
-          view={view}
         />
       </div>
     ))
   }
 
   renderOverlay() {
-    let overlay = (this.state && this.state.overlay) || {}
+    let overlay = this.state?.overlay ?? {}
     let {
       accessors,
       localizer,
@@ -425,7 +424,6 @@ MonthView.propTypes = {
       y: PropTypes.number,
     }),
   ]),
-  view: PropTypes.string,
 }
 
 MonthView.range = (date, { localizer }) => {

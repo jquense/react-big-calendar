@@ -21,7 +21,6 @@ class TimeGridHeader extends React.Component {
       getNow,
       getters: { dayProp },
       components: { header: HeaderComponent = Header },
-      view,
     } = this.props
 
     const today = getNow()
@@ -33,12 +32,7 @@ class TimeGridHeader extends React.Component {
       const { className, style } = dayProp(date)
 
       let header = (
-        <HeaderComponent
-          date={date}
-          label={label}
-          localizer={localizer}
-          view={view}
-        />
+        <HeaderComponent date={date} label={label} localizer={localizer} />
       )
 
       return (
@@ -229,7 +223,6 @@ TimeGridHeader.propTypes = {
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
-  view: PropTypes.string,
 }
 
 export default TimeGridHeader

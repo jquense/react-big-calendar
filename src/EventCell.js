@@ -3,6 +3,21 @@ import React from 'react'
 import clsx from 'clsx'
 
 class EventCell extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isHover: false,
+    }
+  }
+
+  handleMouseEnter = () => {
+    this.setState({ isHover: true })
+  }
+
+  handleMouseLeave = () => {
+    this.setState({ isHover: false })
+  }
+
   render() {
     let {
       style,
@@ -24,6 +39,7 @@ class EventCell extends React.Component {
       slotEnd,
       ...props
     } = this.props
+    let { isHover } = this.state
     delete props.resizable
 
     let title = accessors.title(event)
@@ -36,6 +52,8 @@ class EventCell extends React.Component {
       isAllDay ||
       allDay ||
       localizer.diff(start, localizer.ceil(end, 'day'), 'day') > 1
+
+    event = { ...event, isHover }
 
     let userProps = getters.eventProp(event, start, end, selected)
 
@@ -73,6 +91,8 @@ class EventCell extends React.Component {
           onClick={(e) => onSelect && onSelect(event, e)}
           onDoubleClick={(e) => onDoubleClick && onDoubleClick(event, e)}
           onKeyPress={(e) => onKeyPress && onKeyPress(event, e)}
+          onMouseEnter={this.handleMouseEnter}
+          onMouseLeave={this.handleMouseLeave}
         >
           {typeof children === 'function' ? children(content) : content}
         </div>

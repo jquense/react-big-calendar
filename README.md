@@ -39,7 +39,7 @@ $ yarn storybook
 ### Localization and Date Formatting
 
 `react-big-calendar` includes three options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize), [date-fns](https://date-fns.org/), [Day.js](https://day.js.org) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
@@ -106,6 +106,45 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 })
+
+const MyCalendar = (props) => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
+```js
+import { Calendar, dayjsLocalizer } from 'react-big-calendar'
+import dayjs from 'dayjs'
+
+// import necessary dayjs plugins
+import isBetween from 'dayjs/plugin/isBetween'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import localeData from 'dayjs/plugin/localeData'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import minMax from 'dayjs/plugin/minMax'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+
+// load necessary dayjs plugins
+dayjs.extend(isBetween)
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
+dayjs.extend(localeData)
+dayjs.extend(localizedFormat)
+dayjs.extend(minMax)
+dayjs.extend(timezone)
+dayjs.extend(utc)
+
+const localizer = dayjsLocalizer(dayjs)
 
 const MyCalendar = (props) => (
   <div>

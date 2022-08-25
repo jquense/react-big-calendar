@@ -150,14 +150,14 @@ export default function (dayjsLib) {
   function min(dateA, dateB) {
     const dtA = dayjs(dateA)
     const dtB = dayjs(dateB)
-    const minDt = dayjs.min(dtA, dtB)
+    const minDt = dayjsLib.min(dtA, dtB)
     return minDt.toDate()
   }
 
   function max(dateA, dateB) {
     const dtA = dayjs(dateA)
     const dtB = dayjs(dateB)
-    const maxDt = dayjs.max(dtA, dtB)
+    const maxDt = dayjsLib.max(dtA, dtB)
     return maxDt.toDate()
   }
 
@@ -210,7 +210,7 @@ export default function (dayjsLib) {
   }
 
   function firstOfWeek(culture) {
-    const data = culture ? dayjs.localeData(culture) : dayjs.localeData()
+    const data = culture ? dayjsLib.localeData(culture) : dayjsLib.localeData()
     return data ? data.firstDayOfWeek() : 0
   }
 
@@ -264,15 +264,15 @@ export default function (dayjsLib) {
 
   // These two are used by DateSlotMetrics
   function continuesPrior(start, first) {
-    const mStart = dayjs(start)
-    const mFirst = dayjs(first)
-    return mStart.isBefore(mFirst, 'day')
+    const djStart = dayjs(start)
+    const djFirst = dayjs(first)
+    return djStart.isBefore(djFirst, 'day')
   }
 
   function continuesAfter(start, end, last) {
-    const mEnd = dayjs(end)
-    const mLast = dayjs(last)
-    return mEnd.isSameOrAfter(mLast, 'minutes')
+    const djEnd = dayjs(end)
+    const djLast = dayjs(last)
+    return djEnd.isSameOrAfter(djLast, 'minutes')
   }
 
   // These two are used by eventLevels

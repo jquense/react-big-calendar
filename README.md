@@ -147,4 +147,3 @@ Big Calendar. Carefully test each change accordingly.
   Join us on [Reactiflux Discord](https://discord.gg/reactiflux) community under the channel #libraries if you have any questions.
 
 - Added classNames in eventEndingRow.js to identify `{x} more` is in current Day, past days or future days.
-- Added hover state in EventCell.js

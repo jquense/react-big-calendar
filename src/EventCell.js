@@ -38,9 +38,12 @@ class EventCell extends React.Component {
       localizer.diff(start, localizer.ceil(end, 'day'), 'day') > 1
 
     let userProps = getters.eventProp(event, start, end, selected)
-
     const content = (
-      <div className="rbc-event-content" title={tooltip || undefined}>
+      <div
+        className="rbc-event-content"
+        style={event.style || {}}
+        title={tooltip || undefined}
+      >
         {Event ? (
           <Event
             event={event}
@@ -63,7 +66,7 @@ class EventCell extends React.Component {
         <div
           {...props}
           tabIndex={0}
-          style={{ ...userProps.style, ...style }}
+          style={{ ...userProps.style, ...style, ...(event.style || {}) }}
           className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
             'rbc-event-allday': showAsAllDay,

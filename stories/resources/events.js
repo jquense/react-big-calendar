@@ -7,6 +7,9 @@ export default [
     allDay: true,
     start: new Date(2015, 3, 0),
     end: new Date(2015, 3, 1),
+    style: {
+      backgroundColor: 'red',
+    },
   },
   {
     id: 1,
@@ -48,6 +51,10 @@ export default [
     start: new Date(2015, 3, 12, 10, 30, 0, 0),
     end: new Date(2015, 3, 12, 12, 30, 0, 0),
     desc: 'Pre-meeting meeting, to prepare for the meeting',
+    style: {
+      backgroundColor: 'yellow',
+      color: 'black',
+    },
   },
   {
     id: 7,

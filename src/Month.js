@@ -346,9 +346,13 @@ class MonthView extends React.Component {
   }
 
   overlayDisplay = () => {
-    this.setState({
-      overlay: null,
-    })
+    // This is fix for https://jira.directi.com/browse/CWDC-771. As this function trigger,
+    // when click outside of show more pop up. But it will trigger only if root close is true.
+    if (this.props.popupOverlayProps?.rootClose) {
+      this.setState({
+        overlay: null,
+      })
+    }
   }
 
   selectDates(slotInfo) {

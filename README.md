@@ -147,3 +147,4 @@ Big Calendar. Carefully test each change accordingly.
   Join us on [Reactiflux Discord](https://discord.gg/reactiflux) community under the channel #libraries if you have any questions.
 
 - Added classNames in eventEndingRow.js to identify `{x} more` is in current Day, past days or future days.
+- Update overlayDisplay function in month view to fix https://jira.directi.com/browse/CWDC-771 .Will remove overlay if rootClose option is true only.

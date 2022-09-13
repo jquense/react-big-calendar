@@ -18,7 +18,7 @@ const timeRangeStartFormat = ({ start }, culture, local) =>
 const timeRangeEndFormat = ({ end }, culture, local) =>
   ' – ' + local.format(end, 'LT', culture)
 
-const defStringFormats = {
+const defaultStringFormats = {
   dateFormat: 'DD',
   dayFormat: 'DD ddd',
   weekdayFormat: 'ddd',
@@ -41,7 +41,7 @@ function fixUnit(unit) {
   }
   return datePart
 }
-const defFunctionFormats = {
+const defaultFunctionFormats = {
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,
   eventTimeRangeStartFormat: timeRangeStartFormat,
@@ -52,7 +52,7 @@ const defFunctionFormats = {
 
   agendaTimeRangeFormat: timeRangeFormat,
 }
-export default function (moment, customFormats = defStringFormats) {
+export default function (moment, customFormats = defaultStringFormats) {
   const locale = (m, c) => (c ? m.locale(c) : m)
 
   function getTimezoneOffset(date) {
@@ -343,7 +343,7 @@ export default function (moment, customFormats = defStringFormats) {
     const mtOffset = moment().utcOffset()
     return mtOffset > comparator ? 1 : 0
   }
-  const formats = { ...defFunctionFormats, ...customFormats }
+  const formats = { ...defaultFunctionFormats, ...customFormats }
   return new DateLocalizer({
     formats,
 

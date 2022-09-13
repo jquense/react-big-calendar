@@ -18,26 +18,18 @@ const timeRangeStartFormat = ({ start }, culture, local) =>
 const timeRangeEndFormat = ({ end }, culture, local) =>
   ' – ' + local.format(end, 'LT', culture)
 
-export const formats = {
+const defStringFormats = {
   dateFormat: 'DD',
   dayFormat: 'DD ddd',
   weekdayFormat: 'ddd',
-
-  selectRangeFormat: timeRangeFormat,
-  eventTimeRangeFormat: timeRangeFormat,
-  eventTimeRangeStartFormat: timeRangeStartFormat,
-  eventTimeRangeEndFormat: timeRangeEndFormat,
 
   timeGutterFormat: 'LT',
 
   monthHeaderFormat: 'MMMM YYYY',
   dayHeaderFormat: 'dddd MMM DD',
-  dayRangeHeaderFormat: weekRangeFormat,
-  agendaHeaderFormat: dateRangeFormat,
 
   agendaDateFormat: 'ddd MMM DD',
   agendaTimeFormat: 'LT',
-  agendaTimeRangeFormat: timeRangeFormat,
 }
 
 function fixUnit(unit) {
@@ -49,15 +41,23 @@ function fixUnit(unit) {
   }
   return datePart
 }
+const defFunctionFormats = {
+  selectRangeFormat: timeRangeFormat,
+  eventTimeRangeFormat: timeRangeFormat,
+  eventTimeRangeStartFormat: timeRangeStartFormat,
+  eventTimeRangeEndFormat: timeRangeEndFormat,
 
-export default function (moment) {
+  dayRangeHeaderFormat: weekRangeFormat,
+  agendaHeaderFormat: dateRangeFormat,
+
+  agendaTimeRangeFormat: timeRangeFormat,
+}
+export default function (moment, customFormats = defStringFormats) {
   const locale = (m, c) => (c ? m.locale(c) : m)
 
   function getTimezoneOffset(date) {
     // ensures this gets cast to timezone
-    return moment(date)
-      .toDate()
-      .getTimezoneOffset()
+    return moment(date).toDate().getTimezoneOffset()
   }
 
   function getDstOffset(start, end) {
@@ -343,7 +343,7 @@ export default function (moment) {
     const mtOffset = moment().utcOffset()
     return mtOffset > comparator ? 1 : 0
   }
-
+  const formats = { ...defFunctionFormats, ...customFormats }
   return new DateLocalizer({
     formats,
 

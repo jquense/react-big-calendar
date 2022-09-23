@@ -45,6 +45,20 @@ CustomTimeGutterHeader.args = {
   },
 }
 
+export const CustomTimeGutterWrapper = Template.bind({})
+CustomTimeGutterWrapper.storyName = 'custom TimeGutter wrapper'
+CustomTimeGutterWrapper.args = {
+  popup: true,
+  events: demoEvents,
+  onSelectEvent: action('event selected'),
+  defaultDate: new Date(2015, 3, 1),
+  defaultView: Views.WEEK,
+  views: [Views.WEEK, Views.DAY],
+  components: {
+    timeGutterWrapper: customComponents.timeGutterWrapper,
+  },
+}
+
 export const CustomDateCellWrapper = Template.bind({})
 CustomDateCellWrapper.storyName = 'add custom dateCellWrapper'
 CustomDateCellWrapper.args = {

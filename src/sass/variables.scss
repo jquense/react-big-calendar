@@ -1,5 +1,3 @@
-@use "sass:math";
-
 $out-of-range-color: lighten(#333, 40%) !default;
 $out-of-range-bg-color: lighten(#333, 70%) !default;
 
@@ -8,7 +6,8 @@ $cell-border: #ddd !default;
 
 $border-color: #ccc !default;
 
-$segment-width: percentage(math.div(1, 7)) !default;
+// Each calendar segment is 1/7th.
+$segment-width: 0.14286% !default;
 
 $time-selection-color: white !default;
 $time-selection-bg-color: rgba(0, 0, 0, 0.5) !default;

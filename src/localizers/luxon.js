@@ -63,7 +63,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   }
 
   function formatDateWithCulture(value, culture, format) {
-    return DateTime.fromJSDate(value).setLocale(culture).format(format)
+    return DateTime.fromJSDate(value).setLocale(culture).toFormat(format)
   }
 
   /*** BEGIN localized date arithmetic methods with Luxon ***/

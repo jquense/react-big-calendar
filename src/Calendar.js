@@ -730,6 +730,7 @@ class Calendar extends React.Component {
      *   dateCellWrapper: MyDateCellWrapper,
      *   timeSlotWrapper: MyTimeSlotWrapper,
      *   timeGutterHeader: MyTimeGutterWrapper,
+     *   timeGutterWrapper: MyTimeGutterWrapper,
      *   resourceHeader: MyResourceHeader,
      *   toolbar: MyToolbar,
      *   agenda: {
@@ -762,6 +763,7 @@ class Calendar extends React.Component {
       dayColumnWrapper: PropTypes.elementType,
       timeSlotWrapper: PropTypes.elementType,
       timeGutterHeader: PropTypes.elementType,
+      timeGutterWrapper: PropTypes.elementType,
       resourceHeader: PropTypes.elementType,
 
       toolbar: PropTypes.elementType,
@@ -809,7 +811,7 @@ class Calendar extends React.Component {
      *
      *   noEventsInRange: 'There are no events in this range.',
      *
-     *   showMore: total => `+${total} more`,
+     *   showMore: total => `+ ${total} more`,
      * }
      *
      * <Calendar messages={messages} />
@@ -845,6 +847,8 @@ class Calendar extends React.Component {
   }
 
   static defaultProps = {
+    events: [],
+    backgroundEvents: [],
     elementProps: {},
     popup: false,
     toolbar: true,
@@ -875,14 +879,14 @@ class Calendar extends React.Component {
     super(...args)
 
     this.state = {
-      context: this.getContext(this.props),
+      context: Calendar.getContext(this.props),
     }
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({ context: this.getContext(nextProps) })
+  static getDerivedStateFromProps(nextProps) {
+    return { context: Calendar.getContext(nextProps) }
   }
 
-  getContext({
+  static getContext({
     startAccessor,
     endAccessor,
     allDayAccessor,
@@ -928,6 +932,7 @@ class Calendar extends React.Component {
         dateCellWrapper: NoopWrapper,
         weekWrapper: NoopWrapper,
         timeSlotWrapper: NoopWrapper,
+        timeGutterWrapper: NoopWrapper,
       }),
       accessors: {
         start: wrapAccessor(startAccessor),
@@ -981,7 +986,7 @@ class Calendar extends React.Component {
       view,
       toolbar,
       events,
-      backgroundEvents = [],
+      backgroundEvents,
       style,
       className,
       elementProps,

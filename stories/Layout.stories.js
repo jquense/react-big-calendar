@@ -13,10 +13,12 @@ export default {
 
 const Template = (args) => <Calendar {...args} />
 
+const defaultDate = new Date()
+
 export const EventLayout = Template.bind({})
 EventLayout.args = {
   defaultView: Views.DAY,
-  defaultDate: new Date(),
+  defaultDate,
   timeslots: 4,
   events: createEvents(1),
 }
@@ -171,6 +173,29 @@ export const ZeroDurationOddities = () => {
           end: new Date(2015, 3, 10, 0, 0, 0),
         },
       ]}
+    />
+  )
+}
+
+export const ZeroDurationOverlap = () => {
+  return (
+    <DragAndDropCalendar
+      defaultDate={defaultDate}
+      events={[
+        {
+          title: 'event a',
+          start: defaultDate,
+          end: defaultDate,
+        },
+        {
+          title: 'event b',
+          start: defaultDate,
+          end: defaultDate,
+        },
+      ]}
+      dayLayoutAlgorithm={'no-overlap'}
+      scrollToTime={defaultDate}
+      defaultView={Views.WEEK}
     />
   )
 }

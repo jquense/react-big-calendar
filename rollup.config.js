@@ -1,3 +1,4 @@
+import path from 'path'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
@@ -83,6 +84,12 @@ export default [
     },
     // prevent bundling all dependencies
     external: (id) => !id.startsWith('.') && !id.startsWith('/'),
-    plugins: [babel(babelOptions), sizeSnapshot()],
+    plugins: [
+      babel({
+        ...babelOptions,
+        configFile: path.join(__dirname, 'babel.config.esm.js'),
+      }),
+      sizeSnapshot(),
+    ],
   },
 ]

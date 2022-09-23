@@ -31,7 +31,7 @@ const Template = (args) => (
 )
 
 export const Events = Template.bind({})
-Events.storyName = 'events *'
+Events.storyName = 'events'
 Events.args = {
   defaultDate: new Date(2015, 3, 13),
   events: demoEvents,

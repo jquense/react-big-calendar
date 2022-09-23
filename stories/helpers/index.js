@@ -22,7 +22,9 @@ const localizer = momentLocalizer(moment)
 export const date = (...args) => moment(...args).toDate()
 
 export const Calendar = (props) => (
-  <BaseCalendar localizer={localizer} {...props} />
+  <div style={{ height: 650 }}>
+    <BaseCalendar localizer={localizer} {...props} />
+  </div>
 )
 
 export const DragAndDropCalendar = withDragAndDrop(Calendar)

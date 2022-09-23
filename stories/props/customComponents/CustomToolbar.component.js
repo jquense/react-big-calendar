@@ -44,27 +44,27 @@ export default function CustomToolbar({
 
       <span className="rbc-toolbar-label">{label}</span>
 
-      <span className="rbc-btn-group">
+      <span className={clsx('rbc-btn-group', 'examples--custom-toolbar')}>
         <button
           type="button"
           onClick={() => onNavigate(navigate.PREVIOUS)}
           aria-label={messages.previous}
         >
-          <i className="fa fa-fw fa-chevron-left"></i>
+          &#60;
         </button>
         <button
           type="button"
           onClick={() => onNavigate(navigate.TODAY)}
           aria-label={messages.today}
         >
-          <i className="fa fa-fw fa-circle"></i>
+          &#8226;
         </button>
         <button
           type="button"
           onClick={() => onNavigate(navigate.NEXT)}
           aria-label={messages.next}
         >
-          <i className="fa fa-fw fa-chevron-right"></i>
+          &#62;
         </button>
       </span>
     </div>

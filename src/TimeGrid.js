@@ -1,8 +1,7 @@
+import React, { Component, createRef } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
-import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import memoize from 'memoize-one'
 
 import DayColumn from './DayColumn'
@@ -24,19 +23,20 @@ export default class TimeGrid extends Component {
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
     this._scrollRatio = null
+    this.gutterRef = createRef()
   }
 
-  UNSAFE_componentWillMount() {
-    this.calculateScroll()
+  getSnapshotBeforeUpdate() {
+    this.checkOverflow()
+    return null
   }
 
   componentDidMount() {
-    this.checkOverflow()
-
     if (this.props.width == null) {
       this.measureGutter()
     }
 
+    this.calculateScroll()
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)
@@ -64,27 +64,7 @@ export default class TimeGrid extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.width == null) {
-      this.measureGutter()
-    }
-
     this.applyScroll()
-    //this.checkOverflow()
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { range, scrollToTime, localizer } = this.props
-    // When paginating, reset scroll
-    if (
-      localizer.neq(nextProps.range[0], range[0], 'minutes') ||
-      localizer.neq(nextProps.scrollToTime, scrollToTime, 'minutes')
-    ) {
-      this.calculateScroll(nextProps)
-    }
-  }
-
-  gutterRef = (ref) => {
-    this.gutter = ref && findDOMNode(ref)
   }
 
   handleSelectAlldayEvent = (...args) => {
@@ -287,7 +267,7 @@ export default class TimeGrid extends Component {
     }
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
-        const width = getWidth(this.gutter)
+        const width = getWidth(this.gutterRef?.current)
 
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })

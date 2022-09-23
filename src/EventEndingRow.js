@@ -74,6 +74,20 @@ class EventEndingRow extends React.Component {
     })
   }
 
+  eventsSlotClassName = (slot) => {
+    const { slotMetrics, localizer, getNow } = this.props
+    const { range } = slotMetrics
+    const slotDate = range[slot - 1]
+    const currentDate = getNow()
+    if (localizer.isSameDate(slotDate, currentDate)) {
+      return 'rbc-current-show-more'
+    }
+    if (localizer.gt(slotDate, currentDate, 'day')) {
+      return 'rbc-future-show-more'
+    }
+    return 'rbc-past-show-more'
+  }
+
   renderShowMore(segments, slot) {
     let { localizer } = this.props
     let count = eventsInSlot(segments, slot)
@@ -82,8 +96,12 @@ class EventEndingRow extends React.Component {
       <button
         type="button"
         key={'sm_' + slot}
-        className={clsx('rbc-button-link', 'rbc-show-more')}
-        onClick={e => this.showMore(slot, e)}
+        className={clsx(
+          'rbc-button-link',
+          'rbc-show-more',
+          this.eventsSlotClassName(slot)
+        )}
+        onClick={(e) => this.showMore(slot, e)}
       >
         {localizer.messages.showMore(count)}
       </button>

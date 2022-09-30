@@ -5,25 +5,9 @@ import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 import * as dates from '../../../src/utils/dates'
 
-// import dayjs plugins
-import isBetween from 'dayjs/plugin/isBetween'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
-import localeData from 'dayjs/plugin/localeData'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import minMax from 'dayjs/plugin/minMax'
+// add optional time zone support
 import timezone from 'dayjs/plugin/timezone'
-import utc from 'dayjs/plugin/utc'
-
-// load dayjs plugins
-dayjs.extend(isBetween)
-dayjs.extend(isSameOrAfter)
-dayjs.extend(isSameOrBefore)
-dayjs.extend(localeData)
-dayjs.extend(localizedFormat)
-dayjs.extend(minMax)
 dayjs.extend(timezone)
-dayjs.extend(utc)
 
 const djLocalizer = dayjsLocalizer(dayjs)
 

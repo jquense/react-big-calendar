@@ -120,29 +120,11 @@ const MyCalendar = (props) => (
 )
 ```
 
+#### Day.js
+
 ```js
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs'
-
-// import necessary dayjs plugins
-import isBetween from 'dayjs/plugin/isBetween'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
-import localeData from 'dayjs/plugin/localeData'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import minMax from 'dayjs/plugin/minMax'
-import timezone from 'dayjs/plugin/timezone'
-import utc from 'dayjs/plugin/utc'
-
-// load necessary dayjs plugins
-dayjs.extend(isBetween)
-dayjs.extend(isSameOrAfter)
-dayjs.extend(isSameOrBefore)
-dayjs.extend(localeData)
-dayjs.extend(localizedFormat)
-dayjs.extend(minMax)
-dayjs.extend(timezone)
-dayjs.extend(utc)
 
 const localizer = dayjsLocalizer(dayjs)
 

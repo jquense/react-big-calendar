@@ -1,4 +1,25 @@
+import dayjs from 'dayjs'
 import { DateLocalizer } from '../localizer'
+
+// import dayjs plugins
+// Note that the timezone plugin is not imported here
+// this plugin can be optionally loaded by the user
+import isBetween from 'dayjs/plugin/isBetween'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import localeData from 'dayjs/plugin/localeData'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import minMax from 'dayjs/plugin/minMax'
+import utc from 'dayjs/plugin/utc'
+
+// load dayjs plugins
+dayjs.extend(isBetween)
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
+dayjs.extend(localeData)
+dayjs.extend(localizedFormat)
+dayjs.extend(minMax)
+dayjs.extend(utc)
 
 const weekRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'MMMM DD', culture) +
@@ -53,9 +74,9 @@ function fixUnit(unit) {
 export default function (dayjsLib) {
   const locale = (dj, c) => (c ? dj.locale(c) : dj)
 
-  // if a default timezone is set (dayjsLib.tz.setDefault(<timezone>)),
+  // if the timezone plugin is loaded,
   // then use the timezone aware version
-  const dayjs = dayjsLib.tz().$x.$timezone ? dayjsLib.tz : dayjsLib
+  const dayjs = dayjsLib.tz ? dayjsLib.tz : dayjsLib
 
   function getTimezoneOffset(date) {
     // ensures this gets cast to timezone
@@ -66,7 +87,10 @@ export default function (dayjsLib) {
     // convert to dayjs, in case
     const st = dayjs(start)
     const ed = dayjs(end)
-
+    // if not using the dayjs timezone plugin
+    if (!dayjs.tz) {
+      return st.toDate().getTimezoneOffset() - ed.toDate().getTimezoneOffset()
+    }
     /**
      * If a default timezone has been applied, then
      * use this to get the proper timezone offset, otherwise default

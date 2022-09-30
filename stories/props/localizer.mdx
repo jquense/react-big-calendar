@@ -17,6 +17,15 @@ import timezone from 'dayjs/plugin/timezone'
 dayjs.extend(timezone)
 // end optional time zone support
 
+// Note that the dayjsLocalizer extends Day.js with the following plugins:
+// - IsBetween
+// - IsSameOrAfter
+// - IsSameOrBefore
+// - LocaleData
+// - LocalizedFormat
+// - MinMax
+// - UTC
+
 const localizer = dayjsLocalizer(dayjs)
 ```
 

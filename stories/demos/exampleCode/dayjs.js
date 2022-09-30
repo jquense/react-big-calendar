@@ -4,6 +4,15 @@ import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar'
 import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
 
+// Note that the dayjsLocalizer extends Day.js with the following plugins:
+// - IsBetween
+// - IsSameOrAfter
+// - IsSameOrBefore
+// - LocaleData
+// - LocalizedFormat
+// - MinMax
+// - UTC
+
 // add optional time zone support
 import timezone from 'dayjs/plugin/timezone'
 dayjs.extend(timezone)

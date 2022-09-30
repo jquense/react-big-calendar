@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { DateLocalizer } from '../localizer'
 
 // import dayjs plugins
@@ -11,15 +10,6 @@ import localeData from 'dayjs/plugin/localeData'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import minMax from 'dayjs/plugin/minMax'
 import utc from 'dayjs/plugin/utc'
-
-// load dayjs plugins
-dayjs.extend(isBetween)
-dayjs.extend(isSameOrAfter)
-dayjs.extend(isSameOrBefore)
-dayjs.extend(localeData)
-dayjs.extend(localizedFormat)
-dayjs.extend(minMax)
-dayjs.extend(utc)
 
 const weekRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'MMMM DD', culture) +
@@ -72,6 +62,15 @@ function fixUnit(unit) {
 }
 
 export default function (dayjsLib) {
+  // load dayjs plugins
+  dayjsLib.extend(isBetween)
+  dayjsLib.extend(isSameOrAfter)
+  dayjsLib.extend(isSameOrBefore)
+  dayjsLib.extend(localeData)
+  dayjsLib.extend(localizedFormat)
+  dayjsLib.extend(minMax)
+  dayjsLib.extend(utc)
+
   const locale = (dj, c) => (c ? dj.locale(c) : dj)
 
   // if the timezone plugin is loaded,

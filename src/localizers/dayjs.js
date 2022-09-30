@@ -191,7 +191,7 @@ export default function (dayjsLib) {
     const tm = dayjs(time).format('HH:mm:ss')
     const dt = dayjs(date).startOf('day').format('MM/DD/YYYY')
     // We do it this way to avoid issues when timezone switching
-    return dayjs(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
+    return dayjsLib(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
   }
 
   function add(date, adder, unit) {

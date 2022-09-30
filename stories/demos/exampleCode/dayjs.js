@@ -3,7 +3,6 @@ import dayjs from 'dayjs'
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar'
 import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
-import * as dates from '../../../src/utils/dates'
 
 // add optional time zone support
 import timezone from 'dayjs/plugin/timezone'
@@ -25,7 +24,7 @@ export default function Dayjs({ ...props }) {
         timeSlotWrapper: ColoredDateCellWrapper,
       },
       defaultDate: new Date(2015, 3, 1),
-      max: dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours'),
+      max: dayjs().endOf('day').subtract(1, 'hours').toDate(),
       views: Object.keys(Views).map((k) => Views[k]),
     }),
     []

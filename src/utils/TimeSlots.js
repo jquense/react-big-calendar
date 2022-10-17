@@ -45,7 +45,7 @@ export function getSlotMetrics({
 
   function positionFromDate(date) {
     const diff =
-      localizer.diff(start, date, 'minutes') +
+      localizer.diff(start, date, 'seconds') / 60 +
       localizer.getDstOffset(start, date)
     return Math.min(diff, totalMin)
   }

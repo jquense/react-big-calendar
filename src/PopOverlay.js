@@ -27,7 +27,7 @@ function CalOverlay({
     offset = { x: popupOffset, y: popupOffset }
   }
 
-  const { position, events, date, end } = overlay
+  const { position, events, date, end, popup } = overlay
   return (
     <Overlay
       rootClose
@@ -50,6 +50,7 @@ function CalOverlay({
           components={components}
           localizer={localizer}
           position={position}
+          popup={popup}
           show={overlayDisplay}
           events={events}
           slotStart={date}

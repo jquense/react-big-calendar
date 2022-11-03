@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useMemo } from 'react'
 import { Calendar, luxonLocalizer, Views } from 'react-big-calendar'
-import { DateTime, Settings } from 'luxon'
+import { DateTime } from 'luxon'
 import DemoLink from '../../DemoLink.component'
 
 import events from '../../resources/events'
@@ -18,21 +18,14 @@ export default function Luxon() {
 
   const { defaultDate, getNow, localizer, myEvents, scrollToTime } =
     useMemo(() => {
-      Settings.defaultZone = timezone
       return {
         defaultDate: getDate(defaultDateStr, DateTime),
         getNow: () => DateTime.local().toJSDate(),
-        localizer: luxonLocalizer(DateTime),
+        localizer: luxonLocalizer(DateTime, { zone: timezone }),
         myEvents: [...events],
         scrollToTime: DateTime.local().toJSDate(),
       }
     }, [timezone])
-
-  useEffect(() => {
-    return () => {
-      Settings.defaultZone = defaultTZ // reset to browser TZ on unmount
-    }
-  }, [])
 
   return (
     <Fragment>

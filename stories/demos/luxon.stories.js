@@ -1,6 +1,5 @@
 import React from 'react'
-import moment from 'moment'
-import { Calendar, momentLocalizer } from '../../src'
+import { Calendar } from '../../src'
 import Luxon from './exampleCode/luxon'
 
 export default {
@@ -13,8 +12,6 @@ export default {
   },
 }
 
-const localizer = momentLocalizer(moment)
-
 export function LuxonLocalizer() {
-  return <Luxon localizer={localizer} />
+  return <Luxon />
 }

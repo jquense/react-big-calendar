@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/jquense/react-big-calendar/compare/v1.5.0...v1.5.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* typo for prop titles ([#2298](https://github.com/jquense/react-big-calendar/issues/2298)) ([11fd6c8](https://github.com/jquense/react-big-calendar/commit/11fd6c83685bf6c0345623366247bcb294e6325c))
+
 # [1.5.0](https://github.com/jquense/react-big-calendar/compare/v1.4.3...v1.5.0) (2022-07-19)
 
 

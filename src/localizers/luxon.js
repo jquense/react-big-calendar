@@ -57,24 +57,29 @@ function fixUnit(unit) {
 // Luxon does not currently have weekInfo by culture
 // Luxon uses 1 based values for month and weekday
 // So we default to Sunday (7)
-export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
+export default function (
+  DateTime,
+  { firstDayOfWeek = 7, zone = 'local' } = {}
+) {
   function formatDate(value, format) {
-    return DateTime.fromJSDate(value).toFormat(format)
+    return DateTime.fromJSDate(value, { zone }).toFormat(format)
   }
 
   function formatDateWithCulture(value, culture, format) {
-    return DateTime.fromJSDate(value).setLocale(culture).toFormat(format)
+    return DateTime.fromJSDate(value, { zone })
+      .setLocale(culture)
+      .toFormat(format)
   }
 
   /*** BEGIN localized date arithmetic methods with Luxon ***/
   function defineComparators(a, b, unit) {
     const datePart = fixUnit(unit)
     const dtA = datePart
-      ? DateTime.fromJSDate(a).startOf(datePart)
-      : DateTime.fromJSDate(a)
+      ? DateTime.fromJSDate(a, { zone }).startOf(datePart)
+      : DateTime.fromJSDate(a, { zone })
     const dtB = datePart
-      ? DateTime.fromJSDate(b).startOf(datePart)
-      : DateTime.fromJSDate(b)
+      ? DateTime.fromJSDate(b, { zone }).startOf(datePart)
+      : DateTime.fromJSDate(b, { zone })
     return [dtA, dtB, datePart]
   }
 
@@ -110,12 +115,12 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   function startOfDT(date = new Date(), unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      const dt = DateTime.fromJSDate(date)
+      const dt = DateTime.fromJSDate(date, { zone })
       return datePart.includes('week')
         ? startOfDTWeek(dt)
         : dt.startOf(datePart)
     }
-    return DateTime.fromJSDate(date)
+    return DateTime.fromJSDate(date, { zone })
   }
 
   function firstOfWeek() {
@@ -131,10 +136,10 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   function endOfDT(date = new Date(), unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      const dt = DateTime.fromJSDate(date)
+      const dt = DateTime.fromJSDate(date, { zone })
       return datePart.includes('week') ? endOfDTWeek(dt) : dt.endOf(datePart)
     }
-    return DateTime.fromJSDate(date)
+    return DateTime.fromJSDate(date, { zone })
   }
 
   function endOf(date = new Date(), unit) {
@@ -179,15 +184,15 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   }
 
   function min(dateA, dateB) {
-    const dtA = DateTime.fromJSDate(dateA)
-    const dtB = DateTime.fromJSDate(dateB)
+    const dtA = DateTime.fromJSDate(dateA, { zone })
+    const dtB = DateTime.fromJSDate(dateB, { zone })
     const minDt = DateTime.min(dtA, dtB)
     return minDt.toJSDate()
   }
 
   function max(dateA, dateB) {
-    const dtA = DateTime.fromJSDate(dateA)
-    const dtB = DateTime.fromJSDate(dateB)
+    const dtA = DateTime.fromJSDate(dateA, { zone })
+    const dtB = DateTime.fromJSDate(dateB, { zone })
     const maxDt = DateTime.max(dtA, dtB)
     return maxDt.toJSDate()
   }
@@ -195,7 +200,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   function merge(date, time) {
     if (!date && !time) return null
 
-    const tm = DateTime.fromJSDate(time)
+    const tm = DateTime.fromJSDate(time, { zone })
     const dt = startOfDT(date, 'day')
     return dt
       .set({
@@ -209,14 +214,14 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
 
   function add(date, adder, unit) {
     const datePart = fixUnit(unit)
-    return DateTime.fromJSDate(date)
+    return DateTime.fromJSDate(date, { zone })
       .plus({ [datePart]: adder })
       .toJSDate()
   }
 
   function range(start, end, unit = 'day') {
     const datePart = fixUnit(unit)
-    let current = DateTime.fromJSDate(start).toJSDate() // this is to get it to tz
+    let current = DateTime.fromJSDate(start, { zone }).toJSDate() // this is to get it to tz
     const days = []
 
     while (lte(current, end)) {
@@ -237,8 +242,8 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   function diff(a, b, unit = 'day') {
     const datePart = fixUnit(unit)
     // don't use 'defineComparators' here, as we don't want to mutate the values
-    const dtA = DateTime.fromJSDate(a)
-    const dtB = DateTime.fromJSDate(b)
+    const dtA = DateTime.fromJSDate(a, { zone })
+    const dtB = DateTime.fromJSDate(b, { zone })
     return Math.round(
       dtB.diff(dtA, datePart, { conversionAccuracy: 'longterm' }).toObject()[
         datePart
@@ -291,7 +296,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
 
   function getMinutesFromMidnight(start) {
     const dayStart = startOfDT(start, 'day')
-    const day = DateTime.fromJSDate(start)
+    const day = DateTime.fromJSDate(start, { zone })
     return Math.round(
       day
         .diff(dayStart, 'minutes', { conversionAccuracy: 'longterm' })
@@ -347,8 +352,8 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   // moment(date1).isSame(date2, 'day') would test that they were both the same day of the week
   // moment(date1).isSame(date2, 'date') would test that they were both the same date of the month of the year
   function isSameDate(date1, date2) {
-    const dt = DateTime.fromJSDate(date1)
-    const dt2 = DateTime.fromJSDate(date2)
+    const dt = DateTime.fromJSDate(date1, { zone })
+    const dt2 = DateTime.fromJSDate(date2, { zone })
     return dt.hasSame(dt2, 'day')
   }
 

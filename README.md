@@ -29,10 +29,10 @@ element has a height, or the calendar won't be visible. To provide your own cust
 $ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
-$ yarn examples
+$ yarn storybook
 ```
 
-- Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
+- Open [localhost:9002/](http://localhost:9002/).
 
 ### Localization and Date Formatting
 

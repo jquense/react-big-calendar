@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/jquense/react-big-calendar/compare/v1.5.1...v1.5.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* do not send undefined/null gutterRef to getWidth ([#2300](https://github.com/jquense/react-big-calendar/issues/2300)) ([7b5f5b8](https://github.com/jquense/react-big-calendar/commit/7b5f5b8ef438ff469e7d098a6274118149883238))
+
 ## [1.5.1](https://github.com/jquense/react-big-calendar/compare/v1.5.0...v1.5.1) (2022-11-09)
 
 

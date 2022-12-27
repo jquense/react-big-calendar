@@ -14,6 +14,16 @@ import { inRange, sortEvents } from './utils/eventLevels'
 import Resources from './utils/Resources'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
+const getColumnRange = (startTime, endTime, date, localizer) => {
+  const start = localizer.merge(date, startTime)
+  const end = localizer.merge(date, endTime)
+
+  return {
+    start,
+    end: localizer.gt(end, start) ? end : localizer.add(end, 1, 'day'),
+  }
+}
+
 export default class TimeGrid extends Component {
   constructor(props) {
     super(props)
@@ -97,27 +107,26 @@ export default class TimeGrid extends Component {
     const groupedEvents = resources.groupEvents(events)
     const groupedBackgroundEvents = resources.groupEvents(backgroundEvents)
 
+    const intersectEventWithRange = (event, range) => {
+      const { start: rangeStart, end: rangeEnd } = range
+
+      const start = Math.max(accessors.start(event), rangeStart)
+      const end = Math.min(accessors.end(event), rangeEnd)
+
+      return start < end ? { start, end } : null
+    }
+
     return resources.map(([id, resource], i) =>
       range.map((date, jj) => {
+        const columnRange = getColumnRange(min, max, date, localizer)
+
         let daysEvents = (groupedEvents.get(id) || []).filter((event) =>
-          localizer.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
+          intersectEventWithRange(event, columnRange)
         )
 
         let daysBackgroundEvents = (
           groupedBackgroundEvents.get(id) || []
-        ).filter((event) =>
-          localizer.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
+        ).filter((event) => intersectEventWithRange(event, columnRange))
 
         return (
           <DayColumn
@@ -162,24 +171,43 @@ export default class TimeGrid extends Component {
 
     width = width || this.state.gutterWidth
 
-    let start = range[0],
-      end = range[range.length - 1]
+    // Use min/max time when determining which events are in range.
+    const { start } = getColumnRange(min, max, range[0], localizer)
+    const { end } = getColumnRange(min, max, range[range.length - 1], localizer)
+    const inCalendarRange = (event) =>
+      inRange(event, start, end, accessors, localizer)
 
     this.slots = range.length
 
-    let allDayEvents = [],
-      rangeEvents = [],
-      rangeBackgroundEvents = []
+    const allDayEvents = []
+    const rangeEvents = []
+    const rangeBackgroundEvents = []
 
     events.forEach((event) => {
-      if (inRange(event, start, end, accessors, localizer)) {
-        let eStart = accessors.start(event),
-          eEnd = accessors.end(event)
+      if (inCalendarRange(event)) {
+        const eStart = accessors.start(event)
+        const eEnd = accessors.end(event)
+
+        const columnStart = localizer.merge(eStart, min)
+        const columnDate = localizer.lte(columnStart, eStart)
+          ? columnStart
+          : localizer.add(columnStart, -1, 'day')
+
+        const { start: columnRangeStart, end: columnRangeEnd } = getColumnRange(
+          min,
+          max,
+          columnDate,
+          localizer
+        )
+
+        const fitsInSingleColumn =
+          localizer.lte(columnRangeStart, eStart) &&
+          localizer.lte(eEnd, columnRangeEnd)
 
         if (
           accessors.allDay(event) ||
           localizer.startAndEndAreDateOnly(eStart, eEnd) ||
-          (!showMultiDayTimes && !localizer.isSameDate(eStart, eEnd))
+          (!showMultiDayTimes && !fitsInSingleColumn)
         ) {
           allDayEvents.push(event)
         } else {

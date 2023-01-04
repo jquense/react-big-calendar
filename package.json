@@ -107,6 +107,7 @@
     "@babel/runtime": "^7.18.6",
     "clsx": "^1.2.1",
     "date-arithmetic": "^4.1.0",
+    "dayjs": "^1.11.5",
     "dom-helpers": "^5.2.1",
     "globalize": "^0.1.1",
     "invariant": "^2.2.4",

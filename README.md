@@ -29,15 +29,15 @@ element has a height, or the calendar won't be visible. To provide your own cust
 $ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
-$ yarn examples
+$ yarn storybook
 ```
 
 - Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
 ### Localization and Date Formatting
 
-`react-big-calendar` includes three options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
+`react-big-calendar` includes four options for handling the date formatting and culture localization, depending
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize), [date-fns](https://date-fns.org/), [Day.js](https://day.js.org) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
@@ -104,6 +104,37 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 })
+
+const MyCalendar = (props) => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
+#### Day.js
+
+Note that the dayjsLocalizer extends Day.js with the following plugins:
+
+- [IsBetween](https://day.js.org/docs/en/plugin/is-between)
+- [IsSameOrAfter](https://day.js.org/docs/en/plugin/is-same-or-after)
+- [IsSameOrBefore](https://day.js.org/docs/en/plugin/is-same-or-before)
+- [LocaleData](https://day.js.org/docs/en/plugin/locale-data)
+- [LocalizedFormat](https://day.js.org/docs/en/plugin/localized-format)
+- [MinMax](https://day.js.org/docs/en/plugin/min-max)
+- [UTC](https://day.js.org/docs/en/plugin/utc)
+
+```js
+import { Calendar, dayjsLocalizer } from 'react-big-calendar'
+import dayjs from 'dayjs'
+
+const localizer = dayjsLocalizer(dayjs)
 
 const MyCalendar = (props) => (
   <div>

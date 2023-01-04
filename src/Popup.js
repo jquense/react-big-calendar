@@ -64,6 +64,7 @@ function Pop({
     })
     popperRef.current.style.top = `${topOffset}px`
     popperRef.current.style.left = `${leftOffset}px`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset.x, offset.y, target])
 
   const { width } = position

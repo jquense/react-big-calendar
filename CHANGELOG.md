@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/jquense/react-big-calendar/compare/v1.5.2...v1.6.0) (2023-01-04)
+
+
+### Features
+
+* Dayjs localizer ([#2264](https://github.com/jquense/react-big-calendar/issues/2264)) ([537c6f3](https://github.com/jquense/react-big-calendar/commit/537c6f3f08344191588f2ab3ad52667de7ee261f))
+
 ## [1.5.2](https://github.com/jquense/react-big-calendar/compare/v1.5.1...v1.5.2) (2022-11-10)
 
 

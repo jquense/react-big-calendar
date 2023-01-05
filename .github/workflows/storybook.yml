@@ -22,11 +22,10 @@ jobs:
 
       - name: Deploy 🚀
         # https://github.com/JamesIves/github-pages-deploy-action
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages # The branch the action should deploy to.
           folder: storybook-static # The folder that the build-storybook script generates files.
           target-folder: examples
           clean: true # Automatically remove deleted files from the deploy branch
-          commit-msg: 'docs: update documentation site'
+          commit-message: 'docs: update documentation site'

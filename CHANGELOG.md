@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/jquense/react-big-calendar/compare/v1.6.0...v1.6.1) (2023-01-05)
+
+
+### Bug Fixes
+
+* set width ([#2332](https://github.com/jquense/react-big-calendar/issues/2332)) ([86b26cd](https://github.com/jquense/react-big-calendar/commit/86b26cd8a20ec11e953999650c10d59f4170f1ce))
+
 # [1.6.0](https://github.com/jquense/react-big-calendar/compare/v1.5.2...v1.6.0) (2023-01-04)
 
 

@@ -30,11 +30,10 @@ class Event {
       return 100 / columns
     }
 
-    const availableWidth = 100 - this.container._width
-
     // The row event's width is the space left by the container, divided
     // among itself and its leaves.
     if (this.leaves) {
+      const availableWidth = 100 - this.container._width
       return availableWidth / (this.leaves.length + 1)
     }
 

@@ -1,12 +1,15 @@
 import path from 'path'
+import * as url from 'url'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import replace from '@rollup/plugin-replace'
 import clear from 'rollup-plugin-clear'
-import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
+// removed sizeSnapshot, as it is not compatible with ESM
 import { terser } from 'rollup-plugin-terser'
-import pkg from './package.json'
+import pkg from './package.json' assert { type: 'json' }
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 const input = './src/index.js'
 const name = 'ReactBigCalendar'
@@ -48,7 +51,6 @@ export default [
       nodeResolve(),
       commonjs(commonjsOptions),
       babel(babelOptions),
-      sizeSnapshot(),
     ],
   },
 
@@ -71,7 +73,6 @@ export default [
       commonjs(commonjsOptions),
       babel(babelOptions),
       terser(),
-      sizeSnapshot(),
     ],
   },
 
@@ -89,7 +90,6 @@ export default [
         ...babelOptions,
         configFile: path.join(__dirname, 'babel.config.esm.js'),
       }),
-      sizeSnapshot(),
     ],
   },
 ]

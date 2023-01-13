@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.13.0'
+          node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
@@ -29,13 +29,8 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v3
-        with:
-          semantic_version: 20.0.2
-          extra_plugins: |
-            @semantic-release/changelog@6.0.2
-            @semantic-release/git@10.01
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release

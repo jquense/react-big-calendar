@@ -77,6 +77,16 @@ class Event {
     const index = leaves.indexOf(this) + 1
     return xOffset + index * _width
   }
+
+  get zIndex() {
+    if (this.rows) return 1
+
+    if (this.leaves) return 2
+
+    const { leaves } = this.row
+    const index = leaves.indexOf(this) + this.row.zIndex
+    return index
+  }
 }
 
 /**
@@ -87,7 +97,9 @@ function onSameRow(a, b, minimumStartDifference) {
     // Occupies the same start slot.
     Math.abs(b.start - a.start) < minimumStartDifference ||
     // A's start slot overlaps with b's end slot.
-    (b.start > a.start && b.start < a.end)
+    (b.start > a.start && b.start < a.end) ||
+    // B's start slot overlaps with a's end slot.
+    (a.start > b.start && a.start < b.end)
   )
 }
 
@@ -186,6 +198,7 @@ export default function getStyledEvents({
       height: event.height,
       width: event.width,
       xOffset: Math.max(0, event.xOffset),
+      zIndex: event.zIndex,
     },
   }))
 }

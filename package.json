@@ -1,6 +1,6 @@
 {
   "name": "react-big-calendar",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Calendar! with events",
   "author": {
     "name": "Jason Quense",
@@ -11,6 +11,7 @@
     "url": "git+https://github.com/jquense/react-big-calendar.git"
   },
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",

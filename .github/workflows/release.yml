@@ -30,11 +30,7 @@ jobs:
         run: yarn build
 
       - name: Release
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
-
-      - name: Publish
-        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish

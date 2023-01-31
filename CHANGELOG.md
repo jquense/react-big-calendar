@@ -1,3 +1,11 @@
+## [1.6.2](https://github.com/jquense/react-big-calendar/compare/v1.6.1...v1.6.2) (2023-01-31)
+
+
+### Bug Fixes
+
+* correct publishing ([#2350](https://github.com/jquense/react-big-calendar/issues/2350)) ([ae15118](https://github.com/jquense/react-big-calendar/commit/ae151187fdedccccfdbf84ce64d499d4b4e4b511))
+* no-overlap layout algorithm ([#2239](https://github.com/jquense/react-big-calendar/issues/2239)) ([f7bfd11](https://github.com/jquense/react-big-calendar/commit/f7bfd11f6ce475dd4390e8ed0bf0efea0f1c0a69)), closes [#2240](https://github.com/jquense/react-big-calendar/issues/2240)
+
 ## [1.6.1](https://github.com/jquense/react-big-calendar/compare/v1.6.0...v1.6.1) (2023-01-05)
 
 

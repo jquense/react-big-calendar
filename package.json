@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/jquense/react-big-calendar.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "module": "dist/react-big-calendar.esm.js",

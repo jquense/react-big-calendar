@@ -239,7 +239,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
     // don't use 'defineComparators' here, as we don't want to mutate the values
     const dtA = DateTime.fromJSDate(a)
     const dtB = DateTime.fromJSDate(b)
-    return Math.round(
+    return Math.floor(
       dtB.diff(dtA, datePart, { conversionAccuracy: 'longterm' }).toObject()[
         datePart
       ]

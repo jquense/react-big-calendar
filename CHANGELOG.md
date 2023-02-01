@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/jquense/react-big-calendar/compare/v1.6.2...v1.6.3) (2023-02-01)
+
+
+### Bug Fixes
+
+* Fixed publish script (fix [#2330](https://github.com/jquense/react-big-calendar/issues/2330)) ([#2358](https://github.com/jquense/react-big-calendar/issues/2358)) ([a4e54be](https://github.com/jquense/react-big-calendar/commit/a4e54bed8d534086af87bff8b48c7c9a47ac4141))
+
 ## [1.6.2](https://github.com/jquense/react-big-calendar/compare/v1.6.1...v1.6.2) (2023-01-31)
 
 

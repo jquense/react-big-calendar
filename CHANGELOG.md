@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/jquense/react-big-calendar/compare/v1.6.3...v1.6.4) (2023-02-09)
+
+
+### Bug Fixes
+
+* rounding behavior in Luxon localizer ([#2362](https://github.com/jquense/react-big-calendar/issues/2362)) ([409cff1](https://github.com/jquense/react-big-calendar/commit/409cff1d74a3130f89dca71f19e6832dd7c6e98c)), closes [#2361](https://github.com/jquense/react-big-calendar/issues/2361)
+
 ## [1.6.3](https://github.com/jquense/react-big-calendar/compare/v1.6.2...v1.6.3) (2023-02-01)
 
 

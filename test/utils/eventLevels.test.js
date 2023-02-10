@@ -1,5 +1,7 @@
 import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
+// import dayjs from 'dayjs'
+// import dayjsLocalizer from '../../src/localizers/dayjs'
 //import { DateTime } from 'luxon'
 //import luxonLocalizer from '../../src/localizers/luxon'
 import {
@@ -12,6 +14,7 @@ import {
 } from '../../src/utils/eventLevels'
 
 const localizer = momentLocalizer(moment)
+// const localizer = dayjsLocalizer(dayjs)
 //const localizer = luxonLocalizer(DateTime)
 
 describe('endOfRange', () => {

@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/jquense/react-big-calendar/compare/v1.6.4...v1.6.5) (2023-02-14)
+
+
+### Bug Fixes
+
+* calendar auto scroll while dragging event at top/bottom edge ([#2230](https://github.com/jquense/react-big-calendar/issues/2230)) ([d1c5085](https://github.com/jquense/react-big-calendar/commit/d1c5085b004bb3c606a682b488a92585e50b12b4)), closes [#2231](https://github.com/jquense/react-big-calendar/issues/2231)
+
 ## [1.6.4](https://github.com/jquense/react-big-calendar/compare/v1.6.3...v1.6.4) (2023-02-09)
 
 

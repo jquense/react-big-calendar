@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { DnDContext } from './DnDContext'
+import { scrollParent, scrollTop } from 'dom-helpers'
+import qsa from 'dom-helpers/cjs/querySelectorAll'
 
 import Selection, {
   getBoundsForNode,
@@ -124,6 +126,30 @@ class EventContainerWrapper extends React.Component {
     })
   }
 
+  updateParentScroll = (parent, node) => {
+    setTimeout(() => {
+      const draggedEl = qsa(node, '.rbc-addons-dnd-drag-preview')[0]
+      if (draggedEl) {
+        if (draggedEl.offsetTop < parent.scrollTop) {
+          scrollTop(parent, Math.max(draggedEl.offsetTop, 0))
+        } else if (
+          draggedEl.offsetTop + draggedEl.offsetHeight >
+          parent.scrollTop + parent.clientHeight
+        ) {
+          scrollTop(
+            parent,
+            Math.min(
+              draggedEl.offsetTop -
+                parent.offsetHeight +
+                draggedEl.offsetHeight,
+              parent.scrollHeight
+            )
+          )
+        }
+      }
+    })
+  }
+
   _selectable = () => {
     let wrapper = this.ref.current
     let node = wrapper.children[0]
@@ -131,6 +157,7 @@ class EventContainerWrapper extends React.Component {
     let selector = (this._selector = new Selection(() =>
       wrapper.closest('.rbc-time-view')
     ))
+    let parent = scrollParent(wrapper)
 
     selector.on('beforeSelect', (point) => {
       const { dragAndDropAction } = this.context.draggable
@@ -156,8 +183,14 @@ class EventContainerWrapper extends React.Component {
       const bounds = getBoundsForNode(node)
       const { dragAndDropAction } = this.context.draggable
 
-      if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
-      if (dragAndDropAction.action === 'resize') this.handleResize(box, bounds)
+      if (dragAndDropAction.action === 'move') {
+        this.updateParentScroll(parent, node)
+        this.handleMove(box, bounds)
+      }
+      if (dragAndDropAction.action === 'resize') {
+        this.updateParentScroll(parent, node)
+        this.handleResize(box, bounds)
+      }
     })
 
     selector.on('dropFromOutside', (point) => {

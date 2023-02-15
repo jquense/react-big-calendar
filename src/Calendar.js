@@ -52,7 +52,7 @@ class Calendar extends React.Component {
      * const localizer = globalizeLocalizer(globalize)
      * ```
      * moment
-     * ```js
+     * ``js
      * import {momentLocalizer} from 'react-big-calendar'
      * import moment from 'moment'
      * // and, for optional time zone support

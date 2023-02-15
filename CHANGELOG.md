@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/jquense/react-big-calendar/compare/v1.6.6...v1.6.7) (2023-02-15)
+
+
+### Bug Fixes
+
+* 1px misalignment ([#2367](https://github.com/jquense/react-big-calendar/issues/2367)) ([7479b4d](https://github.com/jquense/react-big-calendar/commit/7479b4d5955511ae1a42ed666d245bd411be7868))
+
 ## [1.6.6](https://github.com/jquense/react-big-calendar/compare/v1.6.5...v1.6.6) (2023-02-15)
 
 

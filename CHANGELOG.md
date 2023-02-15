@@ -1,3 +1,10 @@
+## [1.6.6](https://github.com/jquense/react-big-calendar/compare/v1.6.5...v1.6.6) (2023-02-15)
+
+
+### Bug Fixes
+
+* pass dates to slotGroupPropGetter ([#2066](https://github.com/jquense/react-big-calendar/issues/2066)) ([943ae6e](https://github.com/jquense/react-big-calendar/commit/943ae6edbadb48ca866c256bcbbac7059356fdee))
+
 ## [1.6.5](https://github.com/jquense/react-big-calendar/compare/v1.6.4...v1.6.5) (2023-02-14)
 
 

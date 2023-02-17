@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/jquense/react-big-calendar/compare/v1.6.7...v1.6.8) (2023-02-17)
+
+
+### Bug Fixes
+
+* correct treatment of boolean view in 'views' ([#2368](https://github.com/jquense/react-big-calendar/issues/2368)) ([0e6b771](https://github.com/jquense/react-big-calendar/commit/0e6b7717985e626413347fcc196d38c0d071d759))
+
 ## [1.6.7](https://github.com/jquense/react-big-calendar/compare/v1.6.6...v1.6.7) (2023-02-15)
 
 

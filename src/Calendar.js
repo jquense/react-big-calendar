@@ -26,7 +26,16 @@ import mapValues from 'lodash/mapValues'
 import { wrapAccessor } from './utils/accessors'
 
 function viewNames(_views) {
-  return !Array.isArray(_views) ? Object.keys(_views) : _views
+  if (Array.isArray(_views)) {
+    return _views
+  }
+  const views = []
+  for (const [key, value] of Object.entries(_views)) {
+    if (value) {
+      views.push(key)
+    }
+  }
+  return views
 }
 
 function isValidView(view, { views: _views }) {
@@ -47,7 +56,7 @@ class Calendar extends React.Component {
      * const localizer = globalizeLocalizer(globalize)
      * ```
      * moment
-     * ```js
+     * ``js
      * import {momentLocalizer} from 'react-big-calendar'
      * import moment from 'moment'
      * // and, for optional time zone support

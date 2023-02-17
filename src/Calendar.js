@@ -26,12 +26,16 @@ import mapValues from 'lodash/mapValues'
 import { wrapAccessor } from './utils/accessors'
 
 function viewNames(_views) {
-  for (let i = 0; i < Object.keys(_views).length; i++) {
-    if (_views[Object.keys(_views)[i]] == false) {
-      delete _views[Object.keys(_views)[i]]
+  if (Array.isArray(_views)) {
+    return _views
+  }
+  const views = []
+  for (const [key, value] of Object.entries(_views)) {
+    if (value) {
+      views.push(key)
     }
   }
-  return !Array.isArray(_views) ? Object.keys(_views) : _views
+  return views
 }
 
 function isValidView(view, { views: _views }) {

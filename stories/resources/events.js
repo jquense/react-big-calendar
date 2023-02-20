@@ -177,4 +177,28 @@ export default [
     start: new Date(2015, 3, 14, 18, 30, 0),
     end: new Date(2015, 3, 14, 20, 0, 0),
   },
+  {
+    id: 24,
+    title: 'Event (30s)',
+    start: new Date(2015, 3, 15, 4, 56, 45),
+    end: new Date(2015, 3, 15, 4, 57, 15),
+  },
+  {
+    id: 25,
+    title: 'Event (30s)',
+    start: new Date(2015, 3, 15, 4, 59, 0),
+    end: new Date(2015, 3, 15, 4, 59, 30),
+  },
+  {
+    id: 26,
+    title: 'Event (1min)',
+    start: new Date(2015, 3, 15, 5, 0, 0),
+    end: new Date(2015, 3, 15, 5, 1, 0),
+  },
+  {
+    id: 27,
+    title: 'Event (2min 40s)',
+    start: new Date(2015, 3, 15, 5, 2, 0),
+    end: new Date(2015, 3, 15, 5, 4, 40),
+  },
 ]

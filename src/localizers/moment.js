@@ -60,8 +60,10 @@ export default function (moment) {
 
   function getDstOffset(start, end) {
     // convert to moment, in case
-    const st = moment(start)
-    const ed = moment(end)
+    // Calculate the offset in the timezone of the Events (local)
+    // not in the timezone of the calendar (moment.tz)
+    const st = moment(start).local()
+    const ed = moment(end).local()
     // if not using moment timezone
     if (!moment.tz) {
       return st.toDate().getTimezoneOffset() - ed.toDate().getTimezoneOffset()

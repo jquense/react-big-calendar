@@ -7,6 +7,13 @@ import { Calendar as BaseCalendar, Views, events } from './helpers'
 export default {
   title: 'Additional Examples/Timeslots',
   component: Calendar,
+  decorators: [
+    (Story) => (
+      <div className="height600">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 const Template = (args) => <BaseCalendar {...args} />

@@ -7,6 +7,13 @@ import customComponents from './resources/customComponents'
 export default {
   title: 'Additional Examples/Drag and Drop',
   component: Calendar,
+  decorators: [
+    (Story) => (
+      <div className="height600">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 const Template = (args) => (

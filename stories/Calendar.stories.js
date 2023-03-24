@@ -12,13 +12,16 @@ import customComponents from './resources/customComponents'
 export default {
   title: 'Additional Examples',
   component: Calendar,
+  decorators: [
+    (Story) => (
+      <div className="height600">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
-const Template = (args) => (
-  <div className="height600">
-    <BaseCalendar {...args} />
-  </div>
-)
+const Template = (args) => <BaseCalendar {...args} />
 
 export const ComplexDayViewLayout = Template.bind({})
 ComplexDayViewLayout.storyName = 'complex day view layout'

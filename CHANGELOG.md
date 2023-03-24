@@ -1,3 +1,10 @@
+## [1.6.9](https://github.com/jquense/react-big-calendar/compare/v1.6.8...v1.6.9) (2023-03-24)
+
+
+### Bug Fixes
+
+* **moment:** wrong time on the day when DST changes ([#2374](https://github.com/jquense/react-big-calendar/issues/2374)) ([b82ceb7](https://github.com/jquense/react-big-calendar/commit/b82ceb7f4213e166c64ce643eef912b2ba4cd3a9)), closes [#2296](https://github.com/jquense/react-big-calendar/issues/2296)
+
 ## [1.6.8](https://github.com/jquense/react-big-calendar/compare/v1.6.7...v1.6.8) (2023-02-17)
 
 

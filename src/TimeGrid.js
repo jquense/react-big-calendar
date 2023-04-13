@@ -73,6 +73,11 @@ export default class TimeGrid extends Component {
     notify(this.props.onSelectEvent, args)
   }
 
+  handleShowMore = (...args) => {
+    this.clearSelection()
+    notify(this.props.onShowMore, args)
+  }
+
   handleSelectAllDaySlot = (slots, slotInfo) => {
     const { onSelectSlot } = this.props
 
@@ -211,6 +216,7 @@ export default class TimeGrid extends Component {
           getNow={getNow}
           localizer={localizer}
           selected={selected}
+          allDayMaxRows={this.props.allDayMaxRows}
           resources={this.memoizedResources(resources, accessors)}
           selectable={this.props.selectable}
           accessors={accessors}
@@ -221,6 +227,7 @@ export default class TimeGrid extends Component {
           longPressThreshold={longPressThreshold}
           onSelectSlot={this.handleSelectAllDaySlot}
           onSelectEvent={this.handleSelectAlldayEvent}
+          onShowMore={this.handleShowMore}
           onDoubleClickEvent={this.props.onDoubleClickEvent}
           onKeyPressEvent={this.props.onKeyPressEvent}
           onDrillDown={this.props.onDrillDown}
@@ -341,6 +348,8 @@ TimeGrid.propTypes = {
   getters: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
 
+  allDayMaxRows: PropTypes.number,
+
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
   longPressThreshold: PropTypes.number,
@@ -350,6 +359,7 @@ TimeGrid.propTypes = {
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
   onSelectEvent: PropTypes.func,
+  onShowMore: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   onKeyPressEvent: PropTypes.func,
   onDrillDown: PropTypes.func,

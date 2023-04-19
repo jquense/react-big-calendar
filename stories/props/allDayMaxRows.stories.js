@@ -35,4 +35,5 @@ AllDayMaxRows.args = {
   events: allDayEvents,
   localizer: mLocalizer,
   allDayMaxRows: 2,
+  popup: true,
 }

@@ -85,7 +85,8 @@ class TimeGridHeader extends React.Component {
         rtl={rtl}
         getNow={getNow}
         minRows={2}
-        maxRows={this.props.allDayMaxRows}
+        // Add +1 to include showMore button row in the row limit
+        maxRows={this.props.allDayMaxRows + 1}
         range={range}
         events={eventsToDisplay}
         resourceId={resourceId}
@@ -174,7 +175,8 @@ class TimeGridHeader extends React.Component {
               rtl={rtl}
               getNow={getNow}
               minRows={2}
-              maxRows={this.props.allDayMaxRows}
+              // Add +1 to include showMore button row in the row limit
+              maxRows={this.props.allDayMaxRows + 1}
               range={range}
               events={groupedEvents.get(id) || []}
               resourceId={resource && id}

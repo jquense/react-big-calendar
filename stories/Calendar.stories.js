@@ -12,13 +12,16 @@ import customComponents from './resources/customComponents'
 export default {
   title: 'Additional Examples',
   component: Calendar,
+  decorators: [
+    (Story) => (
+      <div className="height600">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
-const Template = (args) => (
-  <div className="height600">
-    <BaseCalendar {...args} />
-  </div>
-)
+const Template = (args) => <BaseCalendar {...args} />
 
 export const ComplexDayViewLayout = Template.bind({})
 ComplexDayViewLayout.storyName = 'complex day view layout'
@@ -42,6 +45,20 @@ CustomTimeGutterHeader.args = {
   views: [Views.WEEK, Views.DAY],
   components: {
     timeGutterHeader: TimeGutter,
+  },
+}
+
+export const CustomTimeGutterWrapper = Template.bind({})
+CustomTimeGutterWrapper.storyName = 'custom TimeGutter wrapper'
+CustomTimeGutterWrapper.args = {
+  popup: true,
+  events: demoEvents,
+  onSelectEvent: action('event selected'),
+  defaultDate: new Date(2015, 3, 1),
+  defaultView: Views.WEEK,
+  views: [Views.WEEK, Views.DAY],
+  components: {
+    timeGutterWrapper: customComponents.timeGutterWrapper,
   },
 }
 

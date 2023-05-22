@@ -1,5 +1,4 @@
 import React from 'react'
-import { action } from '@storybook/addon-actions'
 import {
   Calendar,
   Views,
@@ -25,6 +24,13 @@ const DraggableCalendar = withDragAndDrop(Calendar)
 export default {
   title: 'Additional Examples/Event Durations',
   component: Calendar,
+  decorators: [
+    (Story) => (
+      <div className="height600">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 const Template = ({ localizer: loc = 'moment', ...args }) => {

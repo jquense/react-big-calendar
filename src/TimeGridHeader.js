@@ -49,7 +49,7 @@ class TimeGridHeader extends React.Component {
             <button
               type="button"
               className="rbc-button-link"
-              onClick={e => this.handleHeaderClick(date, drilldownView, e)}
+              onClick={(e) => this.handleHeaderClick(date, drilldownView, e)}
             >
               {header}
             </button>
@@ -129,7 +129,7 @@ class TimeGridHeader extends React.Component {
 
     let style = {}
     if (isOverflowing) {
-      style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize()}px`
+      style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize() - 1}px`
     }
 
     const groupedEvents = resources.groupEvents(events)

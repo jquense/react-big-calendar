@@ -177,4 +177,28 @@ export default [
     start: new Date(2015, 3, 14, 18, 30, 0),
     end: new Date(2015, 3, 14, 20, 0, 0),
   },
+  {
+    id: 24,
+    title: 'DST ends on this day (Europe)',
+    start: new Date(2022, 9, 30, 0, 0, 0),
+    end: new Date(2022, 9, 30, 4, 30, 0),
+  },
+  {
+    id: 25,
+    title: 'DST ends on this day (America)',
+    start: new Date(2022, 10, 6, 0, 0, 0),
+    end: new Date(2022, 10, 6, 4, 30, 0),
+  },
+  {
+    id: 26,
+    title: 'DST starts on this day (America)',
+    start: new Date(2023, 2, 12, 0, 0, 0),
+    end: new Date(2023, 2, 12, 4, 30, 0),
+  },
+  {
+    id: 27,
+    title: 'DST starts on this day (Europe)',
+    start: new Date(2023, 2, 26, 0, 0, 0),
+    end: new Date(2023, 2, 26, 4, 30, 0),
+  },
 ]

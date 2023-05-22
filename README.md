@@ -1,6 +1,10 @@
 # react-big-calendar
 
-An events calendar component built for React and made for modern browsers (read: IE10+) and uses flexbox over the classic tables-ception approach.
+An events calendar component built for React and made for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
+
+<p align="center">
+  <img src="./assets/rbc-demo.gif" alt="Big Calendar Demo Image" />
+</p>
 
 [**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
@@ -25,15 +29,15 @@ element has a height, or the calendar won't be visible. To provide your own cust
 $ git clone git@github.com:jquense/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
-$ yarn examples
+$ yarn storybook
 ```
 
 - Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
 ### Localization and Date Formatting
 
-`react-big-calendar` includes three options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize) or [date-fns](https://date-fns.org/) localizers.
+`react-big-calendar` includes four options for handling the date formatting and culture localization, depending
+on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize), [date-fns](https://date-fns.org/), [Day.js](https://day.js.org) localizers.
 
 Regardless of your choice, you **must** choose a localizer to use this library:
 
@@ -45,7 +49,7 @@ import moment from 'moment'
 
 const localizer = momentLocalizer(moment)
 
-const MyCalendar = props => (
+const MyCalendar = (props) => (
   <div>
     <Calendar
       localizer={localizer}
@@ -66,7 +70,7 @@ import globalize from 'globalize'
 
 const localizer = globalizeLocalizer(globalize)
 
-const MyCalendar = props => (
+const MyCalendar = (props) => (
   <div>
     <Calendar
       localizer={localizer}
@@ -101,7 +105,38 @@ const localizer = dateFnsLocalizer({
   locales,
 })
 
-const MyCalendar = props => (
+const MyCalendar = (props) => (
+  <div>
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 500 }}
+    />
+  </div>
+)
+```
+
+#### Day.js
+
+Note that the dayjsLocalizer extends Day.js with the following plugins:
+
+- [IsBetween](https://day.js.org/docs/en/plugin/is-between)
+- [IsSameOrAfter](https://day.js.org/docs/en/plugin/is-same-or-after)
+- [IsSameOrBefore](https://day.js.org/docs/en/plugin/is-same-or-before)
+- [LocaleData](https://day.js.org/docs/en/plugin/locale-data)
+- [LocalizedFormat](https://day.js.org/docs/en/plugin/localized-format)
+- [MinMax](https://day.js.org/docs/en/plugin/min-max)
+- [UTC](https://day.js.org/docs/en/plugin/utc)
+
+```js
+import { Calendar, dayjsLocalizer } from 'react-big-calendar'
+import dayjs from 'dayjs'
+
+const localizer = dayjsLocalizer(dayjs)
+
+const MyCalendar = (props) => (
   <div>
     <Calendar
       localizer={localizer}
@@ -128,6 +163,6 @@ SASS implementation provides a `variables` file containing color and sizing vari
 update to fit your application. _Note:_ Changing and/or overriding styles can cause rendering issues with your
 Big Calendar. Carefully test each change accordingly.
 
-## Join us on Reactiflux Discord
+## Join The Community
 
-Join us on [Reactiflux Discord](https://discord.gg/reactiflux) community under the channel #libraries if you have any questions.
+Help us improve Big Calendar! Join us on [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-1ml1j99af-qIvqOfosMog1W7WxM0~j2Q).

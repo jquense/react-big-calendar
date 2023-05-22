@@ -55,15 +55,15 @@ export default function (moment) {
 
   function getTimezoneOffset(date) {
     // ensures this gets cast to timezone
-    return moment(date)
-      .toDate()
-      .getTimezoneOffset()
+    return moment(date).toDate().getTimezoneOffset()
   }
 
   function getDstOffset(start, end) {
     // convert to moment, in case
-    const st = moment(start)
-    const ed = moment(end)
+    // Calculate the offset in the timezone of the Events (local)
+    // not in the timezone of the calendar (moment.tz)
+    const st = moment(start).local()
+    const ed = moment(end).local()
     // if not using moment timezone
     if (!moment.tz) {
       return st.toDate().getTimezoneOffset() - ed.toDate().getTimezoneOffset()
@@ -314,13 +314,10 @@ export default function (moment) {
     return startsBeforeEnd && endsAfterStart
   }
 
-  // moment treats 'day' and 'date' equality very different
-  // moment(date1).isSame(date2, 'day') would test that they were both the same day of the week
-  // moment(date1).isSame(date2, 'date') would test that they were both the same date of the month of the year
   function isSameDate(date1, date2) {
     const dt = moment(date1)
     const dt2 = moment(date2)
-    return dt.isSame(dt2, 'date')
+    return dt.isSame(dt2, 'day')
   }
 
   /**

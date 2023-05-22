@@ -1,12 +1,16 @@
 import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
+// import dayjs from 'dayjs'
+// import dayjsLocalizer from '../../src/localizers/dayjs'
 //import { DateTime } from 'luxon'
 //import luxonLocalizer from '../../src/localizers/luxon'
+
 import { getStyledEvents } from '../../src/utils/DayEventLayout'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import * as dates from '../../src/utils/dates'
 
 const localizer = momentLocalizer(moment)
+// const localizer = dayjsLocalizer(dayjs)
 //const localizer = luxonLocalizer(DateTime)
 
 describe('getStyledEvents', () => {

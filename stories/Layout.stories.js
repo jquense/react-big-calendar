@@ -9,6 +9,13 @@ import createEvents from './helpers/createEvents'
 export default {
   title: 'Additional Examples/Layout',
   component: Calendar,
+  decorators: [
+    (Story) => (
+      <div className="height600">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 const Template = (args) => <Calendar {...args} />

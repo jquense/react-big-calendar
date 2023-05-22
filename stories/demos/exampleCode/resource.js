@@ -54,6 +54,13 @@ export default function Resource({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="resource" />
+      <strong>
+        The calendar below uses the <LinkTo kind="props" story="resource-id-accessor">resourceIdAccessor</LinkTo>,
+          <LinkTo kind="props" story="resource-title-accessor">resourceTitleAccessor</LinkTo> and
+          <LinkTo kind="props" story="resources">resources</LinkTo> props to show events scheduled for different resources.
+        <br/>
+        Events can be mapped so a single resource, or multiple resources.
+      </strong>
       <div className="height600">
         <Calendar
           defaultDate={defaultDate}

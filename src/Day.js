@@ -9,7 +9,7 @@ class Day extends React.Component {
     /**
      * This allows us to default min, max, and scrollToTime
      * using our localizer. This is necessary until such time
-     * as TimeGrid is converted to a functional component.
+     * as TODO: TimeGrid is converted to a functional component.
      */
     let {
       date,

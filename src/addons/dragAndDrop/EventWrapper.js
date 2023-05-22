@@ -43,7 +43,9 @@ class EventWrapper extends React.Component {
     // hack: because of the way the anchors are arranged in the DOM, resize
     // anchor events will bubble up to the move anchor listener. Don't start
     // move operations when we're on a resize anchor.
-    const isResizeHandle = e.target.className.includes('rbc-addons-dnd-resize')
+    const isResizeHandle = e.target
+      .getAttribute('class')
+      ?.includes('rbc-addons-dnd-resize')
     if (!isResizeHandle) {
       let extendedEvent = this.props.event
       extendedEvent.sourceResource = this.props.resource

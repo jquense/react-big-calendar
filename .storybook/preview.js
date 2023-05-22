@@ -19,4 +19,5 @@ export const parameters = {
       ['Introduction', 'props'],
     ],
   },
+  viewMode: 'docs',
 }

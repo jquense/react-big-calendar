@@ -13,7 +13,7 @@ const timeRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'LT', culture) + ' – ' + local.format(end, 'LT', culture)
 
 const timeRangeStartFormat = ({ start }, culture, local) =>
-    local.format(start, 'LT', culture) + ' – '
+  local.format(start, 'LT', culture) + ' – '
 
 const timeRangeEndFormat = ({ end }, culture, local) =>
   ' – ' + local.format(end, 'LT', culture)
@@ -50,8 +50,9 @@ function fixUnit(unit) {
   return datePart
 }
 
-export default function (moment, timezone) {
-  const localMoment = (...args) => moment.tz(...args, timezone)
+export default function (moment, timezone = undefined) {
+  const localMoment = (...args) =>
+    timezone ? moment.tz(...args, timezone) : moment(...args)
   localMoment.localeData = moment.localeData
   const locale = (m, c) => (c ? m.locale(c) : m)
 
@@ -213,8 +214,8 @@ export default function (moment, timezone) {
 
   function firstOfWeek(culture) {
     const data = culture
-        ? localMoment.localeData(culture)
-        : localMoment.localeData()
+      ? localMoment.localeData(culture)
+      : localMoment.localeData()
     return data ? data.firstDayOfWeek() : 0
   }
 
@@ -250,9 +251,9 @@ export default function (moment, timezone) {
    */
   function getSlotDate(dt, minutesFromMidnight, offset) {
     return localMoment(dt)
-        .startOf('day')
-        .minute(minutesFromMidnight + offset)
-        .toDate()
+      .startOf('day')
+      .minute(minutesFromMidnight + offset)
+      .toDate()
   }
 
   // moment will automatically handle DST differences in it's calculations
@@ -281,9 +282,9 @@ export default function (moment, timezone) {
 
   // These two are used by eventLevels
   function sortEvents({
-                        evtA: { start: aStart, end: aEnd, allDay: aAllDay },
-                        evtB: { start: bStart, end: bEnd, allDay: bAllDay },
-                      }) {
+    evtA: { start: aStart, end: aEnd, allDay: aAllDay },
+    evtB: { start: bStart, end: bEnd, allDay: bAllDay },
+  }) {
     const startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
 
     const durA = diff(aStart, ceil(aEnd, 'day'), 'day')
@@ -291,18 +292,18 @@ export default function (moment, timezone) {
     const durB = diff(bStart, ceil(bEnd, 'day'), 'day')
 
     return (
-        startSort || // sort by start Day first
-        Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
-        !!bAllDay - !!aAllDay || // then allDay single day events
-        +aStart - +bStart || // then sort by start time *don't need moment conversion here
-        +aEnd - +bEnd // then sort by end time *don't need moment conversion here either
+      startSort || // sort by start Day first
+      Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
+      !!bAllDay - !!aAllDay || // then allDay single day events
+      +aStart - +bStart || // then sort by start time *don't need moment conversion here
+      +aEnd - +bEnd // then sort by end time *don't need moment conversion here either
     )
   }
 
   function inEventRange({
-                          event: { start, end },
-                          range: { start: rangeStart, end: rangeEnd },
-                        }) {
+    event: { start, end },
+    range: { start: rangeStart, end: rangeEnd },
+  }) {
     const startOfDay = localMoment(start).startOf('day')
     const eEnd = localMoment(end)
     const rStart = localMoment(rangeStart)
@@ -312,8 +313,8 @@ export default function (moment, timezone) {
     // when the event is zero duration we need to handle a bit differently
     const sameMin = !startOfDay.isSame(eEnd, 'minutes')
     const endsAfterStart = sameMin
-        ? eEnd.isAfter(rStart, 'minutes')
-        : eEnd.isSameOrAfter(rStart, 'minutes')
+      ? eEnd.isAfter(rStart, 'minutes')
+      : eEnd.isSameOrAfter(rStart, 'minutes')
 
     return startsBeforeEnd && endsAfterStart
   }

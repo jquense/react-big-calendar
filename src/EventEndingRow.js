@@ -83,7 +83,7 @@ class EventEndingRow extends React.Component {
         type="button"
         key={'sm_' + slot}
         className={clsx('rbc-button-link', 'rbc-show-more')}
-        onClick={e => this.showMore(slot, e)}
+        onClick={(e) => this.showMore(slot, e)}
       >
         {localizer.messages.showMore(count)}
       </button>

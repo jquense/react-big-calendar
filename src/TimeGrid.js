@@ -6,11 +6,14 @@ import memoize from 'memoize-one'
 
 import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
+import TimeGridHeader from './TimeGridHeader'
+import PopOverlay from './PopOverlay'
 
 import getWidth from 'dom-helpers/width'
-import TimeGridHeader from './TimeGridHeader'
-import { notify } from './utils/helpers'
+import getPosition from 'dom-helpers/position'
+import { views } from './utils/constants'
 import { inRange, sortEvents } from './utils/eventLevels'
+import { notify } from './utils/helpers'
 import Resources from './utils/Resources'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
@@ -22,6 +25,7 @@ export default class TimeGrid extends Component {
 
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
+    this.containerRef = React.createRef()
     this._scrollRatio = null
     this.gutterRef = createRef()
   }
@@ -67,10 +71,48 @@ export default class TimeGrid extends Component {
     this.applyScroll()
   }
 
-  handleSelectAlldayEvent = (...args) => {
+  handleKeyPressEvent = (...args) => {
+    this.clearSelection()
+    notify(this.props.onKeyPressEvent, args)
+  }
+
+  handleSelectEvent = (...args) => {
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
     notify(this.props.onSelectEvent, args)
+  }
+
+  handleDoubleClickEvent = (...args) => {
+    this.clearSelection()
+    notify(this.props.onDoubleClickEvent, args)
+  }
+
+  handleShowMore = (events, date, cell, slot, target) => {
+    const {
+      popup,
+      onDrillDown,
+      onShowMore,
+      getDrilldownView,
+      doShowMoreDrillDown,
+    } = this.props
+    this.clearSelection()
+
+    if (popup) {
+      let position = getPosition(cell, this.containerRef.current)
+
+      this.setState({
+        overlay: {
+          date,
+          events,
+          position: { ...position, width: '200px' },
+          target,
+        },
+      })
+    } else if (doShowMoreDrillDown) {
+      notify(onDrillDown, [date, getDrilldownView(date) || views.DAY])
+    }
+
+    notify(onShowMore, [events, date, slot])
   }
 
   handleSelectAllDaySlot = (slots, slotInfo) => {
@@ -202,6 +244,7 @@ export default class TimeGrid extends Component {
           'rbc-time-view',
           resources && 'rbc-time-view-resources'
         )}
+        ref={this.containerRef}
       >
         <TimeGridHeader
           range={range}
@@ -211,6 +254,11 @@ export default class TimeGrid extends Component {
           getNow={getNow}
           localizer={localizer}
           selected={selected}
+          allDayMaxRows={
+            this.props.showAllEvents
+              ? Infinity
+              : this.props.allDayMaxRows ?? Infinity
+          }
           resources={this.memoizedResources(resources, accessors)}
           selectable={this.props.selectable}
           accessors={accessors}
@@ -220,13 +268,15 @@ export default class TimeGrid extends Component {
           isOverflowing={this.state.isOverflowing}
           longPressThreshold={longPressThreshold}
           onSelectSlot={this.handleSelectAllDaySlot}
-          onSelectEvent={this.handleSelectAlldayEvent}
+          onSelectEvent={this.handleSelectEvent}
+          onShowMore={this.handleShowMore}
           onDoubleClickEvent={this.props.onDoubleClickEvent}
           onKeyPressEvent={this.props.onKeyPressEvent}
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
           resizable={resizable}
         />
+        {this.props.popup && this.renderOverlay()}
         <div
           ref={this.contentRef}
           className="rbc-time-content"
@@ -254,6 +304,47 @@ export default class TimeGrid extends Component {
         </div>
       </div>
     )
+  }
+
+  renderOverlay() {
+    let overlay = this.state?.overlay ?? {}
+    let {
+      accessors,
+      localizer,
+      components,
+      getters,
+      selected,
+      popupOffset,
+      handleDragStart,
+    } = this.props
+
+    const onHide = () => this.setState({ overlay: null })
+
+    return (
+      <PopOverlay
+        overlay={overlay}
+        accessors={accessors}
+        localizer={localizer}
+        components={components}
+        getters={getters}
+        selected={selected}
+        popupOffset={popupOffset}
+        ref={this.containerRef}
+        handleKeyPressEvent={this.handleKeyPressEvent}
+        handleSelectEvent={this.handleSelectEvent}
+        handleDoubleClickEvent={this.handleDoubleClickEvent}
+        handleDragStart={handleDragStart}
+        show={!!overlay.position}
+        overlayDisplay={this.overlayDisplay}
+        onHide={onHide}
+      />
+    )
+  }
+
+  overlayDisplay = () => {
+    this.setState({
+      overlay: null,
+    })
   }
 
   clearSelection() {
@@ -341,6 +432,8 @@ TimeGrid.propTypes = {
   getters: PropTypes.object.isRequired,
   localizer: PropTypes.object.isRequired,
 
+  allDayMaxRows: PropTypes.number,
+
   selected: PropTypes.object,
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
   longPressThreshold: PropTypes.number,
@@ -350,12 +443,27 @@ TimeGrid.propTypes = {
   onSelectEnd: PropTypes.func,
   onSelectStart: PropTypes.func,
   onSelectEvent: PropTypes.func,
+  onShowMore: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   onKeyPressEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
+
+  showAllEvents: PropTypes.bool,
+  doShowMoreDrillDown: PropTypes.bool,
+
+  popup: PropTypes.bool,
+  handleDragStart: PropTypes.func,
+
+  popupOffset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ]),
 }
 
 TimeGrid.defaultProps = {

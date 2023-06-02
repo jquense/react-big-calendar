@@ -85,6 +85,8 @@ class TimeGridHeader extends React.Component {
         rtl={rtl}
         getNow={getNow}
         minRows={2}
+        // Add +1 to include showMore button row in the row limit
+        maxRows={this.props.allDayMaxRows + 1}
         range={range}
         events={eventsToDisplay}
         resourceId={resourceId}
@@ -96,6 +98,7 @@ class TimeGridHeader extends React.Component {
         getters={getters}
         localizer={localizer}
         onSelect={this.props.onSelectEvent}
+        onShowMore={this.props.onShowMore}
         onDoubleClick={this.props.onDoubleClickEvent}
         onKeyPress={this.props.onKeyPressEvent}
         onSelectSlot={this.props.onSelectSlot}
@@ -172,6 +175,8 @@ class TimeGridHeader extends React.Component {
               rtl={rtl}
               getNow={getNow}
               minRows={2}
+              // Add +1 to include showMore button row in the row limit
+              maxRows={this.props.allDayMaxRows + 1}
               range={range}
               events={groupedEvents.get(id) || []}
               resourceId={resource && id}
@@ -183,6 +188,7 @@ class TimeGridHeader extends React.Component {
               getters={getters}
               localizer={localizer}
               onSelect={this.props.onSelectEvent}
+              onShowMore={this.props.onShowMore}
               onDoubleClick={this.props.onDoubleClickEvent}
               onKeyPress={this.props.onKeyPressEvent}
               onSelectSlot={this.props.onSelectSlot}
@@ -216,11 +222,14 @@ TimeGridHeader.propTypes = {
   selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
   longPressThreshold: PropTypes.number,
 
+  allDayMaxRows: PropTypes.number,
+
   onSelectSlot: PropTypes.func,
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   onKeyPressEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
+  onShowMore: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
   scrollRef: PropTypes.any,
 }

@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
-import Selection, { getBoundsForNode, isEvent } from './Selection'
+import Selection, { getBoundsForNode, isEvent, isShowMore } from './Selection'
 
 class BackgroundCells extends React.Component {
   constructor(props, context) {
@@ -77,7 +77,7 @@ class BackgroundCells extends React.Component {
     }))
 
     let selectorClicksHandler = (point, actionType) => {
-      if (!isEvent(node, point)) {
+      if (!isEvent(node, point) && !isShowMore(node, point)) {
         let rowBox = getBoundsForNode(node)
         let { range, rtl } = this.props
 

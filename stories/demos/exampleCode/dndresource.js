@@ -102,6 +102,8 @@ export default function DnDResource({ localizer }) {
           )
           resourceId = [...new Set([...filtered, resourceId])]
         }
+      } else if (copyEvent) {
+        resourceId = [...new Set([event.resourceId, resourceId])]
       }
 
       setMyEvents((prev) => {

@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/jquense/react-big-calendar/compare/v1.6.9...v1.7.0) (2023-06-02)
+
+
+### Features
+
+* Support multiple resources on an event ([91155c5](https://github.com/jquense/react-big-calendar/commit/91155c5193f0a0b3899cb84c1dbfc6480fca4c0c)), closes [#2405](https://github.com/jquense/react-big-calendar/issues/2405) [#1649](https://github.com/jquense/react-big-calendar/issues/1649)
+
 ## [1.6.9](https://github.com/jquense/react-big-calendar/compare/v1.6.8...v1.6.9) (2023-03-24)
 
 

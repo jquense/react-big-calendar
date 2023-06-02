@@ -16,6 +16,7 @@ _Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fi
   end: Date,
   slots: Array<Date>,
   action: 'select' | 'click' | 'doubleClick',
+  resourceId: ?number, // only if the calendar is resource view
   bounds: ?{
     // For "select" action
     x: number,

@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/jquense/react-big-calendar/compare/v1.7.0...v1.8.0) (2023-06-02)
+
+
+### Features
+
+* **allDayMaxRows:** Allow for more granular control ([36871bf](https://github.com/jquense/react-big-calendar/commit/36871bf509603dd05ad16f6cb9c5f5d9517cae16)), closes [#2386](https://github.com/jquense/react-big-calendar/issues/2386)
+
 # [1.7.0](https://github.com/jquense/react-big-calendar/compare/v1.6.9...v1.7.0) (2023-06-02)
 
 

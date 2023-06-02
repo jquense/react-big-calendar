@@ -1,7 +1,14 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 
-import { events, Calendar, Views, DragAndDropCalendar } from './helpers'
+import {
+  events,
+  resourceEvents,
+  resources,
+  Calendar,
+  Views,
+  DragAndDropCalendar,
+} from './helpers'
 import customComponents from './resources/customComponents'
 
 export default {
@@ -105,4 +112,21 @@ WithCustomEventWrapper.args = {
   components: {
     eventWrapper: customComponents.eventWrapper,
   },
+}
+
+export const DraggableMultipleResources = Template.bind({})
+DraggableMultipleResources.storyName =
+  'draggable and resizable with multiple resource lanes'
+DraggableMultipleResources.args = {
+  defaultDate: new Date(),
+  defaultView: Views.DAY,
+  views: [Views.DAY, Views.WEEK, Views.AGENDA],
+  events: resourceEvents,
+  resources: resources,
+  resourceAccessor: 'resourceId',
+  resourceIdAccessor: 'id',
+  resourceTitleAccessor: 'name',
+  resizable: true,
+  onEventDrop: action('event dropped'),
+  onEventResize: action('event resized'),
 }

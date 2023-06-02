@@ -18,6 +18,7 @@ class EventWrapper extends React.Component {
     continuesAfter: PropTypes.bool,
     isDragging: PropTypes.bool,
     isResizing: PropTypes.bool,
+    resource: PropTypes.number,
     resizable: PropTypes.bool,
   }
 
@@ -45,8 +46,11 @@ class EventWrapper extends React.Component {
     const isResizeHandle = e.target
       .getAttribute('class')
       ?.includes('rbc-addons-dnd-resize')
-    if (!isResizeHandle)
+    if (!isResizeHandle) {
+      let extendedEvent = this.props.event
+      extendedEvent.sourceResource = this.props.resource
       this.context.draggable.onBeginAction(this.props.event, 'move')
+    }
   }
 
   renderAnchor(direction) {

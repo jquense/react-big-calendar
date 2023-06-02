@@ -2,6 +2,7 @@ import React, { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import DemoLink from '../../DemoLink.component'
+import LinkTo from '@storybook/addon-links/react'
 
 const events = [
   {
@@ -24,7 +25,7 @@ const events = [
     title: 'Team lead meeting',
     start: new Date(2018, 0, 29, 8, 30, 0),
     end: new Date(2018, 0, 29, 12, 30, 0),
-    resourceId: 3,
+    resourceId: [2, 3],
   },
   {
     id: 11,
@@ -54,6 +55,11 @@ export default function Resource({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="resource" />
+      <strong>
+        The calendar below uses the <LinkTo kind="props" story="resource-id-accessor">resourceIdAccessor</LinkTo>, <LinkTo kind="props" story="resource-title-accessor">resourceTitleAccessor</LinkTo> and <LinkTo kind="props" story="resources">resources</LinkTo> props to show events scheduled for different resources.
+        <br/>
+        Events can be mapped to a single resource, or multiple resources.
+      </strong>
       <div className="height600">
         <Calendar
           defaultDate={defaultDate}

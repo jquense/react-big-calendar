@@ -246,7 +246,7 @@ class Calendar extends React.Component {
     resources: PropTypes.arrayOf(PropTypes.object),
 
     /**
-     * Provides a unique identifier for each resource in the `resources` array
+     * Provides a unique identifier, or an array of unique identifiers, for each resource in the `resources` array
      *
      * ```js
      * string | (resource: Object) => any

@@ -26,7 +26,10 @@ function getPosition({ target, offset, container, box }) {
   const right = left + bWidth
   const { x, y } = offset
   const topOffset = bottom > viewBottom ? top - bHeight - y : top + y + height
-  const leftOffset = right > viewRight ? left + x - bWidth + width : left + x
+  const leftOffset =
+    right > viewRight && left + x - bWidth + width >= 0
+      ? left + x - bWidth + width
+      : left + x
 
   return {
     topOffset,

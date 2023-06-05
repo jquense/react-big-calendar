@@ -1,0 +1,50 @@
+import { Meta } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="Guides/Localizers" />
+
+# What is a Localizer?
+
+You have probably noticed that your Big Calendar implementations require a <LinkTo kind="props" story="localizer">localizer</LinkTo> prop. The `localizer` is needed for applying formatting and culture (i18n) to your date displays throughout the Calendar.
+
+Now the `localizer` also handles all internal date math, utilizing the `localizer` you provide. This is how the [moment](https://momentjs.com/) and [Luxon](https://moment.github.io/luxon/#/) localizers handle timezones, and how all of them handle things like Daylight Savings Time. Most components receive the `localizer` as a prop, meaning that your override components can also take advantage of these features.
+Each `localizer`, when created, creates an instance of `DateLocalizer` class, and each one has a normalized group of functions and props available for manipulating dates.
+
+- `add(date:Date, adder:number, unit:string) => Date`
+- `ceil(date:Date, unit:string) => Date`
+- `continuesAfter(start:Date, end:Date, last:Date) => boolean`
+- `continuesPrior(start:Date, first:Date) => boolean`
+- `diff(a:Date, b:Date, unit:string) => number`
+- `endOf(date:Date, unit:string) => Date`
+- `eq(a:Date, b:Date, unit:string) => boolean`
+- `firstVisibleDay(date:Date) => Date`
+- `format(value:Date, format:string) => string`,
+- `formats:object`
+- `getDstOffset(start:Date, end:Date) => number`
+- `getMinutesFromMidnight(start:Date) => number`
+- `getSlotDate(dt:Date, minutesFromMidnight:number, offset:number) => Date`
+- `getTimezoneOffset(date:Date) => number`
+- `getTotalMin(start:Date, end:Date) => number`
+- `gt(a:Date, b:Date, unit:string) => boolean`
+- `gte(a:Date, b:Date, unit:string) => boolean`
+- `inEventRange({event: {start:Date, end:Date}, range: {start:Date, end:Date}}) => boolean`
+- `inRange(day:Date, start:Date, end:Date, unit:string) => boolean`
+- `isSameDate(date1:Date, date2:Date) => boolean`
+- `lastVisibleDay(date:Date) => Date`
+- `lt(a:Date, b:Date, unit:string) => boolean`
+- `lte(a:Date, b:Date, unit:string) => boolean`
+- `max(dateA:Date, dateB:Date) => Date`
+- `merge(date:Date, time:Date) => Date`
+- `min(dateA:Date, dateB:Date) => Date`
+- `minutes(date:Date) => number`
+- `neq(a:Date, b:Date, unit:string) => boolean`
+- `range(start:Date, end:Date, unit:string) => Array[Date]`
+- `sortEvents({evtA: {start:Date, end:Date, allDay:boolean}, evtB: {start:Date, end:Date, allDay:boolean}}) => number`
+- `startAndEndAreDateOnly(start:Date, end:Date) => boolean`
+- `startOf(date:Date, unit:string) => Date`
+- `startOfWeek(culture) => number` (alias of `firstOfWeek()`)
+- `visibleDays(date:Date) => Array[Date]`
+
+Many of these methods are used by Big Calendar in the background for determining layout. You can create your own custom `localizer`, to utilize some other library, as long as they implement these methods. The `DateLocalizer` class defaults these methods to methods from the [date-arithmetic](https://www.npmjs.com/package/date-arithmetic) package.
+
+For examples of building your own custom `localizer` take a look at the [currently implemented localizers](https://github.com/jquense/react-big-calendar/blob/master/src/localizers). If you do build your own `localizer`, please consider publishing it to [npm](https://npmjs.org). We suggest a common naming convention like `rbc-addon-mylocalizername`.

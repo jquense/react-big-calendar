@@ -1,0 +1,17 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# resources
+
+- type: `arrayOf(Resource)`
+
+An array of resource objects that map events to a specific resource. Resource objects, like events, can be any shape or have any properties, but should be uniquly identifiable via the <LinkTo kind="props" story="resource-id-accessor">resourceIdAccessor</LinkTo>, as well as a "title" or name as provided by the <LinkTo kind="props" story="resource-title-accessor">resourceTitleAccessor</LinkTo> prop.
+
+```js
+Resource {
+  id: string | number, // must be unique
+  title: string
+}
+```
+
+<Story id="props--resources" />

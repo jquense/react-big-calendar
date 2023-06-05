@@ -1,0 +1,28 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+
+# backgroundEvents
+
+- type: `arrayOf(BackgroundEvent)`
+- default: `[]`
+
+An array of background event objects to display on the calendar. Background
+Events behave similarly to Events but are not factored into Event overlap logic,
+allowing them to sit behind any Events that may occur during the same period.
+Background Events objects can be any shape, as long as the Calendar knows how to
+retrieve the following details of the event:
+
+- start time
+- end time
+
+Each of these properties can be customized or generated dynamically by
+setting the various "accessor" props. Without any configuration the default
+event should look like:
+
+```js
+BackgroundEvent {
+  start: Date,
+  end: Date,
+}
+```
+
+<Story id="props--back-ground-events" />

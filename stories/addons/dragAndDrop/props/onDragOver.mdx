@@ -1,0 +1,10 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# onDragOver
+
+- type: `function (dragEvent: SyntheticEvent) => any`
+
+If an `onDragOver` callback _is_ passed, then it can discriminate as to whether a draggable item is droppable on the calendar. To designate a draggable item as droppable, call `event.preventDefault` inside `onDragOver`. If `event.preventDefault` is not called in the `onDragOver` callback, then the draggable item will not be droppable on the calendar.
+
+<Story id="addons-drag-and-drop-props--on-drag-over" />

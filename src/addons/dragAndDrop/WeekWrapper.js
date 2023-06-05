@@ -108,7 +108,9 @@ class WeekWrapper extends React.Component {
     if (direction === 'RIGHT') {
       if (cursorInRow) {
         if (slotMetrics.last < start) return this.reset()
-        end = localizer.add(date, 1, 'day')
+        if (localizer.eq(localizer.startOf(end, 'day'), end))
+          end = localizer.add(date, 1, 'day')
+        else end = date
       } else if (
         localizer.inRange(start, slotMetrics.first, slotMetrics.last) ||
         (bounds.bottom < point.y && +slotMetrics.first > +start)
@@ -149,10 +151,16 @@ class WeekWrapper extends React.Component {
   _selectable = () => {
     let node = this.ref.current.closest('.rbc-month-row, .rbc-allday-cell')
     let container = node.closest('.rbc-month-view, .rbc-time-view')
+    let isMonthRow = node.classList.contains('rbc-month-row')
 
-    let selector = (this._selector = new Selection(() => container))
+    // Valid container check only necessary in TimeGrid views
+    let selector = (this._selector = new Selection(() => container, {
+      validContainers: [
+        ...(!isMonthRow ? ['.rbc-day-slot', '.rbc-allday-cell'] : []),
+      ],
+    }))
 
-    selector.on('beforeSelect', point => {
+    selector.on('beforeSelect', (point) => {
       const { isAllDay } = this.props
       const { action } = this.context.draggable.dragAndDropAction
       const bounds = getBoundsForNode(node)
@@ -162,7 +170,7 @@ class WeekWrapper extends React.Component {
       )
     })
 
-    selector.on('selecting', box => {
+    selector.on('selecting', (box) => {
       const bounds = getBoundsForNode(node)
       const { dragAndDropAction } = this.context.draggable
       if (dragAndDropAction.action === 'move') this.handleMove(box, bounds)
@@ -171,7 +179,7 @@ class WeekWrapper extends React.Component {
 
     selector.on('selectStart', () => this.context.draggable.onStart())
 
-    selector.on('select', point => {
+    selector.on('select', (point) => {
       const bounds = getBoundsForNode(node)
       if (!this.state.segment) return
       if (!pointInBox(bounds, point)) {
@@ -181,14 +189,14 @@ class WeekWrapper extends React.Component {
       }
     })
 
-    selector.on('dropFromOutside', point => {
+    selector.on('dropFromOutside', (point) => {
       if (!this.context.draggable.onDropFromOutside) return
       const bounds = getBoundsForNode(node)
       if (!pointInBox(bounds, point)) return
       this.handleDropFromOutside(point, bounds)
     })
 
-    selector.on('dragOverFromOutside', point => {
+    selector.on('dragOverFromOutside', (point) => {
       if (!this.context.draggable.dragFromOutsideItem) return
       const bounds = getBoundsForNode(node)
 

@@ -1,0 +1,17 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# view
+
+- type: `string`
+- default: `Views.MONTH (month|week|work_week|day|agenda)`
+- controlled by: <LinkTo kind="props" story="cal-view-change">onView</LinkTo>
+
+The current view value of the calendar. Determines the visible 'view'.
+If `view` is omitted then it is defaulted to 'month'.
+
+This is a controllable prop, when using <LinkTo kind="props" story="cal-view-change">onView</LinkTo>
+
+<Canvas>
+  <Story id="props--view" />
+</Canvas>

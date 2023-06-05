@@ -1,18 +1,17 @@
-
 $out-of-range-color: lighten(#333, 40%) !default;
 $out-of-range-bg-color: lighten(#333, 70%) !default;
 
-$calendar-border: #DDD !default;
-$cell-border: #DDD !default;
+$calendar-border: #ddd !default;
+$cell-border: #ddd !default;
 
-$border-color: #CCC !default;
+$border-color: #ccc !default;
 
-$segment-width: percentage(1 / 7) !default;
+// Each calendar segment is 1/7th.
+$segment-width: 0.14286% !default;
 
 $time-selection-color: white !default;
-$time-selection-bg-color: rgba(0,0,0, .50) !default;
-$date-selection-bg-color: rgba(0,0,0, .10) !default;
-
+$time-selection-bg-color: rgba(0, 0, 0, 0.5) !default;
+$date-selection-bg-color: rgba(0, 0, 0, 0.1) !default;
 
 $event-bg: #3174ad !default;
 $event-border: darken(#3174ad, 10%) !default;

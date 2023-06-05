@@ -18,33 +18,39 @@ class EventWrapper extends React.Component {
     continuesAfter: PropTypes.bool,
     isDragging: PropTypes.bool,
     isResizing: PropTypes.bool,
+    resource: PropTypes.number,
     resizable: PropTypes.bool,
   }
 
-  handleResizeUp = e => {
+  handleResizeUp = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'UP')
   }
-  handleResizeDown = e => {
+  handleResizeDown = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'DOWN')
   }
-  handleResizeLeft = e => {
+  handleResizeLeft = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'LEFT')
   }
-  handleResizeRight = e => {
+  handleResizeRight = (e) => {
     if (e.button !== 0) return
     this.context.draggable.onBeginAction(this.props.event, 'resize', 'RIGHT')
   }
-  handleStartDragging = e => {
+  handleStartDragging = (e) => {
     if (e.button !== 0) return
     // hack: because of the way the anchors are arranged in the DOM, resize
     // anchor events will bubble up to the move anchor listener. Don't start
     // move operations when we're on a resize anchor.
-    const isResizeHandle = e.target.className.includes('rbc-addons-dnd-resize')
-    if (!isResizeHandle)
+    const isResizeHandle = e.target
+      .getAttribute('class')
+      ?.includes('rbc-addons-dnd-resize')
+    if (!isResizeHandle) {
+      let extendedEvent = this.props.event
+      extendedEvent.sourceResource = this.props.resource
       this.context.draggable.onBeginAction(this.props.event, 'move')
+    }
   }
 
   renderAnchor(direction) {
@@ -60,13 +66,8 @@ class EventWrapper extends React.Component {
   }
 
   render() {
-    const {
-      event,
-      type,
-      continuesPrior,
-      continuesAfter,
-      resizable,
-    } = this.props
+    const { event, type, continuesPrior, continuesAfter, resizable } =
+      this.props
 
     let { children } = this.props
 

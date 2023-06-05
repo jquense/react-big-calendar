@@ -50,8 +50,39 @@ function fixUnit(unit) {
   return datePart
 }
 
-export default function(moment) {
+export default function (moment) {
   const locale = (m, c) => (c ? m.locale(c) : m)
+
+  function getTimezoneOffset(date) {
+    // ensures this gets cast to timezone
+    return moment(date).toDate().getTimezoneOffset()
+  }
+
+  function getDstOffset(start, end) {
+    // convert to moment, in case
+    // Calculate the offset in the timezone of the Events (local)
+    // not in the timezone of the calendar (moment.tz)
+    const st = moment(start).local()
+    const ed = moment(end).local()
+    // if not using moment timezone
+    if (!moment.tz) {
+      return st.toDate().getTimezoneOffset() - ed.toDate().getTimezoneOffset()
+    }
+    /**
+     * If using moment-timezone, and a timezone has been applied, then
+     * use this to get the proper timezone offset, otherwise default
+     * the timezone to the browser local
+     */
+    const tzName = st?._z?.name ?? moment.tz.guess()
+    const startOffset = moment.tz.zone(tzName).utcOffset(+st)
+    const endOffset = moment.tz.zone(tzName).utcOffset(+ed)
+    return startOffset - endOffset
+  }
+
+  function getDayStartDstOffset(start) {
+    const dayStart = moment(start).startOf('day')
+    return getDstOffset(dayStart, start)
+  }
 
   /*** BEGIN localized date arithmetic methods with moment ***/
   function defineComparators(a, b, unit) {
@@ -64,9 +95,7 @@ export default function(moment) {
   function startOf(date = null, unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      return moment(date)
-        .startOf(datePart)
-        .toDate()
+      return moment(date).startOf(datePart).toDate()
     }
     return moment(date).toDate()
   }
@@ -74,9 +103,7 @@ export default function(moment) {
   function endOf(date = null, unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      return moment(date)
-        .endOf(datePart)
-        .toDate()
+      return moment(date).endOf(datePart).toDate()
     }
     return moment(date).toDate()
   }
@@ -138,18 +165,14 @@ export default function(moment) {
     if (!date && !time) return null
 
     const tm = moment(time).format('HH:mm:ss')
-    const dt = moment(date)
-      .startOf('day')
-      .format('MM/DD/YYYY')
+    const dt = moment(date).startOf('day').format('MM/DD/YYYY')
     // We do it this way to avoid issues when timezone switching
     return moment(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
   }
 
   function add(date, adder, unit) {
     const datePart = fixUnit(unit)
-    return moment(date)
-      .add(adder, datePart)
-      .toDate()
+    return moment(date).add(adder, datePart).toDate()
   }
 
   function range(start, end, unit = 'day') {
@@ -192,17 +215,11 @@ export default function(moment) {
   }
 
   function firstVisibleDay(date) {
-    return moment(date)
-      .startOf('month')
-      .startOf('week')
-      .toDate()
+    return moment(date).startOf('month').startOf('week').toDate()
   }
 
   function lastVisibleDay(date) {
-    return moment(date)
-      .endOf('month')
-      .endOf('week')
-      .toDate()
+    return moment(date).endOf('month').endOf('week').toDate()
   }
 
   function visibleDays(date) {
@@ -242,7 +259,7 @@ export default function(moment) {
   function getMinutesFromMidnight(start) {
     const dayStart = moment(start).startOf('day')
     const day = moment(start)
-    return day.diff(dayStart, 'minutes')
+    return day.diff(dayStart, 'minutes') + getDayStartDstOffset(start)
   }
 
   // These two are used by DateSlotMetrics
@@ -297,13 +314,10 @@ export default function(moment) {
     return startsBeforeEnd && endsAfterStart
   }
 
-  // moment treats 'day' and 'date' equality very different
-  // moment(date1).isSame(date2, 'day') would test that they were both the same day of the week
-  // moment(date1).isSame(date2, 'date') would test that they were both the same date of the month of the year
   function isSameDate(date1, date2) {
     const dt = moment(date1)
     const dt2 = moment(date2)
-    return dt.isSame(dt2, 'date')
+    return dt.isSame(dt2, 'day')
   }
 
   /**
@@ -358,6 +372,8 @@ export default function(moment) {
     minutes,
 
     getSlotDate,
+    getTimezoneOffset,
+    getDstOffset,
     getTotalMin,
     getMinutesFromMidnight,
     continuesPrior,

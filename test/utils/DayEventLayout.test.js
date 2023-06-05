@@ -1,12 +1,16 @@
 import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
+// import dayjs from 'dayjs'
+// import dayjsLocalizer from '../../src/localizers/dayjs'
 //import { DateTime } from 'luxon'
 //import luxonLocalizer from '../../src/localizers/luxon'
+
 import { getStyledEvents } from '../../src/utils/DayEventLayout'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 import * as dates from '../../src/utils/dates'
 
 const localizer = momentLocalizer(moment)
+// const localizer = dayjsLocalizer(dayjs)
 //const localizer = luxonLocalizer(DateTime)
 
 describe('getStyledEvents', () => {
@@ -20,7 +24,7 @@ describe('getStyledEvents', () => {
     timeslots: 4,
     localizer,
   })
-  const accessors = { start: e => e.start, end: e => e.end }
+  const accessors = { start: (e) => e.start, end: (e) => e.end }
   const dayLayoutAlgorithm = 'overlap'
 
   describe('matrix', () => {
@@ -33,7 +37,7 @@ describe('getStyledEvents', () => {
           minimumStartDifference: 10,
           dayLayoutAlgorithm,
         })
-        const results = styledEvents.map(result => ({
+        const results = styledEvents.map((result) => ({
           width: Math.floor(result.style.width),
           xOffset: Math.floor(result.style.xOffset),
         }))
@@ -120,6 +124,6 @@ describe('getStyledEvents', () => {
         ],
       ],
     ]
-    toCheck.forEach(args => compare(...args))
+    toCheck.forEach((args) => compare(...args))
   })
 })

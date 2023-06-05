@@ -1,0 +1,89 @@
+name: 🐞 Big Calendar Issue
+description: Create a report for Big Calendar
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: checkboxes
+    id: qa
+    attributes:
+      label: Check that this is really a bug
+      description: For Q&A open go to [StackOverflow](https://stackoverflow.com/)
+      options:
+        - label: I confirm
+          required: true
+  - type: input
+    id: reproduction
+    attributes:
+      label: Reproduction link
+      description: Please provide a link to a repo that can reproduce the problem you ran into. You can fork our [Issue Template](https://codesandbox.io/s/react-big-calendar-example-v9wdyd) in codesandbox to get start. A reproduction is required unless you are absolutely sure that the issue is obvious and the provided information is enough to understand the problem. If a report is vague (e.g. just a generic error message) and has no reproduction, it will receive a "missing demo" label. If no reproduction is provided after 3 days, it will be auto-closed.
+      placeholder: 'https://codesandbox.io/..'
+    validations:
+      required: true
+  - type: textarea
+    id: descr
+    attributes:
+      label: Bug description
+      description: A clear and concise description of what the bug is
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A concise description of what you're experiencing
+    validations:
+      required: false
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: A concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: input
+    id: bigcalendar
+    attributes:
+      label: react-big-calendar version
+      description: Exact release version or commit hash
+      placeholder: e.g 0.39.3
+    validations:
+      required: true
+  - type: input
+    id: reactversion
+    attributes:
+      label: React version
+      description: Exact release version or commit hash
+      placeholder: e.g 17.0.2
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Platform/Target and Browser Versions
+      description: Platform client you are targeting such as macOS, Windows, Cordova, iOS, Android, Chrome, etc.
+      placeholder: e.g macOS Safari 14.1
+    validations:
+      required: true
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Read the [docs](http://jquense.github.io/react-big-calendar/examples).
+          required: true
+        - label: Check that there isn't already an issue that request the same feature to avoid creating a duplicate.
+          required: true
+        - label: Make sure this is a react-big-calendar issue and not an implementation issue
+          required: true
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Would you like to open a PR for this bug?
+      description: Before starting to work on PR it is recommended to get maintainers approval. The fastest, and most appreciated way to have your issue fixed is to create a pull request with working, tested code and we will help get it merged. Don't be scared to open a pull request that isn't completed and ask for input. We're happy to give direction!
+      options:
+        - label: I'm willing to open a PR
+          required: false

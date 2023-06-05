@@ -1,0 +1,32 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+
+# events
+
+- type: `arrayOf(Event)`
+- default: `[]`
+
+An array of event objects to display on the calendar. Events objects
+can be any shape, as long as the Calendar knows how to retrieve the
+following details of the event:
+
+- start time
+- end time
+- title
+- whether its an "all day" event or not
+- any resource the event may be related to
+
+Each of these properties can be customized or generated dynamically by
+setting the various "accessor" props. Without any configuration the default
+event should look like:
+
+```js
+Event {
+  title: string,
+  start: Date,
+  end: Date,
+  allDay?: boolean
+  resource?: any,
+}
+```
+
+<Story id="props--events" />

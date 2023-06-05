@@ -1,0 +1,14 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# slotGroupPropGetter
+
+- type: `function (group: Date[]) => { style?: Object }`
+
+Optionally provide a function that returns an object of className or style props to be applied to the time-slot node.
+
+**Caution! Styles that change layout or position may break the calendar in unexpected ways.**
+
+<Canvas>
+  <Story id="props--slot-group-prop-getter" />
+</Canvas>

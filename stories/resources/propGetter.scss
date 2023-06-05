@@ -1,0 +1,28 @@
+/**
+ * These are classes applied in the propGetter stories
+ */
+
+.powderBlue {
+  background-color: powderblue;
+  color: black;
+}
+
+.darkGreen {
+  background-color: darkgreen;
+  color: white;
+}
+
+.slotDefault {
+  background-color: '#FAF0E6';
+  color: 'black';
+}
+
+.tuesday {
+  @extend .powderBlue;
+}
+
+#my_scheduler {
+  @extend .powderBlue;
+  padding: 0.5em;
+  border: 1px solid blue;
+}

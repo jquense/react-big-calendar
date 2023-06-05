@@ -1,0 +1,940 @@
+import { Meta } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="props/Full Prop List" />
+
+# All Props
+
+### localizer
+
+- type: `instanceOf(DateLocalizer)` **required**
+- <LinkTo kind="props" story="localizer">
+    Example
+  </LinkTo>
+
+The localizer used for formatting dates and times according to the `format` and `culture`
+
+```js
+// When using `Globalize`
+import { globalizeLocalizer } from 'react-big-calendar'
+import globalize from 'globalize'
+
+const localizer = globalizeLocalizer(globalize)
+```
+
+```js
+// When using `moment`
+import { momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+// and, for optional time zone support
+import 'moment-timezone'
+
+moment.tz.setDefault('America/Los_Angeles')
+// end optional time zone support
+
+const localizer = momentLocalizer(moment)
+```
+
+```js
+// When using `Luxon`
+import { luxonLocalizer } from 'react-big-calendar'
+import { DateTime, Settings } from 'luxon'
+// only use `Settings` if you require optional time zone support
+Settings.defaultZone = 'America/Los_Angeles'
+// end optional time zone support
+
+// Luxon uses the Intl API, which currently does not contain `weekInfo`
+// to determine which weekday is the start of the week by `culture`.
+// The `luxonLocalizer` defaults this to Sunday, which differs from
+// the Luxon default of Monday. The localizer requires this option
+// to change the display, and the date math for determining the
+// start of a week. Luxon uses non-zero based values for `weekday`.
+const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 7 })
+```
+
+### elementProps
+
+- type: `object`
+- <LinkTo kind="props" story="element-props">
+    Example
+  </LinkTo>
+
+Props passed to main calendar `<div>`.
+
+**Note:** Will not pass down `className`.
+
+### getNow
+
+- type: `function () => Date`
+- default: `() => new Date()`
+- <LinkTo kind="props" story="get-now">
+    Example
+  </LinkTo>
+
+Determines the current date/time which is highlighted in the views.
+
+The value affects which day is shaded and which time is shown as the current time. It also affects the date used by the Today button in the toolbar.
+
+Providing a value here can be useful when you are implementing time zones using the <LinkTo kind="props" story="start-accessor">startAccessor</LinkTo> and <LinkTo kind="props" story="end-accessor">endAccessor</LinkTo> properties.
+
+### defaultDate
+
+- type: `instanceOf(Date)`
+- default: `new Date()`
+- <LinkTo kind="props" story="default-date">
+    Example
+  </LinkTo>
+
+Sets the initial `date` value in your calendar when you don't want it to be 'today', when not using <LinkTo kind="props" story="get-now">getNow</LinkTo>.
+
+### date
+
+- type: `instanceOf(Date)`
+- default: `new Date()`
+- controlled by: <LinkTo kind="props" story="on-navigate">onNavigate</LinkTo>
+- <LinkTo kind="props" story="date">
+    Example
+  </LinkTo>
+
+The current date value of the calendar. Determines the visible view range.
+If `date` is omitted then the result of <LinkTo kind="props" story="get-now">getNow</LinkTo> is used; otherwise the
+current date is used.
+
+This is a controllable prop, when using <LinkTo kind="props" story="on-navigate">onNavigate</LinkTo>
+
+### onNavigate
+
+- type: `function`
+- controls: <LinkTo kind="props" story="date">date</LinkTo>
+- example: `(newDate) => setDate(newDate)`
+- <LinkTo kind="props" story="on-navigate">
+    Example
+  </LinkTo>
+
+Callback fired when the `date` value changes. When included it is used to 'control' the <LinkTo kind="props" story="date">date</LinkTo> prop value.
+
+### defaultView
+
+- type: `string`
+- default: `Views.MONTH (month|week|work_week|day|agenda)`
+- <LinkTo kind="props" story="default-view">
+    Example
+  </LinkTo>
+
+The initial `view` set for your calendar when you don't want it to be the default ('month').
+
+### view
+
+- type: `string`
+- default: `Views.MONTH (month|week|work_week|day|agenda)`
+- controlled by: <LinkTo kind="props" story="on-view">onView</LinkTo>
+- <LinkTo kind="props" story="view">
+    Example
+  </LinkTo>
+
+The current view value of the calendar. Determines the visible 'view'.
+If `view` is omitted then it is defaulted to 'month'.
+
+This is a controllable prop, when using <LinkTo kind="props" story="on-view">onView</LinkTo>
+
+### onView
+
+- type: 'function'
+- controls: <LinkTo kind="props" story="view">view</LinkTo>
+- example: `(newView) => setView(newView)`
+- <LinkTo kind="props" story="on-view">
+    Example
+  </LinkTo>
+
+Callback fired when the `view` value changes. When included it is used to 'control' the <LinkTo kind="props" story="view">view</LinkTo> prop value.
+
+### events
+
+- type: `arrayOf(Event)`
+- default: `[]`
+- <LinkTo kind="props" story="events">
+    Example
+  </LinkTo>
+
+An array of event objects to display on the calendar. Event objects can be any shape, as long as the Calendar knows how to retrieve the following details of the event:
+
+- start time
+- end time
+- title
+- whether its an "all day" event or not
+- any resource the event may be related to
+
+Each of these properties can be customized or generated dynamically by setting the various "accessor" props. Without any configuration the default event should look like:
+
+```js
+Event {
+  title: string,
+  start: Date,
+  end: Date,
+  allDay?: boolean
+  resource?: any,
+}
+```
+
+### backgroundEvents
+
+- type: `arrayOf(BackgroundEvent)`
+- default: `[]`
+- <LinkTo kind="props" story="background-events">
+    Example
+  </LinkTo>
+
+An array of background event objects to display on the calendar. Background Events behave similarly to <LinkTo kind="props" story="events">events</LinkTo> but are not factored into Event overlap logic, allowing them to sit behind any Events that may occur during the same period. Background Events objects can be any shape, as long as the Calendar knows how to retrieve the following details of the event:
+
+- start time
+- end time
+
+Each of these properties can be customized or generated dynamically by setting the various "accessor" props. Without any configuration the default event should look like:
+
+```js
+BackgroundEvent {
+  start: Date,
+  end: Date,
+}
+```
+
+<!-- ### backgroundEventPropGetter
+
+- type: `function (event: Object, start: Date, end: Date, isSelected: boolean) => {className?: string, style?: Object}`
+- <LinkTo kind="props" story="background-event-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the the event node. -->
+
+### titleAccessor
+
+- type: `string | function (event: Object) => string`
+- default: 'title'
+- <LinkTo kind="props" story="title-accessor">
+    Example
+  </LinkTo>
+
+Accessor for the event title, used to display event information. Should resolve to a `renderable` value.
+
+### tooltipAccessor
+
+- type: `string | function (event: Object) => string`
+- default: 'title'
+- <LinkTo kind="props" story="tooltip-accessor">
+    Example
+  </LinkTo>
+
+Accessor for the event tooltip, used to display event information. Should resolve to a `renderable` value. Removes the tooltip if null.
+
+### startAccessor
+
+- type: `string | function (event: Object) => Date`
+- default: 'start'
+- <LinkTo kind="props" story="start-accessor">
+    Example
+  </LinkTo>
+
+The start date/time of the event. Must resolve to a JavaScript `Date` object.
+
+### endAccessor
+
+- type: `string | function (event: Object) => Date`
+- default: 'end'
+- <LinkTo kind="props" story="end-accessor">
+    Example
+  </LinkTo>
+
+The end date/time of the event. Must resolve to a JavaScript `Date` object.
+
+### allDayAccessor
+
+- type: `string | function (event: Object) => boolean`
+- default: 'allDay'
+- <LinkTo kind="props" story="all-day-accessor">
+    Example
+  </LinkTo>
+
+Determines whether the event should be considered an "all day" event and ignore time. Must resolve to a `boolean` value.
+
+### allDayMaxRows
+
+- type: `number`
+- default: `Infinity`
+- <LinkTo kind="props" story="all-day-max-rows">
+    Example
+  </LinkTo>
+
+Determines a maximum amount of rows of events to display in the all day section for Week and Day views, will display `showMore` button if events excede this number.
+
+### resources
+
+- type: `arrayOf(Resource)`
+- <LinkTo kind="props" story="resources">
+    Example
+  </LinkTo>
+
+An array of resource objects that map events to a specific resource. Resource objects, like events, can be any shape or have any properties, but should be uniquly identifiable via the <LinkTo kind="props" story="resource-id-accessor">resourceIdAccessor</LinkTo>, as well as a "title" or name as provided by the <LinkTo kind="props" story="resource-title-accessor">resourceTitleAccessor</LinkTo> prop.
+
+```js
+Resource {
+  id: string | number, // must be unique
+  title: string
+}
+```
+
+### resourceIdAccessor
+
+- type: `string | function (resource: Object) => string | number // must be unique`
+- <LinkTo kind="props" story="resource-id-accessor">
+    Example
+  </LinkTo>
+
+Provides a unique identifier, or an array of unique identifiers, for each resource in the <LinkTo kind="props" story="resources">resources</LinkTo> array
+
+### resourceTitleAccessor
+
+- type: `string | function (resource: Object) => string`
+- <LinkTo kind="props" story="resource-title-accessor">
+    Example
+  </LinkTo>
+
+Provides a human readable name for the resource object, used in headers.
+
+### onDrillDown
+
+- type: `function (date: Date) => // do something`
+- <LinkTo kind="props" story="on-drill-down">
+    Example
+  </LinkTo>
+
+Callback fired when date header, or the truncated events links are clicked. When included, it will override the default drilldown behavior.
+
+### onRangeChange
+
+- type: `function (range: Array [1|7] | Object {start: Date, end: Date}) => // do something`
+- <LinkTo kind="props" story="on-range-change">
+    Example
+  </LinkTo>
+
+Callback fired when the visible date range changes. Returns an Array of dates or an object with start and end dates for BUILTIN views.
+
+Custom views may return something different.
+
+_Note:_ This method is not fired on initial render. Only as the user navigates through Big Calendar.
+
+### selectable
+
+- type: `boolean | 'ignoreEvents'`
+- <LinkTo kind="props" story="selectable">
+    Example
+  </LinkTo>
+
+Allows mouse selection of ranges of dates/times.
+
+The 'ignoreEvents' option prevents selection code from running when a drag begins over an event. Useful when you want custom event click or drag logic.
+
+_Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fire. Click on the 'showCode' button, at the bottom of the <LinkTo kind="props" story="on-select-slot">example</LinkTo>, to see how you can get around this issue.
+
+## onSelectSlot
+
+- type: `function (Object: slotInfo) => any`
+- requires: <LinkTo kind="props" story="selectable">selectable</LinkTo>
+- <LinkTo kind="props" story="on-select-slot">
+    Example
+  </LinkTo>
+
+A callback fired when a date selection is made. Only fires when <LinkTo kind="props" story="selectable">selectable</LinkTo> is true.
+
+_Things To Know:_ When you 'doubleClick', both 'click' and 'doubleClick' will fire. Click on the 'showCode' button, at the bottom of the example below, to see how you can get around this issue.
+
+```js
+;(slotInfo: {
+  start: Date,
+  end: Date,
+  slots: Array<Date>,
+  action: 'select' | 'click' | 'doubleClick',
+  bounds: ?{
+    // For "select" action
+    x: number,
+    y: number,
+    top: number,
+    right: number,
+    left: number,
+    bottom: number,
+  },
+  box: ?{
+    // For "click" or "doubleClick" actions
+    clientX: number,
+    clientY: number,
+    x: number,
+    y: number,
+  },
+}) => any
+```
+
+#### What's The Difference from onSelecting?
+
+How is this different from <LinkTo kind="props" story="on-selecting">onSelecting</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+
+### onSelectEvent
+
+- type: `function (event: Object) => any`
+- <LinkTo kind="props" story="on-select-event">
+    Example
+  </LinkTo>
+
+Callback fired when a calendar event is selected (i.e.: an `onClick` handler).
+
+**Note:** The <LinkTo kind="props" story="selectable">selectable</LinkTo> prop is _not_ required for this prop to function.
+
+**Important:** The event passed into the function is the Calendar Event, not the SyntheticEvent expected by most click handlers.
+
+### onDoubleClickEvent
+
+- type: `function (event: Object) => any`
+- <LinkTo kind="props" story="on-double-click-event">
+    Example
+  </LinkTo>
+
+Callback fired when a calendar event is clicked twice. (i.e.: an `onDoubleClick` handler).
+
+**Note:** The <LinkTo kind="props" story="selectable">selectable</LinkTo> prop is _not_ required for this prop to function.
+
+**Important:** The event passed into the function is the Calendar Event, not the SyntheticEvent expected by most click handlers.
+
+### onSelecting
+
+- type: `(range: Object { start: Date, end: Date, resourceId: null|string|number }) => ?boolean`
+- requires: <LinkTo kind="props" story="selectable">selectable</LinkTo>
+- <LinkTo kind="props" story="on-selecting">
+    Example
+  </LinkTo>
+
+Callback fired when dragging a selection in the Time views. Only fires when <LinkTo kind="props" story="selectable">selectable</LinkTo> is true.
+
+Returning `false` from the handler will prevent a selection.
+
+#### What's The Difference from onSelectSlot?
+
+How is this different from <LinkTo kind="props" story="on-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+
+### onShowMore
+
+- type: `function (events: Array[event: Object], date: Date) => any`
+- <LinkTo kind="props" story="on-show-more">
+    Example
+  </LinkTo>
+
+Callback fired when a +{count} more is clicked. Receives **all** of the `events` for the `date` on which it was selected.
+
+<!-- TODO: doShowMoreDrillDown is not functioning -->
+
+<!-- Required when using the <LinkTo kind="props" story="do-show-more-drill-down">doShowMoreDrillDown</LinkTo> props as `false`. -->
+
+<!-- ### doShowMoreDrillDown
+
+- type: `boolean`
+- <LinkTo kind="props" story="do-show-more-drill-down">
+    Example
+  </LinkTo>
+
+Determines whether the drill down should occur when clicking on the "+_x_ more" link.
+
+If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `true`, the drill down will occur as usual.
+
+If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `false`, the drill down will not occur and the <LinkTo kind="props" story="on-show-more">onShowMore</LinkTo> function will trigger. -->
+
+### onKeyPressEvent
+
+- type: `function (event: Object, e: SyntheticEvent) => void`
+- <LinkTo kind="props" story="on-key-press-event">
+    Example
+  </LinkTo>
+
+Callback fired when a focused calendar event receives a key press.
+
+### showAllEvents
+
+- type: `boolean`
+- default: `false`
+- <LinkTo kind="props" story="show-all-events">
+    Example
+  </LinkTo>
+
+Displays all events on the month view instead of having some hidden behind +{count} more. This will cause the rows in the month view to be scrollable if the number of events exceed the height of the row.
+
+#### selected
+
+- type: `Event: Object`
+- <LinkTo kind="props" story="selected">
+    Example
+  </LinkTo>
+
+The selected event, if any. By default, Big Calendar 'controls' the `selected` (highlighted) event in the display. You can use this prop to control which event is highlighted. The `selected` event must be a object reference to the event within the <LinkTo kind="props" story="events">events</LinkTo> array.
+
+Often used in conjunction with <LinkTo kind="props" story="on-select-event">OnSelectEvent</LinkTo> and/or <LinkTo kind="props" story="on-double-click-event">onDoubleClickEvent</LinkTo>.
+
+### views
+
+- type: `Views ('month'|'week'|'work_week'|'day'|'agenda')`
+- default: `[views.MONTH, views.WEEK, views.DAY, views.AGENDA]`
+- <LinkTo kind="props" story="cal-views">
+    Example
+  </LinkTo>
+
+An array of built-in view names to allow the calendar to display. accepts either an array of builtin view names,
+
+```js
+views={['month', 'day', 'agenda']}
+```
+
+or an object hash of the view name and the component (or boolean for builtin).
+
+```js
+views={{
+  month: true,
+  week: false,
+  myweek: WorkWeekViewComponent,
+}}
+```
+
+Custom views can be any React component, that implements the following interface:
+
+```js
+interface View {
+  static title(date: Date, { formats: DateFormat[], culture: string?, ...props }): string
+  static navigate(date: Date, action: 'PREV' | 'NEXT' | 'DATE'): Date
+}
+```
+
+### drilldownView
+
+- type: `string`
+- default: `Views.DAY`
+- <LinkTo kind="props" story="drilldown-view">
+    Example
+  </LinkTo>
+
+The string name of the destination `view` for drill-down actions, such as clicking a date header, or the truncated events links. If `getDrilldownView` is also specified it will be used instead.
+
+Set to `null` to disable drill-down actions.
+
+### getDrilldownView
+
+- type: `function (targetDate: Date, currentViewName: string, configuredViewNames: Views[]) => string|null`
+- <LinkTo kind="props" story="get-drilldown-view">
+    Example
+  </LinkTo>
+
+Functionally equivalent to drilldownView, but accepts a function that can return a view name. It's useful for customizing the drill-down actions depending on the target date and triggering view.
+
+Return null to disable drill-down actions.
+
+### length
+
+- type: `number`
+- default: `30`
+- <LinkTo kind="props" story="length">
+    Example
+  </LinkTo>
+
+Determines the end date from date prop in the agenda view date prop + length (in number of days) = end date.
+
+### toolbar
+
+- type: `boolean`
+- default: `true`
+- <LinkTo kind="props" story="toolbar">
+    Example
+  </LinkTo>
+
+Determines whether the toolbar is displayed
+
+### popup
+
+- type: `boolean`
+- default: `true`
+- <LinkTo kind="props" story="popup">
+    Example
+  </LinkTo>
+
+Show truncated events in an overlay when you click the "+_x_ more" link.
+
+### popupOffset
+
+- type: `number|shape {x: number, y: number}`
+- <LinkTo kind="props" story="popup-offset">
+    Example
+  </LinkTo>
+
+Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
+
+### longPressThreshold
+
+- type: `number`
+- default: `250`
+- <LinkTo kind="props" story="long-press-threshold">
+    Example
+  </LinkTo>
+
+Specifies the number of miliseconds the user must press and hold on the screen for a touch to be considered a "long press." Long presses are used for time slot selection on touch devices.
+
+### step
+
+- type: `number`
+- default: `30`
+- <LinkTo kind="props" story="step">
+    Example
+  </LinkTo>
+
+Determines the selectable time increments in week and day views
+
+### timeslots
+
+- type: `number`
+- <LinkTo kind="props" story="timeslots">
+    Example
+  </LinkTo>
+
+The number of slots per "section" in the time grid views. Adjust with <LinkTo kind="props" story="step">step</LinkTo> to change the default of 1 hour long groups, with 30 minute slots.
+
+### rtl
+
+- type: `boolean`
+- default: `false`
+- <LinkTo kind="props" story="right-to-left">
+    Example
+  </LinkTo>
+
+Switch the calendar to a right-to-left read direction.
+
+### eventPropGetter
+
+- type: `function (event: Object, start: Date, end: Date, isSelected: boolean) => {className?: string, style?: Object}`
+- <LinkTo kind="props" story="event-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the the event node.
+
+### slotPropGetter
+
+- type: `function (date: Date) => {className?: string, style?: Object}`
+- <LinkTo kind="props" story="on-slot-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the the time-slot node.
+
+**Caution!** Styles that change layout or position may break the calendar in unexpected ways.
+
+### slotGroupPropGetter
+
+- type: `function (group: Date[]) => { style?: Object }`
+- <LinkTo kind="props" story="slot-group-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the time-slot node.
+
+**Caution! Styles that change layout or position may break the calendar in unexpected ways.**
+
+### dayPropGetter
+
+- type: `function (date: Date) => {className?: string, style?: Object}`
+- <LinkTo kind="props" story="day-prop-getter">
+    Example
+  </LinkTo>
+
+Optionally provide a function that returns an object of className or style props to be applied to the the day background.
+
+**Caution!** Styles that change layout or position may break the calendar in unexpected ways.
+
+### showMultiDayTimes
+
+- type: `boolean`
+- default: `false`
+- <LinkTo kind="props" story="show-multi-day-times">
+    Example
+  </LinkTo>
+
+Support to show multi-day events with specific start and end times in the main time grid (rather than in the all day header).
+
+**Note: This may cause calendars with several events to look very busy in the week and day views.**
+
+### min
+
+- type: `instanceOf(Date)`
+- default: `new Date(1972, 0, 1, 0, 0, 0)`
+- <LinkTo kind="props" story="min">
+    Example
+  </LinkTo>
+
+Constrains the minimum time of the Day and Week views.
+
+### max
+
+- type: `instanceOf(Date)`
+- default: `new Date(1972, 0, 1, 23, 59, 59)`
+- <LinkTo kind="props" story="max">
+    Example
+  </LinkTo>
+
+Constrains the maximum time of the Day and Week views.
+
+### scrollToTime
+
+- type: `instanceOf(Date)`
+- default: `new Date()`
+- <LinkTo kind="props" story="scroll-to-time">
+    Example
+  </LinkTo>
+
+Determines how far down the scroll pane is initially scrolled down.
+
+### culture
+
+- type: `string`
+- default: `none (browser default)`
+- <LinkTo kind="props" story="culture">
+    Example
+  </LinkTo>
+
+Specify a specific culture code for the Calendar. The `culture` is used by `formats` with your <LinkTo kind="props" story="localizer">localizer</LinkTo> to 'format' date/time information on the Calendar. To localize messaging, use the `messages` prop.
+
+**Note: it's generally better to handle this globally via your i18n library.**
+
+### formats
+
+- type: `Object`
+- <LinkTo kind="props" story="formats">
+    Example
+  </LinkTo>
+
+<LinkTo kind="props" story="localizer">
+  Localizer
+</LinkTo> specific formats, tell the Calendar how to format and display dates and
+times.
+
+The `format` types are dependent on the configured localizer; both Moment and Globalize accept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.
+
+```js
+const formats = useMemo(() => ({
+  dateFormat: 'dd',
+
+  dayFormat: (date, , localizer) =>
+    localizer.format(date, 'DDD', culture),
+
+  dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
+    localizer.format(start, { date: 'short' }, culture) + ' — ' +
+    localizer.format(end, { date: 'short' }, culture)
+}), [])
+
+<Calendar formats={formats} />
+```
+
+### formats.dateFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-date-format">
+    Example
+  </LinkTo>
+
+Format for the day of the month heading in the Month view. e.g. "01", "02", "03", etc
+
+### formats.dayFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-day-format">
+    Example
+  </LinkTo>
+
+A day of the week format for Week and Day headings, e.g. "Wed 01/04"
+
+### formats.weekdayFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-weekday-format">
+    Example
+  </LinkTo>
+
+Week day name format for the Month week day headings, e.g: "Sun", "Mon", "Tue", etc
+
+### formats.timeGutterFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-time-gutter-format">
+    Example
+  </LinkTo>
+
+The timestamp cell formats in Week and Time views, e.g. "4:00 AM"
+
+### formats.monthHeaderFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-month-header-format">
+    Example
+  </LinkTo>
+
+Toolbar header format for the Month view, e.g "2015 April"
+
+### formats.dayRangeHeaderFormat
+
+- type: `function (range: Object {start: Date, end: Date}, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-day-range-header-format">
+    Example
+  </LinkTo>
+
+Toolbar header format for the Week views, e.g. "Mar 29 - Apr 04"
+
+### formats.dayHeaderFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-day-header-format">
+    Example
+  </LinkTo>
+
+Toolbar header format for the Day view, e.g. "Wednesday Apr 01"
+
+### formats.agendaHeaderFormat
+
+- type: `function (range: Object {start: Date, end: Date}, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-agenda-header-format">
+    Example
+  </LinkTo>
+
+Toolbar header format for the Agenda view, e.g. "4/1/2015 — 5/1/2015"
+
+### formats.selectRangeFormat
+
+- type: `function (range: Object {start: Date, end: Date}, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-select-range-format">
+    Example
+  </LinkTo>
+
+A time range format shown in the highlighted area when selecting time slots, e.g "08:00 am — 12:00 pm"
+
+### formats.agendaDateFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-agenda-date-format">
+    Example
+  </LinkTo>
+
+Dates displayed in the gutter of the Agenda `view`
+
+### formats.agendaTimeFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-agenda-time-format">
+    Example
+  </LinkTo>
+
+Time only (not range) displayed in the gutter of the Agenda `view`
+
+### formats.agendaTimeRangeFormat
+
+- type: `function (range: Object {start: Date, end: Date}, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-agenda-time-range-format">
+    Example
+  </LinkTo>
+
+Time range displayed in the gutter of the Agenda `view`
+
+### formats.eventTimeRangeFormat
+
+- type: `function (range: Object {start: Date, end: Date}, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-event-time-range-format">
+    Example
+  </LinkTo>
+
+Time range displayed on events in Time Grid views.
+
+### formats.eventTimeRangeStartFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-event-time-range-start-format">
+    Example
+  </LinkTo>
+
+An optional event time range for events that continue onto another day. Used with <LinkTo kind="props" story="show-multi-day-times">showMultiDayTimes</LinkTo>.
+
+### formats.eventTimeRangeEndFormat
+
+- type: `function (date: Date, culture: ?string, localizer: DateLocalizer) => string`
+- <LinkTo kind="props" story="formats-event-time-range-end-format">
+    Example
+  </LinkTo>
+
+An optional event time range for events that continue onto another day. Used with <LinkTo kind="props" story="show-multi-day-times">showMultiDayTimes</LinkTo>.
+
+### components
+
+- type: `object`
+- <LinkTo kind="props" story="components">
+    Example
+  </LinkTo>
+
+Customize how different sections of the calendar render by providing custom Components. In particular the Event component can be specified for the entire calendar, or you can provide an individual component for each view type.
+
+```js
+let components = useMemo({
+  event: MyEvent, // used by each view (Month, Day, Week)
+  toolbar: MyToolbar,
+  agenda: {
+       event: MyAgendaEvent // with the agenda view use a different component to render events
+  }
+}, [])
+<Calendar components={components} />
+```
+
+### messages
+
+- type: `Object`
+- <LinkTo kind="props" story="messages">
+    Example
+  </LinkTo>
+
+String messages used throughout the component, override to provide localizations for button text, `title` attributes and more.
+
+defualts
+
+```js
+{
+  date: 'Date',
+  time: 'Time',
+  event: 'Event',
+  allDay: 'All Day',
+  week: 'Week',
+  work_week: 'Work Week',
+  day: 'Day',
+  month: 'Month',
+  previous: 'Back',
+  next: 'Next',
+  yesterday: 'Yesterday',
+  tomorrow: 'Tomorrow',
+  today: 'Today',
+  agenda: 'Agenda',
+
+  noEventsInRange: 'There are no events in this range.',
+
+  showMore: total => `+${total} more`,
+}
+```
+
+### dayLayoutAlgorithm
+
+- type: `string | Function(events, minimumStartDifference, slotMetrics, accessors)`
+- default: `overlap`
+- <LinkTo kind="props" story="day-layout-algorithm">
+    Example
+  </LinkTo>
+
+A day event layout(arrangement) algorithm.
+
+`overlap` allows events to be overlapped.
+
+`no-overlap` resizes events to avoid overlap.
+
+or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`

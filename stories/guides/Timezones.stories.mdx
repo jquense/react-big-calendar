@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/addon-docs'
+
+<Meta title="Guides/Timezones" />
+
+# Dealing With Time Zones
+
+Time Zones are... **hard**, and while changing the `culture` will help with internationalization and localization, it does not adjust the dates for a specific time zone. Javascript Date objects don't really support time zone switching natively, and date math gets **very** complicated. Thankfully Big Calendar does support `moment` as a localizer, so if you use [moment-timezone](https://momentjs.com/timezone/) you can get your events to display relevant to a time zone other than the browser native.
+
+To change your events to display as a specific time zone, you must [change moment's default timezone](https://momentjs.com/timezone/docs/#/using-timezones/default-timezone/) for all dates, **using an IANA time zone**.
+
+```jsx
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+import 'moment-timezone' // or 'moment-timezone/builds/moment-timezone-with-data[-datarange].js'. See their docs
+
+// Set the IANA time zone you want to use
+moment.tz.setDefault('Europe/Paris')
+
+// Setup the localizer by providing the moment Object
+// to the correct localizer.
+const localizer = momentLocalizer(moment) // or globalizeLocalizer
+
+const MyCalendar = (props) => (
+  <div className="myCustomHeight">
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  </div>
+)
+```
+
+The `momentLocalizer` will now handle all dates and date math as if the date is in the timezone you specified. It is important to note that [changing moment's default timezone](https://momentjs.com/timezone/docs/#/using-timezones/default-timezone/) affects all dates, created by moment, from that point forward, so you may want to reset the default when your component unmounts. And, if switching timezones 'on-the-fly', you want to update your `localizer` and any Date based props (min, max, getNow, etc) at the same time.
+
+**Note:** The `luxonLocalizer` and `dayjsLocalizer` operate in a similar fashion. View their respective demos and source for examples of their usage.

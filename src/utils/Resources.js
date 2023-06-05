@@ -18,11 +18,19 @@ export default function Resources(resources, accessors) {
         return eventsByResource
       }
 
-      events.forEach(event => {
+      events.forEach((event) => {
         const id = accessors.resource(event) || NONE
-        let resourceEvents = eventsByResource.get(id) || []
-        resourceEvents.push(event)
-        eventsByResource.set(id, resourceEvents)
+        if (Array.isArray(id)) {
+          id.forEach((item) => {
+            let resourceEvents = eventsByResource.get(item) || []
+            resourceEvents.push(event)
+            eventsByResource.set(item, resourceEvents)
+          })
+        } else {
+          let resourceEvents = eventsByResource.get(id) || []
+          resourceEvents.push(event)
+          eventsByResource.set(id, resourceEvents)
+        }
       })
       return eventsByResource
     },

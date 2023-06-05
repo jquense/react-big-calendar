@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import scrollbarSize from 'dom-helpers/scrollbarSize'
 import React from 'react'
 
 import DateContentRow from './DateContentRow'
@@ -128,11 +127,12 @@ class TimeGridHeader extends React.Component {
         resourceHeader: ResourceHeaderComponent = ResourceHeader,
       },
       resizable,
+      scrollBarSize,
     } = this.props
 
     let style = {}
     if (isOverflowing) {
-      style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollbarSize() - 1}px`
+      style[rtl ? 'marginLeft' : 'marginRight'] = `${scrollBarSize - 1}px`
     }
 
     const groupedEvents = resources.groupEvents(events)
@@ -212,6 +212,7 @@ TimeGridHeader.propTypes = {
   rtl: PropTypes.bool,
   resizable: PropTypes.bool,
   width: PropTypes.number,
+  scrollBarSize: PropTypes.number,
 
   localizer: PropTypes.object.isRequired,
   accessors: PropTypes.object.isRequired,

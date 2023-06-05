@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
 import memoize from 'memoize-one'
+import scrollbarSize from 'dom-helpers/scrollbarSize'
 
 import DayColumn from './DayColumn'
 import TimeGutter from './TimeGutter'
@@ -21,7 +22,11 @@ export default class TimeGrid extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { gutterWidth: undefined, isOverflowing: null }
+    this.state = {
+      gutterWidth: undefined,
+      isOverflowing: null,
+      scrollBarSize: scrollbarSize(),
+    }
 
     this.scrollRef = React.createRef()
     this.contentRef = React.createRef()
@@ -44,6 +49,12 @@ export default class TimeGrid extends Component {
     this.applyScroll()
 
     window.addEventListener('resize', this.handleResize)
+
+    const resizeObserver = new ResizeObserver(this.getScrollBarSize)
+
+    if (this.contentRef && this.contentRef.current) {
+      resizeObserver.observe(this.contentRef.current)
+    }
   }
 
   handleScroll = (e) => {
@@ -275,6 +286,7 @@ export default class TimeGrid extends Component {
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
           resizable={resizable}
+          scrollBarSize={this.state.scrollBarSize}
         />
         {this.props.popup && this.renderOverlay()}
         <div
@@ -399,6 +411,13 @@ export default class TimeGrid extends Component {
       this.setState({ isOverflowing }, () => {
         this._updatingOverflow = false
       })
+    }
+  }
+
+  getScrollBarSize = () => {
+    const scrollBarSize = scrollbarSize(true)
+    if (this.state.scrollBarSize !== scrollBarSize) {
+      this.setState({ scrollBarSize })
     }
   }
 

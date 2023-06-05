@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/jquense/react-big-calendar/compare/v1.8.0...v1.8.1) (2023-06-05)
+
+
+### Bug Fixes
+
+* scrollToTime does not work properly, when min specified ([#2051](https://github.com/jquense/react-big-calendar/issues/2051)) ([04c1888](https://github.com/jquense/react-big-calendar/commit/04c18886f46acd17f09dec5d73a06bc32e6c75e5))
+
 # [1.8.0](https://github.com/jquense/react-big-calendar/compare/v1.7.0...v1.8.0) (2023-06-02)
 
 

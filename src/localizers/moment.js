@@ -51,8 +51,13 @@ function fixUnit(unit) {
 }
 
 export default function (moment, timezone = undefined) {
+  if (timezone && !moment.tz) {
+    console.error(
+      `Please install 'moment-timezone' package to use the 'timezone' property.`
+    )
+  }
   const localMoment = (...args) =>
-    timezone ? moment.tz(...args, timezone) : moment(...args)
+    timezone && moment.tz ? moment.tz(...args, timezone) : moment(...args)
   localMoment.localeData = moment.localeData
   const locale = (m, c) => (c ? m.locale(c) : m)
 

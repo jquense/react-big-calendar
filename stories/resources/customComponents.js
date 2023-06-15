@@ -79,6 +79,10 @@ const customComponents = {
       </div>
     )
   },
+
+  slotChildrenWrapper: () => {
+    return <div>children</div>
+  },
 }
 
 export default customComponents

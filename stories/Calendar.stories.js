@@ -101,3 +101,13 @@ CustomNoAgendaEventsLabel.args = {
     noEventsInRange: 'There are no special events in this range [test message]',
   },
 }
+
+export const SlotChildrenWrapper = Template.bind({})
+SlotChildrenWrapper.storyName = 'add custom slotChildrenWrapper'
+SlotChildrenWrapper.args = {
+  defaultView: Views.WEEK,
+  events,
+  components: {
+    slotChildrenWrapper: customComponents.slotChildrenWrapper,
+  },
+}

@@ -17,12 +17,14 @@
   "license": "MIT",
   "main": "lib/index.js",
   "module": "dist/react-big-calendar.esm.js",
+  "types": "index.d.ts",
   "style": "lib/css/react-big-calendar.css",
   "files": [
     "lib/",
     "dist/",
     "LICENSE",
     "README.md",
+    "index.d.ts",
     "CHANGELOG.md"
   ],
   "keywords": [

@@ -30,6 +30,7 @@ console.log(chalk.blue('Now we will build some CSS'))
 // Compile SASS from './lib' to get sourcemaps
 console.log(chalk.blue('Compile base styles'))
 await $`sass ./lib/sass/styles.scss ./lib/css/react-big-calendar.css`
+await $`sass ./lib/sass/styles.scss ./dist/react-big-calendar.css`
 console.log(chalk.blue('Compile Add-on styles'))
 // don't forget DnD
 await $`sass ./lib/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.css`

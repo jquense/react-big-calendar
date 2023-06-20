@@ -2381,12 +2381,6 @@ var Header = function Header(_ref) {
     label
   )
 }
-Header.propTypes =
-  process.env.NODE_ENV !== 'production'
-    ? {
-        label: PropTypes.node,
-      }
-    : {}
 
 var DateHeader = function DateHeader(_ref) {
   var label = _ref.label,
@@ -3403,7 +3397,7 @@ var TimeSlotGroup = /*#__PURE__*/ (function (_Component) {
                   : slotChildrenWrapper === null ||
                     slotChildrenWrapper === void 0
                   ? void 0
-                  : slotChildrenWrapper()
+                  : slotChildrenWrapper(slotProps)
               )
             )
           })

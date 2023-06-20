@@ -249,7 +249,7 @@ export interface Components<
   timeSlotWrapper?: React.ComponentType | undefined
   timeGutterHeader?: React.ComponentType | undefined
   timeGutterWrapper?: React.ComponentType | undefined
-  slotChildrenWrapper?: React.ComponentType | undefined
+  slotChildrenWrapper?: React.ComponentType<any> | undefined
   toolbar?: React.ComponentType<ToolbarProps<TEvent, TResource>> | undefined
   agenda?:
     | {

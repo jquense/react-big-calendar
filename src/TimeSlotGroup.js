@@ -18,17 +18,21 @@ export default class TimeSlotGroup extends Component {
     } = this.props
 
     const groupProps = getters ? getters.slotGroupProp(group) : {}
+
     return (
       <div className="rbc-timeslot-group" {...groupProps}>
         {group.map((value, idx) => {
           const slotProps = getters ? getters.slotProp(value, resource) : {}
+
           return (
             <Wrapper key={idx} value={value} resource={resource}>
               <div
                 {...slotProps}
                 className={clsx('rbc-time-slot', slotProps.className)}
               >
-                {renderSlot ? renderSlot(value, idx) : slotChildrenWrapper?.()}
+                {renderSlot
+                  ? renderSlot(value, idx)
+                  : slotChildrenWrapper?.(slotProps)}
               </div>
             </Wrapper>
           )

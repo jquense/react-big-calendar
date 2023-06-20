@@ -49481,7 +49481,7 @@
                     : slotChildrenWrapper === null ||
                       slotChildrenWrapper === void 0
                     ? void 0
-                    : slotChildrenWrapper()
+                    : slotChildrenWrapper(slotProps)
                 )
               )
             })
@@ -50300,14 +50300,6 @@
     var label = _ref.label
     return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
   }
-  ResourceHeader.propTypes =
-    'development' !== 'production'
-      ? {
-          label: propTypesExports.node,
-          index: propTypesExports.number,
-          resource: propTypesExports.object,
-        }
-      : {}
 
   var TimeGridHeader = /*#__PURE__*/ (function (_React$Component) {
     _inherits(TimeGridHeader, _React$Component)

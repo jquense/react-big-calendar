@@ -1,10 +1,10 @@
 {
-  "name": "react-big-calendar",
+  "name": "@kolkovsky/react-big-calendar",
   "version": "1.8.1",
-  "description": "Calendar! with events",
+  "description": "Calendar! with events. Fixing UNSAFE_method",
   "author": {
-    "name": "Jason Quense",
-    "email": "monastic.panic@gmail.com"
+    "name": "Stan Kolkovsky",
+    "email": "stas.kolkovsky@gmail.com"
   },
   "repository": {
     "type": "git",

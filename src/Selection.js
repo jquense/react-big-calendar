@@ -2,21 +2,37 @@ import contains from 'dom-helpers/contains'
 import closest from 'dom-helpers/closest'
 import listen from 'dom-helpers/listen'
 
+const getTargetHost = (target = document) => {
+  if (target instanceof Document) {
+    const shadowRootElement = document.querySelector(
+      '[data-rh-content-portal-name=create-relay-meeting]'
+    )
+
+    if (shadowRootElement === null) return document
+
+    return shadowRootElement.shadowRoot
+  }
+
+  return target
+}
+
 function addEventListener(type, handler, target = document) {
-  return listen(target, type, handler, { passive: false })
+  return listen(getTargetHost(target), type, handler, { passive: false })
 }
 
 function isOverContainer(container, x, y) {
-  return !container || contains(container, document.elementFromPoint(x, y))
+  return (
+    !container || contains(container, getTargetHost().elementFromPoint(x, y))
+  )
 }
 
 export function getEventNodeFromPoint(node, { clientX, clientY }) {
-  let target = document.elementFromPoint(clientX, clientY)
+  let target = getTargetHost().elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-event', node)
 }
 
 export function getShowMoreNodeFromPoint(node, { clientX, clientY }) {
-  let target = document.elementFromPoint(clientX, clientY)
+  let target = getTargetHost().elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-show-more', node)
 }
 

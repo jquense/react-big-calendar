@@ -897,26 +897,41 @@ PopOverlay.propTypes = {
   overlayDisplay: PropTypes.func,
 }
 
+var getTargetHost = function getTargetHost() {
+  var target =
+    arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document
+  if (target instanceof Document) {
+    var shadowRootElement = document.querySelector(
+      '[data-rh-content-portal-name=create-relay-meeting]'
+    )
+    console.log('shadowRootElement', shadowRootElement)
+    if (shadowRootElement === null) return document
+    return shadowRootElement.shadowRoot
+  }
+  return target
+}
 function addEventListener(type, handler) {
   var target =
     arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document
-  return listen(target, type, handler, {
+  return listen(getTargetHost(target), type, handler, {
     passive: false,
   })
 }
 function isOverContainer(container, x, y) {
-  return !container || contains(container, document.elementFromPoint(x, y))
+  return (
+    !container || contains(container, getTargetHost().elementFromPoint(x, y))
+  )
 }
 function getEventNodeFromPoint(node, _ref) {
   var clientX = _ref.clientX,
     clientY = _ref.clientY
-  var target = document.elementFromPoint(clientX, clientY)
+  var target = getTargetHost().elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-event', node)
 }
 function getShowMoreNodeFromPoint(node, _ref2) {
   var clientX = _ref2.clientX,
     clientY = _ref2.clientY
-  var target = document.elementFromPoint(clientX, clientY)
+  var target = getTargetHost().elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-show-more', node)
 }
 function isEvent(node, bounds) {
@@ -2381,6 +2396,12 @@ var Header = function Header(_ref) {
     label
   )
 }
+Header.propTypes =
+  process.env.NODE_ENV !== 'production'
+    ? {
+        label: PropTypes.node,
+      }
+    : {}
 
 var DateHeader = function DateHeader(_ref) {
   var label = _ref.label,

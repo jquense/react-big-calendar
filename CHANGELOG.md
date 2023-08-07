@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/jquense/react-big-calendar/compare/v1.8.1...v1.8.2) (2023-08-07)
+
+
+### Bug Fixes
+
+* **rtl DnD:** Dragging an event in the RTL month view calendar gets confused to the wrong side ([#2426](https://github.com/jquense/react-big-calendar/issues/2426)) ([ebe8c2c](https://github.com/jquense/react-big-calendar/commit/ebe8c2c3846ee8822e24756a82084f5b2a1d348f)), closes [#2310](https://github.com/jquense/react-big-calendar/issues/2310) [#1801](https://github.com/jquense/react-big-calendar/issues/1801)
+
 ## [1.8.1](https://github.com/jquense/react-big-calendar/compare/v1.8.0...v1.8.1) (2023-06-05)
 
 

@@ -1,3 +1,5 @@
+// TODO: fix the globalizeLocalizer to work with globalize 1.x
+
 import * as dates from '../utils/dates'
 import oldGlobalize from './oldGlobalize'
 import { DateLocalizer } from '../localizer'

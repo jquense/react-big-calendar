@@ -34,3 +34,8 @@ node_modules
 
 # Mac OS X
 .DS_Store
+
+# Yarn Cache
+.yarn
+# Yarn NodeLinker
+.yarnrc.yml

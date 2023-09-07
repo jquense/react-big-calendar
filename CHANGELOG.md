@@ -1,330 +1,283 @@
 ## [1.8.2](https://github.com/jquense/react-big-calendar/compare/v1.8.1...v1.8.2) (2023-08-07)
 
-
 ### Bug Fixes
 
-* **rtl DnD:** Dragging an event in the RTL month view calendar gets confused to the wrong side ([#2426](https://github.com/jquense/react-big-calendar/issues/2426)) ([ebe8c2c](https://github.com/jquense/react-big-calendar/commit/ebe8c2c3846ee8822e24756a82084f5b2a1d348f)), closes [#2310](https://github.com/jquense/react-big-calendar/issues/2310) [#1801](https://github.com/jquense/react-big-calendar/issues/1801)
+- **rtl DnD:** Dragging an event in the RTL month view calendar gets confused to the wrong side ([#2426](https://github.com/jquense/react-big-calendar/issues/2426)) ([ebe8c2c](https://github.com/jquense/react-big-calendar/commit/ebe8c2c3846ee8822e24756a82084f5b2a1d348f)), closes [#2310](https://github.com/jquense/react-big-calendar/issues/2310) [#1801](https://github.com/jquense/react-big-calendar/issues/1801)
 
 ## [1.8.1](https://github.com/jquense/react-big-calendar/compare/v1.8.0...v1.8.1) (2023-06-05)
 
-
 ### Bug Fixes
 
-* scrollToTime does not work properly, when min specified ([#2051](https://github.com/jquense/react-big-calendar/issues/2051)) ([04c1888](https://github.com/jquense/react-big-calendar/commit/04c18886f46acd17f09dec5d73a06bc32e6c75e5))
+- scrollToTime does not work properly, when min specified ([#2051](https://github.com/jquense/react-big-calendar/issues/2051)) ([04c1888](https://github.com/jquense/react-big-calendar/commit/04c18886f46acd17f09dec5d73a06bc32e6c75e5))
 
 # [1.8.0](https://github.com/jquense/react-big-calendar/compare/v1.7.0...v1.8.0) (2023-06-02)
 
-
 ### Features
 
-* **allDayMaxRows:** Allow for more granular control ([36871bf](https://github.com/jquense/react-big-calendar/commit/36871bf509603dd05ad16f6cb9c5f5d9517cae16)), closes [#2386](https://github.com/jquense/react-big-calendar/issues/2386)
+- **allDayMaxRows:** Allow for more granular control ([36871bf](https://github.com/jquense/react-big-calendar/commit/36871bf509603dd05ad16f6cb9c5f5d9517cae16)), closes [#2386](https://github.com/jquense/react-big-calendar/issues/2386)
 
 # [1.7.0](https://github.com/jquense/react-big-calendar/compare/v1.6.9...v1.7.0) (2023-06-02)
 
-
 ### Features
 
-* Support multiple resources on an event ([91155c5](https://github.com/jquense/react-big-calendar/commit/91155c5193f0a0b3899cb84c1dbfc6480fca4c0c)), closes [#2405](https://github.com/jquense/react-big-calendar/issues/2405) [#1649](https://github.com/jquense/react-big-calendar/issues/1649)
+- Support multiple resources on an event ([91155c5](https://github.com/jquense/react-big-calendar/commit/91155c5193f0a0b3899cb84c1dbfc6480fca4c0c)), closes [#2405](https://github.com/jquense/react-big-calendar/issues/2405) [#1649](https://github.com/jquense/react-big-calendar/issues/1649)
 
 ## [1.6.9](https://github.com/jquense/react-big-calendar/compare/v1.6.8...v1.6.9) (2023-03-24)
 
-
 ### Bug Fixes
 
-* **moment:** wrong time on the day when DST changes ([#2374](https://github.com/jquense/react-big-calendar/issues/2374)) ([b82ceb7](https://github.com/jquense/react-big-calendar/commit/b82ceb7f4213e166c64ce643eef912b2ba4cd3a9)), closes [#2296](https://github.com/jquense/react-big-calendar/issues/2296)
+- **moment:** wrong time on the day when DST changes ([#2374](https://github.com/jquense/react-big-calendar/issues/2374)) ([b82ceb7](https://github.com/jquense/react-big-calendar/commit/b82ceb7f4213e166c64ce643eef912b2ba4cd3a9)), closes [#2296](https://github.com/jquense/react-big-calendar/issues/2296)
 
 ## [1.6.8](https://github.com/jquense/react-big-calendar/compare/v1.6.7...v1.6.8) (2023-02-17)
 
-
 ### Bug Fixes
 
-* correct treatment of boolean view in 'views' ([#2368](https://github.com/jquense/react-big-calendar/issues/2368)) ([0e6b771](https://github.com/jquense/react-big-calendar/commit/0e6b7717985e626413347fcc196d38c0d071d759))
+- correct treatment of boolean view in 'views' ([#2368](https://github.com/jquense/react-big-calendar/issues/2368)) ([0e6b771](https://github.com/jquense/react-big-calendar/commit/0e6b7717985e626413347fcc196d38c0d071d759))
 
 ## [1.6.7](https://github.com/jquense/react-big-calendar/compare/v1.6.6...v1.6.7) (2023-02-15)
 
-
 ### Bug Fixes
 
-* 1px misalignment ([#2367](https://github.com/jquense/react-big-calendar/issues/2367)) ([7479b4d](https://github.com/jquense/react-big-calendar/commit/7479b4d5955511ae1a42ed666d245bd411be7868))
+- 1px misalignment ([#2367](https://github.com/jquense/react-big-calendar/issues/2367)) ([7479b4d](https://github.com/jquense/react-big-calendar/commit/7479b4d5955511ae1a42ed666d245bd411be7868))
 
 ## [1.6.6](https://github.com/jquense/react-big-calendar/compare/v1.6.5...v1.6.6) (2023-02-15)
 
-
 ### Bug Fixes
 
-* pass dates to slotGroupPropGetter ([#2066](https://github.com/jquense/react-big-calendar/issues/2066)) ([943ae6e](https://github.com/jquense/react-big-calendar/commit/943ae6edbadb48ca866c256bcbbac7059356fdee))
+- pass dates to slotGroupPropGetter ([#2066](https://github.com/jquense/react-big-calendar/issues/2066)) ([943ae6e](https://github.com/jquense/react-big-calendar/commit/943ae6edbadb48ca866c256bcbbac7059356fdee))
 
 ## [1.6.5](https://github.com/jquense/react-big-calendar/compare/v1.6.4...v1.6.5) (2023-02-14)
 
-
 ### Bug Fixes
 
-* calendar auto scroll while dragging event at top/bottom edge ([#2230](https://github.com/jquense/react-big-calendar/issues/2230)) ([d1c5085](https://github.com/jquense/react-big-calendar/commit/d1c5085b004bb3c606a682b488a92585e50b12b4)), closes [#2231](https://github.com/jquense/react-big-calendar/issues/2231)
+- calendar auto scroll while dragging event at top/bottom edge ([#2230](https://github.com/jquense/react-big-calendar/issues/2230)) ([d1c5085](https://github.com/jquense/react-big-calendar/commit/d1c5085b004bb3c606a682b488a92585e50b12b4)), closes [#2231](https://github.com/jquense/react-big-calendar/issues/2231)
 
 ## [1.6.4](https://github.com/jquense/react-big-calendar/compare/v1.6.3...v1.6.4) (2023-02-09)
 
-
 ### Bug Fixes
 
-* rounding behavior in Luxon localizer ([#2362](https://github.com/jquense/react-big-calendar/issues/2362)) ([409cff1](https://github.com/jquense/react-big-calendar/commit/409cff1d74a3130f89dca71f19e6832dd7c6e98c)), closes [#2361](https://github.com/jquense/react-big-calendar/issues/2361)
+- rounding behavior in Luxon localizer ([#2362](https://github.com/jquense/react-big-calendar/issues/2362)) ([409cff1](https://github.com/jquense/react-big-calendar/commit/409cff1d74a3130f89dca71f19e6832dd7c6e98c)), closes [#2361](https://github.com/jquense/react-big-calendar/issues/2361)
 
 ## [1.6.3](https://github.com/jquense/react-big-calendar/compare/v1.6.2...v1.6.3) (2023-02-01)
 
-
 ### Bug Fixes
 
-* Fixed publish script (fix [#2330](https://github.com/jquense/react-big-calendar/issues/2330)) ([#2358](https://github.com/jquense/react-big-calendar/issues/2358)) ([a4e54be](https://github.com/jquense/react-big-calendar/commit/a4e54bed8d534086af87bff8b48c7c9a47ac4141))
+- Fixed publish script (fix [#2330](https://github.com/jquense/react-big-calendar/issues/2330)) ([#2358](https://github.com/jquense/react-big-calendar/issues/2358)) ([a4e54be](https://github.com/jquense/react-big-calendar/commit/a4e54bed8d534086af87bff8b48c7c9a47ac4141))
 
 ## [1.6.2](https://github.com/jquense/react-big-calendar/compare/v1.6.1...v1.6.2) (2023-01-31)
 
-
 ### Bug Fixes
 
-* correct publishing ([#2350](https://github.com/jquense/react-big-calendar/issues/2350)) ([ae15118](https://github.com/jquense/react-big-calendar/commit/ae151187fdedccccfdbf84ce64d499d4b4e4b511))
-* no-overlap layout algorithm ([#2239](https://github.com/jquense/react-big-calendar/issues/2239)) ([f7bfd11](https://github.com/jquense/react-big-calendar/commit/f7bfd11f6ce475dd4390e8ed0bf0efea0f1c0a69)), closes [#2240](https://github.com/jquense/react-big-calendar/issues/2240)
+- correct publishing ([#2350](https://github.com/jquense/react-big-calendar/issues/2350)) ([ae15118](https://github.com/jquense/react-big-calendar/commit/ae151187fdedccccfdbf84ce64d499d4b4e4b511))
+- no-overlap layout algorithm ([#2239](https://github.com/jquense/react-big-calendar/issues/2239)) ([f7bfd11](https://github.com/jquense/react-big-calendar/commit/f7bfd11f6ce475dd4390e8ed0bf0efea0f1c0a69)), closes [#2240](https://github.com/jquense/react-big-calendar/issues/2240)
 
 ## [1.6.1](https://github.com/jquense/react-big-calendar/compare/v1.6.0...v1.6.1) (2023-01-05)
 
-
 ### Bug Fixes
 
-* set width ([#2332](https://github.com/jquense/react-big-calendar/issues/2332)) ([86b26cd](https://github.com/jquense/react-big-calendar/commit/86b26cd8a20ec11e953999650c10d59f4170f1ce))
+- set width ([#2332](https://github.com/jquense/react-big-calendar/issues/2332)) ([86b26cd](https://github.com/jquense/react-big-calendar/commit/86b26cd8a20ec11e953999650c10d59f4170f1ce))
 
 # [1.6.0](https://github.com/jquense/react-big-calendar/compare/v1.5.2...v1.6.0) (2023-01-04)
 
-
 ### Features
 
-* Dayjs localizer ([#2264](https://github.com/jquense/react-big-calendar/issues/2264)) ([537c6f3](https://github.com/jquense/react-big-calendar/commit/537c6f3f08344191588f2ab3ad52667de7ee261f))
+- Dayjs localizer ([#2264](https://github.com/jquense/react-big-calendar/issues/2264)) ([537c6f3](https://github.com/jquense/react-big-calendar/commit/537c6f3f08344191588f2ab3ad52667de7ee261f))
 
 ## [1.5.2](https://github.com/jquense/react-big-calendar/compare/v1.5.1...v1.5.2) (2022-11-10)
 
-
 ### Bug Fixes
 
-* do not send undefined/null gutterRef to getWidth ([#2300](https://github.com/jquense/react-big-calendar/issues/2300)) ([7b5f5b8](https://github.com/jquense/react-big-calendar/commit/7b5f5b8ef438ff469e7d098a6274118149883238))
+- do not send undefined/null gutterRef to getWidth ([#2300](https://github.com/jquense/react-big-calendar/issues/2300)) ([7b5f5b8](https://github.com/jquense/react-big-calendar/commit/7b5f5b8ef438ff469e7d098a6274118149883238))
 
 ## [1.5.1](https://github.com/jquense/react-big-calendar/compare/v1.5.0...v1.5.1) (2022-11-09)
 
-
 ### Bug Fixes
 
-* typo for prop titles ([#2298](https://github.com/jquense/react-big-calendar/issues/2298)) ([11fd6c8](https://github.com/jquense/react-big-calendar/commit/11fd6c83685bf6c0345623366247bcb294e6325c))
+- typo for prop titles ([#2298](https://github.com/jquense/react-big-calendar/issues/2298)) ([11fd6c8](https://github.com/jquense/react-big-calendar/commit/11fd6c83685bf6c0345623366247bcb294e6325c))
 
 # [1.5.0](https://github.com/jquense/react-big-calendar/compare/v1.4.3...v1.5.0) (2022-07-19)
 
-
 ### Features
 
-* **time-gutter-wrapper:** expose time gutter wrapper component ([#2236](https://github.com/jquense/react-big-calendar/issues/2236)) ([39ff8a1](https://github.com/jquense/react-big-calendar/commit/39ff8a10ee4901b950780c0fc4a697f53a0d9d2b))
+- **time-gutter-wrapper:** expose time gutter wrapper component ([#2236](https://github.com/jquense/react-big-calendar/issues/2236)) ([39ff8a1](https://github.com/jquense/react-big-calendar/commit/39ff8a10ee4901b950780c0fc4a697f53a0d9d2b))
 
 ## [1.4.3](https://github.com/jquense/react-big-calendar/compare/v1.4.2...v1.4.3) (2022-07-19)
 
-
 ### Bug Fixes
 
-* auto scroll on event selection ([#2235](https://github.com/jquense/react-big-calendar/issues/2235)) ([6d87ebb](https://github.com/jquense/react-big-calendar/commit/6d87ebbab146ba5a122180a376919bd6601f15c0)), closes [#2233](https://github.com/jquense/react-big-calendar/issues/2233)
+- auto scroll on event selection ([#2235](https://github.com/jquense/react-big-calendar/issues/2235)) ([6d87ebb](https://github.com/jquense/react-big-calendar/commit/6d87ebbab146ba5a122180a376919bd6601f15c0)), closes [#2233](https://github.com/jquense/react-big-calendar/issues/2233)
 
 ## [1.4.2](https://github.com/jquense/react-big-calendar/compare/v1.4.1...v1.4.2) (2022-07-15)
 
-
 ### Bug Fixes
 
-* do not autoscroll on event selection ([#2234](https://github.com/jquense/react-big-calendar/issues/2234)) ([b85b1ff](https://github.com/jquense/react-big-calendar/commit/b85b1ff884862c8116e0e571e0715499f4e7d5f4)), closes [#2233](https://github.com/jquense/react-big-calendar/issues/2233)
+- do not autoscroll on event selection ([#2234](https://github.com/jquense/react-big-calendar/issues/2234)) ([b85b1ff](https://github.com/jquense/react-big-calendar/commit/b85b1ff884862c8116e0e571e0715499f4e7d5f4)), closes [#2233](https://github.com/jquense/react-big-calendar/issues/2233)
 
 ## [1.4.1](https://github.com/jquense/react-big-calendar/compare/v1.4.0...v1.4.1) (2022-07-15)
 
-
 ### Bug Fixes
 
-* **dnd:** dont use classname ([#2232](https://github.com/jquense/react-big-calendar/issues/2232)) ([2332f12](https://github.com/jquense/react-big-calendar/commit/2332f121260bc772f4a709f6334bd9bb96c05e69))
+- **dnd:** dont use classname ([#2232](https://github.com/jquense/react-big-calendar/issues/2232)) ([2332f12](https://github.com/jquense/react-big-calendar/commit/2332f121260bc772f4a709f6334bd9bb96c05e69))
 
 # [1.4.0](https://github.com/jquense/react-big-calendar/compare/v1.3.3...v1.4.0) (2022-07-12)
 
-
 ### Features
 
-* allow using custom event wrapper component while dragging ([#2228](https://github.com/jquense/react-big-calendar/issues/2228)) ([afa8824](https://github.com/jquense/react-big-calendar/commit/afa882426b893e300da25202b5c56b23d591e9f1)), closes [#1864](https://github.com/jquense/react-big-calendar/issues/1864)
+- allow using custom event wrapper component while dragging ([#2228](https://github.com/jquense/react-big-calendar/issues/2228)) ([afa8824](https://github.com/jquense/react-big-calendar/commit/afa882426b893e300da25202b5c56b23d591e9f1)), closes [#1864](https://github.com/jquense/react-big-calendar/issues/1864)
 
 ## [1.3.3](https://github.com/jquense/react-big-calendar/compare/v1.3.2...v1.3.3) (2022-07-12)
 
-
 ### Bug Fixes
 
-* revert ([#2227](https://github.com/jquense/react-big-calendar/issues/2227)) ([b81fa14](https://github.com/jquense/react-big-calendar/commit/b81fa146a97b83cd0bff063eb5004f1583eb365c))
+- revert ([#2227](https://github.com/jquense/react-big-calendar/issues/2227)) ([b81fa14](https://github.com/jquense/react-big-calendar/commit/b81fa146a97b83cd0bff063eb5004f1583eb365c))
 
 ## [1.3.2](https://github.com/jquense/react-big-calendar/compare/v1.3.1...v1.3.2) (2022-07-12)
 
-
 ### Bug Fixes
 
-* temp fix for DayColumn render ([#2224](https://github.com/jquense/react-big-calendar/issues/2224)) ([48b23a2](https://github.com/jquense/react-big-calendar/commit/48b23a26edb2383abee9978a2b99eb4520a97f12)), closes [#2222](https://github.com/jquense/react-big-calendar/issues/2222)
+- temp fix for DayColumn render ([#2224](https://github.com/jquense/react-big-calendar/issues/2224)) ([48b23a2](https://github.com/jquense/react-big-calendar/commit/48b23a26edb2383abee9978a2b99eb4520a97f12)), closes [#2222](https://github.com/jquense/react-big-calendar/issues/2222)
 
 ## [1.3.1](https://github.com/jquense/react-big-calendar/compare/v1.3.0...v1.3.1) (2022-07-12)
 
-
 ### Bug Fixes
 
-* revert change ([#2223](https://github.com/jquense/react-big-calendar/issues/2223)) ([bdb0595](https://github.com/jquense/react-big-calendar/commit/bdb0595400eaf0a612af3bb39d27f3c0c0fc5867))
+- revert change ([#2223](https://github.com/jquense/react-big-calendar/issues/2223)) ([bdb0595](https://github.com/jquense/react-big-calendar/commit/bdb0595400eaf0a612af3bb39d27f3c0c0fc5867))
 
 # [1.3.0](https://github.com/jquense/react-big-calendar/compare/v1.2.4...v1.3.0) (2022-07-11)
 
-
 ### Features
 
-* use custom event wrapper when dragging ([#2221](https://github.com/jquense/react-big-calendar/issues/2221)) ([73ed69a](https://github.com/jquense/react-big-calendar/commit/73ed69ad39383a5a19f90150a373e9f0038c2dee)), closes [#1864](https://github.com/jquense/react-big-calendar/issues/1864)
+- use custom event wrapper when dragging ([#2221](https://github.com/jquense/react-big-calendar/issues/2221)) ([73ed69a](https://github.com/jquense/react-big-calendar/commit/73ed69ad39383a5a19f90150a373e9f0038c2dee)), closes [#1864](https://github.com/jquense/react-big-calendar/issues/1864)
 
 ## [1.2.4](https://github.com/jquense/react-big-calendar/compare/v1.2.3...v1.2.4) (2022-07-11)
 
-
 ### Bug Fixes
 
-* do the math ourselves ([#2220](https://github.com/jquense/react-big-calendar/issues/2220)) ([cace54e](https://github.com/jquense/react-big-calendar/commit/cace54e8b4b0f6baef35f1dac11bcf8f541f5301))
+- do the math ourselves ([#2220](https://github.com/jquense/react-big-calendar/issues/2220)) ([cace54e](https://github.com/jquense/react-big-calendar/commit/cace54e8b4b0f6baef35f1dac11bcf8f541f5301))
 
 ## [1.2.3](https://github.com/jquense/react-big-calendar/compare/v1.2.2...v1.2.3) (2022-07-11)
 
-
 ### Bug Fixes
 
-* correct time-header-gutter ([#2219](https://github.com/jquense/react-big-calendar/issues/2219)) ([160e251](https://github.com/jquense/react-big-calendar/commit/160e251f288174a469932599251af06f179a47f9))
+- correct time-header-gutter ([#2219](https://github.com/jquense/react-big-calendar/issues/2219)) ([160e251](https://github.com/jquense/react-big-calendar/commit/160e251f288174a469932599251af06f179a47f9))
 
 ## [1.2.2](https://github.com/jquense/react-big-calendar/compare/v1.2.1...v1.2.2) (2022-07-11)
 
-
 ### Bug Fixes
 
-* correct popupOffset ([#2218](https://github.com/jquense/react-big-calendar/issues/2218)) ([6fdec30](https://github.com/jquense/react-big-calendar/commit/6fdec3049660a97dcf42819b16bfc01aa5764267))
+- correct popupOffset ([#2218](https://github.com/jquense/react-big-calendar/issues/2218)) ([6fdec30](https://github.com/jquense/react-big-calendar/commit/6fdec3049660a97dcf42819b16bfc01aa5764267))
 
 ## [1.2.1](https://github.com/jquense/react-big-calendar/compare/v1.2.0...v1.2.1) (2022-07-08)
 
-
 ### Bug Fixes
 
-* update to current react-overlays ([#2217](https://github.com/jquense/react-big-calendar/issues/2217)) ([27ebe46](https://github.com/jquense/react-big-calendar/commit/27ebe46f6d4900d1bac5986f57770c93f2ab1287)), closes [#2186](https://github.com/jquense/react-big-calendar/issues/2186)
+- update to current react-overlays ([#2217](https://github.com/jquense/react-big-calendar/issues/2217)) ([27ebe46](https://github.com/jquense/react-big-calendar/commit/27ebe46f6d4900d1bac5986f57770c93f2ab1287)), closes [#2186](https://github.com/jquense/react-big-calendar/issues/2186)
 
 # [1.2.0](https://github.com/jquense/react-big-calendar/compare/v1.1.0...v1.2.0) (2022-07-08)
 
-
 ### Features
 
-* replace unsafe deprecated methods ([#2216](https://github.com/jquense/react-big-calendar/issues/2216)) ([c5c6a8b](https://github.com/jquense/react-big-calendar/commit/c5c6a8bf8f710402dc69bf1322d76b83c19824c4)), closes [#1200](https://github.com/jquense/react-big-calendar/issues/1200) [#1777](https://github.com/jquense/react-big-calendar/issues/1777) [#1481](https://github.com/jquense/react-big-calendar/issues/1481) [#2126](https://github.com/jquense/react-big-calendar/issues/2126) [#2104](https://github.com/jquense/react-big-calendar/issues/2104) [#2105](https://github.com/jquense/react-big-calendar/issues/2105) [#1526](https://github.com/jquense/react-big-calendar/issues/1526)
+- replace unsafe deprecated methods ([#2216](https://github.com/jquense/react-big-calendar/issues/2216)) ([c5c6a8b](https://github.com/jquense/react-big-calendar/commit/c5c6a8bf8f710402dc69bf1322d76b83c19824c4)), closes [#1200](https://github.com/jquense/react-big-calendar/issues/1200) [#1777](https://github.com/jquense/react-big-calendar/issues/1777) [#1481](https://github.com/jquense/react-big-calendar/issues/1481) [#2126](https://github.com/jquense/react-big-calendar/issues/2126) [#2104](https://github.com/jquense/react-big-calendar/issues/2104) [#2105](https://github.com/jquense/react-big-calendar/issues/2105) [#1526](https://github.com/jquense/react-big-calendar/issues/1526)
 
 # [1.1.0](https://github.com/jquense/react-big-calendar/compare/v1.0.1...v1.1.0) (2022-07-08)
 
-
 ### Features
 
-* remove unneeded dependencies ([#2215](https://github.com/jquense/react-big-calendar/issues/2215)) ([fb05151](https://github.com/jquense/react-big-calendar/commit/fb05151252ad02610c7fafa7fbe13dd00b5d40af))
+- remove unneeded dependencies ([#2215](https://github.com/jquense/react-big-calendar/issues/2215)) ([fb05151](https://github.com/jquense/react-big-calendar/commit/fb05151252ad02610c7fafa7fbe13dd00b5d40af))
 
 ## [1.0.1](https://github.com/jquense/react-big-calendar/compare/v1.0.0...v1.0.1) (2022-07-07)
 
-
 ### Bug Fixes
 
-* zero duration no-overlap events ([#2213](https://github.com/jquense/react-big-calendar/issues/2213)) ([bbe1109](https://github.com/jquense/react-big-calendar/commit/bbe11094c0bfcfc162022711f848905e57479152))
+- zero duration no-overlap events ([#2213](https://github.com/jquense/react-big-calendar/issues/2213)) ([bbe1109](https://github.com/jquense/react-big-calendar/commit/bbe11094c0bfcfc162022711f848905e57479152))
 
 # [1.0.0](https://github.com/jquense/react-big-calendar/compare/v0.40.8...v1.0.0) (2022-07-07)
 
-
 ### Features
 
-* **localizers:** move localizer dependencies ([e4a3235](https://github.com/jquense/react-big-calendar/commit/e4a323538c2d2c3cd6c56300ef560ac5f18519c4))
-
+- **localizers:** move localizer dependencies ([e4a3235](https://github.com/jquense/react-big-calendar/commit/e4a323538c2d2c3cd6c56300ef560ac5f18519c4))
 
 ### BREAKING CHANGES
 
-* **localizers:** moment, luxon and globalize are no longer bundled
+- **localizers:** moment, luxon and globalize are no longer bundled
 
 ## [0.40.8](https://github.com/jquense/react-big-calendar/compare/v0.40.7...v0.40.8) (2022-07-07)
 
-
 ### Bug Fixes
 
-* resolve resizing events in Month view ([c7b105f](https://github.com/jquense/react-big-calendar/commit/c7b105f8d59b460b8ed2e45fa90653296651b52c)), closes [#2207](https://github.com/jquense/react-big-calendar/issues/2207)
+- resolve resizing events in Month view ([c7b105f](https://github.com/jquense/react-big-calendar/commit/c7b105f8d59b460b8ed2e45fa90653296651b52c)), closes [#2207](https://github.com/jquense/react-big-calendar/issues/2207)
 
 ## [0.40.7](https://github.com/jquense/react-big-calendar/compare/v0.40.6...v0.40.7) (2022-07-05)
 
-
 ### Bug Fixes
 
-* adjust TimeGutter for DST ([#2205](https://github.com/jquense/react-big-calendar/issues/2205)) ([4ba1255](https://github.com/jquense/react-big-calendar/commit/4ba1255ac80239e3a35d8adb32cbaa3da526619f))
+- adjust TimeGutter for DST ([#2205](https://github.com/jquense/react-big-calendar/issues/2205)) ([4ba1255](https://github.com/jquense/react-big-calendar/commit/4ba1255ac80239e3a35d8adb32cbaa3da526619f))
 
 ## [0.40.6](https://github.com/jquense/react-big-calendar/compare/v0.40.5...v0.40.6) (2022-07-05)
 
-
 ### Bug Fixes
 
-* correct TimeGutter ref ([#2204](https://github.com/jquense/react-big-calendar/issues/2204)) ([055cdd0](https://github.com/jquense/react-big-calendar/commit/055cdd01c153752e90b889cfa37ad5734fe8217e)), closes [#2201](https://github.com/jquense/react-big-calendar/issues/2201)
+- correct TimeGutter ref ([#2204](https://github.com/jquense/react-big-calendar/issues/2204)) ([055cdd0](https://github.com/jquense/react-big-calendar/commit/055cdd01c153752e90b889cfa37ad5734fe8217e)), closes [#2201](https://github.com/jquense/react-big-calendar/issues/2201)
 
 ## [0.40.5](https://github.com/jquense/react-big-calendar/compare/v0.40.4...v0.40.5) (2022-07-05)
 
-
 ### Bug Fixes
 
-* correct TimeGutter ref use ([574dbf7](https://github.com/jquense/react-big-calendar/commit/574dbf73d9c0acd10fb2fa25a128a8a3b9c05c16)), closes [#2200](https://github.com/jquense/react-big-calendar/issues/2200)
+- correct TimeGutter ref use ([574dbf7](https://github.com/jquense/react-big-calendar/commit/574dbf73d9c0acd10fb2fa25a128a8a3b9c05c16)), closes [#2200](https://github.com/jquense/react-big-calendar/issues/2200)
 
 ## [0.40.4](https://github.com/jquense/react-big-calendar/compare/v0.40.3...v0.40.4) (2022-07-01)
 
-
 ### Bug Fixes
 
-* replace findDOMNode with refs ([a902d20](https://github.com/jquense/react-big-calendar/commit/a902d20a7413016a662e1f7b3f7a5241213ce354)), closes [#2193](https://github.com/jquense/react-big-calendar/issues/2193)
+- replace findDOMNode with refs ([a902d20](https://github.com/jquense/react-big-calendar/commit/a902d20a7413016a662e1f7b3f7a5241213ce354)), closes [#2193](https://github.com/jquense/react-big-calendar/issues/2193)
 
 ## [0.40.3](https://github.com/jquense/react-big-calendar/compare/v0.40.2...v0.40.3) (2022-07-01)
 
-
 ### Bug Fixes
 
-* **DND:** Corrects issue of losing droppable event when releasing on non-event related containers ([#2199](https://github.com/jquense/react-big-calendar/issues/2199)) ([508b668](https://github.com/jquense/react-big-calendar/commit/508b668f4adb17635b47f435fdc3b676058a7405)), closes [#2198](https://github.com/jquense/react-big-calendar/issues/2198) [#1902](https://github.com/jquense/react-big-calendar/issues/1902)
+- **DND:** Corrects issue of losing droppable event when releasing on non-event related containers ([#2199](https://github.com/jquense/react-big-calendar/issues/2199)) ([508b668](https://github.com/jquense/react-big-calendar/commit/508b668f4adb17635b47f435fdc3b676058a7405)), closes [#2198](https://github.com/jquense/react-big-calendar/issues/2198) [#1902](https://github.com/jquense/react-big-calendar/issues/1902)
 
 ## [0.40.2](https://github.com/jquense/react-big-calendar/compare/v0.40.1...v0.40.2) (2022-06-16)
 
-
 ### Bug Fixes
 
-* Allow resize to last visible slot ([f26c8a7](https://github.com/jquense/react-big-calendar/commit/f26c8a75a5e7ad667eb6dbc4d392dac32e51dc10)), closes [#2147](https://github.com/jquense/react-big-calendar/issues/2147)
+- Allow resize to last visible slot ([f26c8a7](https://github.com/jquense/react-big-calendar/commit/f26c8a75a5e7ad667eb6dbc4d392dac32e51dc10)), closes [#2147](https://github.com/jquense/react-big-calendar/issues/2147)
 
 ## [0.40.1](https://github.com/jquense/react-big-calendar/compare/v0.40.0...v0.40.1) (2022-04-18)
 
-
 ### Bug Fixes
 
-* correct luxon localizer formatting ([#2172](https://github.com/jquense/react-big-calendar/issues/2172)) ([b130351](https://github.com/jquense/react-big-calendar/commit/b130351966fa6a3870607bbb78394db11a10915b))
+- correct luxon localizer formatting ([#2172](https://github.com/jquense/react-big-calendar/issues/2172)) ([b130351](https://github.com/jquense/react-big-calendar/commit/b130351966fa6a3870607bbb78394db11a10915b))
 
 # [0.40.0](https://github.com/jquense/react-big-calendar/compare/v0.39.7...v0.40.0) (2022-03-24)
 
-
 ### Features
 
-* **events:** default events prop to an empty array ([#2161](https://github.com/jquense/react-big-calendar/issues/2161)) ([efac0b2](https://github.com/jquense/react-big-calendar/commit/efac0b26b365bbddb803ad256e22a5844cf36052)), closes [#1708](https://github.com/jquense/react-big-calendar/issues/1708)
+- **events:** default events prop to an empty array ([#2161](https://github.com/jquense/react-big-calendar/issues/2161)) ([efac0b2](https://github.com/jquense/react-big-calendar/commit/efac0b26b365bbddb803ad256e22a5844cf36052)), closes [#1708](https://github.com/jquense/react-big-calendar/issues/1708)
 
 ## [0.39.7](https://github.com/jquense/react-big-calendar/compare/v0.39.6...v0.39.7) (2022-03-23)
 
-
 ### Bug Fixes
 
-* move react, react-dom to devDependencies ([#2160](https://github.com/jquense/react-big-calendar/issues/2160)) ([6917c15](https://github.com/jquense/react-big-calendar/commit/6917c15f25bad5462392003dcae59ef7fe20f24d))
+- move react, react-dom to devDependencies ([#2160](https://github.com/jquense/react-big-calendar/issues/2160)) ([6917c15](https://github.com/jquense/react-big-calendar/commit/6917c15f25bad5462392003dcae59ef7fe20f24d))
 
 ## [0.39.6](https://github.com/jquense/react-big-calendar/compare/v0.39.5...v0.39.6) (2022-03-23)
 
-
 ### Bug Fixes
 
-* incorrect babel imports in CJS/ESM builds ([#2157](https://github.com/jquense/react-big-calendar/issues/2157)) ([687b121](https://github.com/jquense/react-big-calendar/commit/687b1213d91ded826e92ab1ec39314676aa24bf5))
+- incorrect babel imports in CJS/ESM builds ([#2157](https://github.com/jquense/react-big-calendar/issues/2157)) ([687b121](https://github.com/jquense/react-big-calendar/commit/687b1213d91ded826e92ab1ec39314676aa24bf5))
 
 ## [0.39.5](https://github.com/jquense/react-big-calendar/compare/v0.39.4...v0.39.5) (2022-03-21)
 
-
 ### Bug Fixes
 
-* disable `absoluteRuntime` in babel-preset-react-app ([#2155](https://github.com/jquense/react-big-calendar/issues/2155)) ([b8fcb93](https://github.com/jquense/react-big-calendar/commit/b8fcb9337bb5eb3e2c19f766d18cddba43ea1a06))
+- disable `absoluteRuntime` in babel-preset-react-app ([#2155](https://github.com/jquense/react-big-calendar/issues/2155)) ([b8fcb93](https://github.com/jquense/react-big-calendar/commit/b8fcb9337bb5eb3e2c19f766d18cddba43ea1a06))
 
 ## [0.39.4](https://github.com/jquense/react-big-calendar/compare/v0.39.3...v0.39.4) (2022-03-15)
 
-
 ### Bug Fixes
 
-* correct storybook deploy ([#2145](https://github.com/jquense/react-big-calendar/issues/2145)) ([8c98fb2](https://github.com/jquense/react-big-calendar/commit/8c98fb25bc063cbd88260fb4d2cf709c52912a67))
+- correct storybook deploy ([#2145](https://github.com/jquense/react-big-calendar/issues/2145)) ([8c98fb2](https://github.com/jquense/react-big-calendar/commit/8c98fb25bc063cbd88260fb4d2cf709c52912a67))
 
 ## [0.39.3](https://github.com/jquense/react-big-calendar/compare/v0.39.2...v0.39.3) (2022-03-11)
 

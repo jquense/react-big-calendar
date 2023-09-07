@@ -18,6 +18,23 @@ class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
   intervalTriggered = false
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.selectable && !prevState?.selectable) {
+      this._selectable()
+    }
+
+    if (!nextProps.selectable && prevState?.selectable) {
+      this._teardownSelectable()
+    }
+
+    const updatedSlotMetrics = prevState?.slotMetrics?.update(nextProps)
+
+    return {
+      selectable: nextProps.selectable,
+      slotMetrics: updatedSlotMetrics,
+    }
+  }
+
   constructor(...args) {
     super(...args)
 
@@ -36,14 +53,6 @@ class DayColumn extends React.Component {
   componentWillUnmount() {
     this._teardownSelectable()
     this.clearTimeIndicatorInterval()
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.selectable && !this.props.selectable) this._selectable()
-    if (!nextProps.selectable && this.props.selectable)
-      this._teardownSelectable()
-
-    this.slotMetrics = this.slotMetrics.update(nextProps)
   }
 
   componentDidUpdate(prevProps, prevState) {

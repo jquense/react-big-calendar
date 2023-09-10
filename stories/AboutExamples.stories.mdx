@@ -44,4 +44,4 @@ const onView = useCallback((newView) => setView(newView), [setView])
 <Calendar onView={onView} {...otherProps} />
 ```
 
-If a prop takes an `Object`, an `Array`, a `Date`, a `Function`, or any other non-simple variable type, it is always a good idea to memoize those values prior to passing them as props. Chances are that some prop or state change will trigger a re-render of your Calendar. How well you manage your props will effect overall render performance.
+If a prop takes an `Object`, an `Array`, a `Date`, a `Function`, or any other non-simple variable type, it is always a good idea to memoize those values prior to passing them as props. Chances are that some prop or state change will trigger a re-render of your Calendar. How well you manage your props will affect overall render performance.

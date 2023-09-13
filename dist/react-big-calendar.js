@@ -45313,7 +45313,6 @@
       var shadowRootElement = document.querySelector(
         '[data-rh-content-portal-name=create-relay-meeting]'
       )
-      console.log('shadowRootElement', shadowRootElement)
       if (shadowRootElement === null) return document
       return shadowRootElement.shadowRoot
     }

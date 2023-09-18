@@ -143,7 +143,7 @@ export default [
   },
   {
     id: 18,
-    title: 'Itaewon Halloween Meeting',
+    title: 'Itaewon Meeting',
     start: new Date(2015, 3, 14, 16, 30, 0),
     end: new Date(2015, 3, 14, 17, 30, 0),
   },

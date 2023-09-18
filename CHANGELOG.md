@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/jquense/react-big-calendar/compare/v1.8.3...v1.8.4) (2023-09-18)
+
+
+### Bug Fixes
+
+* typo ([#2443](https://github.com/jquense/react-big-calendar/issues/2443)) ([407e168](https://github.com/jquense/react-big-calendar/commit/407e168921a861e171ec3c8aee23f5ffe855323d))
+
 ## [1.8.3](https://github.com/jquense/react-big-calendar/compare/v1.8.2...v1.8.3) (2023-09-18)
 
 

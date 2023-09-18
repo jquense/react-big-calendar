@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/jquense/react-big-calendar/compare/v1.8.2...v1.8.3) (2023-09-18)
+
+
+### Bug Fixes
+
+* Modify events.js ([#2444](https://github.com/jquense/react-big-calendar/issues/2444)) ([2a838d9](https://github.com/jquense/react-big-calendar/commit/2a838d981ed08c0be7ff6702f64b79db3158ff90))
+
 ## [1.8.2](https://github.com/jquense/react-big-calendar/compare/v1.8.1...v1.8.2) (2023-08-07)
 
 

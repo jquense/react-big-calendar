@@ -20,7 +20,9 @@ class DayColumn extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.selectable && !prevState?.selectable) {
-      this._selectable()
+      if (this && this._selectable) {
+        this._selectable()
+      }
     }
 
     if (!nextProps.selectable && prevState?.selectable) {

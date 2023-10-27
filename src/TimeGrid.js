@@ -397,7 +397,7 @@ export default class TimeGrid extends Component {
 
     const content = this.contentRef.current
 
-    if (!content || !content?.scrollHeight) return
+    if (!content?.scrollHeight) return
     let isOverflowing = content.scrollHeight > content.clientHeight
 
     if (this.state.isOverflowing !== isOverflowing) {

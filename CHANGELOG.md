@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/jquense/react-big-calendar/compare/v1.8.4...v1.8.5) (2023-10-30)
+
+
+### Bug Fixes
+
+* fixing invalid ref with invalid scrollHeight ([#2459](https://github.com/jquense/react-big-calendar/issues/2459)) ([a4bc8f3](https://github.com/jquense/react-big-calendar/commit/a4bc8f3f275ccfba5b6861330b87b39f05505ca8))
+
 ## [1.8.4](https://github.com/jquense/react-big-calendar/compare/v1.8.3...v1.8.4) (2023-09-18)
 
 

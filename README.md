@@ -165,4 +165,4 @@ Big Calendar. Carefully test each change accordingly.
 
 ## Join The Community
 
-Help us improve Big Calendar! Join us on [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-1ml1j99af-qIvqOfosMog1W7WxM0~j2Q).
+Help us improve Big Calendar! Join us on [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-26nu75jqe-maHrrJ2sCbPeVjGZEJ9jRg).

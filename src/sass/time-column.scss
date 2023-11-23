@@ -84,11 +84,20 @@
   .rbc-time-gutter,
   .rbc-time-header-gutter {
     position: sticky;
-    left: 0;
     background-color: white;
-    border-right: 1px solid $cell-border;
     z-index: 10;
-    margin-right: -1px;
+    border-left: 1px solid $cell-border;
+    margin-left: -1px;
+  }
+
+  .rbc-time-header-gutter-left {
+    @extend .rbc-time-header-gutter;
+    left: 0;
+  }
+
+  .rbc-time-header-gutter-right {
+    @extend .rbc-time-header-gutter;
+    right: 0;
   }
 
   .rbc-time-header {

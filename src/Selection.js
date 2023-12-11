@@ -1,38 +1,65 @@
-import contains from 'dom-helpers/contains'
 import closest from 'dom-helpers/closest'
+import contains from 'dom-helpers/contains'
 import listen from 'dom-helpers/listen'
 
-const getTargetHost = (target = document) => {
-  if (target instanceof Document) {
-    const shadowRootElement = document.querySelector(
-      '[data-rh-content-portal-name=create-relay-meeting]'
-    )
+const RH_PORTAL_SELECTOR = '[data-rh-content-portal]'
 
-    if (shadowRootElement === null) return document
-
-    return shadowRootElement.shadowRoot
+/**
+ * get parent rh content portal shadow root
+ * we're not using the closest method as it doesn't work with shadow roots
+ * @param {HTMLElement | null | undefined} node
+ * @returns {ShadowRoot | null}
+ */
+function getParentShadowRoot(node) {
+  if (!node) {
+    return null
   }
 
-  return target
+  if (
+    node?.parentNode instanceof ShadowRoot &&
+    node?.parentNode?.host.matches(RH_PORTAL_SELECTOR)
+  ) {
+    return node.parentNode
+  }
+
+  return getParentShadowRoot(node.parentElement)
 }
 
-function addEventListener(type, handler, target = document) {
-  return listen(getTargetHost(target), type, handler, { passive: false })
+/**
+ * if the node is a html element, query for the closest shadowRoot
+ * @param {HTMLElement | Window} node
+ * @returns {HTMLElement | Window}
+ */
+const getTargetHost = (node) => {
+  if (!node || node instanceof Window) return node
+
+  const closestRHPortal = getParentShadowRoot(node)
+
+  if (closestRHPortal === null) {
+    return document
+  }
+
+  return closestRHPortal
+}
+
+function addEventListener(type, handler, target) {
+  return listen(target, type, handler, { passive: false })
 }
 
 function isOverContainer(container, x, y) {
   return (
-    !container || contains(container, getTargetHost().elementFromPoint(x, y))
+    !container ||
+    contains(container, getTargetHost(container).elementFromPoint(x, y))
   )
 }
 
 export function getEventNodeFromPoint(node, { clientX, clientY }) {
-  let target = getTargetHost().elementFromPoint(clientX, clientY)
+  let target = getTargetHost(node).elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-event', node)
 }
 
 export function getShowMoreNodeFromPoint(node, { clientX, clientY }) {
-  let target = getTargetHost().elementFromPoint(clientX, clientY)
+  let target = getTargetHost(node).elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-show-more', node)
 }
 
@@ -77,6 +104,13 @@ class Selection {
 
     this._listeners = Object.create(null)
 
+    /**
+     * !Note
+     * event listener target for container
+     * we need this to make the calendar work inside shadow roots
+     */
+    this._targetHost = getTargetHost(this.container)
+
     this._handleInitialEvent = this._handleInitialEvent.bind(this)
     this._handleMoveEvent = this._handleMoveEvent.bind(this)
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
@@ -92,16 +126,31 @@ class Selection {
       () => {},
       window
     )
-    this._removeKeyDownListener = addEventListener('keydown', this._keyListener)
-    this._removeKeyUpListener = addEventListener('keyup', this._keyListener)
+
+    this._removeKeyDownListener = addEventListener(
+      'keydown',
+      this._keyListener,
+      this._targetHost
+    )
+
+    this._removeKeyUpListener = addEventListener(
+      'keyup',
+      this._keyListener,
+      this._targetHost
+    )
+
     this._removeDropFromOutsideListener = addEventListener(
       'drop',
-      this._dropFromOutsideListener
+      this._dropFromOutsideListener,
+      this._targetHost
     )
+
     this._removeDragOverFromOutsideListener = addEventListener(
       'dragover',
-      this._dragOverFromOutsideListener
+      this._dragOverFromOutsideListener,
+      this._targetHost
     )
+
     this._addInitialEventListener()
   }
 
@@ -170,18 +219,32 @@ class Selection {
     let timer = null
     let removeTouchMoveListener = null
     let removeTouchEndListener = null
+
     const handleTouchStart = (initialEvent) => {
       timer = setTimeout(() => {
         cleanup()
         handler(initialEvent)
       }, this.longPressThreshold)
-      removeTouchMoveListener = addEventListener('touchmove', () => cleanup())
-      removeTouchEndListener = addEventListener('touchend', () => cleanup())
+
+      removeTouchMoveListener = addEventListener(
+        'touchmove',
+        () => cleanup(),
+        this._targetHost
+      )
+
+      removeTouchEndListener = addEventListener(
+        'touchend',
+        () => cleanup(),
+        this._targetHost
+      )
     }
+
     const removeTouchStartListener = addEventListener(
       'touchstart',
-      handleTouchStart
+      handleTouchStart,
+      this._targetHost
     )
+
     const cleanup = () => {
       if (timer) {
         clearTimeout(timer)
@@ -211,21 +274,32 @@ class Selection {
   // Listen for mousedown and touchstart events. When one is received, disable the other and setup
   // future event handling based on the type of event.
   _addInitialEventListener() {
-    const removeMouseDownListener = addEventListener('mousedown', (e) => {
-      this._removeInitialEventListener()
-      this._handleInitialEvent(e)
-      this._removeInitialEventListener = addEventListener(
-        'mousedown',
-        this._handleInitialEvent
-      )
-    })
-    const removeTouchStartListener = addEventListener('touchstart', (e) => {
-      this._removeInitialEventListener()
-      this._removeInitialEventListener = this._addLongPressListener(
-        this._handleInitialEvent,
-        e
-      )
-    })
+    const removeMouseDownListener = addEventListener(
+      'mousedown',
+      (e) => {
+        this._removeInitialEventListener()
+        this._handleInitialEvent(e)
+
+        this._removeInitialEventListener = addEventListener(
+          'mousedown',
+          this._handleInitialEvent,
+          this._targetHost
+        )
+      },
+      this._targetHost
+    )
+
+    const removeTouchStartListener = addEventListener(
+      'touchstart',
+      (e) => {
+        this._removeInitialEventListener()
+        this._removeInitialEventListener = this._addLongPressListener(
+          this._handleInitialEvent,
+          e
+        )
+      },
+      this._targetHost
+    )
 
     this._removeInitialEventListener = () => {
       removeMouseDownListener()
@@ -313,27 +387,37 @@ class Selection {
       case 'mousedown':
         this._removeEndListener = addEventListener(
           'mouseup',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          this._targetHost
         )
+
         this._onEscListener = addEventListener(
           'keydown',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          this._targetHost
         )
+
         this._removeMoveListener = addEventListener(
           'mousemove',
-          this._handleMoveEvent
+          this._handleMoveEvent,
+          this._targetHost
         )
+
         break
       case 'touchstart':
         this._handleMoveEvent(e)
         this._removeEndListener = addEventListener(
           'touchend',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          this._targetHost
         )
+
         this._removeMoveListener = addEventListener(
           'touchmove',
-          this._handleMoveEvent
+          this._handleMoveEvent,
+          this._targetHost
         )
+
         break
       default:
         break

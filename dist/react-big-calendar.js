@@ -45304,45 +45304,67 @@
     return null
   }
 
-  var getTargetHost = function getTargetHost() {
-    var target =
-      arguments.length > 0 && arguments[0] !== undefined
-        ? arguments[0]
-        : document
-    if (target instanceof Document) {
-      var shadowRootElement = document.querySelector(
-        '[data-rh-content-portal-name=create-relay-meeting]'
-      )
-      if (shadowRootElement === null) return document
-      return shadowRootElement.shadowRoot
+  var RH_PORTAL_SELECTOR = '[data-rh-content-portal]'
+
+  /**
+   * get parent rh content portal shadow root
+   * we're not using the closest method as it doesn't work with shadow roots
+   * @param {HTMLElement | null | undefined} node
+   * @returns {ShadowRoot | null}
+   */
+  function getParentShadowRoot(node) {
+    var _node$parentNode
+    if (!node) {
+      return null
     }
-    return target
+    if (
+      (node === null || node === void 0 ? void 0 : node.parentNode) instanceof
+        ShadowRoot &&
+      node !== null &&
+      node !== void 0 &&
+      (_node$parentNode = node.parentNode) !== null &&
+      _node$parentNode !== void 0 &&
+      _node$parentNode.host.matches(RH_PORTAL_SELECTOR)
+    ) {
+      return node.parentNode
+    }
+    return getParentShadowRoot(node.parentElement)
   }
-  function addEventListener(type, handler) {
-    var target =
-      arguments.length > 2 && arguments[2] !== undefined
-        ? arguments[2]
-        : document
-    return listen(getTargetHost(target), type, handler, {
+
+  /**
+   * if the node is a html element, query for the closest shadowRoot
+   * @param {HTMLElement | Window} node
+   * @returns {HTMLElement | Window}
+   */
+  var getTargetHost = function getTargetHost(node) {
+    if (!node || node instanceof Window) return node
+    var closestRHPortal = getParentShadowRoot(node)
+    if (closestRHPortal === null) {
+      return document
+    }
+    return closestRHPortal
+  }
+  function addEventListener(type, handler, target) {
+    return listen(target, type, handler, {
       passive: false,
     })
   }
   function isOverContainer(container, x, y) {
     return (
       !container ||
-      contains$1(container, getTargetHost().elementFromPoint(x, y))
+      contains$1(container, getTargetHost(container).elementFromPoint(x, y))
     )
   }
   function getEventNodeFromPoint(node, _ref) {
     var clientX = _ref.clientX,
       clientY = _ref.clientY
-    var target = getTargetHost().elementFromPoint(clientX, clientY)
+    var target = getTargetHost(node).elementFromPoint(clientX, clientY)
     return closest(target, '.rbc-event', node)
   }
   function getShowMoreNodeFromPoint(node, _ref2) {
     var clientX = _ref2.clientX,
       clientY = _ref2.clientY
-    var target = getTargetHost().elementFromPoint(clientX, clientY)
+    var target = getTargetHost(node).elementFromPoint(clientX, clientY)
     return closest(target, '.rbc-show-more', node)
   }
   function isEvent(node, bounds) {
@@ -45386,6 +45408,13 @@
       this.longPressThreshold = longPressThreshold
       this.validContainers = validContainers
       this._listeners = Object.create(null)
+
+      /**
+       * !Note
+       * event listener target for container
+       * we need this to make the calendar work inside shadow roots
+       */
+      this._targetHost = getTargetHost(this.container)
       this._handleInitialEvent = this._handleInitialEvent.bind(this)
       this._handleMoveEvent = this._handleMoveEvent.bind(this)
       this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
@@ -45403,16 +45432,23 @@
       )
       this._removeKeyDownListener = addEventListener(
         'keydown',
-        this._keyListener
+        this._keyListener,
+        this._targetHost
       )
-      this._removeKeyUpListener = addEventListener('keyup', this._keyListener)
+      this._removeKeyUpListener = addEventListener(
+        'keyup',
+        this._keyListener,
+        this._targetHost
+      )
       this._removeDropFromOutsideListener = addEventListener(
         'drop',
-        this._dropFromOutsideListener
+        this._dropFromOutsideListener,
+        this._targetHost
       )
       this._removeDragOverFromOutsideListener = addEventListener(
         'dragover',
-        this._dragOverFromOutsideListener
+        this._dragOverFromOutsideListener,
+        this._targetHost
       )
       this._addInitialEventListener()
     }
@@ -45506,15 +45542,21 @@
               'touchmove',
               function () {
                 return cleanup()
-              }
+              },
+              _this._targetHost
             )
-            removeTouchEndListener = addEventListener('touchend', function () {
-              return cleanup()
-            })
+            removeTouchEndListener = addEventListener(
+              'touchend',
+              function () {
+                return cleanup()
+              },
+              _this._targetHost
+            )
           }
           var removeTouchStartListener = addEventListener(
             'touchstart',
-            handleTouchStart
+            handleTouchStart,
+            this._targetHost
           )
           var cleanup = function cleanup() {
             if (timer) {
@@ -45553,9 +45595,11 @@
               _this2._handleInitialEvent(e)
               _this2._removeInitialEventListener = addEventListener(
                 'mousedown',
-                _this2._handleInitialEvent
+                _this2._handleInitialEvent,
+                _this2._targetHost
               )
-            }
+            },
+            this._targetHost
           )
           var removeTouchStartListener = addEventListener(
             'touchstart',
@@ -45565,7 +45609,8 @@
                 _this2._handleInitialEvent,
                 e
               )
-            }
+            },
+            this._targetHost
           )
           this._removeInitialEventListener = function () {
             removeMouseDownListener()
@@ -45665,26 +45710,31 @@
             case 'mousedown':
               this._removeEndListener = addEventListener(
                 'mouseup',
-                this._handleTerminatingEvent
+                this._handleTerminatingEvent,
+                this._targetHost
               )
               this._onEscListener = addEventListener(
                 'keydown',
-                this._handleTerminatingEvent
+                this._handleTerminatingEvent,
+                this._targetHost
               )
               this._removeMoveListener = addEventListener(
                 'mousemove',
-                this._handleMoveEvent
+                this._handleMoveEvent,
+                this._targetHost
               )
               break
             case 'touchstart':
               this._handleMoveEvent(e)
               this._removeEndListener = addEventListener(
                 'touchend',
-                this._handleTerminatingEvent
+                this._handleTerminatingEvent,
+                this._targetHost
               )
               this._removeMoveListener = addEventListener(
                 'touchmove',
-                this._handleMoveEvent
+                this._handleMoveEvent,
+                this._targetHost
               )
               break
           }
@@ -48473,6 +48523,189 @@
     }
   }
 
+  function stringifyPercent(v) {
+    return typeof v === 'string' ? v : v + '%'
+  }
+
+  /* eslint-disable react/prop-types */
+  function TimeGridEvent(props) {
+    var style = props.style,
+      className = props.className,
+      event = props.event,
+      accessors = props.accessors,
+      rtl = props.rtl,
+      selected = props.selected,
+      label = props.label,
+      continuesPrior = props.continuesPrior,
+      continuesAfter = props.continuesAfter,
+      getters = props.getters,
+      onClick = props.onClick,
+      onDoubleClick = props.onDoubleClick,
+      isBackgroundEvent = props.isBackgroundEvent,
+      onKeyPress = props.onKeyPress,
+      _props$components = props.components,
+      Event = _props$components.event,
+      EventWrapper = _props$components.eventWrapper
+    var title = accessors.title(event)
+    var tooltip = accessors.tooltip(event)
+    var end = accessors.end(event)
+    var start = accessors.start(event)
+    var userProps = getters.eventProp(event, start, end, selected)
+    var height = style.height,
+      top = style.top,
+      width = style.width,
+      xOffset = style.xOffset
+    var inner = [
+      /*#__PURE__*/ React.createElement(
+        'div',
+        {
+          key: '1',
+          className: 'rbc-event-label',
+        },
+        label
+      ),
+      /*#__PURE__*/ React.createElement(
+        'div',
+        {
+          key: '2',
+          className: 'rbc-event-content',
+        },
+        Event
+          ? /*#__PURE__*/ React.createElement(Event, {
+              event: event,
+              title: title,
+            })
+          : title
+      ),
+    ]
+    var eventStyle = isBackgroundEvent
+      ? _objectSpread2(
+          _objectSpread2({}, userProps.style),
+          {},
+          _defineProperty$1(
+            {
+              top: stringifyPercent(top),
+              height: stringifyPercent(height),
+              // Adding 10px to take events container right margin into account
+              width: 'calc('.concat(width, ' + 10px)'),
+            },
+            rtl ? 'right' : 'left',
+            stringifyPercent(Math.max(0, xOffset))
+          )
+        )
+      : _objectSpread2(
+          _objectSpread2({}, userProps.style),
+          {},
+          _defineProperty$1(
+            {
+              top: stringifyPercent(top),
+              width: stringifyPercent(width),
+              height: stringifyPercent(height),
+            },
+            rtl ? 'right' : 'left',
+            stringifyPercent(xOffset)
+          )
+        )
+    return /*#__PURE__*/ React.createElement(
+      EventWrapper,
+      Object.assign(
+        {
+          type: 'time',
+        },
+        props
+      ),
+      /*#__PURE__*/ React.createElement(
+        'div',
+        {
+          role: 'button',
+          tabIndex: 0,
+          onClick: onClick,
+          onDoubleClick: onDoubleClick,
+          style: eventStyle,
+          onKeyPress: onKeyPress,
+          title: tooltip
+            ? (typeof label === 'string' ? label + ': ' : '') + tooltip
+            : undefined,
+          className: clsx(
+            isBackgroundEvent ? 'rbc-background-event' : 'rbc-event',
+            className,
+            userProps.className,
+            {
+              'rbc-selected': selected,
+              'rbc-event-continues-earlier': continuesPrior,
+              'rbc-event-continues-later': continuesAfter,
+            }
+          ),
+        },
+        inner
+      )
+    )
+  }
+
+  var TimeSlotGroup = /*#__PURE__*/ (function (_Component) {
+    _inherits(TimeSlotGroup, _Component)
+    var _super = _createSuper(TimeSlotGroup)
+    function TimeSlotGroup() {
+      _classCallCheck(this, TimeSlotGroup)
+      return _super.apply(this, arguments)
+    }
+    _createClass(TimeSlotGroup, [
+      {
+        key: 'render',
+        value: function render() {
+          var _this$props = this.props,
+            renderSlot = _this$props.renderSlot,
+            resource = _this$props.resource,
+            group = _this$props.group,
+            getters = _this$props.getters,
+            _this$props$component = _this$props.components,
+            _this$props$component2 =
+              _this$props$component === void 0 ? {} : _this$props$component,
+            _this$props$component3 = _this$props$component2.timeSlotWrapper,
+            Wrapper =
+              _this$props$component3 === void 0
+                ? NoopWrapper
+                : _this$props$component3,
+            slotChildrenWrapper = _this$props$component2.slotChildrenWrapper
+          var groupProps = getters ? getters.slotGroupProp(group) : {}
+          return /*#__PURE__*/ React.createElement(
+            'div',
+            Object.assign(
+              {
+                className: 'rbc-timeslot-group',
+              },
+              groupProps
+            ),
+            group.map(function (value, idx) {
+              var slotProps = getters ? getters.slotProp(value, resource) : {}
+              return /*#__PURE__*/ React.createElement(
+                Wrapper,
+                {
+                  key: idx,
+                  value: value,
+                  resource: resource,
+                },
+                /*#__PURE__*/ React.createElement(
+                  'div',
+                  Object.assign({}, slotProps, {
+                    className: clsx('rbc-time-slot', slotProps.className),
+                  }),
+                  renderSlot
+                    ? renderSlot(value, idx)
+                    : slotChildrenWrapper === null ||
+                      slotChildrenWrapper === void 0
+                    ? void 0
+                    : slotChildrenWrapper(slotProps)
+                )
+              )
+            })
+          )
+        },
+      },
+    ])
+    return TimeSlotGroup
+  })(reactExports.Component)
+
   var Symbol$2 = _Symbol,
     isArguments = isArguments_1,
     isArray$3 = isArray_1
@@ -49448,189 +49681,6 @@
     return algorithm.apply(this, arguments)
   }
 
-  var TimeSlotGroup = /*#__PURE__*/ (function (_Component) {
-    _inherits(TimeSlotGroup, _Component)
-    var _super = _createSuper(TimeSlotGroup)
-    function TimeSlotGroup() {
-      _classCallCheck(this, TimeSlotGroup)
-      return _super.apply(this, arguments)
-    }
-    _createClass(TimeSlotGroup, [
-      {
-        key: 'render',
-        value: function render() {
-          var _this$props = this.props,
-            renderSlot = _this$props.renderSlot,
-            resource = _this$props.resource,
-            group = _this$props.group,
-            getters = _this$props.getters,
-            _this$props$component = _this$props.components,
-            _this$props$component2 =
-              _this$props$component === void 0 ? {} : _this$props$component,
-            _this$props$component3 = _this$props$component2.timeSlotWrapper,
-            Wrapper =
-              _this$props$component3 === void 0
-                ? NoopWrapper
-                : _this$props$component3,
-            slotChildrenWrapper = _this$props$component2.slotChildrenWrapper
-          var groupProps = getters ? getters.slotGroupProp(group) : {}
-          return /*#__PURE__*/ React.createElement(
-            'div',
-            Object.assign(
-              {
-                className: 'rbc-timeslot-group',
-              },
-              groupProps
-            ),
-            group.map(function (value, idx) {
-              var slotProps = getters ? getters.slotProp(value, resource) : {}
-              return /*#__PURE__*/ React.createElement(
-                Wrapper,
-                {
-                  key: idx,
-                  value: value,
-                  resource: resource,
-                },
-                /*#__PURE__*/ React.createElement(
-                  'div',
-                  Object.assign({}, slotProps, {
-                    className: clsx('rbc-time-slot', slotProps.className),
-                  }),
-                  renderSlot
-                    ? renderSlot(value, idx)
-                    : slotChildrenWrapper === null ||
-                      slotChildrenWrapper === void 0
-                    ? void 0
-                    : slotChildrenWrapper(slotProps)
-                )
-              )
-            })
-          )
-        },
-      },
-    ])
-    return TimeSlotGroup
-  })(reactExports.Component)
-
-  function stringifyPercent(v) {
-    return typeof v === 'string' ? v : v + '%'
-  }
-
-  /* eslint-disable react/prop-types */
-  function TimeGridEvent(props) {
-    var style = props.style,
-      className = props.className,
-      event = props.event,
-      accessors = props.accessors,
-      rtl = props.rtl,
-      selected = props.selected,
-      label = props.label,
-      continuesPrior = props.continuesPrior,
-      continuesAfter = props.continuesAfter,
-      getters = props.getters,
-      onClick = props.onClick,
-      onDoubleClick = props.onDoubleClick,
-      isBackgroundEvent = props.isBackgroundEvent,
-      onKeyPress = props.onKeyPress,
-      _props$components = props.components,
-      Event = _props$components.event,
-      EventWrapper = _props$components.eventWrapper
-    var title = accessors.title(event)
-    var tooltip = accessors.tooltip(event)
-    var end = accessors.end(event)
-    var start = accessors.start(event)
-    var userProps = getters.eventProp(event, start, end, selected)
-    var height = style.height,
-      top = style.top,
-      width = style.width,
-      xOffset = style.xOffset
-    var inner = [
-      /*#__PURE__*/ React.createElement(
-        'div',
-        {
-          key: '1',
-          className: 'rbc-event-label',
-        },
-        label
-      ),
-      /*#__PURE__*/ React.createElement(
-        'div',
-        {
-          key: '2',
-          className: 'rbc-event-content',
-        },
-        Event
-          ? /*#__PURE__*/ React.createElement(Event, {
-              event: event,
-              title: title,
-            })
-          : title
-      ),
-    ]
-    var eventStyle = isBackgroundEvent
-      ? _objectSpread2(
-          _objectSpread2({}, userProps.style),
-          {},
-          _defineProperty$1(
-            {
-              top: stringifyPercent(top),
-              height: stringifyPercent(height),
-              // Adding 10px to take events container right margin into account
-              width: 'calc('.concat(width, ' + 10px)'),
-            },
-            rtl ? 'right' : 'left',
-            stringifyPercent(Math.max(0, xOffset))
-          )
-        )
-      : _objectSpread2(
-          _objectSpread2({}, userProps.style),
-          {},
-          _defineProperty$1(
-            {
-              top: stringifyPercent(top),
-              width: stringifyPercent(width),
-              height: stringifyPercent(height),
-            },
-            rtl ? 'right' : 'left',
-            stringifyPercent(xOffset)
-          )
-        )
-    return /*#__PURE__*/ React.createElement(
-      EventWrapper,
-      Object.assign(
-        {
-          type: 'time',
-        },
-        props
-      ),
-      /*#__PURE__*/ React.createElement(
-        'div',
-        {
-          role: 'button',
-          tabIndex: 0,
-          onClick: onClick,
-          onDoubleClick: onDoubleClick,
-          style: eventStyle,
-          onKeyPress: onKeyPress,
-          title: tooltip
-            ? (typeof label === 'string' ? label + ': ' : '') + tooltip
-            : undefined,
-          className: clsx(
-            isBackgroundEvent ? 'rbc-background-event' : 'rbc-event',
-            className,
-            userProps.className,
-            {
-              'rbc-selected': selected,
-              'rbc-event-continues-earlier': continuesPrior,
-              'rbc-event-continues-later': continuesAfter,
-            }
-          ),
-        },
-        inner
-      )
-    )
-  }
-
   var DayColumnWrapper = function DayColumnWrapper(_ref) {
     var children = _ref.children,
       className = _ref.className,
@@ -50322,14 +50372,6 @@
     var label = _ref.label
     return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
   }
-  ResourceHeader.propTypes =
-    'development' !== 'production'
-      ? {
-          label: propTypesExports.node,
-          index: propTypesExports.number,
-          resource: propTypesExports.object,
-        }
-      : {}
 
   var TimeGridHeader = /*#__PURE__*/ (function (_React$Component) {
     _inherits(TimeGridHeader, _React$Component)

@@ -45400,7 +45400,10 @@
           _ref3$longPressThresh === void 0 ? 250 : _ref3$longPressThresh,
         _ref3$validContainers = _ref3.validContainers,
         validContainers =
-          _ref3$validContainers === void 0 ? [] : _ref3$validContainers
+          _ref3$validContainers === void 0 ? [] : _ref3$validContainers,
+        _ref3$targetHostMarke = _ref3.targetHostMarker,
+        targetHostMarker =
+          _ref3$targetHostMarke === void 0 ? null : _ref3$targetHostMarke
       _classCallCheck(this, Selection)
       this.isDetached = false
       this.container = node
@@ -45414,7 +45417,7 @@
        * event listener target for container
        * we need this to make the calendar work inside shadow roots
        */
-      this._targetHost = getTargetHost(this.container)
+      this._targetHost = getTargetHost(targetHostMarker || this.container())
       this._handleInitialEvent = this._handleInitialEvent.bind(this)
       this._handleMoveEvent = this._handleMoveEvent.bind(this)
       this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
@@ -46051,6 +46054,7 @@
           var node = this.containerRef.current
           var selector = (this._selector = new Selection(this.props.container, {
             longPressThreshold: this.props.longPressThreshold,
+            targetHostMarker: this.containerRef.current,
           }))
           var selectorClicksHandler = function selectorClicksHandler(
             point,
@@ -49823,6 +49827,7 @@
           },
           {
             longPressThreshold: longPressThreshold,
+            targetHostMarker: _this.containerRef.current,
           }
         ))
         var maybeSelect = function maybeSelect(box) {
@@ -50372,6 +50377,14 @@
     var label = _ref.label
     return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
   }
+  ResourceHeader.propTypes =
+    'development' !== 'production'
+      ? {
+          label: propTypesExports.node,
+          index: propTypesExports.number,
+          resource: propTypesExports.object,
+        }
+      : {}
 
   var TimeGridHeader = /*#__PURE__*/ (function (_React$Component) {
     _inherits(TimeGridHeader, _React$Component)

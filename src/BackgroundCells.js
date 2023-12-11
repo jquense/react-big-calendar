@@ -1,10 +1,10 @@
-import React, { createRef } from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import React, { createRef } from 'react'
 
+import Selection, { getBoundsForNode, isEvent, isShowMore } from './Selection'
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
-import Selection, { getBoundsForNode, isEvent, isShowMore } from './Selection'
 
 class BackgroundCells extends React.Component {
   constructor(props, context) {
@@ -72,8 +72,10 @@ class BackgroundCells extends React.Component {
 
   _selectable() {
     let node = this.containerRef.current
+
     let selector = (this._selector = new Selection(this.props.container, {
       longPressThreshold: this.props.longPressThreshold,
+      targetHostMarker: this.containerRef.current,
     }))
 
     let selectorClicksHandler = (point, actionType) => {

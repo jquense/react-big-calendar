@@ -92,7 +92,12 @@ const clickInterval = 250
 class Selection {
   constructor(
     node,
-    { global = false, longPressThreshold = 250, validContainers = [] } = {}
+    {
+      global = false,
+      longPressThreshold = 250,
+      validContainers = [],
+      targetHostMarker = null,
+    } = {}
   ) {
     this._initialEvent = null
     this.selecting = false
@@ -109,7 +114,7 @@ class Selection {
      * event listener target for container
      * we need this to make the calendar work inside shadow roots
      */
-    this._targetHost = getTargetHost(this.container)
+    this._targetHost = getTargetHost(targetHostMarker || this.container())
 
     this._handleInitialEvent = this._handleInitialEvent.bind(this)
     this._handleMoveEvent = this._handleMoveEvent.bind(this)

@@ -1,8 +1,8 @@
+import { scrollParent, scrollTop } from 'dom-helpers'
+import qsa from 'dom-helpers/cjs/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { DnDContext } from './DnDContext'
-import { scrollParent, scrollTop } from 'dom-helpers'
-import qsa from 'dom-helpers/cjs/querySelectorAll'
 
 import Selection, {
   getBoundsForNode,
@@ -154,9 +154,15 @@ class EventContainerWrapper extends React.Component {
     let wrapper = this.ref.current
     let node = wrapper.children[0]
     let isBeingDragged = false
-    let selector = (this._selector = new Selection(() =>
-      wrapper.closest('.rbc-time-view')
-    ))
+
+    let selector =
+      ((this._selector = new Selection(() =>
+        wrapper.closest('.rbc-time-view')
+      )),
+      {
+        targetHostMarker: wrapper,
+      })
+
     let parent = scrollParent(wrapper)
 
     selector.on('beforeSelect', (point) => {

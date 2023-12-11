@@ -264,6 +264,7 @@ class DayColumn extends React.Component {
     const { longPressThreshold, localizer } = this.props
     let selector = (this._selector = new Selection(() => node, {
       longPressThreshold: longPressThreshold,
+      targetHostMarker: this.containerRef.current,
     }))
 
     let maybeSelect = (box) => {

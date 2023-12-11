@@ -4,8 +4,8 @@ import EventRow from '../../EventRow'
 import Selection, { getBoundsForNode } from '../../Selection'
 import { eventSegments } from '../../utils/eventLevels'
 import { getSlotAtX, pointInBox } from '../../utils/selection'
-import { dragAccessors, eventTimes } from './common'
 import { DnDContext } from './DnDContext'
+import { dragAccessors, eventTimes } from './common'
 
 class WeekWrapper extends React.Component {
   static propTypes = {
@@ -158,6 +158,7 @@ class WeekWrapper extends React.Component {
       validContainers: [
         ...(!isMonthRow ? ['.rbc-day-slot', '.rbc-allday-cell'] : []),
       ],
+      targetHostMarker: this.ref.current,
     }))
 
     selector.on('beforeSelect', (point) => {

@@ -991,7 +991,10 @@ var Selection = /*#__PURE__*/ (function () {
         _ref3$longPressThresh === void 0 ? 250 : _ref3$longPressThresh,
       _ref3$validContainers = _ref3.validContainers,
       validContainers =
-        _ref3$validContainers === void 0 ? [] : _ref3$validContainers
+        _ref3$validContainers === void 0 ? [] : _ref3$validContainers,
+      _ref3$targetHostMarke = _ref3.targetHostMarker,
+      targetHostMarker =
+        _ref3$targetHostMarke === void 0 ? null : _ref3$targetHostMarke
     _classCallCheck(this, Selection)
     this.isDetached = false
     this.container = node
@@ -1005,7 +1008,7 @@ var Selection = /*#__PURE__*/ (function () {
      * event listener target for container
      * we need this to make the calendar work inside shadow roots
      */
-    this._targetHost = getTargetHost(this.container)
+    this._targetHost = getTargetHost(targetHostMarker || this.container())
     this._handleInitialEvent = this._handleInitialEvent.bind(this)
     this._handleMoveEvent = this._handleMoveEvent.bind(this)
     this._handleTerminatingEvent = this._handleTerminatingEvent.bind(this)
@@ -1641,6 +1644,7 @@ var BackgroundCells = /*#__PURE__*/ (function (_React$Component) {
         var node = this.containerRef.current
         var selector = (this._selector = new Selection(this.props.container, {
           longPressThreshold: this.props.longPressThreshold,
+          targetHostMarker: this.containerRef.current,
         }))
         var selectorClicksHandler = function selectorClicksHandler(
           point,
@@ -2459,12 +2463,6 @@ var Header = function Header(_ref) {
     label
   )
 }
-Header.propTypes =
-  process.env.NODE_ENV !== 'production'
-    ? {
-        label: PropTypes.node,
-      }
-    : {}
 
 var DateHeader = function DateHeader(_ref) {
   var label = _ref.label,
@@ -3749,6 +3747,7 @@ var DayColumn = /*#__PURE__*/ (function (_React$Component) {
         },
         {
           longPressThreshold: longPressThreshold,
+          targetHostMarker: _this.containerRef.current,
         }
       ))
       var maybeSelect = function maybeSelect(box) {

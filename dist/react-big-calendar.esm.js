@@ -2345,7 +2345,10 @@ var DateContentRow = /*#__PURE__*/ (function (_React$Component) {
                   {
                     isAllDay: isAllDay,
                   },
-                  eventRowProps
+                  eventRowProps,
+                  {
+                    rtl: this.props.rtl,
+                  }
                 ),
                 levels.map(function (segs, idx) {
                   return /*#__PURE__*/ React.createElement(
@@ -2395,6 +2398,12 @@ var Header = function Header(_ref) {
     label
   )
 }
+Header.propTypes =
+  process.env.NODE_ENV !== 'production'
+    ? {
+        label: PropTypes.node,
+      }
+    : {}
 
 var DateHeader = function DateHeader(_ref) {
   var label = _ref.label,
@@ -3516,6 +3525,8 @@ function TimeGridEvent(props) {
     /*#__PURE__*/ React.createElement(
       'div',
       {
+        role: 'button',
+        tabIndex: 0,
         onClick: onClick,
         onDoubleClick: onDoubleClick,
         style: eventStyle,
@@ -4223,6 +4234,14 @@ var ResourceHeader = function ResourceHeader(_ref) {
   var label = _ref.label
   return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
 }
+ResourceHeader.propTypes =
+  process.env.NODE_ENV !== 'production'
+    ? {
+        label: PropTypes.node,
+        index: PropTypes.number,
+        resource: PropTypes.object,
+      }
+    : {}
 
 var TimeGridHeader = /*#__PURE__*/ (function (_React$Component) {
   _inherits(TimeGridHeader, _React$Component)
@@ -4605,6 +4624,8 @@ var TimeGrid = /*#__PURE__*/ (function (_Component) {
     _this.checkOverflow = function () {
       if (_this._updatingOverflow) return
       var content = _this.contentRef.current
+      if (!(content !== null && content !== void 0 && content.scrollHeight))
+        return
       var isOverflowing = content.scrollHeight > content.clientHeight
       if (_this.state.isOverflowing !== isOverflowing) {
         _this._updatingOverflow = true
@@ -7077,6 +7098,7 @@ function oldGlobalize(globalize) {
   })
 }
 
+// TODO: fix the globalizeLocalizer to work with globalize 1.x
 var dateRangeFormat$2 = function dateRangeFormat(_ref, culture, local) {
   var start = _ref.start,
     end = _ref.end

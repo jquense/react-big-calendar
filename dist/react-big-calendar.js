@@ -47805,7 +47805,10 @@
                     {
                       isAllDay: isAllDay,
                     },
-                    eventRowProps
+                    eventRowProps,
+                    {
+                      rtl: this.props.rtl,
+                    }
                   ),
                   levels.map(function (segs, idx) {
                     return /*#__PURE__*/ React.createElement(
@@ -49603,6 +49606,8 @@
       /*#__PURE__*/ React.createElement(
         'div',
         {
+          role: 'button',
+          tabIndex: 0,
           onClick: onClick,
           onDoubleClick: onDoubleClick,
           style: eventStyle,
@@ -50317,6 +50322,14 @@
     var label = _ref.label
     return /*#__PURE__*/ React.createElement(React.Fragment, null, label)
   }
+  ResourceHeader.propTypes =
+    'development' !== 'production'
+      ? {
+          label: propTypesExports.node,
+          index: propTypesExports.number,
+          resource: propTypesExports.object,
+        }
+      : {}
 
   var TimeGridHeader = /*#__PURE__*/ (function (_React$Component) {
     _inherits(TimeGridHeader, _React$Component)
@@ -50720,6 +50733,8 @@
       _this.checkOverflow = function () {
         if (_this._updatingOverflow) return
         var content = _this.contentRef.current
+        if (!(content !== null && content !== void 0 && content.scrollHeight))
+          return
         var isOverflowing = content.scrollHeight > content.clientHeight
         if (_this.state.isOverflowing !== isOverflowing) {
           _this._updatingOverflow = true
@@ -54654,6 +54669,7 @@
     })
   }
 
+  // TODO: fix the globalizeLocalizer to work with globalize 1.x
   var dateRangeFormat$2 = function dateRangeFormat(_ref, culture, local) {
     var start = _ref.start,
       end = _ref.end

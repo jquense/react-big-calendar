@@ -1,3 +1,10 @@
+## [1.8.6](https://github.com/jquense/react-big-calendar/compare/v1.8.5...v1.8.6) (2024-01-08)
+
+
+### Bug Fixes
+
+* **DnD:** dragAndDrop EventWrapper.js error: cannot add property 'X', object is not extensible ([0c4826a](https://github.com/jquense/react-big-calendar/commit/0c4826a70378de7923bd772b15d481e3c30c530b))
+
 ## [1.8.5](https://github.com/jquense/react-big-calendar/compare/v1.8.4...v1.8.5) (2023-10-30)
 
 

@@ -241,7 +241,16 @@ class DayColumn extends React.Component {
           resource={this.props.resource}
           selected={isSelected(event, selected)}
           onClick={(e) =>
-            this._select({ ...event, sourceResource: this.props.resource }, e)
+            this._select(
+              {
+                ...event,
+                ...(this.props.resource && {
+                  sourceResource: this.props.resource,
+                }),
+                ...(isBackgroundEvent && { isBackgroundEvent: true }),
+              },
+              e
+            )
           }
           onDoubleClick={(e) => this._doubleClick(event, e)}
           isBackgroundEvent={isBackgroundEvent}

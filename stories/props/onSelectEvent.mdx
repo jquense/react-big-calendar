@@ -7,6 +7,10 @@ import LinkTo from '@storybook/addon-links/react'
 
 Callback fired when a calendar event is selected (i.e.: an `onClick` handler).
 
+The method receives the selected event as a parameter. If using <LinkTo kind="props" story="resources">resources</LinkTo>, and are in a TimeGrid view ('day' or 'week'), the `event` will have an additional `sourceResource` property containing the resource object that the event is associated with.
+
+Clicking on a <LinkTo kind="props" story="backgroundEvents">backgroundEvent</LinkTo> will also fire the `onSelectEvent` callback. It will also receive the `backgroundEvent` as the `event` object, but contain a `isBackgroundEvent` property set to `true`. This will allow you to distinguish between a background event and a regular event within your `onSelectEvent` handler.
+
 **Note:** The <LinkTo kind="props" story="selectable">selectable</LinkTo> prop is _not_ required for this prop to function.
 
 **Important:** The event passed into the function is the Calendar Event, not the SyntheticEvent expected by most click handlers.

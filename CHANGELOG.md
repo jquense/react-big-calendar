@@ -1,3 +1,10 @@
+## [1.8.7](https://github.com/jquense/react-big-calendar/compare/v1.8.6...v1.8.7) (2024-01-26)
+
+
+### Bug Fixes
+
+* add isBackgroundEvent to onSelectEvent event obj ([#2491](https://github.com/jquense/react-big-calendar/issues/2491)) ([fdbb496](https://github.com/jquense/react-big-calendar/commit/fdbb496eb50696c8b1744fc69249535121b2f4b1))
+
 ## [1.8.6](https://github.com/jquense/react-big-calendar/compare/v1.8.5...v1.8.6) (2024-01-08)
 
 

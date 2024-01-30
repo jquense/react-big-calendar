@@ -1,9 +1,18 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const DateHeader = ({ label, drilldownView, onDrillDown }) => {
+const DateHeader = ({ label, localizer, date, drilldownView, onDrillDown }) => {
+  const renderLabel = () => (
+    <>
+      <span aria-hidden="true">{label}</span>
+      <span className="rbc-sr-only">
+        {localizer.format(date, 'ddd MMM DD YYYY')}
+      </span>
+    </>
+  )
+
   if (!drilldownView) {
-    return <span>{label}</span>
+    return renderLabel()
   }
 
   return (
@@ -13,13 +22,14 @@ const DateHeader = ({ label, drilldownView, onDrillDown }) => {
       onClick={onDrillDown}
       role="cell"
     >
-      {label}
+      {renderLabel()}
     </button>
   )
 }
 
 DateHeader.propTypes = {
   label: PropTypes.node,
+  localizer: PropTypes.object.isRequired,
   date: PropTypes.instanceOf(Date),
   drilldownView: PropTypes.string,
   onDrillDown: PropTypes.func,

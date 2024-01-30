@@ -178,6 +178,7 @@ class MonthView extends React.Component {
       >
         <DateHeaderComponent
           label={label}
+          localizer={localizer}
           date={date}
           drilldownView={drilldownView}
           isOffRange={isOffRange}

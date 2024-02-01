@@ -39,14 +39,6 @@ export default function withDragAndDrop(Calendar) {
     constructor(...args) {
       super(...args)
 
-      const { components } = this.props
-
-      this.components = mergeComponents(components, {
-        eventWrapper: EventWrapper,
-        eventContainerWrapper: EventContainerWrapper,
-        weekWrapper: WeekWrapper,
-      })
-
       this.state = { interacting: false }
     }
 
@@ -99,12 +91,18 @@ export default function withDragAndDrop(Calendar) {
     }
 
     render() {
-      const { selectable, elementProps, ...props } = this.props
+      const { selectable, elementProps, components, ...props } = this.props
       const { interacting } = this.state
 
       delete props.onEventDrop
       delete props.onEventResize
       props.selectable = selectable ? 'ignoreEvents' : false
+
+      this.components = mergeComponents(components, {
+        eventWrapper: EventWrapper,
+        eventContainerWrapper: EventContainerWrapper,
+        weekWrapper: WeekWrapper,
+      })
 
       const elementPropsWithDropFromOutside = this.props.onDropFromOutside
         ? {

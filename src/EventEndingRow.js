@@ -85,7 +85,7 @@ class EventEndingRow extends React.Component {
         className={clsx('rbc-button-link', 'rbc-show-more')}
         onClick={(e) => this.showMore(slot, e)}
       >
-        {localizer.messages.showMore(count)}
+        {localizer.messages.showMore(count, slot)}
       </button>
     ) : (
       false

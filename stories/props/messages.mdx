@@ -27,8 +27,12 @@ defualts
   agenda: 'Agenda',
 
   noEventsInRange: 'There are no events in this range.',
-
-  showMore: total => `+${total} more`,
+  /**
+   * params {total} count of remaining events 
+   * params {remainingEvents} remaining events 
+   * params {events} all events in day
+   */
+  showMore: (total, remainingEvents, events) => `+${total} más`,
 }
 ```
 

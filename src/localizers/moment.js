@@ -81,7 +81,7 @@ export default function (moment, timezone = undefined) {
      * use this to get the proper timezone offset, otherwise default
      * the timezone to the browser local
      */
-    const tzName = st?._z?.name ?? moment.tz.guess()
+    const tzName = timezone ?? moment.tz.guess()
     const startOffset = moment.tz.zone(tzName).utcOffset(+st)
     const endOffset = moment.tz.zone(tzName).utcOffset(+ed)
     return startOffset - endOffset

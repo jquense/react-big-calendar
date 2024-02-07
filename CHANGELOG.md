@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/jquense/react-big-calendar/compare/v1.8.7...v1.9.0) (2024-02-07)
+
+
+### Features
+
+* showMore message add event info ([#2496](https://github.com/jquense/react-big-calendar/issues/2496)) ([18012b7](https://github.com/jquense/react-big-calendar/commit/18012b70ad48a5613bcb08f0a13251d88a9d258f))
+
 ## [1.8.7](https://github.com/jquense/react-big-calendar/compare/v1.8.6...v1.8.7) (2024-01-26)
 
 

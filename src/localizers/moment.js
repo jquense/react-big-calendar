@@ -275,6 +275,13 @@ export default function (moment) {
     return mEnd.isSameOrAfter(mLast, 'minutes')
   }
 
+  function daySpan(start, end) {
+    const mStart = moment(start)
+    const mEnd = moment(end)
+    const dur = moment.duration(mEnd.diff(mStart))
+    return dur.days()
+  }
+
   // These two are used by eventLevels
   function sortEvents({
     evtA: { start: aStart, end: aEnd, allDay: aAllDay },
@@ -282,13 +289,13 @@ export default function (moment) {
   }) {
     const startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
 
-    const durA = diff(aStart, ceil(aEnd, 'day'), 'day')
+    const durA = daySpan(aStart, aEnd)
 
-    const durB = diff(bStart, ceil(bEnd, 'day'), 'day')
+    const durB = daySpan(bStart, bEnd)
 
     return (
       startSort || // sort by start Day first
-      Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
+      durB - durA || // events spanning multiple days go first
       !!bAllDay - !!aAllDay || // then allDay single day events
       +aStart - +bStart || // then sort by start time *don't need moment conversion here
       +aEnd - +bEnd // then sort by end time *don't need moment conversion here either
@@ -381,6 +388,7 @@ export default function (moment) {
     sortEvents,
     inEventRange,
     isSameDate,
+    daySpan,
     browserTZOffset,
   })
 }

@@ -1,19 +1,19 @@
 #!/usr/bin/env zx
-import isCI from 'is-ci';
+import isCI from 'is-ci'
 
 const {
   b = isCI, // pass `-b` to build if you want it to run browserslist update outside of CI environment
-} = argv;
+} = argv
 
 if (b) {
   // Update browserslist
-  await $`npx browserslist@latest --update-db`;
+  await $`npx update-browserslist-db@latest`
 }
 
 console.log(chalk.blue('[BEGIN BUILD]'))
 console.log(chalk.blue('Building js'))
 // build distributables
-await $`NODE_ENV=production rollup -c`;
+await $`NODE_ENV=production rollup -c`
 console.log(chalk.blue(`Compiling 'lib' js files`))
 // build files used for overrides
 await $`NODE_ENV=production RBC_CJS_BUILD=true babel src --out-dir lib`
@@ -22,7 +22,10 @@ console.log(chalk.blue(`Copying SASS files to 'lib'`))
 await fs.copy('./src/sass', './lib/sass')
 console.log(chalk.blue(`...and the 'Add-on' SASS`))
 // don't forget DnD
-await fs.copy('./src/addons/dragAndDrop/styles.scss', './lib/addons/dragAndDrop/styles.scss')
+await fs.copy(
+  './src/addons/dragAndDrop/styles.scss',
+  './lib/addons/dragAndDrop/styles.scss'
+)
 console.log(chalk.blue('Now we will build some CSS'))
 // Compile SASS from './lib' to get sourcemaps
 console.log(chalk.blue('Compile base styles'))

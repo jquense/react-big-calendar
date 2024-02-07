@@ -83,9 +83,7 @@ export function sortWeekEvents(events, accessors, localizer) {
   base.forEach((event) => {
     const startCheck = accessors.start(event)
     const endCheck = accessors.end(event)
-    if (
-      localizer.diff(startCheck, localizer.ceil(endCheck, 'day'), 'day') > 1
-    ) {
+    if (localizer.daySpan(startCheck, endCheck) > 1) {
       multiDayEvents.push(event)
     } else {
       standardEvents.push(event)

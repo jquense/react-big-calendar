@@ -76,6 +76,32 @@ export function segsOverlap(seg, otherSegs) {
   )
 }
 
+export function sortWeekEvents(events, accessors, localizer) {
+  const base = [...events].map((event) => ({
+    ...event,
+    start: accessors.start(event),
+    end: accessors.end(event),
+    allDay: accessors.allDay(event),
+  }))
+  const multiDayEvents = []
+  const standardEvents = []
+  base.forEach((event, index) => {
+    const { start, end } = event
+    if (localizer.diff(start, localizer.ceil(end, 'day'), 'day') > 1) {
+      multiDayEvents.push({ ...events[index] })
+    } else {
+      standardEvents.push({ ...events[index] })
+    }
+  })
+  const multiSorted = multiDayEvents.sort((a, b) =>
+    sortEvents(a, b, accessors, localizer)
+  )
+  const standardSorted = standardEvents.sort((a, b) =>
+    sortEvents(a, b, accessors, localizer)
+  )
+  return [...multiSorted, ...standardSorted]
+}
+
 export function sortEvents(eventA, eventB, accessors, localizer) {
   const evtA = {
     start: accessors.start(eventA),

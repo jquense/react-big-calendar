@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/jquense/react-big-calendar/compare/v1.9.0...v1.9.1) (2024-02-07)
+
+
+### Bug Fixes
+
+* **dnd:** move merge components ([fd02261](https://github.com/jquense/react-big-calendar/commit/fd02261a66d80892a95e9e9ae4cbfe2779d4643c)), closes [#2359](https://github.com/jquense/react-big-calendar/issues/2359)
+
 # [1.9.0](https://github.com/jquense/react-big-calendar/compare/v1.8.7...v1.9.0) (2024-02-07)
 
 

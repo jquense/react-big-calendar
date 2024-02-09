@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/jquense/react-big-calendar/compare/v1.9.1...v1.9.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* changed flex-direction for rbc-toolbar mobile ([#2497](https://github.com/jquense/react-big-calendar/issues/2497)) ([8d7b20d](https://github.com/jquense/react-big-calendar/commit/8d7b20d8c971411d05757344d9eb422af1d8241c)), closes [#1699](https://github.com/jquense/react-big-calendar/issues/1699)
+
 ## [1.9.1](https://github.com/jquense/react-big-calendar/compare/v1.9.0...v1.9.1) (2024-02-07)
 
 

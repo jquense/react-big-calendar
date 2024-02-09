@@ -7,7 +7,7 @@ import range from 'lodash/range'
 
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 let eventsInSlot = (segments, slot) =>
-  segments.filter((seg) => isSegmentInSlot(seg, slot)).length
+  segments.filter((seg) => isSegmentInSlot(seg, slot)).map((seg) => seg.event)
 
 class EventEndingRow extends React.Component {
   render() {
@@ -68,16 +68,17 @@ class EventEndingRow extends React.Component {
     let { segments } = this.props
 
     return range(slot, slot + span).every((s) => {
-      let count = eventsInSlot(segments, s)
+      const count = eventsInSlot(segments, s).length
 
       return count === 1
     })
   }
 
   renderShowMore(segments, slot) {
-    let { localizer } = this.props
-    let count = eventsInSlot(segments, slot)
-
+    let { localizer, slotMetrics } = this.props
+    const events = slotMetrics.getEventsForSlot(slot)
+    const remainingEvents = eventsInSlot(segments, slot)
+    const count = remainingEvents.length
     return count ? (
       <button
         type="button"
@@ -85,7 +86,7 @@ class EventEndingRow extends React.Component {
         className={clsx('rbc-button-link', 'rbc-show-more')}
         onClick={(e) => this.showMore(slot, e)}
       >
-        {localizer.messages.showMore(count)}
+        {localizer.messages.showMore(count, remainingEvents, events)}
       </button>
     ) : (
       false

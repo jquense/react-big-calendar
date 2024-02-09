@@ -1,3 +1,24 @@
+## [1.9.2](https://github.com/jquense/react-big-calendar/compare/v1.9.1...v1.9.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* changed flex-direction for rbc-toolbar mobile ([#2497](https://github.com/jquense/react-big-calendar/issues/2497)) ([8d7b20d](https://github.com/jquense/react-big-calendar/commit/8d7b20d8c971411d05757344d9eb422af1d8241c)), closes [#1699](https://github.com/jquense/react-big-calendar/issues/1699)
+
+## [1.9.1](https://github.com/jquense/react-big-calendar/compare/v1.9.0...v1.9.1) (2024-02-07)
+
+
+### Bug Fixes
+
+* **dnd:** move merge components ([fd02261](https://github.com/jquense/react-big-calendar/commit/fd02261a66d80892a95e9e9ae4cbfe2779d4643c)), closes [#2359](https://github.com/jquense/react-big-calendar/issues/2359)
+
+# [1.9.0](https://github.com/jquense/react-big-calendar/compare/v1.8.7...v1.9.0) (2024-02-07)
+
+
+### Features
+
+* showMore message add event info ([#2496](https://github.com/jquense/react-big-calendar/issues/2496)) ([18012b7](https://github.com/jquense/react-big-calendar/commit/18012b70ad48a5613bcb08f0a13251d88a9d258f))
+
 ## [1.8.7](https://github.com/jquense/react-big-calendar/compare/v1.8.6...v1.8.7) (2024-01-26)
 
 

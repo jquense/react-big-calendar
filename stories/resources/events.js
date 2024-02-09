@@ -1,13 +1,13 @@
 const now = new Date()
 
 export default [
-  {
+  /* {
     id: 0,
     title: 'All Day Event very long title',
     allDay: true,
     start: new Date(2015, 3, 0),
     end: new Date(2015, 3, 1),
-  },
+  }, */
   {
     id: 1,
     title: 'Long Event',
@@ -33,7 +33,15 @@ export default [
     id: 4,
     title: 'Some Event',
     start: new Date(2015, 3, 9, 0, 0, 0),
-    end: new Date(2015, 3, 10, 0, 0, 0),
+    end: new Date(2015, 3, 9, 0, 0, 0),
+    allDay: true,
+  },
+
+  {
+    id: 92,
+    title: 'Some Other Event',
+    start: new Date(2015, 3, 9, 8, 0, 0),
+    end: new Date(2015, 3, 10, 11, 30, 0),
   },
   {
     id: 5,

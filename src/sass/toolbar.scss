@@ -104,3 +104,9 @@ $active-border: darken($btn-border, 12%);
     margin-left: 10px;
   }
 }
+
+@media (max-width: 767px) {
+  .rbc-toolbar {
+    flex-direction: column;
+  }
+}

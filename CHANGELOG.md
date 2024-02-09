@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/jquense/react-big-calendar/compare/v1.9.2...v1.10.0) (2024-02-09)
+
+
+### Features
+
+* **event sort:** update event sort for multi day ([#2502](https://github.com/jquense/react-big-calendar/issues/2502)) ([ff209d0](https://github.com/jquense/react-big-calendar/commit/ff209d035aca4865c4211dc03f27f7da0147c9a1))
+
 ## [1.9.2](https://github.com/jquense/react-big-calendar/compare/v1.9.1...v1.9.2) (2024-02-09)
 
 

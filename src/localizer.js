@@ -75,6 +75,10 @@ function getMinutesFromMidnight(start) {
   return diff(daystart, start, 'minutes') + getDstOffset(daystart, start)
 }
 
+function daySpan(start, end) {
+  return duration(start, end, 'day')
+}
+
 // These two are used by DateSlotMetrics
 function continuesPrior(start, first) {
   return lt(start, first, 'day')
@@ -94,13 +98,13 @@ function sortEvents({
 }) {
   let startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
 
-  let durA = diff(aStart, ceil(aEnd, 'day'), 'day')
+  let durA = daySpan(aStart, aEnd)
 
-  let durB = diff(bStart, ceil(bEnd, 'day'), 'day')
+  let durB = daySpan(bStart, bEnd)
 
   return (
     startSort || // sort by start Day first
-    Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
+    durB - durA || // events spanning multiple days go first
     !!bAllDay - !!aAllDay || // then allDay single day events
     +aStart - +bStart || // then sort by start time
     +aEnd - +bEnd // then sort by end time
@@ -167,13 +171,14 @@ export class DateLocalizer {
     this.min = spec.min || min
     this.max = spec.max || max
     this.minutes = spec.minutes || minutes
+    this.daySpan = spec.daySpan || daySpan
     this.firstVisibleDay = spec.firstVisibleDay || firstVisibleDay
     this.lastVisibleDay = spec.lastVisibleDay || lastVisibleDay
     this.visibleDays = spec.visibleDays || visibleDays
 
     this.getSlotDate = spec.getSlotDate || getSlotDate
     this.getTimezoneOffset =
-      spec.getTimezoneOffset || (value => value.getTimezoneOffset())
+      spec.getTimezoneOffset || ((value) => value.getTimezoneOffset())
     this.getDstOffset = spec.getDstOffset || getDstOffset
     this.getTotalMin = spec.getTotalMin || getTotalMin
     this.getMinutesFromMidnight =

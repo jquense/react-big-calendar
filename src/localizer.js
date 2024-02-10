@@ -15,6 +15,7 @@ import {
   range,
   diff,
   ceil,
+  duration,
   min,
   max,
   firstVisibleDay,

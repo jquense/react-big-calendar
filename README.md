@@ -1,6 +1,6 @@
 # react-big-calendar
 
-An events calendar component built for React and made for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
+An events calendar component built for React and designed for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
 
 <p align="center">
   <img src="./assets/rbc-demo.gif" alt="Big Calendar Demo Image" />

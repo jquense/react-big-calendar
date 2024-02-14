@@ -62,7 +62,6 @@ class EventCell extends React.Component {
       <EventWrapper {...this.props} type="date">
         <div
           {...props}
-          tabIndex={0}
           style={{ ...userProps.style, ...style }}
           className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,

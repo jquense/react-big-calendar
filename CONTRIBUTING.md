@@ -21,7 +21,7 @@ chance of keeping on top of things.
 
 - Create a topic branch from where you want to base your work.
   - This is usually the master branch.
-  - To quickly create a topic branch based on master; `git branch master/my_contribution master` then checkout the new branch with `git checkout master/my_contribution`. Better avoid working directly on the
+  - To quickly create a topic branch based on master; `git branch feat/my_contribution master` then checkout the new branch with `git checkout feat/my_contribution`. Better avoid working directly on the
     `master` branch, to avoid conflicts if you pull in updates from origin.
 - Make commits of logical units.
   - Write/change `stories` that showcase new features or props

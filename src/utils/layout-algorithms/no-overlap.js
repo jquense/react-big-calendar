@@ -28,8 +28,25 @@ export default function ({
   styledEvents.sort((a, b) => {
     a = a.style
     b = b.style
-    if (a.top !== b.top) return a.top > b.top ? 1 : -1
-    else return a.top + a.height < b.top + b.height ? 1 : -1
+    if (a.top !== b.top) {
+      if (a.top > b.top) {
+        return 1;
+      }
+      if (a.top < b.top) {
+        return -1;
+      }
+      return 0;
+    } else {
+      const valueA = a.top + a.height;
+      const valueB = b.top + b.height;
+      if (valueA > valueB) {
+        return 1;
+      }
+      if (valueA < valueB) {
+        return -1;
+      }
+      return 0;
+    }
   })
 
   for (let i = 0; i < styledEvents.length; ++i) {

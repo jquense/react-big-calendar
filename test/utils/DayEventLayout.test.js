@@ -27,26 +27,7 @@ describe('getStyledEvents', () => {
   const accessors = { start: (e) => e.start, end: (e) => e.end }
 
   describe('with overlap dayLayoutAlgorithm', () => {
-    const dayLayoutAlgorithm = 'overlap'
-
-    function compare(title, events, expectedResults) {
-      it(title, () => {
-        const styledEvents = getStyledEvents({
-          events,
-          accessors,
-          slotMetrics,
-          minimumStartDifference: 10,
-          dayLayoutAlgorithm,
-        })
-        const results = styledEvents.map((result) => ({
-          width: Math.floor(result.style.width),
-          xOffset: Math.floor(result.style.xOffset),
-        }))
-        expect(results).toEqual(expectedResults)
-      })
-    }
-
-    const toCheck = [
+    it.each([
       [
         'single event',
         [{ start: d(11), end: d(12) }],
@@ -124,8 +105,24 @@ describe('getStyledEvents', () => {
           { width: 33, xOffset: 66 },
         ],
       ],
-    ]
-    toCheck.forEach((args) => compare(...args))
+    ])('%s', (_, events, expectedStyles) => {
+      const dayLayoutAlgorithm = 'overlap'
+
+      const styledEvents = getStyledEvents({
+        events,
+        accessors,
+        slotMetrics,
+        minimumStartDifference: 10,
+        dayLayoutAlgorithm,
+      })
+
+      const results = styledEvents.map((result) => ({
+        width: Math.floor(result.style.width),
+        xOffset: Math.floor(result.style.xOffset),
+      }))
+
+      expect(results).toEqual(expectedStyles)
+    })
   })
 
   describe('with no-overlap dayLayoutAlgorithm', () => {

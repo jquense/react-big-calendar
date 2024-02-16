@@ -1,3 +1,17 @@
+## [1.10.1](https://github.com/jquense/react-big-calendar/compare/v1.10.0...v1.10.1) (2024-02-14)
+
+
+### Bug Fixes
+
+* **ARIA:** remove tabindex ([#2508](https://github.com/jquense/react-big-calendar/issues/2508)) ([7e01c3d](https://github.com/jquense/react-big-calendar/commit/7e01c3d0495808cf3bf49a95c7cdd8ef98f54fed)), closes [#2498](https://github.com/jquense/react-big-calendar/issues/2498)
+
+# [1.10.0](https://github.com/jquense/react-big-calendar/compare/v1.9.2...v1.10.0) (2024-02-09)
+
+
+### Features
+
+* **event sort:** update event sort for multi day ([#2502](https://github.com/jquense/react-big-calendar/issues/2502)) ([ff209d0](https://github.com/jquense/react-big-calendar/commit/ff209d035aca4865c4211dc03f27f7da0147c9a1))
+
 ## [1.9.2](https://github.com/jquense/react-big-calendar/compare/v1.9.1...v1.9.2) (2024-02-09)
 
 

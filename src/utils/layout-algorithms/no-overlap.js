@@ -29,7 +29,9 @@ export default function ({
     a = a.style
     b = b.style
     if (a.top !== b.top) return a.top > b.top ? 1 : -1
-    else return a.top + a.height < b.top + b.height ? 1 : -1
+    else if (a.height !== b.height)
+      return a.top + a.height < b.top + b.height ? 1 : -1
+    else return 0
   })
 
   for (let i = 0; i < styledEvents.length; ++i) {

@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/jquense/react-big-calendar/compare/v1.10.1...v1.10.2) (2024-02-19)
+
+
+### Bug Fixes
+
+* day events sort fixed ([#2512](https://github.com/jquense/react-big-calendar/issues/2512)) ([ac1ff00](https://github.com/jquense/react-big-calendar/commit/ac1ff004a2f6384a1540e66ed47f219e1f9101c5))
+
 ## [1.10.1](https://github.com/jquense/react-big-calendar/compare/v1.10.0...v1.10.1) (2024-02-14)
 
 

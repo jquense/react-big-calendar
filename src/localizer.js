@@ -102,6 +102,16 @@ function sortEvents({
   let durA = daySpan(aStart, aEnd)
 
   let durB = daySpan(bStart, bEnd)
+  
+  if (startSort === 0) {
+    // same day
+    return (
+      !!bAllDay - !!aAllDay || // allDay single events go first
+      durB - durA || // events spanning multiple days go first
+      +aStart - +bStart || // then sort by start time
+      +aEnd - +bEnd // then sort by end time
+    )
+  }
 
   return (
     startSort || // sort by start Day first

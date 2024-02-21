@@ -25,27 +25,9 @@ describe('getStyledEvents', () => {
     localizer,
   })
   const accessors = { start: (e) => e.start, end: (e) => e.end }
-  const dayLayoutAlgorithm = 'overlap'
 
-  describe('matrix', () => {
-    function compare(title, events, expectedResults) {
-      it(title, () => {
-        const styledEvents = getStyledEvents({
-          events,
-          accessors,
-          slotMetrics,
-          minimumStartDifference: 10,
-          dayLayoutAlgorithm,
-        })
-        const results = styledEvents.map((result) => ({
-          width: Math.floor(result.style.width),
-          xOffset: Math.floor(result.style.xOffset),
-        }))
-        expect(results).toEqual(expectedResults)
-      })
-    }
-
-    const toCheck = [
+  describe('with overlap dayLayoutAlgorithm', () => {
+    it.each([
       [
         'single event',
         [{ start: d(11), end: d(12) }],
@@ -123,7 +105,131 @@ describe('getStyledEvents', () => {
           { width: 33, xOffset: 66 },
         ],
       ],
-    ]
-    toCheck.forEach((args) => compare(...args))
+    ])('%s', (_, events, expectedStyles) => {
+      const dayLayoutAlgorithm = 'overlap'
+
+      const styledEvents = getStyledEvents({
+        events,
+        accessors,
+        slotMetrics,
+        minimumStartDifference: 10,
+        dayLayoutAlgorithm,
+      })
+
+      const results = styledEvents.map((result) => ({
+        width: Math.floor(result.style.width),
+        xOffset: Math.floor(result.style.xOffset),
+      }))
+
+      expect(results).toEqual(expectedStyles)
+    })
+  })
+
+  describe('with no-overlap dayLayoutAlgorithm', () => {
+    it.each([
+      [
+        'single event',
+        [{ start: d(11), end: d(12) }],
+        [{ width: 'calc(100% - 0px)', xOffset: 'calc(0% + 0px)' }],
+      ],
+      [
+        'two consecutive events',
+        [
+          { start: d(11), end: d(11, 10) },
+          { start: d(11, 10), end: d(11, 20) },
+        ],
+        [
+          { width: 'calc(100% - 0px)', xOffset: 'calc(0% + 0px)' },
+          { width: 'calc(100% - 0px)', xOffset: 'calc(0% + 0px)' },
+        ],
+      ],
+      [
+        'two consecutive events too close together',
+        [
+          { start: d(11), end: d(11, 5) },
+          { start: d(11, 5), end: d(11, 10) },
+        ],
+        [
+          { width: 'calc(100% - 0px)', xOffset: 'calc(0% + 0px)' },
+          { width: 'calc(100% - 0px)', xOffset: 'calc(0% + 0px)' },
+        ],
+      ],
+      [
+        'two overlapping events',
+        [
+          { start: d(11), end: d(12) },
+          { start: d(11), end: d(12) },
+        ],
+        [
+          { width: 'calc(50% - 0px)', xOffset: 'calc(0% + 0px)' },
+          { width: 'calc(50% - 3px)', xOffset: 'calc(50% + 3px)' },
+        ],
+      ],
+      [
+        'three overlapping events',
+        [
+          { start: d(11), end: d(12) },
+          { start: d(11), end: d(12) },
+          { start: d(11), end: d(12) },
+        ],
+        [
+          {
+            width: 'calc(33.333333333333336% - 0px)',
+            xOffset: 'calc(0% + 0px)',
+          },
+          {
+            width: 'calc(33.333333333333336% - 3px)',
+            xOffset: 'calc(33.333333333333336% + 3px)',
+          },
+          {
+            width: 'calc(33.33333333333333% - 3px)',
+            xOffset: 'calc(66.66666666666667% + 3px)',
+          },
+        ],
+      ],
+      [
+        'one big event overlapping with two consecutive events',
+        [
+          { start: d(11), end: d(12) },
+          { start: d(11), end: d(11, 30) },
+          { start: d(11, 30), end: d(12) },
+        ],
+        [
+          { width: 'calc(50% - 0px)', xOffset: 'calc(0% + 0px)' },
+          { width: 'calc(50% - 3px)', xOffset: 'calc(50% + 3px)' },
+          { width: 'calc(50% - 3px)', xOffset: 'calc(50% + 3px)' },
+        ],
+      ],
+      [
+        'one big event overlapping with two consecutive events starting too close together',
+        [
+          { start: d(11), end: d(12) },
+          { start: d(11), end: d(11, 5) },
+          { start: d(11, 5), end: d(11, 10) },
+        ],
+        [
+          { width: 'calc(50% - 0px)', xOffset: 'calc(0% + 0px)' },
+          { width: 'calc(50% - 3px)', xOffset: 'calc(50% + 3px)' },
+          { width: 'calc(50% - 3px)', xOffset: 'calc(50% + 3px)' },
+        ],
+      ],
+    ])('%s', (_, events, expectedStyles) => {
+      const dayLayoutAlgorithm = 'no-overlap'
+
+      const styledEvents = getStyledEvents({
+        events,
+        accessors,
+        slotMetrics,
+        minimumStartDifference: 10,
+        dayLayoutAlgorithm,
+      })
+
+      const results = styledEvents.map((result) => ({
+        width: result.style.width,
+        xOffset: result.style.xOffset,
+      }))
+
+      expect(results).toEqual(expectedStyles)
+    })
   })
 })

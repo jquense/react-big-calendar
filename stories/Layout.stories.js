@@ -206,3 +206,107 @@ export const ZeroDurationOverlap = () => {
     />
   )
 }
+
+export const OverlappingBackgroundEventsOverlap = Template.bind({})
+OverlappingBackgroundEventsOverlap.storyName =
+  "Overlapping Background Events - 'overlap'"
+OverlappingBackgroundEventsOverlap.args = {
+  defaultDate: new Date(2016, 11, 3),
+  dayLayoutAlgorithm: 'overlap',
+  defaultView: Views.WEEK,
+  scrollToTime: new Date(2016, 11, 1, 7, 0),
+  backgroundEvents: [
+    {
+      title: 'First Event',
+      start: new Date(2016, 10, 28, 10, 30),
+      end: new Date(2016, 10, 28, 18, 0),
+    },
+    {
+      title: 'Second Event',
+      start: new Date(2016, 10, 28, 12, 0),
+      end: new Date(2016, 10, 28, 16, 30),
+    },
+    {
+      title: 'Third Event',
+      start: new Date(2016, 10, 29, 8, 0),
+      end: new Date(2016, 10, 29, 21, 0),
+    },
+    {
+      title: 'Fourth Event',
+      start: new Date(2016, 10, 29, 9, 30),
+      end: new Date(2016, 10, 29, 19, 30),
+    },
+    {
+      title: 'Fifth Event',
+      start: new Date(2016, 10, 29, 11, 0),
+      end: new Date(2016, 10, 29, 18, 0),
+    },
+    {
+      title: 'Sixth Event',
+      start: new Date(2016, 11, 1, 9, 0),
+      end: new Date(2016, 11, 1, 14, 0),
+    },
+    {
+      title: 'Seventh Event',
+      start: new Date(2016, 11, 1, 11, 0),
+      end: new Date(2016, 11, 1, 16, 0),
+    },
+    {
+      title: 'Eighth Event',
+      start: new Date(2016, 11, 1, 13, 0),
+      end: new Date(2016, 11, 1, 18, 0),
+    },
+  ],
+}
+
+export const OverlappingBackgroundEventsNoOverlap = Template.bind({})
+OverlappingBackgroundEventsNoOverlap.storyName =
+  "Overlapping Background Events - 'no-overlap'"
+OverlappingBackgroundEventsNoOverlap.args = {
+  defaultDate: new Date(2016, 11, 3),
+  dayLayoutAlgorithm: 'no-overlap',
+  defaultView: Views.WEEK,
+  scrollToTime: new Date(2016, 11, 1, 7, 0),
+  backgroundEvents: [
+    {
+      title: 'First Event',
+      start: new Date(2016, 10, 28, 10, 30),
+      end: new Date(2016, 10, 28, 18, 0),
+    },
+    {
+      title: 'Second Event',
+      start: new Date(2016, 10, 28, 12, 0),
+      end: new Date(2016, 10, 28, 16, 30),
+    },
+    {
+      title: 'Third Event',
+      start: new Date(2016, 10, 29, 8, 0),
+      end: new Date(2016, 10, 29, 21, 0),
+    },
+    {
+      title: 'Fourth Event',
+      start: new Date(2016, 10, 29, 9, 30),
+      end: new Date(2016, 10, 29, 19, 30),
+    },
+    {
+      title: 'Fifth Event',
+      start: new Date(2016, 10, 29, 11, 0),
+      end: new Date(2016, 10, 29, 18, 0),
+    },
+    {
+      title: 'Sixth Event',
+      start: new Date(2016, 11, 1, 9, 0),
+      end: new Date(2016, 11, 1, 14, 0),
+    },
+    {
+      title: 'Seventh Event',
+      start: new Date(2016, 11, 1, 11, 0),
+      end: new Date(2016, 11, 1, 16, 0),
+    },
+    {
+      title: 'Eighth Event',
+      start: new Date(2016, 11, 1, 13, 0),
+      end: new Date(2016, 11, 1, 18, 0),
+    },
+  ],
+}

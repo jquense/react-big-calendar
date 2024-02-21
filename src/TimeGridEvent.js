@@ -31,7 +31,6 @@ function TimeGridEvent(props) {
 
   let userProps = getters.eventProp(event, start, end, selected)
 
-  let { height, top, width, xOffset } = style
   const inner = [
     <div key="1" className="rbc-event-label">
       {label}
@@ -41,22 +40,15 @@ function TimeGridEvent(props) {
     </div>,
   ]
 
-  const eventStyle = isBackgroundEvent
-    ? {
-        ...userProps.style,
-        top: stringifyPercent(top),
-        height: stringifyPercent(height),
-        // Adding 10px to take events container right margin into account
-        width: `calc(${width} + 10px)`,
-        [rtl ? 'right' : 'left']: stringifyPercent(Math.max(0, xOffset)),
-      }
-    : {
-        ...userProps.style,
-        top: stringifyPercent(top),
-        width: stringifyPercent(width),
-        height: stringifyPercent(height),
-        [rtl ? 'right' : 'left']: stringifyPercent(xOffset),
-      }
+  const { height, top, width, xOffset } = style
+
+  const eventStyle = {
+    ...userProps.style,
+    top: stringifyPercent(top),
+    height: stringifyPercent(height),
+    width: stringifyPercent(width),
+    [rtl ? 'right' : 'left']: stringifyPercent(xOffset),
+  }
 
   return (
     <EventWrapper type="time" {...props}>

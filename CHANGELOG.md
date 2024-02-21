@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/jquense/react-big-calendar/compare/v1.10.2...v1.10.3) (2024-02-21)
+
+
+### Bug Fixes
+
+* to build ([#2517](https://github.com/jquense/react-big-calendar/issues/2517)) ([621fc7e](https://github.com/jquense/react-big-calendar/commit/621fc7ed25d95c0a65bc12bf513e6fd4e37cd2ef))
+
 ## [1.10.2](https://github.com/jquense/react-big-calendar/compare/v1.10.1...v1.10.2) (2024-02-19)
 
 

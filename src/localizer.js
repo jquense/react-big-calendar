@@ -26,6 +26,7 @@ import {
 } from './utils/dates'
 
 const localePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+const MILLI_SECOND_IN_24_HOURS  = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
 
 function _format(localizer, formatter, value, format, culture) {
   let result =
@@ -93,8 +94,7 @@ function continuesAfter(start, end, last) {
 }
 
 function areDatesMoreThan24HoursApart(date1, date2) {
-  const millisecondsIn24Hours = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-  return Math.abs(date1.getTime() - date2.getTime()) >= millisecondsIn24Hours;
+  return Math.abs(date1.getTime() - date2.getTime()) >= MILLI_SECOND_IN_24_HOURS;
 }
 
 // These two are used by eventLevels

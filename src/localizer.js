@@ -92,6 +92,11 @@ function continuesAfter(start, end, last) {
     : gt(end, last, 'minutes')
 }
 
+function areDatesMoreThan24HoursApart(date1, date2) {
+  const millisecondsIn24Hours = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+  return Math.abs(date1.getTime() - date2.getTime()) >= millisecondsIn24Hours;
+}
+
 // These two are used by eventLevels
 function sortEvents({
   evtA: { start: aStart, end: aEnd, allDay: aAllDay },
@@ -107,9 +112,28 @@ function sortEvents({
     // same day
     if (aAllDay && !bAllDay) {
       return -1; // All-day event a goes before non-all-day event b
-    } else if (!aAllDay && bAllDay) {
+    } 
+    
+    if (!aAllDay && bAllDay) {
       return 1; // Non-all-day event a goes after all-day event b
     }
+    if (durB - durA) { // zero would not enter this if statement
+      // multi-day event
+      const eventAIsMoreThan24Hours = areDatesMoreThan24HoursApart(aEnd, aStart)
+      const eventBIsMoreThan24Hours = areDatesMoreThan24HoursApart(bEnd, bStart)
+      if (eventAIsMoreThan24Hours && !eventBIsMoreThan24Hours) {
+        return -1; // Multi-day event a goes before single-day event b
+      }
+      if (!eventAIsMoreThan24Hours && eventBIsMoreThan24Hours) {
+        return 1; // Multi-day event a goes before single-day event b
+      }
+      if (!eventAIsMoreThan24Hours && !eventBIsMoreThan24Hours) {
+        // both under 24 hours -> check time
+        return +aStart - +bStart || // then sort by start time
+          +aEnd - +bEnd // then sort by end time
+      }
+    }
+
     return (
       durB - durA || // events spanning multiple days go first
       +aStart - +bStart || // then sort by start time

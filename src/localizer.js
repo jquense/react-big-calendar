@@ -105,8 +105,12 @@ function sortEvents({
   
   if (startSort === 0) {
     // same day
+    if (aAllDay && !bAllDay) {
+      return -1; // All-day event a goes before non-all-day event b
+    } else if (!aAllDay && bAllDay) {
+      return 1; // Non-all-day event a goes after all-day event b
+    }
     return (
-      !!bAllDay - !!aAllDay || // allDay single events go first
       durB - durA || // events spanning multiple days go first
       +aStart - +bStart || // then sort by start time
       +aEnd - +bEnd // then sort by end time

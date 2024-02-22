@@ -89,13 +89,9 @@ export function sortWeekEvents(events, accessors, localizer) {
       standardEvents.push(event)
     }
   })
-  const multiSorted = multiDayEvents.sort((a, b) =>
+  return [...multiDayEvents, ...standardEvents].sort((a, b) =>
     sortEvents(a, b, accessors, localizer)
   )
-  const standardSorted = standardEvents.sort((a, b) =>
-    sortEvents(a, b, accessors, localizer)
-  )
-  return [...multiSorted, ...standardSorted]
 }
 
 export function sortEvents(eventA, eventB, accessors, localizer) {

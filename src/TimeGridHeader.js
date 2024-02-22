@@ -190,7 +190,7 @@ class TimeGridHeader extends React.Component {
               onSelect={this.props.onSelectEvent}
               onShowMore={this.props.onShowMore}
               onDoubleClick={this.props.onDoubleClickEvent}
-              onKeyPress={this.props.onKeyPressEvent}
+              onKeyDown={this.props.onKeyPressEvent}
               onSelectSlot={this.props.onSelectSlot}
               longPressThreshold={this.props.longPressThreshold}
               resizable={resizable}

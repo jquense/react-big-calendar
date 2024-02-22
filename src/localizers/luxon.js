@@ -310,6 +310,12 @@ export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
     return gte(end, last)
   }
 
+  function daySpan(start, end) {
+    const dtStart = DateTime.fromJSDate(start)
+    const dtEnd = DateTime.fromJSDate(end)
+    return dtEnd.diff(dtStart).as('days')
+  }
+
   // These two are used by eventLevels
   function sortEvents({
     evtA: { start: aStart, end: aEnd, allDay: aAllDay },
@@ -317,13 +323,13 @@ export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
   }) {
     const startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
 
-    const durA = diff(aStart, ceil(aEnd, 'day'), 'day')
+    const durA = daySpan(aStart, aEnd)
 
-    const durB = diff(bStart, ceil(bEnd, 'day'), 'day')
+    const durB = daySpan(bStart, bEnd)
 
     return (
       startSort || // sort by start Day first
-      Math.max(durB, 1) - Math.max(durA, 1) || // events spanning multiple days go first
+      durB - durA || // events spanning multiple days go first
       !!bAllDay - !!aAllDay || // then allDay single day events
       +aStart - +bStart || // then sort by start time *don't need moment conversion here
       +aEnd - +bEnd // then sort by end time *don't need moment conversion here either
@@ -415,6 +421,7 @@ export default function(DateTime, { firstDayOfWeek = 7 } = {}) {
     sortEvents,
     inEventRange,
     isSameDate,
+    daySpan,
     browserTZOffset,
   })
 }

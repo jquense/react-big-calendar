@@ -37,7 +37,7 @@
     "build": "zx .scripts/build.mjs",
     "build-storybook": "build-storybook",
     "lint": "NODE_ENV=development eslint src test",
-    "prepare": "npm run build && (is-ci || husky install)",
+    "prepare": "is-ci || husky install",
     "prepublishOnly": "yarn build",
     "prettier": "prettier '**/*js' '!lib/**' --write ",
     "storybook": "start-storybook -p 9002",

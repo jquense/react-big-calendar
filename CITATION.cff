@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: Big Calendar
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jason
+    family-names: Quense
+    email: monastic.panic@gmail.com
+  - given-names: Stephen
+    family-names: Blades
+    alias: Cutter
+    website: https://cutterscrossing.com
+    email: no.junk@cutterscrossing.com
+  - given-names: Bogdan
+    family-names: Chadkin
+    alias: TrySound
+  - given-names: Tobias
+    family-names: Andersen
+    email: j.tobiasandersen@gmail.com
+repository-code: 'https://github.com/jquense/react-big-calendar'
+url: 'https://jquense.github.io/react-big-calendar/examples'
+repository-artifact: 'https://registry.npmjs.org/react-big-calendar'
+abstract: >-
+  Big Calendar is a full featured Calendar component for
+  managing events and dates.
+keywords:
+  - scheduler
+  - calendar
+  - events
+license: MIT

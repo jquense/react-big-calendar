@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/jquense/react-big-calendar/compare/v1.10.3...v1.11.0) (2024-02-26)
+
+
+### Features
+
+* add citation file ([#2523](https://github.com/jquense/react-big-calendar/issues/2523)) ([3de0059](https://github.com/jquense/react-big-calendar/commit/3de00592fd68a93582511e83ce9051078188e100))
+
 ## [1.10.3](https://github.com/jquense/react-big-calendar/compare/v1.10.2...v1.10.3) (2024-02-21)
 
 

@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/jquense/react-big-calendar/compare/v1.11.0...v1.11.1) (2024-03-04)
+
+
+### Bug Fixes
+
+* replace deprecated onKeyPress by onKeyDown ([21f51f2](https://github.com/jquense/react-big-calendar/commit/21f51f2bc4e218542fb09bf0e7d22be99ed50028))
+
 # [1.11.0](https://github.com/jquense/react-big-calendar/compare/v1.10.3...v1.11.0) (2024-02-26)
 
 

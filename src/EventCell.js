@@ -71,7 +71,7 @@ class EventCell extends React.Component {
           })}
           onClick={(e) => onSelect && onSelect(event, e)}
           onDoubleClick={(e) => onDoubleClick && onDoubleClick(event, e)}
-          onKeyPress={(e) => onKeyPress && onKeyPress(event, e)}
+          onKeyDown={(e) => onKeyPress && onKeyPress(event, e)}
         >
           {typeof children === 'function' ? children(content) : content}
         </div>

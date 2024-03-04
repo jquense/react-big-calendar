@@ -58,7 +58,7 @@ function TimeGridEvent(props) {
         onClick={onClick}
         onDoubleClick={onDoubleClick}
         style={eventStyle}
-        onKeyPress={onKeyPress}
+        onKeyDown={onKeyPress}
         title={
           tooltip
             ? (typeof label === 'string' ? label + ': ' : '') + tooltip

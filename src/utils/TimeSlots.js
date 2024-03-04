@@ -10,6 +10,10 @@ export function getSlotMetrics({
   timeslots,
   localizer,
 }) {
+  if (localizer.lte(end, start)) {
+    end = localizer.add(end, 1, 'day')
+  }
+
   const key = getKey({ start, end, step, timeslots, localizer })
 
   // DST differences are handled inside the localizer

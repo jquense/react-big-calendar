@@ -212,6 +212,7 @@ class DateContentRow extends React.Component {
           {!!extra.length && (
             <EventEndingRow
               {...props}
+              slots={range.length}
               start={first}
               end={last}
               segments={extra}

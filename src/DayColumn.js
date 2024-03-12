@@ -14,14 +14,21 @@ import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 import DayColumnWrapper from './DayColumnWrapper'
 
+let slotMetrics
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
   intervalTriggered = false
 
+  static getDerivedStateFromProps(nextProps) {
+    slotMetrics = slotMetrics
+      ? slotMetrics.update(nextProps)
+      : TimeSlotUtils.getSlotMetrics(nextProps)
+
+    return null
+  }
   constructor(...args) {
     super(...args)
 
-    this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
     this.containerRef = createRef()
   }
 
@@ -38,33 +45,31 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
- componentDidUpdate(prevProps, prevState) {
-    if (this.props.selectable && !prevProps.selectable) this._selectable();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.selectable && !prevProps.selectable) this._selectable()
     if (!this.props.selectable && prevProps.selectable)
-      this._teardownSelectable();
+      this._teardownSelectable()
 
-    this.slotMetrics = this.slotMetrics.update(this.props);
-
-    const { getNow, isNow, localizer, date, min, max } = this.props;
-    const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes');
+    const { getNow, isNow, localizer, date, min, max } = this.props
+    const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes')
 
     if (prevProps.isNow !== isNow || getNowChanged) {
-      this.clearTimeIndicatorInterval();
+      this.clearTimeIndicatorInterval()
 
       if (isNow) {
         const tail =
           !getNowChanged &&
           localizer.eq(prevProps.date, date, 'minutes') &&
-          prevState.timeIndicatorPosition === this.state.timeIndicatorPosition;
+          prevState.timeIndicatorPosition === this.state.timeIndicatorPosition
 
-        this.setTimeIndicatorPositionUpdateInterval(tail);
+        this.setTimeIndicatorPositionUpdateInterval(tail)
       }
     } else if (
       isNow &&
       (localizer.neq(prevProps.min, min, 'minutes') ||
         localizer.neq(prevProps.max, max, 'minutes'))
     ) {
-      this.positionTimeIndicator();
+      this.positionTimeIndicator()
     }
   }
 
@@ -94,7 +99,7 @@ class DayColumn extends React.Component {
     const current = getNow()
 
     if (current >= min && current <= max) {
-      const top = this.slotMetrics.getCurrentTimePosition(current)
+      const top = slotMetrics.getCurrentTimePosition(current)
       this.intervalTriggered = true
       this.setState({ timeIndicatorPosition: top })
     } else {
@@ -115,7 +120,6 @@ class DayColumn extends React.Component {
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
 
-    let { slotMetrics } = this
     let { selecting, top, height, startDate, endDate } = this.state
 
     let selectDates = { start: startDate, end: endDate }
@@ -195,7 +199,6 @@ class DayColumn extends React.Component {
       resizable,
     } = this.props
 
-    const { slotMetrics } = this
     const { messages } = localizer
 
     let styledEvents = DayEventLayout.getStyledEvents({
@@ -291,7 +294,7 @@ class DayColumn extends React.Component {
     }
 
     let selectionState = (point) => {
-      let currentSlot = this.slotMetrics.closestSlotFromPoint(
+      let currentSlot = slotMetrics.closestSlotFromPoint(
         point,
         getBoundsForNode(node)
       )
@@ -302,12 +305,12 @@ class DayColumn extends React.Component {
 
       let initialSlot = this._initialSlot
       if (localizer.lte(initialSlot, currentSlot)) {
-        currentSlot = this.slotMetrics.nextSlot(currentSlot)
+        currentSlot = slotMetrics.nextSlot(currentSlot)
       } else if (localizer.gt(initialSlot, currentSlot)) {
-        initialSlot = this.slotMetrics.nextSlot(initialSlot)
+        initialSlot = slotMetrics.nextSlot(initialSlot)
       }
 
-      const selectRange = this.slotMetrics.getRange(
+      const selectRange = slotMetrics.getRange(
         localizer.min(initialSlot, currentSlot),
         localizer.max(initialSlot, currentSlot)
       )

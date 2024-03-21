@@ -42,6 +42,7 @@ function Pop({
   components,
   localizer,
   position,
+  popup,
   show,
   events,
   slotStart,
@@ -54,7 +55,9 @@ function Pop({
   target,
   offset,
 }) {
-  useClickOutside({ ref: popperRef, callback: show })
+  if (popup !== 'toggle') {
+    useClickOutside({ ref: popperRef, callback: show });
+  }
   useLayoutEffect(() => {
     const { topOffset, leftOffset } = getPosition({
       target,

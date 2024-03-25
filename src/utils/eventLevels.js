@@ -105,5 +105,5 @@ export function sortEvents(eventA, eventB, accessors, localizer) {
     end: accessors.end(eventB),
     allDay: accessors.allDay(eventB),
   }
-  return localizer.sortEvents({ evtA, evtB })
+  return localizer.sortEvents({ evtA, evtB, eventA, eventB });
 }

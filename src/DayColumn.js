@@ -14,21 +14,14 @@ import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 import DayColumnWrapper from './DayColumnWrapper'
 
-let slotMetrics
 class DayColumn extends React.Component {
   state = { selecting: false, timeIndicatorPosition: null }
   intervalTriggered = false
 
-  static getDerivedStateFromProps(nextProps) {
-    slotMetrics = slotMetrics
-      ? slotMetrics.update(nextProps)
-      : TimeSlotUtils.getSlotMetrics(nextProps)
-
-    return null
-  }
   constructor(...args) {
     super(...args)
 
+    this.slotMetrics = TimeSlotUtils.getSlotMetrics(this.props)
     this.containerRef = createRef()
   }
 
@@ -99,7 +92,7 @@ class DayColumn extends React.Component {
     const current = getNow()
 
     if (current >= min && current <= max) {
-      const top = slotMetrics.getCurrentTimePosition(current)
+      const top = this.slotMetrics.getCurrentTimePosition(current)
       this.intervalTriggered = true
       this.setState({ timeIndicatorPosition: top })
     } else {
@@ -120,6 +113,9 @@ class DayColumn extends React.Component {
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
 
+    this.slotMetrics = this.slotMetrics.update(this.props)
+
+    let { slotMetrics } = this
     let { selecting, top, height, startDate, endDate } = this.state
 
     let selectDates = { start: startDate, end: endDate }
@@ -199,6 +195,7 @@ class DayColumn extends React.Component {
       resizable,
     } = this.props
 
+    const { slotMetrics } = this
     const { messages } = localizer
 
     let styledEvents = DayEventLayout.getStyledEvents({
@@ -294,7 +291,7 @@ class DayColumn extends React.Component {
     }
 
     let selectionState = (point) => {
-      let currentSlot = slotMetrics.closestSlotFromPoint(
+      let currentSlot = this.slotMetrics.closestSlotFromPoint(
         point,
         getBoundsForNode(node)
       )
@@ -305,12 +302,12 @@ class DayColumn extends React.Component {
 
       let initialSlot = this._initialSlot
       if (localizer.lte(initialSlot, currentSlot)) {
-        currentSlot = slotMetrics.nextSlot(currentSlot)
+        currentSlot = this.slotMetrics.nextSlot(currentSlot)
       } else if (localizer.gt(initialSlot, currentSlot)) {
-        initialSlot = slotMetrics.nextSlot(initialSlot)
+        initialSlot = this.slotMetrics.nextSlot(initialSlot)
       }
 
-      const selectRange = slotMetrics.getRange(
+      const selectRange = this.slotMetrics.getRange(
         localizer.min(initialSlot, currentSlot),
         localizer.max(initialSlot, currentSlot)
       )

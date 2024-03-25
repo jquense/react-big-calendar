@@ -165,5 +165,5 @@ Big Calendar. Carefully test each change accordingly.
 
 ## Join The Community
 
-Help us improve Big Calendar! Join us on [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-2cerpqegz-mGzcbm7LxYLFPjcTa0gLgw).
+Help us improve Big Calendar! Join us on [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-2fapdf4pj-oEF51KD2XgHKudkXEhk2lQ).
 (Slack invite links do expire. If you can't get in, just file an issue and we'll get a new link.)

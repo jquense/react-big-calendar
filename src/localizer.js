@@ -101,12 +101,23 @@ function areDatesMoreThan24HoursApart(date1, date2) {
 function sortEvents({
   evtA: { start: aStart, end: aEnd, allDay: aAllDay },
   evtB: { start: bStart, end: bEnd, allDay: bAllDay },
+  eventA,
+  eventB
 }) {
   let startSort = +startOf(aStart, 'day') - +startOf(bStart, 'day')
 
   let durA = daySpan(aStart, aEnd)
 
   let durB = daySpan(bStart, bEnd)
+  if (eventA && eventB && aAllDay && bAllDay) {
+    // both all-day events
+    if (eventA.isWorkLocationEvent && !eventB.isWorkLocationEvent) {
+      return -1;
+    }
+    if (!eventA.isWorkLocationEvent && eventB.isWorkLocationEvent) {
+      return 1;
+    }
+  }
   
   if (startSort === 0) {
     // same day

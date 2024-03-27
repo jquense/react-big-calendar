@@ -65,7 +65,7 @@ class Popup extends React.Component {
         </div>
         {events.map((event, idx) => (
           <EventCell
-            key={idx}
+            key={accessors.key(event) ?? idx}
             type="popup"
             localizer={localizer}
             event={event}

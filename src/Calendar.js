@@ -260,6 +260,17 @@ class Calendar extends React.Component {
     resourceTitleAccessor: accessor,
 
     /**
+     * Provides a unique key for an event.
+     *
+     * ```js
+     * string | (resource: Object) => any
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    keyAccessor: accessor,
+
+    /**
      * Determines the current date/time which is highlighted in the views.
      *
      * The value affects which day is shaded and which time is shown as
@@ -858,6 +869,7 @@ class Calendar extends React.Component {
     startAccessor: 'start',
     endAccessor: 'end',
     resourceAccessor: 'resourceId',
+    keyAccessor: () => null,
 
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
@@ -891,6 +903,7 @@ class Calendar extends React.Component {
     resourceAccessor,
     resourceIdAccessor,
     resourceTitleAccessor,
+    keyAccessor,
     eventPropGetter,
     backgroundEventPropGetter,
     slotPropGetter,
@@ -938,6 +951,7 @@ class Calendar extends React.Component {
         resource: wrapAccessor(resourceAccessor),
         resourceId: wrapAccessor(resourceIdAccessor),
         resourceTitle: wrapAccessor(resourceTitleAccessor),
+        key: wrapAccessor(keyAccessor),
       },
     }
   }

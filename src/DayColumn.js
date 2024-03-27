@@ -240,7 +240,8 @@ class DayColumn extends React.Component {
           style={style}
           event={event}
           label={label}
-          key={'evt_' + idx}
+          // Make the key unique and constant.
+          key={accessors.key(event) ?? 'evt_' + idx}
           getters={getters}
           rtl={rtl}
           components={components}

@@ -1,29 +1,29 @@
 # react-big-calendar
 
-An events calendar component built for React and designed for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
+Un composant de calendrier d'événements conçu pour React et les navigateurs modernes (sauf pour Internet Explorer) en utilisant flexbox au lieu de l'approche classique des tableaux et des légendes.
 
 <p align="center">
   <img src="./assets/rbc-demo.gif" alt="Big Calendar Demo Image" />
 </p>
 
-[**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
+[**DÉMO et documentation**](https://jquense.github.io/react-big-calendar/examples/index.html)
 
-Inspired by [Full Calendar](http://fullcalendar.io/).
+Inspiré par [Full Calendar](http://fullcalendar.io/).
 
-## Use and Setup
+## Utilisation et configuration
 
-`yarn add react-big-calendar` or `npm install --save react-big-calendar`
+`yarn add react-big-calendar` ou `npm install --save react-big-calendar`
 
-Include `react-big-calendar/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
-element has a height, or the calendar won't be visible. To provide your own custom styling, see the [Custom Styling](#custom-styling) topic.
+Faites inclure `react-big-calendar/lib/css/react-big-calendar.css` pour la mise en forme de la page, a et assurez-vous que l'élément conteneur de votre calendrier 
+a une hauteur, sinon le calendrier ne sera pas visible. Pour fournir votre propre mise en forme personnalisé, consultez la rubrique [Custom Styling](#custom-styling).
 
-## Starters
+## Démarrages 
 
 - [react-big-calendar](https://github.com/arecvlohe/rbc-starter)
 - [react-big-calendar with drag and drop](https://github.com/arecvlohe/rbc-with-dnd-starter)
 - [react-big-calendar with TypeScript and React hooks bundled with Vite](https://github.com/christopher-caldwell/react-big-calendar-demo)
 
-## Run examples locally
+## Exécuter des exemples localement
 
 ```sh
 $ git clone git@github.com:jquense/react-big-calendar.git
@@ -32,14 +32,14 @@ $ yarn
 $ yarn storybook
 ```
 
-- Open [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
+- Puis ouvrir [localhost:3000/examples/index.html](http://localhost:3000/examples/index.html).
 
-### Localization and Date Formatting
+### Localisation et formatage de la date:
 
-`react-big-calendar` includes four options for handling the date formatting and culture localization, depending
-on your preference of DateTime libraries. You can use either the [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize), [date-fns](https://date-fns.org/), [Day.js](https://day.js.org) localizers.
+`react-big-calendar` propose quatre options pour gérer le formatage de la date et la localisation de la culture, en fonction de votre préférence pour les bibliothèques DateTime. Vous pouvez utiliser les localisateurs suivants: [Moment.js](https://momentjs.com/), [Globalize.js](https://github.com/jquery/globalize), [date-fns](https://date-fns.org/), [Day.js](https://day.js.org).
 
-Regardless of your choice, you **must** choose a localizer to use this library:
+
+Quel que soit votre choix, vous **devez** choisir un localisateur pour utiliser cette bibliothèque :
 
 #### Moment.js
 
@@ -120,7 +120,7 @@ const MyCalendar = (props) => (
 
 #### Day.js
 
-Note that the dayjsLocalizer extends Day.js with the following plugins:
+Notez bien que dayjsLocalizer étend Day.js avec les modules suivants:
 
 - [IsBetween](https://day.js.org/docs/en/plugin/is-between)
 - [IsSameOrAfter](https://day.js.org/docs/en/plugin/is-same-or-after)
@@ -149,21 +149,20 @@ const MyCalendar = (props) => (
 )
 ```
 
-## Custom Styling
+## Mise en forme personnalisée
 
-Out of the box, you can include the compiled CSS files and be up and running. But, sometimes, you may want to style
-Big Calendar to match your application styling. For this reason, SASS files are included with Big Calendar.
+Par défaut, vous pouvez inclure les fichiers CSS compilés et être opérationnel. Mais, parfois, vous souhaiterez peut-être adapter le style de Big Calendar au style de votre application. Pour cette raison, des fichiers SASS sont inclus avec Big Calendar.
 
 ```
   @import 'react-big-calendar/lib/sass/styles';
-  @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+  @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // Si vous utilisez DnD
 ```
 
-SASS implementation provides a `variables` file containing color and sizing variables that you can
-update to fit your application. _Note:_ Changing and/or overriding styles can cause rendering issues with your
-Big Calendar. Carefully test each change accordingly.
+L'implémentation SASS fournit un fichier `variables` contenant des variables de couleur et de dimensionnement que vous pouvez mettre à jour pour les adapter à votre application.  _Remarque:_ La modification et/ou le remplacement des styles prédéfnis peuvent entraîner des problèmes de rendu avec votre
+Big Calendar. Testez soigneusement chaque modification.
 
-## Join The Community
 
-Help us improve Big Calendar! Join us on [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-2fapdf4pj-oEF51KD2XgHKudkXEhk2lQ).
-(Slack invite links do expire. If you can't get in, just file an issue and we'll get a new link.)
+## Rejoignez la communauté
+
+Aidez-nous à améliorer Big Calendar ! Rejoignez-nous sur [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-2fapdf4pj-oEF51KD2XgHKudkXEhk2lQ).
+(Les liens d'invitation Slack expirent. Si vous ne pouvez pas entrer, signalez simplement un problème et nous vous fournirons un nouveau lien.)

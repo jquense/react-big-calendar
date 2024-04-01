@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/jquense/react-big-calendar/compare/v1.11.1...v1.11.2) (2024-03-12)
+
+
+### Bug Fixes
+
+* correct slotMetrics issue in TimeGrid ([e25f187](https://github.com/jquense/react-big-calendar/commit/e25f1878a8d8aaf37b7b5721f76a1be4ceb0e988)), closes [#2529](https://github.com/jquense/react-big-calendar/issues/2529)
+
 ## [1.11.1](https://github.com/jquense/react-big-calendar/compare/v1.11.0...v1.11.1) (2024-03-04)
 
 

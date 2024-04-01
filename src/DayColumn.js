@@ -38,33 +38,31 @@ class DayColumn extends React.Component {
     this.clearTimeIndicatorInterval()
   }
 
- componentDidUpdate(prevProps, prevState) {
-    if (this.props.selectable && !prevProps.selectable) this._selectable();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.selectable && !prevProps.selectable) this._selectable()
     if (!this.props.selectable && prevProps.selectable)
-      this._teardownSelectable();
+      this._teardownSelectable()
 
-    this.slotMetrics = this.slotMetrics.update(this.props);
-
-    const { getNow, isNow, localizer, date, min, max } = this.props;
-    const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes');
+    const { getNow, isNow, localizer, date, min, max } = this.props
+    const getNowChanged = localizer.neq(prevProps.getNow(), getNow(), 'minutes')
 
     if (prevProps.isNow !== isNow || getNowChanged) {
-      this.clearTimeIndicatorInterval();
+      this.clearTimeIndicatorInterval()
 
       if (isNow) {
         const tail =
           !getNowChanged &&
           localizer.eq(prevProps.date, date, 'minutes') &&
-          prevState.timeIndicatorPosition === this.state.timeIndicatorPosition;
+          prevState.timeIndicatorPosition === this.state.timeIndicatorPosition
 
-        this.setTimeIndicatorPositionUpdateInterval(tail);
+        this.setTimeIndicatorPositionUpdateInterval(tail)
       }
     } else if (
       isNow &&
       (localizer.neq(prevProps.min, min, 'minutes') ||
         localizer.neq(prevProps.max, max, 'minutes'))
     ) {
-      this.positionTimeIndicator();
+      this.positionTimeIndicator()
     }
   }
 
@@ -114,6 +112,8 @@ class DayColumn extends React.Component {
       getters: { dayProp, ...getters },
       components: { eventContainerWrapper: EventContainer, ...components },
     } = this.props
+
+    this.slotMetrics = this.slotMetrics.update(this.props)
 
     let { slotMetrics } = this
     let { selecting, top, height, startDate, endDate } = this.state

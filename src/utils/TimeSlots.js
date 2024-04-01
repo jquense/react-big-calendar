@@ -73,7 +73,7 @@ export function getSlotMetrics({
       let next =
         slots[
           Math.min(
-            slots.findIndex((s) => localizer.eq(s, slot)) + 1,
+            slots.findIndex((s) => s === slot || localizer.eq(s, slot)) + 1,
             slots.length - 1
           )
         ]

@@ -1,3 +1,10 @@
+## [1.11.3](https://github.com/jquense/react-big-calendar/compare/v1.11.2...v1.11.3) (2024-04-02)
+
+
+### Bug Fixes
+
+* **Selection:** handling of terminating event ([937b4c5](https://github.com/jquense/react-big-calendar/commit/937b4c5019a327310d7e27dbbf6f6bd71876aaf4))
+
 ## [1.11.2](https://github.com/jquense/react-big-calendar/compare/v1.11.1...v1.11.2) (2024-03-12)
 
 

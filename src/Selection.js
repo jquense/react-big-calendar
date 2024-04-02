@@ -51,6 +51,8 @@ class Selection {
     node,
     { global = false, longPressThreshold = 250, validContainers = [] } = {}
   ) {
+    this._initialEvent = null
+    this.selecting = false
     this.isDetached = false
     this.container = node
     this.globalMouse = !node || global
@@ -110,6 +112,11 @@ class Selection {
   }
 
   teardown() {
+    this._initialEvent = null
+    this._initialEventData = null
+    this._selectRect = null
+    this.selecting = false
+    this._lastClickData = null
     this.isDetached = true
     this._listeners = Object.create(null)
     this._removeTouchMoveWindowListener && this._removeTouchMoveWindowListener()
@@ -237,6 +244,7 @@ class Selection {
   }
 
   _handleInitialEvent(e) {
+    this._initialEvent = e
     if (this.isDetached) {
       return
     }
@@ -330,32 +338,36 @@ class Selection {
   }
 
   _handleTerminatingEvent(e) {
-    const { pageX, pageY } = getEventCoordinates(e)
+    const selecting = this.selecting
+    const bounds = this._selectRect
+    // If it's not in selecting state, it's a click event
+    if (!selecting && e.type.includes('key')) {
+      e = this._initialEvent
+    }
 
     this.selecting = false
-
     this._removeEndListener && this._removeEndListener()
     this._removeMoveListener && this._removeMoveListener()
 
-    if (!this._initialEventData) return
+    this._selectRect = null
+    this._initialEvent = null
+    this._initialEventData = null
+    this._lastClickData = null
+    if (!e) return
 
     let inRoot = !this.container || contains(this.container(), e.target)
     let isWithinValidContainer = this._isWithinValidContainer(e)
-    let bounds = this._selectRect
-    let click = this.isClick(pageX, pageY)
-
-    this._initialEventData = null
 
     if (e.key === 'Escape' || !isWithinValidContainer) {
       return this.emit('reset')
     }
 
-    if (click && inRoot) {
+    if (!selecting && inRoot) {
       return this._handleClickEvent(e)
     }
 
     // User drag-clicked in the Selectable area
-    if (!click) return this.emit('select', bounds)
+    if (selecting) return this.emit('select', bounds)
 
     return this.emit('reset')
   }
@@ -403,28 +415,29 @@ class Selection {
     let left = Math.min(pageX, x),
       top = Math.min(pageY, y),
       old = this.selecting
-
+    const click = this.isClick(pageX, pageY)
     // Prevent emitting selectStart event until mouse is moved.
     // in Chrome on Windows, mouseMove event may be fired just after mouseDown event.
-    if (this.isClick(pageX, pageY) && !old && !(w || h)) {
+    if (click && !old && !(w || h)) {
       return
     }
 
-    this.selecting = true
-    this._selectRect = {
-      top,
-      left,
-      x: pageX,
-      y: pageY,
-      right: left + w,
-      bottom: top + h,
-    }
-
-    if (!old) {
+    if (!old && !click) {
       this.emit('selectStart', this._initialEventData)
     }
 
-    if (!this.isClick(pageX, pageY)) this.emit('selecting', this._selectRect)
+    if (!click) {
+      this.selecting = true
+      this._selectRect = {
+        top,
+        left,
+        x: pageX,
+        y: pageY,
+        right: left + w,
+        bottom: top + h,
+      }
+      this.emit('selecting', this._selectRect)
+    }
 
     e.preventDefault()
   }

@@ -344,7 +344,6 @@ class MonthView extends React.Component {
 
     const start = new Date(slots[0])
     const end = new Date(slots[slots.length - 1])
-    end.setDate(slots[slots.length - 1].getDate() + 1)
 
     notify(this.props.onSelectSlot, {
       slots,

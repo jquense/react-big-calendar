@@ -1,3 +1,10 @@
+## [1.11.6](https://github.com/jquense/react-big-calendar/compare/v1.11.5...v1.11.6) (2024-04-15)
+
+
+### Bug Fixes
+
+* **docs:** correct link for 'props' in 'Understanding Dates' guide ([#2562](https://github.com/jquense/react-big-calendar/issues/2562)) ([59982ae](https://github.com/jquense/react-big-calendar/commit/59982ae073e9afda4370a8a5f1589c65b0d4580d))
+
 ## [1.11.5](https://github.com/jquense/react-big-calendar/compare/v1.11.4...v1.11.5) (2024-04-15)
 
 

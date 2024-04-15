@@ -1,3 +1,10 @@
+## [1.11.5](https://github.com/jquense/react-big-calendar/compare/v1.11.4...v1.11.5) (2024-04-15)
+
+
+### Bug Fixes
+
+* **stories:** fix not working links in docs ([#2559](https://github.com/jquense/react-big-calendar/issues/2559)) ([295957c](https://github.com/jquense/react-big-calendar/commit/295957c352a9e416c4ba43cb2fb81eaae2d62a69))
+
 ## [1.11.4](https://github.com/jquense/react-big-calendar/compare/v1.11.3...v1.11.4) (2024-04-15)
 
 

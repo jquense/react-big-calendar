@@ -12,7 +12,7 @@ Returning `false` from the handler will prevent a selection.
 
 ## What's The Difference?
 
-How is this different from <LinkTo kind="props" story="cal-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
+How is this different from <LinkTo kind="props" story="on-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method returns a `slotInfo` object, containing a lot of additional information about your selection.
 
 <Canvas>
   <Story id="props--on-selecting" />

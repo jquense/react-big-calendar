@@ -5,13 +5,13 @@ import LinkTo from '@storybook/addon-links/react'
 
 - type: `instanceOf(Date)`
 - default: `new Date()`
-- controlled by: <LinkTo kind="props" story="cal-navigate">onNavigate</LinkTo>
+- controlled by: <LinkTo kind="props" story="on-navigate">onNavigate</LinkTo>
 
 The current date value of the calendar. Determines the visible view range.
 If `date` is omitted then the result of <LinkTo kind="props" story="get-now">getNow</LinkTo> is used; otherwise the
 current date is used.
 
-This is a controllable prop, when using <LinkTo kind="props" story="cal-navigate">onNavigate</LinkTo>
+This is a controllable prop, when using <LinkTo kind="props" story="on-navigate">onNavigate</LinkTo>
 
 <Canvas>
   <Story id="props--cal-date" />

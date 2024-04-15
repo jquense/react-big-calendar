@@ -68,12 +68,19 @@ export function getSlotMetrics({
     },
 
     nextSlot(slot) {
-      let next = slots[Math.min(slots.indexOf(slot) + 1, slots.length - 1)]
+      // We cannot guarantee that the slot object must be in slots,
+      // because after each update, a new slots array will be created.
+      let next =
+        slots[
+          Math.min(
+            slots.findIndex((s) => s === slot || localizer.eq(s, slot)) + 1,
+            slots.length - 1
+          )
+        ]
       // in the case of the last slot we won't a long enough range so manually get it
-      if (next === slot) next = localizer.add(slot, step, 'minutes')
+      if (localizer.eq(next, slot)) next = localizer.add(slot, step, 'minutes')
       return next
     },
-
     closestSlotToPosition(percent) {
       const slot = Math.min(
         slots.length - 1,

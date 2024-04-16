@@ -196,9 +196,6 @@ export default function (dayjsLib) {
   }
 
   function add(date, adder, unit) {
-    // console.log(`${dayjs(date).format('MM/DD/YYYY')} + ${adder} ${unit}`)
-    // console.log(dayjs(date).add(adder, unit).format('MM/DD/YYYY'))
-    // console.log(dayjs(date).add(adder, unit).toDate())
     const datePart = fixUnit(unit)
     return dayjs(date).add(adder, datePart).toDate()
   }

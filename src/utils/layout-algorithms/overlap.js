@@ -27,13 +27,15 @@ class Event {
     // The container event's width is determined by the maximum number of
     // events in any of its rows.
     if (this.rows) {
-      // TODO: fix problem here.
-      // There's too many columns
+      // console.log("this.rows_", this.rows, this.data.title);
       const columns =
         this.rows.reduce(
           (max, row) => Math.max(max, row.leaves.length + 1), // add itself
           0
         ) + 1 // add the container
+      // this section handles the logic for container with leaves (in this case all the short events belong to Long_1)
+      // console.log("leaves: ", this.data.title, this.rows.map(event => event.leaves.map(leave => leave.data.title)))
+      // console.log("columns_", columns, this.data.title);
       return 100 / columns;
     }
 
@@ -42,11 +44,15 @@ class Event {
     // The row event's width is the space left by the container, divided
     // among itself and its leaves.
     if (this.leaves) {
+      // Long_0 is here
+      // console.log("this.leaves_", this.leaves, this.data.title);
       return availableWidth / (this.leaves.length + 1)
     }
 
+    // this handles leaves
     // The leaf event's width is determined by its row's width
-    return this.row._width
+    // console.log("this.row._width", this.row._width, this.data.title);
+    return this.row._width;
   }
 
   /**

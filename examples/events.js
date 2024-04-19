@@ -1,5 +1,46 @@
 const now = new Date()
 
+const STAIR_CASE_TESTING = [
+  {
+    id: 1,
+    title: 'Long Event',
+    start: new Date(2015, 3, 1, 8, 0, 0),
+    end: new Date(2015, 3, 1, 15, 0, 0),
+  },
+  {
+    id: 1.2,
+    title: 'Long Event',
+    start: new Date(2015, 3, 1, 7, 0, 0),
+    end: new Date(2015, 3, 1, 15, 0, 0),
+  },
+  {
+    id: 2,
+    title: 'DTS STARTS',
+    start: new Date(2015, 3, 1, 9, 0, 0),
+    end: new Date(2015, 3, 1, 10, 0, 0),
+  },
+  {
+    id: 3,
+    title: 'DTS ENDS',
+    start: new Date(2015, 3, 1, 10, 0, 0),
+    end: new Date(2015, 3, 1, 11, 0, 0),
+  },
+
+  {
+    id: 4,
+    title: 'Some Event',
+    start: new Date(2015, 3, 1, 11, 0, 0),
+    end: new Date(2015, 3, 1, 12, 0, 0),
+  },
+  {
+    id: 5,
+    title: 'Conference',
+    start: new Date(2015, 3, 1, 12, 0, 0),
+    end: new Date(2015, 3, 1, 13, 0, 0),
+    desc: 'Big conference for important people',
+  },
+]
+
 const DEFAULT_EXAMPLE = [
   {
     id: 0,
@@ -185,7 +226,7 @@ function getRandomInt(inputMin, inputMax) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-let exampleEvents = DEFAULT_EXAMPLE
+let exampleEvents = STAIR_CASE_TESTING
 for (let i = 0; i < 800; i++) {
   const date = getRandomInt(12, 18)
   const hour = getRandomInt(1, 22)

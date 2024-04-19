@@ -27,13 +27,14 @@ class Event {
     // The container event's width is determined by the maximum number of
     // events in any of its rows.
     if (this.rows) {
+      // TODO: fix problem here.
+      // There's too many columns
       const columns =
         this.rows.reduce(
           (max, row) => Math.max(max, row.leaves.length + 1), // add itself
           0
         ) + 1 // add the container
-
-      return 100 / columns
+      return 100 / columns;
     }
 
     const availableWidth = 100 - this.container._width

@@ -3,38 +3,38 @@ const now = new Date()
 const STAIR_CASE_TESTING = [
   {
     id: 1,
-    title: 'Long Event',
+    title: 'Long_0',
     start: new Date(2015, 3, 1, 8, 0, 0),
     end: new Date(2015, 3, 1, 15, 0, 0),
   },
   {
     id: 1.2,
-    title: 'Long Event',
+    title: 'Long_1',
     start: new Date(2015, 3, 1, 7, 0, 0),
     end: new Date(2015, 3, 1, 15, 0, 0),
   },
   {
     id: 2,
-    title: 'DTS STARTS',
+    title: 'Short_0',
     start: new Date(2015, 3, 1, 9, 0, 0),
     end: new Date(2015, 3, 1, 10, 0, 0),
   },
   {
     id: 3,
-    title: 'DTS ENDS',
+    title: 'Short_1',
     start: new Date(2015, 3, 1, 10, 0, 0),
     end: new Date(2015, 3, 1, 11, 0, 0),
   },
 
   {
     id: 4,
-    title: 'Some Event',
+    title: 'Short_2',
     start: new Date(2015, 3, 1, 11, 0, 0),
     end: new Date(2015, 3, 1, 12, 0, 0),
   },
   {
     id: 5,
-    title: 'Conference',
+    title: 'Short_3',
     start: new Date(2015, 3, 1, 12, 0, 0),
     end: new Date(2015, 3, 1, 13, 0, 0),
     desc: 'Big conference for important people',

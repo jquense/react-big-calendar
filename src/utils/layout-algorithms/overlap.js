@@ -1,5 +1,50 @@
 import sortBy from 'lodash/sortBy'
 
+// Terminology below:
+// container:
+// These are the largest grouping entities that can encompass multiple rows. 
+// A container in this scenario can be thought of as a block of time or a particular segment 
+// of the schedule where multiple related events occur.
+
+// Rows within Containers
+// These sub-groupings within containers help manage events that are related but might not directly overlap. 
+// Each row can contain multiple leaves.
+
+// Leaves in Rows: 
+// The individual events that do not contain other events but are contained within rows. 
+// They are the actual entries or appointments in the calendar.
+
+// Leaves:
+// Leaves in this context refer to the individual events that are the last level within a grouping hierarchy. 
+// They do not contain other events but are contained by a row. 
+// Leaves are essentially the 'children' in this hierarchical model, 
+// where they represent the most granular level of detail or the smallest grouping unit within an event container.
+
+// Rows:
+// Rows represent a middle layer in the hierarchy that groups multiple leaves (events). 
+// A row can contain one or more leaves but itself is contained within a container. 
+// Rows help organize events that occur in the same timeframe but might not be directly overlapping. 
+// They can be thought of as a sub-grouping within a larger event structure (container) 
+// where events are related or share similar characteristics, such as a similar start time or location within a view.
+
+// ================================================================================================================
+
+// Functionality below:
+// The function getStyledEvents() takes a set of events and processes them through 
+// a series of steps to categorize them into containers, rows, and leaves 
+// based on their timing and overlapping characteristics.
+
+// The sortByRender() function sorts these events primarily by their start time, 
+// helping arrange them sequentially.
+
+// Overlapping events are then grouped into containers. 
+// If an event cannot fit into an existing container, it becomes a new container.
+
+// Within each container, the code attempts to place events into existing rows based on their start times and overlap. 
+// If an event does not fit into any existing row, it starts a new row.
+
+// Events that fit into a row become leaves of that row.
+
 class Event {
   constructor(data, { accessors, slotMetrics }) {
     const {
@@ -27,15 +72,12 @@ class Event {
     // The container event's width is determined by the maximum number of
     // events in any of its rows.
     if (this.rows) {
-      // console.log("this.rows_", this.rows, this.data.title);
       const columns =
         this.rows.reduce(
           (max, row) => Math.max(max, row.leaves.length + 1), // add itself
           0
         ) + 1 // add the container
       // this section handles the logic for container with leaves (in this case all the short events belong to Long_1)
-      // console.log("leaves: ", this.data.title, this.rows.map(event => event.leaves.map(leave => leave.data.title)))
-      // console.log("columns_", columns, this.data.title);
       return 100 / columns;
     }
 
@@ -44,15 +86,16 @@ class Event {
     // The row event's width is the space left by the container, divided
     // among itself and its leaves.
     if (this.leaves) {
-      // Long_0 is here
-      // console.log("this.leaves_", this.leaves, this.data.title);
       return availableWidth / (this.leaves.length + 1)
     }
 
     // this handles leaves
     // The leaf event's width is determined by its row's width
-    // console.log("this.row._width", this.row._width, this.data.title);
     return this.row._width;
+  }
+
+  getEventTitle() {
+    return this.data.title;
   }
 
   /**
@@ -81,10 +124,14 @@ class Event {
 
   get xOffset() {
     // Containers have no offset.
-    if (this.rows) return 0
+    if (this.rows) {
+      return 0;
+    }
 
     // Rows always start where their container ends.
-    if (this.leaves) return this.container._width
+    if (this.leaves) {
+      return this.container._width
+    }
 
     // Leaves are spread out evenly on the space left by its row.
     const { leaves, xOffset, _width } = this.row

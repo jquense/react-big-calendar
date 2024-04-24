@@ -77,7 +77,6 @@ class Event {
           (max, row) => Math.max(max, row.leaves.length + 1), // add itself
           0
         ) + 1 // add the container
-      // this section handles the logic for container with leaves (in this case all the short events belong to Long_1)
       return 100 / columns;
     }
 
@@ -89,14 +88,8 @@ class Event {
       return availableWidth / (this.leaves.length + 1)
     }
 
-    // this handles leaves
     // The leaf event's width is determined by its row's width
     return this.row._width;
-  }
-
-  // For dev
-  getEventTitle() {
-    return this.data.title;
   }
 
   /**
@@ -253,8 +246,6 @@ export default function getStyledEvents({
       event.leaves = []
       container.rows.push(event)
     }
-    // Problem: it all belongs to the same row but events that are not actually overlapping are being placed in the same row
-    // console.log(event.data.title, "leaves:", event.row?.leaves.map(leaf => leaf.data.title)) // TODO: delete
   }
 
   // Return the original events, along with their styles.

@@ -20,6 +20,12 @@ const STAIR_CASE_TESTING = [
     end: new Date(2015, 3, 1, 10, 0, 0),
   },
   {
+    id: 6,
+    title: 'Short_0A',
+    start: new Date(2015, 3, 1, 9, 0, 0),
+    end: new Date(2015, 3, 1, 10, 0, 0),
+  },
+  {
     id: 3,
     title: 'Short_1',
     start: new Date(2015, 3, 1, 10, 0, 0),

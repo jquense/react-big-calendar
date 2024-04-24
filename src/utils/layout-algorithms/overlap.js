@@ -94,6 +94,7 @@ class Event {
     return this.row._width;
   }
 
+  // For dev
   getEventTitle() {
     return this.data.title;
   }
@@ -148,8 +149,21 @@ function onSameRow(a, b, minimumStartDifference) {
     // Occupies the same start slot.
     Math.abs(b.start - a.start) < minimumStartDifference ||
     // A's start slot overlaps with b's end slot.
-    (b.start > a.start && b.start < a.end)
+    (b.start > a.start && b.start < a.end) // b start is inbtween a start and a end
   )
+}
+
+function isLeafTouchingEvent(event, row) {
+  return row.leaves.every(leaf => {
+      // Check if leaf start time is within the event duration
+      const startsDuringEvent = leaf.start >= event.start && leaf.start < event.end;
+      // Check if leaf end time is within the event duration
+      const endsDuringEvent = leaf.end > event.start && leaf.end <= event.end;
+      // Check if the leaf completely encompasses the event duration
+      const encompassesEvent = leaf.start <= event.start && leaf.end >= event.end;
+      // Return true if any of these conditions are true
+      return startsDuringEvent || endsDuringEvent || encompassesEvent;
+  });
 }
 
 function sortByRender(events) {
@@ -223,12 +237,14 @@ export default function getStyledEvents({
     // Start looking from behind.
     let row = null
     for (let j = container.rows.length - 1; !row && j >= 0; j--) {
+      // compares the event with the container's rows
+      // in staircase issue^, this is the long event
       if (onSameRow(container.rows[j], event, minimumStartDifference)) {
         row = container.rows[j]
       }
     }
 
-    if (row) {
+    if (row && isLeafTouchingEvent(event, row)) {
       // Found a row, so add it.
       row.leaves.push(event)
       event.row = row
@@ -237,6 +253,8 @@ export default function getStyledEvents({
       event.leaves = []
       container.rows.push(event)
     }
+    // Problem: it all belongs to the same row but events that are not actually overlapping are being placed in the same row
+    // console.log(event.data.title, "leaves:", event.row?.leaves.map(leaf => leaf.data.title)) // TODO: delete
   }
 
   // Return the original events, along with their styles.

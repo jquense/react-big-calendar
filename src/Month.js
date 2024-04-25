@@ -50,6 +50,11 @@ class MonthView extends React.Component {
     this._sizeObserver.observe(this.containerRef.current)
   }
 
+  componentDidUpdate(prevProps) {
+    const { localizer, date } = this.props
+    if (localizer.neq(date, prevProps.date, 'month')) this.measureRowLimit()
+  }
+
   componentWillUnmount() {
     this._sizeObserver.disconnect()
   }

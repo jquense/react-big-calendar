@@ -17,7 +17,7 @@ class DateContentRow extends React.Component {
 
     this.containerRef = createRef()
     this.headingRowRef = createRef()
-    this.eventRowRef = createRef()
+    this.rowContentRef = createRef()
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
   }
@@ -47,16 +47,15 @@ class DateContentRow extends React.Component {
 
   getRowLimit() {
     /* Guessing this only gets called on the dummyRow */
-    const dummyRow = this.eventRowRef.current
-    if (!dummyRow) return this.props.maxRows
-    dummyRow.style.display = 'block' 
-    const eventHeight = getHeight(dummyRow)
+    const { renderHeader } = this.props
+    const rowContent = this.rowContentRef.current
+    const eventRow = this.rowContentRef.current?.children[renderHeader ? 1 : 0]
+    if (!eventRow) return Number.Infinity
+    const eventHeight = getHeight(eventRow)
     const headingHeight = this.headingRowRef?.current
       ? getHeight(this.headingRowRef.current)
       : 0
-    const eventSpace = getHeight(this.containerRef.current) - headingHeight
-    dummyRow.style.display = null
-    
+    const eventSpace = getHeight(this.containerRef.current) - headingHeight   
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
 
@@ -71,18 +70,6 @@ class DateContentRow extends React.Component {
         localizer.isSameDate(date, getNow()) && 'rbc-now'
       ),
     })
-  }
-
-  renderDummy = () => {
-    return (
-      <div className="rbc-row rbc-row-dummy" ref={this.eventRowRef}>
-        <div className="rbc-row-segment">
-          <div className="rbc-event">
-            <div className="rbc-event-content">&nbsp;</div>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   render() {
@@ -160,13 +147,13 @@ class DateContentRow extends React.Component {
             showAllEvents && 'rbc-row-content-scrollable'
           )}
           role="row"
+          ref={this.rowContentRef}
         >
           {renderHeader && (
             <div className="rbc-row " ref={this.headingRowRef}>
               {range.map(this.renderHeadingCell)}
             </div>
           )}
-          {this.renderDummy()}
           <ScrollableWeekComponent>
             <WeekWrapper isAllDay={isAllDay} {...eventRowProps} rtl={this.props.rtl}>
               {levels.map((segs, idx) => (

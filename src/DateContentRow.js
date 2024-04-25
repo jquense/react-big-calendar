@@ -47,12 +47,16 @@ class DateContentRow extends React.Component {
 
   getRowLimit() {
     /* Guessing this only gets called on the dummyRow */
-    const eventHeight = getHeight(this.eventRowRef.current)
+    const dummyRow = this.eventRowRef.current
+    if (!dummyRow) return this.props.maxRows
+    dummyRow.style.display = 'block' 
+    const eventHeight = getHeight(dummyRow)
     const headingHeight = this.headingRowRef?.current
       ? getHeight(this.headingRowRef.current)
       : 0
     const eventSpace = getHeight(this.containerRef.current) - headingHeight
-
+    dummyRow.style.display = null
+    
     return Math.max(Math.floor(eventSpace / eventHeight), 1)
   }
 
@@ -70,26 +74,11 @@ class DateContentRow extends React.Component {
   }
 
   renderDummy = () => {
-    let { className, range, renderHeader, showAllEvents } = this.props
     return (
-      <div className={className} ref={this.containerRef}>
-        <div
-          className={clsx(
-            'rbc-row-content',
-            showAllEvents && 'rbc-row-content-scrollable'
-          )}
-        >
-          {renderHeader && (
-            <div className="rbc-row" ref={this.headingRowRef}>
-              {range.map(this.renderHeadingCell)}
-            </div>
-          )}
-          <div className="rbc-row" ref={this.eventRowRef}>
-            <div className="rbc-row-segment">
-              <div className="rbc-event">
-                <div className="rbc-event-content">&nbsp;</div>
-              </div>
-            </div>
+      <div className="rbc-row rbc-row-dummy" ref={this.eventRowRef}>
+        <div className="rbc-row-segment">
+          <div className="rbc-event">
+            <div className="rbc-event-content">&nbsp;</div>
           </div>
         </div>
       </div>
@@ -104,7 +93,6 @@ class DateContentRow extends React.Component {
       className,
       selected,
       selectable,
-      renderForMeasure,
 
       accessors,
       getters,
@@ -124,8 +112,6 @@ class DateContentRow extends React.Component {
       resizable,
       showAllEvents,
     } = this.props
-
-    if (renderForMeasure) return this.renderDummy()
 
     let metrics = this.slotMetrics(this.props)
     let { levels, extra } = metrics
@@ -180,6 +166,7 @@ class DateContentRow extends React.Component {
               {range.map(this.renderHeadingCell)}
             </div>
           )}
+          {this.renderDummy()}
           <ScrollableWeekComponent>
             <WeekWrapper isAllDay={isAllDay} {...eventRowProps} rtl={this.props.rtl}>
               {levels.map((segs, idx) => (
@@ -208,7 +195,6 @@ DateContentRow.propTypes = {
   rtl: PropTypes.bool,
   resizable: PropTypes.bool,
   resourceId: PropTypes.any,
-  renderForMeasure: PropTypes.bool,
   renderHeader: PropTypes.func,
 
   container: PropTypes.func,

@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/jquense/react-big-calendar/compare/v1.11.7...v1.12.0) (2024-04-25)
+
+
+### Features
+
+* **translations:** translate CONTRIBUTING.md to Arabic ([#2558](https://github.com/jquense/react-big-calendar/issues/2558)) ([ae64158](https://github.com/jquense/react-big-calendar/commit/ae64158f102c10e3d1dc555e394c02cca85d7cc2))
+
 ## [1.11.7](https://github.com/jquense/react-big-calendar/compare/v1.11.6...v1.11.7) (2024-04-25)
 
 

@@ -7,7 +7,6 @@ import chunk from 'lodash/chunk'
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
 import getPosition from 'dom-helpers/position'
-import * as animationFrame from 'dom-helpers/animationFrame'
 
 /* import Popup from './Popup'
 import Overlay from 'react-overlays/Overlay' */

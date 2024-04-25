@@ -27,8 +27,6 @@ class MonthView extends React.Component {
 
     this.state = {
       rowLimit: 5,
-      needLimitMeasure: true,
-      date: null,
     }
     this.containerRef = createRef()
     this.slotRowRef = createRef()
@@ -37,38 +35,24 @@ class MonthView extends React.Component {
     this._pendingSelection = []
   }
 
-  static getDerivedStateFromProps({ date, localizer }, state) {
-    return {
-      date,
-      needLimitMeasure: localizer.neq(date, state.date, 'month'),
-    }
-  }
-
   componentDidMount() {
-    let running
-
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
-
-    window.addEventListener(
-      'resize',
-      (this._resizeListener = () => {
-        if (!running) {
-          animationFrame.request(() => {
-            running = false
-            this.setState({ needLimitMeasure: true }) //eslint-disable-line
-          })
+    this._sizeObserver = new ResizeObserver(
+      (entries) => {
+        const lastHeight = this._lastHeight
+        for (let entry of entries) {
+          const curHeight = Math.round(entry.contentRect.height);
+          if (lastHeight !== curHeight) {
+              this._lastHeight = curHeight
+              this.measureRowLimit()
+          }
         }
-      }),
-      false
+      }
     )
-  }
-
-  componentDidUpdate() {
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    this._sizeObserver.observe(this.containerRef.current)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this._resizeListener, false)
+    this._sizeObserver.disconnect()
   }
 
   getContainer = () => {
@@ -113,7 +97,7 @@ class MonthView extends React.Component {
       showAllEvents,
     } = this.props
 
-    const { needLimitMeasure, rowLimit } = this.state
+    const { rowLimit } = this.state
 
     // let's not mutate props
     const weeksEvents = eventsForWeek(
@@ -144,7 +128,6 @@ class MonthView extends React.Component {
         getters={getters}
         localizer={localizer}
         renderHeader={this.readerDateHeading}
-        renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
         onDoubleClick={this.handleDoubleClickEvent}
@@ -271,10 +254,12 @@ class MonthView extends React.Component {
   }
 
   measureRowLimit() {
-    this.setState({
-      needLimitMeasure: false,
-      rowLimit: this.slotRowRef.current.getRowLimit(),
-    })
+    const rowLimit = this.slotRowRef.current.getRowLimit()
+    if (rowLimit !== this.state.rowLimit) {
+      this.setState({
+          rowLimit,
+      })
+    }
   }
 
   handleSelectSlot = (range, slotInfo) => {

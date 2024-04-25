@@ -1,3 +1,10 @@
+## [1.11.7](https://github.com/jquense/react-big-calendar/compare/v1.11.6...v1.11.7) (2024-04-25)
+
+
+### Bug Fixes
+
+* correcting doubleClick ([#2571](https://github.com/jquense/react-big-calendar/issues/2571)) ([775993c](https://github.com/jquense/react-big-calendar/commit/775993cee756c681a351678874007b175258714d)), closes [#2565](https://github.com/jquense/react-big-calendar/issues/2565)
+
 ## [1.11.6](https://github.com/jquense/react-big-calendar/compare/v1.11.5...v1.11.6) (2024-04-15)
 
 

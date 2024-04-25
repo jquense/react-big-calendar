@@ -48,7 +48,6 @@ class DateContentRow extends React.Component {
   getRowLimit() {
     /* Guessing this only gets called on the dummyRow */
     const { renderHeader } = this.props
-    const rowContent = this.rowContentRef.current
     const eventRow = this.rowContentRef.current?.children[renderHeader ? 1 : 0]
     if (!eventRow) return Number.Infinity
     const eventHeight = getHeight(eventRow)

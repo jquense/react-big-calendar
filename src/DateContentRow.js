@@ -49,7 +49,7 @@ class DateContentRow extends React.Component {
     /* Guessing this only gets called on the dummyRow */
     const { renderHeader } = this.props
     const eventRow = this.rowContentRef.current?.children[renderHeader ? 1 : 0]
-    if (!eventRow) return Number.Infinity
+    if (!eventRow) return undefined
     const eventHeight = getHeight(eventRow)
     const headingHeight = this.headingRowRef?.current
       ? getHeight(this.headingRowRef.current)

@@ -28,7 +28,7 @@ class MonthView extends React.Component {
       rowLimit: 5,
     }
     this.containerRef = createRef()
-    this.slotRowRef = createRef()
+    this.slotRowRefs = [] 
 
     this._bgRows = []
     this._pendingSelection = []
@@ -41,18 +41,31 @@ class MonthView extends React.Component {
         for (let entry of entries) {
           const curHeight = Math.round(entry.contentRect.height);
           if (lastHeight !== curHeight) {
-              this._lastHeight = curHeight
-              this.measureRowLimit()
+            this._lastHeight = curHeight
+            this.measureRowLimit()
           }
         }
       }
     )
-    this._sizeObserver.observe(this.containerRef.current)
+    if (!this.props.showAllEvents) {
+      this._sizeObserver.observe(this.containerRef.current)
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { localizer, date } = this.props
-    if (localizer.neq(date, prevProps.date, 'month')) this.measureRowLimit()
+    const { localizer, date, showAllEvents } = this.props
+
+    // measure on month change
+    if (!showAllEvents && localizer.neq(date, prevProps.date, 'month')) {
+      this.measureRowLimit()
+    }
+
+    // toggle observer
+    if (!prevProps.showAllEvents && this.props.showAllEvents) {
+      this._sizeObserver.unobserve(this.containerRef.current)
+    } else if (prevProps.showAllEvents && !this.props.showAllEvents) {
+      this._sizeObserver.observe(this.containerRef.current)
+    }
   }
 
   componentWillUnmount() {
@@ -86,6 +99,10 @@ class MonthView extends React.Component {
     )
   }
 
+  saveWeekRef = (ref) => {
+    this.slotRowRefs.push(ref)
+  }
+
   renderWeek = (week, weekIdx) => {
     let {
       events,
@@ -117,7 +134,7 @@ class MonthView extends React.Component {
     return (
       <DateContentRow
         key={weekIdx}
-        ref={weekIdx === 0 ? this.slotRowRef : undefined}
+        ref={this.saveWeekRef}
         container={this.getContainer}
         className="rbc-month-row"
         getNow={getNow}
@@ -258,10 +275,21 @@ class MonthView extends React.Component {
   }
 
   measureRowLimit() {
-    const rowLimit = this.slotRowRef.current.getRowLimit()
-    if (rowLimit !== this.state.rowLimit) {
-      this.setState({
+    // find first week ref with an event
+    for (let i = 0; i < this.slotRowRefs.length; i++) {
+      const rowLimit = this.slotRowRefs[i]?.getRowLimit()
+      if (rowLimit === undefined) continue
+      if (rowLimit !== this.state.rowLimit) {
+        this.setState({
           rowLimit,
+        })
+      }
+      return
+    }
+    // no events found, reset rowLimit to default 5
+    if (this.state.rowLimit !== 5) {
+      this.setState({
+        rowLimit: 5
       })
     }
   }

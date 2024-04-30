@@ -1,7 +1,16 @@
 import EventWrapper from './EventWrapper'
 import BackgroundWrapper from './BackgroundWrapper'
+import viewUtilities from './viewUtilities'
+import TimeGrid from './TimeGrid'
+import TimeGridEvent from './TimeGridEvent'
+import TimeGridHeader from './TimeGridHeader'
+import TimeGutter from './TimeGutter'
 
 export const components = {
+  TimeGrid: TimeGrid,
+  TimeGridHeader: TimeGridHeader,
+  TimeGridEvent: TimeGridEvent,
+  TimeGutter: TimeGutter,
   eventWrapper: EventWrapper,
   timeSlotWrapper: BackgroundWrapper,
   dateCellWrapper: BackgroundWrapper,

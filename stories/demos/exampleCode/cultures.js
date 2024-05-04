@@ -9,9 +9,8 @@ require('globalize/lib/cultures/globalize.culture.en-GB')
 require('globalize/lib/cultures/globalize.culture.es')
 require('globalize/lib/cultures/globalize.culture.fr')
 require('globalize/lib/cultures/globalize.culture.ar-AE')
-require('globalize/lib/cultures/globalize.culture.ja')
 
-const cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE', 'ja']
+const cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 const lang = {
   en: null,
   'en-GB': null,
@@ -50,19 +49,6 @@ const lang = {
     agenda: 'جدول أعمال',
 
     showMore: (total) => `+${total} إضافي`,
-  },
-  ja: {
-    // Add Japanese translations here
-    week: '週間', // Week
-    work_week: '勤務週', // Work week
-    day: '日', // Day
-    month: '月', // Month
-    previous: '前', // Previous
-    next: '次', // Next
-    today: '今日', // Today
-    agenda: '予定表', // Agenda
-
-    showMore: (total) => `+${total} 件`, // Show more (total items)
   },
 }
 

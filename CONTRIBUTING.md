@@ -11,7 +11,7 @@ To ensure efficiency and organization, we ask all contributors to follow a few g
 ## Getting Started
 
 1. **Create a GitHub Account**: Sign up at [GitHub](https://github.com/signup/free) if you don't already have an account.
-2. **Report Issues**: Before submitting a new issue, [check if the issue already exists](https://github.com/jquense/react-big-calendar/issues)
+2. **Report Issues**: [Check if the issue already exists](https://github.com/jquense/react-big-calendar/issues) before submitting a new one.
    - Describe the issue in detail, including steps to reproduce if it is a bug.
    - Include the earliest version that you know has the issue.
 3. **Fork the Repository**: Make a personal fork of the repository on GitHub to start your work.

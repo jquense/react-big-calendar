@@ -5,10 +5,10 @@ function pluralizeUnit(unit) {
 }
 
 const weekRangeFormat = ({ start, end }, culture, local) =>
-  local.format(start, 'MMMM dd', culture) +
+  local.format(start, 'LLLL dd', culture) +
   ' – ' +
   // updated to use this localizer 'eq()' method
-  local.format(end, local.eq(start, end, 'month') ? 'dd' : 'MMMM dd', culture)
+  local.format(end, local.eq(start, end, 'month') ? 'dd' : 'LLLL dd', culture)
 
 const dateRangeFormat = ({ start, end }, culture, local) =>
   local.format(start, 'D', culture) + ' – ' + local.format(end, 'D', culture)
@@ -34,12 +34,12 @@ export const formats = {
 
   timeGutterFormat: 't',
 
-  monthHeaderFormat: 'MMMM yyyy',
-  dayHeaderFormat: 'EEEE MMM dd',
+  monthHeaderFormat: 'LLLL yyyy',
+  dayHeaderFormat: 'EEEE LLL dd',
   dayRangeHeaderFormat: weekRangeFormat,
   agendaHeaderFormat: dateRangeFormat,
 
-  agendaDateFormat: 'EEE MMM dd',
+  agendaDateFormat: 'EEE LLL dd',
   agendaTimeFormat: 't',
   agendaTimeRangeFormat: timeRangeFormat,
 }

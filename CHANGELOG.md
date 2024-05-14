@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/jquense/react-big-calendar/compare/v1.12.1...v1.12.2) (2024-05-14)
+
+
+### Bug Fixes
+
+* bug with dnd drag drop ([#2602](https://github.com/jquense/react-big-calendar/issues/2602)) ([799a72a](https://github.com/jquense/react-big-calendar/commit/799a72ad5d1782f4d8518e834585728c32e1b7e3)), closes [#2601](https://github.com/jquense/react-big-calendar/issues/2601)
+
 ## [1.12.1](https://github.com/jquense/react-big-calendar/compare/v1.12.0...v1.12.1) (2024-04-30)
 
 

@@ -101,3 +101,13 @@ CustomNoAgendaEventsLabel.args = {
     noEventsInRange: 'There are no special events in this range [test message]',
   },
 }
+
+export const CustomShowMore = Template.bind({})
+CustomShowMore.storyName = 'add custom showMore'
+CustomShowMore.args = {
+  defaultView: Views.MONTH,
+  events,
+  components: {
+    showMore: customComponents.showMore,
+  },
+}

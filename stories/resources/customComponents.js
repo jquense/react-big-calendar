@@ -79,6 +79,25 @@ const customComponents = {
       </div>
     )
   },
+  showMore: (showMoreProps) => {
+    return (
+      <button
+        id="my-custom-show-more"
+        style={{ border: '4px solid red', cursor: 'pointer' }}
+        onClick={() => {
+          action(
+            `custom showMore component clicked with props: ${JSON.stringify(
+              showMoreProps,
+              null,
+              2
+            )}`
+          )
+        }}
+      >
+        {showMoreProps.count} more!
+      </button>
+    )
+  },
 }
 
 export default customComponents

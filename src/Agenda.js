@@ -15,7 +15,7 @@ function Agenda({
   date,
   events,
   getters,
-  length,
+  length = 30,
   localizer,
   onDoubleClickEvent,
   onSelectEvent,
@@ -215,10 +215,6 @@ Agenda.propTypes = {
   onSelectEvent: PropTypes.func,
   onDoubleClickEvent: PropTypes.func,
   selected: PropTypes.object,
-}
-
-Agenda.defaultProps = {
-  length: 30,
 }
 
 Agenda.range = (start, { length = Agenda.defaultProps.length, localizer }) => {

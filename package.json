@@ -46,8 +46,8 @@
     "bracketSpacing": true
   },
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0",
-    "react-dom": "^15.3.0 || ^16.0.0"
+    "react": "^16.0.0 || ^17 || ^18",
+    "react-dom": "^16.0.0 || ^17 || ^18"
   },
   "devDependencies": {
     "@storybook/react": "3.2.16",

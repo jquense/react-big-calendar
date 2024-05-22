@@ -57,3 +57,10 @@ BigCalendar.setLocalizer(BigCalendar.globalizeLocalizer(globalize))
 ## Join us on Reactiflux Discord
 
 Join us on [Reactiflux Discord](https://discord.gg/uJsgpkC) community under the channel #react-big-calendar if you have any questions.
+
+# Dapulse release
+
+Make sure to update the otp value with the current one (npmjs otp)
+```
+npm run release minor --otp=893632
+```

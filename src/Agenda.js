@@ -9,13 +9,15 @@ import { navigate } from './utils/constants'
 import { inRange } from './utils/eventLevels'
 import { isSelected } from './utils/selection'
 
+const DEFAULT_LENGTH = 30;
+
 function Agenda({
   accessors,
   components,
   date,
   events,
   getters,
-  length = 30,
+  length = DEFAULT_LENGTH,
   localizer,
   onDoubleClickEvent,
   onSelectEvent,
@@ -217,7 +219,7 @@ Agenda.propTypes = {
   selected: PropTypes.object,
 }
 
-Agenda.range = (start, { length = Agenda.defaultProps.length, localizer }) => {
+Agenda.range = (start, { length = DEFAULT_LENGTH, localizer }) => {
   let end = localizer.add(start, length, 'day')
   return { start, end }
 }
@@ -225,7 +227,7 @@ Agenda.range = (start, { length = Agenda.defaultProps.length, localizer }) => {
 Agenda.navigate = (
   date,
   action,
-  { length = Agenda.defaultProps.length, localizer }
+  { length = DEFAULT_LENGTH, localizer }
 ) => {
   switch (action) {
     case navigate.PREVIOUS:
@@ -239,7 +241,7 @@ Agenda.navigate = (
   }
 }
 
-Agenda.title = (start, { length = Agenda.defaultProps.length, localizer }) => {
+Agenda.title = (start, { length = DEFAULT_LENGTH, localizer }) => {
   let end = localizer.add(start, length, 'day')
   return localizer.format({ start, end }, 'agendaHeaderFormat')
 }

@@ -2,7 +2,6 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 
 import demoEvents from './resources/events'
-// import demoResourceEvents from './resources/resourceEvents'
 import { Calendar } from '../src'
 
 import {

@@ -2,9 +2,16 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 
 import demoEvents from './resources/events'
+// import demoResourceEvents from './resources/resourceEvents'
 import { Calendar } from '../src'
 
-import { events, Calendar as BaseCalendar, Views } from './helpers'
+import {
+  events,
+  Calendar as BaseCalendar,
+  Views,
+  resourceEvents,
+  resources,
+} from './helpers'
 
 import createEvents from './helpers/createEvents'
 import customComponents from './resources/customComponents'
@@ -99,5 +106,27 @@ CustomNoAgendaEventsLabel.args = {
   events,
   messages: {
     noEventsInRange: 'There are no special events in this range [test message]',
+  },
+}
+
+export const CustomDayColumnWrapper = Template.bind({})
+CustomDayColumnWrapper.storyName = 'add custom dayColumnWrapper'
+CustomDayColumnWrapper.args = {
+  defaultView: Views.DAY,
+  events: resourceEvents,
+  resources: resources,
+  resourceAccessor: 'resourceId',
+  resourceIdAccessor: 'id',
+  resourceTitleAccessor: 'name',
+  components: {
+    dayColumnWrapper: customComponents.dayColumnWrapper,
+  },
+}
+CustomDayColumnWrapper.parameters = {
+  docs: {
+    description: {
+      story:
+        'The custom DayColumnWrapper allows you to add your own custom logic when rendering a Day Column.',
+    },
   },
 }

@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/jquense/react-big-calendar/compare/v1.12.2...v1.13.0) (2024-06-11)
+
+
+### Features
+
+* pass resource prop to DayColumnWrapper ([77760aa](https://github.com/jquense/react-big-calendar/commit/77760aa7ca60c83eaaf587fb2711e29586f5f635)), closes [#2607](https://github.com/jquense/react-big-calendar/issues/2607)
+
 ## [1.12.2](https://github.com/jquense/react-big-calendar/compare/v1.12.1...v1.12.2) (2024-05-14)
 
 

@@ -139,6 +139,7 @@ class DayColumn extends React.Component {
           selecting && 'rbc-slot-selecting'
         )}
         slotMetrics={slotMetrics}
+        resource={resource}
       >
         {slotMetrics.groups.map((grp, idx) => (
           <TimeSlotGroup

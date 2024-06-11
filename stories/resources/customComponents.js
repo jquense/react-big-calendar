@@ -1,5 +1,6 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
+import CustomDayColumnWrapper from './CustomDayColumnWrapper'
 
 const customComponents = {
   dateCellWrapper: (dateCellWrapperProps) => {
@@ -27,6 +28,7 @@ const customComponents = {
       </div>
     )
   },
+  dayColumnWrapper: CustomDayColumnWrapper,
   timeSlotWrapper: (timeSlotWrapperProps) => {
     // Show different styles at arbitrary time
     const hasCustomInfo = timeSlotWrapperProps.value

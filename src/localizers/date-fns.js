@@ -23,7 +23,7 @@ let weekRangeFormat = ({ start, end }, culture, local) =>
 export let formats = {
   dateFormat: 'dd',
   dayFormat: 'dd eee',
-  weekdayFormat: 'cccc',
+  weekdayFormat: 'ccc',
 
   selectRangeFormat: timeRangeFormat,
   eventTimeRangeFormat: timeRangeFormat,

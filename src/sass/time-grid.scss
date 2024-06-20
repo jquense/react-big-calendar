@@ -90,6 +90,7 @@
   min-width: 0;
   flex-direction: column;
   border-left: 1px solid $cell-border;
+  border-right: 1px solid $cell-border;
 
   .rbc-rtl & {
     border-left-width: 0;

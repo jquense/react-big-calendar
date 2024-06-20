@@ -123,6 +123,7 @@ const MyCalendar = (props) => (
 Note that the dayjsLocalizer extends Day.js with the following plugins:
 
 - [IsBetween](https://day.js.org/docs/en/plugin/is-between)
+- [IsLeapYear](https://day.js.org/docs/en/plugin/is-leap-year)
 - [IsSameOrAfter](https://day.js.org/docs/en/plugin/is-same-or-after)
 - [IsSameOrBefore](https://day.js.org/docs/en/plugin/is-same-or-before)
 - [LocaleData](https://day.js.org/docs/en/plugin/locale-data)

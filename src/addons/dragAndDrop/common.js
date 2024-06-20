@@ -1,9 +1,13 @@
+import { createElement } from 'react'
 import { wrapAccessor } from '../../utils/accessors'
-import { createFactory } from 'react'
 
 export const dragAccessors = {
   start: wrapAccessor((e) => e.start),
   end: wrapAccessor((e) => e.end),
+}
+
+function createFactory(Component) {
+  return (props, ...children) => createElement(Component, props, ...children)
 }
 
 function nest(...Components) {

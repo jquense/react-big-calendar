@@ -12,7 +12,10 @@ function isOverContainer(container, x, y) {
 
 export function getEventNodeFromPoint(node, { clientX, clientY }) {
   let target = document.elementFromPoint(clientX, clientY)
-  return closest(target, '.rbc-event', node)
+  return (
+    closest(target, '.rbc-event', node) ||
+    closest(target, '.rbc-background-event', node)
+  )
 }
 
 export function getShowMoreNodeFromPoint(node, { clientX, clientY }) {

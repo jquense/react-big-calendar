@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/jquense/react-big-calendar/compare/v1.13.0...v1.13.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* warning defaultProps in Agenda ([#2620](https://github.com/jquense/react-big-calendar/issues/2620)) ([d1c31c2](https://github.com/jquense/react-big-calendar/commit/d1c31c2d55e5a4a74043261a4e1f5de80396e071))
+
 # [1.13.0](https://github.com/jquense/react-big-calendar/compare/v1.12.2...v1.13.0) (2024-06-11)
 
 

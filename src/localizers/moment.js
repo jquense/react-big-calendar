@@ -144,7 +144,7 @@ export default function (moment) {
     const mDay = moment(day)
     const mMin = moment(min)
     const mMax = moment(max)
-    return mDay.isBetween(mMin, mMax, datePart, '[]')
+    return mDay.isBetween(mMin, mMax, datePart, '[)')
   }
 
   function min(dateA, dateB) {

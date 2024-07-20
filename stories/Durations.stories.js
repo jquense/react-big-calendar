@@ -173,3 +173,96 @@ DaylightSavingsEndsAfter2Am.args = {
   ],
   defaultDate: new Date(2022, 10, 6),
 }
+
+export const EventsEndingAtMidnight = Template.bind({})
+EventsEndingAtMidnight.argTypes = {
+  localizer: {
+    options: ['globalize', 'moment', 'luxon'],
+    control: {
+      type: 'select',
+    },
+  },
+}
+
+EventsEndingAtMidnight.args = {
+  showMultiDayTimes: true,
+  defaultView: Views.WEEK,
+  localizer: 'moment',
+  min: moment('12:00am', 'h:mma').toDate(),
+  max: moment('11:59pm', 'h:mma').toDate(),
+  events: [
+    {
+      title: 'week view issue',
+      start: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
+      end: new Date(
+        new Date(
+          new Date(
+            new Date(new Date().setDate(new Date().getDate() + 1)).setHours(0)
+          ).setMinutes(0)
+        ).setSeconds(0)
+      ),
+    },
+  ],
+}
+
+export const EventsEndingPastMidnight = Template.bind({})
+EventsEndingPastMidnight.argTypes = {
+  localizer: {
+    options: ['globalize', 'moment', 'luxon'],
+    control: {
+      type: 'select',
+    },
+  },
+}
+
+EventsEndingPastMidnight.args = {
+  showMultiDayTimes: true,
+  defaultView: Views.WEEK,
+  localizer: 'moment',
+  min: moment('12:00am', 'h:mma').toDate(),
+  max: moment('11:59pm', 'h:mma').toDate(),
+  events: [
+    {
+      title: 'week view issue',
+      start: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
+      end: new Date(
+        new Date(
+          new Date(
+            new Date(new Date().setDate(new Date().getDate() + 1)).setHours(0)
+          ).setMinutes(5)
+        ).setSeconds(0)
+      ),
+    },
+  ],
+}
+
+export const EventsEndingBeforeMidnight = Template.bind({})
+EventsEndingBeforeMidnight.argTypes = {
+  localizer: {
+    options: ['globalize', 'moment', 'luxon'],
+    control: {
+      type: 'select',
+    },
+  },
+}
+
+EventsEndingBeforeMidnight.args = {
+  showMultiDayTimes: true,
+  defaultView: Views.WEEK,
+  localizer: 'moment',
+  min: moment('12:00am', 'h:mma').toDate(),
+  max: moment('11:59pm', 'h:mma').toDate(),
+  events: [
+    {
+      title: 'week view issue',
+      start: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
+      end: new Date(
+        new Date(
+          new Date(
+            new Date(new Date().setDate(new Date().getDate())).setHours(23)
+          ).setMinutes(59)
+        ).setSeconds(0)
+      ),
+    },
+  ],
+}

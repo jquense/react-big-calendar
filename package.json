@@ -38,10 +38,10 @@
     "build-storybook": "build-storybook",
     "lint": "NODE_ENV=development eslint src test",
     "prepare": "is-ci || husky install",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "npm run build",
     "prettier": "prettier '**/*js' '!lib/**' --write ",
     "storybook": "start-storybook -p 9002",
-    "test": "yarn lint && NODE_ENV=test jest",
+    "test": "npm run lint && NODE_ENV=test jest",
     "tdd": "NODE_ENV=test jest --watch"
   },
   "peerDependencies": {

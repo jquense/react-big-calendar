@@ -104,8 +104,8 @@
     "rollup": "^3.10.0",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-terser": "^7.0.2",
-    "sass": "1.57.1",
-    "sass-loader": "^13.2.0",
+    "sass": "^1.77.8",
+    "sass-loader": "^14.2.1",
     "semantic-release": "^20.0.2",
     "zx": "^7.1.1"
   },

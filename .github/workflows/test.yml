@@ -2,7 +2,6 @@ name: Test
 
 on: [pull_request]
 
-
 jobs:
   test:
     name: Test
@@ -17,10 +16,10 @@ jobs:
           node-version: '18.13.0'
 
       - name: Install Dependencies
-        run: yarn install
+        run: npm install
 
       - name: Unit Test & Linting
-        run: yarn test
+        run: npm run test
 
       - name: Build
-        run: yarn build
+        run: npm run build

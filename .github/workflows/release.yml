@@ -22,14 +22,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install Dependencies
-        run: yarn install
+        run: npm install
 
-# test and build prior to release
+      # test and build prior to release
       - name: Unit Test & Linting
-        run: yarn test
+        run: npm run test
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Release
         env:

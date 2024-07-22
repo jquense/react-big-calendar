@@ -1,7 +1,7 @@
 name: Build and Deploy Documentation
-on: 
+on:
   workflow_run:
-    workflows: ["Release"]
+    workflows: ['Release']
     types: [completed]
     branches:
       - master
@@ -19,11 +19,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-    
+
       - name: Install and Build 🔧
         run: | # Install npm packages and build the Storybook files
-          yarn install --frozen-lockfile
-          yarn build-storybook
+          npm install --frozen-lockfile
+          npm run build-storybook
 
       - name: Deploy 🚀
         # https://github.com/JamesIves/github-pages-deploy-action

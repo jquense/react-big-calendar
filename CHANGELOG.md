@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/jquense/react-big-calendar/compare/v1.13.1...v1.13.2) (2024-08-06)
+
+
+### Bug Fixes
+
+* correct nested sass ([#2641](https://github.com/jquense/react-big-calendar/issues/2641)) ([88bdf77](https://github.com/jquense/react-big-calendar/commit/88bdf77d05d0548cf9228b11f49c550adbc07c4c))
+
 ## [1.13.1](https://github.com/jquense/react-big-calendar/compare/v1.13.0...v1.13.1) (2024-07-12)
 
 

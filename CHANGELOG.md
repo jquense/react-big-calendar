@@ -1,3 +1,10 @@
+## [1.13.3](https://github.com/jquense/react-big-calendar/compare/v1.13.2...v1.13.3) (2024-08-19)
+
+
+### Bug Fixes
+
+* Sass warning on latest version ([d5b6b87](https://github.com/jquense/react-big-calendar/commit/d5b6b8729f3d0960d1df5628a467a0a92f4bcb97))
+
 ## [1.13.2](https://github.com/jquense/react-big-calendar/compare/v1.13.1...v1.13.2) (2024-08-06)
 
 

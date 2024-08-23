@@ -1,3 +1,11 @@
+## [1.13.4](https://github.com/jquense/react-big-calendar/compare/v1.13.3...v1.13.4) (2024-08-23)
+
+
+### Bug Fixes
+
+* Update Slack channel invite in README.md ([47dadc3](https://github.com/jquense/react-big-calendar/commit/47dadc380598e5ecd5f9ffb89cb7c00b7c65c0f8))
+* Update Slack channel invite link in README-ar.md ([de8dd0f](https://github.com/jquense/react-big-calendar/commit/de8dd0fed3a025e57aa2929ced0b8c88fec6da25))
+
 ## [1.13.3](https://github.com/jquense/react-big-calendar/compare/v1.13.2...v1.13.3) (2024-08-19)
 
 

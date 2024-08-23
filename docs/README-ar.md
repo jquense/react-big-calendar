@@ -163,5 +163,5 @@ const MyCalendar = (props) => (
 
 ## انضم إلى المجتمع
 
-ساعدنا في تحسين التقويم الكبير! انضم إلينا على [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-2idl5rs6c-qjCYJxeEWxTpXEf7D8x1Eg).
+ساعدنا في تحسين التقويم الكبير! انضم إلينا على [Slack](https://join.slack.com/t/bigcalendar/shared_invite/zt-2p8tj2wub-SzCyiYvQShAJjsbctPHDOw).
 (تنتهي روابط الدعوة إلى Slack. إذا لم تتمكن من الانضمام، فقط قدم تقريرًا عن المشكلة وسنحصل على رابط جديد.)

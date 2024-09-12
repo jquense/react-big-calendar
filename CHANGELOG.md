@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/jquense/react-big-calendar/compare/v1.13.4...v1.14.0) (2024-09-12)
+
+
+### Features
+
+* **dayPropGetter:** pass resourceId to method ([#2650](https://github.com/jquense/react-big-calendar/issues/2650)) ([272eb88](https://github.com/jquense/react-big-calendar/commit/272eb88d53343d1283621b5626603e052100d092)), closes [#2634](https://github.com/jquense/react-big-calendar/issues/2634)
+
 ## [1.13.4](https://github.com/jquense/react-big-calendar/compare/v1.13.3...v1.13.4) (2024-08-23)
 
 

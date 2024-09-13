@@ -1,21 +1,21 @@
-import React, { Component, createRef } from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import * as animationFrame from 'dom-helpers/animationFrame'
 import memoize from 'memoize-one'
+import PropTypes from 'prop-types'
+import React, { Component, createRef } from 'react'
 
-import DayColumn from './DayColumn'
-import TimeGutter from './TimeGutter'
-import TimeGridHeader from './TimeGridHeader'
-import PopOverlay from './PopOverlay'
-
-import getWidth from 'dom-helpers/width'
 import getPosition from 'dom-helpers/position'
+import getWidth from 'dom-helpers/width'
+import DayColumn from './DayColumn'
+import PopOverlay from './PopOverlay'
+import TimeGridHeader from './TimeGridHeader'
+import TimeGridHeaderResources from './TimeGridHeaderResources'
+import TimeGutter from './TimeGutter'
 import { views } from './utils/constants'
 import { inRange, sortEvents } from './utils/eventLevels'
 import { notify } from './utils/helpers'
-import Resources from './utils/Resources'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
+import Resources from './utils/Resources'
 
 export default class TimeGrid extends Component {
   constructor(props) {
@@ -131,54 +131,157 @@ export default class TimeGrid extends Component {
     })
   }
 
+  renderDayColumn(
+    date,
+    id,
+    resource,
+    groupedEvents,
+    groupedBackgroundEvents,
+    localizer,
+    accessors,
+    components,
+    dayLayoutAlgorithm,
+    now
+  ) {
+    let { min, max } = this.props
+
+    let daysEvents = (groupedEvents.get(id) || []).filter((event) =>
+      localizer.inRange(
+        date,
+        accessors.start(event),
+        accessors.end(event),
+        'day'
+      )
+    )
+
+    let daysBackgroundEvents = (groupedBackgroundEvents.get(id) || []).filter(
+      (event) =>
+        localizer.inRange(
+          date,
+          accessors.start(event),
+          accessors.end(event),
+          'day'
+        )
+    )
+
+    return (
+      <DayColumn
+        {...this.props}
+        localizer={localizer}
+        min={localizer.merge(date, min)}
+        max={localizer.merge(date, max)}
+        resource={resource && id}
+        components={components}
+        isNow={localizer.isSameDate(date, now)}
+        key={`${id}-${date}`}
+        date={date}
+        events={daysEvents}
+        backgroundEvents={daysBackgroundEvents}
+        dayLayoutAlgorithm={dayLayoutAlgorithm}
+      />
+    )
+  }
+
+  renderResourcesFirst(
+    range,
+    resources,
+    groupedEvents,
+    groupedBackgroundEvents,
+    localizer,
+    accessors,
+    now,
+    components,
+    dayLayoutAlgorithm
+  ) {
+    return resources.map(([id, resource]) =>
+      range.map((date) =>
+        this.renderDayColumn(
+          date,
+          id,
+          resource,
+          groupedEvents,
+          groupedBackgroundEvents,
+          localizer,
+          accessors,
+          components,
+          dayLayoutAlgorithm,
+          now
+        )
+      )
+    )
+  }
+
+  renderRangeFirst(
+    range,
+    resources,
+    groupedEvents,
+    groupedBackgroundEvents,
+    localizer,
+    accessors,
+    now,
+    components,
+    dayLayoutAlgorithm
+  ) {
+    return range.map((date) => (
+      <div style={{ display: 'flex', minHeight: '100%', flex: 1 }} key={date}>
+        {resources.map(([id, resource]) => (
+          <div style={{ flex: 1 }} key={accessors.resourceId(resource)}>
+            {this.renderDayColumn(
+              date,
+              id,
+              resource,
+              groupedEvents,
+              groupedBackgroundEvents,
+              localizer,
+              accessors,
+              components,
+              dayLayoutAlgorithm,
+              now
+            )}
+          </div>
+        ))}
+      </div>
+    ))
+  }
+
   renderEvents(range, events, backgroundEvents, now) {
-    let { min, max, components, accessors, localizer, dayLayoutAlgorithm } =
-      this.props
+    let {
+      accessors,
+      localizer,
+      resourceGroupingLayout,
+      components,
+      dayLayoutAlgorithm,
+    } = this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
     const groupedEvents = resources.groupEvents(events)
     const groupedBackgroundEvents = resources.groupEvents(backgroundEvents)
 
-    return resources.map(([id, resource], i) =>
-      range.map((date, jj) => {
-        let daysEvents = (groupedEvents.get(id) || []).filter((event) =>
-          localizer.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
-
-        let daysBackgroundEvents = (
-          groupedBackgroundEvents.get(id) || []
-        ).filter((event) =>
-          localizer.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
-          )
-        )
-
-        return (
-          <DayColumn
-            {...this.props}
-            localizer={localizer}
-            min={localizer.merge(date, min)}
-            max={localizer.merge(date, max)}
-            resource={resource && id}
-            components={components}
-            isNow={localizer.isSameDate(date, now)}
-            key={i + '-' + jj}
-            date={date}
-            events={daysEvents}
-            backgroundEvents={daysBackgroundEvents}
-            dayLayoutAlgorithm={dayLayoutAlgorithm}
-          />
-        )
-      })
-    )
+    if (!resourceGroupingLayout) {
+      return this.renderResourcesFirst(
+        range,
+        resources,
+        groupedEvents,
+        groupedBackgroundEvents,
+        localizer,
+        accessors,
+        now,
+        components,
+        dayLayoutAlgorithm
+      )
+    } else {
+      return this.renderRangeFirst(
+        range,
+        resources,
+        groupedEvents,
+        groupedBackgroundEvents,
+        localizer,
+        accessors,
+        now,
+        components,
+        dayLayoutAlgorithm
+      )
+    }
   }
 
   render() {
@@ -200,6 +303,7 @@ export default class TimeGrid extends Component {
       showMultiDayTimes,
       longPressThreshold,
       resizable,
+      resourceGroupingLayout,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -238,6 +342,35 @@ export default class TimeGrid extends Component {
 
     allDayEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
+    const headerProps = {
+      range,
+      events: allDayEvents,
+      width,
+      rtl,
+      getNow,
+      localizer,
+      selected,
+      allDayMaxRows: this.props.showAllEvents
+        ? Infinity
+        : this.props.allDayMaxRows ?? Infinity,
+      resources: this.memoizedResources(resources, accessors),
+      selectable: this.props.selectable,
+      accessors,
+      getters,
+      components,
+      scrollRef: this.scrollRef,
+      isOverflowing: this.state.isOverflowing,
+      longPressThreshold,
+      onSelectSlot: this.handleSelectAllDaySlot,
+      onSelectEvent: this.handleSelectEvent,
+      onShowMore: this.handleShowMore,
+      onDoubleClickEvent: this.props.onDoubleClickEvent,
+      onKeyPressEvent: this.props.onKeyPressEvent,
+      onDrillDown: this.props.onDrillDown,
+      getDrilldownView: this.props.getDrilldownView,
+      resizable,
+    }
+
     return (
       <div
         className={clsx(
@@ -246,36 +379,11 @@ export default class TimeGrid extends Component {
         )}
         ref={this.containerRef}
       >
-        <TimeGridHeader
-          range={range}
-          events={allDayEvents}
-          width={width}
-          rtl={rtl}
-          getNow={getNow}
-          localizer={localizer}
-          selected={selected}
-          allDayMaxRows={
-            this.props.showAllEvents
-              ? Infinity
-              : this.props.allDayMaxRows ?? Infinity
-          }
-          resources={this.memoizedResources(resources, accessors)}
-          selectable={this.props.selectable}
-          accessors={accessors}
-          getters={getters}
-          components={components}
-          scrollRef={this.scrollRef}
-          isOverflowing={this.state.isOverflowing}
-          longPressThreshold={longPressThreshold}
-          onSelectSlot={this.handleSelectAllDaySlot}
-          onSelectEvent={this.handleSelectEvent}
-          onShowMore={this.handleShowMore}
-          onDoubleClickEvent={this.props.onDoubleClickEvent}
-          onKeyPressEvent={this.props.onKeyPressEvent}
-          onDrillDown={this.props.onDrillDown}
-          getDrilldownView={this.props.getDrilldownView}
-          resizable={resizable}
-        />
+        {resources && resources.length > 1 && resourceGroupingLayout ? (
+          <TimeGridHeaderResources {...headerProps} />
+        ) : (
+          <TimeGridHeader {...headerProps} />
+        )}
         {this.props.popup && this.renderOverlay()}
         <div
           ref={this.contentRef}
@@ -418,6 +526,8 @@ TimeGrid.propTypes = {
   backgroundEvents: PropTypes.array.isRequired,
   resources: PropTypes.array,
 
+  resourceGroupingLayout: PropTypes.bool,
+
   step: PropTypes.number,
   timeslots: PropTypes.number,
   range: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -475,4 +585,6 @@ TimeGrid.propTypes = {
 TimeGrid.defaultProps = {
   step: 30,
   timeslots: 2,
+  // To be compatible with old versions, default as `false`.
+  resourceGroupingLayout: false,
 }

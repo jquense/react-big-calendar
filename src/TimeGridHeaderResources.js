@@ -38,7 +38,7 @@ class TimeGridHeaderResources extends React.Component {
 
     const groupedEvents = resources.groupEvents(events)
 
-    return range.map((date, i) => {
+    return range.map((date, idx) => {
       let drilldownView = getDrilldownView(date)
       let label = localizer.format(date, 'dayFormat')
 
@@ -49,14 +49,13 @@ class TimeGridHeaderResources extends React.Component {
       )
 
       return (
-        <div className="rbc-time-header-content">
+        <div key={idx} className="rbc-time-header-content">
           <div
             className={`rbc-row rbc-time-header-cell${
               range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
             }`}
           >
             <div
-              key={i}
               style={style}
               className={clsx(
                 'rbc-header',
@@ -83,7 +82,7 @@ class TimeGridHeaderResources extends React.Component {
           <div className="rbc-row">
             {resources.map(([id, resource], idx) => {
               return (
-                <div key={`resource_${id}`} className="rbc-header">
+                <div key={`resource_${id}_${idx}`} className="rbc-header">
                   <ResourceHeaderComponent
                     index={idx}
                     label={accessors.resourceTitle(resource)}
@@ -95,7 +94,7 @@ class TimeGridHeaderResources extends React.Component {
           </div>
 
           <div className="rbc-row rbc-m-b-negative-3">
-            {resources.map(([id, resource]) => {
+            {resources.map(([id, resource], idx) => {
               // Filter the grouped events by the current date.
               const filteredEvents = (groupedEvents.get(id) || []).filter(
                 (event) =>
@@ -105,7 +104,7 @@ class TimeGridHeaderResources extends React.Component {
 
               return (
                 <DateContentRow
-                  key={`resource_${id}`}
+                  key={`resource_${id}_${idx}`}
                   isAllDay
                   rtl={rtl}
                   getNow={getNow}

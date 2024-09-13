@@ -35,9 +35,9 @@ export default function DnDOutsideResource({ localizer }) {
   //,
   const handleDragStart = useCallback((event) => setDraggedEvent(event), [])
 
-  const dragFromOutsideItem = useCallback(() => draggedEvent, [draggedEvent])
+  const dragFromOutsideItem = useCallback(() => draggedEvent === 'undroppable' ? null : draggedEvent, [draggedEvent])
 
-  const customOnDragOver = useCallback(
+  const customOnDragOverFromOutside = useCallback(
     (dragEvent) => {
       // check for undroppable is specific to this example
       // and not part of API. This just demonstrates that
@@ -177,7 +177,7 @@ export default function DnDOutsideResource({ localizer }) {
           events={myEvents}
           localizer={localizer}
           onDropFromOutside={onDropFromOutside}
-          onDragOver={customOnDragOver}
+          onDragOverFromOutside={customOnDragOverFromOutside}
           onEventDrop={moveEvent}
           onEventResize={resizeEvent}
           onSelectSlot={newEvent}

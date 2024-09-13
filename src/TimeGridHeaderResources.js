@@ -82,7 +82,14 @@ class TimeGridHeaderResources extends React.Component {
           <div className="rbc-row">
             {resources.map(([id, resource], idx) => {
               return (
-                <div key={`resource_${id}_${idx}`} className="rbc-header">
+                <div
+                  key={`resource_${id}_${idx}`}
+                  className={clsx(
+                    'rbc-header',
+                    className,
+                    localizer.isSameDate(date, today) && 'rbc-today'
+                  )}
+                >
                   <ResourceHeaderComponent
                     index={idx}
                     label={accessors.resourceTitle(resource)}

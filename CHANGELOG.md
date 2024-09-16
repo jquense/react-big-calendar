@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/jquense/react-big-calendar/compare/v1.14.0...v1.14.1) (2024-09-16)
+
+
+### Bug Fixes
+
+* **dnd:** added check for null dragFromOutsideItem, updated example ([#2651](https://github.com/jquense/react-big-calendar/issues/2651)) ([17e62a3](https://github.com/jquense/react-big-calendar/commit/17e62a3d3bf999197e24bd9fb6e68b4cb0fc4873)), closes [#2616](https://github.com/jquense/react-big-calendar/issues/2616) [#2383](https://github.com/jquense/react-big-calendar/issues/2383)
+
 # [1.14.0](https://github.com/jquense/react-big-calendar/compare/v1.13.4...v1.14.0) (2024-09-12)
 
 

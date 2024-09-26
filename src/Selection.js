@@ -352,7 +352,6 @@ class Selection {
     this._selectRect = null
     this._initialEvent = null
     this._initialEventData = null
-    this._lastClickData = null
     if (!e) return
 
     let inRoot = !this.container || contains(this.container(), e.target)

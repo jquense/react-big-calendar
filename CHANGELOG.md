@@ -1,3 +1,81 @@
+## [1.14.1](https://github.com/jquense/react-big-calendar/compare/v1.14.0...v1.14.1) (2024-09-16)
+
+
+### Bug Fixes
+
+* **dnd:** added check for null dragFromOutsideItem, updated example ([#2651](https://github.com/jquense/react-big-calendar/issues/2651)) ([17e62a3](https://github.com/jquense/react-big-calendar/commit/17e62a3d3bf999197e24bd9fb6e68b4cb0fc4873)), closes [#2616](https://github.com/jquense/react-big-calendar/issues/2616) [#2383](https://github.com/jquense/react-big-calendar/issues/2383)
+
+# [1.14.0](https://github.com/jquense/react-big-calendar/compare/v1.13.4...v1.14.0) (2024-09-12)
+
+
+### Features
+
+* **dayPropGetter:** pass resourceId to method ([#2650](https://github.com/jquense/react-big-calendar/issues/2650)) ([272eb88](https://github.com/jquense/react-big-calendar/commit/272eb88d53343d1283621b5626603e052100d092)), closes [#2634](https://github.com/jquense/react-big-calendar/issues/2634)
+
+## [1.13.4](https://github.com/jquense/react-big-calendar/compare/v1.13.3...v1.13.4) (2024-08-23)
+
+
+### Bug Fixes
+
+* Update Slack channel invite in README.md ([47dadc3](https://github.com/jquense/react-big-calendar/commit/47dadc380598e5ecd5f9ffb89cb7c00b7c65c0f8))
+* Update Slack channel invite link in README-ar.md ([de8dd0f](https://github.com/jquense/react-big-calendar/commit/de8dd0fed3a025e57aa2929ced0b8c88fec6da25))
+
+## [1.13.3](https://github.com/jquense/react-big-calendar/compare/v1.13.2...v1.13.3) (2024-08-19)
+
+
+### Bug Fixes
+
+* Sass warning on latest version ([d5b6b87](https://github.com/jquense/react-big-calendar/commit/d5b6b8729f3d0960d1df5628a467a0a92f4bcb97))
+
+## [1.13.2](https://github.com/jquense/react-big-calendar/compare/v1.13.1...v1.13.2) (2024-08-06)
+
+
+### Bug Fixes
+
+* correct nested sass ([#2641](https://github.com/jquense/react-big-calendar/issues/2641)) ([88bdf77](https://github.com/jquense/react-big-calendar/commit/88bdf77d05d0548cf9228b11f49c550adbc07c4c))
+
+## [1.13.1](https://github.com/jquense/react-big-calendar/compare/v1.13.0...v1.13.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* warning defaultProps in Agenda ([#2620](https://github.com/jquense/react-big-calendar/issues/2620)) ([d1c31c2](https://github.com/jquense/react-big-calendar/commit/d1c31c2d55e5a4a74043261a4e1f5de80396e071))
+
+# [1.13.0](https://github.com/jquense/react-big-calendar/compare/v1.12.2...v1.13.0) (2024-06-11)
+
+
+### Features
+
+* pass resource prop to DayColumnWrapper ([77760aa](https://github.com/jquense/react-big-calendar/commit/77760aa7ca60c83eaaf587fb2711e29586f5f635)), closes [#2607](https://github.com/jquense/react-big-calendar/issues/2607)
+
+## [1.12.2](https://github.com/jquense/react-big-calendar/compare/v1.12.1...v1.12.2) (2024-05-14)
+
+
+### Bug Fixes
+
+* bug with dnd drag drop ([#2602](https://github.com/jquense/react-big-calendar/issues/2602)) ([799a72a](https://github.com/jquense/react-big-calendar/commit/799a72ad5d1782f4d8518e834585728c32e1b7e3)), closes [#2601](https://github.com/jquense/react-big-calendar/issues/2601)
+
+## [1.12.1](https://github.com/jquense/react-big-calendar/compare/v1.12.0...v1.12.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* fixing Drag and Drop Examples link ([fa4a378](https://github.com/jquense/react-big-calendar/commit/fa4a378f32ed298394fc4716f9d788c22205347e)), closes [#2585](https://github.com/jquense/react-big-calendar/issues/2585)
+
+# [1.12.0](https://github.com/jquense/react-big-calendar/compare/v1.11.7...v1.12.0) (2024-04-25)
+
+
+### Features
+
+* **translations:** translate CONTRIBUTING.md to Arabic ([#2558](https://github.com/jquense/react-big-calendar/issues/2558)) ([ae64158](https://github.com/jquense/react-big-calendar/commit/ae64158f102c10e3d1dc555e394c02cca85d7cc2))
+
+## [1.11.7](https://github.com/jquense/react-big-calendar/compare/v1.11.6...v1.11.7) (2024-04-25)
+
+
+### Bug Fixes
+
+* correcting doubleClick ([#2571](https://github.com/jquense/react-big-calendar/issues/2571)) ([775993c](https://github.com/jquense/react-big-calendar/commit/775993cee756c681a351678874007b175258714d)), closes [#2565](https://github.com/jquense/react-big-calendar/issues/2565)
+
 ## [1.11.6](https://github.com/jquense/react-big-calendar/compare/v1.11.5...v1.11.6) (2024-04-15)
 
 

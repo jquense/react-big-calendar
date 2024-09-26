@@ -19,11 +19,14 @@ export default function DragAndDrop({ localizer }) {
       if (!allDay && droppedOnAllDaySlot) {
         event.allDay = true
       }
+      if (allDay && !droppedOnAllDaySlot) {
+          event.allDay = false;
+      }
 
       setMyEvents((prev) => {
         const existing = prev.find((ev) => ev.id === event.id) ?? {}
         const filtered = prev.filter((ev) => ev.id !== event.id)
-        return [...filtered, { ...existing, start, end, allDay }]
+        return [...filtered, { ...existing, start, end, allDay: event.allDay }]
       })
     },
     [setMyEvents]

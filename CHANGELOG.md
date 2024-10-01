@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/jquense/react-big-calendar/compare/v1.14.1...v1.15.0) (2024-10-01)
+
+
+### Features
+
+* **components:** showMore component customization ([#2537](https://github.com/jquense/react-big-calendar/issues/2537)) ([afb3138](https://github.com/jquense/react-big-calendar/commit/afb31384d1c68a075112ef2f3fc5499f975f0d03)), closes [#2391](https://github.com/jquense/react-big-calendar/issues/2391)
+
 ## [1.14.1](https://github.com/jquense/react-big-calendar/compare/v1.14.0...v1.14.1) (2024-09-16)
 
 

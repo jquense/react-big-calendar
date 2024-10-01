@@ -45,6 +45,36 @@ export const DragableCalendar = (props) => {
 
 export const events = [
   {
+    title: 'example 1',
+    start: moment().startOf('month').add(1, 'hours').toDate(),
+    end: moment().startOf('month').add(2, 'hours').toDate(),
+    allDay: false,
+  },
+  {
+    title: 'example 2',
+    start: moment().startOf('month').add(1, 'hours').toDate(),
+    end: moment().startOf('month').add(2, 'hours').toDate(),
+    allDay: false,
+  },
+  {
+    title: 'example 3',
+    start: moment().startOf('month').add(1, 'hours').toDate(),
+    end: moment().startOf('month').add(2, 'hours').toDate(),
+    allDay: false,
+  },
+  {
+    title: 'example 4',
+    start: moment().startOf('month').add(1, 'hours').toDate(),
+    end: moment().startOf('month').add(2, 'hours').toDate(),
+    allDay: false,
+  },
+  {
+    title: 'example 5',
+    start: moment().startOf('month').add(1, 'hours').toDate(),
+    end: moment().startOf('month').add(2, 'hours').toDate(),
+    allDay: false,
+  },
+  {
     title: 'test',
     start: moment().add(1, 'days').subtract(5, 'hours').toDate(),
     end: moment().add(1, 'days').subtract(4, 'hours').toDate(),

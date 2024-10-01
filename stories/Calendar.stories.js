@@ -129,3 +129,13 @@ CustomDayColumnWrapper.parameters = {
     },
   },
 }
+
+export const CustomShowMore = Template.bind({})
+CustomShowMore.storyName = 'add custom showMore'
+CustomShowMore.args = {
+  defaultView: Views.MONTH,
+  events,
+  components: {
+    showMore: customComponents.showMore,
+  },
+}

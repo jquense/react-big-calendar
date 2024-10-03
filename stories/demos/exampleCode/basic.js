@@ -51,7 +51,7 @@ export default function Basic({
           events={events}
           localizer={localizer}
           max={max}
-          // showMultiDayTimes
+          showMultiDayTimes
           step={60}
           views={views}
         />

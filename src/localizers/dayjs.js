@@ -162,12 +162,22 @@ export default function (dayjsLib) {
     return dtA.isSameOrBefore(dtB, datePart)
   }
 
-  function inRange(day, min, max, unit = 'day') {
+  function inRange(day, min, max, unit = 'day', exclusiveMax = false) {
     const datePart = fixUnit(unit)
     const djDay = dayjs(day)
     const djMin = dayjs(min)
     const djMax = dayjs(max)
-    return djDay.isBetween(djMin, djMax, datePart, '[]')
+
+    let inRange
+    if (unit === 'minute' && exclusiveMax) {
+      inRange =
+        djDay.isSameOrAfter(djMin.startOf('day')) &&
+        djDay.millisecond(0).isBefore(djMax.millisecond(0))
+    } else {
+      inRange = djDay.isBetween(djMin, djMax, datePart, '[]')
+    }
+
+    return inRange
   }
 
   function min(dateA, dateB) {

@@ -139,12 +139,19 @@ export default function (moment) {
     return dtA.isSameOrBefore(dtB, datePart)
   }
 
-  function inRange(day, min, max, unit = 'day') {
+  function inRange(day, min, max, unit = 'day', exclusiveMax = false) {
     const datePart = fixUnit(unit)
     const mDay = moment(day)
     const mMin = moment(min)
     const mMax = moment(max)
-    return mDay.isBetween(mMin, mMax, datePart, '[]')
+    let inRange
+    if (unit === 'minute' && exclusiveMax) {
+      inRange = mDay.isBetween(mMin.startOf('day'), mMax, datePart, '[)')
+    } else {
+      inRange = mDay.isBetween(mMin, mMax, datePart, '[]')
+    }
+
+    return inRange
   }
 
   function min(dateA, dateB) {

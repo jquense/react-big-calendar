@@ -146,7 +146,8 @@ export default class TimeGrid extends Component {
             date,
             accessors.start(event),
             accessors.end(event),
-            'day'
+            'minute',
+            true
           )
         )
 

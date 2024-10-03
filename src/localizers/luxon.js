@@ -170,12 +170,20 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
     return +dtA <= +dtB
   }
 
-  function inRange(day, min, max, unit = 'day') {
+  function inRange(day, min, max, unit = 'day', exclusiveMax = false) {
     const datePart = fixUnit(unit)
     const mDay = startOfDT(day, datePart)
     const mMin = startOfDT(min, datePart)
     const mMax = startOfDT(max, datePart)
-    return +mDay >= +mMin && +mDay <= +mMax
+
+    let inRange
+    if (unit === 'minute' && exclusiveMax) {
+      inRange = mDay >= mMin.startOf('day') && mDay < mMax
+    } else {
+      inRange = mDay >= mMin && mDay <= mMax
+    }
+
+    return inRange
   }
 
   function min(dateA, dateB) {

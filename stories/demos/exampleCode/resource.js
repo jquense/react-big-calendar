@@ -1,8 +1,8 @@
-import React, { Fragment, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
-import DemoLink from '../../DemoLink.component'
 import LinkTo from '@storybook/addon-links/react'
+import PropTypes from 'prop-types'
+import React, { Fragment, useMemo, useState } from 'react'
+import { Calendar, DateLocalizer, Views } from 'react-big-calendar'
+import DemoLink from '../../DemoLink.component'
 
 const events = [
   {
@@ -44,6 +44,8 @@ const resourceMap = [
 ]
 
 export default function Resource({ localizer }) {
+  const [groupResourcesOnWeek, setGroupResourcesOnWeek] = useState(false)
+
   const { defaultDate, views } = useMemo(
     () => ({
       defaultDate: new Date(2018, 0, 29),
@@ -56,10 +58,32 @@ export default function Resource({ localizer }) {
     <Fragment>
       <DemoLink fileName="resource" />
       <strong>
-        The calendar below uses the <LinkTo kind="props" story="resource-id-accessor">resourceIdAccessor</LinkTo>, <LinkTo kind="props" story="resource-title-accessor">resourceTitleAccessor</LinkTo> and <LinkTo kind="props" story="resources">resources</LinkTo> props to show events scheduled for different resources.
-        <br/>
+        The calendar below uses the{' '}
+        <LinkTo kind="props" story="resource-id-accessor">
+          resourceIdAccessor
+        </LinkTo>
+        ,{' '}
+        <LinkTo kind="props" story="resource-title-accessor">
+          resourceTitleAccessor
+        </LinkTo>{' '}
+        and{' '}
+        <LinkTo kind="props" story="resources">
+          resources
+        </LinkTo>{' '}
+        props to show events scheduled for different resources.
+        <br />
         Events can be mapped to a single resource, or multiple resources.
       </strong>
+      <div style={{ margin: '10px 0 20px 0' }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={groupResourcesOnWeek}
+            onChange={() => setGroupResourcesOnWeek(!groupResourcesOnWeek)}
+          />
+          Group resources on week view.
+        </label>
+      </div>
       <div className="height600">
         <Calendar
           defaultDate={defaultDate}
@@ -71,6 +95,7 @@ export default function Resource({ localizer }) {
           resourceTitleAccessor="resourceTitle"
           step={60}
           views={views}
+          resourceGroupingLayout={groupResourcesOnWeek}
         />
       </div>
     </Fragment>

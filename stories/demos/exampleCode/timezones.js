@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useMemo } from 'react'
+import React, { Fragment, useState, useMemo } from 'react'
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
 import moment from 'moment'
 import 'moment-timezone'
@@ -18,21 +18,14 @@ export default function Timezones() {
 
   const { defaultDate, getNow, localizer, myEvents, scrollToTime } =
     useMemo(() => {
-      moment.tz.setDefault(timezone)
       return {
         defaultDate: getDate(defaultDateStr, moment),
         getNow: () => moment().toDate(),
-        localizer: momentLocalizer(moment),
+        localizer: momentLocalizer(moment, timezone),
         myEvents: [...events],
         scrollToTime: moment().toDate(),
       }
     }, [timezone])
-
-  useEffect(() => {
-    return () => {
-      moment.tz.setDefault() // reset to browser TZ on unmount
-    }
-  }, [])
 
   return (
     <Fragment>

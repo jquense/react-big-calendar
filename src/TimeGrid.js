@@ -139,46 +139,50 @@ export default class TimeGrid extends Component {
     const groupedEvents = resources.groupEvents(events)
     const groupedBackgroundEvents = resources.groupEvents(backgroundEvents)
 
-    return resources.map(([id, resource], i) =>
-      range.map((date, jj) => {
-        let daysEvents = (groupedEvents.get(id) || []).filter((event) =>
-          localizer.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
+    return range.map((date, jj) => (
+      <div style={{ display: 'flex', minHeight: '100%', flex: 1 }} key={jj}>
+        {resources.map(([id, resource], i) => {
+          let daysEvents = (groupedEvents.get(id) || []).filter((event) =>
+            localizer.inRange(
+              date,
+              accessors.start(event),
+              accessors.end(event),
+              'day'
+            )
           )
-        )
 
-        let daysBackgroundEvents = (
-          groupedBackgroundEvents.get(id) || []
-        ).filter((event) =>
-          localizer.inRange(
-            date,
-            accessors.start(event),
-            accessors.end(event),
-            'day'
+          let daysBackgroundEvents = (
+            groupedBackgroundEvents.get(id) || []
+          ).filter((event) =>
+            localizer.inRange(
+              date,
+              accessors.start(event),
+              accessors.end(event),
+              'day'
+            )
           )
-        )
 
-        return (
-          <DayColumn
-            {...this.props}
-            localizer={localizer}
-            min={localizer.merge(date, min)}
-            max={localizer.merge(date, max)}
-            resource={resource && id}
-            components={components}
-            isNow={localizer.isSameDate(date, now)}
-            key={i + '-' + jj}
-            date={date}
-            events={daysEvents}
-            backgroundEvents={daysBackgroundEvents}
-            dayLayoutAlgorithm={dayLayoutAlgorithm}
-          />
-        )
-      })
-    )
+          return (
+            <div style={{ flex: 1 }} key={accessors.resourceId(resource)}>
+              <DayColumn
+                {...this.props}
+                localizer={localizer}
+                min={localizer.merge(date, min)}
+                max={localizer.merge(date, max)}
+                resource={resource && id}
+                components={components}
+                isNow={localizer.isSameDate(date, now)}
+                key={i + '-' + jj}
+                date={date}
+                events={daysEvents}
+                backgroundEvents={daysBackgroundEvents}
+                dayLayoutAlgorithm={dayLayoutAlgorithm}
+              />
+            </div>
+          )
+        })}
+      </div>
+    ))
   }
 
   render() {

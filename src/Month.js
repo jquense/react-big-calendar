@@ -160,7 +160,7 @@ class MonthView extends React.Component {
 
   readerDateHeading = ({ date, className, ...props }) => {
     let { date: currentDate, getDrilldownView, localizer } = this.props
-    let isOffRange = localizer.neq(date, currentDate, 'month')
+    let isOffRange = localizer.neq(currentDate, date, 'month')
     let isCurrent = localizer.isSameDate(date, currentDate)
     let drilldownView = getDrilldownView(date)
     let label = localizer.format(date, 'dateFormat')

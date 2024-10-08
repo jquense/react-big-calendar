@@ -690,6 +690,11 @@ class Calendar extends React.Component {
       timeGutterFormat: dateFormat,
 
       /**
+       * The position the time gutter gets rendered (left, right, both)
+       */
+      timeGutterPosition: PropTypes.oneOf(['left', 'right', 'both']),
+
+      /**
        * Toolbar header format for the Month view, e.g "2015 April"
        *
        */
@@ -1160,4 +1165,5 @@ export default uncontrollable(Calendar, {
   view: 'onView',
   date: 'onNavigate',
   selected: 'onSelectEvent',
+  timeGutterPosition: 'left',
 })

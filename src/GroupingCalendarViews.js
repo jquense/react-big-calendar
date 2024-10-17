@@ -8,7 +8,7 @@ const GROUPING_CALENDAR_VIEWS = {
   [views.WEEK]: GroupingCalendarWeekView,
   [views.WORK_WEEK]: GroupingCalendarWeekView,
   [views.DAY]: GroupingCalendarDayView,
-  [views.AGENDA]: GroupingCalendarWeekView,
+  [views.AGENDA]: ({ children }) => children,
 }
 
 export default GROUPING_CALENDAR_VIEWS

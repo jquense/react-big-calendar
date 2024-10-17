@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jquense/react-big-calendar.git"
+    "url": "git+https://github.com/Deep-Consulting-Solutions/react-big-calendar.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

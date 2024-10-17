@@ -16,6 +16,7 @@ import { mergeWithDefaults } from './localizer'
 import message from './utils/messages'
 import moveDate from './utils/move'
 import VIEWS from './Views'
+import GROUPING_CALENDAR_VIEWS from './GroupingCalendarViews'
 import Toolbar from './Toolbar'
 import NoopWrapper from './NoopWrapper'
 
@@ -864,6 +865,28 @@ class Calendar extends React.Component {
      * or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
      */
     dayLayoutAlgorithm: DayLayoutAlgorithmPropType,
+
+    /**
+     * Defines the grouping of resources, where each group has a title and
+     * associated resources.
+     *
+     * Each resource contains an `id` and a `label`. The grouping itself is optional.
+     *
+     * @type {object}
+     * @property {string} title - The title of the group.
+     * @property {Array<{id: string, label: string}>} resources - The array of resources, each with an `id` and `label`.
+     *
+     * Defaults to `undefined` if not provided.
+     */
+    grouping: PropTypes.shape({
+      title: PropTypes.string,
+      resources: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string,
+          label: PropTypes.string,
+        })
+      ),
+    }),
   }
 
   static defaultProps = {
@@ -894,6 +917,7 @@ class Calendar extends React.Component {
     longPressThreshold: 250,
     getNow: () => new Date(),
     dayLayoutAlgorithm: 'overlap',
+    grouping: {},
   }
 
   constructor(...args) {
@@ -994,6 +1018,10 @@ class Calendar extends React.Component {
     return views[this.props.view]
   }
 
+  getGroupingView = () => {
+    return GROUPING_CALENDAR_VIEWS[this.props.view]
+  }
+
   getDrilldownView = (date) => {
     const { view, drilldownView, getDrilldownView } = this.props
 
@@ -1004,6 +1032,7 @@ class Calendar extends React.Component {
 
   render() {
     let {
+      grouping,
       view,
       toolbar,
       events,
@@ -1027,11 +1056,37 @@ class Calendar extends React.Component {
     current = current || getNow()
 
     let View = this.getView()
+
+    const GroupingView = this.getGroupingView()
+
     const { accessors, components, getters, localizer, viewNames } =
       this.state.context
 
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { localizer, length })
+
+    const viewProps = {
+      ...props,
+      events: events,
+      backgroundEvents: backgroundEvents,
+      date: current,
+      getNow: getNow,
+      length: length,
+      localizer: localizer,
+      getters: getters,
+      components: components,
+      accessors: accessors,
+      showMultiDayTimes: showMultiDayTimes,
+      getDrilldownView: this.getDrilldownView,
+      onNavigate: this.handleNavigate,
+      onDrillDown: this.handleDrillDown,
+      onSelectEvent: this.handleSelectEvent,
+      onDoubleClickEvent: this.handleDoubleClickEvent,
+      onKeyPressEvent: this.handleKeyPressEvent,
+      onSelectSlot: this.handleSelectSlot,
+      onShowMore: onShowMore,
+      doShowMoreDrillDown: doShowMoreDrillDown,
+    }
 
     return (
       <div
@@ -1050,28 +1105,26 @@ class Calendar extends React.Component {
             localizer={localizer}
           />
         )}
-        <View
-          {...props}
-          events={events}
-          backgroundEvents={backgroundEvents}
-          date={current}
-          getNow={getNow}
-          length={length}
-          localizer={localizer}
-          getters={getters}
-          components={components}
-          accessors={accessors}
-          showMultiDayTimes={showMultiDayTimes}
-          getDrilldownView={this.getDrilldownView}
-          onNavigate={this.handleNavigate}
-          onDrillDown={this.handleDrillDown}
-          onSelectEvent={this.handleSelectEvent}
-          onDoubleClickEvent={this.handleDoubleClickEvent}
-          onKeyPressEvent={this.handleKeyPressEvent}
-          onSelectSlot={this.handleSelectSlot}
-          onShowMore={onShowMore}
-          doShowMoreDrillDown={doShowMoreDrillDown}
-        />
+        {grouping?.resources
+          ? grouping.resources.map((resource, index) => (
+              <GroupingView
+                key={resource.id}
+                resource={resource}
+                index={index}
+                grouping={grouping}
+              >
+                <View
+                  {...viewProps}
+                  events={events.filter(
+                    (event) => event.resourceId === resource.id
+                  )}
+                  hideHeader={index !== 0}
+                />
+              </GroupingView>
+            ))
+          : null}
+
+        {!grouping?.resources ? <View {...viewProps} /> : null}
       </div>
     )
   }

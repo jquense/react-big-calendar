@@ -76,7 +76,7 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { date, localizer, className } = this.props,
+    let { date, localizer, className, hideHeader } = this.props,
       month = localizer.visibleDays(date, localizer),
       weeks = chunk(month, 7)
 
@@ -89,9 +89,11 @@ class MonthView extends React.Component {
         aria-label="Month View"
         ref={this.containerRef}
       >
-        <div className="rbc-row rbc-month-header" role="row">
-          {this.renderHeaders(weeks[0])}
-        </div>
+        {hideHeader ? null : (
+          <div className="rbc-row rbc-month-header" role="row">
+            {this.renderHeaders(weeks[0])}
+          </div>
+        )}
         {weeks.map(this.renderWeek)}
         {this.props.popup && this.renderOverlay()}
       </div>
@@ -408,6 +410,8 @@ MonthView.propTypes = {
       y: PropTypes.number,
     }),
   ]),
+
+  hideHeader: PropTypes.bool,
 }
 
 MonthView.range = (date, { localizer }) => {

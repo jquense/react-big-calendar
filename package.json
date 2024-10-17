@@ -11,8 +11,7 @@
     "url": "git+https://github.com/jquense/react-big-calendar.git"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com"
   },
   "license": "MIT",
   "main": "lib/index.js",

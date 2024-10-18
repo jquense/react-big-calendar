@@ -20,7 +20,7 @@ export const GroupingCalendarWeekView = ({
           </div>
         </div>
       </div>
-      {children}
+      <div className="rbc-grouping-children-wrapper">{children}</div>
     </div>
   )
 }

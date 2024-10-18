@@ -79,7 +79,11 @@
   flex:1;
   display: flex;
   justify-content: flex-start;
-  align-items: stretch;;
+  align-items: stretch;
+}
+
+.rbc-grouping-children-wrapper{
+  flex: 1;
 }
 
 .rbc-grouping-column {

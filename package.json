@@ -30,6 +30,8 @@
     "assets": "cpy src/less/* lib/less && npm run assets-addons",
     "assets-addons": "cpy addons/**/*.less ../lib/ --cwd=src --parents",
     "build": "npm run clean && babel src --out-dir lib && npm run assets && npm run less",
+    "watch": "babel src --out-dir lib --watch",
+    "build-watch": "npm run build && npm run watch",
     "build:examples": "npm run clean:examples && webpack --config examples/webpack.config.js",
     "examples": "npm run clean:examples && webpack-dev-server --inline --hot --config examples/webpack.config.js",
     "lint": "eslint src test",

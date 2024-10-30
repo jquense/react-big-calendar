@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { DragSource } from 'react-dnd'
+import { DragSource as DragSourceOld } from 'react-dnd'
+import { DragSource as DragSource14 } from 'react-dnd-14'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import cn from 'classnames'
 import compose from './compose'
@@ -8,6 +9,8 @@ import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
 
 import BigCalendar from '../../index'
+
+const DragSource = window.Pulse.features.calendar_dnd_14 ? DragSource14 : DragSourceOld;
 
 class DraggableEventWrapper extends React.Component {
   static contextTypes = {

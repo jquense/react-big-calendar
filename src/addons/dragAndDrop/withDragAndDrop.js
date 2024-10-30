@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { DragDropContext } from 'react-dnd'
+import { HTML5Backend } from "react-dnd-html5-backend-14";
+import { DndProvider, useDragDropManager } from "react-dnd-14";
 import cn from 'classnames'
 
 import { accessor } from '../../utils/propTypes'
 import DraggableEventWrapper from './DraggableEventWrapper'
 import { DroppableDayWrapper, DroppableDateCellWrapper } from './DropWrappers'
+import { useCallback } from 'react';
 
+const shouldUseDragDropContext14 = window.Pulse.features.calendar_dnd_14;
 let html5Backend
 
 try {
-  html5Backend = require('react-dnd-html5-backend')
+  html5Backend = shouldUseDragDropContext14 ? HTML5Backend : require('react-dnd-html5-backend');
 } catch (err) {
   /* optional dep missing */
 }
@@ -72,6 +76,7 @@ export default function withDragAndDrop(
       resizable: PropTypes.bool,
       components: PropTypes.object,
       step: PropTypes.number,
+      dragDropManager: shouldUseDragDropContext14 ? PropTypes.object : undefined,
     }
 
     static defaultProps = {
@@ -119,9 +124,15 @@ export default function withDragAndDrop(
     }
 
     componentWillMount() {
-      let monitor = this.context.dragDropManager.getMonitor()
-      this.monitor = monitor
-      this.unsubscribeToStateChange = monitor.subscribeToStateChange(
+      if (!shouldUseDragDropContext14) {
+        let monitor = this.context.dragDropManager.getMonitor()
+        this.monitor = monitor
+      }
+      else 
+      {
+        this.monitor = this.props.dragDropManager.getMonitor()
+      }
+      this.unsubscribeToStateChange = this.monitor.subscribeToStateChange(
         this.handleStateChange
       )
     }
@@ -167,6 +178,22 @@ export default function withDragAndDrop(
   if (backend === false) {
     return DragAndDropCalendar
   } else {
-    return DragDropContext(backend)(DragAndDropCalendar)
+    if (!shouldUseDragDropContext14) {
+      return DragDropContext(backend)(DragAndDropCalendar)
+    }
+
+    return withDragDrop(DragAndDropCalendar, backend);
   }
+}
+
+function withDragDrop(WrappedComponent, backend) {
+  const WrappedComponentWithDragDropManager = props => {
+    const dragDropManager = useDragDropManager();
+    return <WrappedComponent {...props} dragDropManager={dragDropManager} />;
+  };
+
+  return props =>
+    (<DndProvider backend={backend}>
+      <WrappedComponentWithDragDropManager {...props} />
+    </DndProvider>);
 }

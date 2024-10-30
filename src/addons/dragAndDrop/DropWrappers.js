@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { DropTarget } from 'react-dnd'
+import { DropTarget as DropTargetOld } from 'react-dnd'
+import { DropTarget as DropTarget14 } from 'react-dnd-14'
 import cn from 'classnames'
 import noop from 'lodash/noop'
 
@@ -8,6 +9,8 @@ import { accessor } from '../../utils/propTypes'
 import { accessor as get } from '../../utils/accessors'
 import dates from '../../utils/dates'
 import BigCalendar from '../../index'
+
+const DropTarget = window.Pulse.features.calendar_dnd_14 ? DropTarget14 : DropTargetOld;
 
 function getEventDropProps(start, end, dropDate, droppedInAllDay) {
   // Calculate duration between original start and end dates

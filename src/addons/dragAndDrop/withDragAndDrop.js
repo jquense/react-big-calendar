@@ -4,11 +4,9 @@ import { DragDropContext } from 'react-dnd'
 import { HTML5Backend } from "react-dnd-html5-backend-14";
 import { DndProvider, useDragDropManager } from "react-dnd-14";
 import cn from 'classnames'
-
 import { accessor } from '../../utils/propTypes'
 import DraggableEventWrapper from './DraggableEventWrapper'
 import { DroppableDayWrapper, DroppableDateCellWrapper } from './DropWrappers'
-import { useCallback } from 'react';
 
 const shouldUseDragDropContext14 = window.Pulse.features.calendar_dnd_14;
 let html5Backend

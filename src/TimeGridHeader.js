@@ -128,6 +128,7 @@ class TimeGridHeader extends React.Component {
         resourceHeader: ResourceHeaderComponent = ResourceHeader,
       },
       resizable,
+      timeGutterPosition,
     } = this.props
 
     let style = {}
@@ -143,12 +144,14 @@ class TimeGridHeader extends React.Component {
         ref={scrollRef}
         className={clsx('rbc-time-header', isOverflowing && 'rbc-overflowing')}
       >
-        <div
-          className="rbc-label rbc-time-header-gutter"
-          style={{ width, minWidth: width, maxWidth: width }}
-        >
-          {TimeGutterHeader && <TimeGutterHeader />}
-        </div>
+        {timeGutterPosition !== 'right' && (
+          <div
+            className="rbc-label rbc-time-header-gutter-left"
+            style={{ width, minWidth: width, maxWidth: width }}
+          >
+            {TimeGutterHeader && <TimeGutterHeader />}
+          </div>
+        )}
 
         {resources.map(([id, resource], idx) => (
           <div className="rbc-time-header-content" key={id || idx}>
@@ -197,6 +200,15 @@ class TimeGridHeader extends React.Component {
             />
           </div>
         ))}
+
+        {timeGutterPosition !== 'left' && (
+          <div
+            className="rbc-label rbc-time-header-gutter-right"
+            style={{ width, minWidth: width, maxWidth: width }}
+          >
+            {TimeGutterHeader && <TimeGutterHeader />}
+          </div>
+        )}
       </div>
     )
   }

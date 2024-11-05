@@ -200,6 +200,7 @@ export default class TimeGrid extends Component {
       showMultiDayTimes,
       longPressThreshold,
       resizable,
+      timeGutterPosition,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -238,6 +239,22 @@ export default class TimeGrid extends Component {
 
     allDayEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
+    const timeGutter = (
+      <TimeGutter
+        date={start}
+        ref={this.gutterRef}
+        localizer={localizer}
+        min={localizer.merge(start, min)}
+        max={localizer.merge(start, max)}
+        step={this.props.step}
+        getNow={this.props.getNow}
+        timeslots={this.props.timeslots}
+        components={components}
+        className="rbc-time-gutter"
+        getters={getters}
+      />
+    )
+
     return (
       <div
         className={clsx(
@@ -275,6 +292,7 @@ export default class TimeGrid extends Component {
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
           resizable={resizable}
+          timeGutterPosition={timeGutterPosition}
         />
         {this.props.popup && this.renderOverlay()}
         <div
@@ -282,25 +300,16 @@ export default class TimeGrid extends Component {
           className="rbc-time-content"
           onScroll={this.handleScroll}
         >
-          <TimeGutter
-            date={start}
-            ref={this.gutterRef}
-            localizer={localizer}
-            min={localizer.merge(start, min)}
-            max={localizer.merge(start, max)}
-            step={this.props.step}
-            getNow={this.props.getNow}
-            timeslots={this.props.timeslots}
-            components={components}
-            className="rbc-time-gutter"
-            getters={getters}
-          />
+          {timeGutterPosition !== 'right' && timeGutter}
+
           {this.renderEvents(
             range,
             rangeEvents,
             rangeBackgroundEvents,
             getNow()
           )}
+
+          {timeGutterPosition !== 'left' && timeGutter}
         </div>
       </div>
     )
@@ -475,4 +484,5 @@ TimeGrid.propTypes = {
 TimeGrid.defaultProps = {
   step: 30,
   timeslots: 2,
+  timeGutterPosition: 'left',
 }

@@ -141,3 +141,14 @@
   background-color: $current-time-color;
   pointer-events: none;
 }
+
+.rbc-resource-grouping {
+  &.rbc-time-header-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rbc-row .rbc-header {
+    width: 141px;
+  }
+}

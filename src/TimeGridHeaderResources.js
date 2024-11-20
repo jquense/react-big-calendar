@@ -49,7 +49,10 @@ class TimeGridHeaderResources extends React.Component {
       )
 
       return (
-        <div key={idx} className="rbc-time-header-content">
+        <div
+          key={idx}
+          className="rbc-time-header-content rbc-resource-grouping"
+        >
           <div
             className={`rbc-row rbc-time-header-cell${
               range.length <= 1 ? ' rbc-time-header-cell-single-day' : ''
@@ -100,7 +103,7 @@ class TimeGridHeaderResources extends React.Component {
             })}
           </div>
 
-          <div className="rbc-row rbc-m-b-negative-3">
+          <div className="rbc-row rbc-m-b-negative-3 rbc-h-full">
             {resources.map(([id, resource], idx) => {
               // Filter the grouped events by the current date.
               const filteredEvents = (groupedEvents.get(id) || []).filter(

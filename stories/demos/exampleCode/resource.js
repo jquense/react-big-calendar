@@ -1,9 +1,11 @@
 import LinkTo from '@storybook/addon-links/react'
 import PropTypes from 'prop-types'
-import React, { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, useMemo, useState, useCallback } from 'react'
 import { Calendar, DateLocalizer, Views } from 'react-big-calendar'
 import DemoLink from '../../DemoLink.component'
+import withDragAndDrop from '../../../src/addons/dragAndDrop'
 
+const DragAndDropCalendar = withDragAndDrop(Calendar)
 const resources = [
   { resourceId: 1, resourceTitle: 'Board room' },
   { resourceId: 2, resourceTitle: 'Training room' },
@@ -34,6 +36,55 @@ export default function Resource({ localizer }) {
       views: ['day', 'work_week'],
     }),
     []
+  )
+
+  const [myEvents, setEvents] = useState(events)
+
+  const handleSelectSlot = useCallback(
+    ({ start, end, resourceId }) => {
+      const title = window.prompt('New Event Name')
+      if (title) {
+        setEvents((prev) => [...prev, { start, end, title, resourceId }])
+      }
+    },
+    [setEvents]
+  )
+
+  const handleSelectEvent = useCallback(
+    (event) => window.alert(event.title),
+    []
+  )
+  const moveEvent = useCallback(
+    ({
+      event,
+      start,
+      end,
+      resourceId,
+      isAllDay: droppedOnAllDaySlot = false,
+    }) => {
+      const { allDay } = event
+      if (!allDay && droppedOnAllDaySlot) {
+        event.allDay = true
+      }
+
+      setEvents((prev) => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end, resourceId, allDay }]
+      })
+    },
+    [setEvents]
+  )
+
+  const resizeEvent = useCallback(
+    ({ event, start, end }) => {
+      setEvents((prev) => {
+        const existing = prev.find((ev) => ev.id === event.id) ?? {}
+        const filtered = prev.filter((ev) => ev.id !== event.id)
+        return [...filtered, { ...existing, start, end }]
+      })
+    },
+    [setEvents]
   )
 
   return (
@@ -67,14 +118,19 @@ export default function Resource({ localizer }) {
         </label>
       </div>
       <div className="height600">
-        <Calendar
+        <DragAndDropCalendar
+          selectable
           defaultDate={defaultDate}
           defaultView={Views.DAY}
-          events={events}
+          events={myEvents}
           localizer={localizer}
           resources={resources}
           resourceIdAccessor="resourceId"
           resourceTitleAccessor="resourceTitle"
+          onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          onEventDrop={moveEvent}
+          onEventResize={resizeEvent}
           step={60}
           views={views}
           resourceGroupingLayout={groupResourcesOnWeek}

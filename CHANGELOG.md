@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/jquense/react-big-calendar/compare/v1.15.0...v1.16.0) (2024-11-21)
+
+
+### Features
+
+* implement Conditional Resource Grouping ([#2679](https://github.com/jquense/react-big-calendar/issues/2679)) ([d52f836](https://github.com/jquense/react-big-calendar/commit/d52f836b1170106c87d1f9a64bb8c2c3484278f5))
+
 # [1.15.0](https://github.com/jquense/react-big-calendar/compare/v1.14.1...v1.15.0) (2024-10-01)
 
 

@@ -1,0 +1,46 @@
+import { Story } from '@storybook/addon-docs'
+
+# resourceGroupingLayout
+
+- type: `boolean`
+- default: 'false'
+
+Determines whether grouped resources should be displayed in a layout that organizes them from Resource > Day to Day > Resource.
+
+For example
+
+```md
+resourceGroupingLayout={false}
+Resource 1
+  Day 1
+    Event 1
+    Event 2
+  Day 2
+    Event 3
+    Event 4
+Resource 2
+  Day 3
+    Event 5
+    Event 6
+  Day 4
+    Event 7
+    Event 8
+
+resourceGroupingLayout={true}
+Day 1
+  Resource 1
+    Event 1
+    Event 2
+  Resource 2
+    Event 3
+    Event 4
+Day 2
+  Resource 1
+    Event 5
+    Event 6
+  Resource 2
+    Event 7
+    Event 8
+```
+
+<Story id="props--resource-grouping-layout" />

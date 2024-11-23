@@ -1,7 +1,8 @@
 import React from 'react'
 import moment from 'moment'
-import { Calendar, momentLocalizer } from '../../src'
+import { Calendar, dayjsLocalizer, momentLocalizer } from '../../src'
 import Basic from './exampleCode/basic'
+import dayjs from 'dayjs'
 
 export default {
   title: 'Examples',
@@ -13,7 +14,7 @@ export default {
   },
 }
 
-const localizer = momentLocalizer(moment)
+const localizer = dayjsLocalizer(dayjs)
 
 export function Example1() {
   return <Basic localizer={localizer} />

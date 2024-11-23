@@ -29,6 +29,7 @@ class WorkWeek extends React.Component {
     let range = workWeekRange(date, this.props)
     return (
       <TimeGrid
+        container="workweek"
         {...props}
         range={range}
         eventOffset={15}

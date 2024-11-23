@@ -26,6 +26,7 @@ class Week extends React.Component {
 
     return (
       <TimeGrid
+        container="week"
         {...props}
         range={range}
         eventOffset={15}

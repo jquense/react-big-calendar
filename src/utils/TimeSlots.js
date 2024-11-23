@@ -12,6 +12,10 @@ export function getSlotMetrics({
 }) {
   const key = getKey({ start, end, step, timeslots, localizer })
 
+  end.setDate(start.getDate() + 1); // Add 1 day
+  end.setHours(3, 0, 0); // Setting at 3 AM
+
+
   // DST differences are handled inside the localizer
   const totalMin = 1 + localizer.getTotalMin(start, end)
   const minutesFromMidnight = localizer.getMinutesFromMidnight(start)

@@ -26,6 +26,7 @@ class Day extends React.Component {
 
     return (
       <TimeGrid
+        container="day"
         {...props}
         range={range}
         eventOffset={10}

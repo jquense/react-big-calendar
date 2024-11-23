@@ -34,7 +34,7 @@ export default function Basic({
       components: {
         timeSlotWrapper: ColoredDateCellWrapper,
       },
-      defaultDate: new Date(2015, 3, 1),
+      defaultDate: new Date(2022, 9, 14),
       max: dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours'),
       views: Object.keys(Views).map((k) => Views[k]),
     }),
@@ -50,9 +50,11 @@ export default function Basic({
           defaultDate={defaultDate}
           events={events}
           localizer={localizer}
-          max={max}
+          min={new Date(2022, 10, 14, 9, 0, 0)}
+          max={new Date(2022, 10, 14, 22, 59, 59)}
           showMultiDayTimes
           step={60}
+          timeslots={1}
           views={views}
         />
       </div>

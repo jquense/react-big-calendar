@@ -22,6 +22,7 @@ function MyWeek({
 
   return (
     <TimeGrid
+      container="customView"
       date={date}
       eventOffset={15}
       localizer={localizer}

@@ -145,14 +145,18 @@ export default class TimeGrid extends Component {
   ) {
     let { min, max } = this.props
 
-    let daysEvents = (groupedEvents.get(id) || []).filter((event) =>
-      localizer.inRange(
-        date,
-        accessors.start(event),
-        accessors.end(event),
-        'day'
+    let daysEvents = (groupedEvents.get(id) || [])
+
+    if (this.props.container !== "day") {
+      daysEvents = daysEvents.filter((event) =>
+        localizer.inRange(
+          date,
+          accessors.start(event),
+          accessors.end(event),
+          'day'
+        )
       )
-    )
+    }
 
     let daysBackgroundEvents = (groupedBackgroundEvents.get(id) || []).filter(
       (event) =>
@@ -318,7 +322,7 @@ export default class TimeGrid extends Component {
       rangeBackgroundEvents = []
 
     events.forEach((event) => {
-      if (inRange(event, start, end, accessors, localizer)) {
+      if (inRange(event, start, end, accessors, localizer) || this.props.container === "day") {
         let eStart = accessors.start(event),
           eEnd = accessors.end(event)
 
@@ -525,7 +529,7 @@ TimeGrid.propTypes = {
   events: PropTypes.array.isRequired,
   backgroundEvents: PropTypes.array.isRequired,
   resources: PropTypes.array,
-
+  container:  PropTypes.string && "view" | "week" | "workweek",
   resourceGroupingLayout: PropTypes.bool,
 
   step: PropTypes.number,

@@ -118,9 +118,11 @@ class EventContainerWrapper extends React.Component {
       boundaryBox
     )
 
+    const end = this._calculateDnDEnd(start)
+
     this.context.draggable.onDropFromOutside({
       start,
-      end: slotMetrics.nextSlot(start),
+      end,
       allDay: false,
       resource,
     })
@@ -133,9 +135,23 @@ class EventContainerWrapper extends React.Component {
       { y: point.y, x: point.x },
       bounds
     )
-    const end = slotMetrics.nextSlot(start)
+    const end = this._calculateDnDEnd(start)
     const event = this.context.draggable.dragFromOutsideItem()
     this.update(event, slotMetrics.getRange(start, end, false, true))
+  }
+
+  _calculateDnDEnd = (start) => {
+    const { accessors, slotMetrics, localizer } = this.props
+    const event = this.context.draggable.dragFromOutsideItem()
+    const { duration: eventDuration } = eventTimes(event, accessors, localizer)
+
+    let end = slotMetrics.nextSlot(start)
+    const eventHasDuration = !isNaN(eventDuration)
+    if (eventHasDuration) {
+      const eventEndSlot = localizer.add(start, eventDuration, 'milliseconds')
+      end = new Date(Math.max(eventEndSlot, end))
+    }
+    return end
   }
 
   updateParentScroll = (parent, node) => {
@@ -152,8 +168,8 @@ class EventContainerWrapper extends React.Component {
             parent,
             Math.min(
               draggedEl.offsetTop -
-                parent.offsetHeight +
-                draggedEl.offsetHeight,
+              parent.offsetHeight +
+              draggedEl.offsetHeight,
               parent.scrollHeight
             )
           )

@@ -1,3 +1,10 @@
+## [1.16.2](https://github.com/jquense/react-big-calendar/compare/v1.16.1...v1.16.2) (2024-11-25)
+
+
+### Bug Fixes
+
+* Customize drag from outside event's length ([#2681](https://github.com/jquense/react-big-calendar/issues/2681)) ([2ed9465](https://github.com/jquense/react-big-calendar/commit/2ed9465b159f08c7fa6c09f699a353137304260b)), closes [#2680](https://github.com/jquense/react-big-calendar/issues/2680)
+
 ## [1.16.1](https://github.com/jquense/react-big-calendar/compare/v1.16.0...v1.16.1) (2024-11-25)
 
 

@@ -1,3 +1,10 @@
+## [1.16.3](https://github.com/jquense/react-big-calendar/compare/v1.16.2...v1.16.3) (2024-11-26)
+
+
+### Bug Fixes
+
+* update doc type of onDropFromOutside function signature ([5438fb5](https://github.com/jquense/react-big-calendar/commit/5438fb51e019111742228a6b22825aa694cac256))
+
 ## [1.16.2](https://github.com/jquense/react-big-calendar/compare/v1.16.1...v1.16.2) (2024-11-25)
 
 

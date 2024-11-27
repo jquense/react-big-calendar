@@ -187,8 +187,8 @@ export default function (dayjsLib) {
   function merge(date, time) {
     if (!date && !time) return null
 
-    const tm = dayjs(time).format('HH:mm:ss')
-    const dt = dayjs(date).startOf('day').format('MM/DD/YYYY')
+    const tm = dayjsLib(time).format('HH:mm:ss')
+    const dt = dayjsLib(date).startOf('day').format('MM/DD/YYYY')
     // We do it this way to avoid issues when timezone switching
     return dayjsLib(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
   }

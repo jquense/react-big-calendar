@@ -226,6 +226,17 @@ class Calendar extends React.Component {
     endAccessor: accessor,
 
     /**
+     * The id of the event. Must resolve to a string or number. Used as the key for the event in the DOM. If not provided, the event will be given a key of 'evt\_{index}'.
+     *
+     * ```js
+     * string | number | (event: Object) => string | number
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    eventIdAccessor: accessor,
+
+    /**
      * Returns the id of the `resource` that the event is a member of. This
      * id should match at least one resource in the `resources` array.
      *

@@ -6,13 +6,11 @@ export default function createEvents(idx = 0, date = new Date()) {
   const sets = [
     [
       {
-        id: '1',
         title: 'Event 1',
         start: new Date(y, m, d, 10, 30, 0, 0),
         end: new Date(y, m, d, 13, 30, 0, 0),
       },
       {
-        id: '2',
         title: 'Event 2',
         start: new Date(y, m, d, 10, 30, 0, 0),
         end: new Date(y, m, d, 13, 30, 0, 0),
@@ -115,7 +113,6 @@ export default function createEvents(idx = 0, date = new Date()) {
         end: new Date(y, m, d, 13, 0, 0, 0),
       },
       {
-        id: '1512',
         title: 'Event 15',
         start: new Date(y, m, d, 6, 30, 0, 0),
         end: new Date(y, m, d, 8, 0, 0, 0),

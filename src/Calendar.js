@@ -898,6 +898,8 @@ class Calendar extends React.Component {
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
 
+    eventIdAccessor: 'id',
+
     longPressThreshold: 250,
     getNow: () => new Date(),
     dayLayoutAlgorithm: 'overlap',
@@ -923,6 +925,7 @@ class Calendar extends React.Component {
     resourceAccessor,
     resourceIdAccessor,
     resourceTitleAccessor,
+    eventIdAccessor,
     eventPropGetter,
     backgroundEventPropGetter,
     slotPropGetter,
@@ -971,6 +974,7 @@ class Calendar extends React.Component {
         resource: wrapAccessor(resourceAccessor),
         resourceId: wrapAccessor(resourceIdAccessor),
         resourceTitle: wrapAccessor(resourceTitleAccessor),
+        eventId: wrapAccessor(eventIdAccessor),
       },
     }
   }

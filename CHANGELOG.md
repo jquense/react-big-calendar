@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/jquense/react-big-calendar/compare/v1.16.3...v1.17.0) (2024-12-11)
+
+
+### Features
+
+* adds a new event id accessor ([#2693](https://github.com/jquense/react-big-calendar/issues/2693)) ([9883ace](https://github.com/jquense/react-big-calendar/commit/9883ace5ae79829f41bbc3721a61e9f5fa45f61b))
+
 ## [1.16.3](https://github.com/jquense/react-big-calendar/compare/v1.16.2...v1.16.3) (2024-11-26)
 
 

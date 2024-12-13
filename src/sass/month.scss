@@ -14,27 +14,30 @@
 }
 
 .rbc-selected-cell {
-  background-color: $date-selection-bg-color;
+  background-color: var(
+    --rbc-date-selection-bg-color,
+    $date-selection-bg-color
+  );
 }
 
 .rbc-show-more {
   @extend .rbc-ellipsis;
   background-color: rgba(255, 255, 255, 0.3);
-  z-index: $event-zindex;
+  z-index: var(--rbc-event-zindex, $event-zindex);
   font-weight: bold;
   font-size: 85%;
   height: auto;
   line-height: normal;
-  color: $event-bg;
+  color: var(--rbc-event-bg, $event-bg);
   &:hover,
   &:focus {
-    color: darken($event-bg, 10%);
+    color: var(--rbc-event-bg--selected, darken($event-bg, 10%));
   }
 }
 
 .rbc-month-view {
   position: relative;
-  border: 1px solid $calendar-border;
+  border: 1px solid var(--rbc-calendar-border, $calendar-border);
   display: flex;
   flex-direction: column;
   flex: 1 0 0;
@@ -61,7 +64,7 @@
   height: 100%; // ie-fix
 
   & + & {
-    border-top: 1px solid $cell-border;
+    border-top: 1px solid var(--rbc-cell-border, $cell-border);
   }
 }
 
@@ -98,18 +101,18 @@
   flex: 1 0 0%;
 
   & + & {
-    border-left: 1px solid $cell-border;
+    border-left: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   .rbc-rtl & + & {
     border-left-width: 0;
-    border-right: 1px solid $cell-border;
+    border-right: 1px solid var(--rbc-cell-border, $cell-border);
   }
 }
 
 .rbc-overlay {
   position: absolute;
-  z-index: $event-zindex + 1;
+  z-index: var(--rbc-event-zindex, $event-zindex) + 1;
   border: 1px solid #e5e5e5;
   background-color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);

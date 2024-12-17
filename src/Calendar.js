@@ -226,6 +226,17 @@ class Calendar extends React.Component {
     endAccessor: accessor,
 
     /**
+     * The id of the event. Must resolve to a string or number. Used as the key for the event in the DOM. If not provided, the event will be given a key of 'evt\_{index}'.
+     *
+     * ```js
+     * string | number | (event: Object) => string | number
+     * ```
+     *
+     * @type {(func|string)}
+     */
+    eventIdAccessor: accessor,
+
+    /**
      * Returns the id of the `resource` that the event is a member of. This
      * id should match at least one resource in the `resources` array.
      *
@@ -898,6 +909,8 @@ class Calendar extends React.Component {
     resourceIdAccessor: 'id',
     resourceTitleAccessor: 'title',
 
+    eventIdAccessor: 'id',
+
     longPressThreshold: 250,
     getNow: () => new Date(),
     dayLayoutAlgorithm: 'overlap',
@@ -923,6 +936,7 @@ class Calendar extends React.Component {
     resourceAccessor,
     resourceIdAccessor,
     resourceTitleAccessor,
+    eventIdAccessor,
     eventPropGetter,
     backgroundEventPropGetter,
     slotPropGetter,
@@ -971,6 +985,7 @@ class Calendar extends React.Component {
         resource: wrapAccessor(resourceAccessor),
         resourceId: wrapAccessor(resourceIdAccessor),
         resourceTitle: wrapAccessor(resourceTitleAccessor),
+        eventId: wrapAccessor(eventIdAccessor),
       },
     }
   }

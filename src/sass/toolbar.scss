@@ -54,6 +54,7 @@ $active-border: darken($btn-border, 12%);
 
     &:hover {
       color: $btn-color;
+      cursor: pointer;
       background-color: $active-background;
           border-color: $active-border;
     }

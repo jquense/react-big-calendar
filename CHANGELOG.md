@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/jquense/react-big-calendar/compare/v1.17.0...v1.17.1) (2024-12-19)
+
+
+### Bug Fixes
+
+* **Toolbar:** cursor styling on hover ([#2700](https://github.com/jquense/react-big-calendar/issues/2700)) ([7029eb3](https://github.com/jquense/react-big-calendar/commit/7029eb3e7ee09134ca9e490c828dffcf98019a7e)), closes [#2697](https://github.com/jquense/react-big-calendar/issues/2697)
+
 # [1.17.0](https://github.com/jquense/react-big-calendar/compare/v1.16.3...v1.17.0) (2024-12-11)
 
 

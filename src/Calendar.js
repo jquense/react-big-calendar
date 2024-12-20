@@ -508,9 +508,15 @@ class Calendar extends React.Component {
 
     /**
      * Show truncated events in an overlay when you click the "+_x_ more" link.
+     * can be true/false or the string toggle to handle open close on click
      */
     popup: PropTypes.bool,
 
+    /**
+    * enable or disable the view of duplicated events in the more popup
+    */
+    noDuplicateInMore: PropTypes.bool,
+    
     /**
      * Distance in pixels, from the edges of the viewport, the "show more" overlay should be positioned.
      *
@@ -889,6 +895,7 @@ class Calendar extends React.Component {
     backgroundEvents: [],
     elementProps: {},
     popup: false,
+    noDuplicateInMore: false,
     toolbar: true,
     view: views.MONTH,
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],

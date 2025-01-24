@@ -269,7 +269,7 @@ function sortByTime(events) {
 
 export default function getStyledEvents({
   events,
-  minimumStartDifference: _minimumStartDifference,
+  minimumStartDifference,
   slotMetrics,
   accessors,
 }) {
@@ -280,7 +280,7 @@ export default function getStyledEvents({
   )
   // TODO: Fix ordering. Order by range depth first.
   const sortedEvents = sortByTime(proxies)
-  const eventRanges = createNestedRanges(sortedEvents)
+  const eventRanges = createNestedRanges(sortedEvents, minimumStartDifference)
 
   /**
    * Instead of calculating z-indexes to use for each event, we can simply render in
@@ -319,10 +319,15 @@ export default function getStyledEvents({
  *
  * The events should be pre-sorted before being passed into this function.
  * @param {Event[]} sortedEvents
+ * @param {number} minimumStartDifference
  * @returns {EventRange[]}
  */
-export function createNestedRanges(sortedEvents) {
-  const mergedRanges = mergeRanges(sortedEvents, false)
+export function createNestedRanges(sortedEvents, minimumStartDifference) {
+  const plainRanges = sortedEvents.map(event => ({
+    start: event.start,
+    end: Math.max(event.end, event.start + minimumStartDifference),
+  }))
+  const mergedRanges = mergeRanges(plainRanges, false)
   let remainingEvents = sortedEvents
 
   const eventRanges = mergedRanges.map(range => {
@@ -330,11 +335,14 @@ export function createNestedRanges(sortedEvents) {
       eventRange,
       childEvents,
       remainingEvents: returnedRemainingEvents,
-    } = createEventRange(range, remainingEvents)
+    } = createEventRange(range, remainingEvents, minimumStartDifference)
     remainingEvents = returnedRemainingEvents
 
     if (childEvents.length > 0) {
-      const childEventRanges = createNestedRanges(childEvents)
+      const childEventRanges = createNestedRanges(
+        childEvents,
+        minimumStartDifference
+      )
       eventRange.addRanges(childEventRanges)
     }
 
@@ -350,8 +358,9 @@ export function createNestedRanges(sortedEvents) {
  * The events should be pre-sorted before being passed into this function.
  * @param {Range} range
  * @param {Event[]} sortedEvents
+ * @param {number} minimumStartDifference
  */
-export function createEventRange(range, sortedEvents) {
+function createEventRange(range, sortedEvents, minimumStartDifference) {
   const eventRange = new EventRange(range.start, range.end)
 
   /**
@@ -382,7 +391,7 @@ export function createEventRange(range, sortedEvents) {
       return
     }
 
-    blockedUntil = event.end
+    blockedUntil = Math.max(event.end, event.start + minimumStartDifference)
     eventRange.addEvent(event)
   })
 

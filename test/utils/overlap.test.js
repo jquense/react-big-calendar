@@ -287,14 +287,10 @@ describe('createNestedRanges', () => {
       { start: d(12), end: d(15) },
       { accessors, slotMetrics }
     )
-    const eventRanges = createNestedRanges([
-      eventA1,
-      eventAA1,
-      eventAAA1,
-      eventAB1,
-      eventA2,
-      eventB1,
-    ])
+    const eventRanges = createNestedRanges(
+      [eventA1, eventAA1, eventAAA1, eventAB1, eventA2, eventB1],
+      15
+    )
 
     expect(eventRanges).toHaveLength(2)
     const [rangeA, rangeB] = eventRanges

@@ -34,3 +34,6 @@ node_modules
 
 # Mac OS X
 .DS_Store
+
+# Sometimes we pack the module locally for testing
+*.tgz

@@ -257,42 +257,14 @@ export class Event {
 }
 
 /**
- * Sort the events in the order in which they'll be rendered in DOM.
- * This eliminates the need for calculating z-indexes.
+ * Sort the events in a way that makes building the ranges easier.
+ * First order by start time (earliest first).
+ * Break ties by the end time (latest first).
  * @param {Event[]} events
  * @returns {Event[]}
  */
-function sortByRender(events) {
-  const sortedByTime = sortBy(events, ['startMs', e => -e.endMs])
-
-  /**
-   * @type {Event[]}
-   */
-  const sorted = []
-  while (sortedByTime.length > 0) {
-    const event = sortedByTime.shift()
-    sorted.push(event)
-
-    for (let i = 0; i < sortedByTime.length; i++) {
-      const test = sortedByTime[i]
-
-      // Still inside this event, look for next.
-      if (event.endMs > test.startMs) continue
-
-      // We've found the first event of the next event group.
-      // If that event is not right next to our current event, we have to
-      // move it here.
-      if (i > 0) {
-        const event = sortedByTime.splice(i, 1)[0]
-        sorted.push(event)
-      }
-
-      // We've already found the next event group, so stop looking.
-      break
-    }
-  }
-
-  return sorted
+function sortByTime(events) {
+  return sortBy(events, ['startMs', e => -e.endMs])
 }
 
 export default function getStyledEvents({
@@ -307,8 +279,27 @@ export default function getStyledEvents({
     event => new Event(event, { slotMetrics, accessors })
   )
   // TODO: Fix ordering. Order by range depth first.
-  const eventsInRenderOrder = sortByRender(proxies)
-  createNestedRanges(eventsInRenderOrder)
+  const sortedEvents = sortByTime(proxies)
+  const eventRanges = createNestedRanges(sortedEvents)
+
+  /**
+   * Instead of calculating z-indexes to use for each event, we can simply render in
+   * an order that allows the DOM to use the correct stacking order.
+   * @type {Event[]}
+   */
+  const eventsInRenderOrder = []
+
+  /**
+   * @param {EventRange} eventRange
+   */
+  const addEventsFromRange = eventRange => {
+    eventRange.events.forEach(event => {
+      eventsInRenderOrder.push(event)
+    })
+    eventRange.childRanges.forEach(addEventsFromRange)
+  }
+
+  eventRanges.forEach(addEventsFromRange)
 
   // Return the original events, along with their styles.
   return eventsInRenderOrder.map(event => ({
@@ -325,12 +316,14 @@ export default function getStyledEvents({
 /**
  * Recursively creates all the EventRanges given an an array of events.
  * This returns only the top-level ranges, which have references pointing to their child ranges.
- * @param {Event[]} eventsInRenderOrder
+ *
+ * The events should be pre-sorted before being passed into this function.
+ * @param {Event[]} sortedEvents
  * @returns {EventRange[]}
  */
-export function createNestedRanges(eventsInRenderOrder) {
-  const mergedRanges = mergeRanges(eventsInRenderOrder, false)
-  let remainingEvents = eventsInRenderOrder
+export function createNestedRanges(sortedEvents) {
+  const mergedRanges = mergeRanges(sortedEvents, false)
+  let remainingEvents = sortedEvents
 
   const eventRanges = mergedRanges.map(range => {
     const {
@@ -353,10 +346,12 @@ export function createNestedRanges(eventsInRenderOrder) {
 
 /**
  * Create an EventRange given a start and end point and the list of available events.
+ *
+ * The events should be pre-sorted before being passed into this function.
  * @param {Range} range
- * @param {Event[]} events
+ * @param {Event[]} sortedEvents
  */
-export function createEventRange(range, events) {
+export function createEventRange(range, sortedEvents) {
   const eventRange = new EventRange(range.start, range.end)
 
   /**
@@ -376,7 +371,7 @@ export function createEventRange(range, events) {
   // - Events directly in this range (not in a parent or child)
   // - Events that are in this range's child ranges
   // - Events that are outside of this range completely
-  events.forEach(event => {
+  sortedEvents.forEach(event => {
     if (!eventRange.isEventInRange(event)) {
       remainingEvents.push(event)
       return

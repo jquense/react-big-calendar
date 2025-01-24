@@ -278,7 +278,6 @@ export default function getStyledEvents({
   const proxies = events.map(
     event => new Event(event, { slotMetrics, accessors })
   )
-  // TODO: Fix ordering. Order by range depth first.
   const sortedEvents = sortByTime(proxies)
   const eventRanges = createNestedRanges(sortedEvents, minimumStartDifference)
 

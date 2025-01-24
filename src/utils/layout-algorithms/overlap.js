@@ -219,6 +219,8 @@ export class Event {
 
   /**
    * The event's width without any overlap.
+   * A range should always be set before rendering an event.
+   * A fallback of 100 is provided just in case though instead of raising an error.
    */
   get _width() {
     if (!this.range) {

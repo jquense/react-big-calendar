@@ -1,51 +1,199 @@
 import sortBy from 'lodash/sortBy'
+import { mergeRanges } from '../rangeFunctions'
 
-// Terminology below:
-// container:
-// These are the largest grouping entities that can encompass multiple rows.
-// A container in this scenario can be thought of as a block of time or a particular segment
-// of the schedule where multiple related events occur.
+/**
+ * @typedef {{ start: number, end: number }} Range
+ */
 
-// Rows within Containers
-// These sub-groupings within containers help manage events that are related but might not directly overlap.
-// Each row can contain multiple leaves.
+/**
+ * The original library categorized events as containers, rows, or leaves - where a container can contain many rows
+ * and a row can contain many leaves. However there are layout issues with this approach. The biggest we found was
+ * that each leaf would always take up its own column even if it could share another leaf's column without overlapping.
+ * There was no logic to account for more than 3 events occurring at the same time since it was always assumed that
+ * each leaf occupied its own column.
+ *
+ * This new approach is more flexible and is built on ranges. Each EventRange can have multiple child EventRanges,
+ * which allows for nesting beyond the 3 layers that the original library was built to support.
+ *
+ * An EventRange includes an array of events. These events are the events that are showing at that ranges specific
+ * depth. The child ranges' events are not included.
+ */
+export class EventRange {
+  /**
+   * @param {number} start
+   * @param {number} end
+   */
+  constructor(start, end) {
+    /**
+     * @type {number}
+     */
+    this.start = start
 
-// Leaves in Rows:
-// The individual events that do not contain other events but are contained within rows.
-// They are the actual entries or appointments in the calendar.
+    /**
+     * @type {number}
+     */
+    this.end = end
 
-// Leaves:
-// Leaves in this context refer to the individual events that are the last level within a grouping hierarchy.
-// They do not contain other events but are contained by a row.
-// Leaves are essentially the 'children' in this hierarchical model,
-// where they represent the most granular level of detail or the smallest grouping unit within an event container.
+    /**
+     * @type {Event[]}
+     */
+    this.events = []
 
-// Rows:
-// Rows represent a middle layer in the hierarchy that groups multiple leaves (events).
-// A row can contain one or more leaves but itself is contained within a container.
-// Rows help organize events that occur in the same timeframe but might not be directly overlapping.
-// They can be thought of as a sub-grouping within a larger event structure (container)
-// where events are related or share similar characteristics, such as a similar start time or location within a view.
+    /**
+     * @type {EventRange | null}
+     */
+    this.parentRange = null
 
-// ================================================================================================================
+    /**
+     * @type {EventRange[]}
+     */
+    this.childRanges = []
 
-// Functionality below:
-// The function getStyledEvents() takes a set of events and processes them through
-// a series of steps to categorize them into containers, rows, and leaves
-// based on their timing and overlapping characteristics.
+    // Memoized values below. These values require recursively checking parents/children,
+    // so it's best to save the value after it's been calculated once.
 
-// The sortByRender() function sorts these events primarily by their start time,
-// helping arrange them sequentially.
+    /**
+     * @type {number | null}
+     * @private
+     */
+    this._depth = null
 
-// Overlapping events are then grouped into containers.
-// If an event cannot fit into an existing container, it becomes a new container.
+    /**
+     * @type {number | null}
+     * @private
+     */
+    this._maxDepth = null
 
-// Within each container, the code attempts to place events into existing rows based on their start times and overlap.
-// If an event does not fit into any existing row, it starts a new row.
+    /**
+     * @type {number | null}
+     * @private
+     */
+    this._width = null
 
-// Events that fit into a row become leaves of that row.
+    /**
+     * @type {number | null}
+     * @private
+     */
+    this._xOffset = null
+  }
 
-class Event {
+  /**
+   * The depth of this range, with 0 being the topmost range.
+   * @returns number
+   */
+  get depth() {
+    if (this._depth !== null) {
+      return this._depth
+    }
+
+    if (this.parentRange) {
+      this._depth = this.parentRange.depth + 1
+    } else {
+      this._depth = 0
+    }
+
+    return this._depth
+  }
+
+  /**
+   * The max depth this range goes to, checking all child ranges to see which
+   * one has the deepest nesting.
+   * @returns {number}
+   */
+  get maxDepth() {
+    if (this._maxDepth !== null) {
+      return this._maxDepth
+    }
+
+    if (this.childRanges.length === 0) {
+      this._maxDepth = this.depth
+      return this._maxDepth
+    }
+
+    const maxChildDepth = Math.max(
+      ...this.childRanges.map(range => range.maxDepth)
+    )
+    this._maxDepth = maxChildDepth
+    return this._maxDepth
+  }
+
+  /**
+   * The width of this range's column, given in percent (i.e. a value of 50 means 50%).
+   * @returns {number}
+   */
+  get width() {
+    if (this._width !== null) {
+      return this._width
+    }
+
+    const availableWidth = 100 - this.xOffset
+    // Plus one to include self.
+    const layersRemaining = this.maxDepth - this.depth + 1
+    this._width = availableWidth / layersRemaining
+    return this._width
+  }
+
+  /**
+   * The width of the gap to the left of this range's column, given in percent (i.e.
+   * a value of 50 means 50%).
+   * @returns {number}
+   */
+  get xOffset() {
+    if (this._xOffset !== null) {
+      return this._xOffset
+    }
+
+    if (!this.parentRange) {
+      this._xOffset = 0
+      return 0
+    }
+
+    const parentTotalWidth = this.parentRange.xOffset + this.parentRange.width
+    this._xOffset = parentTotalWidth
+    return this._xOffset
+  }
+
+  /**
+   * @param {EventRange[]} ranges
+   */
+  addRanges(ranges) {
+    ranges.forEach(range => {
+      range.parentRange = this
+      this.childRanges.push(range)
+    })
+  }
+
+  /**
+   * Adds an event to this range.
+   * @param {Event} event
+   */
+  addEvent(event) {
+    this.events.push(event)
+    event.range = this
+  }
+
+  /**
+   * Checks if an event overlaps with this range.
+   * @param {Event} event
+   */
+  isEventInRange(event) {
+    if (event.start >= this.start && event.start < this.end) {
+      return true
+    }
+
+    if (event.end > this.start && event.end <= this.end) {
+      return true
+    }
+
+    if (event.start < this.start && event.end > this.end) {
+      return true
+    }
+
+    return false
+  }
+}
+
+export class Event {
   constructor(data, { accessors, slotMetrics }) {
     const {
       start,
@@ -56,6 +204,10 @@ class Event {
       height,
     } = slotMetrics.getRange(accessors.start(data), accessors.end(data))
 
+    /**
+     * @type {EventRange | null}
+     */
+    this.range = null
     this.start = start
     this.end = end
     this.startMs = +startDate
@@ -69,27 +221,11 @@ class Event {
    * The event's width without any overlap.
    */
   get _width() {
-    // The container event's width is determined by the maximum number of
-    // events in any of its rows.
-    if (this.rows) {
-      const columns =
-        this.rows.reduce(
-          (max, row) => Math.max(max, row.leaves.length + 1), // add itself
-          0
-        ) + 1 // add the container
-      return 100 / columns
+    if (!this.range) {
+      return 100
     }
 
-    const availableWidth = 100 - this.container._width
-
-    // The row event's width is the space left by the container, divided
-    // among itself and its leaves.
-    if (this.leaves) {
-      return availableWidth / (this.leaves.length + 1)
-    }
-
-    // The leaf event's width is determined by its row's width
-    return this.row._width
+    return this.range.width
   }
 
   /**
@@ -100,55 +236,38 @@ class Event {
     const noOverlap = this._width
     const overlap = Math.min(100, this._width * 1.7)
 
-    // Containers can always grow.
-    if (this.rows) {
-      return overlap
+    if (!this.range) {
+      return noOverlap
     }
 
-    // Rows can grow if they have leaves.
-    if (this.leaves) {
-      return this.leaves.length > 0 ? overlap : noOverlap
+    if (this.range.childRanges.length === 0) {
+      return noOverlap
     }
 
-    // Leaves can grow unless they're the last item in a row.
-    const { leaves } = this.row
-    const index = leaves.indexOf(this)
-    return index === leaves.length - 1 ? noOverlap : overlap
+    return overlap
   }
 
   get xOffset() {
-    // Containers have no offset.
-    if (this.rows) {
+    if (!this.range) {
       return 0
     }
 
-    // Rows always start where their container ends.
-    if (this.leaves) {
-      return this.container._width
-    }
-
-    // Leaves are spread out evenly on the space left by its row.
-    const { leaves, xOffset, _width } = this.row
-    const index = leaves.indexOf(this) + 1
-    return xOffset + index * _width
+    return this.range.xOffset
   }
 }
 
 /**
- * Return true if event a and b is considered to be on the same row.
+ * Sort the events in the order in which they'll be rendered in DOM.
+ * This eliminates the need for calculating z-indexes.
+ * @param {Event[]} events
+ * @returns {Event[]}
  */
-function onSameRow(a, b, minimumStartDifference) {
-  return (
-    // Occupies the same start slot.
-    Math.abs(b.start - a.start) < minimumStartDifference ||
-    // A's start slot overlaps with b's end slot.
-    (b.start > a.start && b.start < a.end) // b start is in between a start and a end
-  )
-}
-
 function sortByRender(events) {
   const sortedByTime = sortBy(events, ['startMs', e => -e.endMs])
 
+  /**
+   * @type {Event[]}
+   */
   const sorted = []
   while (sortedByTime.length > 0) {
     const event = sortedByTime.shift()
@@ -178,7 +297,7 @@ function sortByRender(events) {
 
 export default function getStyledEvents({
   events,
-  minimumStartDifference,
+  minimumStartDifference: _minimumStartDifference,
   slotMetrics,
   accessors,
 }) {
@@ -187,51 +306,9 @@ export default function getStyledEvents({
   const proxies = events.map(
     event => new Event(event, { slotMetrics, accessors })
   )
+  // TODO: Fix ordering. Order by range depth first.
   const eventsInRenderOrder = sortByRender(proxies)
-
-  // Group overlapping events, while keeping order.
-  // Every event is always one of: container, row or leaf.
-  // Containers can contain rows, and rows can contain leaves.
-  const containerEvents = []
-  for (let i = 0; i < eventsInRenderOrder.length; i++) {
-    const event = eventsInRenderOrder[i]
-
-    // Check if this event can go into a container event.
-    const container = containerEvents.find(
-      c =>
-        c.end > event.start ||
-        Math.abs(event.start - c.start) < minimumStartDifference
-    )
-
-    // Couldn't find a container — that means this event is a container.
-    if (!container) {
-      event.rows = []
-      containerEvents.push(event)
-      continue
-    }
-
-    // Found a container for the event.
-    event.container = container
-
-    // Check if the event can be placed in an existing row.
-    // Start looking from behind.
-    let row = null
-    for (let j = container.rows.length - 1; !row && j >= 0; j--) {
-      if (onSameRow(container.rows[j], event, minimumStartDifference)) {
-        row = container.rows[j]
-      }
-    }
-
-    if (row) {
-      // Found a row, so add it.
-      row.leaves.push(event)
-      event.row = row
-    } else {
-      // Couldn't find a row – that means this event is a row.
-      event.leaves = []
-      container.rows.push(event)
-    }
-  }
+  createNestedRanges(eventsInRenderOrder)
 
   // Return the original events, along with their styles.
   return eventsInRenderOrder.map(event => ({
@@ -243,4 +320,76 @@ export default function getStyledEvents({
       xOffset: Math.max(0, event.xOffset),
     },
   }))
+}
+
+/**
+ * Recursively creates all the EventRanges given an an array of events.
+ * This returns only the top-level ranges, which have references pointing to their child ranges.
+ * @param {Event[]} eventsInRenderOrder
+ * @returns {EventRange[]}
+ */
+export function createNestedRanges(eventsInRenderOrder) {
+  const mergedRanges = mergeRanges(eventsInRenderOrder, false)
+  let remainingEvents = eventsInRenderOrder
+
+  const eventRanges = mergedRanges.map(range => {
+    const {
+      eventRange,
+      childEvents,
+      remainingEvents: returnedRemainingEvents,
+    } = createEventRange(range, remainingEvents)
+    remainingEvents = returnedRemainingEvents
+
+    if (childEvents.length > 0) {
+      const childEventRanges = createNestedRanges(childEvents)
+      eventRange.addRanges(childEventRanges)
+    }
+
+    return eventRange
+  })
+
+  return eventRanges
+}
+
+/**
+ * Create an EventRange given a start and end point and the list of available events.
+ * @param {Range} range
+ * @param {Event[]} events
+ */
+export function createEventRange(range, events) {
+  const eventRange = new EventRange(range.start, range.end)
+
+  /**
+   * @type {number | null}
+   */
+  let blockedUntil = null
+  /**
+   * @type {Event[]}
+   */
+  const childEvents = []
+  /**
+   * @type {Event[]}
+   */
+  const remainingEvents = []
+
+  // Group the events into three categories:
+  // - Events directly in this range (not in a parent or child)
+  // - Events that are in this range's child ranges
+  // - Events that are outside of this range completely
+  events.forEach(event => {
+    if (!eventRange.isEventInRange(event)) {
+      remainingEvents.push(event)
+      return
+    }
+
+    if (blockedUntil !== null && event.start < blockedUntil) {
+      childEvents.push(event)
+      return
+    }
+
+    blockedUntil = event.end
+    eventRange.addEvent(event)
+  })
+
+  return { eventRange, childEvents, remainingEvents }
 }

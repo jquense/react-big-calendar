@@ -1,3 +1,38 @@
+## [1.17.1](https://github.com/jquense/react-big-calendar/compare/v1.17.0...v1.17.1) (2024-12-19)
+
+
+### Bug Fixes
+
+* **Toolbar:** cursor styling on hover ([#2700](https://github.com/jquense/react-big-calendar/issues/2700)) ([7029eb3](https://github.com/jquense/react-big-calendar/commit/7029eb3e7ee09134ca9e490c828dffcf98019a7e)), closes [#2697](https://github.com/jquense/react-big-calendar/issues/2697)
+
+# [1.17.0](https://github.com/jquense/react-big-calendar/compare/v1.16.3...v1.17.0) (2024-12-11)
+
+
+### Features
+
+* adds a new event id accessor ([#2693](https://github.com/jquense/react-big-calendar/issues/2693)) ([9883ace](https://github.com/jquense/react-big-calendar/commit/9883ace5ae79829f41bbc3721a61e9f5fa45f61b))
+
+## [1.16.3](https://github.com/jquense/react-big-calendar/compare/v1.16.2...v1.16.3) (2024-11-26)
+
+
+### Bug Fixes
+
+* update doc type of onDropFromOutside function signature ([5438fb5](https://github.com/jquense/react-big-calendar/commit/5438fb51e019111742228a6b22825aa694cac256))
+
+## [1.16.2](https://github.com/jquense/react-big-calendar/compare/v1.16.1...v1.16.2) (2024-11-25)
+
+
+### Bug Fixes
+
+* Customize drag from outside event's length ([#2681](https://github.com/jquense/react-big-calendar/issues/2681)) ([2ed9465](https://github.com/jquense/react-big-calendar/commit/2ed9465b159f08c7fa6c09f699a353137304260b)), closes [#2680](https://github.com/jquense/react-big-calendar/issues/2680)
+
+## [1.16.1](https://github.com/jquense/react-big-calendar/compare/v1.16.0...v1.16.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* add appearance: button for better cross-browser button styling c… ([#2677](https://github.com/jquense/react-big-calendar/issues/2677)) ([85be249](https://github.com/jquense/react-big-calendar/commit/85be24990fc17992c0f7fadb0dc1b1e427d305ac)), closes [#2676](https://github.com/jquense/react-big-calendar/issues/2676)
+
 # [1.16.0](https://github.com/jquense/react-big-calendar/compare/v1.15.0...v1.16.0) (2024-11-21)
 
 

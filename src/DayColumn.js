@@ -210,6 +210,7 @@ class DayColumn extends React.Component {
     return styledEvents.map(({ event, style }, idx) => {
       let end = accessors.end(event)
       let start = accessors.start(event)
+      let key = accessors.eventId(event) ?? 'evt_' + idx
       let format = 'eventTimeRangeFormat'
       let label
 
@@ -230,7 +231,7 @@ class DayColumn extends React.Component {
           style={style}
           event={event}
           label={label}
-          key={'evt_' + idx}
+          key={key}
           getters={getters}
           rtl={rtl}
           components={components}

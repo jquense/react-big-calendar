@@ -29,6 +29,29 @@ export default {
 
 const Template = (args) => <BaseCalendar {...args} />
 
+export const CustomizeResourceViewWidthUsingCssVariables = (args) => (
+  <>
+    <style>
+      {`
+      :root {
+        --rbc-resource-view-day-slot-width: 100px;
+      }
+    `}
+    </style>
+    <BaseCalendar {...args} />
+  </>
+)
+CustomizeResourceViewWidthUsingCssVariables.storyName =
+  'customize resource view width using css variables'
+CustomizeResourceViewWidthUsingCssVariables.args = {
+  defaultView: Views.WEEK,
+  defaultDate: new Date(),
+  events: createEvents(5),
+  events: resourceEvents,
+  resources,
+  step: 30,
+}
+
 export const ComplexDayViewLayout = Template.bind({})
 ComplexDayViewLayout.storyName = 'complex day view layout'
 ComplexDayViewLayout.args = {

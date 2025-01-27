@@ -106,12 +106,12 @@
   }
 
   .rbc-day-slot {
-    min-width: var(--rbc-day-slot-width);
+    min-width: var(--rbc-resource-view-day-slot-width);
   }
 
   .rbc-header,
   .rbc-day-bg {
-    width: var(--rbc-day-slot-width);
+    width: var(--rbc-resource-view-day-slot-width);
     // min-width: 0;
     flex:  1 1 0;
     flex-basis: 0 px;

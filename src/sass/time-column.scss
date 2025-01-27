@@ -54,7 +54,7 @@
     overflow: hidden;
     position: absolute;
   }
-  
+
   .rbc-background-event {
     @extend .rbc-event;
     opacity: 0.75;
@@ -106,12 +106,12 @@
   }
 
   .rbc-day-slot {
-    min-width: 140px;
+    min-width: var(--rbc-day-slot-width);
   }
 
   .rbc-header,
   .rbc-day-bg {
-    width: 140px;
+    width: var(--rbc-day-slot-width);
     // min-width: 0;
     flex:  1 1 0;
     flex-basis: 0 px;

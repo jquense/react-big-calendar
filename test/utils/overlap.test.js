@@ -8,6 +8,8 @@ import {
 } from '../../src/utils/layout-algorithms/overlap'
 import { getSlotMetrics } from '../../src/utils/TimeSlots'
 
+const FLOAT_PRECISION = 5
+
 const localizer = momentLocalizer(moment)
 const d = (...args) => new Date(2015, 3, 1, ...args)
 const min = dates.startOf(d(), 'day')
@@ -20,6 +22,25 @@ const slotMetrics = getSlotMetrics({
   localizer,
 })
 const accessors = { start: e => e.start, end: e => e.end }
+
+/**
+ * @param {number} start
+ * @param {number} end
+ */
+function buildEvent(start, end) {
+  return new Event({ start: d(start), end: d(end) }, { accessors, slotMetrics })
+}
+
+/**
+ * @param {number[]} start
+ * @param {number[]} end
+ */
+function buildEventWithMinutes(start, end) {
+  return new Event(
+    { start: d(...start), end: d(...end) },
+    { accessors, slotMetrics }
+  )
+}
 
 describe('EventRange', () => {
   /**
@@ -261,65 +282,632 @@ describe('EventRange', () => {
   })
 })
 
-describe('createNestedRanges', () => {
-  it('builds the ranges with the correct hierarchy', () => {
-    const eventA1 = new Event(
-      { start: d(0), end: d(6) },
-      { accessors, slotMetrics }
-    )
-    const eventAA1 = new Event(
-      { start: d(1), end: d(3) },
-      { accessors, slotMetrics }
-    )
-    const eventAAA1 = new Event(
-      { start: d(1), end: d(2) },
-      { accessors, slotMetrics }
-    )
-    const eventAB1 = new Event(
-      { start: d(5), end: d(9) },
-      { accessors, slotMetrics }
-    )
-    const eventA2 = new Event(
-      { start: d(6), end: d(9) },
-      { accessors, slotMetrics }
-    )
-    const eventB1 = new Event(
-      { start: d(12), end: d(15) },
-      { accessors, slotMetrics }
-    )
-    const eventRanges = createNestedRanges(
-      [eventA1, eventAA1, eventAAA1, eventAB1, eventA2, eventB1],
+describe('Event', () => {
+  /**
+   * ```text
+   * ┌─┬─┬─┬─┬─┬─┐
+   * │A│B│C│D│E│ │
+   * └─┴─┴─┴─┴─┤ │
+   *           │ │
+   * ┌─┬───────┤F│
+   * │ │   H   │ │
+   * │G├───┬───┤ │
+   * │ │ I │ J │ │
+   * └─┴───┴───┤ │
+   *           └─┘
+   * ```
+   */
+  const buildComplexExample1 = () => {
+    const eventA = buildEvent(0, 1)
+    const eventB = buildEvent(0.1, 1)
+    const eventC = buildEvent(0.2, 1)
+    const eventD = buildEvent(0.3, 1)
+    const eventE = buildEvent(0.4, 1)
+    const eventF = buildEvent(0.5, 12)
+    const eventG = buildEvent(3, 5)
+    const eventH = buildEvent(3, 4)
+    const eventI = buildEvent(4, 5)
+    const eventJ = buildEvent(4, 5)
+
+    createNestedRanges(
+      [
+        eventA,
+        eventB,
+        eventC,
+        eventD,
+        eventE,
+        eventF,
+        eventG,
+        eventH,
+        eventI,
+        eventJ,
+      ],
       15
     )
 
+    return {
+      A: eventA,
+      B: eventB,
+      C: eventC,
+      D: eventD,
+      E: eventE,
+      F: eventF,
+      G: eventG,
+      H: eventH,
+      I: eventI,
+      J: eventJ,
+    }
+  }
+
+  /**
+   * In this example, events `G`, `H`, `I`, `J`, and `K` all have room to expand.
+   * Events `G` and `H` have more room to grow and expand by different amounts
+   * than events `I`, `J`, and `K`.
+   *
+   * ```text
+   * ┌─┬─┬─┬─┬─┬─┐
+   * │A│B│C│D│E│ │
+   * └─┴─┴─┴─┴─┤ │
+   *           │ │
+   * ┌────┐    │ │
+   * │  G ├────┤F│
+   * ├──┬─┤  H │ │
+   * │ I├─┴─┬──┤ │
+   * │  │ J │ K│ │
+   * └──┤   │  ├─┘
+   *    └───┴──┘
+   * ```
+   */
+  const buildComplexExample2 = () => {
+    const eventA = buildEventWithMinutes([7, 0], [7, 25])
+    const eventB = buildEventWithMinutes([7, 1], [7, 25])
+    const eventC = buildEventWithMinutes([7, 2], [7, 25])
+    const eventD = buildEventWithMinutes([7, 3], [7, 25])
+    const eventE = buildEventWithMinutes([7, 4], [7, 25])
+    const eventF = buildEventWithMinutes([7, 15], [10, 20])
+    const eventG = buildEventWithMinutes([8, 30], [9, 20])
+    const eventH = buildEventWithMinutes([9, 0], [9, 40])
+    const eventI = buildEventWithMinutes([9, 30], [10, 20])
+    const eventJ = buildEventWithMinutes([9, 45], [10, 25])
+    const eventK = buildEventWithMinutes([9, 46], [10, 25])
+
+    createNestedRanges(
+      [
+        eventA,
+        eventB,
+        eventC,
+        eventD,
+        eventE,
+        eventF,
+        eventG,
+        eventH,
+        eventI,
+        eventJ,
+        eventK,
+      ],
+      15
+    )
+
+    return {
+      A: eventA,
+      B: eventB,
+      C: eventC,
+      D: eventD,
+      E: eventE,
+      F: eventF,
+      G: eventG,
+      H: eventH,
+      I: eventI,
+      J: eventJ,
+      K: eventK,
+    }
+  }
+
+  /**
+   * ```text
+   * ┌─┬─┬─┬─┬─┬─┬─┐
+   * │A│B│C│D│E│F│ │
+   * └─┴─┴─┴─┴─┴─┤ │
+   *             │ │
+   * ┌──┬────┬───┤G│
+   * │  │  I │ J │ │
+   * │ H├──┬─┴┬──┤ │
+   * │  │ K│ L│ M│ │
+   * └──┴──┴──┴──┴─┘
+   * ```
+   */
+  const buildComplexExample3 = () => {
+    const eventA = buildEventWithMinutes([7, 0], [7, 30])
+    const eventB = buildEventWithMinutes([7, 1], [7, 30])
+    const eventC = buildEventWithMinutes([7, 2], [7, 30])
+    const eventD = buildEventWithMinutes([7, 3], [7, 30])
+    const eventE = buildEventWithMinutes([7, 4], [7, 30])
+    const eventF = buildEventWithMinutes([7, 5], [7, 30])
+    const eventG = buildEventWithMinutes([7, 6], [10, 0])
+    const eventH = buildEventWithMinutes([9, 0], [10, 0])
+    const eventI = buildEventWithMinutes([9, 0], [9, 30])
+    const eventJ = buildEventWithMinutes([9, 1], [9, 30])
+    const eventK = buildEventWithMinutes([9, 30], [10, 0])
+    const eventL = buildEventWithMinutes([9, 31], [10, 0])
+    const eventM = buildEventWithMinutes([9, 32], [10, 0])
+
+    createNestedRanges(
+      [
+        eventA,
+        eventB,
+        eventC,
+        eventD,
+        eventE,
+        eventF,
+        eventG,
+        eventH,
+        eventI,
+        eventJ,
+        eventK,
+        eventL,
+        eventM,
+      ],
+      15
+    )
+
+    return {
+      A: eventA,
+      B: eventB,
+      C: eventC,
+      D: eventD,
+      E: eventE,
+      F: eventF,
+      G: eventG,
+      H: eventH,
+      I: eventI,
+      J: eventJ,
+      K: eventK,
+      L: eventL,
+      M: eventM,
+    }
+  }
+
+  describe('buildEventTree', () => {
+    describe('example 1', () => {
+      it('sets the parent and children relationships', () => {
+        const events = buildComplexExample1()
+
+        events.H.buildEventTree()
+
+        // Check parent events.
+        expect(events.A._parentEvents).toStrictEqual([])
+        expect(events.B._parentEvents).toStrictEqual([events.A])
+        expect(events.C._parentEvents).toStrictEqual([events.B])
+        expect(events.D._parentEvents).toStrictEqual([events.C])
+        expect(events.E._parentEvents).toStrictEqual([events.D])
+        expect(events.F._parentEvents).toStrictEqual([events.E])
+        expect(events.G._parentEvents).toStrictEqual([])
+        expect(events.H._parentEvents).toStrictEqual([events.G])
+        expect(events.I._parentEvents).toStrictEqual([events.G])
+        expect(events.J._parentEvents).toStrictEqual([events.I])
+
+        // Check child events.
+        expect(events.A._childEvents).toStrictEqual([events.B])
+        expect(events.B._childEvents).toStrictEqual([events.C])
+        expect(events.C._childEvents).toStrictEqual([events.D])
+        expect(events.D._childEvents).toStrictEqual([events.E])
+        expect(events.E._childEvents).toStrictEqual([events.F])
+        expect(events.F._childEvents).toStrictEqual([])
+        expect(events.G._childEvents).toStrictEqual([events.H, events.I])
+        expect(events.H._childEvents).toStrictEqual([])
+        expect(events.I._childEvents).toStrictEqual([events.J])
+        expect(events.J._childEvents).toStrictEqual([])
+      })
+    })
+
+    describe('example 2', () => {
+      it('sets the parent and children relationships', () => {
+        const events = buildComplexExample2()
+
+        events.H.buildEventTree()
+
+        // Check parent events.
+        expect(events.A._parentEvents).toStrictEqual([])
+        expect(events.B._parentEvents).toStrictEqual([events.A])
+        expect(events.C._parentEvents).toStrictEqual([events.B])
+        expect(events.D._parentEvents).toStrictEqual([events.C])
+        expect(events.E._parentEvents).toStrictEqual([events.D])
+        expect(events.F._parentEvents).toStrictEqual([events.E])
+        expect(events.G._parentEvents).toStrictEqual([])
+        expect(events.H._parentEvents).toStrictEqual([events.G, events.I])
+        expect(events.I._parentEvents).toStrictEqual([])
+        expect(events.J._parentEvents).toStrictEqual([events.I])
+        expect(events.K._parentEvents).toStrictEqual([events.J])
+
+        // Check child events.
+        expect(events.A._childEvents).toStrictEqual([events.B])
+        expect(events.B._childEvents).toStrictEqual([events.C])
+        expect(events.C._childEvents).toStrictEqual([events.D])
+        expect(events.D._childEvents).toStrictEqual([events.E])
+        expect(events.E._childEvents).toStrictEqual([events.F])
+        expect(events.F._childEvents).toStrictEqual([])
+        expect(events.G._childEvents).toStrictEqual([events.H])
+        expect(events.H._childEvents).toStrictEqual([])
+        expect(events.I._childEvents).toStrictEqual([events.H, events.J])
+        expect(events.J._childEvents).toStrictEqual([events.K])
+        expect(events.K._childEvents).toStrictEqual([])
+      })
+    })
+  })
+
+  describe('expansionDetails', () => {
+    describe('example 1', () => {
+      it('returns the most restrictive expansion details for the event', () => {
+        const events = buildComplexExample1()
+
+        expect(events.A.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.B.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.C.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.D.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.E.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.F.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.G.expansionDetails).toStrictEqual({
+          maxLocalDepth: 2,
+          openRanges: 2,
+        })
+        expect(events.H.expansionDetails).toStrictEqual({
+          maxLocalDepth: 1,
+          openRanges: 3,
+        })
+        expect(events.I.expansionDetails).toStrictEqual({
+          maxLocalDepth: 2,
+          openRanges: 2,
+        })
+        expect(events.J.expansionDetails).toStrictEqual({
+          maxLocalDepth: 2,
+          openRanges: 2,
+        })
+      })
+    })
+
+    describe('example 2', () => {
+      it('returns the most restrictive expansion details for the event', () => {
+        const events = buildComplexExample2()
+
+        expect(events.A.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.B.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.C.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.D.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.E.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.F.expansionDetails).toStrictEqual({
+          maxLocalDepth: 5,
+          openRanges: 0,
+        })
+        expect(events.G.expansionDetails).toStrictEqual({
+          maxLocalDepth: 1,
+          openRanges: 3,
+        })
+        expect(events.H.expansionDetails).toStrictEqual({
+          maxLocalDepth: 1,
+          openRanges: 3,
+        })
+        expect(events.I.expansionDetails).toStrictEqual({
+          maxLocalDepth: 2,
+          openRanges: 2,
+        })
+        expect(events.J.expansionDetails).toStrictEqual({
+          maxLocalDepth: 2,
+          openRanges: 2,
+        })
+        expect(events.K.expansionDetails).toStrictEqual({
+          maxLocalDepth: 2,
+          openRanges: 2,
+        })
+      })
+    })
+  })
+
+  describe('openRangesBelow', () => {
+    describe('example 1', () => {
+      it('correctly calculates how many open ranges are under each event', () => {
+        const events = buildComplexExample1()
+
+        expect(events.A.openRangesBelow).toBe(0)
+        expect(events.B.openRangesBelow).toBe(0)
+        expect(events.C.openRangesBelow).toBe(0)
+        expect(events.D.openRangesBelow).toBe(0)
+        expect(events.E.openRangesBelow).toBe(0)
+        expect(events.F.openRangesBelow).toBe(0)
+        expect(events.G.openRangesBelow).toBe(2)
+        expect(events.H.openRangesBelow).toBe(3)
+        expect(events.I.openRangesBelow).toBe(2)
+        expect(events.J.openRangesBelow).toBe(2)
+      })
+    })
+
+    describe('example 2', () => {
+      it('correctly calculates how many open ranges are under each event', () => {
+        const events = buildComplexExample2()
+
+        expect(events.A.openRangesBelow).toBe(0)
+        expect(events.B.openRangesBelow).toBe(0)
+        expect(events.C.openRangesBelow).toBe(0)
+        expect(events.D.openRangesBelow).toBe(0)
+        expect(events.E.openRangesBelow).toBe(0)
+        expect(events.F.openRangesBelow).toBe(0)
+        expect(events.G.openRangesBelow).toBe(3)
+        expect(events.H.openRangesBelow).toBe(3)
+        expect(events.I.openRangesBelow).toBe(2)
+        expect(events.J.openRangesBelow).toBe(2)
+        expect(events.K.openRangesBelow).toBe(2)
+      })
+    })
+  })
+
+  describe('baseWidth', () => {
+    const getTotalWidth = events => {
+      return events
+        .map(event => event.baseWidth)
+        .reduce((prev, current) => prev + current, 0)
+    }
+
+    describe('example 1', () => {
+      const events = buildComplexExample1()
+
+      it('returns the non-overlapping width of the event', () => {
+        expect(events.A.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.B.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.C.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.D.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.E.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.F.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.G.baseWidth).toBeCloseTo(250 / 9, FLOAT_PRECISION)
+        expect(events.H.baseWidth).toBeCloseTo(500 / 9, FLOAT_PRECISION)
+        expect(events.I.baseWidth).toBeCloseTo(250 / 9, FLOAT_PRECISION)
+        expect(events.J.baseWidth).toBeCloseTo(250 / 9, FLOAT_PRECISION)
+      })
+
+      it('fills up the available width for each path', () => {
+        expect(
+          getTotalWidth([
+            events.A,
+            events.B,
+            events.C,
+            events.D,
+            events.E,
+            events.F,
+          ])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+
+        expect(getTotalWidth([events.G, events.H, events.F])).toBeCloseTo(
+          100,
+          FLOAT_PRECISION
+        )
+
+        expect(
+          getTotalWidth([events.G, events.I, events.J, events.F])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+      })
+    })
+
+    describe('example 2', () => {
+      const events = buildComplexExample2()
+
+      it('returns the non-overlapping width of the event', () => {
+        expect(events.A.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.B.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.C.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.D.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.E.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.F.baseWidth).toBeCloseTo(100 / 6, FLOAT_PRECISION)
+        expect(events.G.baseWidth).toBeCloseTo(375 / 9, FLOAT_PRECISION)
+        expect(events.H.baseWidth).toBeCloseTo(375 / 9, FLOAT_PRECISION)
+        expect(events.I.baseWidth).toBeCloseTo(250 / 9, FLOAT_PRECISION)
+        expect(events.J.baseWidth).toBeCloseTo(250 / 9, FLOAT_PRECISION)
+        expect(events.K.baseWidth).toBeCloseTo(250 / 9, FLOAT_PRECISION)
+      })
+
+      it('fills up the available width for each path', () => {
+        expect(
+          getTotalWidth([
+            events.A,
+            events.B,
+            events.C,
+            events.D,
+            events.E,
+            events.F,
+          ])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+
+        expect(getTotalWidth([events.G, events.H, events.F])).toBeCloseTo(
+          100,
+          FLOAT_PRECISION
+        )
+
+        expect(
+          getTotalWidth([events.I, events.J, events.K, events.F])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+      })
+    })
+
+    describe('example 3', () => {
+      const events = buildComplexExample3()
+
+      it('returns the non-overlapping width of the event', () => {
+        expect(events.A.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.B.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.C.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.D.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.E.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.F.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.G.baseWidth).toBeCloseTo(100 / 7, FLOAT_PRECISION)
+        expect(events.H.baseWidth).toBeCloseTo(150 / 7, FLOAT_PRECISION)
+        expect(events.I.baseWidth).toBeCloseTo(225 / 7, FLOAT_PRECISION)
+        expect(events.J.baseWidth).toBeCloseTo(225 / 7, FLOAT_PRECISION)
+        expect(events.K.baseWidth).toBeCloseTo(150 / 7, FLOAT_PRECISION)
+        expect(events.L.baseWidth).toBeCloseTo(150 / 7, FLOAT_PRECISION)
+        expect(events.M.baseWidth).toBeCloseTo(150 / 7, FLOAT_PRECISION)
+      })
+
+      it('fills up the available width for each path', () => {
+        expect(
+          getTotalWidth([
+            events.A,
+            events.B,
+            events.C,
+            events.D,
+            events.E,
+            events.F,
+            events.G,
+          ])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+
+        expect(
+          getTotalWidth([events.H, events.I, events.J, events.G])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+
+        expect(
+          getTotalWidth([events.H, events.K, events.L, events.M, events.G])
+        ).toBeCloseTo(100, FLOAT_PRECISION)
+      })
+    })
+  })
+
+  describe('xOffset', () => {
+    describe('example 1', () => {
+      it('returns the correct xOffset value', () => {
+        const events = buildComplexExample1()
+
+        expect(events.A.xOffset).toBeCloseTo(0, 5)
+        expect(events.B.xOffset).toBeCloseTo(100 / 6, 5)
+        expect(events.C.xOffset).toBeCloseTo(200 / 6, 5)
+        expect(events.D.xOffset).toBeCloseTo(300 / 6, 5)
+        expect(events.E.xOffset).toBeCloseTo(400 / 6, 5)
+        expect(events.F.xOffset).toBeCloseTo(500 / 6, 5)
+        expect(events.G.xOffset).toBeCloseTo(0, 5)
+        expect(events.H.xOffset).toBeCloseTo(250 / 9, 5)
+        expect(events.I.xOffset).toBeCloseTo(250 / 9, 5)
+        expect(events.J.xOffset).toBeCloseTo(500 / 9, 5)
+      })
+    })
+
+    describe('example 2', () => {
+      it('returns the correct xOffset value', () => {
+        const events = buildComplexExample2()
+
+        expect(events.A.xOffset).toBeCloseTo(0, 5)
+        expect(events.B.xOffset).toBeCloseTo(100 / 6, 5)
+        expect(events.C.xOffset).toBeCloseTo(200 / 6, 5)
+        expect(events.D.xOffset).toBeCloseTo(300 / 6, 5)
+        expect(events.E.xOffset).toBeCloseTo(400 / 6, 5)
+        expect(events.F.xOffset).toBeCloseTo(500 / 6, 5)
+        expect(events.G.xOffset).toBeCloseTo(0, 5)
+        expect(events.H.xOffset).toBeCloseTo(375 / 9, 5)
+        expect(events.I.xOffset).toBeCloseTo(0, 5)
+        expect(events.J.xOffset).toBeCloseTo(250 / 9, 5)
+        expect(events.K.xOffset).toBeCloseTo(500 / 9, 5)
+      })
+    })
+  })
+})
+
+describe('createNestedRanges', () => {
+  /**
+   * ```text
+   * ┌─┐
+   * │ ├─┬─┐
+   * │ │B│C│
+   * │ │ ├─┘
+   * │A├─┘
+   * │ │
+   * │ │┌──┐
+   * ├─┴┤D │
+   * │E │  │
+   * └──┴──┘
+   * ┌─────┐
+   * │  F  │
+   * └─────┘
+   * ```
+   */
+  const createEvents = () => {
+    const eventA = buildEvent(0, 6)
+    const eventB = buildEvent(1, 3)
+    const eventC = buildEvent(1, 2)
+    const eventD = buildEvent(5, 9)
+    const eventE = buildEvent(6, 9)
+    const eventF = buildEvent(12, 15)
+
+    return {
+      A: eventA,
+      B: eventB,
+      C: eventC,
+      D: eventD,
+      E: eventE,
+      F: eventF,
+    }
+  }
+
+  it('builds the ranges with the correct hierarchy', () => {
+    const events = createEvents()
+
+    const eventRanges = createNestedRanges(Object.values(events), 15)
+
     expect(eventRanges).toHaveLength(2)
-    const [rangeA, rangeB] = eventRanges
+    const [rangeAE, rangeF] = eventRanges
 
-    expect(rangeA.events).toStrictEqual([eventA1, eventA2])
-    expect(rangeA.start).toBe(0 * 60)
-    expect(rangeA.end).toBe(9 * 60)
-    expect(rangeA.childRanges).toHaveLength(2)
-    const [rangeAA, rangeAB] = rangeA.childRanges
+    expect(rangeAE.events).toStrictEqual([events.A, events.E])
+    expect(rangeAE.start).toBe(0 * 60)
+    expect(rangeAE.end).toBe(9 * 60)
+    expect(rangeAE.childRanges).toHaveLength(2)
+    const [rangeB, rangeD] = rangeAE.childRanges
 
-    expect(rangeAA.events).toStrictEqual([eventAA1])
-    expect(rangeAA.start).toBe(1 * 60)
-    expect(rangeAA.end).toBe(3 * 60)
-    expect(rangeAA.childRanges).toHaveLength(1)
-    const rangeAAA = rangeAA.childRanges[0]
+    expect(rangeB.events).toStrictEqual([events.B])
+    expect(rangeB.start).toBe(1 * 60)
+    expect(rangeB.end).toBe(3 * 60)
+    expect(rangeB.childRanges).toHaveLength(1)
+    const rangeC = rangeB.childRanges[0]
 
-    expect(rangeAAA.events).toStrictEqual([eventAAA1])
-    expect(rangeAAA.start).toBe(1 * 60)
-    expect(rangeAAA.end).toBe(2 * 60)
-    expect(rangeAAA.childRanges).toHaveLength(0)
+    expect(rangeC.events).toStrictEqual([events.C])
+    expect(rangeC.start).toBe(1 * 60)
+    expect(rangeC.end).toBe(2 * 60)
+    expect(rangeC.childRanges).toHaveLength(0)
 
-    expect(rangeAB.events).toStrictEqual([eventAB1])
-    expect(rangeAB.start).toBe(5 * 60)
-    expect(rangeAB.end).toBe(9 * 60)
-    expect(rangeAB.childRanges).toHaveLength(0)
+    expect(rangeD.events).toStrictEqual([events.D])
+    expect(rangeD.start).toBe(5 * 60)
+    expect(rangeD.end).toBe(9 * 60)
+    expect(rangeD.childRanges).toHaveLength(0)
 
-    expect(rangeB.events).toStrictEqual([eventB1])
-    expect(rangeB.start).toBe(12 * 60)
-    expect(rangeB.end).toBe(15 * 60)
-    expect(rangeB.childRanges).toHaveLength(0)
+    expect(rangeF.events).toStrictEqual([events.F])
+    expect(rangeF.start).toBe(12 * 60)
+    expect(rangeF.end).toBe(15 * 60)
+    expect(rangeF.childRanges).toHaveLength(0)
   })
 })

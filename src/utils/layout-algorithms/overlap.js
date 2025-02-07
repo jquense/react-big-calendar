@@ -41,6 +41,7 @@ export class EventRange {
      * @type {Event[]}
      */
     this.events = []
+    this.hiddenEvents = []
 
     /**
      * @type {EventRange | null}
@@ -93,6 +94,10 @@ export class EventRange {
 
     this._blockedTimes = mergeRanges(this.events)
     return this._blockedTimes
+  }
+
+  get hasHiddenEvents() {
+    return this.hiddenEvents.length > 0;
   }
 
   /**
@@ -764,6 +769,10 @@ function createEventRange(range, sortedEvents, minimumStartDifference) {
     if (!eventRange.isEventInRange(event)) {
       remainingEvents.push(event)
       return
+    }
+    if (event.isHiddenEvent) {
+      eventRange.hiddenEvents.push(event)
+      return;
     }
 
     if (blockedUntil !== null && event.start < blockedUntil) {

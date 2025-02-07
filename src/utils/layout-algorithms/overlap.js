@@ -2,6 +2,8 @@ import sortBy from 'lodash/sortBy'
 import { mergeRanges } from '../rangeFunctions'
 import _ from 'lodash'
 
+const HIDDEN_EVENT_WIDTH = "10px";
+
 /**
  * @typedef {{ start: number, end: number }} Range
  */
@@ -401,6 +403,10 @@ export class Event {
     return this._expansionDetails
   }
 
+  get isHiddenEvent() {
+    return true; // TODO: implement
+  }
+
   /**
    * Count the number of open ranges below this event.
    * These are used to determine how much this event (and its parents) can expand.
@@ -477,6 +483,11 @@ export class Event {
       return this._baseWidth
     }
 
+    if (this.isHiddenEvent) {
+      this._baseWidth = HIDDEN_EVENT_WIDTH;
+      return this._baseWidth;
+    }
+
     if (!this.range) {
       this._baseWidth = 100
       return this._baseWidth
@@ -546,6 +557,10 @@ export class Event {
     const noOverlap = this.baseWidth
     const overlap = Math.min(100 - this.xOffset, this.baseWidth * 1.7)
 
+    if (this.isHiddenEvent) {
+      return noOverlap;
+    }
+
     if (!this.range) {
       return noOverlap
     }
@@ -560,6 +575,11 @@ export class Event {
   get xOffset() {
     if (this._xOffset != null) {
       return this._xOffset
+    }
+
+    if (this.isHiddenEvent) {
+      this._xOffset = 0;
+      return this._xOffset;
     }
 
     if (!this.range) {

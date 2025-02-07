@@ -409,6 +409,7 @@ export class Event {
   }
 
   get isHiddenEvent() {
+    console.log("this.data_", this.data); // TODO: delete
     return true; // TODO: implement
   }
 
@@ -686,6 +687,21 @@ export default function getStyledEvents({
 
   eventRanges.forEach(addEventsFromRange)
 
+  const getXOffset = (event) => {
+    const defaultOffset = Math.max(0, event.xOffset)
+    if (defaultOffset > 0) {
+      //if not 0 -> return default offset
+      return defaultOffset;
+    }
+    if (event.isHiddenEvent) {
+      return 0;
+    }
+    if (event.range.hasHiddenEvents) {
+      return HIDDEN_EVENT_WIDTH;
+    }
+    return defaultOffset;
+  }
+
   // Return the original events, along with their styles.
   return eventsInRenderOrder.map(event => ({
     event: event.data,
@@ -693,7 +709,7 @@ export default function getStyledEvents({
       top: event.top,
       height: event.height,
       width: event.width,
-      xOffset: Math.max(0, event.xOffset),
+      xOffset: getXOffset(event),
     },
   }))
 }

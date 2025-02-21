@@ -409,7 +409,7 @@ export class Event {
   }
 
   get isHiddenEvent() {
-    return this.data?.isHiddenEvent;
+    return this.data?.is_hidden;
   }
 
   /**

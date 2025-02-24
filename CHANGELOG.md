@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/jquense/react-big-calendar/compare/v1.17.1...v1.18.0) (2025-02-24)
+
+
+### Features
+
+* add support for React 19 ([#2710](https://github.com/jquense/react-big-calendar/issues/2710)) ([4d39499](https://github.com/jquense/react-big-calendar/commit/4d39499d0dc2803d8cf38a2d4036cbdb3c1a0b93))
+
 ## [1.17.1](https://github.com/jquense/react-big-calendar/compare/v1.17.0...v1.17.1) (2024-12-19)
 
 

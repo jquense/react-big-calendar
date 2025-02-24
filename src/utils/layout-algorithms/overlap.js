@@ -2,6 +2,8 @@ import sortBy from 'lodash/sortBy'
 import { mergeRanges } from '../rangeFunctions'
 import _ from 'lodash'
 
+const HIDDEN_EVENT_WIDTH = "10px";
+
 /**
  * @typedef {{ start: number, end: number }} Range
  */
@@ -39,6 +41,7 @@ export class EventRange {
      * @type {Event[]}
      */
     this.events = []
+    this.hiddenEvents = []
 
     /**
      * @type {EventRange | null}
@@ -91,6 +94,10 @@ export class EventRange {
 
     this._blockedTimes = mergeRanges(this.events)
     return this._blockedTimes
+  }
+
+  get hasHiddenEvents() {
+    return this.hiddenEvents.length > 0;
   }
 
   /**
@@ -401,6 +408,10 @@ export class Event {
     return this._expansionDetails
   }
 
+  get isHiddenEvent() {
+    return this.data?.is_hidden;
+  }
+
   /**
    * Count the number of open ranges below this event.
    * These are used to determine how much this event (and its parents) can expand.
@@ -477,6 +488,11 @@ export class Event {
       return this._baseWidth
     }
 
+    if (this.isHiddenEvent) {
+      this._baseWidth = HIDDEN_EVENT_WIDTH;
+      return this._baseWidth;
+    }
+
     if (!this.range) {
       this._baseWidth = 100
       return this._baseWidth
@@ -546,6 +562,10 @@ export class Event {
     const noOverlap = this.baseWidth
     const overlap = Math.min(100 - this.xOffset, this.baseWidth * 1.7)
 
+    if (this.isHiddenEvent) {
+      return noOverlap;
+    }
+
     if (!this.range) {
       return noOverlap
     }
@@ -560,6 +580,11 @@ export class Event {
   get xOffset() {
     if (this._xOffset != null) {
       return this._xOffset
+    }
+
+    if (this.isHiddenEvent) {
+      this._xOffset = 0;
+      return this._xOffset;
     }
 
     if (!this.range) {
@@ -653,6 +678,9 @@ export default function getStyledEvents({
    * @param {EventRange} eventRange
    */
   const addEventsFromRange = eventRange => {
+    eventRange.hiddenEvents.forEach(event => {
+      eventsInRenderOrder.push(event)
+    })
     eventRange.events.forEach(event => {
       eventsInRenderOrder.push(event)
     })
@@ -661,14 +689,37 @@ export default function getStyledEvents({
 
   eventRanges.forEach(addEventsFromRange)
 
+  const getWidth = (event) => {
+    const defaultWidth = event.width
+    if (defaultWidth === 100 && event.range.hasHiddenEvents) {
+      return `calc(100% - ${HIDDEN_EVENT_WIDTH})`;
+    }
+    return defaultWidth;
+  }
+
+  const getXOffset = (event) => {
+    const defaultOffset = Math.max(0, event.xOffset)
+    if (defaultOffset > 0) {
+      //if not 0 -> return default offset
+      return defaultOffset;
+    }
+    if (event.isHiddenEvent) {
+      return 0;
+    }
+    if (event.range.hasHiddenEvents) {
+      return HIDDEN_EVENT_WIDTH;
+    }
+    return defaultOffset;
+  }
+
   // Return the original events, along with their styles.
   return eventsInRenderOrder.map(event => ({
     event: event.data,
     style: {
       top: event.top,
       height: event.height,
-      width: event.width,
-      xOffset: Math.max(0, event.xOffset),
+      width: getWidth(event),
+      xOffset: getXOffset(event),
     },
   }))
 }
@@ -744,6 +795,10 @@ function createEventRange(range, sortedEvents, minimumStartDifference) {
     if (!eventRange.isEventInRange(event)) {
       remainingEvents.push(event)
       return
+    }
+    if (event.isHiddenEvent) {
+      eventRange.hiddenEvents.push(event)
+      return;
     }
 
     if (blockedUntil !== null && event.start < blockedUntil) {

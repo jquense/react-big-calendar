@@ -45,8 +45,8 @@
     "tdd": "NODE_ENV=test jest --watch"
   },
   "peerDependencies": {
-    "react": "^16.14.0 || ^17 || ^18",
-    "react-dom": "^16.14.0 || ^17 || ^18"
+    "react": "^16.14.0 || ^17 || ^18 || ^19",
+    "react-dom": "^16.14.0 || ^17 || ^18 || ^19"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",

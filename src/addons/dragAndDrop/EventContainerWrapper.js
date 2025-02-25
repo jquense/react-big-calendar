@@ -155,6 +155,10 @@ class EventContainerWrapper extends React.Component {
   }
 
   updateParentScroll = (parent, node) => {
+    if(!this.context.draggable.autoscrollWhenDragging){
+      return
+    }
+
     setTimeout(() => {
       const draggedEl = qsa(node, '.rbc-addons-dnd-drag-preview')[0]
       if (draggedEl) {

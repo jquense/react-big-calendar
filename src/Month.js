@@ -7,7 +7,6 @@ import chunk from 'lodash/chunk'
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
 import getPosition from 'dom-helpers/position'
-import * as animationFrame from 'dom-helpers/animationFrame'
 
 /* import Popup from './Popup'
 import Overlay from 'react-overlays/Overlay' */
@@ -27,48 +26,50 @@ class MonthView extends React.Component {
 
     this.state = {
       rowLimit: 5,
-      needLimitMeasure: true,
-      date: null,
     }
     this.containerRef = createRef()
-    this.slotRowRef = createRef()
+    this.slotRowRefs = [] 
 
     this._bgRows = []
     this._pendingSelection = []
   }
 
-  static getDerivedStateFromProps({ date, localizer }, state) {
-    return {
-      date,
-      needLimitMeasure: localizer.neq(date, state.date, 'month'),
+  componentDidMount() {
+    this._sizeObserver = new ResizeObserver(
+      (entries) => {
+        const lastHeight = this._lastHeight
+        for (let entry of entries) {
+          const curHeight = Math.round(entry.contentRect.height);
+          if (lastHeight !== curHeight) {
+            this._lastHeight = curHeight
+            this.measureRowLimit()
+          }
+        }
+      }
+    )
+    if (!this.props.showAllEvents) {
+      this._sizeObserver.observe(this.containerRef.current)
     }
   }
 
-  componentDidMount() {
-    let running
+  componentDidUpdate(prevProps) {
+    const { localizer, date, showAllEvents } = this.props
 
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    // measure on month change
+    if (!showAllEvents && localizer.neq(date, prevProps.date, 'month')) {
+      this.measureRowLimit()
+    }
 
-    window.addEventListener(
-      'resize',
-      (this._resizeListener = () => {
-        if (!running) {
-          animationFrame.request(() => {
-            running = false
-            this.setState({ needLimitMeasure: true }) //eslint-disable-line
-          })
-        }
-      }),
-      false
-    )
-  }
-
-  componentDidUpdate() {
-    if (this.state.needLimitMeasure) this.measureRowLimit(this.props)
+    // toggle observer
+    if (!prevProps.showAllEvents && this.props.showAllEvents) {
+      this._sizeObserver.unobserve(this.containerRef.current)
+    } else if (prevProps.showAllEvents && !this.props.showAllEvents) {
+      this._sizeObserver.observe(this.containerRef.current)
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this._resizeListener, false)
+    this._sizeObserver.disconnect()
   }
 
   getContainer = () => {
@@ -98,6 +99,10 @@ class MonthView extends React.Component {
     )
   }
 
+  saveWeekRef = (ref) => {
+    this.slotRowRefs.push(ref)
+  }
+
   renderWeek = (week, weekIdx) => {
     let {
       events,
@@ -113,7 +118,7 @@ class MonthView extends React.Component {
       showAllEvents,
     } = this.props
 
-    const { needLimitMeasure, rowLimit } = this.state
+    const { rowLimit } = this.state
 
     // let's not mutate props
     const weeksEvents = eventsForWeek(
@@ -129,7 +134,7 @@ class MonthView extends React.Component {
     return (
       <DateContentRow
         key={weekIdx}
-        ref={weekIdx === 0 ? this.slotRowRef : undefined}
+        ref={this.saveWeekRef}
         container={this.getContainer}
         className="rbc-month-row"
         getNow={getNow}
@@ -144,7 +149,6 @@ class MonthView extends React.Component {
         getters={getters}
         localizer={localizer}
         renderHeader={this.readerDateHeading}
-        renderForMeasure={needLimitMeasure}
         onShowMore={this.handleShowMore}
         onSelect={this.handleSelectEvent}
         onDoubleClick={this.handleDoubleClickEvent}
@@ -271,10 +275,23 @@ class MonthView extends React.Component {
   }
 
   measureRowLimit() {
-    this.setState({
-      needLimitMeasure: false,
-      rowLimit: this.slotRowRef.current.getRowLimit(),
-    })
+    // find first week ref with an event
+    for (let i = 0; i < this.slotRowRefs.length; i++) {
+      const rowLimit = this.slotRowRefs[i]?.getRowLimit()
+      if (rowLimit === undefined) continue
+      if (rowLimit !== this.state.rowLimit) {
+        this.setState({
+          rowLimit,
+        })
+      }
+      return
+    }
+    // no events found, reset rowLimit to default 5
+    if (this.state.rowLimit !== 5) {
+      this.setState({
+        rowLimit: 5
+      })
+    }
   }
 
   handleSelectSlot = (range, slotInfo) => {

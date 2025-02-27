@@ -312,6 +312,7 @@ class MonthView extends React.Component {
       onShowMore,
       getDrilldownView,
       doShowMoreDrillDown,
+      noDuplicateInMore
     } = this.props
     //cancel any pending selections so only the event click goes through.
     this.clearSelection()
@@ -319,8 +320,20 @@ class MonthView extends React.Component {
     if (popup) {
       let position = getPosition(cell, this.containerRef.current)
 
+      if (noDuplicateInMore) {
+          events = events.slice(this.state.rowLimit - 1);
+      }
+      if (popup === 'toggle' && this.state.overlay
+          && this.state.overlay.position
+          && this.state.overlay.position.top === position.top
+          && this.state.overlay.position.left === position.left
+          && this.state.overlay.position.width === position.width
+          && this.state.overlay.position.height === position.height
+      )
+          position = null;
+      
       this.setState({
-        overlay: { date, events, position, target },
+        overlay: { date, events, position, target, popup },
       })
     } else if (doShowMoreDrillDown) {
       notify(onDrillDown, [date, getDrilldownView(date) || views.DAY])

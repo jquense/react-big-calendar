@@ -2,7 +2,7 @@ import sortBy from 'lodash/sortBy'
 import { mergeRanges } from '../rangeFunctions'
 import _ from 'lodash'
 
-const HIDDEN_EVENT_WIDTH = "10px";
+const HIDDEN_EVENT_WIDTH = '10px'
 
 /**
  * @typedef {{ start: number, end: number }} Range
@@ -97,7 +97,7 @@ export class EventRange {
   }
 
   get hasHiddenEvents() {
-    return this.hiddenEvents.length > 0;
+    return this.hiddenEvents.length > 0
   }
 
   /**
@@ -398,7 +398,8 @@ export class Event {
         }
       })
 
-      return mostRestrictiveDetails
+      this._expansionDetails = mostRestrictiveDetails
+      return this._expansionDetails
     }
 
     this._expansionDetails = {
@@ -409,7 +410,7 @@ export class Event {
   }
 
   get isHiddenEvent() {
-    return this.data?.is_hidden;
+    return this.data?.is_hidden
   }
 
   /**
@@ -489,8 +490,8 @@ export class Event {
     }
 
     if (this.isHiddenEvent) {
-      this._baseWidth = HIDDEN_EVENT_WIDTH;
-      return this._baseWidth;
+      this._baseWidth = HIDDEN_EVENT_WIDTH
+      return this._baseWidth
     }
 
     if (!this.range) {
@@ -563,7 +564,7 @@ export class Event {
     const overlap = Math.min(100 - this.xOffset, this.baseWidth * 1.7)
 
     if (this.isHiddenEvent) {
-      return noOverlap;
+      return noOverlap
     }
 
     if (!this.range) {
@@ -583,8 +584,8 @@ export class Event {
     }
 
     if (this.isHiddenEvent) {
-      this._xOffset = 0;
-      return this._xOffset;
+      this._xOffset = 0
+      return this._xOffset
     }
 
     if (!this.range) {
@@ -689,27 +690,27 @@ export default function getStyledEvents({
 
   eventRanges.forEach(addEventsFromRange)
 
-  const getWidth = (event) => {
+  const getWidth = event => {
     const defaultWidth = event.width
     if (defaultWidth === 100 && event.range.hasHiddenEvents) {
-      return `calc(100% - ${HIDDEN_EVENT_WIDTH})`;
+      return `calc(100% - ${HIDDEN_EVENT_WIDTH})`
     }
-    return defaultWidth;
+    return defaultWidth
   }
 
-  const getXOffset = (event) => {
+  const getXOffset = event => {
     const defaultOffset = Math.max(0, event.xOffset)
     if (defaultOffset > 0) {
       //if not 0 -> return default offset
-      return defaultOffset;
+      return defaultOffset
     }
     if (event.isHiddenEvent) {
-      return 0;
+      return 0
     }
     if (event.range.hasHiddenEvents) {
-      return HIDDEN_EVENT_WIDTH;
+      return HIDDEN_EVENT_WIDTH
     }
-    return defaultOffset;
+    return defaultOffset
   }
 
   // Return the original events, along with their styles.
@@ -798,7 +799,7 @@ function createEventRange(range, sortedEvents, minimumStartDifference) {
     }
     if (event.isHiddenEvent) {
       eventRange.hiddenEvents.push(event)
-      return;
+      return
     }
 
     if (blockedUntil !== null && event.start < blockedUntil) {

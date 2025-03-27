@@ -1,7 +1,7 @@
 import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
 import * as dates from '../../src/utils/dates'
-import {
+import getStyledEvents, {
   createNestedRanges,
   Event,
   EventRange,
@@ -909,5 +909,25 @@ describe('createNestedRanges', () => {
     expect(rangeF.start).toBe(12 * 60)
     expect(rangeF.end).toBe(15 * 60)
     expect(rangeF.childRanges).toHaveLength(0)
+  })
+})
+
+describe('getStyledEvents', () => {
+  it('does not stall with a large number of deeply nested events', () => {
+    const events = []
+    for (let i = 0; i < 1000; i++) {
+      events.push(buildEvent(12, 13))
+    }
+    const start = new Date()
+    getStyledEvents({
+      events,
+      accessors,
+      slotMetrics,
+      minimumStartDifference: 10,
+    })
+    const end = new Date()
+    const difference = (end - start) / 1000
+    // Should take less than a second
+    expect(difference).toBeLessThan(1)
   })
 })

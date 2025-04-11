@@ -14,10 +14,9 @@ const adjusted = demoEvents.map((event) => {
     end: endDate,
     title: label,
     allDay: allDayEvent,
-    resourceId: ResourceId
     ...other
   } = event
-  return { ...other, startDate, endDate, label, allDayEvent, ResourceId }
+  return { ...other, startDate, endDate, label, allDayEvent }
 })
 
 export const accessorStoryArgs = {
@@ -29,12 +28,18 @@ export const accessorStoryArgs = {
   titleAccessor: 'label',
   tooltipAccessor: 'label',
   startAccessor: 'startDate',
-  idAccessor: 'id',
-  resourceAccessor: 'ResourceId'
+  idAccessor: 'id'
 }
 /** END Specific to event key accessors */
 
 /** Specific to resource key accessors */
+const adjustedResourceEvents = resourceEvents.map((event) => {
+  const {
+    resourceId: ResourceId,
+    ...other
+  } = event;
+  return { ...other, ResourceId }
+})
 const adjustedResources = resources.map(({ id: Id, title: Title }) => ({
   Id,
   Title,
@@ -43,11 +48,11 @@ const adjustedResources = resources.map(({ id: Id, title: Title }) => ({
 export const resourceAccessorStoryArgs = {
   defaultDate: new Date(2015, 3, 4),
   defaultView: Views.DAY,
-  events: resourceEvents,
+  events: adjustedResourceEvents,
   localizer: mLocalizer,
   resourceIdAccessor: 'Id',
   resources: adjustedResources,
   resourceTitleAccessor: 'Title',
-  resourceAccessor: 'resourceId',
+  resourceAccessor: 'ResourceId',
 }
 /** END Specific to resource key accessors */

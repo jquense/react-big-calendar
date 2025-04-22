@@ -410,7 +410,7 @@ export class Event {
   }
 
   get isHiddenEvent() {
-    return this.data?.is_hidden
+    return this.data?.is_hidden || this.data?.is_recurring_event_hidden
   }
 
   /**

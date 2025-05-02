@@ -55,6 +55,17 @@ const customComponents = {
     }
     return <div style={style}>{eventWrapperProps.children}</div>
   },
+  selectionWrapper: (selectionWrapperProps) => {
+    const style = {
+      width: '100%',
+      height: '100%',
+      border: '4px solid',
+      borderColor: 'blue',
+      backgroundColor: 'red',
+      padding: '5px',
+    }
+    return <div style={style}>{selectionWrapperProps.children}</div>
+  },
   timeSlotWrapper: (timeSlotWrapperProps) => {
     const style =
       timeSlotWrapperProps.resource === null ||

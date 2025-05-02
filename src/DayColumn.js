@@ -1,15 +1,15 @@
-import React, { createRef } from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import React, { createRef } from 'react'
 
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 import * as TimeSlotUtils from './utils/TimeSlots'
 import { isSelected } from './utils/selection'
 
-import { notify } from './utils/helpers'
-import * as DayEventLayout from './utils/DayEventLayout'
-import TimeSlotGroup from './TimeSlotGroup'
 import TimeGridEvent from './TimeGridEvent'
+import TimeSlotGroup from './TimeSlotGroup'
+import * as DayEventLayout from './utils/DayEventLayout'
+import { notify } from './utils/helpers'
 import { DayLayoutAlgorithmPropType } from './utils/propTypes'
 
 import DayColumnWrapper from './DayColumnWrapper'
@@ -110,7 +110,11 @@ class DayColumn extends React.Component {
       accessors,
       localizer,
       getters: { dayProp, ...getters },
-      components: { eventContainerWrapper: EventContainer, ...components },
+      components: {
+        eventContainerWrapper: EventContainer,
+        selectionWrapper: Selection,
+        ...components
+      },
     } = this.props
 
     this.slotMetrics = this.slotMetrics.update(this.props)
@@ -169,7 +173,11 @@ class DayColumn extends React.Component {
 
         {selecting && (
           <div className="rbc-slot-selection" style={{ top, height }}>
-            <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
+            {Selection ? (
+              <Selection {...selectDates} />
+            ) : (
+              <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
+            )}
           </div>
         )}
         {isNow && this.intervalTriggered && (

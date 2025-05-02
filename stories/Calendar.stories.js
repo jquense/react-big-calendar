@@ -98,6 +98,17 @@ CustomEventWrapper.args = {
   },
 }
 
+export const CustomSelectionWrapper = Template.bind({})
+CustomSelectionWrapper.storyName = 'add custom selectionWrapper'
+CustomSelectionWrapper.args = {
+  defaultView: Views.DAY,
+  events,
+  selectable: true,
+  components: {
+    selectionWrapper: customComponents.selectionWrapper,
+  },
+}
+
 export const CustomNoAgendaEventsLabel = Template.bind({})
 CustomNoAgendaEventsLabel.storyName = 'add custom no agenda events label'
 CustomNoAgendaEventsLabel.args = {

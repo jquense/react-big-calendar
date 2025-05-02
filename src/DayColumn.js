@@ -110,7 +110,11 @@ class DayColumn extends React.Component {
       accessors,
       localizer,
       getters: { dayProp, ...getters },
-      components: { eventContainerWrapper: EventContainer, selectionWrapper: Selection, ...components },
+      components: {
+        eventContainerWrapper: EventContainer,
+        selectionWrapper: Selection,
+        ...components
+      },
     } = this.props
 
     this.slotMetrics = this.slotMetrics.update(this.props)
@@ -169,7 +173,11 @@ class DayColumn extends React.Component {
 
         {selecting && (
           <div className="rbc-slot-selection" style={{ top, height }}>
-            {Selection ? <Selection {...selectDates} /> : <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>}
+            {Selection ? (
+              <Selection {...selectDates} />
+            ) : (
+              <span>{localizer.format(selectDates, 'selectRangeFormat')}</span>
+            )}
           </div>
         )}
         {isNow && this.intervalTriggered && (

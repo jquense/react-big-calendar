@@ -796,6 +796,7 @@ class Calendar extends React.Component {
       event: PropTypes.elementType,
       eventWrapper: PropTypes.elementType,
       eventContainerWrapper: PropTypes.elementType,
+      selectionWrapper: PropTypes.elementType,
       dateCellWrapper: PropTypes.elementType,
       dayColumnWrapper: PropTypes.elementType,
       timeSlotWrapper: PropTypes.elementType,

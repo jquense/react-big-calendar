@@ -146,6 +146,7 @@ class EventContainerWrapper extends React.Component {
     })
 
     this.reset()
+    // Only call cleanup here, after dropping from outside
     this._cleanupPreviewElements()
   }
 
@@ -279,13 +280,11 @@ class EventContainerWrapper extends React.Component {
 
     selector.on('click', () => {
       if (isBeingDragged) this.reset()
-      this._cleanupPreviewElements()
       this.context.draggable.onEnd(null)
     })
 
     selector.on('reset', () => {
       this.reset()
-      this._cleanupPreviewElements()
       this.context.draggable.onEnd(null)
     })
   }
@@ -294,7 +293,6 @@ class EventContainerWrapper extends React.Component {
     const { resource } = this.props
     const { event } = this.state
     this.reset()
-    this._cleanupPreviewElements()
 
     this.context.draggable.onEnd({
       start: event.start,

@@ -1,14 +1,14 @@
 {
   "name": "react-big-calendar",
-  "version": "1.18.1",
+  "version": "1.18.0",
   "description": "Calendar! with events",
   "author": {
-    "name": "Johnfil Initan",
-    "email": "njohnfil.pr@gmail.com"
+    "name": "Jason Quense",
+    "email": "monastic.panic@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fs-jinitan/react-big-calendar.git"
+    "url": "git+https://github.com/jquense/react-big-calendar.git"
   },
   "publishConfig": {
     "access": "public",
@@ -34,12 +34,11 @@
     "full calendar"
   ],
   "scripts": {
-    "build": "npx zx .scripts/build.mjs",
-    "build-win": "node build-win.js",
+    "build": "zx .scripts/build.mjs",
     "build-storybook": "build-storybook",
     "lint": "NODE_ENV=development eslint src test",
     "prepare": "is-ci || husky install",
-    "prepublishOnly": "yarn build-win",
+    "prepublishOnly": "yarn build",
     "prettier": "prettier '**/*js' '!lib/**' --write ",
     "storybook": "start-storybook -p 9002",
     "test": "yarn lint && NODE_ENV=test jest",
@@ -90,7 +89,6 @@
     "eslint-plugin-react": "^7.32.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.10",
-    "fs-extra": "^11.3.0",
     "husky": "^8.0.3",
     "is-ci": "^3.0.1",
     "jest": "^29.3.1",

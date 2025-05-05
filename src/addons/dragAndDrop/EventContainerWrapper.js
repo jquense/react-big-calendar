@@ -110,6 +110,24 @@ class EventContainerWrapper extends React.Component {
     this.update(event, newRange)
   }
 
+  _cleanupPreviewElements = () => {
+    if (this.ref.current) {
+      const previewElements = qsa(
+        this.ref.current,
+        '.rbc-addons-dnd-drag-preview'
+      )
+      previewElements.forEach((el) => {
+        if (el.parentNode) {
+          try {
+            el.parentNode.removeChild(el)
+          } catch (err) {
+            // Ignore removal errors
+          }
+        }
+      })
+    }
+  }
+
   handleDropFromOutside = (point, boundaryBox) => {
     const { slotMetrics, resource } = this.props
 
@@ -126,6 +144,9 @@ class EventContainerWrapper extends React.Component {
       allDay: false,
       resource,
     })
+
+    this.reset()
+    this._cleanupPreviewElements()
   }
 
   handleDragOverFromOutside = (point, bounds) => {
@@ -168,8 +189,8 @@ class EventContainerWrapper extends React.Component {
             parent,
             Math.min(
               draggedEl.offsetTop -
-              parent.offsetHeight +
-              draggedEl.offsetHeight,
+                parent.offsetHeight +
+                draggedEl.offsetHeight,
               parent.scrollHeight
             )
           )
@@ -229,7 +250,9 @@ class EventContainerWrapper extends React.Component {
     })
 
     selector.on('dragOverFromOutside', (point) => {
-      const item = this.context.draggable.dragFromOutsideItem ? this.context.draggable.dragFromOutsideItem() : null
+      const item = this.context.draggable.dragFromOutsideItem
+        ? this.context.draggable.dragFromOutsideItem()
+        : null
       if (!item) return
       const bounds = getBoundsForNode(node)
       if (!pointInColumn(bounds, point)) return this.reset()
@@ -256,10 +279,13 @@ class EventContainerWrapper extends React.Component {
 
     selector.on('click', () => {
       if (isBeingDragged) this.reset()
+      this._cleanupPreviewElements()
       this.context.draggable.onEnd(null)
     })
+
     selector.on('reset', () => {
       this.reset()
+      this._cleanupPreviewElements()
       this.context.draggable.onEnd(null)
     })
   }
@@ -268,6 +294,7 @@ class EventContainerWrapper extends React.Component {
     const { resource } = this.props
     const { event } = this.state
     this.reset()
+    this._cleanupPreviewElements()
 
     this.context.draggable.onEnd({
       start: event.start,

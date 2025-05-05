@@ -102,6 +102,20 @@ const customComponents = {
       </button>
     )
   },
+  timeIndicatorWrapper: (timeIndicatorWrapperProps) => {
+    return (
+      <div
+        {...timeIndicatorWrapperProps}
+        style={{
+          ...timeIndicatorWrapperProps.style,
+          backgroundColor: 'red',
+          height: '2px',
+        }}
+      >
+        Time Ex
+      </div>
+    )
+  },
 }
 
 export default customComponents

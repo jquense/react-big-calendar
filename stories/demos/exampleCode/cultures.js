@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Calendar, DateLocalizer } from 'react-big-calendar'
 import DemoLink from '../../DemoLink.component'
 import events from '../../resources/events'
-import Layout from 'react-tackle-box/Layout'
 
 require('globalize/lib/cultures/globalize.culture.en-GB')
 require('globalize/lib/cultures/globalize.culture.es')
@@ -76,21 +75,19 @@ export default function CulturesDemo({ localizer }) {
   return (
     <Fragment>
       <DemoLink fileName="cultures">
-        <Layout direction="column" align="center">
-          <label>Select a Culture</label>{' '}
-          <select
-            className="form-control"
-            style={{ width: 200, display: 'inline-block' }}
-            defaultValue={'fr'}
-            onChange={cultureOnClick}
-          >
-            {cultures.map((c, idx) => (
-              <option key={idx} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </Layout>
+        <label>Select a Culture</label>{' '}
+        <select
+          className="form-control"
+          style={{ width: 200, display: 'inline-block' }}
+          defaultValue={'fr'}
+          onChange={cultureOnClick}
+        >
+          {cultures.map((c, idx) => (
+            <option key={idx} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
       </DemoLink>
       <div className="height600">
         <Calendar

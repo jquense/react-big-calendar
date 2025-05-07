@@ -5,9 +5,14 @@ import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import replace from '@rollup/plugin-replace'
 import clear from 'rollup-plugin-clear'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 import dts from 'rollup-plugin-dts'
-import pkg from './package.json' assert { type: 'json' }
+import json from '@rollup/plugin-json'
+
+import { readFileSync } from 'fs'
+const pkg = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf-8')
+)
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -40,16 +45,14 @@ export default [
     },
     external: [...Object.keys(globals), /@babel\/runtime/],
     plugins: [
-      clear({
-        targets: ['./dist', './lib'],
-        watch: true,
-      }),
+      clear({ targets: ['./dist', './lib'], watch: true }),
       replace({
         'process.env.NODE_ENV': JSON.stringify('development'),
         preventAssignment: true,
       }),
       nodeResolve(),
       commonjs(commonjsOptions),
+      json(),
       babel(babelOptions),
     ],
   },
@@ -71,6 +74,7 @@ export default [
       }),
       nodeResolve(),
       commonjs(commonjsOptions),
+      json(),
       babel(babelOptions),
       terser(),
     ],
@@ -85,6 +89,9 @@ export default [
     },
     external: (id) => !id.startsWith('.') && !id.startsWith('/'),
     plugins: [
+      nodeResolve(),
+      commonjs(commonjsOptions),
+      json(),
       babel({
         ...babelOptions,
         configFile: path.join(__dirname, 'babel.config.esm.js'),

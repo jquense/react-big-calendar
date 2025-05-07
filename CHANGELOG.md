@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/Xetoxyc/react-big-calendar/compare/v1.2.1...v1.2.2) (2025-05-07)
+
+
+### Bug Fixes
+
+* rollup config ([3c3599b](https://github.com/Xetoxyc/react-big-calendar/commit/3c3599b1397d32bf332926e6219fd345529c0883))
+
 ## [1.2.1](https://github.com/Xetoxyc/react-big-calendar/compare/v1.2.0...v1.2.1) (2024-08-30)
 
 

@@ -5,6 +5,7 @@ import EventRowMixin from './EventRowMixin'
 import { eventLevels } from './utils/eventLevels'
 import range from 'lodash/range'
 
+// Modified: Check if a segment spans through this slot (including events that started earlier)
 let isSegmentInSlot = (seg, slot) => seg.left <= slot && seg.right >= slot
 let eventsInSlot = (segments, slot) =>
   segments.filter((seg) => isSegmentInSlot(seg, slot)).map((seg) => seg.event)
@@ -24,10 +25,31 @@ class EventEndingRow extends React.Component {
     while (current <= slots) {
       let key = '_lvl_' + current
 
+      // Find segment that starts at or spans through current slot
       let { event, left, right, span } =
-        rowSegments.filter((seg) => isSegmentInSlot(seg, current))[0] || {} //eslint-disable-line
+        rowSegments.filter((seg) => isSegmentInSlot(seg, current))[0] || {} 
 
       if (!event) {
+        // No visible event starts at this slot, but check if we need a "more" button
+        // for hidden events that span this slot
+        const hiddenEvents = this.getHiddenEventsForSlot(segments, current)
+        if (hiddenEvents.length > 0) {
+          let gap = current - lastEnd
+          if (gap) {
+            row.push(EventRowMixin.renderSpan(slots, gap, key + '_gap'))
+          }
+          row.push(
+            EventRowMixin.renderSpan(
+              slots,
+              1,
+              key,
+              this.renderShowMore(segments, current)
+            )
+          )
+          lastEnd = current = current + 1
+          continue
+        }
+        
         current++
         continue
       }
@@ -62,6 +84,23 @@ class EventEndingRow extends React.Component {
     }
 
     return <div className="rbc-row">{row}</div>
+  }
+
+  // New helper method to find hidden events for a slot
+  getHiddenEventsForSlot(segments, slot) {
+    // Get all events (visible and hidden) for this slot
+    const allEventsInSlot = eventsInSlot(segments, slot)
+    
+    // Get visible events for this slot from the first level
+    const rowSegments = eventLevels(segments).levels[0]
+    const visibleEventsInSlot = rowSegments
+      .filter(seg => isSegmentInSlot(seg, slot))
+      .map(seg => seg.event)
+    
+    // Return events that are in allEventsInSlot but not in visibleEventsInSlot
+    return allEventsInSlot.filter(
+      event => !visibleEventsInSlot.some(visEvent => visEvent === event)
+    )
   }
 
   canRenderSlotEvent(slot, span) {

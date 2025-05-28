@@ -1,8 +1,8 @@
+import { scrollParent, scrollTop } from 'dom-helpers'
+import qsa from 'dom-helpers/cjs/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { DnDContext } from './DnDContext'
-import { scrollParent, scrollTop } from 'dom-helpers'
-import qsa from 'dom-helpers/cjs/querySelectorAll'
 
 import Selection, {
   getBoundsForNode,
@@ -110,24 +110,6 @@ class EventContainerWrapper extends React.Component {
     this.update(event, newRange)
   }
 
-  _cleanupPreviewElements = () => {
-    if (this.ref.current) {
-      const previewElements = qsa(
-        this.ref.current,
-        '.rbc-addons-dnd-drag-preview'
-      )
-      previewElements.forEach((el) => {
-        if (el.parentNode) {
-          try {
-            el.parentNode.removeChild(el)
-          } catch (err) {
-            // Ignore removal errors
-          }
-        }
-      })
-    }
-  }
-
   handleDropFromOutside = (point, boundaryBox) => {
     const { slotMetrics, resource } = this.props
 
@@ -145,9 +127,8 @@ class EventContainerWrapper extends React.Component {
       resource,
     })
 
+    // Cleanup after dropping from outside
     this.reset()
-    // Only call cleanup here, after dropping from outside
-    this._cleanupPreviewElements()
   }
 
   handleDragOverFromOutside = (point, bounds) => {

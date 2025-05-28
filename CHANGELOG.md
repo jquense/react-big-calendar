@@ -1,3 +1,16 @@
+# [1.19.0](https://github.com/jquense/react-big-calendar/compare/v1.18.0...v1.19.0) (2025-05-28)
+
+
+### Bug Fixes
+
+* Clean up preview elements after dropping from outside ([#2746](https://github.com/jquense/react-big-calendar/issues/2746)) ([652502f](https://github.com/jquense/react-big-calendar/commit/652502f67c9a193466608319853429b4f85720eb))
+* issue [#2534](https://github.com/jquense/react-big-calendar/issues/2534) ([#2566](https://github.com/jquense/react-big-calendar/issues/2566)) ([10cfe84](https://github.com/jquense/react-big-calendar/commit/10cfe84ec1257cdd09949f50630c3e84680d1aec))
+
+
+### Features
+
+* **time-indicator-wrapper:** expose time indicator wrapper component ([#2747](https://github.com/jquense/react-big-calendar/issues/2747)) ([10b8041](https://github.com/jquense/react-big-calendar/commit/10b8041f6c6b41304c74ad70f36fcb7f0e67b698))
+
 # [1.18.0](https://github.com/jquense/react-big-calendar/compare/v1.17.1...v1.18.0) (2025-02-24)
 
 

@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/jquense/react-big-calendar/compare/v1.19.0...v1.19.1) (2025-05-28)
+
+
+### Bug Fixes
+
+* correctly show +more buttons on slots with hidden spanning events ([#2744](https://github.com/jquense/react-big-calendar/issues/2744)) ([dbd0b0a](https://github.com/jquense/react-big-calendar/commit/dbd0b0a767c294457704ea682a7c9621d8d93440))
+
 # [1.19.0](https://github.com/jquense/react-big-calendar/compare/v1.18.0...v1.19.0) (2025-05-28)
 
 

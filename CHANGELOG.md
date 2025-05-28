@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/jquense/react-big-calendar/compare/v1.19.1...v1.19.2) (2025-05-28)
+
+
+### Bug Fixes
+
+* fix dayjs localizer merge function to not change min and max upon tz change ([#2712](https://github.com/jquense/react-big-calendar/issues/2712)) ([7d2aa77](https://github.com/jquense/react-big-calendar/commit/7d2aa77663d2d96ec50b9dc640277a59cc05ac0c))
+
 ## [1.19.1](https://github.com/jquense/react-big-calendar/compare/v1.19.0...v1.19.1) (2025-05-28)
 
 

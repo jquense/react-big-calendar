@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Overlay } from 'react-overlays'
 import Popup from './Popup'
@@ -42,7 +42,7 @@ const IsolatedOverlayManager = ({ selected }) => {
     if (overlay && selected !== overlay.selected) {
       setOverlay(prev => ({ ...prev, selected }))
     }
-  }, [selected])
+  }, [selected, overlay])
 
   if (!overlay || !portalContainer) return null
 

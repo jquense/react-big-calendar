@@ -13,87 +13,10 @@ import DateContentRow from './DateContentRow'
 import DateHeader from './DateHeader'
 import Header from './Header'
 
-import { inRange, sortEvents } from './utils/eventLevels'
+import { inRange, sortWeekEvents } from './utils/eventLevels'
 
 let eventsForWeek = (evts, start, end, accessors, localizer) =>
   evts.filter((e) => inRange(e, start, end, accessors, localizer))
-
-/**
- * Optimized event sorting for better performance with large datasets
- */
-let fastSortWeekEvents = (events, accessors, localizer) => {
-  if (events.length < 2) return events
-  
-  const singleDayEvents = []
-  const multiDayEvents = []
-  
-  events.forEach((event) => {
-    const start = accessors.start(event)
-    const end = accessors.end(event)
-    
-    if (start.getTime() === end.getTime()) {
-      singleDayEvents.push(event)
-    } else {
-      multiDayEvents.push(event)
-    }
-  })
-  
-  singleDayEvents.sort((a, b) => {
-    return accessors.start(a).getTime() - accessors.start(b).getTime()
-  })
-  
-  const multiSorted = multiDayEvents.sort((a, b) =>
-    sortEvents(a, b, accessors, localizer)
-  )
-  
-  return [...multiSorted, ...singleDayEvents]
-}
-
-/**
- * Preprocesses events and assigns them to weeks for faster rendering
- */
-let preprocessMonthEventsFast = (events, weeks, accessors, localizer) => {
-  const weekEventsMap = new Map()
-  
-  const weekBoundaries = weeks.map((week, idx) => ({
-    idx,
-    start: week[0].getTime(),
-    end: week[week.length - 1].getTime()
-  }))
-  
-  const eventsByDate = new Map()
-  
-  events.forEach(event => {
-    const startTime = accessors.start(event).getTime()
-    const dateKey = Math.floor(startTime / (24 * 60 * 60 * 1000))
-    
-    if (!eventsByDate.has(dateKey)) {
-      eventsByDate.set(dateKey, [])
-    }
-    eventsByDate.get(dateKey).push(event)
-  })
-  
-  eventsByDate.forEach((dateEvents, dateKey) => {
-    const dateTime = dateKey * (24 * 60 * 60 * 1000)
-    
-    const weekIdx = weekBoundaries.findIndex(week => 
-      dateTime >= week.start && dateTime <= week.end
-    )
-    
-    if (weekIdx !== -1) {
-      if (!weekEventsMap.has(weekIdx)) {
-        weekEventsMap.set(weekIdx, [])
-      }
-      weekEventsMap.get(weekIdx).push(...dateEvents)
-    }
-  })
-  
-  weekEventsMap.forEach((weekEvents, weekIdx) => {
-    weekEventsMap.set(weekIdx, fastSortWeekEvents(weekEvents, accessors, localizer))
-  })
-  
-  return weekEventsMap
-}
 
 class MonthView extends React.Component {
   constructor(...args) {
@@ -109,8 +32,6 @@ class MonthView extends React.Component {
 
     this._bgRows = []
     this._pendingSelection = []
-    this._weekEventsCache = null
-    this._lastCacheKey = null
   }
 
   static getDerivedStateFromProps({ date, localizer }, state) {
@@ -152,18 +73,11 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { date, localizer, className, events, accessors } = this.props,
+    let { date, localizer, className } = this.props,
       month = localizer.visibleDays(date, localizer),
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
-
-    const cacheKey = `${+date}_${events.length}_${events.length > 0 ? +events[0].start : 0}`
-    
-    if (this._lastCacheKey !== cacheKey) {
-      this._weekEventsCache = preprocessMonthEventsFast(events, weeks, accessors, localizer)
-      this._lastCacheKey = cacheKey
-    }
 
     return (
       <div
@@ -182,6 +96,7 @@ class MonthView extends React.Component {
 
   renderWeek = (week, weekIdx) => {
     let {
+      events,
       components,
       selectable,
       getNow,
@@ -195,8 +110,17 @@ class MonthView extends React.Component {
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
-    const sorted = this._weekEventsCache.get(weekIdx) || []
-    const maxEventsToRender = showAllEvents ? Infinity : rowLimit
+    
+    // let's not mutate props
+    const weeksEvents = eventsForWeek(
+      [...events],
+      week[0],
+      week[week.length - 1],
+      accessors,
+      localizer
+    )
+
+    const sorted = sortWeekEvents(weeksEvents, accessors, localizer)
 
     return (
       <DateContentRow
@@ -208,7 +132,7 @@ class MonthView extends React.Component {
         date={date}
         range={week}
         events={sorted}
-        maxRows={showAllEvents ? Infinity : maxEventsToRender}
+        maxRows={showAllEvents ? Infinity : rowLimit}
         selected={selected}
         selectable={selectable}
         components={components}
@@ -325,7 +249,7 @@ class MonthView extends React.Component {
       selected,
       handleDragStart,
     } = this.props
-    
+    //cancel any pending selections so only the event click goes through.
     this.clearSelection()
 
     if (popup) {

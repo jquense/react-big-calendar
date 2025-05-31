@@ -1,12 +1,12 @@
-import React, { createRef } from 'react'
 import clsx from 'clsx'
 import getHeight from 'dom-helpers/height'
 import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
+import React, { createRef } from 'react'
 
 import BackgroundCells from './BackgroundCells'
-import EventRow from './EventRow'
 import EventEndingRow from './EventEndingRow'
+import EventRow from './EventRow'
 import NoopWrapper from './NoopWrapper'
 import ScrollableWeekWrapper from './ScrollableWeekWrapper'
 import * as DateSlotMetrics from './utils/DateSlotMetrics'
@@ -20,8 +20,6 @@ class DateContentRow extends React.Component {
     this.eventRowRef = createRef()
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
-    this._metricsCache = null
-    this._metricsCacheKey = null
   }
 
   handleSelectSlot = (slot) => {
@@ -128,21 +126,7 @@ class DateContentRow extends React.Component {
 
     if (renderForMeasure) return this.renderDummy()
 
-    /**
-     * Cache metrics calculation to avoid expensive layout recalculations
-     */
-    const { events, maxRows } = this.props
-    const cacheKey = `${events.length}_${events.length > 0 ? events[0].start : ''}_${maxRows}`
-    
-    let metrics
-    if (this._metricsCacheKey === cacheKey && this._metricsCache) {
-      metrics = this._metricsCache
-    } else {
-      metrics = this.slotMetrics(this.props)
-      this._metricsCache = metrics
-      this._metricsCacheKey = cacheKey
-    }
-    
+    let metrics = this.slotMetrics(this.props)
     let { levels, extra } = metrics
 
     let ScrollableWeekComponent = showAllEvents
@@ -258,21 +242,4 @@ DateContentRow.defaultProps = {
   maxRows: Infinity,
 }
 
-/**
- * Memoized component to prevent unnecessary re-renders
- */
-const MemoizedDateContentRow = React.memo(DateContentRow, (prevProps, nextProps) => {
-  const shouldUpdate = 
-    prevProps.date !== nextProps.date ||
-    prevProps.events !== nextProps.events ||
-    prevProps.range !== nextProps.range ||
-    prevProps.maxRows !== nextProps.maxRows ||
-    prevProps.renderForMeasure !== nextProps.renderForMeasure ||
-    prevProps.getNow !== nextProps.getNow
-    
-  return !shouldUpdate
-})
-
-MemoizedDateContentRow.displayName = 'MemoizedDateContentRow'
-
-export default MemoizedDateContentRow
+export default DateContentRow

@@ -20,6 +20,8 @@ class DateContentRow extends React.Component {
     this.eventRowRef = createRef()
 
     this.slotMetrics = DateSlotMetrics.getSlotMetrics()
+    this._metricsCache = null
+    this._metricsCacheKey = null
   }
 
   handleSelectSlot = (slot) => {
@@ -46,7 +48,6 @@ class DateContentRow extends React.Component {
   }
 
   getRowLimit() {
-    /* Guessing this only gets called on the dummyRow */
     const eventHeight = getHeight(this.eventRowRef.current)
     const headingHeight = this.headingRowRef?.current
       ? getHeight(this.headingRowRef.current)
@@ -127,7 +128,21 @@ class DateContentRow extends React.Component {
 
     if (renderForMeasure) return this.renderDummy()
 
-    let metrics = this.slotMetrics(this.props)
+    /**
+     * Cache metrics calculation to avoid expensive layout recalculations
+     */
+    const { events, maxRows } = this.props
+    const cacheKey = `${events.length}_${events.length > 0 ? events[0].start : ''}_${maxRows}`
+    
+    let metrics
+    if (this._metricsCacheKey === cacheKey && this._metricsCache) {
+      metrics = this._metricsCache
+    } else {
+      metrics = this.slotMetrics(this.props)
+      this._metricsCache = metrics
+      this._metricsCacheKey = cacheKey
+    }
+    
     let { levels, extra } = metrics
 
     let ScrollableWeekComponent = showAllEvents
@@ -243,4 +258,21 @@ DateContentRow.defaultProps = {
   maxRows: Infinity,
 }
 
-export default DateContentRow
+/**
+ * Memoized component to prevent unnecessary re-renders
+ */
+const MemoizedDateContentRow = React.memo(DateContentRow, (prevProps, nextProps) => {
+  const shouldUpdate = 
+    prevProps.date !== nextProps.date ||
+    prevProps.events !== nextProps.events ||
+    prevProps.range !== nextProps.range ||
+    prevProps.maxRows !== nextProps.maxRows ||
+    prevProps.renderForMeasure !== nextProps.renderForMeasure ||
+    prevProps.getNow !== nextProps.getNow
+    
+  return !shouldUpdate
+})
+
+MemoizedDateContentRow.displayName = 'MemoizedDateContentRow'
+
+export default MemoizedDateContentRow

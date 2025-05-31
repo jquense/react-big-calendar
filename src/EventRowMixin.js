@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import React from 'react'
 import EventCell from './EventCell'
 import { isSelected } from './utils/selection'
 

@@ -1,25 +1,99 @@
-import React, { createRef } from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import React, { createRef } from 'react'
 
 import chunk from 'lodash/chunk'
 
+import * as animationFrame from 'dom-helpers/animationFrame'
+import getPosition from 'dom-helpers/position'
 import { navigate, views } from './utils/constants'
 import { notify } from './utils/helpers'
-import getPosition from 'dom-helpers/position'
-import * as animationFrame from 'dom-helpers/animationFrame'
 
-/* import Popup from './Popup'
-import Overlay from 'react-overlays/Overlay' */
-import PopOverlay from './PopOverlay'
 import DateContentRow from './DateContentRow'
-import Header from './Header'
 import DateHeader from './DateHeader'
+import Header from './Header'
 
-import { inRange, sortWeekEvents } from './utils/eventLevels'
+import { inRange, sortEvents } from './utils/eventLevels'
 
 let eventsForWeek = (evts, start, end, accessors, localizer) =>
   evts.filter((e) => inRange(e, start, end, accessors, localizer))
+
+/**
+ * Optimized event sorting for better performance with large datasets
+ */
+let fastSortWeekEvents = (events, accessors, localizer) => {
+  if (events.length < 2) return events
+  
+  const singleDayEvents = []
+  const multiDayEvents = []
+  
+  events.forEach((event) => {
+    const start = accessors.start(event)
+    const end = accessors.end(event)
+    
+    if (start.getTime() === end.getTime()) {
+      singleDayEvents.push(event)
+    } else {
+      multiDayEvents.push(event)
+    }
+  })
+  
+  singleDayEvents.sort((a, b) => {
+    return accessors.start(a).getTime() - accessors.start(b).getTime()
+  })
+  
+  const multiSorted = multiDayEvents.sort((a, b) =>
+    sortEvents(a, b, accessors, localizer)
+  )
+  
+  return [...multiSorted, ...singleDayEvents]
+}
+
+/**
+ * Preprocesses events and assigns them to weeks for faster rendering
+ */
+let preprocessMonthEventsFast = (events, weeks, accessors, localizer) => {
+  const weekEventsMap = new Map()
+  
+  const weekBoundaries = weeks.map((week, idx) => ({
+    idx,
+    start: week[0].getTime(),
+    end: week[week.length - 1].getTime()
+  }))
+  
+  const eventsByDate = new Map()
+  
+  events.forEach(event => {
+    const startTime = accessors.start(event).getTime()
+    const dateKey = Math.floor(startTime / (24 * 60 * 60 * 1000))
+    
+    if (!eventsByDate.has(dateKey)) {
+      eventsByDate.set(dateKey, [])
+    }
+    eventsByDate.get(dateKey).push(event)
+  })
+  
+  eventsByDate.forEach((dateEvents, dateKey) => {
+    const dateTime = dateKey * (24 * 60 * 60 * 1000)
+    
+    const weekIdx = weekBoundaries.findIndex(week => 
+      dateTime >= week.start && dateTime <= week.end
+    )
+    
+    if (weekIdx !== -1) {
+      if (!weekEventsMap.has(weekIdx)) {
+        weekEventsMap.set(weekIdx, [])
+      }
+      weekEventsMap.get(weekIdx).push(...dateEvents)
+    }
+  })
+  
+  weekEventsMap.forEach((weekEvents, weekIdx) => {
+    weekEventsMap.set(weekIdx, fastSortWeekEvents(weekEvents, accessors, localizer))
+  })
+  
+  return weekEventsMap
+}
 
 class MonthView extends React.Component {
   constructor(...args) {
@@ -35,6 +109,8 @@ class MonthView extends React.Component {
 
     this._bgRows = []
     this._pendingSelection = []
+    this._weekEventsCache = null
+    this._lastCacheKey = null
   }
 
   static getDerivedStateFromProps({ date, localizer }, state) {
@@ -55,7 +131,7 @@ class MonthView extends React.Component {
         if (!running) {
           animationFrame.request(() => {
             running = false
-            this.setState({ needLimitMeasure: true }) //eslint-disable-line
+            this.setState({ needLimitMeasure: true })
           })
         }
       }),
@@ -76,11 +152,18 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { date, localizer, className } = this.props,
+    let { date, localizer, className, events, accessors } = this.props,
       month = localizer.visibleDays(date, localizer),
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
+
+    const cacheKey = `${+date}_${events.length}_${events.length > 0 ? +events[0].start : 0}`
+    
+    if (this._lastCacheKey !== cacheKey) {
+      this._weekEventsCache = preprocessMonthEventsFast(events, weeks, accessors, localizer)
+      this._lastCacheKey = cacheKey
+    }
 
     return (
       <div
@@ -93,14 +176,12 @@ class MonthView extends React.Component {
           {this.renderHeaders(weeks[0])}
         </div>
         {weeks.map(this.renderWeek)}
-        {this.props.popup && this.renderOverlay()}
       </div>
     )
   }
 
   renderWeek = (week, weekIdx) => {
     let {
-      events,
       components,
       selectable,
       getNow,
@@ -114,17 +195,8 @@ class MonthView extends React.Component {
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
-
-    // let's not mutate props
-    const weeksEvents = eventsForWeek(
-      [...events],
-      week[0],
-      week[week.length - 1],
-      accessors,
-      localizer
-    )
-
-    const sorted = sortWeekEvents(weeksEvents, accessors, localizer)
+    const sorted = this._weekEventsCache.get(weekIdx) || []
+    const maxEventsToRender = showAllEvents ? Infinity : rowLimit
 
     return (
       <DateContentRow
@@ -136,7 +208,7 @@ class MonthView extends React.Component {
         date={date}
         range={week}
         events={sorted}
-        maxRows={showAllEvents ? Infinity : rowLimit}
+        maxRows={showAllEvents ? Infinity : maxEventsToRender}
         selected={selected}
         selectable={selectable}
         components={components}
@@ -204,72 +276,6 @@ class MonthView extends React.Component {
     ))
   }
 
-  renderOverlay() {
-    let overlay = this.state?.overlay ?? {}
-    let {
-      accessors,
-      localizer,
-      components,
-      getters,
-      selected,
-      popupOffset,
-      handleDragStart,
-    } = this.props
-
-    const onHide = () => this.setState({ overlay: null })
-
-    return (
-      <PopOverlay
-        overlay={overlay}
-        accessors={accessors}
-        localizer={localizer}
-        components={components}
-        getters={getters}
-        selected={selected}
-        popupOffset={popupOffset}
-        ref={this.containerRef}
-        handleKeyPressEvent={this.handleKeyPressEvent}
-        handleSelectEvent={this.handleSelectEvent}
-        handleDoubleClickEvent={this.handleDoubleClickEvent}
-        handleDragStart={handleDragStart}
-        show={!!overlay.position}
-        overlayDisplay={this.overlayDisplay}
-        onHide={onHide}
-      />
-    )
-
-    /* return (
-      <Overlay
-        rootClose
-        placement="bottom"
-        show={!!overlay.position}
-        onHide={() => this.setState({ overlay: null })}
-        target={() => overlay.target}
-      >
-        {({ props }) => (
-          <Popup
-            {...props}
-            popupOffset={popupOffset}
-            accessors={accessors}
-            getters={getters}
-            selected={selected}
-            components={components}
-            localizer={localizer}
-            position={overlay.position}
-            show={this.overlayDisplay}
-            events={overlay.events}
-            slotStart={overlay.date}
-            slotEnd={overlay.end}
-            onSelect={this.handleSelectEvent}
-            onDoubleClick={this.handleDoubleClickEvent}
-            onKeyPress={this.handleKeyPressEvent}
-            handleDragStart={this.props.handleDragStart}
-          />
-        )}
-      </Overlay>
-    ) */
-  }
-
   measureRowLimit() {
     this.setState({
       needLimitMeasure: false,
@@ -312,27 +318,48 @@ class MonthView extends React.Component {
       onShowMore,
       getDrilldownView,
       doShowMoreDrillDown,
+      accessors,
+      localizer,
+      components,
+      getters,
+      selected,
+      handleDragStart,
     } = this.props
-    //cancel any pending selections so only the event click goes through.
+    
     this.clearSelection()
 
     if (popup) {
       let position = getPosition(cell, this.containerRef.current)
 
-      this.setState({
-        overlay: { date, events, position, target },
-      })
+      if (window.showCalendarOverlay) {
+        window.showCalendarOverlay({
+          date,
+          events,
+          position,
+          target,
+          accessors,
+          localizer,
+          components,
+          getters,
+          selected,
+          onSelect: this.handleSelectEvent,
+          onDoubleClick: this.handleDoubleClickEvent,
+          onKeyPress: this.handleKeyPressEvent,
+          handleDragStart,
+          containerRef: this.containerRef,
+          popupOffset: this.props.popupOffset,
+          onHide: () => {
+            if (window.hideCalendarOverlay) {
+              window.hideCalendarOverlay()
+            }
+          }
+        })
+      }
     } else if (doShowMoreDrillDown) {
       notify(onDrillDown, [date, getDrilldownView(date) || views.DAY])
     }
 
     notify(onShowMore, [events, date, slot])
-  }
-
-  overlayDisplay = () => {
-    this.setState({
-      overlay: null,
-    })
   }
 
   selectDates(slotInfo) {

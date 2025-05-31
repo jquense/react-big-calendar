@@ -16,15 +16,13 @@ export function getSlotMetrics() {
     )
 
     let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1))
-    // Subtract 1 from minRows to not include showMore button row when
-    // it would be rendered
+
     const minEventRows = extra.length > 0 ? minRows - 1 : minRows
     while (levels.length < minEventRows) levels.push([])
 
     return {
       first,
       last,
-
       levels,
       extra,
       range,

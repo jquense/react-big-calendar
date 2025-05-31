@@ -1116,7 +1116,7 @@ class Calendar extends React.Component {
     let { onRangeChange, localizer } = this.props
 
     if (onRangeChange) {
-      if (viewComponent.range) {
+      if (viewComponent?.range) {
         onRangeChange(viewComponent.range(date, { localizer }), view)
       } else {
         if (process.env.NODE_ENV !== 'production') {

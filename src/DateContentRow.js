@@ -46,6 +46,7 @@ class DateContentRow extends React.Component {
   }
 
   getRowLimit() {
+    /* Guessing this only gets called on the dummyRow */
     const eventHeight = getHeight(this.eventRowRef.current)
     const headingHeight = this.headingRowRef?.current
       ? getHeight(this.headingRowRef.current)

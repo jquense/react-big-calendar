@@ -52,7 +52,7 @@ class MonthView extends React.Component {
         if (!running) {
           animationFrame.request(() => {
             running = false
-            this.setState({ needLimitMeasure: true })
+            this.setState({ needLimitMeasure: true }) //eslint-disable-line
           })
         }
       }),

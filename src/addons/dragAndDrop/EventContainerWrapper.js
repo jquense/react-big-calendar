@@ -229,6 +229,8 @@ class EventContainerWrapper extends React.Component {
       const bounds = getBoundsForNode(node)
       if (!pointInColumn(bounds, point)) return
       this.handleDropFromOutside(point, bounds)
+      // cleanup the preview so that the state change from the user defined onDropFromOutside method is reflected.
+      this.handleInteractionEnd()
     })
 
     selector.on('dragOverFromOutside', (point) => {

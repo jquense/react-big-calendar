@@ -1,7 +1,7 @@
 @import './variables';
 
-$active-background: darken($btn-bg, 10%);
-$active-border: darken($btn-border, 12%);
+$active-background: var(--rbc-btn-bg--active, darken($btn-bg, 10%));
+$active-border: var(--rbc-btn-border--active, darken($btn-border, 12%));
 
 .rbc-toolbar {
   display: flex;
@@ -12,21 +12,21 @@ $active-border: darken($btn-border, 12%);
   font-size: 16px;
 
   .rbc-toolbar-label {
-    flex-grow:1;
+    flex-grow: 1;
     padding: 0 10px;
     text-align: center;
   }
 
   & button {
-    color: $btn-color;
+    color: var(--rbc-btn-color, $btn-color);
     display: inline-block;
     margin: 0;
     text-align: center;
     vertical-align: middle;
     background: none;
     background-image: none;
-    border: 1px solid $btn-border;
-    padding: .375rem 1rem;
+    border: 1px solid var(--rbc-btn-border, $btn-border);
+    padding: 0.375rem 1rem;
     border-radius: 4px;
     line-height: normal;
     white-space: nowrap;
@@ -34,15 +34,15 @@ $active-border: darken($btn-border, 12%);
     &:active,
     &.rbc-active {
       background-image: none;
-      box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
       background-color: $active-background;
       border-color: $active-border;
 
       &:hover,
       &:focus {
-        color: $btn-color;
-        background-color: darken($btn-bg, 17%);
-        border-color: darken($btn-border, 25%);
+        color: var(--rbc-btn-color, $btn-color);
+        background-color: var(--rbc-btn-bg--active-focus, darken($btn-bg, 17%));
+        border-color: var(--rbc-btn-border--active-focus, darken($btn-border, 25%));
       }
     }
 
@@ -56,7 +56,7 @@ $active-border: darken($btn-border, 12%);
       color: $btn-color;
       cursor: pointer;
       background-color: $active-background;
-          border-color: $active-border;
+      border-color: $active-border;
     }
   }
 }

@@ -1,3 +1,10 @@
+## [1.19.3](https://github.com/jquense/react-big-calendar/compare/v1.19.2...v1.19.3) (2025-06-12)
+
+
+### Bug Fixes
+
+* Replaces createFactory with createElement ([#2754](https://github.com/jquense/react-big-calendar/issues/2754)) ([23a0fae](https://github.com/jquense/react-big-calendar/commit/23a0faeab665c961461ebeda2f555f819afbe4a3)), closes [#2377](https://github.com/jquense/react-big-calendar/issues/2377) [#1831](https://github.com/jquense/react-big-calendar/issues/1831) [#2740](https://github.com/jquense/react-big-calendar/issues/2740)
+
 ## [1.19.2](https://github.com/jquense/react-big-calendar/compare/v1.19.1...v1.19.2) (2025-05-28)
 
 

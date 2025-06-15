@@ -1,0 +1,11 @@
+import { Canvas, Story } from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+
+# resourceAccessor
+
+- type: `string | function (resource: Object) => string | number // must be unique`
+- <LinkTo kind="props" story="resource-accessor">
+    Example
+  </LinkTo>
+
+Returns the unique identifier of the `resource` that each event in the <LinkTo kind="props" story="events">events</LinkTo> is a member of. This identifier should match at least one resource in the <LinkTo kind="props" story="resources">resources</LinkTo> array.

@@ -192,8 +192,7 @@ export default function (dayjsLib) {
     const tm = dayjs(time).format('HH:mm:ss')
     const dt = dayjs(date).startOf('day').format('MM/DD/YYYY')
     // We do it this way to avoid issues when timezone switching
-    const mergedDateTime = dayjs(`${dt} ${tm}`).toDate()
-    return dayjsLib(mergedDateTime).utc(true).toDate()
+    return dayjs(`${dt} ${tm}`).toDate()
   }
 
   function add(date, adder, unit) {

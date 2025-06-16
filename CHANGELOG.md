@@ -1,3 +1,10 @@
+## [1.19.4](https://github.com/jquense/react-big-calendar/compare/v1.19.3...v1.19.4) (2025-06-16)
+
+
+### Bug Fixes
+
+* **dayjs localizer:** reverts previous changs, as it was casting a date as UTC instead of local time ([#2759](https://github.com/jquense/react-big-calendar/issues/2759)) ([7ba9e24](https://github.com/jquense/react-big-calendar/commit/7ba9e24e24943b1f20efcb1652097933ac3b1774)), closes [#2758](https://github.com/jquense/react-big-calendar/issues/2758)
+
 ## [1.19.3](https://github.com/jquense/react-big-calendar/compare/v1.19.2...v1.19.3) (2025-06-12)
 
 

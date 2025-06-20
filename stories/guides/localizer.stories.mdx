@@ -1,3 +1,4 @@
+
 import { Meta } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 
@@ -5,7 +6,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 # What is a Localizer?
 
-You have probably noticed that your Big Calendar implementations require a <LinkTo kind="props" story="localizer">localizer</LinkTo> prop. The `localizer` is needed for applying formatting and culture (i18n) to your date displays throughout the Calendar.
+You have probably noticed that your Big Calendar implementations require a localizer prop. The `localizer` is needed for applying formatting and culture (i18n) to your date displays throughout the Calendar.
 
 Now the `localizer` also handles all internal date math, utilizing the `localizer` you provide. This is how the [moment](https://momentjs.com/) and [Luxon](https://moment.github.io/luxon/#/) localizers handle timezones, and how all of them handle things like Daylight Savings Time. Most components receive the `localizer` as a prop, meaning that your override components can also take advantage of these features.
 Each `localizer`, when created, creates an instance of `DateLocalizer` class, and each one has a normalized group of functions and props available for manipulating dates.
@@ -48,3 +49,32 @@ Each `localizer`, when created, creates an instance of `DateLocalizer` class, an
 Many of these methods are used by Big Calendar in the background for determining layout. You can create your own custom `localizer`, to utilize some other library, as long as they implement these methods. The `DateLocalizer` class defaults these methods to methods from the [date-arithmetic](https://www.npmjs.com/package/date-arithmetic) package.
 
 For examples of building your own custom `localizer` take a look at the [currently implemented localizers](https://github.com/jquense/react-big-calendar/blob/master/src/localizers). If you do build your own `localizer`, please consider publishing it to [npm](https://npmjs.org). We suggest a common naming convention like `rbc-addon-mylocalizername`.
+
+### Customizing with Locale Files
+
+Each localizer library allows for defining custom translations for various calendar elements like weekdays, months, navigation buttons (Previous, Next, Today), and more. You can leverage these libraries to provide translations for your desired language.
+
+##### Example: Adding Japanese Support
+
+Here's a basic example demonstrating how to include Japanese translations using the `globalize` library:
+
+```javascript {"id":"01HX1RTAKN8WKEHMV5FASGABYV"}
+require('globalize/lib/cultures/globalize.culture.ja');
+
+const cultures = ['ja'];
+const lang = {
+  ja: {
+    week: '週間', // Week
+    work_week: '勤務週', // Work week
+    day: '日', // Day
+    month: '月', // Month
+    previous: '前', // Previous
+    next: '次', // Next
+    today: '今日', // Today
+    agenda: '予定表', // Agenda
+    showMore: (total) => `+${total} 件`, // Show more (total items)
+  },
+};
+```
+
+In this example, we import the Japanese culture definition for the `globalize` library. We then define a `lang` object containing translations for various calendar elements in Japanese. Finally, we can use this `lang` object with the chosen localizer library to render the calendar in Japanese.

@@ -1,4 +1,4 @@
-@import './variables';
+@use './variables' as *;
 
 .rbc-row {
   display: flex;

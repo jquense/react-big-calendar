@@ -155,8 +155,8 @@ const MyCalendar = (props) => (
 التقويم الكبير ليتناسب مع تصميم التطبيق الخاص بك. لهذا السبب، تم تضمين ملفات SASS مع التقويم الكبير.
 
 ```
-  @import 'react-big-calendar/lib/sass/styles';
-  @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+  @use 'react-big-calendar/lib/sass/styles';
+  @use 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 ```
 
 توفر مكتبة SASS ملف `variables` يحتوي على متغيرات الألوان والأبعاد التي يمكنك تحديثها لتتناسب مع تطبيقك. _ملحوظة:_ يمكن أن يؤدي تغيير و/أو تجاوز الأنماط إلى حدوث مشكلات في التقديم مع تقويمك الكبير. قم بإجراء اختبارات دقيقة لكل تغيير وفقًا لذلك.

@@ -1,7 +1,7 @@
 @import './variables';
 
-$active-background: darken($btn-bg, 10%);
-$active-border: darken($btn-border, 12%);
+$active-background: color.adjust($btn-bg, $lightness: -10%, $space: hsl);
+$active-border: color.adjust($btn-border, $lightness: -12%, $space: hsl);
 
 .rbc-toolbar {
   display: flex;
@@ -41,8 +41,8 @@ $active-border: darken($btn-border, 12%);
       &:hover,
       &:focus {
         color: $btn-color;
-        background-color: darken($btn-bg, 17%);
-        border-color: darken($btn-border, 25%);
+        background-color: color.adjust($btn-bg, $lightness: -17%, $space: hsl);
+        border-color: color.adjust($btn-bg, $lightness: -25%, $space: hsl);
       }
     }
 

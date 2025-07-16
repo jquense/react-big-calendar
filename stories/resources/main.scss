@@ -59,6 +59,6 @@
 
 .nonDraggable,
 .nonResizable {
-  background-color: lighten(#3174ad, 40) !important;
+  background-color: color.adjust(#3174ad, $lightness: 40%, $space: hsl) !important;
   color: black !important;
 }

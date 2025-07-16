@@ -19,7 +19,7 @@
   }
 
   &.rbc-selected {
-    background-color: darken($event-bg, 10%);
+    background-color: color.adjust($event-bg, $lightness: -10%, $space: hsl);
   }
 
   &:focus {

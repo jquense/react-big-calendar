@@ -28,7 +28,7 @@
   color: $event-bg;
   &:hover,
   &:focus {
-    color: darken($event-bg, 10%);
+    color: color.adjust($event-bg, $lightness: -10%, $space: hsl);
   }
 }
 

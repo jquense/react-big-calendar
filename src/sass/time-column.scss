@@ -76,7 +76,7 @@
   }
 
   .rbc-time-slot {
-    border-top: 1px solid lighten($cell-border, 10%);
+    border-top: 1px solid color.adjust($cell-border, $lightness: 10%, $space: hsl);
   }
 }
 

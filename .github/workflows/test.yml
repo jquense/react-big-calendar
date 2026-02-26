@@ -2,7 +2,6 @@ name: Test
 
 on: [pull_request]
 
-
 jobs:
   test:
     name: Test
@@ -14,7 +13,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.13.0'
+          node-version: '22.21.1'
 
       - name: Install Dependencies
         run: yarn install

@@ -107,7 +107,7 @@
     "sass": "1.57.1",
     "sass-loader": "^13.2.0",
     "semantic-release": "^20.0.2",
-    "zx": "^7.1.1"
+    "zx": "^8.8.5"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.7",

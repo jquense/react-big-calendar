@@ -1,5 +1,7 @@
 # react-big-calendar
 
+> **⚠️ Important:** The back office is using the [`react-big-calendar-custom`](https://github.com/manabie-com/react-big-calendar/tree/react-big-calendar-custom) branch instead of `master`. Please be aware of this if you update that branch or want to publish a new version. Reference: https://manabie.slack.com/archives/C037409QQ4S/p1703214668236279?thread_ts=1703206801.278349&cid=C037409QQ4S
+
 An events calendar component built for React and designed for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
 
 <p align="center">

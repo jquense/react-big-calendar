@@ -57,6 +57,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.18.6",
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.28.5",
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@rollup/plugin-babel": "6.0.3",

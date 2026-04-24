@@ -40,7 +40,8 @@ class MonthView extends React.Component {
   static getDerivedStateFromProps({ date, localizer }, state) {
     return {
       date,
-      needLimitMeasure: localizer.neq(date, state.date, 'month'),
+      needLimitMeasure:
+        state.needLimitMeasure || localizer.neq(date, state.date, 'month'),
     }
   }
 

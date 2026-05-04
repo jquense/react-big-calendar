@@ -49,6 +49,15 @@ class EventWrapper extends React.Component {
       this.context.draggable.onBeginAction(this.props.event, 'move')
   }
 
+  handleMouseUp = () => {
+    // If interacting is still false when mouseup fires, the user just clicked
+    // (no drag occurred). Reset DnD state so action/event don't stay stuck
+    // and cause rbc-addons-dnd-dragged-event to appear on the next interaction.
+    if (!this.context.draggable.dragAndDropAction.interacting) {
+      this.context.draggable.onEnd(null)
+    }
+  }
+
   renderAnchor(direction) {
     const cls = direction === 'Up' || direction === 'Down' ? 'ns' : 'ew'
     return (
@@ -121,6 +130,7 @@ class EventWrapper extends React.Component {
       const newProps = {
         onMouseDown: this.handleStartDragging,
         onTouchStart: this.handleStartDragging,
+        onMouseUp: this.handleMouseUp,
       }
 
       if (isResizable) {

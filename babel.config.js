@@ -37,6 +37,12 @@ module.exports = function (api) {
           absoluteRuntime: false,
         },
       ],
+      [
+        '@babel/preset-react',
+        {
+          runtime: 'automatic',
+        },
+      ],
     ],
     plugins: [
       ['@babel/plugin-transform-runtime'],

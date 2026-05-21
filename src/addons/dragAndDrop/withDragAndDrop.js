@@ -27,6 +27,8 @@ export default function withDragAndDrop(Calendar) {
 
       selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
       resizable: PropTypes.bool,
+
+      autoscrollWhenDragging: PropTypes.bool
     }
 
     static defaultProps = {
@@ -34,6 +36,7 @@ export default function withDragAndDrop(Calendar) {
       draggableAccessor: null,
       resizableAccessor: null,
       resizable: true,
+      autoscrollWhenDragging: true
     }
 
     constructor(...args) {
@@ -53,6 +56,7 @@ export default function withDragAndDrop(Calendar) {
           draggableAccessor: this.props.draggableAccessor,
           resizableAccessor: this.props.resizableAccessor,
           dragAndDropAction: this.state,
+          autoscrollWhenDragging: this.props.autoscrollWhenDragging
         },
       }
     }

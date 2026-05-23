@@ -47,12 +47,13 @@ class BackgroundCells extends React.Component {
       <div className="rbc-row-bg" ref={this.containerRef}>
         {range.map((date, index) => {
           let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style } = getters.dayProp(date)
+          const { className, style, title } = getters.dayProp(date)
 
           return (
             <Wrapper key={index} value={date} range={range}>
               <div
                 style={style}
+                title={title}
                 className={clsx(
                   'rbc-day-bg',
                   className,

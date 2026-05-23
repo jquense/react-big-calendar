@@ -143,6 +143,11 @@ class BackgroundCells extends React.Component {
       this.setState({ selecting: false })
       notify(this.props.onSelectEnd, [this.state])
     })
+
+    selector.on('reset', () => {
+      this._initial = {}
+      this.setState({ selecting: false })
+    })
   }
 
   _teardownSelectable() {

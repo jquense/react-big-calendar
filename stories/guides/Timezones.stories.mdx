@@ -31,6 +31,32 @@ const MyCalendar = (props) => (
   </div>
 )
 ```
+or just add prop second argument to `momentLocalizer` function
+
+```jsx
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment-timezone'
+
+
+// Setup the localizer by providing the moment Object
+// to the correct localizer.
+
+const MyCalendar = (props) => {
+const [timezone, setTimezone] = useState(defaultTZ);
+const localizer = useMemo(()=> momentLocalizer(moment, timezone) ,[timezone] )
+
+  return (
+      <div className="myCustomHeight">
+        <Calendar
+          localizer={localizer}
+          events={myEventsList}
+          startAccessor="start"
+          endAccessor="end"
+        />
+    </div>
+    )
+}
+```
 
 The `momentLocalizer` will now handle all dates and date math as if the date is in the timezone you specified. It is important to note that [changing moment's default timezone](https://momentjs.com/timezone/docs/#/using-timezones/default-timezone/) affects all dates, created by moment, from that point forward, so you may want to reset the default when your component unmounts. And, if switching timezones 'on-the-fly', you want to update your `localizer` and any Date based props (min, max, getNow, etc) at the same time.
 

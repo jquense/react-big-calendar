@@ -50,20 +50,28 @@ function fixUnit(unit) {
   return datePart
 }
 
-export default function (moment) {
+export default function (moment, timezone = undefined) {
+  if (timezone && !moment.tz) {
+    console.error(
+      `Please install 'moment-timezone' package to use the 'timezone' property.`
+    )
+  }
+  const localMoment = (...args) =>
+    timezone && moment.tz ? moment.tz(...args, timezone) : moment(...args)
+  localMoment.localeData = moment.localeData
   const locale = (m, c) => (c ? m.locale(c) : m)
 
   function getTimezoneOffset(date) {
     // ensures this gets cast to timezone
-    return moment(date).toDate().getTimezoneOffset()
+    return localMoment(date).toDate().getTimezoneOffset()
   }
 
   function getDstOffset(start, end) {
     // convert to moment, in case
     // Calculate the offset in the timezone of the Events (local)
     // not in the timezone of the calendar (moment.tz)
-    const st = moment(start).local()
-    const ed = moment(end).local()
+    const st = localMoment(start).local()
+    const ed = localMoment(end).local()
     // if not using moment timezone
     if (!moment.tz) {
       return st.toDate().getTimezoneOffset() - ed.toDate().getTimezoneOffset()
@@ -73,39 +81,39 @@ export default function (moment) {
      * use this to get the proper timezone offset, otherwise default
      * the timezone to the browser local
      */
-    const tzName = st?._z?.name ?? moment.tz.guess()
+    const tzName = timezone ?? moment.tz.guess()
     const startOffset = moment.tz.zone(tzName).utcOffset(+st)
     const endOffset = moment.tz.zone(tzName).utcOffset(+ed)
     return startOffset - endOffset
   }
 
   function getDayStartDstOffset(start) {
-    const dayStart = moment(start).startOf('day')
+    const dayStart = localMoment(start).startOf('day')
     return getDstOffset(dayStart, start)
   }
 
   /*** BEGIN localized date arithmetic methods with moment ***/
   function defineComparators(a, b, unit) {
     const datePart = fixUnit(unit)
-    const dtA = datePart ? moment(a).startOf(datePart) : moment(a)
-    const dtB = datePart ? moment(b).startOf(datePart) : moment(b)
+    const dtA = datePart ? localMoment(a).startOf(datePart) : localMoment(a)
+    const dtB = datePart ? localMoment(b).startOf(datePart) : localMoment(b)
     return [dtA, dtB, datePart]
   }
 
   function startOf(date = null, unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      return moment(date).startOf(datePart).toDate()
+      return localMoment(date).startOf(datePart).toDate()
     }
-    return moment(date).toDate()
+    return localMoment(date).toDate()
   }
 
   function endOf(date = null, unit) {
     const datePart = fixUnit(unit)
     if (datePart) {
-      return moment(date).endOf(datePart).toDate()
+      return localMoment(date).endOf(datePart).toDate()
     }
-    return moment(date).toDate()
+    return localMoment(date).toDate()
   }
 
   // moment comparison operations *always* convert both sides to moment objects
@@ -141,22 +149,22 @@ export default function (moment) {
 
   function inRange(day, min, max, unit = 'day') {
     const datePart = fixUnit(unit)
-    const mDay = moment(day)
-    const mMin = moment(min)
-    const mMax = moment(max)
+    const mDay = localMoment(day)
+    const mMin = localMoment(min)
+    const mMax = localMoment(max)
     return mDay.isBetween(mMin, mMax, datePart, '[]')
   }
 
   function min(dateA, dateB) {
-    const dtA = moment(dateA)
-    const dtB = moment(dateB)
+    const dtA = localMoment(dateA)
+    const dtB = localMoment(dateB)
     const minDt = moment.min(dtA, dtB)
     return minDt.toDate()
   }
 
   function max(dateA, dateB) {
-    const dtA = moment(dateA)
-    const dtB = moment(dateB)
+    const dtA = localMoment(dateA)
+    const dtB = localMoment(dateB)
     const maxDt = moment.max(dtA, dtB)
     return maxDt.toDate()
   }
@@ -164,21 +172,21 @@ export default function (moment) {
   function merge(date, time) {
     if (!date && !time) return null
 
-    const tm = moment(time).format('HH:mm:ss')
-    const dt = moment(date).startOf('day').format('MM/DD/YYYY')
+    const tm = localMoment(time).format('HH:mm:ss')
+    const dt = localMoment(date).startOf('day').format('MM/DD/YYYY')
     // We do it this way to avoid issues when timezone switching
-    return moment(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
+    return localMoment(`${dt} ${tm}`, 'MM/DD/YYYY HH:mm:ss').toDate()
   }
 
   function add(date, adder, unit) {
     const datePart = fixUnit(unit)
-    return moment(date).add(adder, datePart).toDate()
+    return localMoment(date).add(adder, datePart).toDate()
   }
 
   function range(start, end, unit = 'day') {
     const datePart = fixUnit(unit)
     // because the add method will put these in tz, we have to start that way
-    let current = moment(start).toDate()
+    let current = localMoment(start).toDate()
     const days = []
 
     while (lte(current, end)) {
@@ -199,27 +207,29 @@ export default function (moment) {
   function diff(a, b, unit = 'day') {
     const datePart = fixUnit(unit)
     // don't use 'defineComparators' here, as we don't want to mutate the values
-    const dtA = moment(a)
-    const dtB = moment(b)
+    const dtA = localMoment(a)
+    const dtB = localMoment(b)
     return dtB.diff(dtA, datePart)
   }
 
   function minutes(date) {
-    const dt = moment(date)
+    const dt = localMoment(date)
     return dt.minutes()
   }
 
   function firstOfWeek(culture) {
-    const data = culture ? moment.localeData(culture) : moment.localeData()
+    const data = culture
+      ? localMoment.localeData(culture)
+      : localMoment.localeData()
     return data ? data.firstDayOfWeek() : 0
   }
 
   function firstVisibleDay(date) {
-    return moment(date).startOf('month').startOf('week').toDate()
+    return localMoment(date).startOf('month').startOf('week').toDate()
   }
 
   function lastVisibleDay(date) {
-    return moment(date).endOf('month').endOf('week').toDate()
+    return localMoment(date).endOf('month').endOf('week').toDate()
   }
 
   function visibleDays(date) {
@@ -245,7 +255,7 @@ export default function (moment) {
    * @returns {Date}
    */
   function getSlotDate(dt, minutesFromMidnight, offset) {
-    return moment(dt)
+    return localMoment(dt)
       .startOf('day')
       .minute(minutesFromMidnight + offset)
       .toDate()
@@ -257,21 +267,21 @@ export default function (moment) {
   }
 
   function getMinutesFromMidnight(start) {
-    const dayStart = moment(start).startOf('day')
-    const day = moment(start)
+    const dayStart = localMoment(start).startOf('day')
+    const day = localMoment(start)
     return day.diff(dayStart, 'minutes') + getDayStartDstOffset(start)
   }
 
   // These two are used by DateSlotMetrics
   function continuesPrior(start, first) {
-    const mStart = moment(start)
-    const mFirst = moment(first)
+    const mStart = localMoment(start)
+    const mFirst = localMoment(first)
     return mStart.isBefore(mFirst, 'day')
   }
 
   function continuesAfter(start, end, last) {
-    const mEnd = moment(end)
-    const mLast = moment(last)
+    const mEnd = localMoment(end)
+    const mLast = localMoment(last)
     return mEnd.isSameOrAfter(mLast, 'minutes')
   }
 
@@ -306,10 +316,10 @@ export default function (moment) {
     event: { start, end },
     range: { start: rangeStart, end: rangeEnd },
   }) {
-    const startOfDay = moment(start).startOf('day')
-    const eEnd = moment(end)
-    const rStart = moment(rangeStart)
-    const rEnd = moment(rangeEnd)
+    const startOfDay = localMoment(start).startOf('day')
+    const eEnd = localMoment(end)
+    const rStart = localMoment(rangeStart)
+    const rEnd = localMoment(rangeEnd)
 
     const startsBeforeEnd = startOfDay.isSameOrBefore(rEnd, 'day')
     // when the event is zero duration we need to handle a bit differently
@@ -322,8 +332,8 @@ export default function (moment) {
   }
 
   function isSameDate(date1, date2) {
-    const dt = moment(date1)
-    const dt2 = moment(date2)
+    const dt = localMoment(date1)
+    const dt2 = localMoment(date2)
     return dt.isSame(dt2, 'day')
   }
 
@@ -344,7 +354,7 @@ export default function (moment) {
     const dtOffset = dt.getTimezoneOffset()
     const comparator = Number(`${neg}${Math.abs(dtOffset)}`)
     // moment correctly provides positive/negative offset, as expected
-    const mtOffset = moment().utcOffset()
+    const mtOffset = localMoment().utcOffset()
     return mtOffset > comparator ? 1 : 0
   }
 
@@ -357,7 +367,7 @@ export default function (moment) {
     visibleDays,
 
     format(value, format, culture) {
-      return locale(moment(value), culture).format(format)
+      return locale(localMoment(value), culture).format(format)
     },
 
     lt,

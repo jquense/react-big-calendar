@@ -1,4 +1,4 @@
-@import './variables';
+@use './variables' as *;
 
 .rbc-agenda-view {
   display: flex;
@@ -69,5 +69,5 @@
 
 
 .rbc-agenda-event-cell {
-  width: 100%
+  width: 100%;
 }

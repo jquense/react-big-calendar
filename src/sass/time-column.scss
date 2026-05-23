@@ -1,4 +1,4 @@
-@import './variables';
+@use './variables' as *;
 
 .rbc-time-column {
   display: flex;
@@ -9,7 +9,6 @@
     flex: 1;
   }
 }
-
 
 .rbc-timeslot-group {
   border-bottom: 1px solid $cell-border;
@@ -76,7 +75,8 @@
   }
 
   .rbc-time-slot {
-    border-top: 1px solid lighten($cell-border, 10%);
+    border-top: 1px solid
+      color.adjust($cell-border, $lightness: 10%, $space: hsl);
   }
 }
 

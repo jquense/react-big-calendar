@@ -1,5 +1,5 @@
-@import './variables';
-@import './time-column';
+@use './variables' as *;
+@use './time-column';
 
 .rbc-slot-selection {
   z-index: 10;

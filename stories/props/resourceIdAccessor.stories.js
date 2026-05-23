@@ -9,6 +9,7 @@ export default {
   argTypes: {
     localizer: { control: { type: null } },
     events: { control: { type: null } },
+    resourceAccessor: { control: { type: null }},
     defaultDate: {
       control: {
         type: null,

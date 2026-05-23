@@ -28,11 +28,18 @@ export const accessorStoryArgs = {
   titleAccessor: 'label',
   tooltipAccessor: 'label',
   startAccessor: 'startDate',
-  idAccessor: 'id',
+  idAccessor: 'id'
 }
 /** END Specific to event key accessors */
 
 /** Specific to resource key accessors */
+const adjustedResourceEvents = resourceEvents.map((event) => {
+  const {
+    resourceId: ResourceId,
+    ...other
+  } = event;
+  return { ...other, ResourceId }
+})
 const adjustedResources = resources.map(({ id: Id, title: Title }) => ({
   Id,
   Title,
@@ -41,10 +48,11 @@ const adjustedResources = resources.map(({ id: Id, title: Title }) => ({
 export const resourceAccessorStoryArgs = {
   defaultDate: new Date(2015, 3, 4),
   defaultView: Views.DAY,
-  events: resourceEvents,
+  events: adjustedResourceEvents,
   localizer: mLocalizer,
   resourceIdAccessor: 'Id',
   resources: adjustedResources,
   resourceTitleAccessor: 'Title',
+  resourceAccessor: 'ResourceId',
 }
-/** ENDSpecific to resource key accessors */
+/** END Specific to resource key accessors */

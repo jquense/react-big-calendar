@@ -127,6 +127,9 @@
     "react-overlays": "^5.2.1",
     "uncontrollable": "^7.2.1"
   },
+  "resolutions": {
+    "handlebars": "^4.7.9"
+  },
   "bugs": {
     "url": "https://github.com/jquense/react-big-calendar/issues"
   },

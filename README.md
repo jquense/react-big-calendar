@@ -6,7 +6,7 @@ An events calendar component built for React and designed for modern browsers (r
   <img src="./assets/rbc-demo.gif" alt="Big Calendar Demo Image" />
 </p>
 
-[**DEMO and Docs**](https://jquense.github.io/react-big-calendar/examples/index.html)
+[**DEMO and Docs**](https://bigcalendar.github.io/react-big-calendar/examples/index.html)
 
 Inspired by [Full Calendar](http://fullcalendar.io/).
 

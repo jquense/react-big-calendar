@@ -1,36 +1,66 @@
 name: Build and Deploy Documentation
-on: 
+
+on:
   workflow_run:
-    workflows: ["Release"]
+    workflows: ['Release']
     types: [completed]
     branches:
       - master
-    paths:
-      - 'src/**'
-      - 'stories/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
+  build:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
-    
-      - name: Install and Build 🔧
-        run: | # Install npm packages and build the Storybook files
-          yarn install --frozen-lockfile
-          yarn build-storybook
+          cache: yarn
 
-      - name: Deploy 🚀
-        # https://github.com/JamesIves/github-pages-deploy-action
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Storybook
+        run: yarn build-storybook
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p pages/examples
+          cp -R storybook-static/. pages/examples/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          folder: storybook-static # The folder that the build-storybook script generates files.
-          target-folder: examples
-          clean: true # Automatically remove deleted files from the deploy branch
-          commit-message: 'docs: update documentation site'
+          path: pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

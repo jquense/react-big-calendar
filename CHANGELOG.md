@@ -1,3 +1,10 @@
+## [1.19.5](https://github.com/bigcalendar/react-big-calendar/compare/v1.19.4...v1.19.5) (2026-05-29)
+
+
+### Bug Fixes
+
+* **Month:** preserve needLimitMeasure state set by resize listener ([#2797](https://github.com/bigcalendar/react-big-calendar/issues/2797)) ([8fcbc6c](https://github.com/bigcalendar/react-big-calendar/commit/8fcbc6c26c8df7aed81f4de54d24686354befc61)), closes [#2789](https://github.com/bigcalendar/react-big-calendar/issues/2789)
+
 ## [1.19.4](https://github.com/bigcalendar/react-big-calendar/compare/v1.19.3...v1.19.4) (2025-06-16)
 
 

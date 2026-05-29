@@ -26,7 +26,7 @@
 ## تشغيل الأمثلة محلياً
 
 ```sh
-$ git clone git@github.com:jquense/react-big-calendar.git
+$ git clone git@github.com:bigcalendar/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
 $ yarn storybook

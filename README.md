@@ -26,7 +26,7 @@ element has a height, or the calendar won't be visible. To provide your own cust
 ## Run examples locally
 
 ```sh
-$ git clone git@github.com:jquense/react-big-calendar.git
+$ git clone git@github.com:bigcalendar/react-big-calendar.git
 $ cd react-big-calendar
 $ yarn
 $ yarn storybook

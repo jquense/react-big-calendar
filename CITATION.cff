@@ -19,7 +19,7 @@ authors:
   - given-names: Tobias
     family-names: Andersen
     email: j.tobiasandersen@gmail.com
-repository-code: 'https://github.com/jquense/react-big-calendar'
+repository-code: 'https://github.com/bigcalendar/react-big-calendar'
 url: 'https://jquense.github.io/react-big-calendar/examples'
 repository-artifact: 'https://registry.npmjs.org/react-big-calendar'
 abstract: >-

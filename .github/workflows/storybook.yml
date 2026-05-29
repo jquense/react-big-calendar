@@ -45,8 +45,8 @@ jobs:
 
       - name: Prepare Pages artifact
         run: |
-          mkdir -p pages/examples
-          cp -R storybook-static/. pages/examples/
+          mkdir -p pages
+          cp -R storybook-static/. pages/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

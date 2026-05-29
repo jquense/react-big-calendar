@@ -6,7 +6,7 @@
   <img src="../assets/rbc-demo.gif" alt="Big Calendar Demo Image" />
 </p>
 
-[**عرض التجربة والمستندات**](https://jquense.github.io/react-big-calendar/examples/index.html)
+[**عرض التجربة والمستندات**](https://bigcalendar.github.io/react-big-calendar/index.html)
 
 مستوحى من [Full Calendar](http://fullcalendar.io/).
 

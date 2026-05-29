@@ -73,7 +73,7 @@ body:
       label: Validations
       description: Before submitting the issue, please make sure you do the following
       options:
-        - label: Read the [docs](http://jquense.github.io/react-big-calendar/examples).
+        - label: Read the [docs](https://bigcalendar.github.io/react-big-calendar).
           required: true
         - label: Check that there isn't already an issue that request the same feature to avoid creating a duplicate.
           required: true

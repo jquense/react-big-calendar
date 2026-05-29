@@ -49,6 +49,15 @@ export default function CustomToolbar({
           type="button"
           onClick={() => onNavigate(navigate.PREVIOUS)}
           aria-label={messages.previous}
+          style={{ 
+            border: 'none',
+            borderRadius: '50%', // Make buttons circular
+            padding: '8px 14px', 
+            cursor: 'pointer',
+            transition: 'box-shadow 0.2s ease-in-out', // Smooth hover transition
+          }}
+          onMouseEnter={(e) => (e.target.style.boxShadow = '0px 0px 0px 0.5px rgba(0, 0, 0, 0.1)')} // Light gray circle on hover
+          onMouseLeave={(e) => (e.target.style.boxShadow = 'none')}
         >
           &#60;
         </button>
@@ -56,13 +65,40 @@ export default function CustomToolbar({
           type="button"
           onClick={() => onNavigate(navigate.TODAY)}
           aria-label={messages.today}
+          
+          style={{
+            border: '1px solid #cccccc', // Light gray border
+            borderRadius: '4px', 
+            padding: '5px 12px', 
+            fontSize: '14px', 
+            fontWeight: 'normal',
+            cursor: 'pointer', // Indicate clickability
+            transition: 'background-color 0.2s ease-in-out', // Smooth hover transition
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#e6e6e6'; // Darker gray on hover
+            e.target.style.boxShadow = 'inset 0px 0px 3px 0px rgba(0, 0, 0, 0.2)'; // Inner shadow on hover
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'white'; // Back to original color
+            e.target.style.boxShadow = 'none'; // Remove inner shadow
+          }}
         >
-          &#8226;
+         Today
         </button>
         <button
           type="button"
           onClick={() => onNavigate(navigate.NEXT)}
           aria-label={messages.next}
+          style={{ 
+            border: 'none',
+            borderRadius: '50%', // Make buttons circular
+            padding: '8px 14px', 
+            cursor: 'pointer',
+            transition: 'box-shadow 0.2s ease-in-out', // Smooth hover transition
+          }}
+          onMouseEnter={(e) => (e.target.style.boxShadow = '0px 0px 0px 0.5px rgba(0, 0, 0, 0.1)')} // Light gray circle on hover
+          onMouseLeave={(e) => (e.target.style.boxShadow = 'none')}
         >
           &#62;
         </button>

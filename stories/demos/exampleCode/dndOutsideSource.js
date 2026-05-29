@@ -180,7 +180,6 @@ export default function DnDOutsideResource({ localizer }) {
           onDragOverFromOutside={customOnDragOverFromOutside}
           onEventDrop={moveEvent}
           onEventResize={resizeEvent}
-          onSelectSlot={newEvent}
           resizable
           selectable
         />

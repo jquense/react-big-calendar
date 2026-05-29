@@ -9,8 +9,10 @@ require('globalize/lib/cultures/globalize.culture.en-GB')
 require('globalize/lib/cultures/globalize.culture.es')
 require('globalize/lib/cultures/globalize.culture.fr')
 require('globalize/lib/cultures/globalize.culture.ar-AE')
+require('globalize/lib/cultures/globalize.culture.zh-CN')
+require('globalize/lib/cultures/globalize.culture.ru')
 
-const cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
+const cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE', 'zh-CN', 'ru']
 const lang = {
   en: null,
   'en-GB': null,
@@ -23,7 +25,6 @@ const lang = {
     next: 'Después',
     today: 'Hoy',
     agenda: 'El Diario',
-
     showMore: (total) => `+${total} más`,
   },
   fr: {
@@ -35,7 +36,6 @@ const lang = {
     next: 'Prochain',
     today: `Aujourd'hui`,
     agenda: 'Ordre du jour',
-
     showMore: (total) => `+${total} plus`,
   },
   'ar-AE': {
@@ -47,8 +47,29 @@ const lang = {
     next: 'التالي',
     today: 'اليوم',
     agenda: 'جدول أعمال',
-
     showMore: (total) => `+${total} إضافي`,
+  },
+  'zh-CN': {
+    week: '周',
+    work_week: '工作周',
+    day: '天',
+    month: '月',
+    previous: '上一个',
+    next: '下一个',
+    today: '今天',
+    agenda: '日程',
+    showMore: (total) => `+${total} 更多`,
+  },
+  ru: {
+    week: 'Неделя',
+    work_week: 'Рабочая неделя',
+    day: 'День',
+    month: 'Месяц',
+    previous: 'Предыдущий',
+    next: 'Следующий',
+    today: 'Сегодня',
+    agenda: 'Повестка дня',
+    showMore: (total) => `+${total} больше`,
   },
 }
 
@@ -58,7 +79,6 @@ export default function CulturesDemo({ localizer }) {
 
   const cultureOnClick = useCallback(
     ({ target: { value } }) => {
-      // really better to useReducer for simultaneously setting multiple state values
       setCulture(value)
       setRightToLeft(value === 'ar-AE')
     },
@@ -105,6 +125,7 @@ export default function CulturesDemo({ localizer }) {
     </Fragment>
   )
 }
+
 CulturesDemo.propTypes = {
   localizer: PropTypes.instanceOf(DateLocalizer),
 }

@@ -12,7 +12,7 @@
 
 
 .rbc-timeslot-group {
-  border-bottom: 1px solid $cell-border;
+  border-bottom: 1px solid var(--rbc-cell-border, $cell-border);
   min-height: 40px;
   display: flex;
   flex-flow: column nowrap;
@@ -45,7 +45,7 @@
   }
 
   .rbc-event {
-    border: 1px solid $event-border;
+    border: 1px solid var(--rbc-event-border, $event-border);
     display: flex;
     max-height: 100%;
     min-height: 20px;
@@ -54,7 +54,7 @@
     overflow: hidden;
     position: absolute;
   }
-  
+
   .rbc-background-event {
     @extend .rbc-event;
     opacity: 0.75;
@@ -76,7 +76,7 @@
   }
 
   .rbc-time-slot {
-    border-top: 1px solid lighten($cell-border, 10%);
+    border-top: 1px solid var(--rbc-time-slot-border-top, $time-slot-border-top);
   }
 }
 
@@ -86,7 +86,7 @@
     position: sticky;
     left: 0;
     background-color: white;
-    border-right: 1px solid $cell-border;
+    border-right: 1px solid var(--rbc-cell-border, $cell-border);
     z-index: 10;
     margin-right: -1px;
   }
@@ -113,7 +113,7 @@
   .rbc-day-bg {
     width: 140px;
     // min-width: 0;
-    flex:  1 1 0;
+    flex: 1 1 0;
     flex-basis: 0 px;
   }
 }

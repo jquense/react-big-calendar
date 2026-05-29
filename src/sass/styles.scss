@@ -44,11 +44,11 @@
 }
 
 .rbc-off-range {
-  color: $out-of-range-color;
+  color: var(--rbc-out-of-range-color, $out-of-range-color);
 }
 
 .rbc-off-range-bg {
-  background: $out-of-range-bg-color;
+  background: var(--rbc-out-of-range-bg-color, $out-of-range-bg-color);
 }
 
 .rbc-header {
@@ -62,15 +62,15 @@
   font-weight: bold;
   font-size: 90%;
   min-height: 0;
-  border-bottom: 1px solid $cell-border;
+  border-bottom: 1px solid var(--rbc-cell-border, $cell-border);
 
   & + & {
-    border-left: 1px solid $cell-border;
+    border-left: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   .rbc-rtl & + & {
     border-left-width: 0;
-    border-right: 1px solid $cell-border;
+    border-right: 1px solid var(--rbc-cell-border, $cell-border);
   }
 
   & > a {
@@ -122,7 +122,7 @@
 }
 
 .rbc-today {
-  background-color: $today-highlight-bg;
+  background-color: var(--rbc-today-highlight-bg, $today-highlight-bg);
 }
 
 @import './toolbar';

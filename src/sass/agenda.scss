@@ -8,7 +8,7 @@
 
   table.rbc-agenda-table {
     width: 100%;
-    border: 1px solid $cell-border;
+    border: 1px solid var(--rbc-cell-border, $cell-border);
     border-spacing: 0;
     border-collapse: collapse;
 
@@ -24,24 +24,24 @@
     }
 
     tbody > tr > td + td {
-      border-left: 1px solid $cell-border;
+      border-left: 1px solid var(--rbc-cell-border, $cell-border);
     }
 
     .rbc-rtl & {
       tbody > tr > td + td {
         border-left-width: 0;
-        border-right: 1px solid $cell-border;
+        border-right: 1px solid var(--rbc-cell-border, $cell-border);
       }
     }
 
     tbody > tr + tr {
-      border-top: 1px solid $cell-border;
+      border-top: 1px solid var(--rbc-cell-border, $cell-border);
     }
 
     thead > tr > th {
       padding: 3px 5px;
       text-align: left;
-      border-bottom: 1px solid $cell-border;
+      border-bottom: 1px solid var(--rbc-cell-border, $cell-border);
 
       .rbc-rtl & {
         text-align: right;
@@ -54,10 +54,10 @@
   text-transform: lowercase;
 
   .rbc-continues-after:after {
-    content: ' »'
+    content: ' »';
   }
   .rbc-continues-prior:before {
-    content: '« '
+    content: '« ';
   }
 }
 
@@ -66,8 +66,6 @@
   white-space: nowrap;
 }
 
-
-
 .rbc-agenda-event-cell {
-  width: 100%
+  width: 100%;
 }

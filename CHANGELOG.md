@@ -1,3 +1,10 @@
+## [1.19.6](https://github.com/bigcalendar/react-big-calendar/compare/v1.19.5...v1.19.6) (2026-05-29)
+
+
+### Bug Fixes
+
+* update all release pipeline actions ([025d834](https://github.com/bigcalendar/react-big-calendar/commit/025d834d2dd0cb965f07c960b8587485873dc7e2))
+
 ## [1.19.5](https://github.com/bigcalendar/react-big-calendar/compare/v1.19.4...v1.19.5) (2026-05-29)
 
 

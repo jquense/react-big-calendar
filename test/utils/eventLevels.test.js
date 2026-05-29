@@ -11,6 +11,7 @@ import {
   inRange,
   segsOverlap,
   sortEvents,
+  sortWeekEvents,
 } from '../../src/utils/eventLevels'
 
 const localizer = momentLocalizer(moment)
@@ -645,5 +646,56 @@ describe('sortEvents', () => {
         })
       })
     })
+  })
+})
+
+describe('sortWeekEvents', () => {
+  const accessors = {
+    start: (e) => e.start,
+    end: (e) => e.end,
+    allDay: (e) => e.allDay,
+  }
+
+  const multiDayEvent = {
+    start: new Date(2023, 0, 1),
+    end: new Date(2023, 0, 3),
+    allDay: false,
+  }
+  const singleDayEvent = {
+    start: new Date(2023, 0, 5, 10),
+    end: new Date(2023, 0, 5, 11),
+    allDay: false,
+  }
+
+  test('returns multi-day events before single-day events', () => {
+    const events = [singleDayEvent, multiDayEvent]
+    const result = sortWeekEvents(events, accessors, localizer)
+    expect(result[0]).toBe(multiDayEvent)
+    expect(result[1]).toBe(singleDayEvent)
+  })
+
+  test('handles empty array', () => {
+    const result = sortWeekEvents([], accessors, localizer)
+    expect(result).toEqual([])
+  })
+
+  test('handles only single-day events', () => {
+    const laterEvent = {
+      start: new Date(2023, 0, 10, 14),
+      end: new Date(2023, 0, 10, 15),
+      allDay: false,
+    }
+    const result = sortWeekEvents([laterEvent, singleDayEvent], accessors, localizer)
+    expect(result).toHaveLength(2)
+  })
+
+  test('handles only multi-day events', () => {
+    const longerEvent = {
+      start: new Date(2023, 0, 1),
+      end: new Date(2023, 0, 5),
+      allDay: false,
+    }
+    const result = sortWeekEvents([longerEvent, multiDayEvent], accessors, localizer)
+    expect(result).toHaveLength(2)
   })
 })

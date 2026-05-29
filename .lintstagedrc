@@ -1,7 +1,9 @@
 {
-    "src/**/*.js": "eslint",
-    "test/**/*.js": "eslint",
-    "*.{js,json,css,md}": [
+    "src/**/*.js": [
+      "eslint",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
       "prettier --write"
     ]
   }

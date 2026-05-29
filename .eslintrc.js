@@ -4,6 +4,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
+  ignorePatterns: ['test/**'],
   extends: ['jason/react', 'prettier', 'plugin:storybook/recommended'],
   plugins: ['react-hooks'],
   env: {
@@ -12,6 +13,12 @@ module.exports = {
     es6: true,
   },
   overrides: [
+    {
+      files: ['test/**/*.js'],
+      env: {
+        jest: true,
+      },
+    },
     {
       // or whatever matches stories specified in .storybook/main.js
       files: ['*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],

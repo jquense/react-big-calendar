@@ -232,4 +232,30 @@ describe('getStyledEvents', () => {
       expect(results).toEqual(expectedStyles)
     })
   })
+
+  describe('with invalid dayLayoutAlgorithm', () => {
+    test('returns empty array when algorithm is not a known key and not a function', () => {
+      const result = getStyledEvents({
+        events: [{ start: d(11), end: d(12) }],
+        accessors,
+        slotMetrics,
+        minimumStartDifference: 10,
+        dayLayoutAlgorithm: 'invalid-algo',
+      })
+      expect(result).toEqual([])
+    })
+
+    test('accepts a custom function as algorithm', () => {
+      const customAlgo = jest.fn(() => [{ style: { width: 100 } }])
+      const result = getStyledEvents({
+        events: [{ start: d(11), end: d(12) }],
+        accessors,
+        slotMetrics,
+        minimumStartDifference: 10,
+        dayLayoutAlgorithm: customAlgo,
+      })
+      expect(customAlgo).toHaveBeenCalled()
+      expect(result).toHaveLength(1)
+    })
+  })
 })

@@ -42,4 +42,5 @@ node_modules
 
 .claude
 CLAUDE.md
+ERRORS.md
 memory/

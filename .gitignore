@@ -39,3 +39,7 @@ node_modules
 .yarn
 # Yarn NodeLinker
 .yarnrc.yml
+
+.claude
+CLAUDE.md
+memory/

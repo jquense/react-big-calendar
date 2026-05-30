@@ -20,7 +20,7 @@ authors:
     family-names: Andersen
     email: j.tobiasandersen@gmail.com
 repository-code: 'https://github.com/bigcalendar/react-big-calendar'
-url: 'https://jquense.github.io/react-big-calendar/examples'
+url: 'https://bigcalendar.github.io/react-big-calendar'
 repository-artifact: 'https://registry.npmjs.org/react-big-calendar'
 abstract: >-
   Big Calendar is a full featured Calendar component for

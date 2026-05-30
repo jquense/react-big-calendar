@@ -4,16 +4,34 @@ on:
   issues:
     types: [labeled]
 
+permissions:
+  issues: write
+
 jobs:
   reply-labeled:
     runs-on: ubuntu-latest
     steps:
       - name: missing demo
         if: github.event.label.name == 'missing demo'
-        uses: actions-cool/issues-helper@v2.2.1
+        uses: peter-evans/create-or-update-comment@v5
         with:
-          actions: 'create-comment, remove-labels'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
             Hello @${{ github.event.issue.user.login }}. Please provide an online reproduction by [codesandbox](https://codesandbox.io/) or a minimal GitHub repository. You can fork our [Issue Template](https://codesandbox.io/s/react-big-calendar-example-v9wdyd) in codesandbox to get start. Issues labeled by `missing demo` will be closed if no activities in 3 days.
+
+      - name: remove missing demo label
+        if: github.event.label.name == 'missing demo'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'missing demo',
+              })
+            } catch (error) {
+              if (error.status !== 404) throw error
+            }

@@ -21,5 +21,5 @@ export default create({
   inputBorderRadius: 4,
 
   brandTitle: 'Big Calendar',
-  brandUrl: 'http://jquense.github.io/react-big-calendar/examples',
+  brandUrl: 'https://bigcalendar.github.io/react-big-calendar',
 })

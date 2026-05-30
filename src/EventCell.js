@@ -63,6 +63,8 @@ class EventCell extends React.Component {
         <div
           {...props}
           style={{ ...userProps.style, ...style }}
+          role="button"
+          tabIndex={0}
           className={clsx('rbc-event', className, userProps.className, {
             'rbc-selected': selected,
             'rbc-event-allday': showAsAllDay,

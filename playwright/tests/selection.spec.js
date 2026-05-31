@@ -14,7 +14,7 @@
  *   - isClick (coordinate tolerance check)
  *   - isEvent / isShowMore filter checks
  */
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('../helpers/coverage')
 const { loadStory } = require('../helpers/storybook')
 
 const SELECTABLE_WEEK = 'additional-examples-timeslots--selectable-step-15-x-4-slot'

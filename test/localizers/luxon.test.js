@@ -304,3 +304,40 @@ describe('luxon localizer — week boundary branches', () => {
     expect(result.length).toBeGreaterThanOrEqual(7)
   })
 })
+
+describe('luxon localizer — fixUnit null branch (line 50)', () => {
+  test('eq with null unit does not throw (fixUnit null → undefined)', () => {
+    const a = d(2023, 0, 15, 10, 0)
+    const b = d(2023, 0, 15, 10, 0)
+    expect(() => localizer.eq(a, b, null)).not.toThrow()
+  })
+
+  test('diff with null unit does not throw', () => {
+    const a = d(2023, 0, 15)
+    const b = d(2023, 0, 16)
+    expect(() => localizer.diff(a, b, null)).not.toThrow()
+  })
+
+  test('startOf with null unit does not throw', () => {
+    expect(() => localizer.startOf(d(2023, 0, 15), null)).not.toThrow()
+  })
+})
+
+describe('luxon localizer — fixUnit null branch direct (line 50)', () => {
+  test('startOf with null unit exercises fixUnit null → undefined', () => {
+    // pluralizeUnit(null.toLowerCase()) would throw, so fixUnit checks !unit first:
+    // datePart = null ? pluralizeUnit(...) : null → false branch → datePart = null
+    // then !datePart → datePart = undefined
+    expect(() => localizer.startOf(new Date(), null)).not.toThrow()
+  })
+
+  test('endOf with null unit exercises fixUnit null → undefined path', () => {
+    expect(() => localizer.endOf(new Date(), null)).not.toThrow()
+  })
+
+  test('diff with null unit goes through fixUnit', () => {
+    const a = new Date(2023, 0, 15)
+    const b = new Date(2023, 0, 16)
+    expect(() => localizer.diff(a, b, null)).not.toThrow()
+  })
+})

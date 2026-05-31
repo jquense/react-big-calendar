@@ -2,7 +2,7 @@
  * Smoke test that verifies story IDs load a calendar correctly.
  * Run this first to confirm IDs before writing full tests.
  */
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('../helpers/coverage')
 
 const STORIES = [
   'additional-examples--complex-day-view-layout',

@@ -11,7 +11,7 @@
  *   - EventWrapper.js: drag handle rendering, onDragStart
  *   - common.js: nest (already covered via Jest)
  */
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('../helpers/coverage')
 const { loadStory, dragFromTo } = require('../helpers/storybook')
 
 const DND_WEEK = 'additional-examples-drag-and-drop--draggable-and-resizable'

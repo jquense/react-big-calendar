@@ -41,8 +41,16 @@
     "prepublishOnly": "yarn build",
     "prettier": "prettier '**/*js' '!lib/**' --write ",
     "storybook": "start-storybook -p 9002",
+    "storybook:coverage": "COVERAGE=true start-storybook -p 9002",
     "test": "yarn lint && NODE_ENV=test jest",
-    "tdd": "NODE_ENV=test jest --watch"
+    "test:coverage": "yarn lint && NODE_ENV=test jest --coverage && yarn coverage:check",
+    "tdd": "NODE_ENV=test jest --watch",
+    "playwright": "node_modules/.bin/playwright test --config=playwright/playwright.config.js",
+    "playwright:file": "node_modules/.bin/playwright test --config=playwright/playwright.config.js",
+    "playwright:coverage": "COVERAGE=true node_modules/.bin/playwright test --config=playwright/playwright.config.js",
+    "coverage:check": "node scripts/coverage-check.js",
+    "coverage:merge": "node scripts/merge-coverage.js && yarn coverage:check",
+    "coverage:full": "yarn test:coverage && yarn playwright:coverage && yarn coverage:merge"
   },
   "peerDependencies": {
     "react": "^16.14.0 || ^17 || ^18 || ^19",

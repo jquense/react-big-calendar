@@ -56,6 +56,29 @@ module.exports = {
       '../src'
     )
 
+    // Instrument src/ with Istanbul when running under coverage mode.
+    // Activate with: COVERAGE=true yarn storybook (or yarn playwright:coverage)
+    if (process.env.COVERAGE === 'true') {
+      config.module.rules.push({
+        test: /\.jsx?$/,
+        include: path.resolve(__dirname, '../src'),
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              [
+                'babel-plugin-istanbul',
+                {
+                  exclude: ['**/*.test.js', '**/__tests__/**'],
+                },
+              ],
+            ],
+          },
+        },
+        enforce: 'post',
+      })
+    }
+
     return config
   },
 }

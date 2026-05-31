@@ -12,7 +12,7 @@
  *   - componentDidUpdate (selectable prop change)
  *   - rbc-selected-cell appearance during selection
  */
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('../helpers/coverage')
 const { loadStory } = require('../helpers/storybook')
 
 test.describe('BackgroundCells.js — month view rendering', () => {

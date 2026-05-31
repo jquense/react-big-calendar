@@ -122,9 +122,7 @@ describe('dayjs localizer — min / max / add / diff / range / ceil / merge', ()
 })
 
 describe('dayjs localizer — minutes', () => {
-  // BUG: dayjs localizer calls dt.minutes() but dayjs only has dt.minute() (no 's').
-  // This function throws at runtime. Tracked separately for fix.
-  test.skip('returns minutes component (blocked by source bug: dt.minutes is not a function)', () => {
+  test('returns minutes component', () => {
     expect(localizer.minutes(d(2023, 0, 1, 5, 45))).toBe(45)
   })
 })
@@ -271,5 +269,61 @@ describe('dayjs localizer — null unit paths', () => {
 
   test('endOf without unit returns a Date', () => {
     expect(localizer.endOf(d(2023, 0, 15))).toBeInstanceOf(Date)
+  })
+})
+
+describe('dayjs localizer — fixUnit null branch (line 58)', () => {
+  test('eq with null unit falls through to fixUnit(null) → undefined', () => {
+    // Passing null/undefined as the unit exercises the !datePart branch
+    const a = d(2023, 0, 15, 10, 0)
+    const b = d(2023, 0, 15, 10, 0)
+    // Should not throw — fixUnit(null) returns undefined and comparison falls back
+    expect(() => localizer.eq(a, b, null)).not.toThrow()
+  })
+
+  test('diff with null unit does not throw', () => {
+    const a = d(2023, 0, 15)
+    const b = d(2023, 0, 16)
+    expect(() => localizer.diff(a, b, null)).not.toThrow()
+  })
+})
+
+describe('dayjs localizer — minutes-precision comparisons', () => {
+  test('diff in minutes returns correct count', () => {
+    const a = d(2023, 0, 15, 10, 42)
+    const b = d(2023, 0, 15, 10, 0)
+    expect(Math.abs(localizer.diff(a, b, 'minutes'))).toBe(42)
+  })
+
+  test('lt with minutes precision works correctly', () => {
+    const a = d(2023, 0, 15, 9, 30)
+    const b = d(2023, 0, 15, 9, 45)
+    expect(localizer.lt(a, b, 'minutes')).toBe(true)
+  })
+})
+
+describe('dayjs localizer — minutes() (lines 232-234)', () => {
+  test('returns the minute component of a date', () => {
+    expect(localizer.minutes(new Date(2023, 0, 15, 10, 42))).toBe(42)
+  })
+
+  test('returns 0 for a date at the top of the hour', () => {
+    expect(localizer.minutes(new Date(2023, 0, 15, 9, 0))).toBe(0)
+  })
+
+  test('returns 59 for a date at 59 minutes past', () => {
+    expect(localizer.minutes(new Date(2023, 0, 15, 14, 59))).toBe(59)
+  })
+})
+
+describe('dayjs localizer — fixUnit null branch (lines 55-62, line 58)', () => {
+  test('startOf with null unit goes through fixUnit null branch', () => {
+    // fixUnit(null) → datePart = null → !datePart → datePart = undefined
+    // startOf(..., undefined) exercises the else if (!datePart) branch
+    expect(() => localizer.startOf(new Date(), null)).not.toThrow()
+  })
+
+  test('endOf with null unit exercises fixUnit null → undefined path', () => {
+    expect(() => localizer.endOf(new Date(), null)).not.toThrow()
   })
 })

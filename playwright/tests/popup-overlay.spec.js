@@ -12,7 +12,7 @@
  *   - Popup event click → onSelect
  *   - useClickOutside → clicking outside hides popup
  */
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('../helpers/coverage')
 const { loadStory } = require('../helpers/storybook')
 
 // examples--example-6 is the popup demo: month view with popup=true

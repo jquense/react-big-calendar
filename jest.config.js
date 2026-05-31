@@ -1,5 +1,6 @@
 module.exports = {
   clearMocks: true,
+  testMatch: ['<rootDir>/test/**/*.test.js'],
   moduleDirectories: ['node_modules', 'src'],
   testEnvironment: 'jest-environment-jsdom',
   transform: {

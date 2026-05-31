@@ -14,7 +14,7 @@
  *                   316-330 (handleShowMore), 334-350 (overlayDisplay/selectDates)
  *   DateContentRow.js: getRowLimit(), handleShowMore, handleSelectSlot
  */
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('../helpers/coverage')
 const { loadStory } = require('../helpers/storybook')
 
 const MONTH_POPUP = 'additional-examples--custom-show-more'

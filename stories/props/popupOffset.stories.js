@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './popupOffset.mdx'
 
 const mLocalizer = momentLocalizer(moment)
 
@@ -18,12 +17,7 @@ export default {
       },
     },
     popup: 'boolean',
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

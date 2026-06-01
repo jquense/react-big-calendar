@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './components.mdx'
 import CustomToolbar from './customComponents/CustomToolbar.component'
 import '../resources/customToolbar.scss'
 
@@ -10,12 +9,7 @@ const mLocalizer = momentLocalizer(moment)
 
 export default {
   title: 'props',
-  component: Calendar,
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  component: Calendar
 }
 
 export function Components() {

@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs'
+import { Meta } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
 
 <Meta title="props/Full Prop List" />
@@ -198,14 +198,13 @@ BackgroundEvent {
 }
 ```
 
-<!-- ### backgroundEventPropGetter
+{/*
+### backgroundEventPropGetter
 
 - type: `function (event: Object, start: Date, end: Date, isSelected: boolean) => {className?: string, style?: Object}`
-- <LinkTo kind="props" story="background-event-prop-getter">
-    Example
-  </LinkTo>
 
-Optionally provide a function that returns an object of className or style props to be applied to the the event node. -->
+Optionally provide a function that returns an object of className or style props to be applied to the the event node.
+*/}
 
 ### titleAccessor
 
@@ -426,24 +425,21 @@ How is this different from <LinkTo kind="props" story="on-select-slot">onSelectS
     Example
   </LinkTo>
 
-Callback fired when a +{count} more is clicked. Receives **all** of the `events` for the `date` on which it was selected.
+Callback fired when a `+{count} more` is clicked. Receives **all** of the `events` for the `date` on which it was selected.
 
-<!-- TODO: doShowMoreDrillDown is not functioning -->
+{/* TODO: doShowMoreDrillDown is not functioning */}
 
-<!-- Required when using the <LinkTo kind="props" story="do-show-more-drill-down">doShowMoreDrillDown</LinkTo> props as `false`. -->
+{/* Required when using the doShowMoreDrillDown prop as false. */}
 
-<!-- ### doShowMoreDrillDown
+{/*
+### doShowMoreDrillDown
 
-- type: `boolean`
-- <LinkTo kind="props" story="do-show-more-drill-down">
-    Example
-  </LinkTo>
+- type: boolean
 
-Determines whether the drill down should occur when clicking on the "+_x_ more" link.
-
-If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `true`, the drill down will occur as usual.
-
-If <LinkTo kind="props" story="popup">popup</LinkTo> is `false`, and `doShowMoreDrillDown` is `false`, the drill down will not occur and the <LinkTo kind="props" story="on-show-more">onShowMore</LinkTo> function will trigger. -->
+Determines whether the drill down should occur when clicking on the "+x more" link.
+If popup is false and doShowMoreDrillDown is true, the drill down will occur as usual.
+If popup is false and doShowMoreDrillDown is false, the drill down will not occur and onShowMore will trigger.
+*/}
 
 ### onKeyPressEvent
 
@@ -462,7 +458,7 @@ Callback fired when a focused calendar event receives a key press.
     Example
   </LinkTo>
 
-Displays all events on the month view instead of having some hidden behind +{count} more. This will cause the rows in the month view to be scrollable if the number of events exceed the height of the row.
+Displays all events on the month view instead of having some hidden behind `+{count} more`. This will cause the rows in the month view to be scrollable if the number of events exceed the height of the row.
 
 #### selected
 
@@ -712,10 +708,7 @@ Specify a specific culture code for the Calendar. The `culture` is used by `form
     Example
   </LinkTo>
 
-<LinkTo kind="props" story="localizer">
-  Localizer
-</LinkTo> specific formats, tell the Calendar how to format and display dates and
-times.
+<LinkTo kind="props" story="localizer">Localizer</LinkTo> specific formats, tell the Calendar how to format and display dates and times.
 
 The `format` types are dependent on the configured localizer; both Moment and Globalize accept strings of tokens according to their own specification, such as: `'DD mm yyyy'`.
 

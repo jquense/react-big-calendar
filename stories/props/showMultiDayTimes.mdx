@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './showMultiDayTimes.stories'
 
 # showMultiDayTimes
 
@@ -9,4 +10,4 @@ Support to show multi-day events with specific start and end times in the main t
 
 **Note: This may cause calendars with several events to look very busy in the week and day views.**
 
-<Story id="props--show-multi-day-times" />
+<Canvas of={Stories.ShowMultiDayTimes} meta={Stories} />

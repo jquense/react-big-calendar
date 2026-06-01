@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './onSelecting.stories'
 
 # onSelecting
 
@@ -14,6 +15,4 @@ Returning `false` from the handler will prevent a selection.
 
 How is this different from <LinkTo kind="props" story="on-select-slot">onSelectSlot</LinkTo>? That is a very good question. The `onSelecting` method is only available in the Time views (`week`, `work week`, `day`), whereas `onSelectSlot` is also available in the `month` view. The `onSelecting` method allows you to 'cancel' your selection by returning `false`. The `onSelectSlot` method provides a parameter, `slotInfo` object, containing a lot of additional information about your selection.
 
-<Canvas>
-  <Story id="props--on-selecting" />
-</Canvas>
+<Canvas of={Stories.OnSelecting} meta={Stories} />

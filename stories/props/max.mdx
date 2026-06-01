@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './max.stories'
 
 # max
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 Constrains the maximum time of the Day and Week views.
 
-<Story id="props--max" />
+<Canvas of={Stories.Max} meta={Stories} />

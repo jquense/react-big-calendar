@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './onDropFromOutside.stories'
 
 # onDropFromOutside
 
@@ -9,4 +10,4 @@ A callback fired when user drops an item onto the Calendar from outside of the C
 
 **Important:** The callback does **not** receive the element being dropped. It only receives the details of the slot an element was dropped on.
 
-<Story id="addons-drag-and-drop-props--on-drop-from-outside" />
+<Canvas of={Stories.OnDropFromOutside} meta={Stories} />

@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './tooltipAccessor.stories'
 
 # tooltipAccessor
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 Accessor for the event tooltip, used to display event information. Should resolve to a `renderable` value. Removes the tooltip if null.
 
-<Story id="props--tooltip-accessor" />
+<Canvas of={Stories.TooltipAccessor} meta={Stories} />

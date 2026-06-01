@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './formatsAgendaDateFormat.stories'
 
 # formats.agendaDateFormat
 
@@ -7,6 +8,4 @@ import LinkTo from '@storybook/addon-links/react'
 
 Dates displayed in the gutter of the Agenda `view`
 
-<Canvas>
-  <Story id="props--formats-agenda-date-format" />
-</Canvas>
+<Canvas of={Stories.FormatsAgendDateFormat} meta={Stories} />

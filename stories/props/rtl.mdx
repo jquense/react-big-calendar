@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './rtl.stories'
 
 # rtl
 
@@ -10,4 +11,4 @@ Switch the calendar to a right-to-left read direction. Best if used in conjuncti
 
 See the <LinkTo kind="examples" story="example-5">Localization Example</LinkTo> for another example of combining `rtl`, `localizer`, `culture` and `messages`.
 
-<Story id="props--right-to-left" />
+<Canvas of={Stories.RightToLeft} meta={Stories} />

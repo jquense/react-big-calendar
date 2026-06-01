@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './view.stories'
 
 # view
 
@@ -12,6 +13,4 @@ If `view` is omitted then it is defaulted to 'month'.
 
 This is a controllable prop, when using <LinkTo kind="props" story="on-view">onView</LinkTo>
 
-<Canvas>
-  <Story id="props--view" />
-</Canvas>
+<Canvas of={Stories.View} meta={Stories} />

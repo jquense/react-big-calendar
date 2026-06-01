@@ -19,13 +19,10 @@ console.log(chalk.blue(`Compiling 'lib' js files`))
 await $`NODE_ENV=production RBC_CJS_BUILD=true babel src --out-dir lib`
 console.log(chalk.blue(`Copying SASS files to 'lib'`))
 // and since we don't currently use CSS modules...
-await fs.copy('./src/sass', './lib/sass')
+await $`cp -r ./src/sass ./lib/sass`
 console.log(chalk.blue(`...and the 'Add-on' SASS`))
 // don't forget DnD
-await fs.copy(
-  './src/addons/dragAndDrop/styles.scss',
-  './lib/addons/dragAndDrop/styles.scss'
-)
+await $`mkdir -p ./lib/addons/dragAndDrop && cp ./src/addons/dragAndDrop/styles.scss ./lib/addons/dragAndDrop/styles.scss`
 console.log(chalk.blue('Now we will build some CSS'))
 // Compile SASS from './lib' to get sourcemaps
 console.log(chalk.blue('Compile base styles'))

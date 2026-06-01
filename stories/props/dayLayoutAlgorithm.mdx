@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './dayLayoutAlgorithm.stories'
 
 # dayLayoutAlgorithm
 
@@ -13,4 +14,4 @@ A day event layout(arrangement) algorithm.
 
 or custom `Function(events, minimumStartDifference, slotMetrics, accessors)`
 
-<Story id="props--day-layout-algorithm" />
+<Canvas of={Stories.DayLayoutAlgorithm} meta={Stories} />

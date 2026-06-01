@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './localizer.stories'
 
 # localizer
 
@@ -69,9 +70,7 @@ const localizer = momentLocalizer(moment)
 
 See the <LinkTo kind="examples" story="example-5">Localization Example</LinkTo> for another example of combining `rtl`, `localizer`, `culture` and `messages`.
 
-<Canvas>
-  <Story id="props--localizer" />
-</Canvas>
+<Canvas of={Stories.Localizer} meta={Stories} />
 
 ## More Information
 

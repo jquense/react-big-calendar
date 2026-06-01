@@ -2,19 +2,13 @@ import React, { useCallback, useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, Views, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './dayPropGetter.mdx'
 import '../resources/propGetter.scss'
 
 const mLocalizer = momentLocalizer(moment)
 
 export default {
   title: 'props',
-  component: Calendar,
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  component: Calendar
 }
 
 export function DayPropGetter() {

@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './startAccessor.stories'
 
 # startAccessor
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 The start date/time of the event. Must resolve to a JavaScript `Date` object.
 
-<Story id="props--start-accessor" />
+<Canvas of={Stories.StartAccessor} meta={Stories} />

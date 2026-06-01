@@ -1,4 +1,5 @@
-@import '../../sass/variables';
+@use 'sass:color';
+@use '../../sass/variables' as *;
 
 .rbc-addons-dnd {
   .rbc-addons-dnd-row-body {
@@ -11,21 +12,18 @@
     right: 0;
   }
 
-
   .rbc-addons-dnd-over {
-    background-color: rgba(
-      red($date-selection-bg-color),
-      green($date-selection-bg-color),
-      blue($date-selection-bg-color),
-      .3
-    );
+    background-color: color.change($date-selection-bg-color, $alpha: 0.3);
   }
 
   .rbc-event {
     transition: opacity 150ms;
 
     &:hover {
-      .rbc-addons-dnd-resize-ns-icon, .rbc-addons-dnd-resize-ew-icon { display: block; }
+      .rbc-addons-dnd-resize-ns-icon,
+      .rbc-addons-dnd-resize-ew-icon {
+        display: block;
+      }
     }
   }
 
@@ -33,8 +31,9 @@
     opacity: 0;
   }
 
-  &.rbc-addons-dnd-is-dragging .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
-    opacity: .50;
+  &.rbc-addons-dnd-is-dragging
+    .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
+    opacity: 0.5;
   }
 
   .rbc-addons-dnd-resizable {
@@ -47,8 +46,12 @@
     width: 100%;
     text-align: center;
     position: absolute;
-    &:first-child { top: 0; }
-    &:last-child { bottom: 0; }
+    &:first-child {
+      top: 0;
+    }
+    &:last-child {
+      bottom: 0;
+    }
 
     .rbc-addons-dnd-resize-ns-icon {
       display: none;
@@ -63,8 +66,12 @@
     position: absolute;
     top: 4px;
     bottom: 0;
-    &:first-child { left: 0; }
-    &:last-child { right: 0; }
+    &:first-child {
+      left: 0;
+    }
+    &:last-child {
+      right: 0;
+    }
 
     .rbc-addons-dnd-resize-ew-icon {
       display: none;

@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { Calendar, Views, momentLocalizer } from '../../src'
 import allDayEvents from '../resources/allDayEvents'
-import mdx from './allDayMaxRows.mdx'
 
 const mLocalizer = momentLocalizer(moment)
 
@@ -13,12 +12,7 @@ export default {
     localizer: { control: { type: null } },
     events: { control: { type: null } },
     defaultDate: { control: { type: null } },
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

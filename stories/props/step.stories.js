@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { Calendar, Views, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './step.mdx'
 
 const mLocalizer = momentLocalizer(moment)
 
@@ -23,12 +22,7 @@ export default {
       },
     },
     step: 'number',
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

@@ -2,18 +2,12 @@ import React, { useState, useCallback } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './onNavigate.mdx'
 
 const mLocalizer = momentLocalizer(moment)
 
 export default {
   title: 'props',
-  component: Calendar,
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  component: Calendar
 }
 
 export function OnNavigate() {

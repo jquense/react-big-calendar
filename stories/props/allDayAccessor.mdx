@@ -1,4 +1,5 @@
-import { Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './allDayAccessor.stories'
 
 # allDayAccessor
 
@@ -7,4 +8,4 @@ import { Story } from '@storybook/addon-docs'
 
 Determines whether the event should be considered an "all day" event and ignore time. Must resolve to a `boolean` value.
 
-<Story id="props--all-day-accessor" />
+<Canvas of={Stories.AllDayAccessor} meta={Stories} />

@@ -1,5 +1,11 @@
-@import './variables';
-@import './reset';
+@use './variables' as *;
+@use './helpers' as *;
+@use './reset';
+@use './toolbar';
+@use './event';
+@use './month';
+@use './agenda';
+@use './time-grid';
 
 .rbc-calendar {
   box-sizing: border-box;
@@ -24,19 +30,11 @@
 }
 
 .rbc-abs-full {
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  @include abs-full;
 }
 
 .rbc-ellipsis {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include ellipsis;
 }
 
 .rbc-rtl {
@@ -111,9 +109,6 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-
     /* Hide scrollbar for Chrome, Safari and Opera */
     &::-webkit-scrollbar {
       display: none;
@@ -124,9 +119,3 @@
 .rbc-today {
   background-color: $today-highlight-bg;
 }
-
-@import './toolbar';
-@import './event';
-@import './month';
-@import './agenda';
-@import './time-grid';

@@ -1,5 +1,3 @@
-// TODO: fix the globalizeLocalizer to work with globalize 1.x
-
 import * as dates from '../utils/dates'
 import oldGlobalize from './oldGlobalize'
 import { DateLocalizer } from '../localizer'
@@ -62,7 +60,7 @@ export default function (globalize) {
       const weekData = cldr.get('supplemental').weekData
       const firstDay = weekData.firstDay[territory || '001']
       return days.indexOf(firstDay)
-    } catch (e) {
+    } catch {
       if (process.env.NODE_ENV !== 'production') {
         console.error(
           'Failed to accurately determine first day of the week.' +

@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './endAccessor.stories'
 
 # endAccessor
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 The end date/time of the event. Must resolve to a JavaScript `Date` object.
 
-<Story id="props--end-accessor" />
+<Canvas of={Stories.EndAccessor} meta={Stories} />

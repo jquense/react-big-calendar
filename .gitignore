@@ -43,6 +43,7 @@ node_modules
 .yarnrc.yml
 
 playwright-report
+storybook-static
 
 .claude
 CLAUDE.md

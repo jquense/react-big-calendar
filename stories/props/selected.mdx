@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './selected.stories'
 
 # selected
 
@@ -9,6 +10,4 @@ The selected event, if any. By default, Big Calendar 'controls' the `selected` (
 
 Often used in conjunction with <LinkTo kind="props" story="on-select-event">OnSelectEvent</LinkTo> and/or <LinkTo kind="props" story="on-double-click-event">onDoubleClickEvent</LinkTo>.
 
-<Canvas>
-  <Story id="props--selected" />
-</Canvas>
+<Canvas of={Stories.Selected} meta={Stories} />

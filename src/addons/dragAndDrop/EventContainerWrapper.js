@@ -1,5 +1,5 @@
 import { scrollParent, scrollTop } from 'dom-helpers'
-import qsa from 'dom-helpers/cjs/querySelectorAll'
+import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { DnDContext } from './DnDContext'

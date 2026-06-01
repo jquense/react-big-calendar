@@ -1,14 +1,13 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './onShowMore.stories'
 
 # onShowMore
 
 - type: `function (events: Array[event: Object], date: Date) => any`
 
-Callback fired when a +{count} more is clicked. Receives **all** of the `events` for the `date` on which it was selected.
+Callback fired when a `+{count} more` is clicked. Receives **all** of the `events` for the `date` on which it was selected.
 
-<!-- Required when using the <LinkTo kind="props" story="do-show-more-drill-down">doShowMoreDrillDown</LinkTo> props as `false`. -->
+{/* Required when using the doShowMoreDrillDown prop as `false`. */}
 
-<Canvas>
-  <Story id="props--on-show-more" />
-</Canvas>
+<Canvas of={Stories.OnShowMore} meta={Stories} />

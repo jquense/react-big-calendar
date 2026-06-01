@@ -1,7 +1,4 @@
 module.exports = function (api) {
-  //api.cache(false)
-
-  const isCJSBuild = process.env.RBC_CJS_BUILD === 'true'
   const isESMBuild = process.env.RBC_ESM_BUILD === 'true'
   const optionalPlugins = []
 
@@ -26,24 +23,20 @@ module.exports = function (api) {
           }),
         },
       ],
-      // FIXME: Passing `useESModules` to babel-preset-react-app is an
-      // undocumented feature. Should be avoided. This option is also deprecated
-      // according to
-      // https://babeljs.io/docs/en/babel-plugin-transform-runtime#useesmodules
       [
-        'react-app',
+        '@babel/preset-react',
         {
-          useESModules: !isCJSBuild,
-          absoluteRuntime: false,
+          development: api.env('development') || api.env('test'),
+          runtime: 'classic',
         },
       ],
     ],
     plugins: [
       ['@babel/plugin-transform-runtime'],
+      ['@babel/plugin-transform-class-properties', { loose: true }],
+      ['@babel/plugin-transform-private-methods', { loose: true }],
+      ['@babel/plugin-transform-private-property-in-object', { loose: true }],
       ['transform-react-remove-prop-types', { mode: 'wrap' }],
-      ['@babel/plugin-proposal-class-properties', { loose: true }],
-      ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
-      ['@babel/plugin-proposal-private-methods', { loose: true }],
       ...optionalPlugins,
     ],
   }

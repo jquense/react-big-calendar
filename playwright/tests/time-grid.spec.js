@@ -178,8 +178,14 @@ test.describe('TimeGridHeader.js — all-day events row (renderRow)', () => {
   })
 
   test('all-day events appear in the header row', async ({ page }) => {
+    // Story renders month view by default — navigate to week view where the
+    // TimeGridHeader all-day row exists
+    await page.click('button:has-text("Week")')
     const timeView = page.locator('.rbc-time-view')
     await expect(timeView).toBeVisible()
+    // All-day events render in the header row above the time slots
+    const allDayRow = page.locator('.rbc-allday-cell, .rbc-row.rbc-allday-cell')
+    await expect(allDayRow.first()).toBeVisible()
   })
 })
 

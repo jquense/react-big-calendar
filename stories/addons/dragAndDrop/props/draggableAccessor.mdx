@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './draggableAccessor.stories'
 
 # draggableAccessor
 
@@ -8,4 +9,4 @@ import LinkTo from '@storybook/addon-links/react'
 
 When used, can determine whether an 'event' is draggable
 
-<Story id="addons-drag-and-drop-props--draggable-accessor" />
+<Canvas of={Stories.DraggableAccessor} meta={Stories} />

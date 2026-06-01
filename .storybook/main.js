@@ -1,24 +1,23 @@
 const path = require('path')
+
 module.exports = {
   stories: [
-    '../stories/**/*.stories.mdx',
+    '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
+    '@storybook/addon-docs',
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    //'@storybook/addon-jest', // TODO: try this out
     {
-      name: `@storybook/preset-scss`,
+      name: '@storybook/preset-scss',
       options: {
         rule: {
           test: /(?<!\.module).s[ca]ss$/,
         },
       },
     },
-    // module
     {
-      name: `@storybook/preset-scss`,
+      name: '@storybook/preset-scss',
       options: {
         rule: {
           test: /\.module\.s[ca]ss$/,
@@ -30,30 +29,45 @@ module.exports = {
         },
       },
     },
-    {
-      name: '@storybook/addon-postcss',
-      options: {
-        postcssLoaderOptions: {
-          implementation: require('postcss'),
-        },
-      },
-    },
   ],
-  framework: '@storybook/react',
-  core: {
-    builder: 'webpack5',
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
   },
   webpackFinal: async (config) => {
     config.devtool = 'inline-source-map'
 
-    config.entry.unshift(
-      path.resolve(__dirname, '../stories/resources/main.scss')
-    )
+    config.module.rules.push({
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: require.resolve('babel-loader'),
+        options: { configFile: path.resolve(__dirname, '../babel.config.js') },
+      },
+    })
 
     // Aliases the src to the package name, so that 'example' scripting reads right
     config.resolve.alias['react-big-calendar'] = path.resolve(
       __dirname,
       '../src'
+    )
+
+    // Globalize 1.x UMD bundle references 'cldr' (AMD name) while the npm package is 'cldrjs'
+    config.resolve.alias['cldr'] = path.resolve(
+      __dirname,
+      '../node_modules/cldrjs/dist/cldr'
+    )
+    config.resolve.alias['cldr/event'] = path.resolve(
+      __dirname,
+      '../node_modules/cldrjs/dist/cldr/event'
+    )
+    config.resolve.alias['cldr/supplemental'] = path.resolve(
+      __dirname,
+      '../node_modules/cldrjs/dist/cldr/supplemental'
+    )
+    config.resolve.alias['cldr/unresolved'] = path.resolve(
+      __dirname,
+      '../node_modules/cldrjs/dist/cldr/unresolved'
     )
 
     // Instrument src/ with Istanbul when running under coverage mode.

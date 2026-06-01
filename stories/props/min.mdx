@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './min.stories'
 
 # min
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 Constrains the minimum time of the Day and Week views.
 
-<Story id="props--min" />
+<Canvas of={Stories.Min} meta={Stories} />

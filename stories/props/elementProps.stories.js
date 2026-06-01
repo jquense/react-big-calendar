@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './elementProps.mdx'
 import '../resources/propGetter.scss'
 
 const mLocalizer = momentLocalizer(moment)
@@ -13,12 +12,7 @@ export default {
   argTypes: {
     localizer: { control: { type: null } },
     events: { control: { type: null } },
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

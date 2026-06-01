@@ -1,3 +1,16 @@
+# [1.20.0](https://github.com/bigcalendar/react-big-calendar/compare/v1.19.6...v1.20.0) (2026-06-01)
+
+
+### Bug Fixes
+
+* update node version for runner ([2241a1e](https://github.com/bigcalendar/react-big-calendar/commit/2241a1e765f864bb7ea272cfea6d896b923808ae))
+
+
+### Features
+
+* update dependencies ([5a11b2a](https://github.com/bigcalendar/react-big-calendar/commit/5a11b2a232138d9b28479589b7e55cbe5e3c5ca2))
+* update dependencies and more testing ([6b65acf](https://github.com/bigcalendar/react-big-calendar/commit/6b65acf5f9ff1400e74bca47be360c7b2a87cf42))
+
 ## [1.19.6](https://github.com/bigcalendar/react-big-calendar/compare/v1.19.5...v1.19.6) (2026-05-29)
 
 

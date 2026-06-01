@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './onView.stories'
 
 # onView
 
@@ -9,6 +10,4 @@ import LinkTo from '@storybook/addon-links/react'
 
 Callback fired when the `view` value changes. When included it is used to 'control' the <LinkTo kind="props" story="view">view</LinkTo> prop value.
 
-<Canvas>
-  <Story id="props--on-view" />
-</Canvas>
+<Canvas of={Stories.OnView} meta={Stories} />

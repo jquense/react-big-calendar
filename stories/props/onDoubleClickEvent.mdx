@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './onDoubleClickEvent.stories'
 
 # onDoubleClickEvent
 
@@ -11,6 +12,4 @@ Callback fired when a calendar event is clicked twice. (i.e.: an `onDoubleClick`
 
 **Important:** The event passed into the function is the Calendar Event, not the SyntheticEvent expected by most click handlers.
 
-<Canvas>
-  <Story id="props--on-double-click-event" />
-</Canvas>
+<Canvas of={Stories.OnDoubleClickEvent} meta={Stories} />

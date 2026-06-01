@@ -1,4 +1,6 @@
-@import './variables';
+@use 'sass:color';
+@use './variables' as *;
+@use './helpers' as *;
 
 .rbc-row {
   display: flex;
@@ -9,7 +11,7 @@
   padding: 0 1px 1px 1px;
 
   .rbc-event-content {
-    @extend .rbc-ellipsis;
+    @include ellipsis;
   }
 }
 
@@ -18,7 +20,7 @@
 }
 
 .rbc-show-more {
-  @extend .rbc-ellipsis;
+  @include ellipsis;
   background-color: rgba(255, 255, 255, 0.3);
   z-index: $event-zindex;
   font-weight: bold;
@@ -28,7 +30,7 @@
   color: $event-bg;
   &:hover,
   &:focus {
-    color: darken($event-bg, 10%);
+    color: color.adjust($event-bg, $lightness: -10%);
   }
 }
 
@@ -86,7 +88,7 @@
 }
 
 .rbc-row-bg {
-  @extend .rbc-abs-full;
+  @include abs-full;
   display: flex;
   flex-direction: row;
   flex: 1 0 0;

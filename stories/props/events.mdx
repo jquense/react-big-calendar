@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './events.stories'
 
 # events
 
@@ -29,4 +30,4 @@ Event {
 }
 ```
 
-<Story id="props--events" />
+<Canvas of={Stories.Events} meta={Stories} />

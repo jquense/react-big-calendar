@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { Calendar, Views, momentLocalizer } from '../../src'
 import resourceData from '../resources/resourceEvents'
-import mdx from './resources.mdx'
 
 const { events: resourceEvents, list: resources } = resourceData
 
@@ -24,12 +23,7 @@ export default {
         type: null,
       },
     },
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

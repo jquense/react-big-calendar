@@ -2,16 +2,10 @@ import React, { useMemo } from 'react'
 import moment from 'moment'
 import { Calendar, momentLocalizer } from '../../src'
 import demoEvents from '../resources/events'
-import mdx from './localizer.mdx'
 
 export default {
   title: 'props',
   component: Calendar,
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
   decorators: [
     (Story) => (
       <div style={{ height: 800 }}>

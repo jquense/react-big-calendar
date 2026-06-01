@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './getNow.stories'
 
 # getNow
 
@@ -11,4 +12,4 @@ The value affects which day is shaded and which time is shown as the current tim
 
 Providing a value here can be useful when you are implementing time zones using the `startAccessor` and `endAccessor` properties.
 
-<Story id="props--get-now" />
+<Canvas of={Stories.GetNow} meta={Stories} />

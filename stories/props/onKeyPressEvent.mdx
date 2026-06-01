@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './onKeyPressEvent.stories'
 
 # onKeyPressEvent
 
@@ -7,6 +8,4 @@ import LinkTo from '@storybook/addon-links/react'
 
 Callback fired when a focused calendar event receives a key press.
 
-<Canvas>
-  <Story id="props--on-key-press-event" />
-</Canvas>
+<Canvas of={Stories.OnKeyPressEvent} meta={Stories} />

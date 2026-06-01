@@ -1,5 +1,5 @@
-@import './variables';
-@import './time-column';
+@use './variables' as *;
+@use './time-column';
 
 .rbc-slot-selection {
   z-index: 10;
@@ -51,7 +51,7 @@
 
 .rbc-time-header {
   display: flex;
-  flex: 0 0 auto; // should not shrink below height
+  flex: 0 0 auto;
   flex-direction: row;
 
   &.rbc-overflowing {
@@ -70,14 +70,6 @@
   > .rbc-row.rbc-row-resource {
     border-bottom: 1px solid $cell-border;
   }
-
-  // .rbc-gutter-cell {
-  //   flex: none;
-  // }
-
-  // > .rbc-gutter-cell + * {
-  //   width: 100%;
-  // }
 }
 
 .rbc-time-header-cell-single-day {

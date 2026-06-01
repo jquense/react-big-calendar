@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './formatsDayRangeHeaderFormat.stories'
 
 # formats.dayRangeHeaderFormat
 
@@ -7,6 +8,4 @@ import LinkTo from '@storybook/addon-links/react'
 
 Toolbar header format for the Week views, e.g. "Mar 29 - Apr 04"
 
-<Canvas>
-  <Story id="props--formats-day-range-header-format" />
-</Canvas>
+<Canvas of={Stories.FormatsDayRangeHeaderFormat} meta={Stories} />

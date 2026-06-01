@@ -1,7 +1,6 @@
 import React from 'react'
 import { Calendar } from '../../src'
 import { resourceAccessorStoryArgs } from './storyDefaults'
-import mdx from './resourceGroupingLayout.mdx'
 
 export default {
   title: 'props',
@@ -10,12 +9,7 @@ export default {
     localizer: { control: { type: null } },
     events: { control: { type: null } },
     defaultDate: { control: { type: null } },
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

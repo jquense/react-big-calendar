@@ -15,6 +15,8 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+coverage-merged
+.nyc_output
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -40,6 +42,10 @@ node_modules
 # Yarn NodeLinker
 .yarnrc.yml
 
+playwright-report
+storybook-static
+
 .claude
 CLAUDE.md
+ERRORS.md
 memory/

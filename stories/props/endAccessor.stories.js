@@ -1,7 +1,6 @@
 import React from 'react'
 import { Calendar } from '../../src'
 import { accessorStoryArgs } from './storyDefaults'
-import mdx from './endAccessor.mdx'
 
 export default {
   title: 'props',
@@ -14,12 +13,7 @@ export default {
         type: null,
       },
     },
-  },
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
+  }
 }
 
 const Template = (args) => (

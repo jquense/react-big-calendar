@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './defaultDate.stories'
 
 # defaultDate
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 Sets the initial `date` value in your calendar when you don't want it to be 'today', when not using `getNow`, or controlling `date`.
 
-<Story id="props--default-date" />
+<Canvas of={Stories.DefaultDate} meta={Stories} />

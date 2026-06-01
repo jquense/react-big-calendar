@@ -1,9 +1,10 @@
 /**
- * As seen in ./.storybook/main.js, this file is used to provide
+ * As seen in ./.storybook/preview.js, this file is used to provide
  * the Big Calendar styles in Storybook
  */
-@import '../../src/sass/styles.scss';
-@import '../../src/addons/dragAndDrop/styles.scss';
+@use 'sass:color';
+@use '../../src/sass/styles.scss' as calendar;
+@use '../../src/addons/dragAndDrop/styles.scss' as dnd;
 
 .height600 {
   position: relative;
@@ -59,6 +60,6 @@
 
 .nonDraggable,
 .nonResizable {
-  background-color: lighten(#3174ad, 40) !important;
+  background-color: color.adjust(#3174ad, $lightness: 40%) !important;
   color: black !important;
 }

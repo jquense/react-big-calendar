@@ -1,5 +1,6 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
+import * as Stories from './formatsMonthHeaderFormat.stories'
 
 # formats.monthHeaderFormat
 
@@ -7,6 +8,4 @@ import LinkTo from '@storybook/addon-links/react'
 
 Toolbar header format for the Month view, e.g "2015 April"
 
-<Canvas>
-  <Story id="props--formats-month-header-format" />
-</Canvas>
+<Canvas of={Stories.FormatsMonthHeaderFormat} meta={Stories} />

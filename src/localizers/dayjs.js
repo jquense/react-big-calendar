@@ -231,7 +231,7 @@ export default function (dayjsLib) {
 
   function minutes(date) {
     const dt = dayjs(date)
-    return dt.minutes()
+    return dt.minute()
   }
 
   function firstOfWeek(culture) {

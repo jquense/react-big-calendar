@@ -1,10 +1,11 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './eventIdAccessor.stories'
 
 # eventIdAccessor
 
 - type: `string | number | function (event: Object) => string | number`
 - default: 'id'
 
-The id of the event. Must resolve to a string or number. Used as the key for the event in the DOM. If not provided, the event will be given a key of 'evt\_{index}'.
+The id of the event. Must resolve to a string or number. Used as the key for the event in the DOM. If not provided, the event will be given a key of `evt_{index}`.
 
-<Story id="props--event-id-accessor" />
+<Canvas of={Stories.EventIdAccessor} meta={Stories} />

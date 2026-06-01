@@ -1,4 +1,5 @@
-import { Canvas, Story } from '@storybook/addon-docs'
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './scrollToTime.stories'
 
 # scrollToTime
 
@@ -7,4 +8,4 @@ import { Canvas, Story } from '@storybook/addon-docs'
 
 Determines how far down the scroll pane is initially scrolled down.
 
-<Story id="props--scroll-to-time" />
+<Canvas of={Stories.ScrollToTime} meta={Stories} />

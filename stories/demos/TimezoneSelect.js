@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Layout from 'react-tackle-box/Layout'
 import moment from 'moment'
 import 'moment-timezone'
 
@@ -18,7 +17,7 @@ export default function TimezoneSelect({
 
   return (
     <div>
-      <Layout direction="column" align="center">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {title ? <strong style={{ marginBottom: 10 }}>{title}</strong> : null}
         <label>Select a Timezone</label>{' '}
         <select
@@ -33,7 +32,7 @@ export default function TimezoneSelect({
             </option>
           ))}
         </select>
-      </Layout>
+      </div>
     </div>
   )
 }

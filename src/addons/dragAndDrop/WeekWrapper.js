@@ -62,7 +62,8 @@ class WeekWrapper extends React.Component {
   handleMove = (point, bounds, draggedEvent) => {
     if (!pointInBox(bounds, point)) return this.reset()
     const event = this.context.draggable.dragAndDropAction.event || draggedEvent
-    const { accessors, slotMetrics, rtl, localizer } = this.props
+    const { accessors, slotMetrics, localizer } = this.props
+    const rtl = this.props.components.weekWrapper.contextType._defaultValue;
 
     const slot = getSlotAtX(bounds, point.x, rtl, slotMetrics.slots)
 

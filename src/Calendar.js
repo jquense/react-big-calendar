@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { uncontrollable } from 'uncontrollable'
+import { useUncontrolled } from 'uncontrollable'
 import {
   accessor,
   views as componentViews,
@@ -1183,8 +1183,28 @@ class Calendar extends React.Component {
   }
 }
 
-export default uncontrollable(Calendar, {
-  view: 'onView',
-  date: 'onNavigate',
-  selected: 'onSelectEvent',
-})
+function UncontrolledCalendar(props) {
+  const controlledProps = useUncontrolled(props, {
+    view: 'onView',
+    date: 'onNavigate',
+    selected: 'onSelectEvent',
+  })
+
+  return <Calendar {...controlledProps} />
+}
+
+UncontrolledCalendar.propTypes = {
+  ...Calendar.propTypes,
+  view: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  date: PropTypes.instanceOf(Date),
+  selected: PropTypes.object,
+}
+
+UncontrolledCalendar.defaultProps = {
+  ...Calendar.defaultProps,
+  view: views.MONTH,
+  date: new Date(),
+  selected: null,
+}
+
+export default UncontrolledCalendar

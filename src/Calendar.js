@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { uncontrollable } from 'uncontrollable'
+import { useUncontrolled } from 'uncontrollable'
 import {
   accessor,
   views as componentViews,
@@ -1183,8 +1183,18 @@ class Calendar extends React.Component {
   }
 }
 
-export default uncontrollable(Calendar, {
-  view: 'onView',
-  date: 'onNavigate',
-  selected: 'onSelectEvent',
-})
+const UncontrolledCalendar = React.forwardRef(
+  function UncontrolledCalendar(props, ref) {
+    const controlledProps = useUncontrolled(props, {
+      view: 'onView',
+      date: 'onNavigate',
+      selected: 'onSelectEvent',
+    })
+
+    return <Calendar ref={ref} {...controlledProps} />
+  }
+)
+
+UncontrolledCalendar.propTypes = Calendar.propTypes
+
+export default UncontrolledCalendar

@@ -272,7 +272,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
 
   /**
    * Moved from TimeSlots.js, this method overrides the method of the same name
-   * in the localizer.js, using moment to construct the js Date
+   * in the localizer.js, using Luxon to construct the js Date
    * @param {Date} dt - date to start with
    * @param {Number} minutesFromMidnight
    * @param {Number} offset
@@ -280,7 +280,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
    */
   function getSlotDate(dt, minutesFromMidnight, offset) {
     return startOfDT(dt, 'day')
-      .set({ minutes: minutesFromMidnight + offset })
+      .plus({ minutes: minutesFromMidnight + offset })
       .toJSDate()
   }
 

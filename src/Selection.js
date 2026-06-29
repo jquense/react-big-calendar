@@ -7,16 +7,19 @@ function addEventListener(type, handler, target = document) {
 }
 
 function isOverContainer(container, x, y) {
-  return !container || contains(container, document.elementFromPoint(x, y))
+  const doc = (container && container.ownerDocument) || document
+  return !container || contains(container, doc.elementFromPoint(x, y))
 }
 
 export function getEventNodeFromPoint(node, { clientX, clientY }) {
-  let target = document.elementFromPoint(clientX, clientY)
+  const doc = (node && node.ownerDocument) || document
+  let target = doc.elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-event', node)
 }
 
 export function getShowMoreNodeFromPoint(node, { clientX, clientY }) {
-  let target = document.elementFromPoint(clientX, clientY)
+  const doc = (node && node.ownerDocument) || document
+  let target = doc.elementFromPoint(clientX, clientY)
   return closest(target, '.rbc-show-more', node)
 }
 
@@ -55,6 +58,13 @@ class Selection {
     this.selecting = false
     this.isDetached = false
     this.container = node
+    // Resolve the document/window that owns the container node, so listeners
+    // and hit-testing target the right document when the calendar is rendered
+    // (e.g. via a React portal) into a separate window or an iframe. Falls back
+    // to the global document/window, so in-page usage is unchanged.
+    const ownerNode = typeof node === 'function' ? node() : node
+    this.ownerDocument = (ownerNode && ownerNode.ownerDocument) || document
+    this.ownerWindow = this.ownerDocument.defaultView || window
     this.globalMouse = !node || global
     this.longPressThreshold = longPressThreshold
     this.validContainers = validContainers
@@ -74,17 +84,27 @@ class Selection {
     this._removeTouchMoveWindowListener = addEventListener(
       'touchmove',
       () => {},
-      window
+      this.ownerWindow
     )
-    this._removeKeyDownListener = addEventListener('keydown', this._keyListener)
-    this._removeKeyUpListener = addEventListener('keyup', this._keyListener)
+    this._removeKeyDownListener = addEventListener(
+      'keydown',
+      this._keyListener,
+      this.ownerDocument
+    )
+    this._removeKeyUpListener = addEventListener(
+      'keyup',
+      this._keyListener,
+      this.ownerDocument
+    )
     this._removeDropFromOutsideListener = addEventListener(
       'drop',
-      this._dropFromOutsideListener
+      this._dropFromOutsideListener,
+      this.ownerDocument
     )
     this._removeDragOverFromOutsideListener = addEventListener(
       'dragover',
-      this._dragOverFromOutsideListener
+      this._dragOverFromOutsideListener,
+      this.ownerDocument
     )
     this._addInitialEventListener()
   }
@@ -159,12 +179,21 @@ class Selection {
         cleanup()
         handler(initialEvent)
       }, this.longPressThreshold)
-      removeTouchMoveListener = addEventListener('touchmove', () => cleanup())
-      removeTouchEndListener = addEventListener('touchend', () => cleanup())
+      removeTouchMoveListener = addEventListener(
+        'touchmove',
+        () => cleanup(),
+        this.ownerDocument
+      )
+      removeTouchEndListener = addEventListener(
+        'touchend',
+        () => cleanup(),
+        this.ownerDocument
+      )
     }
     const removeTouchStartListener = addEventListener(
       'touchstart',
-      handleTouchStart
+      handleTouchStart,
+      this.ownerDocument
     )
     const cleanup = () => {
       if (timer) {
@@ -195,21 +224,30 @@ class Selection {
   // Listen for mousedown and touchstart events. When one is received, disable the other and setup
   // future event handling based on the type of event.
   _addInitialEventListener() {
-    const removeMouseDownListener = addEventListener('mousedown', (e) => {
-      this._removeInitialEventListener()
-      this._handleInitialEvent(e)
-      this._removeInitialEventListener = addEventListener(
-        'mousedown',
-        this._handleInitialEvent
-      )
-    })
-    const removeTouchStartListener = addEventListener('touchstart', (e) => {
-      this._removeInitialEventListener()
-      this._removeInitialEventListener = this._addLongPressListener(
-        this._handleInitialEvent,
-        e
-      )
-    })
+    const removeMouseDownListener = addEventListener(
+      'mousedown',
+      (e) => {
+        this._removeInitialEventListener()
+        this._handleInitialEvent(e)
+        this._removeInitialEventListener = addEventListener(
+          'mousedown',
+          this._handleInitialEvent,
+          this.ownerDocument
+        )
+      },
+      this.ownerDocument
+    )
+    const removeTouchStartListener = addEventListener(
+      'touchstart',
+      (e) => {
+        this._removeInitialEventListener()
+        this._removeInitialEventListener = this._addLongPressListener(
+          this._handleInitialEvent,
+          e
+        )
+      },
+      this.ownerDocument
+    )
 
     this._removeInitialEventListener = () => {
       removeMouseDownListener()
@@ -297,26 +335,31 @@ class Selection {
       case 'mousedown':
         this._removeEndListener = addEventListener(
           'mouseup',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          this.ownerDocument
         )
         this._onEscListener = addEventListener(
           'keydown',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          this.ownerDocument
         )
         this._removeMoveListener = addEventListener(
           'mousemove',
-          this._handleMoveEvent
+          this._handleMoveEvent,
+          this.ownerDocument
         )
         break
       case 'touchstart':
         this._handleMoveEvent(e)
         this._removeEndListener = addEventListener(
           'touchend',
-          this._handleTerminatingEvent
+          this._handleTerminatingEvent,
+          this.ownerDocument
         )
         this._removeMoveListener = addEventListener(
           'touchmove',
-          this._handleMoveEvent
+          this._handleMoveEvent,
+          this.ownerDocument
         )
         break
       default:
@@ -514,9 +557,10 @@ export function objectsCollide(nodeA, nodeB, tolerance = 0) {
 export function getBoundsForNode(node) {
   if (!node.getBoundingClientRect) return node
 
+  const win = (node.ownerDocument && node.ownerDocument.defaultView) || window
   let rect = node.getBoundingClientRect(),
-    left = rect.left + pageOffset('left'),
-    top = rect.top + pageOffset('top')
+    left = rect.left + pageOffset('left', win),
+    top = rect.top + pageOffset('top', win)
 
   return {
     top,
@@ -526,8 +570,9 @@ export function getBoundsForNode(node) {
   }
 }
 
-function pageOffset(dir) {
-  if (dir === 'left') return window.pageXOffset || document.body.scrollLeft || 0
-  if (dir === 'top') return window.pageYOffset || document.body.scrollTop || 0
+function pageOffset(dir, win = window) {
+  if (dir === 'left')
+    return win.pageXOffset || win.document.body.scrollLeft || 0
+  if (dir === 'top') return win.pageYOffset || win.document.body.scrollTop || 0
 }
 export default Selection

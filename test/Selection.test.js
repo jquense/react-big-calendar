@@ -498,3 +498,53 @@ describe('Selection — getBoundsForNode', () => {
     document.body.removeChild(node)
   })
 })
+
+// ── ownerDocument (rendered into another document) ──────────────────────────────
+describe('Selection — ownerDocument', () => {
+  test('resolves ownerDocument/ownerWindow from the container node', () => {
+    const frameDoc = document.implementation.createHTMLDocument('frame')
+    const node = frameDoc.createElement('div')
+    frameDoc.body.appendChild(node)
+
+    selection = new Selection(node)
+    expect(selection.ownerDocument).toBe(frameDoc)
+    // createHTMLDocument() has no defaultView, so the window falls back to global
+    expect(selection.ownerWindow).toBe(window)
+  })
+
+  test('binds its listeners to the container document, not the global document', () => {
+    const frameDoc = document.implementation.createHTMLDocument('frame')
+    const node = frameDoc.createElement('div')
+    frameDoc.body.appendChild(node)
+
+    const frameSpy = jest.spyOn(frameDoc, 'addEventListener')
+    const globalSpy = jest.spyOn(document, 'addEventListener')
+
+    selection = new Selection(node)
+
+    const frameTypes = frameSpy.mock.calls.map((c) => c[0])
+    expect(frameTypes).toEqual(
+      expect.arrayContaining([
+        'keydown',
+        'keyup',
+        'drop',
+        'dragover',
+        'mousedown',
+        'touchstart',
+      ])
+    )
+    // The fix: these no longer land on the global document.
+    const globalTypes = globalSpy.mock.calls.map((c) => c[0])
+    expect(globalTypes).not.toContain('drop')
+    expect(globalTypes).not.toContain('dragover')
+
+    frameSpy.mockRestore()
+    globalSpy.mockRestore()
+  })
+
+  test('falls back to the global document when there is no container', () => {
+    selection = new Selection(null, { global: true })
+    expect(selection.ownerDocument).toBe(document)
+    expect(selection.ownerWindow).toBe(window)
+  })
+})

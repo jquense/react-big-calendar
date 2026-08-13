@@ -25,6 +25,10 @@ module.exports = {
         cssLoaderOptions: {
           modules: {
             localIdentName: '[name]__[local]--[hash:base64:5]',
+            // css-loader v7+ defaults `namedExport` to true, which removes the
+            // default export. Keep it off so stories can keep using
+            // `import styles from './x.module.scss'`.
+            namedExport: false,
           },
         },
       },

@@ -81,6 +81,7 @@ Day.propTypes = {
   onKeyPressEvent: PropTypes.func,
   onShowMore: PropTypes.func,
   onDrillDown: PropTypes.func,
+  onScroll: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,

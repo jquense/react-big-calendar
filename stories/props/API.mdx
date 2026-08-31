@@ -322,6 +322,17 @@ Custom views may return something different.
 
 _Note:_ This method is not fired on initial render. Only as the user navigates through Big Calendar.
 
+### onScroll
+
+- type: `function (scrollTime: Date) => // do something`
+- <LinkTo kind="props" story="on-scroll">
+    Example
+  </LinkTo>
+
+Callback fired when the time-grid scroll pane of the Day, Week and Work Week views is scrolled. Receives the time of day at the top of the visible scroll pane, the counterpart to `scrollToTime`.
+
+_Note:_ The callback is not throttled; throttle or debounce it in your handler if needed.
+
 ### selectable
 
 - type: `boolean | 'ignoreEvents'`

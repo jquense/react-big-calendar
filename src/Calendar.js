@@ -328,6 +328,17 @@ class Calendar extends React.Component {
     onRangeChange: PropTypes.func,
 
     /**
+     * ```js
+     * (scrollTime: Date) => void
+     * ```
+     *
+     * Callback fired when the time-grid scroll pane of the Day, Week and Work Week
+     * views are scrolled.
+     *
+     */
+    onScroll: PropTypes.func,
+
+    /**
      * A callback fired when a date selection is made. Only fires when `selectable` is `true`.
      *
      * ```js

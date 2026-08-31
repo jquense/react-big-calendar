@@ -1,0 +1,15 @@
+import { Canvas } from '@storybook/addon-docs/blocks'
+import * as Stories from './onScroll.stories'
+
+# onScroll
+
+- type: `(scrollTime: Date) => void`
+
+Callback fired when the time-grid scroll pane of the Day, Week and Work Week
+views are scrolled. Receives the time of day at the top of the visible scroll
+pane, the counterpart to [`scrollToTime`](./?path=/docs/props-scrolltotime--docs),
+useful for persisting and restoring the scroll position.
+
+The callback is not throttled; throttle or debounce it in your handler if needed.
+
+<Canvas of={Stories.OnScroll} meta={Stories} />

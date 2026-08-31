@@ -49,6 +49,7 @@ WorkWeek.propTypes = {
   max: PropTypes.instanceOf(Date),
   scrollToTime: PropTypes.instanceOf(Date),
   enableAutoScroll: PropTypes.bool,
+  onScroll: PropTypes.func,
 }
 
 WorkWeek.defaultProps = TimeGrid.defaultProps

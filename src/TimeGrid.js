@@ -50,6 +50,9 @@ export default class TimeGrid extends Component {
     if (this.scrollRef.current) {
       this.scrollRef.current.scrollLeft = e.target.scrollLeft
     }
+    if (this.props.onScroll && e.target.scrollHeight) {
+      notify(this.props.onScroll, [this.calculateScrollTime(e.target)])
+    }
   }
 
   handleResize = () => {
@@ -352,7 +355,7 @@ export default class TimeGrid extends Component {
       selected,
       allDayMaxRows: this.props.showAllEvents
         ? Infinity
-        : this.props.allDayMaxRows ?? Infinity,
+        : (this.props.allDayMaxRows ?? Infinity),
       resources: this.memoizedResources(resources, accessors),
       selectable: this.props.selectable,
       accessors,
@@ -500,6 +503,18 @@ export default class TimeGrid extends Component {
     this._scrollRatio = diffMillis / totalMillis
   }
 
+  // Inverse of calculateScroll, scrollTop to time of day
+  calculateScrollTime(content) {
+    const { min, max, localizer } = this.props
+
+    const totalMillis = localizer.diff(min, max, 'milliseconds')
+    const scrolledMillis = Math.round(
+      (content.scrollTop / content.scrollHeight) * totalMillis
+    )
+
+    return localizer.add(min, scrolledMillis, 'milliseconds')
+  }
+
   checkOverflow = () => {
     if (this._updatingOverflow) return
 
@@ -563,6 +578,7 @@ TimeGrid.propTypes = {
   onDoubleClickEvent: PropTypes.func,
   onKeyPressEvent: PropTypes.func,
   onDrillDown: PropTypes.func,
+  onScroll: PropTypes.func,
   getDrilldownView: PropTypes.func.isRequired,
 
   dayLayoutAlgorithm: DayLayoutAlgorithmPropType,

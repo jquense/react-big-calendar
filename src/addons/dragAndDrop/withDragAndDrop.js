@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
+import memoize from 'memoize-one'
 
 import { accessor } from '../../utils/propTypes'
 import EventWrapper from './EventWrapper'
@@ -40,6 +41,19 @@ export default function withDragAndDrop(Calendar) {
       super(...args)
 
       this.state = { interacting: false }
+
+      // Memoized on the `components` prop. Recomputing this on every render
+      // hands `Calendar` a new object each time, which remounts every custom
+      // component the consumer passed in — see #2588. Keeping it out of the
+      // constructor is what makes a changed `components` prop take effect at
+      // all (#2359), so the fix is to memoize rather than to move it back.
+      this.mergeComponents = memoize((components) =>
+        mergeComponents(components, {
+          eventWrapper: EventWrapper,
+          eventContainerWrapper: EventContainerWrapper,
+          weekWrapper: WeekWrapper,
+        })
+      )
     }
 
     getDnDContextValue() {
@@ -98,11 +112,7 @@ export default function withDragAndDrop(Calendar) {
       delete props.onEventResize
       props.selectable = selectable ? 'ignoreEvents' : false
 
-      this.components = mergeComponents(components, {
-        eventWrapper: EventWrapper,
-        eventContainerWrapper: EventContainerWrapper,
-        weekWrapper: WeekWrapper,
-      })
+      this.components = this.mergeComponents(components)
 
       const elementPropsWithDropFromOutside = this.props.onDropFromOutside
         ? {

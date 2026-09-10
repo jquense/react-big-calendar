@@ -302,3 +302,94 @@ describe('withDragAndDrop — render', () => {
     expect(container.querySelector('.rbc-calendar')).toBeInTheDocument()
   })
 })
+
+// ── components memoization (#2588 / #2359) ────────────────────────────────────
+describe('withDragAndDrop — components memoization', () => {
+  const ToolbarA = () => <div data-testid="toolbar-a" />
+  const ToolbarB = () => <div data-testid="toolbar-b" />
+
+  test('reuses the merged object when the components prop is unchanged', () => {
+    // A fresh object every render remounts every custom component the consumer
+    // passed in, because `Calendar` treats it as a changed prop — #2588.
+    const ref = React.createRef()
+    const components = { toolbar: ToolbarA }
+    const { rerender } = render(
+      <DnDCalendar {...baseProps} components={components} ref={ref} />
+    )
+    const merged = ref.current.components
+
+    rerender(<DnDCalendar {...baseProps} components={components} ref={ref} />)
+
+    expect(ref.current.components).toBe(merged)
+  })
+
+  test('recomputes when the components prop changes', () => {
+    // The merge lives outside the constructor so that a changed `components`
+    // prop takes effect at all — #2359. Memoizing must not undo that.
+    const ref = React.createRef()
+    const { rerender, queryByTestId } = render(
+      <DnDCalendar
+        {...baseProps}
+        components={{ toolbar: ToolbarA }}
+        ref={ref}
+      />
+    )
+    const merged = ref.current.components
+    expect(queryByTestId('toolbar-a')).toBeInTheDocument()
+
+    rerender(
+      <DnDCalendar
+        {...baseProps}
+        components={{ toolbar: ToolbarB }}
+        ref={ref}
+      />
+    )
+
+    expect(ref.current.components).not.toBe(merged)
+    expect(queryByTestId('toolbar-b')).toBeInTheDocument()
+    expect(queryByTestId('toolbar-a')).not.toBeInTheDocument()
+  })
+
+  test('two calendars do not evict each other', () => {
+    // `memoize-one` holds a single slot, so this only works because the
+    // memoized function is created per instance in the constructor. Hoisting it
+    // to module scope would reintroduce #2588 the moment a second calendar is
+    // mounted — and only then, which is a bad way to find out.
+    const refA = React.createRef()
+    const refB = React.createRef()
+    const componentsA = { toolbar: ToolbarA }
+    const componentsB = { toolbar: ToolbarB }
+    const tree = () => (
+      <>
+        <DnDCalendar {...baseProps} components={componentsA} ref={refA} />
+        <DnDCalendar {...baseProps} components={componentsB} ref={refB} />
+      </>
+    )
+
+    const { rerender } = render(tree())
+    const mergedA = refA.current.components
+    const mergedB = refB.current.components
+
+    rerender(tree())
+
+    expect(refA.current.components).toBe(mergedA)
+    expect(refB.current.components).toBe(mergedB)
+  })
+
+  test('still nests the DnD wrappers into the merged object', () => {
+    const ref = React.createRef()
+    render(
+      <DnDCalendar
+        {...baseProps}
+        components={{ toolbar: ToolbarA }}
+        ref={ref}
+      />
+    )
+
+    const merged = ref.current.components
+    expect(merged.toolbar).toBe(ToolbarA)
+    expect(merged.eventWrapper).toBeDefined()
+    expect(merged.eventContainerWrapper).toBeDefined()
+    expect(merged.weekWrapper).toBeDefined()
+  })
+})

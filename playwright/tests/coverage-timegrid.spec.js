@@ -22,7 +22,10 @@ const { loadStory, dragFromTo } = require('../helpers/storybook')
 const WEEK = 'additional-examples--custom-time-gutter-header'
 const WEEK_SEL = 'additional-examples-timeslots--selectable-step-15-x-4-slot'
 const DAY_TODAY = 'additional-examples--complex-day-view-layout'
-const RESOURCES = 'additional-examples-drag-and-drop--draggable-multiple-resources'
+// The only story that turns resourceGroupingLayout on outright; the
+// draggable-resources one starts with the checkbox off, so it never renders
+// the grouping layout.
+const GROUPING = 'props--resource-grouping-layout'
 const LAYOUT = 'additional-examples-layout--event-layout'
 
 // ── Scroll handling ───────────────────────────────────────────────────────────
@@ -175,11 +178,23 @@ test.describe('TimeGrid — handleShowMore and popup overlay', () => {
 // ── resourceGroupingLayout branch ────────────────────────────────────────────
 test.describe('TimeGrid — resourceGroupingLayout (TimeGridHeaderResources path)', () => {
   test.beforeEach(async ({ page }) => {
-    await loadStory(page, RESOURCES)
+    await loadStory(page, GROUPING)
   })
 
   test('renders TimeGridHeaderResources when resources are grouped by layout', async ({ page }) => {
     await expect(page.locator('.rbc-time-view')).toBeVisible()
+    // The grouping header renders one wrapper per day
+    const dayGroups = page.locator('.rbc-time-header-content.rbc-resource-grouping')
+    const dayCount = await dayGroups.count()
+    expect(dayCount).toBeGreaterThan(0)
+
+    // `.rbc-time-header-content > .rbc-row.rbc-row-resource` carries the
+    // border-bottom and flex-shrink from sass/time-grid.scss.
+    const resourceRows = await page
+      .locator('.rbc-time-header-content > .rbc-row.rbc-row-resource')
+      .count()
+    expect(resourceRows).toBe(dayCount)
+
     // Multiple day-slots (one per resource × day combination)
     const slots = page.locator('.rbc-day-slot')
     const count = await slots.count()

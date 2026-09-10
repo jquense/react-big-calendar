@@ -6,6 +6,7 @@ import React from 'react'
 import DateContentRow from './DateContentRow'
 import Header from './Header'
 import ResourceHeader from './ResourceHeader'
+import { inRange } from './utils/eventLevels'
 import { notify } from './utils/helpers'
 
 class TimeGridHeaderResources extends React.Component {
@@ -82,7 +83,7 @@ class TimeGridHeaderResources extends React.Component {
             </div>
           </div>
 
-          <div className="rbc-row">
+          <div className="rbc-row rbc-row-resource">
             {resources.map(([id, resource], idx) => {
               return (
                 <div
@@ -105,11 +106,12 @@ class TimeGridHeaderResources extends React.Component {
 
           <div className="rbc-row rbc-m-b-negative-3 rbc-h-full">
             {resources.map(([id, resource], idx) => {
-              // Filter the grouped events by the current date.
+              // Filter the grouped events by the current date. Comparing the
+              // event boundaries to the date would drop a multi-day event from
+              // every day between its start and its end, so test the overlap
+              // the way the rest of the calendar does.
               const filteredEvents = (groupedEvents.get(id) || []).filter(
-                (event) =>
-                  localizer.isSameDate(event.start, date) ||
-                  localizer.isSameDate(event.end, date)
+                (event) => inRange(event, date, date, accessors, localizer)
               )
 
               return (

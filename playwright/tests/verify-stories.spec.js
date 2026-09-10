@@ -12,6 +12,7 @@ const STORIES = [
   'additional-examples--custom-time-gutter-header',
   'additional-examples-layout--event-layout',
   'additional-examples-drag-and-drop--draggable-multiple-resources',
+  'props--resource-grouping-layout',
 ]
 
 for (const storyId of STORIES) {

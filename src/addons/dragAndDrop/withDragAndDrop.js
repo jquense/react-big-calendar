@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
+import memoize from 'memoize-one'
 
 import { accessor } from '../../utils/propTypes'
 import EventWrapper from './EventWrapper'
@@ -42,19 +43,44 @@ export default function withDragAndDrop(Calendar) {
       this.state = { interacting: false }
     }
 
-    getDnDContextValue() {
-      return {
+    // The context value keeps its reference until one of its inputs changes,
+    // so a render of the wrapper does not render every context consumer.
+    buildDnDContextValue = memoize(
+      (
+        onDropFromOutside,
+        dragFromOutsideItem,
+        draggableAccessor,
+        resizableAccessor,
+        dragAndDropAction
+      ) => ({
         draggable: {
           onStart: this.handleInteractionStart,
           onEnd: this.handleInteractionEnd,
           onBeginAction: this.handleBeginAction,
-          onDropFromOutside: this.props.onDropFromOutside,
-          dragFromOutsideItem: this.props.dragFromOutsideItem,
-          draggableAccessor: this.props.draggableAccessor,
-          resizableAccessor: this.props.resizableAccessor,
-          dragAndDropAction: this.state,
+          onDropFromOutside,
+          dragFromOutsideItem,
+          draggableAccessor,
+          resizableAccessor,
+          dragAndDropAction,
         },
-      }
+      })
+    )
+
+    getDnDContextValue() {
+      const {
+        onDropFromOutside,
+        dragFromOutsideItem,
+        draggableAccessor,
+        resizableAccessor,
+      } = this.props
+
+      return this.buildDnDContextValue(
+        onDropFromOutside,
+        dragFromOutsideItem,
+        draggableAccessor,
+        resizableAccessor,
+        this.state
+      )
     }
 
     defaultOnDragOver = (event) => {

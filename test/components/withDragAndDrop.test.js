@@ -240,6 +240,53 @@ describe('withDragAndDrop — getDnDContextValue', () => {
     const ctx = ref.current.getDnDContextValue()
     expect(ctx.draggable.draggableAccessor).toBe(draggableAccessor)
   })
+
+  test('keeps the context value reference when the wrapper renders again with the same inputs', () => {
+    const ref = React.createRef()
+    const { rerender } = render(<DnDCalendar {...baseProps} ref={ref} />)
+    const ctx = ref.current.getDnDContextValue()
+
+    rerender(<DnDCalendar {...baseProps} ref={ref} className="other" />)
+
+    expect(ref.current.getDnDContextValue()).toBe(ctx)
+  })
+
+  test('builds a new context value when an accessor changes', () => {
+    const ref = React.createRef()
+    const { rerender } = render(
+      <DnDCalendar {...baseProps} draggableAccessor={() => true} ref={ref} />
+    )
+    const ctx = ref.current.getDnDContextValue()
+    const draggableAccessor = () => false
+
+    rerender(
+      <DnDCalendar
+        {...baseProps}
+        draggableAccessor={draggableAccessor}
+        ref={ref}
+      />
+    )
+
+    expect(ref.current.getDnDContextValue()).not.toBe(ctx)
+    expect(ref.current.getDnDContextValue().draggable.draggableAccessor).toBe(
+      draggableAccessor
+    )
+  })
+
+  test('builds a new context value when the drag state changes', () => {
+    const ref = React.createRef()
+    render(<DnDCalendar {...baseProps} ref={ref} />)
+    const ctx = ref.current.getDnDContextValue()
+
+    act(() => {
+      ref.current.handleBeginAction({ id: 1 }, 'move', null)
+    })
+
+    expect(ref.current.getDnDContextValue()).not.toBe(ctx)
+    expect(ref.current.getDnDContextValue().draggable.dragAndDropAction).toBe(
+      ref.current.state
+    )
+  })
 })
 
 // ── render — prop forwarding ───────────────────────────────────────────────────

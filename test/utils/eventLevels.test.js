@@ -2,8 +2,8 @@ import moment from 'moment'
 import momentLocalizer from '../../src/localizers/moment'
 // import dayjs from 'dayjs'
 // import dayjsLocalizer from '../../src/localizers/dayjs'
-//import { DateTime } from 'luxon'
-//import luxonLocalizer from '../../src/localizers/luxon'
+import { DateTime, Settings } from 'luxon'
+import luxonLocalizer from '../../src/localizers/luxon'
 import {
   endOfRange,
   eventSegments,
@@ -160,6 +160,44 @@ describe('eventSegments', () => {
       const result = eventSegments(event, range, accessors, localizer)
 
       expect(result.right).toBe(5)
+    })
+  })
+
+  describe('when the calendar time zone is ahead of the browser time zone', () => {
+    // UTC+14, ahead of the time zone of any machine the tests run on
+    const zone = 'Pacific/Kiritimati'
+    const at = (year, month, day, hour = 0) =>
+      DateTime.fromObject({ year, month, day, hour }, { zone }).toJSDate()
+    let zonedLocalizer
+    let range
+
+    beforeAll(() => {
+      Settings.defaultZone = zone
+      zonedLocalizer = luxonLocalizer(DateTime)
+      // Sunday to Saturday
+      range = zonedLocalizer.range(at(2026, 10, 4), at(2026, 10, 10))
+    })
+
+    afterAll(() => {
+      Settings.defaultZone = 'system'
+    })
+
+    test('it sets span equal to the number of days an all day event spans', () => {
+      // Tuesday to Saturday, ending at midnight
+      const event = { start: at(2026, 10, 6), end: at(2026, 10, 10) }
+
+      const result = eventSegments(event, range, accessors, zonedLocalizer)
+
+      expect(result.span).toBe(4)
+    })
+
+    test('it sets span equal to the number of days a timed event spans', () => {
+      // Tuesday 10:00 to Saturday 10:00
+      const event = { start: at(2026, 10, 6, 10), end: at(2026, 10, 10, 10) }
+
+      const result = eventSegments(event, range, accessors, zonedLocalizer)
+
+      expect(result.span).toBe(5)
     })
   })
 })

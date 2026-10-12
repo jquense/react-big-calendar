@@ -23,9 +23,7 @@ export function eventSegments(event, range, accessors, localizer) {
   let span = localizer.diff(start, end, 'day')
 
   span = Math.min(span, slots)
-  // The segmentOffset is necessary when adjusting for timezones
-  // ahead of the browser timezone
-  span = Math.max(span - localizer.segmentOffset, 1)
+  span = Math.max(span, 1)
 
   return {
     event,

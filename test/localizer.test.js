@@ -142,16 +142,6 @@ describe('DateLocalizer constructor', () => {
     ).toBe(false)
   })
 
-  test('segmentOffset is 0 when browserTZOffset is not provided', () => {
-    const loc = new DateLocalizer(makeSpec())
-    expect(loc.segmentOffset).toBe(0)
-  })
-
-  test('segmentOffset uses browserTZOffset result when provided', () => {
-    const loc = new DateLocalizer(makeSpec({ browserTZOffset: () => 1 }))
-    expect(loc.segmentOffset).toBe(1)
-  })
-
   test('sortEvents sorts by start date', () => {
     const loc = new DateLocalizer(makeSpec())
     const earlier = { start: new Date(2023, 0, 1), end: new Date(2023, 0, 2), allDay: false }

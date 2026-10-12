@@ -359,27 +359,6 @@ export default function (dayjsLib) {
     return dt.isSame(dt2, 'day')
   }
 
-  /**
-   * This method, called once in the localizer constructor, is used by eventLevels
-   * 'eventSegments()' to assist in determining the 'span' of the event in the display,
-   * specifically when using a timezone that is greater than the browser native timezone.
-   * @returns number
-   */
-  function browserTZOffset() {
-    /**
-     * Date.prototype.getTimezoneOffset horrifically flips the positive/negative from
-     * what you see in it's string, so we have to jump through some hoops to get a value
-     * we can actually compare.
-     */
-    const dt = new Date()
-    const neg = /-/.test(dt.toString()) ? '-' : ''
-    const dtOffset = dt.getTimezoneOffset()
-    const comparator = Number(`${neg}${Math.abs(dtOffset)}`)
-    // dayjs correctly provides positive/negative offset, as expected
-    const mtOffset = dayjs().utcOffset()
-    return mtOffset > comparator ? 1 : 0
-  }
-
   return new DateLocalizer({
     formats,
 
@@ -420,6 +399,5 @@ export default function (dayjsLib) {
     sortEvents,
     inEventRange,
     isSameDate,
-    browserTZOffset,
   })
 }

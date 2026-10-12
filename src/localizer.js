@@ -191,7 +191,6 @@ export class DateLocalizer {
     this.isSameDate = spec.isSameDate || isSameDate
     this.startAndEndAreDateOnly =
       spec.startAndEndAreDateOnly || startAndEndAreDateOnly
-    this.segmentOffset = spec.browserTZOffset ? spec.browserTZOffset() : 0
   }
 }
 

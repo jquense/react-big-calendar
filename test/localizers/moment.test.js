@@ -308,12 +308,6 @@ describe('moment localizer — daySpan', () => {
   })
 })
 
-describe('moment localizer — segmentOffset / browserTZOffset', () => {
-  test('segmentOffset is 0 or 1', () => {
-    expect([0, 1]).toContain(localizer.segmentOffset)
-  })
-})
-
 describe('moment localizer — format functions (formats object)', () => {
   test('agendaHeaderFormat (dateRangeFormat) returns a string', () => {
     const result = formats.agendaHeaderFormat(
